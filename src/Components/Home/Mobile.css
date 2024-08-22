@@ -1,0 +1,80 @@
+/* styles.css */
+/* Custom styles for react-tabs */
+
+/* Custom styles for the tab list */
+.tab1-list {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* Custom styles for individual tabs */
+.tab1 {
+  display: inline-block;
+  border: 1px solid transparent;
+  border-bottom: none;
+  position: relative;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+/* Custom styles for selected tab */
+.tab1[aria-selected="true"] {
+  background-color: #ffffff67;
+  color: #fff;
+  border-radius: 15px;
+}
+
+/* Custom styles for tab panels */
+.tab1-panel {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+/* Additional styling for input box */
+.inputbox {
+  background: rgba(255, 255, 255, 0.6);
+  height: 3.8vw;
+  width: 36vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Styling for disabled tabs */
+.tab--disabled {
+  color: gray;
+  cursor: default;
+}
+
+/* Remove focus outline for tabs */
+.tab:focus {
+  outline: none;
+}
+
+/* Styling for focus indicator */
+.tab:focus:after {
+  content: "";
+  position: absolute;
+  height: 5px;
+  left: -4px;
+  right: -4px;
+  bottom: -5px;
+}
+
+/* Styling for tab panels */
+.tab-panel {
+  display: none;
+}
+
+/* Styling for selected tab panel */
+.tab-panel--selected {
+  display: block;
+}
+
+/* Styling for input placeholder */
+input::placeholder {
+  /* color: rgba(255, 255, 255, 0.836); */
+  font-size: 1.1vw;
+}

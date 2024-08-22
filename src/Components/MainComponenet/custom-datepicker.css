@@ -1,0 +1,17 @@
+/* Custom CSS */
+.custom-datepicker {
+    background-color: #03CCF4; /* Set your desired background color */
+  }
+  
+  /* Change background color of the input field */
+  .custom-datepicker .ant-picker-input > input {
+    background-color: #f0f0f0; /* Set your desired background color */
+  }
+  
+  /* Change background color of the calendar popup */
+  .custom-datepicker .ant-picker-dropdown {
+    background-color: #03CCF4; /* Set your desired background color */
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    background-color: red;
+}

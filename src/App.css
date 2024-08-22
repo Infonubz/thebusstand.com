@@ -1,0 +1,352 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* Hide the default checkbox */
+.custom-checkbox {
+  display: none;
+}
+
+/* Style the label to represent the custom checkbox */
+.custom-checkbox + label {
+  position: relative;
+  padding-left: 25px; /* adjust based on your design */
+  cursor: pointer;
+}
+
+/* Create the visual representation of the custom checkbox using a pseudo-element */
+.custom-checkbox + label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2px; /* adjust based on your design */
+  width: 18px; /* adjust based on your design */
+  height: 18px; /* adjust based on your design */
+  border: 2px solid #ccc; /* default border color */
+  background-color: white; /* default background color */
+}
+
+/* Change the color when checkbox is checked */
+.custom-checkbox:checked + label::before {
+  background-color: green; /* Change to desired color */
+  border-color: green; /* Change to desired color */
+}
+.custom-select {
+  color: white; /* Text color */
+}
+
+.custom-select option {
+  color: black; /* Text color for options */
+}
+
+.custom-select option[value=""][disabled] {
+  color: #999; /* Placeholder text color */
+}
+.custom-timepicker .ant-picker-input input::placeholder {
+  color: black;
+  font-size: 1vw;
+  padding: 0;
+}
+.custom-timepicker .ant-picker-input-suffix {
+  color: red;
+}
+.ant-picker-ok button {
+  color: white; /* Initial color */
+  background-color: #03ccf4;
+}
+.ant-calendar-selected-day {
+  background-color: red; /* Change background color of selected date */
+}
+.ant-picker-panel {
+  background-color: red; /* Change background color of popup calendar */
+}
+
+::-webkit-scrollbar {
+  width: 0px; /* Set the width of the scrollbar */
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the track (background behind the scrollbar) */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #1f487c; /* Color of the scrollbar handle */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #1f487c; /* Color of the scrollbar handle when hovered */
+}
+/* Custom CSS */
+.custom-popover {
+  padding: 20px; /* Adjust the padding value according to your needs */
+}
+.moving {
+  background-repeat: repeat-x;
+}
+
+.bg-build-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.bg-build-image {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  animation: bgmove 5s linear infinite;
+  background-repeat: repeat-x;
+}
+.bg-vehicle {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  animation: vehiclemove 5s linear infinite;
+  background-repeat: repeat-x;
+}
+.bg-vehicle2 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  animation: vehiclemove2 10s linear infinite;
+  background-repeat: repeat-x;
+}
+@keyframes bgmove {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes vehiclemove {
+  /* 0% {
+    transform: translateX(0%);
+  } */
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes vehiclemove2 {
+  /* 0% {
+    transform: translateX(0%);
+  } */
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* CSS */
+.custom-select .ant-select-selection-placeholder {
+  font-size: 1vw;
+  color: black;
+}
+/* CSS */
+/* Change the text size of the selected value */
+.custom-select1 .ant-select-selection-selected-value {
+  font-size: 1.2vw; /* Change the font size as needed */
+}
+
+/* Change the text size of the dropdown options */
+.custom-select2 .ant-select-dropdown-menu-item {
+  font-size: 1.2vw; /* Change the font size as needed */
+}
+/* CSS */
+/* Change the text size of the selected value */
+.ant-select-selection-selected-value {
+  font-size: 5px; /* Change the font size as needed */
+}
+/* Change the text size of the dropdown options */
+.ant-select-dropdown-menu-item {
+  font-size: 5px; /* Change the font size as needed */
+}
+
+.slide-wrapper {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.header {
+  text-shadow: 1px 1.5px gray;
+}
+
+@keyframes colorChange {
+  0% {
+    color: black;
+  }
+  50% {
+    color: #1f487c;
+  }
+  100% {
+    color: black;
+  }
+}
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0; /* Optional - if you want to remove the margin */
+}
+
+.no-spinner {
+  -moz-appearance: textfield; /* Firefox */
+}
+.custom-select .ant-select-selector {
+  border: none; /* Remove default border */
+  box-shadow: none; /* Remove default box-shadow */
+  background-color: transparent; /* Make background transparent */
+  padding-right: 0; /* Remove padding */
+}
+
+.custom-dropdown {
+  .ant-select-dropdown-menu-item-active:not(
+      .ant-select-dropdown-menu-item-disabled
+    ) {
+    background-color: transparent; /* Make dropdown item background transparent */
+  }
+}
+
+.custom-dropdown-menu {
+  .ant-select-dropdown {
+    border: none; /* Remove dropdown border */
+    box-shadow: none; /* Remove dropdown box-shadow */
+  }
+}
+.slide-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+.slide-wrapper {
+  display: flex;
+  transition: transform 1s ease-in-out;
+}
+
+.slide {
+  flex: 1 0 100%;
+}
+
+/* Custom CSS to adjust the modal width and height */
+.custom-modal .ant-modal-content {
+  width: 40vw !important; /* Adjust the modal width */
+  height: 35vw !important; /* Adjust the modal height */
+  max-width: none; /* Prevent the default max-width behavior */
+}
+.custom-modal .ant-modal-wrap {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100% !important;
+  min-height: 100vh !important;
+  width: 100% !important;
+}
+
+.custom-modal .ant-modal {
+  top: 0; /* Ensures the modal starts from the top */
+}
+.custom-modal .ant-modal-body {
+  padding: 0; /* Adjust the padding as needed */
+}
+/* src/custom.css */
+.placeholder-blue::placeholder {
+  color: #1f487c; /* Your desired placeholder color */
+  font-weight: 400;
+}
+
+.new-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.new-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+.new-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.new-scrollbar1::-webkit-scrollbar {
+  width: 8px;
+}
+
+.new-scrollbar1::-webkit-scrollbar-thumb {
+  background-color: #1F487C;
+  border-radius: 10px;
+}
+
+.new-scrollbar1::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+.custom-drawer .ant-drawer-body {
+  padding: 0px; /* Adjust the padding as needed */
+}
+.custom-search::placeholder {
+  font-size: 5vw; /* Adjust this value to your desired size */
+  /* padding-left: 5vw; */
+  color: #1F487C;
+}
+
+.custom-date-picker {
+  display: none !important; /* Hide the input field */
+}
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.react-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.react-player video {
+  object-fit: cover; /* Ensures the video covers the entire div */
+}

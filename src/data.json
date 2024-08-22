@@ -1,0 +1,105 @@
+[
+  {
+    "id": 1,
+    "Bus_Operator_Name": "sri tulasi travels",
+    "Low_Price_Name": "Sri tulasi travels",
+    "Low_Price": 1234,
+    "Available_seats": 65,
+    "Window_Seat": 23,
+    "Operators_Rating": 4.9,
+    "Subscribers": "56.65k",
+    "Bus_Depature_Place": "Tirupur",
+    "Bus_Arrival_Place": "Chennai",
+    "Bus_Departure_Time": "10:23",
+    "Bus_Arrival_Time": "12:21",
+    "Bus_Travel_Time": "10:30 HRS",
+    "Bus_Departure_Date": "20 Feb",
+    "Bus_Arrival_Date": "21 Feb",
+    "Radius": true,
+    "AC": true,
+    "Non_Ac": false,
+    "Bus_Seater": true,
+    "Bus_Sleeper": true,
+    "Bus_Seat_Sleeper": true,
+    "Bus_Type": "NON A/C Seater/ Sleeper (2+1)",
+    "Bus_Operator_Price": 5345,
+    "Pickup_Point": [
+      "Navalur Tollgate",
+      "Satyabhama University",
+      "Shollinganallur",
+      "Ekkatuthangal",
+      "Thuraipakkam",
+      "Perungudi",
+      "Kandanchavadi",
+      "Central Ramoji Film City",
+      "LB"
+    ],
+    "Drop_Point": [
+      "Nagar",
+      "Dilsuknagar",
+      "Lakdikapool",
+      "Panjagutta",
+      "Ameerpet",
+      "SR Nagar\tM-ticket"
+    ],
+    "Bus_Amenities": [
+      "Supported",
+      "Blankets",
+      "Pillow",
+      "Charging Point",
+      "Emergency Contact Number",
+      "M-ticket",
+      "Track My Bus"
+    ],
+    "Full_Details": [
+      [
+        "Bus_Operator:yatra",
+        "price: ₹9170",
+        "dis_price: ₹1950",
+        "url:https:www.yatra.com"
+      ],
+      [
+        "bus_operator:ABHI BUS",
+        "bus_operator_logo: abhibus",
+        "price: ₹2500",
+        "dis_price: ₹1950"
+      ],
+      [
+        "bus_operator:GOIBIBO",
+        "bus_operator_logo:goibibo",
+        " price: ₹2200",
+        " dis_price: ₹1500"
+      ],
+      [
+        " bus_operator:MAKE MY TRIP",
+        " bus_operator_logo: makemy",
+        "price: ₹2300",
+        "dis_price: ₹2000"
+      ],
+      [
+        "bus_operator:CLEAR TRIP",
+        "bus_operator_logo:clear",
+        "price: ₹2500",
+        " dis_price: ₹1650"
+      ],
+      [
+        "bus_operator: ZING BUS",
+        " bus_operator_logo: zink",
+        "price: ₹2200",
+        " dis_price: ₹1900"
+      ],
+      [
+        "bus_operator:ORANGE TRAVELS",
+        "bus_operator_logo:orange",
+        " price: ₹2200",
+        "dis_price: ₹1600"
+      ],
+      [
+        " bus_operator: SHARMA TRAVELS",
+        " bus_operator_logo: sharma",
+        " price: ₹2500",
+        "dis_price: ₹1550"
+      ]
+    ]
+  }
+]

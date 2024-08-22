@@ -1,0 +1,252 @@
+.custom-date-picker .ant-picker-input {
+  border: none;
+  box-shadow: none;
+}
+
+/* Ensure high specificity by targeting the exact structure */
+.custom-date-picker-dropdown .ant-picker-panel-container {
+  background-color: #1f487c !important; /* Change to your desired background color */
+  color: white;
+}
+
+.custom-date-picker-dropdown .ant-picker-panel {
+  background-color: #1f487c !important; /* Change to your desired background color */
+  color: white;
+}
+
+.custom-date-picker-dropdown .ant-picker-date-panel {
+  background-color: #1f487c !important; /* Change to your desired background color */
+  color: white;
+}
+.custom-date-picker-dropdown .ant-picker-cell-inner {
+  color: white !important; /* Change number color to white */
+  font-weight: 400;
+}
+/* Header and day names */
+.custom-date-picker-dropdown .ant-picker-header,
+.custom-date-picker-dropdown .ant-picker-header-view button,
+.custom-date-picker-dropdown .ant-picker-calendar-header,
+.custom-date-picker-dropdown .ant-picker-calendar-header button {
+  color: white !important; /* Header and buttons text color */
+}
+
+/* Day names */
+
+/* Date cells (including today's date) */
+.custom-date-picker-dropdown .ant-picker-cell-inner {
+  color: white !important; /* Date cells */
+}
+
+/* Today's date outline */
+.custom-date-picker-dropdown
+  .ant-picker-cell-inner.ant-picker-cell-today::before {
+  border-color: white !important; /* Outline color for today's date */
+}
+
+/* Icons (e.g., navigation arrows) */
+.custom-date-picker-dropdown .ant-picker-header .ant-picker-prev-icon,
+.custom-date-picker-dropdown .ant-picker-header .ant-picker-next-icon,
+.custom-date-picker-dropdown .ant-picker-header .ant-picker-super-prev-icon,
+.custom-date-picker-dropdown .ant-picker-header .ant-picker-super-next-icon {
+  color: white !important; /* Icon colors */
+}
+.custom-date-picker-dropdown
+  .ant-picker-calendar-header
+  .ant-picker-week-header
+  .ant-picker-cell {
+  color: white !important;
+}
+
+/* Date cells (including today's date) */
+.custom-date-picker-dropdown .ant-picker-cell-inner {
+  color: white !important;
+}
+/* Ensure high specificity by targeting the exact structure */
+/* Ensure high specificity by targeting the exact structure */
+/* Ensure high specificity by targeting the exact structure */
+.custom-date-picker-dropdown
+  .ant-picker-calendar-header
+  .ant-picker-week-header
+  .ant-picker-cell {
+  color: red !important; /* Day names color */
+}
+
+/* Custom CSS for DatePicker selected date */
+.custom-date-picker-dropdown .ant-picker-cell-selected .ant-picker-cell-inner,
+.custom-date-picker-dropdown
+  .ant-picker-cell-selected
+  .ant-picker-cell-today
+  .ant-picker-cell-inner {
+  color: rgb(
+    255,
+    128,
+    0
+  ) !important; /* Change to your desired selected date color */
+  font-weight: 600;
+  background-color: #999;
+}
+
+/* Custom CSS for DatePicker dropdown header color */
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-content
+  th {
+  color: white !important;
+  font-weight: 700; /* Change to your desired header color */
+}
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-cell-in-view.ant-picker-cell-selected
+  .ant-picker-cell-inner,
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-cell-in-view.ant-picker-cell-range-start
+  .ant-picker-cell-inner,
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-cell-in-view.ant-picker-cell-range-end
+  .ant-picker-cell-inner {
+  background-color: white !important; /* Change to your desired background color */
+}
+
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-cell-in-view.ant-picker-cell-today
+  .ant-picker-cell-inner::before {
+  border-color: white !important; /* Change to your desired border color */
+  font-weight: 600;
+}
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-outlined:focus,
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-outlined:focus-within {
+  border: none !important; /* Remove the border */
+}
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-outlined:hover {
+  border-color: transparent !important; /* Set border color to transparent */
+}
+/* Change background color of DatePicker dropdown on hover */
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-cell:hover {
+  background-color: white !important; /* Change to your desired background color */
+  /* border-radius: 0.5vw; */
+  /* transition: background-color 0.3s ease;  */
+}
+/* Change text color of DatePicker dropdown dates on hover */
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-cell:hover
+  .ant-picker-cell-inner {
+  color: rgb(255, 128, 0) !important; /* Change to your desired text color */
+  font-weight: 500;
+}
+/* Smooth transition for DatePicker dropdown date cells */
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-cell {
+  /* transition: background-color 0.3s ease;  */
+}
+/* Change background color of disabled dates in DatePicker dropdown */
+/* Styling for disabled dates in DatePicker dropdown */
+/* :where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-cell-disabled {
+  background-color: rgb(172, 171, 171) !important; 
+} */
+
+/* Styling for text color of disabled dates in DatePicker dropdown */
+/* Styling for text color of disabled dates in DatePicker dropdown */
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-cell-disabled
+  .ant-picker-cell-inner {
+  color: white !important; /* White text color */
+}
+/* Custom CSS for DatePicker dropdown panel */
+/* :where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown .ant-picker-panel-container .ant-picker-panel-layout {
+    width: 20vw; 
+    height: 20vw; 
+  } */
+:where(.css-dev-only-do-not-override-3rel02).ant-picker
+  .ant-picker-input
+  > input {
+  font-size: 1vw; /* Change to your desired font size */
+}
+/* Custom CSS for DatePicker calendar icon size */
+/* Custom CSS for DatePicker calendar icon path size */
+/* Custom CSS for DatePicker input background opacity */
+/* Custom CSS for DatePicker background color */
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-panel
+  > .ant-picker-time-panel {
+  background-color: #1f487c !important; /* Change to your desired background color */
+  color: white;
+  width: 8vw;
+}
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-time-panel-column
+  > li.ant-picker-time-panel-cell
+  .ant-picker-time-panel-cell-inner {
+  color: white;
+  font-weight: 500;
+}
+/* For the "Now" button */
+.ant-picker-time-panel-now-btn {
+  background-color: orange;
+}
+
+/* For the "OK" button */
+.ant-picker-time-panel-footer-btn.ant-picker-time-panel-footer-btn-ok {
+  background-color: orange;
+}
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-ranges {
+  background-color: orange;
+}
+.ant-picker-ok button {
+  background-color: orange !important;
+  color: white;
+  font-weight: 700;
+}
+
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-time-panel-column {
+  scrollbar-color: orange !important;
+}
+:where(.css-dev-only-do-not-override-3rel02).ant-btn-primary:disabled,
+:where(.css-dev-only-do-not-override-3rel02).ant-btn-primary.ant-btn-disabled {
+  color: black;
+}
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-time-panel-column
+  > li.ant-picker-time-panel-cell-selected
+  .ant-picker-time-panel-cell-inner {
+  background-color: orange;
+}
+.ant-picker-dropdown .ant-picker-time-panel-column::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.ant-picker-dropdown .ant-picker-time-panel-column::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* Color of the scrollbar thumb */
+}
+/* .ant-picker-time-panel-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ant-picker-time-panel-cell {
+  text-align: center;
+} */
+
+.custom-date-picker-dropdown .ant-picker-panel-container {
+  width: 20vw;
+  height: 15vw;
+  border-radius: 1.5vw;
+}
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-date-panel
+  .ant-picker-body {
+  padding: 0;
+}
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-content {
+  padding:1vw;
+  width: 105%;
+}
+:where(.css-dev-only-do-not-override-3rel02).ant-picker-dropdown
+  .ant-picker-cell {
+  padding: 0.2vw 0;
+}
+.ant-picker-cell .ant-picker-cell-in-view {
+  padding: 0;
+}

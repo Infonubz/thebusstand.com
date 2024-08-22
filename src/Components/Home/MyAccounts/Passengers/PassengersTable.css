@@ -1,0 +1,110 @@
+/* Ensure the table content follows the border radius */
+.Passenger-class .ant-table-content {
+    border-radius: 0 !important;
+}
+
+/* Header background color and text color */
+.Passenger-class .ant-table-thead>tr>th {
+    background-color: #1f4b7f;
+    color: white;
+    border: none;
+    text-align: center;
+    vertical-align: middle;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Header border color on hover */
+.Passenger-class .ant-table-thead>tr>th:hover {
+    background-color: #1f4b7f;
+    border-color: #1f4b7f;
+}
+
+/* Align text in cells to the center */
+:where(.Passenger-class).ant-table-wrapper .ant-table-cell,
+:where(.Passenger-class).ant-table-wrapper .ant-table-thead>tr>th,
+:where(.Passenger-class).ant-table-wrapper .ant-table-tbody>tr>th,
+:where(.Passenger-class).ant-table-wrapper .ant-table-tbody>tr>td,
+:where(.Passenger-class).ant-table-wrapper tfoot>tr>th,
+:where(.Passenger-class).ant-table-wrapper tfoot>tr>td {
+    position: relative;
+    padding: 0.5vw 0.5vw;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 1.2vw;
+}
+
+/* Sort icon styles */
+:where(.Passenger-class).ant-table-wrapper .ant-table-column-sorters {
+    background-color: #1f4b7f;
+    border: none;
+}
+
+/* Remove background color and border on hover for the sort icon */
+.Passenger-class .ant-table-column-sorters:hover {
+    background-color: #1f4b7f;
+    border: none;
+}
+
+/* Ensuring no padding and background for the inner elements */
+.Passenger-class .ant-table-column-sorters .ant-table-column-sorter-inner:hover {
+    background-color: transparent;
+    padding: 0;
+}
+
+/* Ensuring no background color and border on hover for icons */
+.Passenger-class .ant-table-column-sorters:hover .anticon,
+.Passenger-class .ant-table-column-sorters:hover .ant-table-column-sorter-up,
+.Passenger-class .ant-table-column-sorters:hover .ant-table-column-sorter-down {
+    background-color: transparent;
+}
+
+/* Ensuring no border or shadow effect on the sortable header */
+.Passenger-class .ant-table-column-sorters:hover {
+    box-shadow: none;
+    outline: none;
+}
+
+/* Specific styles for the sort icon container */
+.Passenger-class .ant-table-column-sorters {
+    background-color: #1f4b7f;
+    border: none;
+}
+
+/* Icon color */
+.Passenger-class .anticon svg {
+    display: inline-block;
+    color: white;
+}
+
+/* Sortable header styles */
+:where(.Passenger-class).ant-table-wrapper .ant-table-thead th.ant-table-column-sort {
+    background: #1f4b7f;
+}
+
+:where(.Passenger-class).ant-table-wrapper .ant-table-thead th.ant-table-column-has-sorters {
+    outline: none;
+    cursor: pointer;
+}
+
+/* ----------------------------------------------HoverHIdden---------------------------------------------------------- */
+.Passenger-class .ant-table-thead>tr>th.ant-table-column-has-sorters:hover {
+    background-color: #1f4b7f !important;
+    color: white;
+    border-color: #1f4b7f !important;
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------- */
+
+/* Divider between header cells */
+:where(.Passenger-class).ant-table-wrapper .ant-table-thead>tr>th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before,
+:where(.Passenger-class).ant-table-wrapper .ant-table-thead>tr>td:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before {
+    position: absolute;
+    top: 50%;
+    inset-inline-end: 0;
+    width: 1px;
+    height: 1.6em;
+    background-color: #1f4b7f;
+    transform: translateY(-50%);
+    transition: background-color 0.2s;
+    content: "";
+}

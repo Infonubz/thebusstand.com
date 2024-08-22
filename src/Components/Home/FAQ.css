@@ -1,0 +1,100 @@
+.tab2-list {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* Custom styles for individual tabs */
+.tab2 {
+  display: inline-block;
+  border: 0.1vw solid transparent;
+  border-bottom: none;
+  position: relative;
+  /* padding: 0.8vw 10vw; */
+  padding-top: 0.8vw;
+  padding-bottom: 0.8vw;
+  cursor: pointer;
+}
+/* .react-tabs__tab {
+    display: inline-block;
+    border: 1px solid;
+    border-left: 1px;
+    border-top: 1px;
+    border-right: 1px;
+    border-color: white;
+    width: 15vw;
+    position: relative;
+    list-style: none;
+    padding: 5px 5px;
+    cursor: pointer;
+  } */
+
+/* Custom styles for selected tab */
+.tab2[aria-selected="true"] {
+  color: #1f487c;
+  font-weight: 700;
+  display: inline-block;
+  border: 1px solid;
+  border-left: 1px;
+  border-top: 1px;
+  border-right: 1px;
+  border-color: #1f487c;
+}
+
+/* Custom styles for tab panels */
+.tab2-panel {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+/* Additional styling for input box */
+.inputbox {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* Styling for disabled tabs */
+.tab2--disabled {
+  color: gray;
+  cursor: default;
+}
+
+/* Remove focus outline for tabs */
+.tab2:focus {
+  outline: none;
+}
+
+/* Styling for focus indicator */
+.tab2:focus:after {
+  content: "";
+  position: absolute;
+  height: 5px;
+  left: -4px;
+  right: -4px;
+  bottom: -5px;
+}
+
+/* Styling for tab panels */
+.tab2-panel {
+  display: none;
+}
+
+/* Styling for selected tab panel */
+.tab2-panel--selected {
+  display: block;
+}
+
+/* Styling for input placeholder */
+input::placeholder {
+  /* color: rgba(255, 255, 255, 0.836); */
+  font-size: x-large;
+}
+
+/* styles.css */
+
+
+.react-tabs__tab-panel span{
+  text-align: left;
+  margin: 0;
+  padding: 0;
+}

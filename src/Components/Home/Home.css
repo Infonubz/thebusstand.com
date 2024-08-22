@@ -1,0 +1,16 @@
+/* CustomSelect.css */
+
+/* Change the placeholder color */
+.ant-select-selection-placeholder {
+  color: #1f487c !important; /* Change to your desired color */
+}
+
+/* Hide the search icon */
+.ant-select-selection-search-icon {
+  display: none !important;
+}
+
+/* Hide the dropdown arrow */
+.ant-select-arrow {
+  display: none !important;
+}

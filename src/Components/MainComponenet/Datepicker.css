@@ -1,0 +1,84 @@
+.p-inputtext {
+  /* border: 1px solid black; */
+  /* padding: 0.4vw 0.5vw; */
+  /* width: 10vw; */
+  border-radius: 0.5vw;
+  inline-size: none;
+  outline: none;
+}
+
+.p-datepicker {
+  color: #ffffff;
+  width: 10%;
+}
+
+.p-datepicker-other-month {
+  background-color: #1f487c;
+  color: #979797;
+}
+
+.p-monthpicker {
+  background-color: #1f487c;
+  color: #ffffff;
+}
+
+.p-monthpicker-month {
+  background-color: #1f487c;
+  color: #ffffff;
+  padding: 0.8vw;
+  width: 22.4vw;
+  height: 2.5vw;
+}
+
+.p-yearpicker-year {
+  background-color: #1f487c;
+  color: #ffffff;
+  padding: 0.8vw;
+  width: 22.4vw;
+  height: 2.5vw;
+}
+
+.p-datepicker-today {
+  color: #f6921e;
+  background-color: #ffffff;
+  border-radius: 0.1vw;
+}
+
+.p-datepicker-calendar td:hover {
+  color: #f6921e;
+  background-color: #ffffff;
+  border-radius: 0.1vw;
+}
+
+.p-datepicker-header {
+  background-color: #1f487c;
+  padding: 0.8vw;
+  text-align: center;
+  font-weight: bold;
+  width: 15.5vw;
+  margin-top: 1vw;
+}
+
+.p-datepicker-calendar {
+  background-color: #1f487c;
+  border-collapse: separate;
+  border-spacing: 0.3vw;
+}
+
+.p-datepicker-calendar th {
+  padding: 0.3vw;
+  text-align: center;
+  font-weight: bold;
+}
+
+.p-datepicker-calendar td {
+  padding: 0.3vw;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* customStyles.css */
+.custom-datepicker .ant-picker-dropdown {
+  background-color: blueviolet; /* Change this to your desired background color */
+}
