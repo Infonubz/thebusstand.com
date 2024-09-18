@@ -1,0 +1,49 @@
+/* Customize the pagination container */
+.ant-pagination {
+  margin: 2vw 0;
+}
+
+/* Style for the default pagination buttons */
+.ant-pagination-item {
+  border-radius: 0.5vw;
+  border: 0.2vw solid #1f487c;
+}
+
+/* Style for pagination links */
+.ant-pagination-item a {
+  color: #1f487c;
+}
+
+/* Hover style for pagination items */
+.ant-pagination-item:hover {
+  border-color: #ffffff;
+}
+
+/* Active page style */
+.ant-pagination-item-active {
+  border-color: #ffffff;
+  background: #1f487c;
+}
+
+/* Text color for the active page */
+.ant-pagination-item-active a {
+  color: #ffffff;
+}
+
+/* Style for disabled buttons */
+.ant-pagination-disabled {
+  color: #d9d9d9;
+  border-color: #d9d9d9;
+}
+
+/* Style for previous and next buttons */
+.ant-pagination-prev .ant-pagination-item-link,
+.ant-pagination-next .ant-pagination-item-link {
+  color: #1f487c;
+}
+
+/* Hover style for previous and next buttons */
+.ant-pagination-prev:hover .ant-pagination-item-link,
+.ant-pagination-next:hover .ant-pagination-item-link {
+  color: #ffffff;
+}

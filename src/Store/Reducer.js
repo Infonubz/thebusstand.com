@@ -19,6 +19,15 @@ import {
   CARD_DETAIL,
   TOP_ROUTE_LIST,
   PDP,
+  OFFERS_OCCUPATION,
+  SEAT_LAYOUT,
+  GET_BOOKING_DETAILS,
+  TBS_INFO,
+  GET_OPERATOR_LIST,
+  FEED_BACK,
+  SEND_OTP,
+  BOOKING_DETAILS_STATUS,
+  GET_TICKET_TO_CANCEL,
 } from "./type";
 
 const initial = {
@@ -40,6 +49,13 @@ const initial = {
   promo_list: [],
   top_route_list: [],
   pdp: [],
+  offers_occupation: [],
+  seat_layout: [],
+  get_booking_details: [],
+  tbs_info: [],
+  get_operator_list: [],
+  feed_back: [],
+  send_otp: [],
 };
 
 export const busreducer = (state = initial, action) => {
@@ -174,6 +190,69 @@ export const busreducer = (state = initial, action) => {
         pdp: payload,
       };
     }
+    case OFFERS_OCCUPATION: {
+      console.log(payload, "OFFERS_OCCUPATION");
+      return {
+        ...state,
+        offers_occupation: payload,
+      };
+    }
+    case SEAT_LAYOUT: {
+      console.log(payload, "OFFERS_OCCUPATION");
+      return {
+        ...state,
+        seat_layout: payload.data[0],
+      };
+    }
+    case GET_BOOKING_DETAILS: {
+      console.log(payload, "GET_BOOKING_DETAILS");
+      return {
+        ...state,
+        get_booking_details: payload,
+      };
+    }
+    case TBS_INFO: {
+      console.log(payload, "TBS_INFO__TBS_INFO");
+      return {
+        ...state,
+        tbs_info: payload,
+      };
+    }
+    case GET_OPERATOR_LIST: {
+      console.log(payload, "GET_OPERATOR_LIST");
+      return {
+        ...state,
+        get_operator_list: payload,
+      };
+    }
+    case FEED_BACK: {
+      console.log(payload, "FEED_BACK__FEED_BACK");
+      return {
+        ...state,
+        feed_back: payload,
+      };
+    }
+
+    case SEND_OTP: {
+      console.log(payload, "SEND_OTP");
+      return {
+        ...state,
+        send_otp: payload,
+      };
+    }
+    case BOOKING_DETAILS_STATUS: {
+      return {
+        ...state,
+        booking_details_status: payload,
+      };
+    }
+    case GET_TICKET_TO_CANCEL: {
+      return {
+        ...state,
+        get_ticket_to_cancel: payload,
+      };
+    }
+
     default: {
       return state;
     }

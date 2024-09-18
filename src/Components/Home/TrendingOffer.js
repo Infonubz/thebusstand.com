@@ -255,7 +255,7 @@ const TrendingOffer = () => {
           </div>
           <div className="h-full w-[100%] px-[5vw] place-items-center py-[1vw] items-center justify-center flex">
             <div className="grid grid-cols-4 w-full h-full items-center flex-col  gap-[1vw] justify-center px-[2vw]">
-              {promotionlist.map((item, index) => (
+             {promotionlist?.map((item, index) => (
                 // <>
                 //   <div className="relative">
                 //     <img src={item?.img} className="w-[100%] h-[100%] " />
@@ -273,10 +273,10 @@ const TrendingOffer = () => {
                 //   </div>
                 // </>
                 <img
-                  src={item?.background_image}
-                  className="w-[100%] h-[100%] "
-                />
-              ))}
+                src={`http://192.168.90.47:4000${item?.background_image}`}
+                className="w-[80vw] lg:h-[80%] md:h-[12vw] h-[40vw]"
+              />
+            ))}
             </div>
           </div>
         </div>

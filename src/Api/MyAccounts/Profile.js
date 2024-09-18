@@ -1,6 +1,8 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import { PROFILE_DATA } from "../../Store/type";
+import { GetUserDetails } from "../Login/Login";
+import { useNavigate } from "react-router";
 
 const api = axios.create({
   headers: {
@@ -11,7 +13,9 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 export const GetProfileById = async (dispatch, id) => {
   try {
-    const response = await axios.get(`${apiUrl}/passenger-details/${id}`);
+    const response = await axios.get(
+      `${apiUrl}/passenger-details/${sessionStorage.getItem("user_id")}`
+    );
     dispatch({ type: PROFILE_DATA, payload: response.data });
     return response.data;
   } catch (error) {
@@ -74,18 +78,24 @@ export const GetProfileById = async (dispatch, id) => {
 //     return null;
 //   }
 // };
-
 export const UpdateProfile = async (profilevalues) => {
   const payload = {
-    name: profilevalues.name,
-    date_of_birth: profilevalues.dob,
+    user_name: profilevalues.user_name,
+    date_of_birth: profilevalues.date_of_birth,
     gender: profilevalues.gender,
-    email: profilevalues.email,
-    phone: profilevalues.phone,
+    email_id: profilevalues.email_id,
+    mobile_number: profilevalues.mobile_number,
     state: profilevalues.state,
-    state_id: profilevalues.state_id,
+    state_id: profilevalues.state_id || "TN",
+    age: profilevalues.age,
   };
-  const user_id = "tbs-pax1001";
+  console.log(profilevalues, "profilevalues");
+
+  const user_id = sessionStorage.getItem("user_id");
+
+  console.log(payload, "Update_profile_payload");
+  console.log(user_id, "user_id__user_id");
+
   const url = user_id
     ? `${apiUrl}/passenger-details/${user_id}`
     : `${apiUrl}/passenger-details`;
@@ -97,10 +107,11 @@ export const UpdateProfile = async (profilevalues) => {
       url,
       data: payload,
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
       },
     });
-    // GetOffersData(dispatch);
+    toast.success(response.message);
+    GetUserDetails();
     console.log(response, "responseresponse");
     return response.data;
   } catch (error) {

@@ -18,7 +18,7 @@ const MainPage = () => {
       <MainNavbar />
       <div>
         {" "}
-        <div className="flex md:pt-[8vw] pt-[23vw]">
+        <div className="flex md:pt-[8vw] pt-[12vw]">
           <Sidebar sidebarToggle={sidebarToggle} />
           <div className="flex flex-col flex-1">
             <div

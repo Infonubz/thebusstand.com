@@ -9,6 +9,7 @@ export default function PassengerIndex() {
     const [isPassengersList, setIsPassengersList] = useState(true);
     const [passData, setPassData] = useState("")
     const [updateData, setUpdateData] = useState("")
+    const [isEdit,setIsEdit] = useState(false)
     
     const passengerdata = useSelector((state) => state?.passenger_data.add_passenger_details)
     console.log(passengerdata, "passengerdatapassengerdata")
@@ -35,7 +36,8 @@ export default function PassengerIndex() {
                     passData={passData}
                     updateData={updateData}
                     setPassData={setPassData}
-                    setUpdateData={setUpdateData} />
+                    setUpdateData={setUpdateData}
+                    setIsEdit={setIsEdit} />
                 : <AddPassengers
                     nextPage={nextPage}
                     prevStep={prevStep} 
@@ -43,7 +45,10 @@ export default function PassengerIndex() {
                     passData={passData}
                     updateData={updateData}
                     setPassData={setPassData}
-                    setUpdateData={setUpdateData}/>
+                    setUpdateData={setUpdateData}
+                    isEdit={isEdit}
+                    />
+
             }
         </div>
     );

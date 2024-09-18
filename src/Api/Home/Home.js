@@ -84,7 +84,7 @@ export const GetTopBusRoutes = async (dispatch, id) => {
     );
     dispatch({
       type: TOP_ROUTE_LIST,
-      payload: response?.data[0]?.top_bus_routes,
+      payload: response?.data,
     });
     console.log(response.data, "footerresponse");
     return response.data;

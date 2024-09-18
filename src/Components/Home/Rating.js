@@ -3,50 +3,59 @@ import shape from "../../assets/shape.png";
 import double from "../../assets/doubl.png";
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { GetFeedbacks } from "../../Api/Home/RatingFeedback";
 
 export default function Rating() {
-  const ratingdata = [
-    {
-      rate: "4.5",
-      review: "Accurate real-time tracking. Excellent!",
-      name: "Harish Yarrabothula",
-      company: "Nubiznez Pvt. Ltd.",
-    },
-    {
-      rate: "3.5",
-      review: "Very convenient for daily commute.",
-      name: "P Manoj",
-      company: "Incture Technologies",
-    },
-    {
-      rate: "2.5",
-      review: "Reliable schedules, moderate ticket booking.",
-      name: "Praveen K P",
-      company: "Neudesic",
-    },
-    {
-      rate: "1.5",
-      review: "Good App, but bus I booked was bad.",
-      name: "Virushne V K",
-      company: "Nous Infosystems",
-    },
-    {
-      rate: "4.0",
-      review: "Perfect for planning bus journeys.",
-      name: "MithunKumar V",
-      company: "PathPartner Technology",
-    },
-    {
-      rate: "1.0",
-      review: "Unable to Book, Faced lot of issues.",
-      name: "Vigashne",
-      company: "RapidValue Solutions",
-    },
+  // const ratingdata = [
+  //   {
+  //     rating: "4.5",
+  //     description: "Accurating real-time tracking. Excellent!",
+  //     name: "Harish Yarrabothula",
+  //     occupation: "Nubiznez Pvt. Ltd.",
+  //   },
+  //   {
+  //     rating: "3.5",
+  //     description: "Very convenient for daily commute.",
+  //     name: "P Manoj",
+  //     occupation: "Incture Technologies",
+  //   },
+  //   {
+  //     rating: "2.5",
+  //     description: "Reliable schedules, moderating ticket booking.",
+  //     name: "Praveen K P",
+  //     occupation: "Neudesic",
+  //   },
+  //   {
+  //     rating: "1.5",
+  //     description: "Good App, but bus I booked was bad.",
+  //     name: "Virushne V K",
+  //     occupation: "Nous Infosystems",
+  //   },
+  //   {
+  //     rating: "4.0",
+  //     description: "Perfect for planning bus journeys.",
+  //     name: "MithunKumar V",
+  //     occupation: "PathPartner Technology",
+  //   },
+  //   {
+  //     rating: "1.0",
+  //     description: "Unable to Book, Faced lot of issues.",
+  //     name: "Vigashne",
+  //     occupation: "RapidValue Solutions",
+  //   },
 
-  ];
+  // ];
 
   const [startIndex, setStartIndex] = useState(0);
 
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    GetFeedbacks(dispatch)
+  }, [dispatch])
+
+  const ratingdata = useSelector((state) => state.feed_back)
 
   const prevSlide = () => {
     const newIndex = Math.max(0, startIndex - 1);
@@ -76,7 +85,7 @@ export default function Rating() {
                 className="absolute left-[2vw] top-[0.5vw] w-[2vw] h-[2vw] "
               />
               <div className="absolute right-[2vw] top-[1vw]">
-              <div className={`w-[6.3vw] h-[2.5vh] sm:w-[4vw] sm:h-[2vw] ${item.rate >= "3.5" ? "bg-[#61B00F]" : item.rate >= "2.5" ? "bg-[#FF910E]" : "bg-[#EA222F]"} flex items-center justify-center rounded-[0.2vw]`}>
+                <div className={`w-[6.3vw] h-[2.5vh] sm:w-[4vw] sm:h-[2vw] ${item.rating == "5" ? "bg-[#61B00F]" : item.rating == "4" ? "bg-[#ffbf0e]" : item.rating == "3" ? "bg-[#FF910E]" : item.rating == "2" ? "bg-[#ff520e]" : "bg-[#EA222F]"} flex items-center justify-center rounded-[0.2vw]`}>
                   <FaStar
                     style={{
                       color: "white",
@@ -86,13 +95,13 @@ export default function Rating() {
                   />
                   <div>
                     <p className="text-white font-bold text-[1.15vw]">
-                      {item.rate}
+                      {item.rating}
                     </p>
                   </div>
                 </div>
               </div>
               <div className="absolute bottom-[2vw] px-[2vw]">
-                <p className="text-black text-[1.2vw]">{item.review}</p>
+                <p className=" text-[#1F487C] text-[1.2vw]">{item.description}</p>
               </div>
               <div className="absolute left-[0.2vw] bottom-[-2vw]">
                 <p className="text-[1.1vw] text-[#1F487C] font-bold">
@@ -100,7 +109,7 @@ export default function Rating() {
                 </p>
               </div>
               <div className="absolute left-[0.2vw] bottom-[-3.5vw]">
-                <p className="text-[1.1vw] text-[#8DA0A8] ">{item.company}</p>
+                <p className="text-[1.1vw] text-[#8DA0A8] ">{item.occupation}</p>
               </div>
             </div>
           ))}
@@ -139,7 +148,7 @@ export default function Rating() {
                 />
                 <div className="absolute right-[3vw] top-[2vw]">
                   <div
-                    className={`w-[6vw] h-[2.5vh] ${item.rate >= "3.5" ? "bg-[#61B00F]" : item.rate >= "2.5" ? "bg-[#FF910E]" : "bg-[#EA222F]"} flex space-x-[0.1vw] justify-center items-center rounded-[0.2vw]`}>
+                    className={`w-[6vw] h-[2.5vh] ${item.rating == "5" ? "bg-[#61B00F]" : item.rating == "4" ? "bg-[#ffbf0e]" : item.rating == "3" ? "bg-[#FF910E]" : item.rating == "2" ? "bg-[#ff520e]" : "bg-[#EA222F]"} flex space-x-[0.1vw] justify-center items-center rounded-[0.2vw]`}>
                     <FaStar
                       style={{
                         color: "white",
@@ -147,19 +156,19 @@ export default function Rating() {
                       size={"1.8vw"}
                       className="mx-[0.2vw]"
                     />
-                    <div> 
-                      <p className="text-white font-bold text-[2vw]">{item.rate}</p>
+                    <div>
+                      <p className="text-white font-bold text-[2vw]">{item.rating}</p>
                     </div>
                   </div>
                 </div>
                 <div className="absolute top-[9vw] px-[2vw] ">
-                  <p className="text-black text-[3.5vw] text-wrap">{item.review}</p>
+                  <p className="text-black text-[3.5vw] text-wrap">{item.description}</p>
                 </div>
                 <div className="absolute left-[0.2vw] bottom-[8.5vw]">
                   <p className="text-[3.5vw] text-[#1F487C] font-bold">{item.name}</p>
                 </div>
                 <div className="absolute left-[0.2vw] bottom-[4.5vw]">
-                  <p className="text-[3vw] text-[#8DA0A8]">{item.company}</p>
+                  <p className="text-[3vw] text-[#8DA0A8]">{item.occupation}</p>
                 </div>
               </div>
             ))}

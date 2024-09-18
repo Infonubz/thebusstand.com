@@ -6,7 +6,11 @@ import nlogo from "../../assets/logo.png";
 import profile from "../../assets/Profile.png";
 import ticket from "../../assets/ticket.png";
 import share from "../../assets/Share.png";
-import { MdStarRate } from "react-icons/md";
+import {
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+  MdStarRate,
+} from "react-icons/md";
 // import "../src/Components/TextMoving/TextMoving.css"; // Import the stylesheet
 import "tailwindcss/tailwind.css"; // Make sure you have Tailwind CSS imported in your project
 import React, { useEffect, useRef, useState } from "react";
@@ -35,12 +39,12 @@ import dayjs from "dayjs";
 import time from "../../assets/time.png";
 import date from "../../assets/date.png";
 import { IoMdTime } from "react-icons/io";
-import { FaArrowLeft, FaMapMarkerAlt } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaMapMarkerAlt } from "react-icons/fa";
 import split from "../../assets/split.png";
 import doubleducker from "../../assets/doubleducker.png";
 import buslogo from "../../assets/502-ai 1.png";
 import "../../App.css";
-import { Calendar } from "primereact/calendar";
+// import { Calendar } from "primereact/calendar";
 import "../../Components/MainComponenet/Datepicker.css";
 import TimePick from "./TimePicker";
 import { timePickerInput } from "analogue-time-picker";
@@ -48,7 +52,7 @@ import Sidebar from "./Sidebar";
 import "../../Components/MainComponenet/TimePicker.css";
 import TimePickerComponent from "./TimePicker";
 import axios from "axios";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import bus2 from "../../assets/doubleducker.png";
 import { RWebShare } from "react-web-share";
 // import 'antd/dist/antd.css';
@@ -59,12 +63,25 @@ import DateInput from "./DatePicker/Components/DateInput";
 import "./DatePicker/style.css";
 import { CiSearch } from "react-icons/ci";
 import { LiaCitySolid } from "react-icons/lia";
-import { SmileOutlined } from '@ant-design/icons';
-import { Dropdown } from 'antd';
+import { SmileOutlined } from "@ant-design/icons";
+import { Dropdown } from "antd";
 import { PiNavigationArrowFill } from "react-icons/pi";
 import { PiUserCircleDuotone } from "react-icons/pi";
 import { FaTicketAlt } from "react-icons/fa";
 import { RiLogoutCircleLine } from "react-icons/ri";
+import { SendTravelDetails } from "../../Api/Dashboard/Dashboard";
+import { IoArrowBackCircle } from "react-icons/io5";
+import { TiArrowBackOutline } from "react-icons/ti";
+import { TbArrowBackUpDouble } from "react-icons/tb";
+import Calendar from "react-calendar";
+import newbus from "../../assets/newbus.png";
+import newbus1 from "../../assets/newbus1.png";
+import LoginModalPopUp from "../Login/LoginModalPopUp";
+import Login from "../Login/Login";
+import { FaUserCircle } from "react-icons/fa";
+import { toast } from "react-toastify";
+import CommonMainNavbar from "../Common/CommonMainNavbar";
+
 // import bus1 from "../../assets/bus";
 // import bus from "../../assets/bus.png";
 // import styled from "styled-components";
@@ -80,47 +97,159 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
     time: "",
   });
   console.log(traveldetails.date, "traveldetailstraveldetails");
-  console.log(traveldetails.from.value, "fromoomomomomomo")
-  console.log(traveldetails.to, "tototototototototototototo")
+  console.log(traveldetails.from.value, "fromoomomomomomo");
+  console.log(traveldetails.to, "tototototototototototototo");
 
   // const fromValue = traveldetails.from.value
   // console.log(fromValue, 'fromvaluevalue')
 
-  const [toValue, setToValue] = useState(traveldetails.to.value);
-  const [fromValue, setFromValue] = useState(traveldetails.to.value);
+  const [toValue, setToValue] = useState("");
+  const [fromValue, setFromValue] = useState("");
+
   useEffect(() => {
     // Update the state when traveldetails.to.value changes
     setToValue(traveldetails.to.value);
     setFromValue(traveldetails.from.value);
+    console.log(toValue, "traveldetailsto");
+    console.log(fromValue, "traveldetailsfrom");
   }, [traveldetails.to.value, traveldetails.from.value]);
 
   const busdata = useSelector((state) => state.bus_data);
   console.log(busdata, "busdadaaadsasdas");
 
+  const handleChangeToValue = (value) => {
+    setToValue(value);
+    // localStorage.setItem("arrival", value);
+    console.log(value, "tooovalue");
+  };
+
+  const [toBus, setToBus] = useState("");
+  const all = [
+    {
+      value: "Coimbatore",
+      label: "Coimbatore",
+    },
+    {
+      value: "Hyderabad",
+      label: "Hyderabad",
+    },
+    {
+      value: "Bangalore",
+      label: "Bangalore",
+    },
+  ];
+  const Coimbatore = [
+    {
+      value: "Coimbatore",
+      label: "Coimbatore",
+    },
+  ];
+  const Hyderabad = [
+    {
+      value: "Hyderabad",
+      label: "Hyderabad",
+    },
+  ];
+  const Bangalore = [
+    {
+      value: "Bangalore",
+      label: "Bangalore",
+    },
+  ];
+
+  const handleChangeFromValue = (value) => {
+    setFromValue(value);
+
+    if (value == "Pondicherry") {
+      console.log(value, "busdatas");
+      setToBus(Coimbatore);
+    } else if (value == "Bangalore") {
+      setToBus(Hyderabad);
+    } else if (value == "Chennai") {
+      setToBus(Bangalore);
+    } else {
+      setToBus(all);
+    }
+
+    // localStorage.setItem("departure", value);
+    console.log(value, "fromvalue");
+  };
+
+  const handleChangeDateValue = (value) => {
+    setFromDate(value);
+    // localStorage.setItem("selectdate", value);
+    console.log(value, "selectdate");
+  };
+  // useEffect(()=>{
+  //  localStorage.setItem("arrival", value);
+  // localStorage.setItem("selectdate", value);
+  // localStorage.setItem("departure", value);
+
+  // },[])
+
+  const [modifyBtn, setModifyBtn] = useState(false);
+  const dispatch = useDispatch();
   useEffect(() => {
-    // if (busdata) {
-    setTraveldetails({
-      ...traveldetails,
-      from: {
-        // label: busdata.from,
-        // value: busdata.from,
-        label: localStorage.getItem("departure"),
-        value: localStorage.getItem("departure"),
-      },
-      to: {
-        // label: busdata.to,
-        // value: busdata.to,
-        label: localStorage.getItem("arrival"),
-        value: localStorage.getItem("arrival"),
-      },
-      date: new Date(localStorage.getItem("selectdate")),
-    });
-    // }
-  }, [
-    localStorage.getItem("departure"),
-    localStorage.getItem("arrival"),
-    localStorage.getItem("selectdate"),
-  ]);
+    // Retrieve the current date string from localStorage
+    let dateTimeString = localStorage.getItem("selectdate");
+
+    if (dateTimeString) {
+      // Parse the string into a Date object
+      let dateObj = new Date(dateTimeString);
+
+      // Format the date to "YYYY-MM-DD HH:mm:ss"
+      let formattedDate =
+        dateObj.getFullYear() +
+        "-" +
+        ("0" + (dateObj.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + dateObj.getDate()).slice(-2) +
+        " " +
+        ("0" + dateObj.getHours()).slice(-2) +
+        ":" +
+        ("0" + dateObj.getMinutes()).slice(-2) +
+        ":" +
+        ("0" + dateObj.getSeconds()).slice(-2);
+
+      // Store the formatted date back in localStorage
+      localStorage.setItem("selectdate", formattedDate);
+
+      // Send the travel details
+      SendTravelDetails(
+        dispatch,
+        localStorage.getItem("departure"),
+        localStorage.getItem("arrival"),
+        formattedDate
+      );
+
+      // Update travel details state
+      setTraveldetails({
+        from: {
+          label: localStorage.getItem("departure") || "",
+          value: localStorage.getItem("departure") || "",
+        },
+        to: {
+          label: localStorage.getItem("arrival") || "",
+          value: localStorage.getItem("arrival") || "",
+        },
+        date: new Date(formattedDate),
+      });
+    }
+  }, [dispatch, modifyBtn]);
+
+  useEffect(() => {
+    const storedDeparture = localStorage.getItem("departure");
+    const storedArrival = localStorage.getItem("arrival");
+    const storedDate = localStorage.getItem("selectdate");
+
+    setTraveldetails((prevDetails) => ({
+      ...prevDetails,
+      from: { label: storedDeparture, value: storedDeparture },
+      to: { label: storedArrival, value: storedArrival },
+      date: new Date(storedDate),
+    }));
+  }, [modifyBtn]);
+
   console.log(localStorage.getItem("departure"), "hhhhhhhhhhhh");
 
   const options = [
@@ -136,8 +265,10 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   const onSearch = (value) => {
     console.log("search:", value);
   };
-  const dispatch = useDispatch();
   const handleSearch = () => {
+    localStorage.setItem("arrival", toValue);
+    localStorage.setItem("selectdate", fromDate);
+    localStorage.setItem("departure", fromValue);
     dispatch({
       type: BUS_SEARCH,
       payload: traveldetails,
@@ -376,24 +507,24 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   const [showTime, setShowTime] = useState(null);
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    if (!inputRef.current) return;
+  // useEffect(() => {
+  //   if (!inputRef.current) return;
 
-    const picker = timePickerInput({
-      mode: 12, // Set the mode to 12-hour clock with AM/PM selection
-      inputElement: inputRef.current,
-    });
+  //   const picker = timePickerInput({
+  //     mode: 12, // Set the mode to 12-hour clock with AM/PM selection
+  //     inputElement: inputRef.current,
+  //   });
 
-    setShowTime(picker);
+  //   setShowTime(picker);
 
-    if (onTimeChanged) {
-      attachChangeEventToValueChange(inputRef.current, onTimeChanged);
-    }
+  //   if (onTimeChanged) {
+  //     attachChangeEventToValueChange(inputRef.current, onTimeChanged);
+  //   }
 
-    return () => {
-      picker.dispose();
-    };
-  }, [onTimeChanged]);
+  //   return () => {
+  //     picker.dispose();
+  //   };
+  // }, [onTimeChanged]);
 
   const attachChangeEventToValueChange = (input, handler) => {
     Object.defineProperty(input, "value", {
@@ -552,6 +683,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
     { city: "Chennai", value: "Chennai", state: "Tamilnadu" },
     { city: "Bangalore", value: "Bangalore", state: "Karnataka" },
     { city: "Hyderabad", value: "Hyderabad", state: "Telangana" },
+    { city: "Pondicherry", value: "Pondicherry", state: "Tamilnadu" },
   ];
   const arrival_city = [
     { city: "Coimbatore", value: "Coimbatore", state: "Tamilnadu" },
@@ -565,45 +697,63 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   console.log(fromDate, "fromDate");
 
   const handleProPage = () => {
-    navigation('/main')
-  }
+    navigation("/main", { state: { tabIndex: 1 } });
+  };
+
+  const handleBookingPage = () => {
+    navigation("/main", { state: { tabIndex: 3 } });
+  };
 
   const [logModalIsOpen, setLogModalIsOpen] = useState(false);
   const openLogModal = () => {
-    console.log("open");
+    console.log("openhomeee");
     setAccDrawer(false);
     setLogModalIsOpen(true);
+    sessionStorage.clear();
+    localStorage.clear();
+    navigation("/");
+    toast.success("Logout Successfully");
   };
   const closeLogModal = () => {
-    setLogModalIsOpen(false)
-  }
+    setLogModalIsOpen(false);
+  };
 
   const items = [
     {
-      key: '1',
-      label:
-        <div className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]" onClick={handleProPage}>
+      key: "1",
+      label: (
+        <div
+          className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+          onClick={handleProPage}
+        >
           <PiUserCircleDuotone color="#1F487C" size="1.5vw" /> My Account
         </div>
+      ),
     },
     {
-      key: '2',
-      label:
-        <div className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]" onClick={openLogModal}>
+      key: "2",
+      label: (
+        <div
+          className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+          onClick={handleBookingPage}
+        >
           <FaTicketAlt color="#1F487C" size="1.5vw" /> Bookings
         </div>
+      ),
     },
     {
-      key: '3',
-      label:
-        <div className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]" onClick={openLogModal}>
+      key: "3",
+      label: (
+        <div
+          className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+          onClick={openLogModal}
+        >
           <RiLogoutCircleLine color="#1F487C" size="1.5vw" /> Logout
         </div>
+      ),
     },
   ];
-  // import { PiUserCircleDuotone } from "react-icons/pi";
-  // import { FaTicketAlt } from "react-icons/fa";
-  // import { RiLogoutCircleLine } from "react-icons/ri";
+
   const [accDrawer, setAccDrawer] = useState(false);
   const showAccDrawer = () => {
     setAccDrawer(true);
@@ -614,186 +764,137 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
 
   const [logMobileIsOpen, setLogMobileIsOpen] = useState(false);
   const openLogMobile = () => {
-    console.log("open");
+    console.log("open5555555555555555555555");
     setAccDrawer(false);
     setLogMobileIsOpen(true);
   };
   const closeLogMobile = () => {
-    setLogMobileIsOpen(false)
-  }
+    setLogMobileIsOpen(false);
+  };
+
+  const formattedDate = moment(fromDate).format("DD-MM-YYYY");
+  const mobileformattedDate = moment(fromDate).format("DD MMM ddd");
+
+  const navigate = useNavigate();
+
+  // const [openDate,setOpenDate]=useState(false)
+
+  // // const Drawerdate = () =>{
+  //   // setOpenDate(true)
+
+  // // }
+  // const onClosedate = () =>{
+  //   setOpenDate(false)
+  // }
+
+  const [openDatee, setOpenDatee] = useState(false);
+  const [selectedDatee, setSelectedDatee] = useState(new Date());
+
+  const showDrawer = () => {
+    setOpenDatee(true);
+  };
+
+  const onClosee = () => {
+    setOpenDatee(false);
+  };
+
+  const handleDateChangee = (date, dateString) => {
+    setSelectedDatee(dateString);
+  };
+
+  const LoginUser_Name = sessionStorage.getItem("user_name");
+
+  const [loginIsOpen, setLoginIsOpen] = useState(false);
+  const closeLoginModal = () => {
+    setLoginIsOpen(false);
+  };
+  console.log(LoginUser_Name == "null", "gggggggg");
 
   return (
     <>
       <div className="fixed w-full z-1" style={{ zIndex: 1 }}>
-        <div className="h-[11vw] md:h-[3.3vw] w-full bg-[#E5FFF1] grid grid-cols-10 -z-1000">
-          <div
-            className="col-span-4 md:col-span-2 flex h-[3.3vw] cursor-pointer"
-            onClick={() => navigation("/")}
-          >
-            {/* <div class="grid grid-rows-2 grid-flow-col"> */}
-            {/* <div class="row-span-2">
-                <img src={nlogo} className="p-1 w-12 h-[50px]" />
-              </div> */}
-            {/* <div class="col-span-2 w-full">
-                <p className="text-[180%] text-blue-900 font-bold ml-1 w-full">
-                  thebusstand.com
-                </p>
+        <CommonMainNavbar />
+        <div className="h-[12vw] md:h-[4.7vw] w-full bg-[#1F487C] md:-z-10">
+          <div className="md:h-[0.3vw] md:block hidden w-full bg-[#E5FFF1] opacity-90"></div>
+          <div className="grid md:hidden block w-full  h-[12vw]">
+            <div className="items-center flex justify-around text-white">
+              <div onClick={() => navigation("/")} className="text-[4vw]">
+                <FaArrowLeft />
               </div>
-              <div class="row-span-1 col-span-2 text-xs justify-center items-center h-ful">
-                <p className="flex text-center ml-1 mt-1">
-                  We cover the 100% of the bus routes
-                </p>
-              </div> */}
-            <img
-              src={buslogo}
-              className="h-[9vw] w-[15-vw] md:h-[3vw] md:w-[5vw]"
-            />
-            <img
-              src={busstand}
-              className="object-fill h-[9vw] w-[60vw] py-[0.5] md:py-[0.1vw] md:h-[3vw] md:w-[14vw]"
-            />
-            {/* </div> */}
-          </div>
-          <div className="col-span-3 md:col-span-7 overflow-hidden flex items-center justify-center">
-            <div className="md:block hidden ">
-              <div className=" flex items-center justify-center ">
-                <MdStarRate
-                  size={"2.5vw"}
-                  id="changingText"
-                  style={{
-                    animation: "colorChange 2s infinite alternate",
-                  }}
-                />
-                <span
-                  id="changingText"
-                  className="text-[2.1vw] tracking-normal italic px-[0.5vw]"
-                  style={{
-                    fontFamily: "Calibri",
-                    animation: "colorChange 2s infinite alternate",
-                  }}
+              <div className="flex justify-between gap-[2vw] text-[4vw]">
+                <div className="">{fromValue}</div>
+                <div className="mt-[1vw] text-gray-500">
+                  <FaArrowRight />
+                </div>
+
+                <div className="">{toValue}</div>
+              </div>
+              {/* <div className="pr-[2vw]"><input type="date"/></div> */}
+              <div className="pr-[2vw]">
+                <button
+                  onClick={showDrawer}
+                  className="w-[28vw] h-[7vw] flex items-center justify-center bg-blue-500 text-white rounded-full shadow-lg"
                 >
-                  We show the best travel rates for the same bus by comparing
-                  market apps
-                </span>
-
-                <MdStarRate
-                  size={"2.5vw"}
-                  id="changingText"
-                  style={{
-                    animation: "colorChange 2s infinite alternate",
-                  }}
-                />
+                  <div className="text-center text-[3vw] flex">
+                    <span className="text-[4.5vw]">
+                      <MdKeyboardArrowLeft />
+                    </span>{" "}
+                    <span>{mobileformattedDate}</span>{" "}
+                    <span className="text-[4.5vw]">
+                      <MdKeyboardArrowRight />
+                    </span>
+                  </div>
+                </button>
               </div>
             </div>
-            {/* <marquee direction="left" scrollamount="10">
-              <div className="flex items-center  ">
-                <span className="mx-[0.5vw]">
-                  <MdStarRate size={"3vw"} />
-                </span>
-                <span className="text-[1.5vw] font-semibold italic">
-                  We show the best travel rates for the same bus buy comparing
-                  market apps
-                </span>
-                <span className="mx-2">
-                  <MdStarRate size={"3vw"} />
-                </span>
-                <span className="text-[1.5vw] text-blue-900 font-semibold italic">
-                  We do not impose any commission on either operators or
-                  passengers
-                </span>
-                <span className="mx-2">
-                  <MdStarRate size={"3vw"} />
-                </span>
-              </div>
-            </marquee> */}
-          </div>
-          <div className="col-span-3 gap-[2vw] md:col-span-1 md:h-[3.3vw] w-full flex md:gap-[1vw] justify-center md:px-[0.5vw] items-center">
-            <div className="flex items-center gap-[0.5vw] md:block hidden">
-              <img
-                src={share}
-                className="h-[7vw] w-[7vw] md:h-[2vw] md:w-[2vw] cursor-pointer"
-                onClick={openModal}
-              />
-              {/* <p className="text-[1.1vw] text-[#1F487C] font-bold">Share</p> */}
-            </div>
-            <div className="flex items-center gap-[0.5vw] md:hidden block">
-              <RWebShare
-                data={{
-                  // text: "Like humans, flamingos make friends for life",
-                  url: currentUrl,
-                  title: "Share to social media",
-                }}
-                onClick={() => console.log("shared successfully!")}
-              >
-                <img
-                  src={share}
-                  className="h-[7vw] w-[7vw] md:h-[2vw] md:w-[2vw] cursor-pointer"
-                // onClick={openModal}
-                />
-              </RWebShare>
-            </div>
-            <div className="flex items-center gap-[0.5vw]" onClick={() => navigation('/rewards')}>
-              <img
-                src={ticket}
-                className="h-[7vw] w-[7vw] md:h-[2vw] md:w-[2vw]"
-              />
-              {/* <p className="text-[1.1vw] text-[#1F487C] font-bold">
-                Rewards/Offers
-              </p> */}
-            </div>
-            {/* <div className="justify-center items-center flex"> */}
-            {/* <div className="flex items-center gap-[0.5vw]" onClick={() => navigation('/main')}> */}
-            <div>
-              <div className="md:block hidden">
-                <Dropdown
-                  menu={{
-                    items,
-                  }}
-                  className="flex items-center gap-[0.5vw]"
-                >
-                  <a onClick={(e) => e.preventDefault()}>
-                    <Space>
-                      <img
-                        src={profile}
-                        className="h-[2vw] w-[2vw]"
-                      />
-                    </Space>
-                  </a>
-                </Dropdown>
-              </div>
-
-
-
-
-
-              <div className=" md:hidden block  ">
-                <img
-                  src={profile}
-                  className="h-[7vw] w-[7vw] "
-                  onClick={showAccDrawer}
-                />
-              </div>
-
-
-
-
-
-
-
-
-            </div>
-            {/* <p className="text-[1.1vw] text-[#1F487C] font-bold">
-                Login/SignUp
-              </p> */}
-            {/* </div> */}
-
-          </div>
+            {/* <Drawer
+             placement={"bottom"}
+             closable={false}
+             onClose={onClosedate}
+             open={openDate}
+             key={"right"}
+             width={"100%"}
+             className="custom-drawer">
+                <div style={{ padding: 16 }}>
+          <DatePicker
+            style={{ width: '100%' }}
+            onChange={handleDateChange}
+            value={selectedDate ? moment(selectedDate, 'YYYY-MM-DD') : null}
+          />
         </div>
-        <div className="h-[12vw] md:h-[4.7vw] w-full bg-[#1F487C] -z-10">
-          <div className="md:h-[0.3vw] w-full bg-[#E5FFF1] opacity-90"></div>
+            
+          </Drawer> */}
+
+            <Drawer
+              title="Select Date"
+              placement="bottom"
+              closable={false}
+              onClose={onClosee}
+              open={openDatee}
+              height="55%" // Adjust height as needed
+              bodyStyle={{ padding: 0 }} // Removes extra padding
+              className="flex justify-center md:hidden"
+            >
+              <div className="flex items-center justify-center">
+                <Calendar
+                  onChange={(date) => {
+                    setSelectedDatee(date);
+                    setFromDate(date);
+                    onClosee(); // Close drawer on date select
+                  }}
+                  value={selectedDatee}
+                  style={{ width: "100%" }}
+                />
+              </div>
+            </Drawer>
+          </div>
+
           <img
-            src={bus}
-            className="absolute md:block hidden top-[2.7vw] h-[6.8vw] w-[19vw] object-fill -z-100 left-0"
+            src={newbus1}
+            className="absolute md:block hidden top-[1.7vw] h-[8.1vw] w-[21.75vw]   left-[-3vw]"
+            // style={{
+            //   transform: "rotateY(180deg)",
+            // }}
           />
           <div className="pl-[1vw] md:pl-[19vw] grid grid-cols-12 w-full md:h-[4.5vw] h-[12vw]">
             {/* <div className="col-span-2 w-full"> */}
@@ -801,7 +902,10 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
             <div className="hidden">
               <div className="col-span-6 md:col-span-4  h-full items-center">
                 <div className="grid grid-cols-7 gap-[1vw] md:gap-0 md:grid-cols-5 items-center h-full">
-                  <div className="md:block hidden md:col-span-2" ref={popoverRef}>
+                  <div
+                    className="md:block hidden md:col-span-2"
+                    ref={popoverRef}
+                  >
                     {/* <Select
                     showSearch
                     placeholder="From"
@@ -853,7 +957,6 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                         />
                         <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.5vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
                           {traveldetails?.from?.value?.toUpperCase()}
-
                         </p>
                       </div>
                     </Popover>
@@ -1121,135 +1224,205 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                 </div>
               </div>
             </div>
-            <div className="md:col-span-5 grid md:grid-cols-5 col-span-7 grid-cols-7 gap-[1vw] content-center">
-              <div className="md:col-span-2 col-span-3">
-                <Select
-                  showSearch
-                  value={fromValue}
-                  onChange={(value) => setFromValue(value)}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    color: "red  ",
-                    fontSize: "1.2vw"
-                  }}
-                  className="text-[1vw]"
-                  placeholder="Search to Select"
-                  optionFilterProp="label"
-                  filterSort={(optionA, optionB) =>
-                    (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                  }
-                  // options={[
-                  //   {
-                  //     value: toValue,
-                  //     label: toValue,
-                  //   },
-                  //   {
-                  //     value: '2',
-                  //     label: 'Closed',
-                  //   },
-                  //   {
-                  //     value: '3',
-                  //     label: 'Communicated',
-                  //   },
-                  //   {
-                  //     value: '4',
-                  //     label: 'Identified',
-                  //   },
-                  //   {
-                  //     value: '5',
-                  //     label: 'Resolved',
-                  //   },
-                  //   {
-                  //     value: '6',
-                  //     label: 'Cancelled',
-                  //   },
-                  // ]}
-                  options={options}
-                />
+            <div className="md:col-span-5 grid md:grid-cols-5  content-center">
+              {/* <div className="col-span-1  md:hidden  flex justify-start items-center ">
+                <TbArrowBackUpDouble className="text-white text-5xl" onClick={()=>navigate("/")} />
+              </div> */}
+              <div className="md:col-span-2 md:block hidden">
+                {modifyBtn === true ? (
+                  <Select
+                    showSearch
+                    value={fromValue}
+                    onChange={(value) => {
+                      handleChangeFromValue(value);
+                    }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      color: "red  ",
+                      fontSize: "1.2vw",
+                    }}
+                    className="text-[1vw]"
+                    placeholder="Search to Select"
+                    optionFilterProp="label"
+                    filterSort={(optionA, optionB) =>
+                      (optionA?.label ?? "")
+                        .toLowerCase()
+                        .localeCompare((optionB?.label ?? "").toLowerCase())
+                    }
+                    // options={[
+                    //   {
+                    //     value: toValue,
+                    //     label: toValue,
+                    //   },
+                    //   {
+                    //     value: '2',
+                    //     label: 'Closed',
+                    //   },
+                    //   {
+                    //     value: '3',
+                    //     label: 'Communicated',
+                    //   },
+                    //   {
+                    //     value: '4',
+                    //     label: 'Identified',
+                    //   },
+                    //   {
+                    //     value: '5',
+                    //     label: 'Resolved',
+                    //   },
+                    //   {
+                    //     value: '6',
+                    //     label: 'Cancelled',
+                    //   },
+                    // ]}
+                    options={options}
+                  />
+                ) : (
+                  <div className="relative custnav">
+                    <img src={split} className=" md:w-[13vw] md:h-[3vw]" />
+                    <div className=" absolute md:bottom-[.6vw] md:left-[3vw] md:text-[1.3vw] text-white  bottom-[1.9vw] text-[2.5vw] left-[3.5vw]">
+                      {fromValue}
+                    </div>
+                  </div>
+                )}
               </div>
-              <div className="md:col-span-1 col-span-1 content-center ">
+              <div className="md:col-span-1 content-center md:block hidden ">
                 <div className=" relative flex items-center justify-center cursor-pointer ">
                   <div
                     // onClick={handleSwap}
                     className=" cursor-not-allowed"
                   >
-                    <img
-                      src={split}
-                      className="w-[7vw] h-[7.5vw] md:h-[2.5vw] md:w-[2.5vw]"
-                    />
+                    <img src={split} className="md:h-[2.5vw] md:w-[2.5vw]" />
                     <FaArrowRightArrowLeft
                       color="white"
                       size={"1.2vw"}
-                      className="absolute size-[4vw] md:size-[1.2vw] left-[1.3vw] top-[1.8vw] md:top-[0.7vw] md:left-[2.3vw] transform translate[-50%,-50%]"
+                      className="absolute size-[4vw] md:size-[1.2vw] left-[1.3vw] top-[1.8vw] md:top-[0.7vw] md:left-[2.7vw] transform translate[-50%,-50%]"
                     />
                   </div>
                 </div>
+              </div>
+              <div className="md:col-span-2 content-center md:block hidden">
+                {modifyBtn === true ? (
+                  <Select
+                    showSearch
+                    value={toValue}
+                    onChange={(value) => {
+                      handleChangeToValue(value);
+                    }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      color: "red  ",
+                      fontSize: "1.2vw",
+                    }}
+                    className="text-[1vw]"
+                    placeholder="Search to Select"
+                    optionFilterProp="label"
+                    filterSort={(optionA, optionB) =>
+                      (optionA?.label ?? "")
+                        .toLowerCase()
+                        .localeCompare((optionB?.label ?? "").toLowerCase())
+                    }
+                    // options={[
+                    //   {
+                    //     value: toValue,
+                    //     label: toValue,
+                    //   },
+                    //   {
+                    //     value: '2',
+                    //     label: 'Closed',
+                    //   },
+                    //   {
+                    //     value: '3',
+                    //     label: 'Communicated',
+                    //   },
+                    //   {
+                    //     value: '4',
+                    //     label: 'Identified',
+                    //   },
+                    //   {
+                    //     value: '5',
+                    //     label: 'Resolved',
+                    //   },
+                    //   {
+                    //     value: '6',
+                    //     label: 'Cancelled',
+                    //   },
+                    // ]}
+                    // options={tooptions}
+                    options={toBus}
+                  />
+                ) : (
+                  <div className="relative">
+                    <img
+                      src={split}
+                      className=" md:w-[13vw] md:h-[3vw] flex justify-center"
+                    />
+                    <div className=" absolute md:bottom-[.6vw] md:left-[3vw] md:text-[1.3vw] text-white  bottom-[1.9vw] text-[2.5vw] left-[3.5vw]">
+                      {toValue}
+                    </div>
+                  </div>
+                )}
+              </div>
 
-              </div>
-              <div className="md:col-span-2 col-span-3 content-center">
-                <Select
-                  showSearch
-                  value={toValue}
-                  onChange={(value) => setToValue(value)}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    color: "red  ",
-                    fontSize: "1.2vw"
-                  }}
-                  className="text-[1vw]"
-                  placeholder="Search to Select"
-                  optionFilterProp="label"
-                  filterSort={(optionA, optionB) =>
-                    (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                  }
-                  // options={[
-                  //   {
-                  //     value: toValue,
-                  //     label: toValue,
-                  //   },
-                  //   {
-                  //     value: '2',
-                  //     label: 'Closed',
-                  //   },
-                  //   {
-                  //     value: '3',
-                  //     label: 'Communicated',
-                  //   },
-                  //   {
-                  //     value: '4',
-                  //     label: 'Identified',
-                  //   },
-                  //   {
-                  //     value: '5',
-                  //     label: 'Resolved',
-                  //   },
-                  //   {
-                  //     value: '6',
-                  //     label: 'Cancelled',
-                  //   },
-                  // ]}
-                  options={tooptions}
-                />
-              </div>
+              {/* <div className=" md:hidden col-span-1"></div> */}
+              {/* <div className="md:hidden block col-span-3 content-center ml-[1vw]">
+            <div className="bg-blue-200 w-full  h-[7vw] rounded-[0.5vw] text-[1.1vw]">
+                      <DateInput
+                        value={fromDate}
+                        onChange={handleChangeDateValue}
+                      />
+                      <input type="date"/>
+                    </div>
+                    </div> */}
             </div>
-            <div className="col-span-3"></div>
+
+            <div className="md:col-span-3"></div>
             <div className="md:block hidden col-span-4 content-center">
               <div className="grid grid-cols-4 gap-[1vw]  px-[0.5vw] ">
                 <div className="col-span-2">
-                  <div className="bg-white w-full  h-[2.3vw] rounded-[0.5vw] text-[1.1vw]">
-                    <DateInput value={fromDate} onChange={setFromDate} />
-                  </div>
+                  {modifyBtn === true ? (
+                    <div className="bg-white w-full  h-[2.3vw] rounded-[0.5vw] text-[1.1vw]">
+                      <DateInput
+                        value={fromDate}
+                        onChange={handleChangeDateValue}
+                      />
+                    </div>
+                  ) : (
+                    <div className="relative">
+                      <img
+                        src={split}
+                        className="w-[13vw] h-[3vw] felx justify-center"
+                      />
+                      <div className="absolute bottom-[.6vw] left-[3vw] text-[1.3vw] text-white">
+                        {formattedDate}
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="col-span-2">
-                  <div
-                    className="bg-white w-full  h-[2.3vw]  rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer"
-                    onClick={handleSearch}
-                  >
-                    Search
+                {modifyBtn === true ? (
+                  <div className="col-span-2">
+                    <div
+                      className="bg-white w-full  h-[2.3vw]  rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer"
+                      onClick={() => {
+                        handleSearch();
+                        setModifyBtn(false);
+                      }}
+                    >
+                      Search
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="col-span-2">
+                    <div
+                      className="bg-white w-full  h-[2.3vw] mt-[.4vw]  rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer"
+                      onClick={() => setModifyBtn(true)}
+                    >
+                      Modify
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -1287,10 +1460,13 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
           <div className="text-[#1F487C] text-[5vw] px-[2vw] flex items-center gap-[5vw]">
             <PiUserCircleDuotone color="#1F487C" size="5vw" /> My Account
           </div>
-          <div className="text-[#1F487C] text-[5vw] px-[2vw] flex items-center gap-[5vw]" >
+          <div className="text-[#1F487C] text-[5vw] px-[2vw] flex items-center gap-[5vw]">
             <FaTicketAlt color="#1F487C" size="5vw" /> Bookings
           </div>
-          <div className="text-[#1F487C] text-[5vw] px-[2vw] flex items-center gap-[5vw]" onClick={openLogMobile}>
+          <div
+            className="text-[#1F487C] text-[5vw] px-[2vw] flex items-center gap-[5vw]"
+            onClick={openLogMobile}
+          >
             <RiLogoutCircleLine color="#1F487C" size="5vw" /> Logout
           </div>
         </div>
@@ -1307,10 +1483,26 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
         className="custom-drawer"
       >
         <div className=" flex flex-col items-center gap-y-[5vw]">
-          <div className="font-bold text-[5vw] text-[#1F487C]">Are you Sure you want to Log Out ?</div>
-          <div className="text-[4vw] px-[10vw] text-center text-[#1F487C]">Tickets Booking is Faster when you are Logged In</div>
-          <button className=" bg-[#1F487C] text-[4vw] w-3/4 h-[10vw] text-white rounded-md font-bold">Yes, Log Out</button>
-          <button className="  border-[0.2vw] border-[#1F487C] text-[4vw] w-3/4 h-[10vw] text-[#1F487C] rounded-md font-bold">Cancel</button>
+          <div className="font-bold text-[5vw] text-[#1F487C]">
+            Are you Sure you want to Log Out ?
+          </div>
+          <div className="text-[4vw] px-[10vw] text-center text-[#1F487C]">
+            Tickets Booking is Faster when you are Logged In
+          </div>
+          <button
+            className=" bg-[#1F487C] text-[4vw] w-3/4 h-[10vw] text-white rounded-md font-bold"
+            onClick={() => {
+              console.log("hiiiiii", "home");
+
+              navigation("/");
+              sessionStorage.clear();
+            }}
+          >
+            Yes, Log Out
+          </button>
+          <button className="  border-[0.2vw] border-[#1F487C] text-[4vw] w-3/4 h-[10vw] text-[#1F487C] rounded-md font-bold">
+            Cancel
+          </button>
         </div>
       </Drawer>
 
@@ -1329,10 +1521,26 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
         }}
       >
         <div className=" flex flex-col items-center gap-y-[1vw]">
-          <div className="font-bold text-[1.7vw] text-[#1F487C]">Are you Sure you want to Log Out ?</div>
-          <div className="text-[1.2vw] px-[4vw] text-center text-[#1F487C]">Tickets Booking is Faster when you are Logged In</div>
-          <button className=" bg-[#1F487C] text-[1.4vw] w-[20vw] h-[3.5vw] text-white rounded-full font-bold ">Yes, Log Out</button>
-          <button className="  border-[0.2vw] border-[#1F487C] text-[1.4vw] w-[20vw] h-[3.5vw] text-[#1F487C] rounded-full font-bold">Cancel</button>
+          <div className="font-bold text-[1.7vw] text-[#1F487C]">
+            Are you Sure you want to Log Out ?
+          </div>
+          <div className="text-[1.2vw] px-[4vw] text-center text-[#1F487C]">
+            Tickets Booking is Faster when you are Logged In
+          </div>
+          <button
+            className=" bg-[#1F487C] text-[1.4vw] w-[20vw] h-[3.5vw] text-white rounded-full font-bold "
+            onClick={() => {
+              console.log("hiiiiii", "home");
+
+              navigation("/");
+              sessionStorage.clear();
+            }}
+          >
+            Yes, Log Out
+          </button>
+          <button className="  border-[0.2vw] border-[#1F487C] text-[1.4vw] w-[20vw] h-[3.5vw] text-[#1F487C] rounded-full font-bold">
+            Cancel
+          </button>
         </div>
       </Modal>
 
@@ -1389,7 +1597,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                     from: e.target.value,
                   });
                 }}
-              // value={inputsearch.from}
+                // value={inputsearch.from}
               />
             </div>
             <div className="h-[100%]  w-full">
@@ -1430,6 +1638,17 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
           </div>
         </div>
       </Drawer>
+      <LoginModalPopUp
+        show={loginIsOpen}
+        onClose={closeLoginModal}
+        height="35vw"
+        width="60vw"
+      >
+        <Login
+          closeLoginModal={closeLoginModal}
+          setLoginIsOpen={setLoginIsOpen}
+        />
+      </LoginModalPopUp>
     </>
   );
 };

@@ -11,7 +11,7 @@ import { GetPassengById, GetPassengerData } from "../../../../Api/MyAccounts/Pas
 import ModalPopup from "../../../MainComponenet/Modal/ModalPopup";
 import Delete from "./Delete";
 
-export default function PassengersList({ nextPage, passengerdata, setPassData, passData, updateData, setUpdateData }) {
+export default function PassengersList({ nextPage, passengerdata, setPassData, passData, updateData, setUpdateData ,setIsEdit}) {
 
   const getDataById = (id) => {
     GetPassengById(id)
@@ -26,6 +26,7 @@ export default function PassengersList({ nextPage, passengerdata, setPassData, p
   const handleNextPage = () => {
     setUpdateData(null)
     nextPage()
+    setIsEdit(false)
   }
 
   const [deletemodalIsOpen, setDeleteModalIsOpen] = useState(false);
@@ -41,12 +42,12 @@ export default function PassengersList({ nextPage, passengerdata, setPassData, p
       // specify the condition of filtering result
       // here is that finding the name started with `value`
       // onFilter: (value, record) => record.name.indexOf(value) === 0,
-      sorter: (a, b) => a.name.length - b.name.length,
+      sorter: (a, b) => a.user_name.length - b.user_name.length,
       sortDirections: ['descend'],
       render: (row) => {
         return (
           <div className="flex justify-center">
-            <h1 className="text-[1vw]">{row.name}</h1>
+            <h1 className="text-[1vw]">{row.user_name}</h1>
           </div>
         )
       }
@@ -85,6 +86,7 @@ export default function PassengersList({ nextPage, passengerdata, setPassData, p
               onClick={() => {
                 setUpdateData(row.tbs_add_pax_id);
                 nextPage();
+                setIsEdit(true)
               }}>
               <div><MdOutlineModeEdit size='1.1vw' /></div>
               <div className="text-[1vw]">Edit</div>

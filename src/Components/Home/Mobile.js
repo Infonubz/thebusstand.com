@@ -27,7 +27,7 @@ const MobileApp = () => {
             <img
               src={iphone}
               alt="iphone"
-              className="absolute top-[-7vw] h-[40vw]"
+              className="absolute top-[-5vw] left-[2vw] h-[35vw] w-[28vw]"
             />
           </div>
           <div className=" col-span-4  h-[35vw] w-full">

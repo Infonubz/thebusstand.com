@@ -7,9 +7,9 @@ import place6 from "../../assets/Vector (7).png";
 import place7 from "../../assets/Vector (8).png";
 import place8 from "../../assets/Vector (9).png";
 import mumbai from "../../assets/mumbai.png";
-import newdheli from "../../assets/newdheli.jpg"
+import newdheli from "../../assets/newdheli.jpg";
 // import goa from "../../assets/goa.jpg"
-import chennai from "../../assets/chennai.jpg"
+import chennai from "../../assets/chennai.jpg";
 import Buses from "./Buses";
 import BusOperator from "./BusOperator";
 import mumbai1 from "../../assets/mumbai1.png";
@@ -52,10 +52,9 @@ import { useDispatch, useSelector } from "react-redux";
 // ];
 
 export default function DomesticPlace() {
-
   const sanitizePath = (path) => {
-    const sanitizedPath = path.replace(/\\\\/g, 'file://').replace(/\\/g, '//');
-    console.log(encodeURI(sanitizedPath),"techimage");
+    const sanitizedPath = path.replace(/\\\\/g, "file://").replace(/\\/g, "//");
+    console.log(encodeURI(sanitizedPath), "techimage");
     return encodeURI(sanitizedPath);
   };
 
@@ -65,8 +64,8 @@ export default function DomesticPlace() {
     GetPdp(dispatch);
   }, [dispatch]);
 
-  const popular_domestic_presence = useSelector((state) => state?.pdp[0])
-  console.log(popular_domestic_presence, "popular_domestic_presence")
+  const popular_domestic_presence = useSelector((state) => state?.pdp);
+  console.log(popular_domestic_presence, "popular_domestic_presence");
   return (
     <>
       <div className="px-[5vw] md:block hidden">
@@ -75,10 +74,10 @@ export default function DomesticPlace() {
         </p>
 
         <div className="grid grid-cols-7 w-full py-[1vw]">
-          {popular_domestic_presence?.popular_domestic_presence?.map((item) => (
+          {popular_domestic_presence?.map((item) => (
             <div className="col-span-1 w-full items-center justify-center flex-col">
               <img
-                src={sanitizePath(item?.image)}
+                src={`http://192.168.90.47:4001${item.image}`}
                 className="w-[9vw] h-[9vw] ml-[1.8vw] rounded-full shadow-md shadow-[#1F487C]"
               />
               <p className="text-center py-[0.8vw] text-[1.2vw] font-bold">
@@ -167,19 +166,21 @@ export default function DomesticPlace() {
         </div> */}
         <div className="relative overflow-x-auto scrollbar-hide">
           <div className="flex w-full  py-[1vw]">
-            {popular_domestic_presence?.popular_domestic_presence?.map((item) => (
-              <div className="w-[20vw] mr-[5vw] flex-shrink-0 ml-[1vw]">
-                {/* <div className="w-[40vw]"> */}
-                <img
-                 src={sanitizePath(item?.image)}
-                  className="w-[20vw] h-[20vw]  rounded-full shadow-md shadow-[#1F487C]"
-                />
-                <p className="text-center py-[0.8vw] mt-[2vw] text-[3vw] font-bold">
-                  {item?.source_name?.toUpperCase()}
-                </p>
-                {/* </div> */}
-              </div>
-            ))}
+            {popular_domestic_presence?.popular_domestic_presence?.map(
+              (item) => (
+                <div className="w-[20vw] mr-[5vw] flex-shrink-0 ml-[1vw]">
+                  {/* <div className="w-[40vw]"> */}
+                  <img
+                      src={`http://192.168.90.47:4001${item.image}`}
+                      className="w-[20vw] h-[20vw]  rounded-full shadow-md shadow-[#1F487C]"
+                  />
+                  <p className="text-center py-[0.8vw] mt-[2vw] text-[3vw] font-bold">
+                    {item?.source_name?.toUpperCase()}
+                  </p>
+                  {/* </div> */}
+                </div>
+              )
+            )}
           </div>
         </div>
         <p className=" text-[4vw] pl-[2vw] text-[#1F487C] font-bold pt-[1vw] pb-[1vw]">

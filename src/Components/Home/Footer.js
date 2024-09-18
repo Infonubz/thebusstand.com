@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Bus from "../../assets/502-ai 1 (2).png";
 import FaceBook from "../../assets/Facebook.png";
 import InstaGram from "../../assets/Instagram.png";
@@ -8,7 +8,10 @@ import Youtube from "../../assets/Youtube.png";
 import ads from "../../assets/We cover 100% of the bus routes.png";
 import Tabbings from "./Tabbings";
 import FooterBg from "../../assets/FooterBG.png";
+import Footer1 from "../Footer/Footer";
 import "../../Components/Home/Footer.css";
+import { IoIosArrowDropupCircle } from "react-icons/io";
+import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 const Footer = () => {
   const footerdata = [
     {
@@ -57,6 +60,17 @@ const Footer = () => {
       ],
     },
   ];
+  const [top, setShowGoTop] = useState(false);
+  const handleVisibleButton = () => {
+    setShowGoTop(window.pageYOffset > 50);
+  };
+  const handleScrollUp = () => {
+    window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleVisibleButton);
+  }, []);
   return (
     <>
       {/* <div
@@ -93,7 +107,15 @@ const Footer = () => {
         </div>
       </div> */}
 
-      <div className="md:block hidden">
+      <div className="md:block hidden relative">
+        <div className="absolute top-0 right-0">
+          <button
+            className="text-white text-[1.2vw] font-bold p-[1vw] bg-blue-950"
+            onClick={handleScrollUp}
+          >
+            top
+          </button>
+        </div>
         <div className="bg-black flex  h-[23vw] w-full py-[1vw]  relative">
           {" "}
           <div className="w-[25%] h-full grid grid-rows-7">
@@ -146,6 +168,14 @@ const Footer = () => {
                 className="h-[1.8vw] w-[1.8vw] "
               />
             </a>
+          </div>
+          <div className="absolute bottom-[4vw] right-[2vw]">
+            <button
+              className="bg-blue-800 text-white text-[1vw] p-[1vw] rounded-full shadow-lg shadow-white"
+              onClick={handleScrollUp}
+            >
+              <MdKeyboardDoubleArrowUp size={"2vw"} />
+            </button>
           </div>
         </div>
       </div>
@@ -221,6 +251,7 @@ const Footer = () => {
           </a>
         </div> */}
       </div>
+      <Footer1></Footer1>
     </>
   );
 };

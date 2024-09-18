@@ -10,24 +10,57 @@ import { TfiMapAlt } from "react-icons/tfi";
 import filterImg from "../../assets/filter.png";
 import { Button, Drawer } from "antd";
 import SidebarMobile from "./SidebarMobile";
-import { LuSettings2 } from "react-icons/lu"
-import { Googlemap } from "./../Home/GoogleMap"
-import { useNavigate } from 'react-router-dom';
+import { LuSettings2 } from "react-icons/lu";
+import { Googlemap } from "./../Home/GoogleMap";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
   const bus_count = useSelector((state) => state.bus_list);
+  const buslist = useSelector((state) => state?.card_detail);
+
   const [sorting, setSorting] = useState("");
+  const [isSortedByPrice, setIsSortedByPrice] = useState(false);
+
   console.log(sorting, "sortingsorting");
+
   const dispatch = useDispatch();
+
   const menuhandle = () => {
     setSidebarToggle(!sidebarToggle);
+
     dispatch({
       type: SEARCH_BUTTON,
       payload: false,
     });
+
     localStorage.setItem("search", false);
   };
+
+  const handleSortingClick = (value) => {
+    setSorting(value);
+    localStorage.setItem("sort", value);
+    console.log(value, "tooovalue");
+  };
+
+  // const handleSortingClick = (value) => {
+  //   // Update the sorting state
+  //   setSorting(value === sorting ? "" : value);
+
+  //   // Clear all previous sorting values from localStorage
+  //   localStorage.removeItem("price");
+  //   localStorage.removeItem("seats");
+  //   localStorage.removeItem("ratings");
+  //   localStorage.removeItem("arrivalSort");
+  //   localStorage.removeItem("departureSort");
+
+  //   // Store the new sorting value in localStorage
+  //   if (value !== sorting) {
+  //     localStorage.setItem("sort", value);
+  //   }
+  // };
+
   const [boolean, setBoolean] = useState(false);
+
   useEffect(() => {
     dispatch({
       type: REARRANGE_ORDER,
@@ -47,30 +80,27 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
   const navigateMap = useNavigate();
 
   const handleButtonClick = (button) => {
-    if (button === 'map') {
+    if (button === "map") {
       setSelectedButton(button);
-      navigateMap('/map'); 
-    } 
-    else if (button === 'filter') {
+      navigateMap("/map");
+    } else if (button === "filter") {
       setDrawerHeight("50%");
       setSelectedButton(button);
       setIsDrawerOpen(true);
-      navigateMap('/dashboard'); 
-    }
-    else {
+      navigateMap("/dashboard");
+    } else {
       setDrawerHeight("100%");
       setSelectedButton(button);
       setIsDrawerOpen(true);
-      navigateMap('/dashboard'); 
+      navigateMap("/dashboard");
     }
-  }; 
-  
+  };
 
-
-  const handleDrawerClose = (button) =>{
+  const handleDrawerClose = (button) => {
     setIsDrawerOpen(false);
     setSelectedButton(null);
-  }
+  };
+  // console.log(buslist.length, "buslistbuslist");
 
   return (
     <>
@@ -107,11 +137,11 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
           <button
             className={`
     ${sorting === "price" ? "bg-[#1F487C] " : "bg-white border-gray-300 "}  
-    py-[0.1vw] border-[0.1vw] rounded-[0.4vw]
-    w-[4.5vw]  
-  `}
+    py-[0.1vw] border-[0.1vw] rounded-[0.4vw] w-[4.5vw] `}
             onClick={() => {
-              setSorting(sorting === "price" ? "" : "price");
+              const newValue = sorting === "price" ? "" : "price";
+              setSorting(newValue);
+              handleSortingClick(newValue);
             }}
           >
             <span className="flex justify-center items-center">
@@ -123,7 +153,7 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
               >
                 Price
               </p>
-              {sorting === "price" ? (
+              {sorting === "price" && (
                 <span>
                   <MdOutlineKeyboardDoubleArrowUp
                     color="white"
@@ -131,8 +161,6 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
                     className="font-bold"
                   />
                 </span>
-              ) : (
-                ""
               )}
             </span>
           </button>
@@ -142,7 +170,9 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
               sorting == "seats" ? "bg-[#1F487C] " : "bg-white border-gray-300"
             } px-[0.5vw] w-[4.5vw] py-[0.1vw] border-[0.1vw]  rounded-[0.4vw]`}
             onClick={() => {
-              setSorting(sorting === "seats" ? "" : "seats");
+              const newValue = sorting === "seats" ? "" : "seats";
+              setSorting(newValue);
+              handleSortingClick(newValue);
             }}
           >
             <span className="flex items-center justify-center">
@@ -171,9 +201,11 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
               sorting == "ratings"
                 ? "bg-[#1F487C] "
                 : "bg-white border-gray-300"
-            } px-[0.2vw] py-[0.1vw] border-[0.1vw]  rounded-[0.4vw] w-[4.5vw]`}
+            } px-[0.2vw] py-[0.1vw] border-[0.1vw] rounded-[0.4vw] w-[5vw]`}
             onClick={() => {
-              setSorting(sorting === "ratings" ? "" : "ratings");
+              const newValue = sorting === "ratings" ? "" : "ratings";
+              setSorting(newValue);
+              handleSortingClick(newValue);
             }}
           >
             <span className="flex items-center justify-center">
@@ -199,23 +231,25 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
           </button>
           <button
             className={`${
-              sorting == "arrival"
+              sorting == "arrivalSort"
                 ? "bg-[#1F487C] "
                 : "bg-white  border-gray-300"
-            }  py-[0.1vw] border-[0.1vw]  rounded-[0.4vw] w-[6.5vw]`}
+            }  py-[0.1vw] border-[0.1vw]  rounded-[0.4vw] w-[6.9vw]`}
             onClick={() => {
-              setSorting(sorting === "arrival" ? "" : "arrival");
+              const newValue = sorting === "arrivalSort" ? "" : "arrivalSort";
+              setSorting(newValue);
+              handleSortingClick(newValue);
             }}
           >
             <span className="flex items-center justify-center">
               <p
                 className={`${
-                  sorting == "arrival" ? "text-white" : "text-[#1F487C]"
+                  sorting == "arrivalSort" ? "text-white" : "text-[#1F487C]"
                 }  text-[0.9vw]  font-bold `}
               >
                 Arrival Time
               </p>
-              {sorting == "arrival" ? (
+              {sorting == "arrivalSort" ? (
                 <span>
                   <MdOutlineKeyboardDoubleArrowUp
                     color="white"
@@ -230,23 +264,25 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
           </button>
           <button
             className={`${
-              sorting == "departure"
+              sorting == "departureSort"
                 ? "bg-[#1F487C]  "
                 : "bg-white border-gray-300"
-            } w-[8vw] py-[0.1vw] border-[0.1vw] rounded-[0.4vw]`}
+            } w-[8.2vw] py-[0.1vw] border-[0.1vw] rounded-[0.4vw]`}
             onClick={() => {
-              setSorting(sorting === "departure" ? "" : "departure");
+              const newValue = sorting === "departureSort" ? "" : "departureSort";
+              setSorting(newValue);
+              handleSortingClick(newValue);
             }}
           >
             <span className="flex items-center justify-center">
               <p
                 className={`${
-                  sorting == "departure" ? "text-white" : "text-[#1F487C]"
+                  sorting == "departureSort" ? "text-white" : "text-[#1F487C]"
                 }  text-[0.9vw]  font-bold `}
               >
                 Departure Time
               </p>
-              {sorting == "departure" ? (
+              {sorting == "departureSort" ? (
                 <span>
                   <MdOutlineKeyboardDoubleArrowUp
                     color="white"
@@ -266,125 +302,170 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
             className={`flex ${
               sidebarToggle
                 ? "absolute right-[0.8vw] top-[0.5vw]"
-                : "absolute left-[68vw] top-[0.5vw]"
+                : "absolute left-[64.5vw] top-[0.5vw]"
             } items-center `}
           >
             <img src={sbus} className="w-[1.4vw] h-[1.5vw] mr-[0.5vw]" />
-            <span className="text-[#1F487C] font-bold  text-[0.8vw]  px-[0.1vw] flex items-center">
-              <span className="pr-[0.2vw]">Showing</span>
-              <span className="pr-[0.2vw] text-[1vw] font-extrabold">{bus_count?.length}</span>
-              <span>Buses On this route</span>
+            <span className="text-[#1F487C] font-bold  text-[1vw]  px-[0.1vw] flex items-center">
+              <span className="pr-[0.4vw]">Showing</span>
+              <div className="w-[1.7vw] h-[1.7vw] bg-[#1F487C] text-white mr-[0.4vw] items-center flex justify-center rounded-full">
+                <span className=" text-[1vw] font-extrabold ">
+                  {buslist?.length}
+                </span>
+              </div>
+              <span className="text-[1vw]">Buses On this route</span>
               {/* {`Showing ${bus_count?.length} Buses On this route`} */}
             </span>
           </div>
         </div>
       </div>
 
-
-      <div
-        className="bg-[#E5FFF1] grid grid-cols-12 py-[1vw] h-full w-full relative md:hidden block" >
+      <div className="bg-[#E5FFF1] grid grid-cols-12 py-[1vw] h-full w-full relative md:hidden block">
         <div className="col-span-7 pb-[1vw] pt-[1vw] h-full w-full flex gap-[1.5vw] ml-[1vw]">
           <button
             className={`py-[0.3vw] border-[0.1vw] rounded-md w-[17.5vw]  
             ${
-              selectedButton === 'sort' ? 'bg-[#1F487C]' : 'bg-white border-gray-300'
+              selectedButton === "sort"
+                ? "bg-[#1F487C]"
+                : "bg-white border-gray-300"
             }`}
-            onClick={() => handleButtonClick('sort')}
+            onClick={() => handleButtonClick("sort")}
           >
             <span className="flex">
-              <span className=""> 
-              <MdSort className="h-[6vw] w-[6vw]" color={selectedButton === 'sort' ? '#FFFFFF' : '#1F487C'} /> </span>
-            <span><p className={`text-[4.5vw] pl-[1vw] font-bold ${selectedButton === 'sort' ? 'text-white' : 'text-[#1F487C]'} `} >  Sort </p></span> 
+              <span className="">
+                <MdSort
+                  className="h-[6vw] w-[6vw]"
+                  color={selectedButton === "sort" ? "#FFFFFF" : "#1F487C"}
+                />{" "}
+              </span>
+              <span>
+                <p
+                  className={`text-[4.5vw] pl-[1vw] font-bold ${
+                    selectedButton === "sort" ? "text-white" : "text-[#1F487C]"
+                  } `}
+                >
+                  {" "}
+                  Sort{" "}
+                </p>
+              </span>
             </span>
-            {selectedButton === 'sort' 
-            // && (
-            //   <span>
-            //     <MdOutlineKeyboardDoubleArrowUp color="white" size={"1vw"} className="font-bold" />
-            //   </span> )
-              }
+            {
+              selectedButton === "sort"
+              // && (
+              //   <span>
+              //     <MdOutlineKeyboardDoubleArrowUp color="white" size={"1vw"} className="font-bold" />
+              //   </span> )
+            }
           </button>
 
           <button
             className={`px-[1vw] w-[18.5vw] py-[0.3vw] border-[0.1vw]  rounded-md
             ${
-              selectedButton === 'filter' ? 'bg-[#1F487C]' : 'bg-white border-gray-300'
+              selectedButton === "filter"
+                ? "bg-[#1F487C]"
+                : "bg-white border-gray-300"
             }`}
-            onClick={() => handleButtonClick('filter')}
+            onClick={() => handleButtonClick("filter")}
           >
             <span className="flex justify-center">
-              <span> <LuSettings2 className="h-[5.5vw] w-[5.5vw] pt-[1vw]" color={selectedButton === 'filter' ? '#FFFFFF' : '#1F487C'} /> </span>
-              <span> <p
-                className={`text-[4.5vw] pl-[1vw] pr-[1vw] font-bold ${selectedButton === 'filter' ? 'text-white' : 'text-[#1F487C]'}`}
-              >
-                Filter
-              </p></span>
-              {selectedButton === 'filter' 
-              // && (
-              // <span>
-              //   <MdOutlineKeyboardDoubleArrowUp color="white" className="font-bold" />
-              // </span> )
-            }
+              <span>
+                {" "}
+                <LuSettings2
+                  className="h-[5.5vw] w-[5.5vw] pt-[1vw]"
+                  color={selectedButton === "filter" ? "#FFFFFF" : "#1F487C"}
+                />{" "}
+              </span>
+              <span>
+                {" "}
+                <p
+                  className={`text-[4.5vw] pl-[1vw] pr-[1vw] font-bold ${
+                    selectedButton === "filter"
+                      ? "text-white"
+                      : "text-[#1F487C]"
+                  }`}
+                >
+                  Filter
+                </p>
+              </span>
+              {
+                selectedButton === "filter"
+                // && (
+                // <span>
+                //   <MdOutlineKeyboardDoubleArrowUp color="white" className="font-bold" />
+                // </span> )
+              }
             </span>
           </button>
           <button
             className={`py-[0.3vw] border-[0.1vw] rounded-md w-[18vw] px-[1vw] ${
-              selectedButton === 'map' ? 'bg-[#1F487C]' : 'bg-white border-gray-300'
+              selectedButton === "map"
+                ? "bg-[#1F487C]"
+                : "bg-white border-gray-300"
             }`}
-            onClick={() => handleButtonClick('map')}
+            onClick={() => handleButtonClick("map")}
           >
             <span className="flex justify-center">
               <span className="pt-[0.5vw]">
-                <TfiMapAlt className="h-[5.5vw] w-[5.5vw]" color={selectedButton === 'map' ? '#FFFFFF' : '#1F487C'} /></span>
-              <span> 
-                <p className= {`text-[#1F487C] text-[4.5vw] pl-[1.5vw] font-bold ${selectedButton === 'map' ? 'text-white' : 'text-[#1F487C]'} `} >
-                Map
-              </p>
+                <TfiMapAlt
+                  className="h-[5.5vw] w-[5.5vw]"
+                  color={selectedButton === "map" ? "#FFFFFF" : "#1F487C"}
+                />
               </span>
-              {selectedButton === 'map' 
-            //   && (
-            //   <span>
-            //     <MdOutlineKeyboardDoubleArrowUp className="font-bold" />
-            //   </span>
-            // )
-            }
+              <span>
+                <p
+                  className={`text-[#1F487C] text-[4.5vw] pl-[1.5vw] font-bold ${
+                    selectedButton === "map" ? "text-white" : "text-[#1F487C]"
+                  } `}
+                >
+                  Map
+                </p>
+              </span>
+              {
+                selectedButton === "map"
+                //   && (
+                //   <span>
+                //     <MdOutlineKeyboardDoubleArrowUp className="font-bold" />
+                //   </span>
+                // )
+              }
             </span>
           </button>
         </div>
 
         <div className="col-span-5">
-
-          <div className="absolute top-[2.5vw] ml-[5vw]" >
+          <div className="absolute top-[2.5vw] ml-[5vw]">
             <span className="text-[#1F487C] font-bold text-[3.8vw] flex items-center">
-              <span><img src={sbus} className="w-[5.2vw] h-[5.5vw]" /></span>
+              <span>
+                <img src={sbus} className="w-[5.2vw] h-[5.5vw]" />
+              </span>
               <span className="pl-[1.5vw]">Showing</span>
-              <span className="text-[3.8vw] pl-[0.8vw] font-extrabold">{bus_count?.length}</span>
+              <span className="text-[3.8vw] pl-[0.8vw] font-extrabold">
+                {buslist?.length}
+              </span>
               <span className="pl-[0.8vw]">Buses </span>
               {/* {`Showing ${bus_count?.length} Buses On this route`} */}
             </span>
           </div>
         </div>
-
       </div>
-
 
       <Drawer
         closable
         destroyOnClose
-        title={<p>{selectedButton === 'sort' ? 'Sort' : 'Filter'}</p>}
+        title={<p>{selectedButton === "sort" ? "Sort" : "Filter"}</p>}
         placement="bottom"
         width={"100%"}
         height={drawerHeight}
         style={{
-          backgroundColor: "#E5FFF1"
+          backgroundColor: "#E5FFF1",
         }}
         open={isDrawerOpen}
         onClose={handleDrawerClose}
       >
         {/* {selectedButton === 'sort' && <SortDrawer />} */}
-        {selectedButton === 'filter' && <SidebarMobile />}
+        {selectedButton === "filter" && <SidebarMobile />}
         {/* {selectedButton === 'map' && <MapDrawer />} */}
       </Drawer>
-
     </>
   );
 };

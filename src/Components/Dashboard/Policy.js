@@ -71,9 +71,9 @@ const Policy = () => {
   ];
   return (
     <>
-      <div className="md:block hidden w-full">
-        <div className="bg-[#F6F6F6] h-auto px-[5vw]">
-          <div className="flex border-[0.15vw] border-[#1F487C] w-[60vw] rounded-[0.2vw]">
+      <div className="md:block  hidden w-full">
+        <div className="bg-[#F6F6F6] h-auto px-[1vw] pt-[1vw]">
+          <div className="flex justify-center mt-[1vw] mx-auto border-[0.15vw] border-[#1F487C] w-[60vw] rounded-[0.2vw]">
             <button
               className={`${isToggleSwitch == "CDCP" ? "bg-[#1F4B7F]" : "bg-[#F6F6F6]"
                 } w-[30vw] h-[2.5vw] flex px-[1vw] justify-center gap-[0.5vw] items-center`}
@@ -101,8 +101,8 @@ const Policy = () => {
           </div>
 
           {isToggleSwitch == "CDCP" ? (
-            <div className="py-[2vw]">
-              <div className="grid grid-cols-3 gap-[3vw]">
+            <div className="py-[2vw] px-[.5vw]">
+              <div className="flex justify-between">
                 <div className="bg-[#D0E5FF80] rounded-[0.5vw]">
                   <div className="py-[1vw] px-[0.5vw] flex flex-col gap-[1vw]">
                     <p className="text-[1.1vw] text-[#1F4B7F]">

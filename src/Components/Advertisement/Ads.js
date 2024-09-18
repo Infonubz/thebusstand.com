@@ -50,7 +50,9 @@ export default function Advertisement() {
   }, []);
 
   return (
-    <div className="slide-container pt-[10vw] md:pt-0">
+    <div className="slide-container 
+    
+     md:pt-0">
       <div className="relative">
         {getlist[currentIndex]?.ad_file_type === "image/jpeg" ||
         getlist[currentIndex]?.ad_file_type === "image/png" ||

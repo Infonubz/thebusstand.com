@@ -33,9 +33,9 @@ const LoginMobile = () => {
 
     return (
         <>
-            <div className='flex flex-col items-center py-[25%]'>
+            <div className='flex flex-col items-center '>
                 <div className=' flex justify-items-center'>
-                    <img src={Password} className='w-[75vw] h-[75vw]' />
+                    <img src={Password} className='w-[70vw] h-[70vw]' />
                 </div>
                 <div className='px-[5vw]'>
                     {renderStepComponent()}

@@ -10,6 +10,7 @@ import { useLocation, useParams } from "react-router";
 import { CiCalendar } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
 import { HOME_SELECTED_DATE } from "../../../../Store/type";
+import { MdOutlineCalendarMonth } from "react-icons/md";
 
 function getDateSlots(currentMonth, currentYear) {
   const currentMonthDays = getDaysInMonth(currentMonth, currentYear).map(
@@ -77,7 +78,7 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
   console.log(dateSelection, "dateselectiondateselectiondateselection");
   console.log(nextDate3, "nextdatenextedatewfaewfawgafdsagewa");
 
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(currentDate);
 
   useClickOutside(popupRef, () => {
     setShowPopup(false);
@@ -119,6 +120,7 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
       console.error("props.onChange is not a function");
     }
     setSelectedDate(date.date);
+    setDateSelectionColor(true);
     setShowPopup(false);
   }
 
@@ -159,15 +161,23 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
     }
   }, [location.pathname, selectedDate]);
   console.log(nextDate3, "nextDate3");
+
+  const [dateSelectionColor, setDateSelectionColor] = useState(false);
+
   return (
     <>
       <div className="p-[0.5vw] gap-[4.5vw] md:gap-[1.5vw] grid grid-cols-5">
         <div
-          className={`${dayjs(selectedDate).format("D") == dayjs(currentDate).format("D")
+          className={`${
+            dayjs(selectedDate).format("D") == dayjs(currentDate).format("D") &&
+            dateSelectionColor === false
               ? "bg-[#1F487C] text-white"
               : "bg-[#E5FFF1] text-black"
-            }  cursor-pointer w-[12vw] h-[16vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[0.4vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
-          onClick={() => setSelectedDate(currentDate)}
+          }  cursor-pointer w-[12vw] h-[16vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[0.4vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
+          onClick={() => {
+            setSelectedDate(currentDate);
+            setDateSelectionColor(false);
+          }}
         >
           <div className=" justify-items-center py-[1.5vw] md:py-0">
             <div className="flex flex-col items-center">
@@ -184,11 +194,17 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
           </div>
         </div>
         <div
-          className={`${dayjs(selectedDate).format("D") == dayjs(nextDate1).format("D")
+          className={`${
+            dayjs(selectedDate).format("D") == dayjs(nextDate1).format("D") &&
+            dateSelectionColor === false
               ? "bg-[#1F487C] text-white"
               : "bg-[#E5FFF1] text-black"
-            }  cursor-pointer w-[12vw] h-[16vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[0.4vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
-          onClick={() => setSelectedDate(nextDate1)}
+          }  cursor-pointer w-[12vw] h-[16vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[0.4vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
+          onClick={() => {
+            setSelectedDate(nextDate1);
+
+            setDateSelectionColor(false);
+          }}
         >
           <div className="flex-col py-[1.5vw] md:py-0">
             <div className="flex flex-col items-center">
@@ -205,11 +221,16 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
           </div>
         </div>
         <div
-          className={`${dayjs(selectedDate).format("D") == dayjs(nextDate2).format("D")
+          className={`${
+            dayjs(selectedDate).format("D") == dayjs(nextDate2).format("D") &&
+            dateSelectionColor === false
               ? "bg-[#1F487C] text-white"
               : "bg-[#E5FFF1] text-black"
-            }  cursor-pointer w-[12vw] h-[16vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[0.4vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
-          onClick={() => setSelectedDate(nextDate2)}
+          }  cursor-pointer w-[12vw] h-[16vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[0.4vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
+          onClick={() => {
+            setSelectedDate(nextDate2);
+            setDateSelectionColor(false);
+          }}
         >
           <div className="flex-col py-[1.5vw] md:py-0">
             <div className="flex flex-col items-center">
@@ -226,11 +247,17 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
           </div>
         </div>
         <div
-          className={`${dayjs(selectedDate).format("D") == dayjs(nextDate3).format("D")
+          className={`${
+            dayjs(selectedDate).format("D") == dayjs(nextDate3).format("D") &&
+            dateSelectionColor === false
               ? "bg-[#1F487C] text-white"
               : "bg-[#E5FFF1] text-black"
-            }  cursor-pointer w-[12vw] h-[16vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[0.4vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
-          onClick={() => setSelectedDate(nextDate3)}
+          }  cursor-pointer w-[12vw] h-[16vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[0.4vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
+          onClick={() => {
+            setSelectedDate(nextDate3);
+
+            setDateSelectionColor(false);
+          }}
         >
           <div className="flex-col py-[1.5vw] md:py-0">
             <div className="flex flex-col items-center">
@@ -415,34 +442,55 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
                 {selectedDate ? (
                   <div
                     className={`flex-col absolute top-[50%] left-[50%] transform translate-y-[-50%] translate-x-[-50%] z-10`}
-                    onClick={() => setShowPopup(!showPopup)}
+                    onClick={() => {
+                      setShowPopup(!showPopup);
+                    }}
                   >
                     <div
-                      className={`${dayjs(selectedDate).format("D") ==
-                          dayjs(dateSelection).format("D")
+                      className={`${
+                        dayjs(selectedDate).format("D") ==
+                          dayjs(dateSelection).format("D") &&
+                        dateSelectionColor === true
                           ? "bg-[#1F487C] text-white"
                           : "bg-[#E5FFF1] text-black"
-                        } cursor-pointer w-[12vw] h-[16vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[0.4vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
+                      } cursor-pointer w-[12vw] h-[16vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[0.4vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
                       onClick={() => setSelectedDate(dateSelection)}
                     >
-                      <div className="flex flex-col items-center">
-                        <p className=" md:text-[0.8vw] text-[2.5vw] text-center">
-                          {dayjs(dateSelection).format("MMM")}
-                        </p>
-                        <p className="text-center  font-semibold md:text-[1.2vw]">
-                          {dayjs(dateSelection).format("D")}
-                        </p>
-                        <p className="text-center font-semibold text-[2.5vw] md:text-[0.8vw]">
-                          {dayjs(dateSelection).format("ddd")}
-                        </p>
-                      </div>
+                      {dateSelectionColor === true ? (
+                        <div className="flex flex-col items-center md:mt-0 mt-[2vw]">
+                          <p className=" md:text-[0.8vw] text-[2.5vw] text-center">
+                            {dayjs(dateSelection).format("MMM")}
+                          </p>
+                          <p className="text-center  font-semibold md:text-[1.2vw]">
+                            {dayjs(dateSelection).format("D")}
+                          </p>
+                          <p className="text-center font-semibold text-[2.5vw] md:text-[0.8vw]">
+                            {dayjs(dateSelection).format("ddd")}
+                          </p>
+                        </div>
+                      ) : (
+                        <div
+                          onClick={() => {
+                            setShowPopup(!showPopup);
+                          }}
+                          className="flex flex-col items-center justify-center mt-[3.5vw]  md:mt-[.7vw]"
+                        >
+                          <p className="text-center font-semibold md:text-[1.2vw]">
+                            <MdOutlineCalendarMonth className="md:text-xl text-3xl" />
+                          </p>
+                          <p className="text-center font-semibold text-[2.5vw] md:text-[0.8vw]">
+                            Date
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ) : (
                   <div>
                     <div
-                      className={`${location.pathname == "/" ? "block" : "hidden"
-                        } flex-col  z-10 cursor-pointer `}
+                      className={`${
+                        location.pathname == "/" ? "block" : "hidden"
+                      } flex-col  z-10 cursor-pointer `}
                       onClick={() => setShowPopup(!showPopup)}
                     >
                       <div className="md:block hidden">
@@ -452,13 +500,13 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
                             color={`${showPopup ? "white" : "black"}`}
                           />
                           <p
-                            className={`text-center text-[1vw] ${showPopup ? "text-white" : "text-black"
-                              }`}
+                            className={`text-center text-[1vw] ${
+                              showPopup ? "text-white" : "text-black"
+                            }`}
                           >
                             Date
                           </p>
                         </div>
-
                       </div>
                       <div className="md:hidden block">
                         <div className="items-center flex flex-col  py-[1.5vw]">
@@ -467,8 +515,9 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
                             color={`${showPopup ? "white" : "black"}`}
                           />
                           <p
-                            className={`text-center text-[4vw] ${showPopup ? "text-white" : "text-black"
-                              }`}
+                            className={`text-center text-[4vw] ${
+                              showPopup ? "text-white" : "text-black"
+                            }`}
                           >
                             Date
                           </p>
@@ -568,7 +617,7 @@ HomeDateInput.propTypes = {
 };
 
 HomeDateInput.defaultProps = {
-  onChange: () => { },
+  onChange: () => {},
   value: "",
 };
 

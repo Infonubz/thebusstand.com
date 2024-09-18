@@ -8,7 +8,15 @@ import share from "../../../src/assets//Share.png";
 import bg_build1 from "../../assets/bg_build1.png";
 import bg_build2 from "../../assets/bg_build2.png";
 import vehicle from "../../../src/assets/vehicles.png";
-import { DatePicker, Drawer, Input, Popover, Select } from "antd";
+import {
+  DatePicker,
+  Drawer,
+  Dropdown,
+  Input,
+  Popover,
+  Select,
+  Space,
+} from "antd";
 import suitcase from "../../../src/assets/suitcase.png";
 import stand_man from "../../assets/stand_man.png";
 import man from "../../assets/man.png";
@@ -20,6 +28,7 @@ import {
   FaArrowLeft,
   FaArrowRightArrowLeft,
   FaArrowRightLong,
+  FaBus,
   FaMapPin,
 } from "react-icons/fa6";
 import dayjs from "dayjs";
@@ -69,7 +78,7 @@ import {
   IoIosArrowForward,
 } from "react-icons/io";
 import locationmap from "../../assets/locationicon.png";
-import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaMapMarkerAlt, FaTicketAlt, FaUserCircle } from "react-icons/fa";
 import precius from "../../assets/precius.png";
 import ModalPopup from "../MainComponenet/Modal/ModalPopup";
 import thankyou from "../../assets/thankyou.png";
@@ -78,8 +87,8 @@ import * as Yup from "yup";
 import Offers from "./Offers";
 // import { Calendar } from "primereact/calendar";
 import axios from "axios";
-import { min } from "moment";
-import { PiBusThin } from "react-icons/pi";
+import moment, { min } from "moment";
+import { PiBusThin, PiUserCircleDuotone } from "react-icons/pi";
 import Calendar from "react-calendar";
 import { LiaCitySolid } from "react-icons/lia";
 import HomePageDatePicker from "./HomeDatePicker";
@@ -92,6 +101,11 @@ import LoginModalPopUp from "../Login/LoginModalPopUp";
 import Login from "../Login/Login";
 import { SendTravelDetails } from "../../Api/Dashboard/Dashboard";
 import TopTravelledBusRoutes from "./TopTravelledBusRoutes";
+import { SearchableDropdown } from "./SearchableDropDown";
+import { RiLogoutCircleLine } from "react-icons/ri";
+import { GetUserDetails } from "../../Api/Login/Login";
+import { MdKeyboardDoubleArrowUp } from "react-icons/md";
+import CommonMainNavbar from "../Common/CommonMainNavbar";
 
 const validationSchema = Yup.object().shape({
   occupation: Yup.string()
@@ -202,18 +216,20 @@ export default function Home1() {
   const navigation = useNavigate();
 
   const handleLoginPage = () => {
-    navigation("/Login")
-  }
+    navigation("/Login");
+  };
 
   const [seatFilter, SetSeatFilter] = useState("");
+  const [luxury, setLuxury] = useState(false);
   const [busdatas, setBusDatas] = useState({
-    ac: false,
+    ac: "false",
     from: "",
     to: "",
     date: "",
-    seater: seatFilter == "seater" ? seatFilter : "",
-    sleeper: seatFilter == "sleeper" ? seatFilter : "",
-    semi_sleeper: seatFilter == "semi_sleeper" ? seatFilter : "",
+    seater: "",
+    sleeper: "",
+    semi_sleeper: "",
+    luxury_data: false,
   });
   const dispatch = useDispatch();
   const [error, setError] = useState({
@@ -223,41 +239,69 @@ export default function Home1() {
     mobile: "",
   });
 
+  useEffect(() => {
+    setBusDatas({
+      ...busdatas,
+      seater: seatFilter == "seater" ? "true" : "false",
+      sleeper: seatFilter == "sleeper" ? "true" : "false",
+      semi_sleeper: seatFilter == "semi_sleeper" ? "true" : "false",
+      date: moment(getselecteddate).format("YYYY-MM-DD"),
+      luxury_data: luxury,
+    });
 
-  
-  const handlebussearch = () => {
-    SendTravelDetails(dispatch);
-    navigation(`/dashboard`);
-  };
+    // setBusDatas({date:moment(getselecteddate).format('YYYY-MM-DD')})
+  }, [seatFilter, getselecteddate, luxury]);
 
-  // const handlebussearch = async () => {
-  //   if (
-  //     busdatas.from &&
-  //     busdatas.to
-  //     // ||
-  //     // (localStorage.getItem("depature") && localStorage.getItem("arrival"))
-  //   ) {
-  //     navigation(`/dashboard`);
-  //     localStorage.setItem("busdetails", busdatas);
-  //     dispatch({
-  //       type: BUS_DATAS,
-  //       payload: busdatas,
-  //     });
-  //   }
-  //   if (busdatas.from === "" || busdatas.to === "") {
-  //     const errors = {};
+  console.log(seatFilter, busdatas.seater, "sssseaaahjhaadsfdsffdsf");
+  console.log(busdatas, "datevaluesdfasdf");
 
-  //     if (busdatas.from === "") {
-  //       errors.from = "field is required";
-  //     }
-
-  //     if (busdatas.to === "") {
-  //       errors.to = "field is required";
-  //     }
-
-  //     setError(errors);
-  //   }
+  // const handlebussearch = () => {
+  //   SendTravelDetails(dispatch);
+  //   navigation(`/dashboard`);
   // };
+
+  const handlebussearch = async () => {
+    // if (
+    //   busdatas.from &&
+    //   busdatas.to
+    //   // ||
+    //   // (localStorage.getItem("depature") && localStorage.getItem("arrival"))
+    // ) {
+    //   navigation(`/dashboard`);
+    //   localStorage.setItem("busdetails", busdatas);
+    //   dispatch({
+    //     type: BUS_DATAS,
+    //     payload: busdatas,
+    //   });
+    // }
+    sessionStorage.setItem("loading", true);
+    localStorage.setItem("departure", busdatas.from);
+    localStorage.setItem("arrival", busdatas.to);
+    try {
+      const data = await SendTravelDetails(
+        dispatch,
+        // busdatas.from,
+        // busdatas.to,
+        busdatas,
+        luxury
+      );
+      console.log(busdatas.from, busdatas.to, "datadata");
+    } catch (error) {
+      console.error("Error fetching additional user data", error);
+    }
+    if (busdatas.from === "" || busdatas.to === "") {
+      const errors = {};
+      if (busdatas.from === "") {
+        errors.from = "field is required";
+      }
+      if (busdatas.to === "") {
+        errors.to = "field is required";
+      }
+      setError(errors);
+    } else {
+      navigation(`/dashboard`);
+    }
+  };
   const handlecheckbox = (e) => {
     const { checked } = e.target;
     setBusDatas({
@@ -495,49 +539,50 @@ export default function Home1() {
     localStorage.setItem("selectdate", selecteddate);
     localStorage.setItem("seatType", seatFilter);
     localStorage.setItem("ac", busdatas.ac);
-  }, [selecteddate, seatFilter, busdatas.ac]);
+    sessionStorage.setItem("isLuxury", luxury);
+  }, [selecteddate, seatFilter, busdatas.ac, luxury]);
   console.log(busdatas.ac, "accccccccc");
   const [tobus, setToBus] = useState("");
   useEffect(() => {
     const all = [
       {
+        value: "Coimbatore",
+        label: "Coimbatore",
+      },
+      {
         value: "Hyderabad",
         label: "Hyderabad",
       },
       {
-        value: "Goa",
-        label: "Goa",
+        value: "Bangalore",
+        label: "Bangalore",
       },
+    ];
+    const Coimbatore = [
       {
         value: "Coimbatore",
         label: "Coimbatore",
       },
     ];
-    const Chennai = [
+    const Hyderabad = [
       {
-        value: "Coimbatore",
-        label: "Coimbatore",
+        value: "Hyderabad",
+        label: "Hyderabad",
       },
     ];
     const Bangalore = [
       {
-        value: "Goa",
-        label: "Goa",
+        value: "Bangalore",
+        label: "Bangalore",
       },
     ];
-    const pondy = [
-      {
-        value: "Coimbatore",
-        label: "Coimbatore",
-      },
-    ];
-    if (busdatas.from == "Chennai") {
+    if (busdatas.from == "Pondicherry") {
       console.log(busdatas.from, "busdatas.from");
-      setToBus(Chennai);
+      setToBus(Coimbatore);
     } else if (busdatas.from == "Bangalore") {
+      setToBus(Hyderabad);
+    } else if (busdatas.from == "Chennai") {
       setToBus(Bangalore);
-    } else if (busdatas.from == "Pondicherry") {
-      setToBus(pondy);
     } else {
       setToBus(all);
     }
@@ -700,24 +745,140 @@ export default function Home1() {
     setLoginIsOpen(false);
   };
 
-
   const nextFieldRef = useRef(null);
+  const [accDrawer, setAccDrawer] = useState(false);
+  const showAccDrawer = () => {
+    setAccDrawer(true);
+  };
+  const onAccClose = () => {
+    setAccDrawer(false);
+  };
+  const [logMobileIsOpen, setLogMobileIsOpen] = useState(false);
+  const openLogMobile = () => {
+    console.log("open8888888888888888888");
+    setAccDrawer(false);
+    setLogMobileIsOpen(true);
+  };
+  const closeLogMobile = () => {
+    setLogMobileIsOpen(false);
+  };
+  const [logModalIsOpen, setLogModalIsOpen] = useState(false);
+  const openLogModal = () => {
+    console.log("openkkkkk");
+    setAccDrawer(false);
+    setLogModalIsOpen(true);
+    sessionStorage.clear();
+    localStorage.clear();
+    toast.success("Logout Successfully");
+    // window.location.reload();
+  };
+  const closeLogModal = () => {
+    setLogModalIsOpen(false);
+  };
+  const handleProPage = () => {
+    navigation("/main", { state: { tabIndex: 1 } });
+  };
 
+  const handleBookingPage = () => {
+    navigation("/main", { state: { tabIndex: 3 } });
+  };
+  const LoginUser_Name = sessionStorage.getItem("user_name");
+  const items = [
+    {
+      key: "1",
+      label: (
+        <div
+          className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+          onClick={handleProPage}
+        >
+          <PiUserCircleDuotone color="#1F487C" size="1.5vw" /> My Account
+        </div>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <div
+          className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+          onClick={handleBookingPage}
+        >
+          <FaTicketAlt color="#1F487C" size="1.5vw" /> Bookings
+        </div>
+      ),
+    },
+    {
+      key: "3",
+      label: (
+        <div
+          className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+          onClick={openLogModal}
+        >
+          <RiLogoutCircleLine color="#1F487C" size="1.5vw" /> Logout
+        </div>
+      ),
+    },
+  ];
+  // useEffect(() => {
+  //   GetUserDetails();
+  // }, []);
+  const [top, setShowGoTop] = useState(false);
+  const handleVisibleButton = () => {
+    setShowGoTop(window.pageYOffset > 50);
+  };
+  const handleScrollUp = () => {
+    window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleVisibleButton);
+  }, []);
+  console.log(top, "toptop");
+
+  const [scrollPercentage, setScrollPercentage] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset; // Current scroll position
+      const scrollHeight = document.documentElement.scrollHeight; // Total height of the page
+      const clientHeight = document.documentElement.clientHeight; // Height of the visible part (viewport height)
+
+      // Calculate percentage
+      const totalHeight = scrollHeight - clientHeight;
+      const scrolled = (scrollTop / totalHeight) * 100;
+
+      setScrollPercentage(scrolled);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+  console.log(scrollPercentage.toFixed(2), "teswtinggggg");
 
   return (
     <div
       className="bg-[#E5FFF1]  min-h-screen max-h-auto w-full overflow-auto  relative"
-    // style={{
-    //   backgroundColor: "rgba(0, 0, 0, 0.5)",
-    // }}
-    >
-      <div
-        className="md:h-[4.5vw] h-[10vw]  w-full flex md:shadow-lg md:shadow-black"
+
       // style={{
-      //   zIndex: 1,
+      //   backgroundColor: "rgba(0, 0, 0, 0.5)",
       // }}
-      >
-        <div className="w-[40%] md:h-[4vw] h-[10vw] flex ">
+    >
+      {/* <div className="absolute bottom-[4vw] right-[2vw]">
+        <button
+          className="bg-blue-800 text-white text-[1vw] p-[1vw] rounded-full shadow-lg shadow-white"
+          onClick={handleScrollUp}
+        >
+          <MdKeyboardDoubleArrowUp size={"2vw"} />
+        </button>
+      </div> */}
+      {/* <div
+        className="md:h-[4.5vw] h-[10vw]  w-full flex md:shadow-lg md:shadow-black"
+        style={{
+          zIndex: 1,
+        }}
+      > */}
+      {/* <div className="w-[40%] md:h-[4vw] h-[10vw] flex ">
           <img
             className="md:w-[6.25vw] w-[15vw] md:h-[4vw] h-[10vw]"
             src={buslogo}
@@ -757,7 +918,10 @@ export default function Home1() {
               Share
             </p>
           </div>
-          <div className="flex items-center justify-center gap-[0.5vw]" onClick={() => navigation('/rewards')}>
+          <div
+            className="flex items-center justify-center gap-[0.5vw]"
+            onClick={() => navigation("/rewards")}
+          >
             <img
               className="md:w-[1.6vw] md:h-[1.6vw] w-[7vw] h-[7vw]"
               src={ticket}
@@ -766,28 +930,45 @@ export default function Home1() {
               Rewards/Offers
             </p>
           </div>{" "}
-          <div className="flex items-center justify-center gap-[0.5vw]">
-            <div className="md:block hidden">
-              <img
-                className=" w-[1.6vw] h-[1.6vw] "
-                src={profile}
-              />
+
+          {LoginUser_Name && LoginUser_Name != "null" ? (
+            <div>
+              <Dropdown
+                menu={{
+                  items,
+                }}
+                className="flex items-center gap-[0.5vw] cursor-pointer"
+              >
+                <a onClick={(e) => e.preventDefault()}>
+                  <Space>
+                    <div className="flex items-center  gap-[1vw]">
+                      <div>
+                        <FaUserCircle size="1.5vw" color="#1F487C" />
+                      </div>
+                      <p className="text-[1.2vw] font-semibold text-[#1F487C]">
+                        {LoginUser_Name == "undefined"
+                          ? "Guest"
+                          : LoginUser_Name}
+                      </p>
+                    </div>
+                  </Space>
+                </a>
+              </Dropdown>
             </div>
-            <div className="md:hidden block" onClick={handleLoginPage}>
-              <img
-                className=" w-[7vw] h-[7vw]"
-                src={profile}
-              />
-            </div>
-            <p
-              className="text-[1.2vw] hidden md:block font-semibold text-[#1F487C] cursor-pointer"
+          ) : (
+            <div
+              className="flex items-center justify-center gap-[0.5vw] cursor-pointer"
               onClick={() => setLoginIsOpen(true)}
             >
-              Login/SignUp
-            </p>
-          </div>
-        </div>
-      </div>
+              <img className="w-[1.6vw] h-[1.6vw]" src={profile} />
+              <p className="text-[1.2vw] font-semibold text-[#1F487C]">
+                Login/SignUp
+              </p>
+            </div>
+          )}
+        </div> */}
+      <CommonMainNavbar />
+      {/* </div> */}
       <div className="hero relative md:block hidden">
         <p className="absolute top-[3vw] left-[12vw] text-[1.7vw] tracking-wide font-bold">
           <span className="text-white">
@@ -812,10 +993,11 @@ export default function Home1() {
           {/* <div className="cloud3"></div> 
            <div className="cloud4"></div>  */}
           {/* <div className="build_1"></div> */}
+          <div className="flight"></div>
           <div className="scooter"></div>
           <div className="car"></div>
           <div className="bus1"></div>
-          <div className="car1"></div>
+          {/* <div className="car1"></div> */}
           <div className="bike"></div>
           {/* <div className="auto"></div> */}
           <div className="dubleducker"></div>
@@ -835,6 +1017,7 @@ export default function Home1() {
           validationSchema={validationSchema}
           onSubmit={(values) => {
             setBusDatas(values);
+
             // localStorage.setItem("page1", true);
             // localStorage.setItem("occupation", values.option);
             // localStorage.setItem("mobile", values.mobile);
@@ -892,7 +1075,7 @@ export default function Home1() {
                               className="absolute right-[-0.8vw] bottom-[1.1vw] h-[6.5vw] w-[3.8vw]"
                             />
                             {/* ------------------------------------------------------------------------------------------------------------------------------------ */}
-                            <Field name="from">
+                            {/* <Field name="from">
                               {({ field }) => (
                                 <Select
                                   // {...field}
@@ -926,12 +1109,45 @@ export default function Home1() {
                                   ]}
                                 />
                               )}
-                            </Field>
-                            <ErrorMessage
-                              name="from"
-                              component="div"
-                              className="text-red-500 text-[0.8vw]"
-                            />
+                            </Field> */}
+                            <div
+                              style={{
+                                width: "88%",
+                              }}
+                            >
+                              <Field name="from" className="relative">
+                                {({ field }) => (
+                                  <SearchableDropdown
+                                    options={[
+                                      {
+                                        value: "Pondicherry",
+                                        label: "Pondicherry",
+                                      },
+                                      {
+                                        value: "Bangalore",
+                                        label: "Bangalore",
+                                      },
+                                      { value: "Chennai", label: "Chennai" },
+                                    ]}
+                                    value={values.from}
+                                    onChange={(value) => {
+                                      setBusDatas({
+                                        ...busdatas,
+                                        from: value,
+                                      });
+                                      setFieldValue("from", value); // Set Formik field value
+                                      // localStorage.setItem('departure', value);
+                                    }}
+                                    placeholder="From"
+                                  />
+                                )}
+                              </Field>
+                              <ErrorMessage
+                                name="from"
+                                component="div"
+                                className="text-red-500 text-[0.8vw] absolute top-[3.3vw]"
+                              />
+                            </div>
 
                             {/* ------------------------------------------------------------------------------------------------------------------------ */}
                           </div>
@@ -941,12 +1157,12 @@ export default function Home1() {
                             color="#1F487C"
                             className=" cursor-not-allowed"
                             size={"2vw"}
-                          // onClick={handleflip}
+                            // onClick={handleflip}
                           />
                         </div>
                         <div className="col-span-4 w-full h-full  items-center justify-center flex ">
                           <div
-                            className=" bg-[#1F487C] rounded-md relative "
+                            className=" bg-[#1F487C] rounded-md relative  "
                             style={{
                               width: "100%",
                               height: "80%",
@@ -963,14 +1179,14 @@ export default function Home1() {
                             />
                             <img
                               src={map}
-                              className="absolute left-0 top-[-4vw] "
+                              className="absolute left-0 top-[-4vw]"
                               style={{
                                 // height: "100%",
                                 width: "80%",
                                 // zIndex: 1,
                               }}
                             />
-                            <Field name="to">
+                            {/* <Field name="to">
                               {({ field }) => (
                                 <>
                                   <Select
@@ -999,17 +1215,44 @@ export default function Home1() {
                                     className="w-full h-full pl-[0.1vw] pb-[0.1vw] pt-[0.3vw] outline-none pr-[2vw] text-[1vw] custom-select"
                                     options={tobus}
                                   />
-                                  {/* <p className="text-red-500 absolute bottom-[-1.2vw] left-0 text-[0.9vw]">
-                                    {error.to}
-                                  </p> */}
                                 </>
                               )}
-                            </Field>
-                            <ErrorMessage
-                              name="to"
-                              component="div"
-                              className="text-red-500 text-[0.8vw]"
-                            />
+                            </Field> */}
+                            <div
+                              style={{
+                                width: "88%",
+                              }}
+                            >
+                              <Field name="to" className="relative">
+                                {({ field }) => (
+                                  <SearchableDropdown
+                                    // options={[
+                                    //   { value: 'Chennai', label: 'Chennai' },
+                                    //   { value: 'Bangalore', label: 'Bangalore' },
+                                    //   { value: 'Salem', label: 'Salem' },
+                                    //   { value: 'Coimbatore', label: 'Coimbatore' }
+                                    // ]}
+                                    options={tobus}
+                                    value={values.to}
+                                    onChange={(value) => {
+                                      setBusDatas({
+                                        ...busdatas,
+                                        to: value,
+                                      });
+                                      setFieldValue("to", value); // Set Formik field value
+                                      // localStorage.setItem('arrival', value);
+                                    }}
+                                    placeholder="To"
+                                  />
+                                )}
+                              </Field>
+
+                              <ErrorMessage
+                                name="to"
+                                component="div"
+                                className="text-red-500 text-[0.8vw] absolute top-[3.3vw]"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1020,12 +1263,13 @@ export default function Home1() {
                         Seat Type (optional)
                       </h1>
                       {/* <h1>Seat Type (optional)</h1> */}
-                      <div className="flex gap-[1vw] pt-[0.5vw] pl-[2vw] items-center w-full ">
+                      <div className="flex gap-[1vw]   pt-[0.5vw] pl-[2vw] items-center w-full ">
                         <button
-                          className={`border-[0.15vw] ${seatFilter == "seater"
-                            ? "bg-[#1F487C] text-white"
-                            : "text-black border-[#81A3B6]"
-                            }  py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
+                          className={`border-[0.15vw] flex ${
+                            seatFilter == "seater"
+                              ? "bg-[#1F487C] text-white border-white"
+                              : "text-black border-[#81A3B6]"
+                          } py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
                           onClick={() => {
                             if (seatFilter == "seater") {
                               SetSeatFilter("");
@@ -1034,13 +1278,61 @@ export default function Home1() {
                             }
                           }}
                         >
-                          Seater
+                          {/* <span className="">
+                            <div
+                              className={`border-t-[0.1vw] ${
+                                seatFilter == "seater"
+                                  ? "bg-white border-[#1F487C]"
+                                  : "bg-[#1F487C] border-white"
+                              } border-l-[0.1vw] border-r-[0.1vw] rounded-t-[0.1vw] h-[0.9vw] w-[1vw] relative flex items-center justify-center cursor-pointer`}
+                            >
+                              <div
+                                className={`border-b-[0.1vw] ${
+                                  seatFilter == "seater"
+                                    ? "bg-white border-[#1F487C]"
+                                    : "bg-[#1F487C] border-white"
+                                } border-l-[0.1vw] border-r-[0.1vw]  h-[0.9vw] w-[1.2vw] absolute top-[0.4vw] flex items-center justify-center`}
+                              ></div>
+                              <div
+                                className={`border-b-[0.1vw]  ${
+                                  seatFilter == "seater"
+                                    ? " border-[#1F487C]"
+                                    : " border-white"
+                                } border-l-[0.1vw] border-r-[0.1vw] h-[0.7vw] w-[0.8vw] absolute top-[0.4vw] flex items-center justify-center`}
+                              ></div>
+                              <div
+                                className={`border-t-[0.1vw] ${
+                                  seatFilter == "seater"
+                                    ? "bg-white border-[#1F487C]"
+                                    : "bg-[#1F487C] border-white"
+                                } absolute top-[0.4vw] w-[0.25vw] left-[-0.15vw]`}
+                              ></div>
+                              <div
+                                className={`border-t-[0.1vw]  ${
+                                  seatFilter == "seater"
+                                    ? " border-[#1F487C]"
+                                    : " border-white"
+                                } absolute top-[0.4vw] w-[0.25vw] right-[-0.15vw]`}
+                              ></div>
+                            </div>
+                          </span> */}
+                          <span
+                            className={` ${
+                              seatFilter == "seater"
+                                ? "text-white"
+                                : "text-[#1F487C]"
+                            } font-bold inline-flex`}
+                          >
+                            Seater
+                          </span>
                         </button>
+
                         <button
-                          className={`border-[0.15vw] ${seatFilter == "sleeper"
-                            ? "bg-[#1F487C] text-white"
-                            : "text-black border-[#81A3B6]"
-                            }  py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
+                          className={`border-[0.15vw] flex ${
+                            seatFilter == "sleeper"
+                              ? "bg-[#1F487C] text-white border-white"
+                              : "text-black border-[#81A3B6]"
+                          } py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
                           onClick={() => {
                             if (seatFilter == "sleeper") {
                               SetSeatFilter("");
@@ -1049,13 +1341,43 @@ export default function Home1() {
                             }
                           }}
                         >
-                          Sleeper
+                          {/* <span
+                            style={{
+                              transform: "rotate(90deg)",
+                            }}
+                         >
+                            <div
+                              className={`border-[0.1vw] ${
+                                seatFilter == "sleeper"
+                                  ? "border-[#1F487C] bg-white"
+                                  : "border-white bg-[#1F487C]"
+                              } border-[#1F487C] h-[2vw] w-[1vw] rounded-[0.1vw] relative flex items-center justify-center cursor-pointer`}
+                            >
+                              <div
+                                className={`border-[0.1vw]  ${
+                                  seatFilter == "sleeper"
+                                    ? "border-[#1F487C] bg-[#1F487C]"
+                                    : "border-white bg-white"
+                                }  w-[0.5vw] h-[0.2vw] absolute bottom-[0.3vw] rounded-[0.1vw]`}
+                              ></div>
+                            </div>
+                          </span> */}
+                          <span
+                            className={` ${
+                              seatFilter == "sleeper"
+                                ? "text-white"
+                                : "text-[#1F487C]"
+                            } font-bold`}
+                          >
+                            Sleeper
+                          </span>
                         </button>
-                        <button
-                          className={`border-[0.15vw] ${seatFilter == "semi_sleeper"
-                            ? "bg-[#1F487C] text-white"
-                            : "text-black border-[#81A3B6]"
-                            }  py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
+                        {/* <button
+                          className={`border-[0.15vw] ${
+                            seatFilter == "semi_sleeper"
+                              ? "bg-[#1F487C] text-white"
+                              : "text-black border-[#81A3B6]"
+                          }  py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
                           onClick={() => {
                             if (seatFilter == "semi_sleeper") {
                               SetSeatFilter("");
@@ -1065,6 +1387,28 @@ export default function Home1() {
                           }}
                         >
                           Semi Sleeper
+                        </button> */}
+                        <button
+                          className={`border-[0.15vw] flex items-center ${
+                            luxury == true
+                              ? "bg-custom-gradient-luxury bg-image-url  text-black border-[#e1db84]"
+                              : "text-black border-[#81A3B6]"
+                          }  py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
+                          onClick={() => setLuxury(!luxury)}
+                        >
+                          {/* <span className="pr-[0.5vw]">
+                            <FaBus
+                              size={"1vw"}
+                              color={`${luxury == true ? "black" : "1F487C"}`}
+                            />
+                          </span> */}
+                          <span
+                            className={`${
+                              luxury == true ? "text-black" : "text-[#1F487C]"
+                            } font-bold`}
+                          >
+                            Luxury Buses
+                          </span>
                         </button>
                         {/* <button className="border-[0.15vw] border-[#81A3B6] py-[0.3vw] px-[1.5vw] rounded-full text-[1vw]">
                     Semi-Sleeper
@@ -1174,10 +1518,11 @@ export default function Home1() {
             <div className="row-span-1 items-center mt-[2vw] relative">
               <div className="flex items-center w-full gap-[3.5vw] ">
                 <button
-                  className={`border-[0.15vw] ${seatFilter == "seater"
-                    ? "bg-[#1F487C] text-white"
-                    : "text-black border-[#81A3B6]"
-                    }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
+                  className={`border-[0.15vw] ${
+                    seatFilter == "seater"
+                      ? "bg-[#1F487C] text-white"
+                      : "text-black border-[#81A3B6]"
+                  }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                   onClick={() => {
                     if (seatFilter == "seater") {
                       SetSeatFilter("");
@@ -1189,10 +1534,11 @@ export default function Home1() {
                   Seater
                 </button>
                 <button
-                  className={`border-[0.15vw] ${seatFilter == "sleeper"
-                    ? "bg-[#1F487C] text-white"
-                    : "text-black border-[#81A3B6]"
-                    }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
+                  className={`border-[0.15vw] ${
+                    seatFilter == "sleeper"
+                      ? "bg-[#1F487C] text-white"
+                      : "text-black border-[#81A3B6]"
+                  }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                   onClick={() => {
                     if (seatFilter == "sleeper") {
                       SetSeatFilter("");
@@ -1203,11 +1549,12 @@ export default function Home1() {
                 >
                   Sleeper
                 </button>
-                <button
-                  className={`border-[0.15vw] ${seatFilter == "semi_sleeper"
-                    ? "bg-[#1F487C] text-white"
-                    : "text-black border-[#81A3B6]"
-                    }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
+                {/* <button
+                  className={`border-[0.15vw] ${
+                    seatFilter == "semi_sleeper"
+                      ? "bg-[#1F487C] text-white"
+                      : "text-black border-[#81A3B6]"
+                  }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                   onClick={() => {
                     if (seatFilter == "semi_sleeper") {
                       SetSeatFilter("");
@@ -1217,7 +1564,7 @@ export default function Home1() {
                   }}
                 >
                   Semi Sleeper
-                </button>
+                </button> */}
                 {/* <button className="border-[0.15vw] border-[#81A3B6] py-[0.3vw] px-[1.5vw] rounded-full text-[1vw]">
                     Semi-Sleeper
                   </button> */}
@@ -1369,7 +1716,7 @@ export default function Home1() {
           </div>
         </div>
       </div> */}
-      <TopTravelledBusRoutes/>
+      <TopTravelledBusRoutes />
       <Buses />
       <BusOperator />
       <DomesticPlace />
@@ -1430,7 +1777,7 @@ export default function Home1() {
                     from: e.target.value,
                   });
                 }}
-              // value={inputsearch.from}
+                // value={inputsearch.from}
               />
             </div>
             <div className="h-[100%]  w-full">
@@ -1440,7 +1787,7 @@ export default function Home1() {
                     className="flex items-center px-[5vw] py-[2vw] bg-white"
                     onClick={() => {
                       selectinput == "from"
-                        ? localStorage.setItem("depature", item.city)
+                        ? localStorage.setItem("departure", item.city)
                         : localStorage.setItem("arrival", item.city);
                       setModalShow(false);
                       setInputSearch({
@@ -1449,13 +1796,13 @@ export default function Home1() {
                       });
                       selectinput == "from"
                         ? setBusDatas({
-                          ...busdatas,
-                          from: item.city,
-                        })
+                            ...busdatas,
+                            from: item.city,
+                          })
                         : setBusDatas({
-                          ...busdatas,
-                          to: item.city,
-                        });
+                            ...busdatas,
+                            to: item.city,
+                          });
                     }}
                   >
                     <span>
@@ -1539,8 +1886,9 @@ export default function Home1() {
               </p>
 
               <div
-                className={`border-b-[0.2vw] ${showregister ? "border-[#1F487C]" : " border-[#8EA3BD]"
-                  } relative mx-[3vw] my-[3vw]`}
+                className={`border-b-[0.2vw] ${
+                  showregister ? "border-[#1F487C]" : " border-[#8EA3BD]"
+                } relative mx-[3vw] my-[3vw]`}
               >
                 <img
                   src={locationmap}
@@ -1556,26 +1904,67 @@ export default function Home1() {
                   </p>
                 </div>
                 <div
-                  className={`${showregister ? "bg-[#1F487C]" : "bg-[#8EA3BD]"
-                    } w-[1vw] h-[1vw] absolute rounded-full  right-[-0.5vw] bottom-[-0.5vw]`}
+                  className={`${
+                    showregister ? "bg-[#1F487C]" : "bg-[#8EA3BD]"
+                  } w-[1vw] h-[1vw] absolute rounded-full  right-[-0.5vw] bottom-[-0.5vw]`}
                 ></div>
                 <p
-                  className={`${showregister ? "text-[#1F487C]" : "text-[#8EA3BD]"
-                    }  absolute left-[47.5%] bottom-[-2.3vw] text-[1.3vw] font-bold`}
+                  className={`${
+                    showregister ? "text-[#1F487C]" : "text-[#8EA3BD]"
+                  }  absolute left-[47.5%] bottom-[-2.3vw] text-[1.3vw] font-bold`}
                 >
                   To
                 </p>
                 <div
-                  className={`${showregister ? `bg-[#1F487C]` : "bg-[#8EA3BD]"
-                    } w-[1vw] h-[1vw] absolute rounded-full  left-[48%] bottom-[-0.5vw]`}
+                  className={`${
+                    showregister ? `bg-[#1F487C]` : "bg-[#8EA3BD]"
+                  } w-[1vw] h-[1vw] absolute rounded-full  left-[48%] bottom-[-0.5vw]`}
                 ></div>
                 <p
-                  className={`${showregister ? "text-[#1F487C]" : "text-[#8EA3BD]"
-                    } absolute right-[-2vw] bottom-[-2.3vw] text-[1.3vw] font-bold`}
+                  className={`${
+                    showregister ? "text-[#1F487C]" : "text-[#8EA3BD]"
+                  } absolute right-[-2vw] bottom-[-2.3vw] text-[1.3vw] font-bold`}
                 >
                   TRAVEL
                 </p>
               </div>
+              <Modal
+                isOpen={logModalIsOpen}
+                onRequestClose={closeLogModal}
+                style={{
+                  overlay: {
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  },
+                  content: {
+                    height: "23vw",
+                    width: "auto",
+                    margin: "8vw 30vw",
+                  },
+                }}
+              >
+                <div className=" flex flex-col items-center gap-y-[1vw]">
+                  <div className="font-bold text-[1.7vw] text-[#1F487C]">
+                    Are you Sure you want to Log Out ?
+                  </div>
+                  <div className="text-[1.2vw] px-[4vw] text-center text-[#1F487C]">
+                    Tickets Booking is Faster when you are Logged In
+                  </div>
+                  <button
+                    className=" bg-[#1F487C] text-[1.4vw] w-[20vw] h-[3.5vw] text-white rounded-full font-bold "
+                    onClick={() => {
+                      console.log("hiiiiii", "main");
+
+                      navigation("/");
+                      sessionStorage.clear();
+                    }}
+                  >
+                    Yes, Log Out
+                  </button>
+                  <button className="  border-[0.2vw] border-[#1F487C] text-[1.4vw] w-[20vw] h-[3.5vw] text-[#1F487C] rounded-full font-bold">
+                    Cancel
+                  </button>
+                </div>
+              </Modal>
               {/* <div className="px-[2vw] pt-[3vw] relative">
                 <div className=" w-full border-[0.1vw]  rounded-[0.5vw] h-[3vw] flex border-[#1F487C]">
                   <div className=" w-[88%] rounded-l-[0.5vw]  items-center flex">
@@ -1807,7 +2196,7 @@ export default function Home1() {
                 <GoogleMap
                   width={"100%"}
                   height={"10vw"}
-                // currentloaction={currentloaction}
+                  // currentloaction={currentloaction}
                 />
               ) : (
                 <img src={precius} className="h-[10vw] w-full blur-[0.2vw]" />
@@ -1817,7 +2206,7 @@ export default function Home1() {
               <div className=" justify-between px-[2vw] flex mt-[2vw]">
                 <button
                   className="text-white bg-[#1F487C] h-[2.5vw] text-[1.1vw]  w-[8vw] rounded-[0.8vw]"
-                // onClick={handleGrantPermission}
+                  // onClick={handleGrantPermission}
                 >
                   Cancel
                 </button>
@@ -1922,8 +2311,94 @@ export default function Home1() {
         height="35vw"
         width="60vw"
       >
-        <Login />
+        <Login setLoginIsOpen={setLoginIsOpen} />
       </LoginModalPopUp>
+
+      <Drawer
+        // title="Basic Drawer"
+        placement={"right"}
+        closable={true}
+        onClose={onAccClose}
+        open={accDrawer}
+        key={"right"}
+        width={"75%"}
+        className="custom-drawer"
+      >
+        <div className="grid grid-rows-3 gap-y-[2vw]">
+          <div className="text-[#1F487C] text-[5vw] px-[2vw] flex items-center gap-[5vw]">
+            <PiUserCircleDuotone color="#1F487C" size="5vw" /> My Account
+          </div>
+          <div className="text-[#1F487C] text-[5vw] px-[2vw] flex items-center gap-[5vw]">
+            <FaTicketAlt color="#1F487C" size="5vw" /> Bookings
+          </div>
+          <div
+            className="text-[#1F487C] text-[5vw] px-[2vw] flex items-center gap-[5vw]"
+            onClick={openLogMobile}
+          >
+            <RiLogoutCircleLine color="#1F487C" size="5vw" /> Logout
+          </div>
+        </div>
+      </Drawer>
+
+      <Drawer
+        // title="Basic Drawer"
+        placement={"bottom"}
+        closable={true}
+        onClose={closeLogMobile}
+        open={logMobileIsOpen}
+        key={"right"}
+        width={"50%"}
+        className="custom-drawer"
+      >
+        <div className=" flex flex-col items-center gap-y-[5vw]">
+          <div className="font-bold text-[5vw] text-[#1F487C]">
+            Are you Sure you want to Log Out ?
+          </div>
+          <div className="text-[4vw] px-[10vw] text-center text-[#1F487C]">
+            Tickets Booking is Faster when you are Logged In
+          </div>
+          <button
+            className=" bg-[#1F487C] text-[4vw] w-3/4 h-[10vw] text-white rounded-md font-bold"
+            onClick={() => {
+              console.log("hiiiiii", "main");
+
+              navigation("/");
+              sessionStorage.clear();
+            }}
+          >
+            Yes, Log Out
+          </button>
+          <button className="  border-[0.2vw] border-[#1F487C] text-[4vw] w-3/4 h-[10vw] text-[#1F487C] rounded-md font-bold">
+            Cancel
+          </button>
+        </div>
+      </Drawer>
+
+      <Drawer
+        // title="Basic Drawer"
+        placement={"right"}
+        closable={true}
+        onClose={onAccClose}
+        open={accDrawer}
+        key={"right"}
+        width={"75%"}
+        className="custom-drawer"
+      >
+        <div className="grid grid-rows-3 gap-y-[2vw]">
+          <div className="text-[#1F487C] text-[5vw] px-[2vw] flex items-center gap-[5vw]">
+            <PiUserCircleDuotone color="#1F487C" size="5vw" /> My Account
+          </div>
+          <div className="text-[#1F487C] text-[5vw] px-[2vw] flex items-center gap-[5vw]">
+            <FaTicketAlt color="#1F487C" size="5vw" /> Bookings
+          </div>
+          <div
+            className="text-[#1F487C] text-[5vw] px-[2vw] flex items-center gap-[5vw]"
+            onClick={openLogMobile}
+          >
+            <RiLogoutCircleLine color="#1F487C" size="5vw" /> Logout
+          </div>
+        </div>
+      </Drawer>
     </div>
   );
 }

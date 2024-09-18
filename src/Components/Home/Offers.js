@@ -241,10 +241,18 @@ function Offers() {
                         />
                       </div>
                     </div> */}
-                    <img
-                      src={`http://192.168.90.47:4000${item?.background_image}`}
-                      className="w-[80vw] lg:h-[80%] md:h-[12vw] h-[40vw]"
-                    />
+                    <div className="relative">
+                      <div className="absolute left-[4.5vw] top-0">
+                        <div className="bg-[#E5FFF1] w-[1.6vw] h-[0.8vw] rounded-b-full"></div>
+                      </div>
+                      <img
+                        src={`http://192.168.90.47:4000${item?.background_image}`}
+                        className="w-[80vw] lg:h-[80%] md:h-[12vw] h-[40vw]"
+                      />
+                      <div className="absolute left-[4.5vw] bottom-0">
+                        <div className="bg-[#E5FFF1] w-[1.6vw] h-[0.8vw] rounded-t-full rounded-b-[0.5vw]"></div>
+                      </div>
+                    </div>
                   </>
                 ))}
             </div>

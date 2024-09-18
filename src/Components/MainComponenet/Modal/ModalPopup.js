@@ -3,7 +3,7 @@ import React from "react";
 import "../Modal/ModalPopup.css";
 import { RxCross2 } from "react-icons/rx";
 
-const ModalPopup = ({ show, onClose, children, height, width }) => {
+const ModalPopup = ({ show, onClose, children, height, width, padding }) => {
   if (!show) {
     return null;
   }
@@ -11,6 +11,7 @@ const ModalPopup = ({ show, onClose, children, height, width }) => {
   const modalStyle = {
     height: height || "auto",
     width: width || "auto",
+    padding: padding || "auto"
   };
 
   return (

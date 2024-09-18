@@ -275,7 +275,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetPassengById, GetPassengerData, SubmitPassengerData } from "../../../../Api/MyAccounts/Passenger";
 import { PASSENGER_DATA } from "../../../../Store/type";
 
-const AddPassengers = ({ prevStep, setPassData, passData, updateData, setUpdateData }) => {
+const AddPassengers = ({ prevStep, setPassData, passData, updateData, setUpdateData, isEdit }) => {
     const validationSchema = Yup.object().shape({
         name: Yup.string()
             .min(2, "Name must be at least 2 characters long")
@@ -283,6 +283,7 @@ const AddPassengers = ({ prevStep, setPassData, passData, updateData, setUpdateD
             .required("Name is required"),
         date_of_birth: Yup.date()
             .max(new Date(), "Date of birth can't be in the future")
+            .max(new Date(new Date()?.setFullYear(new Date()?.getFullYear() - 1)), 'Date of birth must be at least 1 year ')
             .required("Date of birth is required"),
         email: Yup.string()
             .email("Invalid email format")
@@ -290,6 +291,7 @@ const AddPassengers = ({ prevStep, setPassData, passData, updateData, setUpdateD
         phone: Yup.string()
             .matches(/^\d{10}$/, "phone number must be exactly 10 digits")
             .required("phone number is required"),
+        gender: Yup.string().required('Gender is required')    
     });
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -336,12 +338,12 @@ const AddPassengers = ({ prevStep, setPassData, passData, updateData, setUpdateD
 
             <Formik
                 initialValues={{
-                    name: passengData?.name || "",
+                    name: passengData?.user_name || "",
                     date_of_birth: passengData?.date_of_birth || "",
                     age: passengData?.age || "",
                     state: passengData?.state || "",
-                    email: passengData?.email || "",
-                    phone: passengData?.phone || "",
+                    email: passengData?.email_id || "",
+                    phone: passengData?.mobile_number || "",
                     gender: passengData?.gender || "",
                 }}
                 validationSchema={validationSchema}
@@ -377,7 +379,8 @@ const AddPassengers = ({ prevStep, setPassData, passData, updateData, setUpdateD
                         <div className='grid grid-rows-2 gap-[1vw]'>
                             <div>
                                 <div className='text-[#1F487C] text-[1.5vw] font-semibold '>
-                                    Add Passengers Details
+                                    
+                                    {(isEdit === true)?"Edit Passenger Details":"Add Passenger Details"}
                                 </div>
                                 <div className='grid grid-cols-2 py-[1vw] relative '>
                                     <div className="">
@@ -414,11 +417,11 @@ const AddPassengers = ({ prevStep, setPassData, passData, updateData, setUpdateD
                                             className="text-red-500 text-[0.8vw] absolute top-[4vw]"
                                         />
                                     </div>
-                                    <div className="">
+                                    <div className="relative">
                                         <Field
                                             type="date"
                                             name="date_of_birth"
-                                            placeholder="Date of Birth*"
+                                            placeholder=" "
                                             value={values.date_of_birth}
                                             onChange={(e) => {
                                                 handleChange(e); // Formik's handleChange
@@ -434,15 +437,22 @@ const AddPassengers = ({ prevStep, setPassData, passData, updateData, setUpdateD
 
                                             className="block py-[0.5vw] px-2 w-[27vw] h-[3vw] text-[1vw] text-[#1F487C] bg-transparent border border-gray-300 rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
                                         />
+                                        <label
+                                            htmlFor="date_of_birth"
+                                            className={`absolute text-[1vw] text-[#1F487C] duration-300 transform  scale-75 top-[.3vw] left-[0.4vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] peer-focus:text-[1vw] peer-focus:scale-75 peer-focus:-translate-y-[1vw]  -translate-y-[1vw]`}
+                                        >
+                                            Date Of Birth<span className="text-red-500 ml-1">*</span>
+                                        </label>
+                                        
                                         <ErrorMessage
                                             name="date_of_birth"
                                             component="div"
-                                            className="text-red-500 text-[0.8vw] absolute top-[4vw]"
+                                            className="text-red-500 text-[0.8vw] absolute top-[3.1vw]"
                                         />
                                     </div>
                                 </div>
 
-                                <div className='py-[0.5vw] grid grid-rows-2'>
+                                <div className='py-[0.5vw] grid grid-rows-2 relative'>
                                     <div className='opacity-60 font-semibold text-[1.5vw] '>Gender</div>
                                     <div className='flex gap-x-[2vw]'>
                                         <div className='border-[0.1vw] border-slate-500 text-[#1F487C] text-[1.2vw] h-[3vw] w-[12.5vw] outline-none px-[1vw] rounded-[0.5vw] flex items-center justify-between'>
@@ -462,8 +472,10 @@ const AddPassengers = ({ prevStep, setPassData, passData, updateData, setUpdateD
                                                     name="gender"
                                                     value="female" />
                                             </div>
+                                           
                                         </div>
                                     </div>
+                                <ErrorMessage name="gender" component="div" className="text-red-500 bottom-[-.8vw] text-[.8vw]  absolute" />
                                 </div>
                             </div>
                             <div className='relative'>
@@ -575,7 +587,7 @@ const AddPassengers = ({ prevStep, setPassData, passData, updateData, setUpdateD
                                             className={`absolute text-[1.2vw] text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[0.5vw] left-[0.4vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[1vw] peer-focus:text-[1vw] peer-focus:scale-75 peer-focus:-translate-y-[1.2vw] ${values.phone ? "-translate-y-[1.2vw]" : ""
                                                 }`}
                                         >
-                                            phone Number<span className="text-red-500 ml-1">*</span>
+                                            Phone Number<span className="text-red-500 ml-1">*</span>
                                         </label>
 
                                         <ErrorMessage
@@ -589,7 +601,7 @@ const AddPassengers = ({ prevStep, setPassData, passData, updateData, setUpdateD
                         </div>
                         <div className=' flex justify-center gap-[2vw]'>
                             <button className='bg-[#1F487C] text-[white] w-[18vw] h-[3vw] rounded-full text-[1.25vw]' onClick={prevStep}>Back</button>
-                            <button type='submit' className='bg-[#1F487C] text-[white] w-[18vw] h-[3vw] rounded-full text-[1.25vw]'>Add Passengers</button>
+                            <button type='submit' className='bg-[#1F487C] text-[white] w-[18vw] h-[3vw] rounded-full text-[1.25vw]'>{(isEdit === true)?"Save Passenger":"Add Passenger"}</button>
 
                         </div>
                     </Form>
