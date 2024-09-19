@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Flex, Spin } from "antd";
+import { GetUserDetails } from "../../../../Api/Login/Login";
 
 const HomeProfile = () => {
   const validationSchema = Yup.object().shape({
@@ -121,7 +122,7 @@ const HomeProfile = () => {
               const currentYear = new Date().getFullYear();
               const age = currentYear - birthYear;
               values.age = age;
-
+              GetUserDetails();
               // Simulating network delay with setTimeout
               setTimeout(async () => {
                 await UpdateProfile(values);
@@ -178,13 +179,14 @@ const HomeProfile = () => {
                         className="block py-[0.5vw] px-2 w-[27vw] h-[3vw] text-[1vw] text-[#1F487C] bg-transparent border border-gray-300 rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
                         onChange={handleChange}
                       />
-                        <label
+                      <label
                         htmlFor="date_of_birth"
                         className={`absolute text-[1.2vw] text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[1vw] left-[0.4vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[1vw] peer-focus:text-[1vw] peer-focus:scale-75 peer-focus:-translate-y-[2vw] ${
                           values.date_of_birth ? "-translate-y-[2vw]" : ""
                         }`}
                       >
-                        Date of Birth<span className="text-red-500 ml-1">*</span>
+                        Date of Birth
+                        <span className="text-red-500 ml-1">*</span>
                       </label>
                       <ErrorMessage
                         name="date_of_birth"

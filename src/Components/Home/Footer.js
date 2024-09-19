@@ -132,14 +132,14 @@ const Footer = () => {
             </div>
             <div className="row-span-1">
               <div className="absolute left-0 bottom-0">
-                <p className="text-gray-300 text-[1vw]">Version - 1.0.1</p>
+                {/* <p className="text-gray-300 text-[1vw]">Version - 1.0.1</p> */}
               </div>
             </div>
           </div>
           <div className="w-[75%] h-full">
             <Tabbings />
           </div>
-          <div className=" flex absolute right-[1vw] bottom-0 my-[1vw] gap-[0.5vw]">
+          {/* <div className=" flex absolute right-[1vw] bottom-0 my-[1vw] gap-[0.5vw]">
             <a href="https://www.youtube.com/">
               <img
                 src={Youtube}
@@ -168,10 +168,10 @@ const Footer = () => {
                 className="h-[1.8vw] w-[1.8vw] "
               />
             </a>
-          </div>
-          <div className="absolute bottom-[4vw] right-[2vw]">
+          </div> */}
+          <div className="absolute bottom-[3vw] right-[2vw]">
             <button
-              className="bg-blue-800 text-white text-[1vw] p-[1vw] rounded-full shadow-lg shadow-white"
+              className="bg-[#1F487C] text-white text-[1vw] p-[1vw] rounded-full shadow-lg shadow-white"
               onClick={handleScrollUp}
             >
               <MdKeyboardDoubleArrowUp size={"2vw"} />

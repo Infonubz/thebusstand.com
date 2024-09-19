@@ -11,12 +11,12 @@ const Footer1 = () => {
 
   return (
     <>
-      <div className="bg-[#1F487C] h-[4vw]">
-        <div className="flex flex-row gap-[5.5vw] pt-[1vw]">
+      <div className="bg-[#1F487C] h-[3vw] flex items-center ">
+        <div className="flex items-center flex-row gap-[5.5vw]">
           <div className="flex-2 cursor-pointer" onClick={() => navigation("/")}>
             <p className="text-[1.1vw] text-white font-semibold pl-[1vw]">Home</p>
           </div>
-          <div className="flex-2 cursor-pointer" onClick={() => navigation("/offers")}>
+          <div className="flex-2 cursor-pointer" onClick={() => navigation("/rewards")}>
             <p className="text-[1.1vw] text-white font-semibold">Offers</p>
           </div>
           <div className="flex-2 cursor-pointer" onClick={() => navigation("/about")}>
@@ -45,9 +45,9 @@ const Footer1 = () => {
           </div>
         </div>
       </div>
-      <div className="bg-[#ffffff] h-[3.5vw]">
-        <div className="flex flex-row pt-[1vw] pl-[1vw] justify-between">
-          <div className="flex gap-[1vw]">
+      <div className="bg-[#ffffff] h-[3vw] flex items-center justify-between">
+        {/* <div className="flex "> */}
+          <div className="flex gap-[1vw] pl-[1vw]">
             <a href="https://www.facebook.com/">
               <img src={FaceBook} alt="facebook" className="w-[1.5vw] h-[1.5vw]" />
             </a>
@@ -61,10 +61,10 @@ const Footer1 = () => {
               <img src={Youtube} alt="youtube" className="w-[1.5vw] h-[1.5vw]" />
             </a>
           </div>
-          <div>
+          <div className="">
             <p className="text-[#1F487C] pr-[0.8vw] font-bold">Copyright @ thebusstand.com All Rights Reserved.</p>
           </div>
-        </div>
+        {/* </div> */}
       </div>
     </>
   );

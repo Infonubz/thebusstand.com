@@ -70,6 +70,8 @@ import profile from "../../../src/assets/Profile.png";
 import ShareButtons from "../MainComponenet/ShareButton";
 import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
+import homesky from "../../assets/BackgroundSky1.png";
+import CommonMainNavbar from "../Common/CommonMainNavbar";
 
 const TrendingOffer = () => {
   const [showDialog, setShowDialog] = useState(false);
@@ -207,7 +209,7 @@ const TrendingOffer = () => {
     <>
       <div className="bg-[#E5FFF1] min-h-screen max-h-auto w-full overflow-auto relative  md:block hidden ">
         <div className="flex flex-col gap-[1vw]">
-          <div className="h-[4.5vw] w-full flex">
+          {/* <div className="h-[4.5vw] w-full flex">
             <div className="w-[40%] h-[4vw] flex ">
               <img className="w-[6.25vw] h-[4vw]" src={buslogo} />
               <img src={busstand} className="h-[4vw] w-[20vw] py-[0.1vw]" />
@@ -252,31 +254,64 @@ const TrendingOffer = () => {
                 </p>
               </div>
             </div>
-          </div>
-          <div className="h-full w-[100%] px-[5vw] place-items-center py-[1vw] items-center justify-center flex">
-            <div className="grid grid-cols-4 w-full h-full items-center flex-col  gap-[1vw] justify-center px-[2vw]">
-             {promotionlist?.map((item, index) => (
-                // <>
-                //   <div className="relative">
-                //     <img src={item?.img} className="w-[100%] h-[100%] " />
-                //     <p className="absolute text-[0.8vw] left-[1.2vw] bottom-[2.5vw] text-white">
-                //       {`Valid till ${item?.valid}`}
-                //     </p>
-                //     <div className="w-auto h-[1.7vw] border-dashed flex items-center rounded-[0.2vw] border-[0.1vw] bg-opacity-20 bg-white border-white absolute left-[1.2vw] bottom-[0.6vw] px-[1.5vw]   text-white">
-                //       <p>{item?.coupon}</p>
-                //       <img
-                //         src={clipboard}
-                //         className="absolute bottom-[0.2vw] right-[-2.2vw] h-[1.5vw] w-[1.5vw] cursor-pointer"
-                //         onClick={() => copyCouponCode(item)}
-                //       />
-                //     </div>
-                //   </div>
-                // </>
-                <img
-                src={`http://192.168.90.47:4000${item?.background_image}`}
-                className="w-[80vw] lg:h-[80%] md:h-[12vw] h-[40vw]"
-              />
-            ))}
+          </div> */}
+          <CommonMainNavbar />
+          <div
+            className="relative md:h-[45vw] h-[100%] bg-[#d1f8e3]"
+            style={{ zIndex: 1 }}
+          >
+            <div
+              className="md:h-[10vw] h-[14vw] z-[1] md:z-0 overflow-x-hidden"
+              style={{
+                backgroundImage: `url(${homesky})`,
+                width: "100%",
+                overflow: "hidden",
+                // backgroundSize: "cover",
+                position: "relative",
+                overflowX: "hidden",
+                width: "100%",
+              }}
+            >
+              <label className="absolute left-[39vw] md:left-[36vw] top-[2vw] md:top-[0.1vw] text-[6vw]  md:text-[4vw] text-white font-bold opacity-20">
+                {`Trending Offers`}
+              </label>
+              <label className="absolute left-[43vw] top-[5vw] md:top-[2vw] text-[3vw]  md:text-[2vw] text-white font-bold">
+                {"Trending Offers"}
+              </label>
+              <div className="cloudhome"></div>
+            </div>
+            <div className="absolute top-[7vw] left-[12.5vw] bg-white w-3/4 h-[35vw] rounded-lg md:block hidden">
+              <div className=" w-full flex px-[4vw] items-center justify-between my-[1vw] ">
+                <p className="text-[1.5vw] text-[#1F487C] font-bold">
+                  Trending Offers
+                </p>
+              </div>
+              <div className="max-h-[28vw] h-full  overflow-y-auto w-[100%] px-[3vw] place-items-center py-[1vw] items-center justify-center flex">
+                <div className="grid grid-cols-3 w-full h-full items-center flex-col  gap-x-[1vw] justify-center px-[1vw]">
+                  {promotionlist?.map((item, index) => (
+                    // <>
+                    //   <div className="relative">
+                    //     <img src={item?.img} className="w-[100%] h-[100%] " />
+                    //     <p className="absolute text-[0.8vw] left-[1.2vw] bottom-[2.5vw] text-white">
+                    //       {`Valid till ${item?.valid}`}
+                    //     </p>
+                    //     <div className="w-auto h-[1.7vw] border-dashed flex items-center rounded-[0.2vw] border-[0.1vw] bg-opacity-20 bg-white border-white absolute left-[1.2vw] bottom-[0.6vw] px-[1.5vw]   text-white">
+                    //       <p>{item?.coupon}</p>
+                    //       <img
+                    //         src={clipboard}
+                    //         className="absolute bottom-[0.2vw] right-[-2.2vw] h-[1.5vw] w-[1.5vw] cursor-pointer"
+                    //         onClick={() => copyCouponCode(item)}
+                    //       />
+                    //     </div>
+                    //   </div>
+                    // </>
+                    <img
+                      src={`http://192.168.90.47:4000${item?.background_image}`}
+                      className="w-[80vw] lg:h-[80%] md:h-[12vw] h-[40vw]"
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>

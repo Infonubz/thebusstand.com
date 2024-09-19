@@ -13,6 +13,9 @@ import { FaBus } from "react-icons/fa6";
 import { RiArrowRightDoubleLine, RiMapPin3Line } from "react-icons/ri";
 import { FaFileDownload, FaMapMarkerAlt } from "react-icons/fa";
 import ticketview from "../../assets/ticket_view.png";
+import amountView from "../../assets/Group.png";
+import { FaAngleRight } from "react-icons/fa6";
+
 import upi from "../../assets/upi.png";
 import phonepay from "../../assets/phonepay.png";
 import gpay from "../../assets/gpay.png";
@@ -46,6 +49,7 @@ import {
   sendBookingPrice,
   TicketViewDetails,
 } from "../../Api/MyAccounts/MyBookings";
+import SINGLECARD_BG from "../../assets/SINGLECARD_BG.png";
 import { FaPhoneFlip } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { FaEdit } from "react-icons/fa";
@@ -432,9 +436,8 @@ function DrawerDetails({
   return (
     <>
       <div>
-        <div className=" md:block hidden">
+        <div className="md:block hidden">
           <Drawer
-            // title="Basic Drawer"
             placement={placement}
             closable={false}
             onClose={onClose}
@@ -442,873 +445,1128 @@ function DrawerDetails({
             key={placement}
             width={"60%"}
           >
-            {!continuenext ? (
-              <div>
-                <div className="flex gap-[0.5vw] items-center"></div>
-                <div className="px-[2px] ">
-                  <div
-                    className="h-[20vw] w-full F rounded-[0.5vw]"
-                    style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
-                  >
+            <div>
+              {!continuenext ? (
+                <div className="">
+                  <div className="flex gap-[0.5vw] items-center"></div>
+                  <div className="px-[2px] ">
                     <div
-                      className="flex h-[4vw] w-full px-[1vw] pt-[0.5vw] mb-4 rounded-t-[1vw]"
-                      style={{ backgroundColor: colorcode.theme }}
+                      className={`${
+                        busdetails.bus_type_status === "luxury"
+                          ? " bg-[#FFEEC9]"
+                          : "  bg-white"
+                      }  h-[20vw] w-full F rounded-[0.5vw]`}
+                      style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
                     >
-                      <img src={complete} className="h-[2.5vw] w-[2.5vw]" />
-                      <div className="h-[2vw]">
-                        <h1
-                          className="text-[1.5vw] text-white font-semibold "
-                          // style={{
-                          //   color: colorcode.theme,
-                          // }}
-                        >
-                          Journey Details
-                        </h1>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-6 w-full h-[15vw]">
-                      <div className="col-span-2 w-[100%] h-full flex">
-                        <div className="w-[80%] h-full items-center justify-center flex flex-col">
-                          <div className="h-[60%] flex justify-center items-center">
-                            {" "}
-                            <img
-                              src={imageurl}
-                              className="w-[5vw] h-[5vw] rounded-full"
-                            />
-                          </div>
-                          <div className="flex flex-col h-[40%] items-center ">
-                            <p
-                              className=" text-[1.1vw] font-bold"
-                              style={{
-                                color: colorcode.theme,
-                              }}
-                            >
-                              {seatplatform}
-                            </p>
-                            <p
-                              className="text-[0.7vw] "
-                              // style={{
-                              //   color: colorcode.theme,
-                              // }}
-                            >
-                              {busdetails?.bus_type}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="w-[20%] h-full  py-[1vw] flex justify-center">
-                          {/* <img src={bus_complete} className="h-full w-full " /> */}
-                          <div
-                            className="border-dashed border-r-[0.1vw] h-[90%] relative"
-                            //  style={{borderColor:colorcode.theme}}
+                      <div
+                        className="flex h-[4vw] w-full px-[1vw] pt-[0.5vw] mb-4 rounded-t-[1vw]"
+                        style={{
+                          backgroundColor:
+                            busdetails.bus_type_status === "luxury"
+                              ? "#393939"
+                              : colorcode.theme,
+                        }}
+                      >
+                        <img src={complete} className="h-[2.5vw] w-[2.5vw]" />
+                        <div className="h-[2vw]">
+                          <h1
+                            className="text-[1.5vw] text-white font-semibold "
+                            // style={{
+                            //   color: colorcode.theme,
+                            // }}
                           >
-                            <FaBus
-                              className=" absolute top-[-0.5vw] left-[-0.7vw]"
-                              // style={{color:colorcode.theme}}
-                              size={"1.5vw"}
-                            />
-                            <div className=" absolute top-[6vw] left-[-0.5vw]">
-                              <div
-                                className="h-[1vw] w-[1vw] border-[0.1vw] bg-white rounded-full"
-                                //  style={{borderColor:colorcode.theme}}
-                              ></div>
-                            </div>{" "}
-                            <FaMapMarkerAlt
-                              size={"1.5vw"}
-                              // style={{color:colorcode.theme}}
-                              className="absolute left-[-0.7vw] bottom-[-1.2vw]"
-                            />
-                          </div>
+                            Journey Details
+                          </h1>
                         </div>
                       </div>
-                      <div className="col-span-4">
-                        <div className="grid grid-rows-7 w-full h-full">
-                          <div className="row-span-3">
-                            <div className="grid grid-cols-4">
-                              <div className="col-span-1 ">
-                                <div className="flex flex-col pl-[1vw] text-left">
-                                  <p
-                                    className="text-[0.8vw]  pt-[0.5vw]"
-                                    // style={{
-                                    //   color: colorcode.theme,
-                                    // }}
-                                  >
-                                    {/* {dayjs(bus[busIndex]?.Bus_depature_date).format(
+                      <div className="grid grid-cols-6 w-full h-[15vw]">
+                        <div className="col-span-2 w-[100%] h-full flex">
+                          <div className="w-[80%] h-full items-center justify-center flex flex-col">
+                            <div className="h-[60%] flex justify-center items-center">
+                              {" "}
+                              <img
+                                src={imageurl}
+                                className="w-[5vw] h-[5vw] rounded-full"
+                              />
+                            </div>
+                            <div className="flex flex-col h-[40%] items-center ">
+                              <p
+                                className=" text-[1.1vw] font-bold"
+                                style={{
+                                  color: colorcode.theme,
+                                }}
+                              >
+                                {seatplatform}
+                              </p>
+                              <p
+                                className="text-[0.7vw] "
+                                // style={{
+                                //   color: colorcode.theme,
+                                // }}
+                              >
+                                {busdetails?.bus_type}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="w-[20%] h-full  py-[1vw] flex justify-center">
+                            {/* <img src={bus_complete} className="h-full w-full " /> */}
+                            <div
+                              className="border-dashed border-r-[0.1vw] h-[90%] relative"
+                              style={{ borderColor: colorcode.theme }}
+                            >
+                              <FaBus
+                                className=" absolute top-[-0.5vw] left-[-0.7vw]"
+                                style={{
+                                  color:
+                                    busdetails.bus_type_status === "luxury"
+                                      ? "#393939"
+                                      : colorcode.theme,
+                                }}
+                                size={"1.5vw"}
+                              />
+                              <div className=" absolute top-[6vw] left-[-0.5vw]">
+                                <div
+                                  className={`${
+                                    busdetails.bus_type_status === "luxury"
+                                      ? "bg-[#FFEEC9]"
+                                      : "bg-white"
+                                  } h-[1vw] w-[1vw] border-[0.1vw] rounded-full`}
+                                  style={{
+                                    borderColor:
+                                      busdetails.bus_type_status === "luxury"
+                                        ? "#393939"
+                                        : colorcode.theme,
+                                  }}
+                                ></div>
+                              </div>{" "}
+                              <FaMapMarkerAlt
+                                size={"1.5vw"}
+                                style={{
+                                  color:
+                                    busdetails.bus_type_status === "luxury"
+                                      ? "#393939"
+                                      : colorcode.theme,
+                                }}
+                                className="absolute left-[-0.7vw] bottom-[-1.2vw]"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-span-4">
+                          <div className="grid grid-rows-7 w-full h-full">
+                            <div className="row-span-3">
+                              <div className="grid grid-cols-4">
+                                <div className="col-span-1 ">
+                                  <div className="flex flex-col pl-[1vw] text-left">
+                                    <p
+                                      className="text-[0.8vw]  pt-[0.5vw]"
+                                      // style={{
+                                      //   color: colorcode.theme,
+                                      // }}
+                                    >
+                                      {/* {dayjs(bus[busIndex]?.Bus_depature_date).format(
                                 "DD MMM"
                               )} */}
-                                    {dayjs(
-                                      busdetails?.departure_date_time
-                                    ).format("DD MMM")}
-                                  </p>
-                                  <p
-                                    className="font-bold  text-[1.2vw]"
+                                      {dayjs(
+                                        busdetails?.departure_date_time
+                                      ).format("DD MMM")}
+                                    </p>
+                                    <p
+                                      className="font-bold  text-[1.2vw]"
+                                      // style={{
+                                      //   color: colorcode.theme,
+                                      // }}
+                                    >
+                                      {/* {item.bus_depature} */}
+                                      {/* {bus[busIndex]?.Bus_Depature_time} */}
+                                      {dayjs(
+                                        busdetails?.departure_date_time
+                                      ).format("HH:mm A")}
+                                    </p>
+                                    <p
+                                      className=" text-[0.9vw] "
+                                      // style={{
+                                      //   color: colorcode.theme,
+                                      // }}
+                                    >
+                                      {/* {bus[busIndex]?.Bus_Depature_place} */}
+                                      {busdetails?.source_name}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="col-span-2 flex-col mt-[0.5vw] items-center w-full justify-center">
+                                  {/* <img
+                                    src={bus_comp}
+                                    className="h-[3.5vw] w-[22vw] "
+                                  /> */}
+                                  <div className="col-span-2 h-full relative w-full flex items-center justify-center">
+                                    <div
+                                      className={`${
+                                        busdetails.bus_type_status === "luxury"
+                                          ? "bg-[#393939]"
+                                          : "bg-[#1F487C]"
+                                      } absolute left-0 h-[0.5vw] w-[0.5vw] rounded-full`}
+                                    ></div>
+                                    <div
+                                      className={`${
+                                        busdetails.bus_type_status === "luxury"
+                                          ? "border-[#393939]"
+                                          : "border-[#1F487C]"
+                                      } border-[0.15vw] absolute left-0 top-[2.1vw] border-dashed w-[18.5vw]`}
+                                    ></div>
+                                    <div
+                                      className={`${
+                                        busdetails.bus_type_status === "luxury"
+                                          ? "bg-[#393939]"
+                                          : "bg-[#1F487C]"
+                                      } relative h-[2.1vw] flex w-[5.5vw] rounded-tl-[0.8vw] rounded-tr-[0.8vw] rounded-bl-[0.3vw] 
+                                rounded-br-[0.3vw] text-white text-[1vw] font-bold justify-center items-center`}
+                                      // style={{
+                                      //   zIndex: 2,
+                                      // }}
+                                    >
+                                      {busdetails?.time_duration}
+                                      <div
+                                        className={`${
+                                          busdetails.bus_type_status ===
+                                          "luxury"
+                                            ? "bg-[#393939]"
+                                            : "bg-[#1F487C]"
+                                        } absolute bottom-[-0.8vw] left-[0.8vw] h-[1.3vw] w-[1.3vw] rounded-full flex items-center justify-center `}
+                                        // style={{
+                                        //   zIndex: 1,
+                                        // }}
+                                      >
+                                        <div className="bg-white h-[0.4vw] w-[0.4vw] rounded-full"></div>
+                                      </div>
+                                      <div
+                                        className={`${
+                                          busdetails.bus_type_status ===
+                                          "luxury"
+                                            ? "bg-[#393939]"
+                                            : "bg-[#1F487C]"
+                                        } absolute bottom-[-0.8vw] right-[0.8vw] h-[1.3vw] w-[1.3vw] rounded-full flex items-center justify-center `}
+                                      >
+                                        <div className="bg-white h-[0.4vw] w-[0.4vw] rounded-full"></div>
+                                      </div>
+                                    </div>
+                                    <FaAngleRight
+                                      color={`${
+                                        busdetails.bus_type_status === "luxury"
+                                          ? "#393939"
+                                          : "#1F487C"
+                                      }`}
+                                      size={"1vw"}
+                                      className="absolute right-0"
+                                    />
+                                  </div>
+                                  {/* <p
+                                    className="text-center text-[1vw] font-bold"
                                     // style={{
                                     //   color: colorcode.theme,
                                     // }}
                                   >
-                                    {/* {item.bus_depature} */}
-                                    {/* {bus[busIndex]?.Bus_Depature_time} */}
-                                    {dayjs(
-                                      busdetails?.departure_date_time
-                                    ).format("HH:mm A")}
-                                  </p>
-                                  <p
-                                    className=" text-[0.9vw] "
-                                    // style={{
-                                    //   color: colorcode.theme,
-                                    // }}
-                                  >
-                                    {/* {bus[busIndex]?.Bus_Depature_place} */}
-                                    {busdetails?.source_name}
-                                  </p>
+                                    {busdetails?.time_duration}
+                                  </p> */}
+                                </div>
+                                <div className="col-span-1">
+                                  <div className="flex flex-col text-right pr-[1vw]">
+                                    <p
+                                      className="text-[0.8vw] pt-[0.5vw] "
+                                      // style={{
+                                      //   color: colorcode.theme,
+                                      // }}
+                                    >
+                                      {/* {dayjs(bus[busIndex]?.Bus_arrival_date).format(
+                                "DD MMM"
+                              )} */}
+                                      {dayjs(
+                                        busdetails?.arrival_date_time
+                                      ).format("DD MMM")}
+                                    </p>
+                                    <p
+                                      className="font-bold r text-[1.2vw] "
+                                      // style={{
+                                      //   color: colorcode.theme,
+                                      // }}
+                                    >
+                                      {/* {item.bus_arr} */}
+                                      {/* {bus[busIndex]?.Bus_Arrival_time} */}
+                                      {dayjs(
+                                        busdetails?.arrival_date_time
+                                      ).format("HH:mm A")}
+                                    </p>
+                                    <p
+                                      className=" text-[0.9vw] "
+                                      // style={{
+                                      //   color: colorcode.theme,
+                                      // }}
+                                    >
+                                      {/* {bus[busIndex]?.Bus_Arrival_place} */}
+                                      {busdetails?.destination_name}
+                                    </p>
+                                  </div>
                                 </div>
                               </div>
-                              <div className="col-span-2 flex-col mt-[0.5vw] items-center w-full justify-center">
-                                <img
-                                  src={bus_comp}
-                                  className="h-[3.5vw] w-[22vw] "
-                                />
+                            </div>
+                            <div className="row-span-2 flex justify-between px-[1vw] ">
+                              <div className="flex flex-col  ">
+                                <p className="text-[1vw] ">
+                                  Boarding Point & Time
+                                </p>
                                 <p
-                                  className="text-center text-[1vw] font-bold"
+                                  className=" text-[1.1vw] font-semibold"
+                                  // style={{
+                                  //   color: colorcode.theme,
+
+                                  // }}
+                                >
+                                  {`${selectedRoutes?.dep_route} : ${dayjs(
+                                    selectedRoutes?.dep_time
+                                  ).format("DD MMM, HH:mm")}`}
+                                </p>
+                              </div>
+                              <div className="flex flex-col items-center">
+                                <p className="text-[1vw]">Seat Number(s)</p>
+                                <div className="text-[1.1vw] font-semibold">
+                                  <div className="flex flex-row flex-wrap">
+                                    {selectedSeats?.length > 0 ? (
+                                      selectedSeats.map((seat, index) => (
+                                        <p
+                                          key={index}
+                                          className="text-[1vw] mr-[0.4vw]"
+                                        >
+                                          {seat}
+                                          {index < selectedSeats.length - 1 &&
+                                            ","}
+                                        </p>
+                                      ))
+                                    ) : (
+                                      <p className="text-[1vw] mr-[0.4vw]">
+                                        No Seat Selected
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="row-span-2 flex px-[1vw] justify-between ">
+                              <div className="flex flex-col  ">
+                                <p className="text-[1vw] ">
+                                  Dropping Point & Time
+                                </p>
+                                <p
+                                  className="text-[1.1vw] font-semibold"
                                   // style={{
                                   //   color: colorcode.theme,
                                   // }}
                                 >
-                                  {/* {item.bus_travel_time} */}
-                                  {/* {bus[busIndex]?.Bus_travel_time} */}
-                                  {busdetails?.time_duration}
+                                  {`${selectedRoutes?.arri_route} : ${dayjs(
+                                    selectedRoutes?.arr_time
+                                  ).format("DD MMM, HH:mm")}`}
                                 </p>
                               </div>
-                              <div className="col-span-1">
-                                <div className="flex flex-col text-right pr-[1vw]">
-                                  <p
-                                    className="text-[0.8vw] pt-[0.5vw] "
-                                    // style={{
-                                    //   color: colorcode.theme,
-                                    // }}
-                                  >
-                                    {/* {dayjs(bus[busIndex]?.Bus_arrival_date).format(
-                                "DD MMM"
-                              )} */}
-                                    {dayjs(
-                                      busdetails?.arrival_date_time
-                                    ).format("DD MMM")}
-                                  </p>
-                                  <p
-                                    className="font-bold r text-[1.2vw] "
-                                    // style={{
-                                    //   color: colorcode.theme,
-                                    // }}
-                                  >
-                                    {/* {item.bus_arr} */}
-                                    {/* {bus[busIndex]?.Bus_Arrival_time} */}
-                                    {dayjs(
-                                      busdetails?.arrival_date_time
-                                    ).format("HH:mm A")}
-                                  </p>
-                                  <p
-                                    className=" text-[0.9vw] "
-                                    // style={{
-                                    //   color: colorcode.theme,
-                                    // }}
-                                  >
-                                    {/* {bus[busIndex]?.Bus_Arrival_place} */}
-                                    {busdetails?.destination_name}
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="row-span-2 flex justify-between px-[1vw] ">
-                            <div className="flex flex-col  ">
-                              <p className="text-[1vw] ">
-                                Boarding Point & Time
-                              </p>
-                              <p
-                                className=" text-[1.1vw] font-semibold"
-                                // style={{
-                                //   color: colorcode.theme,
+                              <div className="relative">
+                                {busdetails.bus_type_status === "luxury" ? (
+                                  <img
+                                    src={amountView}
+                                    className="w-[9vw] h-[3.5vw]"
+                                  />
+                                ) : (
+                                  <img
+                                    src={ticketview}
+                                    className="w-[9vw] h-[3.5vw]"
+                                  />
+                                )}
 
-                                // }}
-                              >
-                                {`${selectedRoutes?.dep_route} : ${dayjs(
-                                  selectedRoutes?.dep_time
-                                ).format("DD MMM, HH:mm")}`}
-                              </p>
-                            </div>
-                            <div className="flex flex-col items-center">
-                              <p className="text-[1vw]">Seat Number(s)</p>
-                              <div className="text-[1.1vw] font-semibold">
-                                <div className="flex flex-row flex-wrap">
-                                  {selectedSeats?.length > 0 ? (
-                                    selectedSeats.map((seat, index) => (
-                                      <p
-                                        key={index}
-                                        className="text-[1vw] mr-[0.4vw]"
-                                      >
-                                        {seat}
-                                        {index < selectedSeats.length - 1 &&
-                                          ","}
-                                      </p>
-                                    ))
-                                  ) : (
-                                    <p className="text-[1vw] mr-[0.4vw]">
-                                      No Seat Selected
-                                    </p>
-                                  )}
-                                </div>
+                                <p className="text-[1.5vw] font-bold text-white absolute left-[2.3vw] top-[0.8vw]">
+                                  {`₹ ${discount}`}
+                                </p>
                               </div>
-                            </div>
-                          </div>
-                          <div className="row-span-2 flex px-[1vw] justify-between ">
-                            <div className="flex flex-col  ">
-                              <p className="text-[1vw] ">
-                                Dropping Point & Time
-                              </p>
-                              <p
-                                className="text-[1.1vw] font-semibold"
-                                // style={{
-                                //   color: colorcode.theme,
-                                // }}
-                              >
-                                {`${selectedRoutes?.arri_route} : ${dayjs(
-                                  selectedRoutes?.arr_time
-                                ).format("DD MMM, HH:mm")}`}
-                              </p>
-                            </div>
-                            <div className="relative">
-                              <img
-                                src={ticketview}
-                                className="w-[9vw] h-[3.5vw]"
-                              />
-                              <p className="text-[1.5vw] font-bold text-white absolute left-[2.3vw] top-[0.8vw]">
-                                {`₹ ${discount}`}
-                              </p>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="px-[2px] py-[2vw] ">
-                  <div
-                    className="h-auto w-full F rounded-[0.5vw] pb-[1vw]"
-                    style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
-                  >
+                  <div className="px-[2px] py-[2vw]">
                     <div
-                      className="flex h-[4vw] w-full px-[1vw] pt-[0.5vw] mb-7 rounded-t-[1vw]"
-                      style={{ backgroundColor: colorcode.theme }}
+                      className={`${
+                        busdetails.bus_type_status === "luxury"
+                          ? "bg-[#FFEEC9]"
+                          : "bg-white"
+                      } h-auto w-full F rounded-[0.5vw] pb-[1vw]`}
+                      style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
                     >
-                      {termschecked ? (
-                        <img src={complete} className="h-[2.5vw] w-[2.5vw]" />
-                      ) : (
-                        ""
-                      )}
-                      <h1
-                        className="text-[1.5vw] font-semibold  text-white"
-                        // style={{
-                        //   color: colorcode.theme,
-                        // }}
-                      >
-                        Passenger Details
-                      </h1>
-                    </div>
-                    <div className="h-auto w-full px-[1vw]">
-                      <Formik
-                        initialValues={{
-                          email:
-                            storedEmail &&
-                            storedEmail !== "undefined" &&
-                            storedEmail !== "null"
-                              ? storedEmail
-                              : "",
-                          mobile:
-                            storedMobile &&
-                            storedMobile !== "undefined" &&
-                            storedMobile !== "null"
-                              ? storedMobile
-                              : "",
-                          user_name:
-                            selectedSeats.map(
-                              (seat, index) => travelerDetails[index]?.user_name
-                            ) || "",
-                          age:
-                            selectedSeats.map(
-                              (seat, index) => travelerDetails[index]?.age
-                            ) || "",
-                          gender: selectedSeats.map(
-                            (seat, index) =>
-                              travelerDetails[index]?.gender || "male"
-                          ),
-                          terms: termschecked || false,
+                      <div
+                        className="flex h-[4vw] w-full px-[1vw] pt-[0.5vw] mb-7 rounded-t-[1vw]"
+                        style={{
+                          backgroundColor:
+                            busdetails.bus_type_status === "luxury"
+                              ? "#393939"
+                              : colorcode.theme,
                         }}
-                        validationSchema={validationSchema}
-                        onSubmit={(values) => {
-                          handleSubmit(values);
-                          console.log(values, "values values");
-                          setRegisterFullDetails(values);
-                          localStorage.setItem("page1", true);
-                          localStorage.setItem("occupation", values.option);
-                          localStorage.setItem("mobile", values.mobile);
-                        }}
-                        enableReinitialize={false}
                       >
-                        {({
-                          isSubmitting,
-                          isValid,
-                          handleSubmit,
-                          values,
-                          setFieldValue,
-                          handleChange,
-                        }) => (
-                          <Form onSubmit={handleSubmit}>
-                            <div className="grid grid-row-3 w-full h-full gap-[1vw]">
-                              <div className="row-span-1">
-                                <div className="flex flex-row gap-[2.5vw] mb-[1vw] items-center">
-                                  <div className="flex-1">
-                                    <p className="text-[1.1vw] font-semibold">
-                                      Contact Details
-                                    </p>
-                                  </div>
-                                  <div className="flex-3 relative">
-                                    <Field
-                                      type="text"
-                                      name="email"
-                                      disabled={isEmailDisabled}
-                                      placeholder="Email ID"
-                                      value={
-                                        storedEmail &&
-                                        storedEmail !== "undefined" &&
-                                        storedEmail !== "null"
-                                          ? storedEmail
-                                          : values.email
-                                      }
-                                      onChange={(e) => {
-                                        handleChange(e);
-                                        setFieldValue("email", e.target.value);
-                                        // sessionStorage.setItem(
-                                        //   "user_email_id",
-                                        //   e.target.value
-                                        // );
-                                      }}
-                                      className={`${
-                                        !isSubmitting || !isEmailDisabled
-                                          ? `cursor-pointer`
-                                          : "cursor-not-allowed"
-                                      } border-r-[0.5vw] border-[.1vw] text-[1.2vw] h-[3vw] w-[21vw] rounded-[0.5vw] outline-none px-[1vw]`}
-                                      style={{
-                                        borderColor: colorcode.theme,
-                                      }}
-                                    />
-                                    <ErrorMessage
-                                      name="email"
-                                      component="div"
-                                      className="text-red-500 text-[0.8vw] absolute top-[3vw] left-[1vw]"
-                                    />
-                                    <ErrorMessage
-                                      name="email"
-                                      component="div"
-                                      className="text-red-500 text-[0.8vw] absolute top-[3vw] left-[1vw]"
-                                    />
-                                  </div>
-                                  <div className="flex-3 relative">
-                                    <Field
-                                      as="select"
-                                      name="option"
-                                      className={`${
-                                        !isSubmitting || !enableInput
-                                          ? `cursor-pointer`
-                                          : "cursor-not-allowed"
-                                      } border-r-[0.1vw] border-[.1vw] border-py-[0.5vw] text-[1.1vw] h-[3vw] w-[25%] rounded-l-[0.5vw] outline-none px-[1vw]`}
-                                      style={{
-                                        borderColor: colorcode.theme,
-                                      }}
-                                    >
-                                      <option
-                                        value=""
-                                        label="+91"
-                                        className=""
-                                        style={{
-                                          color: colorcode.theme,
-                                        }}
-                                      />
-                                    </Field>
-                                    <Field
-                                      type="text"
-                                      name="mobile"
-                                      disabled={isMobileDisabled}
-                                      placeholder="Mobile Number"
-                                      maxLength={10}
-                                      value={
-                                        storedMobile &&
-                                        storedMobile !== "undefined" &&
-                                        storedMobile !== "null"
-                                          ? storedMobile
-                                          : values.mobile
-                                      }
-                                      onChange={(e) => {
-                                        handleChange(e);
-                                        setFieldValue("mobile", e.target.value);
-                                        // sessionStorage.setItem(
-                                        //   "user_mobile",
-                                        //   e.target.value
-                                        // );
-                                      }}
-                                      className={`${
-                                        !isSubmitting || !isMobileDisabled
-                                          ? `cursor-pointer`
-                                          : "cursor-not-allowed"
-                                      } border-r-[0.5vw] border-black border-[0.1vw] text-[1.2vw] h-[3vw] w-[75%] rounded-r-[0.5vw] outline-none px-[1vw]`}
-                                      style={{
-                                        borderColor: colorcode.theme,
-                                      }}
-                                    />
-                                    <ErrorMessage
-                                      name="mobile"
-                                      component="div"
-                                      className="text-red-500 text-[0.8vw] absolute top-[3vw] left-[1vw]"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="row-span-1">
-                                <div className="grid grid-cols-5">
-                                  <div className="col-span-1"></div>
-                                  <div className="col-span-4">
-                                    <p className="text-[1vw] pb-[1vw]">
-                                      Your booking details will be sent to this
-                                      email address and mobile number.
-                                    </p>
-                                    <div className="px-[0.5vw]">
-                                      <div className="border-b-[0.2vw] w-full"></div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              {selectedSeats?.length > 0 &&
-                                selectedSeats.map((seat, index) => (
-                                  <div
-                                    key={index}
-                                    className="flex flex-row gap-[1vw] mb-[1vw] items-center"
-                                  >
-                                    {/* Seat Number */}
-                                    <div className="flex-1">
+                        {termschecked ? (
+                          <img src={complete} className="h-[2.5vw] w-[2.5vw]" />
+                        ) : (
+                          ""
+                        )}
+                        <h1
+                          className="text-[1.5vw] font-semibold  text-white"
+                          // style={{
+                          //   color: colorcode.theme,
+                          // }}
+                        >
+                          Passenger Details
+                        </h1>
+                      </div>
+                      <div className="h-auto w-full px-[1vw]">
+                        <Formik
+                          initialValues={{
+                            email:
+                              storedEmail &&
+                              storedEmail !== "undefined" &&
+                              storedEmail !== "null"
+                                ? storedEmail
+                                : "",
+                            mobile:
+                              storedMobile &&
+                              storedMobile !== "undefined" &&
+                              storedMobile !== "null"
+                                ? storedMobile
+                                : "",
+                            user_name:
+                              selectedSeats.map(
+                                (seat, index) =>
+                                  travelerDetails[index]?.user_name
+                              ) || "",
+                            age:
+                              selectedSeats.map(
+                                (seat, index) => travelerDetails[index]?.age
+                              ) || "",
+                            gender: selectedSeats.map(
+                              (seat, index) =>
+                                travelerDetails[index]?.gender || "male"
+                            ),
+                            terms: termschecked || false,
+                          }}
+                          validationSchema={validationSchema}
+                          onSubmit={(values) => {
+                            handleSubmit(values);
+                            console.log(values, "values values");
+                            setRegisterFullDetails(values);
+                            localStorage.setItem("page1", true);
+                            localStorage.setItem("occupation", values.option);
+                            localStorage.setItem("mobile", values.mobile);
+                          }}
+                          enableReinitialize={false}
+                        >
+                          {({
+                            isSubmitting,
+                            isValid,
+                            handleSubmit,
+                            values,
+                            setFieldValue,
+                            handleChange,
+                          }) => (
+                            <Form onSubmit={handleSubmit}>
+                              <div className="grid grid-row-4 w-full h-full gap-[1vw]">
+                                <div className="row-span-1">
+                                  <div className="flex flex-row gap-[2.5vw] mb-[1vw] items-center">
+                                    <div className="flex-2">
                                       <p className="text-[1.1vw] font-semibold">
-                                        Seat No: {seat}
+                                        Contact Details
                                       </p>
                                     </div>
-
-                                    {/* Operator Name */}
-                                    <div className="flex-1 relative">
+                                    <div className="flex-3 relative">
                                       <Field
                                         type="text"
-                                        disabled={enableInput}
-                                        // name={`user_name_${index}`}
-                                        name
-                                        placeholder="User Name"
+                                        name="email"
+                                        disabled={
+                                          isEmailDisabled || enableInput
+                                        }
+                                        placeholder="Email ID"
                                         value={
-                                          travelerDetails[index]?.user_name ||
-                                          values[`user_name_${index}`] ||
-                                          ""
+                                          storedEmail &&
+                                          storedEmail !== "undefined" &&
+                                          storedEmail !== "null"
+                                            ? storedEmail
+                                            : values.email
                                         }
                                         onChange={(e) => {
                                           handleChange(e);
                                           setFieldValue(
-                                            `user_name_${index}`,
+                                            "email",
                                             e.target.value
                                           );
-                                          setTravelerDetails((prevDetails) => ({
-                                            ...prevDetails,
-                                            [index]: {
-                                              ...prevDetails[index],
-                                              user_name: e.target.value,
-                                              seat,
-                                            },
-                                          }));
+                                          // sessionStorage.setItem(
+                                          //   "user_email_id",
+                                          //   e.target.value
+                                          // );
                                         }}
                                         className={`${
-                                          !isSubmitting || !enableInput
+                                          !isSubmitting || !isEmailDisabled
                                             ? `cursor-pointer`
                                             : "cursor-not-allowed"
-                                        }  border-r-[0.5vw] border-[.1vw] text-[1.2vw] h-[3vw] w-[15vw] rounded-[0.5vw] outline-none px-[1vw]`}
-                                        style={{ borderColor: colorcode.theme }}
+                                        } border-r-[0.5vw] border-[.1vw] text-[1.2vw] h-[3vw] w-[21vw] rounded-[0.5vw] outline-none px-[1vw]`}
+                                        style={{
+                                          borderColor:
+                                            busdetails.bus_type_status ===
+                                            "luxury"
+                                              ? "#393939"
+                                              : colorcode.theme,
+                                        }}
                                       />
                                       <ErrorMessage
-                                        name={`user_name_${index}`}
+                                        name="email"
+                                        component="div"
+                                        className="text-red-500 text-[0.8vw] absolute top-[3vw] left-[1vw]"
+                                      />
+                                      <ErrorMessage
+                                        name="email"
                                         component="div"
                                         className="text-red-500 text-[0.8vw] absolute top-[3vw] left-[1vw]"
                                       />
                                     </div>
-
-                                    {/* Age */}
-                                    <div className="flex-1 relative">
+                                    <div className="flex-3 relative">
                                       <Field
-                                        type="text"
-                                        disabled={enableInput}
-                                        name={`age_${index}`}
-                                        placeholder="Age"
-                                        maxLength={2}
-                                        value={
-                                          travelerDetails[index]?.age ||
-                                          values[`age_${index}`] ||
-                                          ""
-                                        }
-                                        onChange={(e) => {
-                                          handleChange(e);
-                                          setFieldValue(
-                                            `age_${index}`,
-                                            e.target.value
-                                          );
-                                          setTravelerDetails((prevDetails) => ({
-                                            ...prevDetails,
-                                            [index]: {
-                                              ...prevDetails[index],
-                                              age: e.target.value,
-                                              seat,
-                                            },
-                                          }));
-                                        }}
-                                        className={`${
-                                          !isSubmitting || !enableInput
-                                            ? `cursor-pointer`
-                                            : "cursor-not-allowed"
-                                        } border-r-[0.5vw] border-[.1vw] border-black text-[1.2vw] h-[3vw] w-[6vw] rounded-[0.5vw] outline-none px-[1vw]`}
-                                        style={{ borderColor: colorcode.theme }}
-                                      />
-                                      <ErrorMessage
-                                        name={`age_${index}`}
-                                        component="div"
-                                        className="text-red-500 text-[0.8vw] absolute top-[3vw] left-[1vw]"
-                                      />
-                                    </div>
-
-                                    {/* Gender Toggle Buttons */}
-                                    <div className="flex-2">
-                                      <button
-                                        disabled={enableInput}
-                                        type="button"
-                                        name="gender"
-                                        style={{
-                                          backgroundColor:
-                                            travelerDetails[index]?.gender ===
-                                              "male" || !travelerDetails[index]
-                                              ? colorcode.theme // Default color for male
-                                              : "",
-                                          color:
-                                            travelerDetails[index]?.gender !==
-                                              "male" && travelerDetails[index]
-                                              ? colorcode.theme
-                                              : "",
-                                          borderColor: colorcode.theme,
-                                        }}
-                                        className={`${
-                                          !isSubmitting || !enableInput
-                                            ? "cursor-pointer"
-                                            : "cursor-not-allowed"
-                                        } ${
-                                          travelerDetails[index]?.gender ===
-                                          "male"
-                                            ? "text-white"
-                                            : ""
-                                        } h-[3vw] w-[4vw] rounded-l-[0.5vw] text-[1vw] border-[0.1vw] border-[#1F487C]`}
-                                        onClick={() =>
-                                          setTravelerDetails((prevDetails) => ({
-                                            ...prevDetails,
-                                            [index]: {
-                                              ...prevDetails[index],
-                                              gender: "male",
-                                              seat,
-                                            },
-                                          }))
-                                        }
-                                      >
-                                        Male
-                                      </button>
-                                      <button
-                                        disabled={enableInput}
-                                        type="button"
-                                        name={`gender_${index}`}
-                                        style={{
-                                          ...(travelerDetails[index]?.gender ===
-                                          "female"
-                                            ? {
-                                                backgroundColor:
-                                                  colorcode.theme,
-                                              }
-                                            : {
-                                                color: colorcode.theme,
-                                                borderColor: colorcode.theme,
-                                              }),
-                                        }}
-                                        className={`${
-                                          !isSubmitting || !enableInput
-                                            ? "cursor-pointer"
-                                            : "cursor-not-allowed"
-                                        } 
-                                      ${
-                                        travelerDetails[index]?.gender ===
-                                        "female"
-                                          ? "text-white"
-                                          : ""
-                                      } h-[3vw] w-[4vw] rounded-r-[0.5vw] border-[0.1vw] text-[1vw] border-[#1F487C]`}
-                                        onClick={() =>
-                                          setTravelerDetails((prevDetails) => ({
-                                            ...prevDetails,
-                                            [index]: {
-                                              ...prevDetails[index],
-                                              gender: "female",
-                                              seat,
-                                            },
-                                          }))
-                                        }
-                                      >
-                                        Female
-                                      </button>
-                                    </div>
-
-                                    {/* Dropdown Input */}
-                                    <div className="flex-3">
-                                      <Field
-                                        disabled={enableInput}
                                         as="select"
+                                        name="option"
+                                        disabled={
+                                          isMobileDisabled || enableInput
+                                        }
                                         className={`${
                                           !isSubmitting || !enableInput
                                             ? `cursor-pointer`
                                             : "cursor-not-allowed"
-                                        } border-r-[0.5vw] border-[.1vw] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw]`}
-                                        style={{ borderColor: colorcode.theme }}
-                                        name={`dropdown_${index}`}
-                                        onChange={(e) =>
-                                          handleDropdownChange(
-                                            e,
-                                            index,
-                                            setFieldValue
-                                          )
-                                        }
+                                        } border-r-[0.1vw] border-[.1vw] border-py-[0.5vw] text-[1.1vw] h-[3vw] w-[25%] rounded-l-[0.5vw] outline-none px-[1vw]`}
+                                        style={{
+                                          borderColor:
+                                            busdetails.bus_type_status ===
+                                            "luxury"
+                                              ? "#393939"
+                                              : colorcode.theme,
+                                        }}
                                       >
-                                        <option value="">Passenger</option>
-                                        {passengerdatalist?.length > 0 &&
-                                          passengerdatalist.map(
-                                            (passenger, idx) => (
-                                              <option
-                                                key={idx}
-                                                value={passenger.tbs_add_pax_id}
-                                              >
-                                                {passenger.user_name}
-                                              </option>
-                                            )
-                                          )}
+                                        <option
+                                          value=""
+                                          label="+91"
+                                          className=""
+                                          style={{
+                                            color:
+                                              busdetails.bus_type_status ===
+                                              "luxury"
+                                                ? "#393939"
+                                                : colorcode.theme,
+                                          }}
+                                        />
                                       </Field>
+                                      <Field
+                                        type="text"
+                                        name="mobile"
+                                        disabled={
+                                          isMobileDisabled || enableInput
+                                        }
+                                        placeholder="Mobile Number"
+                                        maxLength={10}
+                                        value={
+                                          storedMobile &&
+                                          storedMobile !== "undefined" &&
+                                          storedMobile !== "null"
+                                            ? storedMobile
+                                            : values.mobile
+                                        }
+                                        onChange={(e) => {
+                                          handleChange(e);
+                                          setFieldValue(
+                                            "mobile",
+                                            e.target.value
+                                          );
+                                          // sessionStorage.setItem(
+                                          //   "user_mobile",
+                                          //   e.target.value
+                                          // );
+                                        }}
+                                        className={`${
+                                          !isSubmitting || !isMobileDisabled
+                                            ? `cursor-pointer`
+                                            : "cursor-not-allowed"
+                                        } border-r-[0.5vw] border-black border-[0.1vw] text-[1.2vw] h-[3vw] w-[75%] rounded-r-[0.5vw] outline-none px-[1vw]`}
+                                        style={{
+                                          borderColor:
+                                            busdetails.bus_type_status ===
+                                            "luxury"
+                                              ? "#393939"
+                                              : colorcode.theme,
+                                        }}
+                                      />
+                                      <ErrorMessage
+                                        name="mobile"
+                                        component="div"
+                                        className="text-red-500 text-[0.8vw] absolute top-[3vw] left-[1vw]"
+                                      />
                                     </div>
                                   </div>
-                                ))}
-                            </div>
-                            {registerfulldetails?.terms == true ? (
-                              ""
-                            ) : (
-                              <>
-                                <div className="flex pt-[2vw] items-center justify-between">
-                                  <div className="flex gap-[0.5vw]">
-                                    <Field
-                                      disabled={enableInput}
-                                      type="checkbox"
-                                      name="terms"
-                                      className="h-[1.5vw] w-[1.5vw]"
-                                      checked={values.terms}
-                                      onChange={(e) => {
-                                        handleChange(e);
-                                        setFieldValue("terms", e.target.value);
-                                        setTermsChecked(e.target.checked);
-                                        console.log(
-                                          e.target.checked,
-                                          "setTermsChecked"
-                                        );
-                                      }}
-                                    />
-                                    <p>
-                                      Yes and I accept the{" "}
-                                      <span>Terms and conditions</span>
-                                    </p>
-                                  </div>
-                                  {sumbitbutton && (
-                                    <FaEdit
-                                      size={"2vw"}
-                                      color="#1F4B7F"
-                                      className="cursor-pointer ml-[15vw]"
-                                      onClick={() => {
-                                        setEnableInput(false);
-                                        //fetchBookingDetail(mobilenum);
-                                        console.log(mobilenum, "mobilenum");
-                                      }}
-                                    />
-                                  )}
-
-                                  <button
-                                    type="submit"
-                                    style={{
-                                      backgroundColor:
-                                        isValid && termschecked
-                                          ? colorcode.theme
-                                          : "gray",
-                                    }}
-                                    className={`${
-                                      (!isSubmitting &&
-                                        isValid &&
-                                        termschecked) ||
-                                      !enableInput
-                                        ? "cursor-pointer"
-                                        : "cursor-not-allowed"
-                                    }  
-                                  w-[18vw] h-[2.5vw] rounded-[0.5vw] ml-[1vw]`}
-                                    disabled={enableInput}
-                                    onClick={() => {
-                                      setMobilenum(
-                                        storedMobile &&
-                                          storedMobile != "undefined"
-                                          ? sessionStorage.getItem(
-                                              "user_mobile"
-                                            )
-                                          : values.mobile
-                                      );
-                                      console.log(
-                                        "passenger detail",
-                                        travelerDetails
-                                      );
-                                    }}
-                                  >
-                                    <span className="text-white text-[1.1vw] font-semibold">
-                                      {isSubmitting && isValid
-                                        ? `Update to Pay ₹ ${discount}`
-                                        : `Continue to Pay ₹ ${discount}`}
-                                    </span>
-                                  </button>
                                 </div>
-                                <ErrorMessage
-                                  name="terms"
-                                  component="div"
-                                  className="text-red-500 text-[0.8vw] ml-[2vw]"
-                                />
-                              </>
-                            )}
-                          </Form>
-                        )}
-                      </Formik>
-                    </div>
-                  </div>
-                  {showPrice ? (
-                    <div className="grid grid-cols-2 gap-[2vw] pt-[2vw] h-[25vw]">
-                      <div
-                        className="col-span-1 h-[25vw] w-full  rounded-[0.5vw] pb-[2vw]"
-                        style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
-                      >
-                        <div
-                          className="row-span-6 h-auto w-full  rounded-[0.5vw] pb-[2vw]"
-                          style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
-                        >
-                          <h1
-                            className="text-[1.5vw] font-semibold bg-gradient-to-r px-[1vw] py-[0.5vw] from-[#2E78AE] to-[#1F487C] bg-clip-text text-transparent"
-                            style={{ color: colorcode.theme }}
-                          >
-                            Offers
-                          </h1>
-                          <div className="px-[1vw] h-[17vw] overflow-y-auto">
-                            {offers.map((item, index) => (
-                              <div
-                                key={index}
-                                className="border-[0.1vw]  rounded-[0.5vw] mb-[1vw]"
-                                style={{
-                                  borderColor: colorcode.theme,
-                                }}
-                              >
-                                <div className="grid grid-cols-10 m-[0.5vw] w-full">
-                                  <div className="col-span-1 pt-[0.2vw]">
-                                    <input
-                                      type="radio"
-                                      name="offer"
-                                      className="w-full h-auto"
-                                    />
+                                <div className="row-span-1">
+                                  <div className="grid grid-cols-5">
+                                    <div className="col-span-1"></div>
+                                    <div className="col-span-4">
+                                      <p className="text-[1vw] pb-[1vw]">
+                                        Your booking details will be sent to
+                                        this email address and mobile number.
+                                      </p>
+                                      <div className="px-[0.5vw]">
+                                        <div 
+                                        className="border-b-[0.2vw] w-full"
+                                        style={{
+                                          borderColor:
+                                            busdetails.bus_type_status ===
+                                            "luxury"
+                                              ? "#393939"
+                                              : colorcode.theme,
+                                        }}
+                                        ></div>
+                                      </div>
+                                    </div>
                                   </div>
-                                  <div className="col-span-9 flex flex-col w-full">
-                                    <p
-                                      className="text-[1.1vw] font-bold"
-                                      // style={{ color: colorcode.theme }}
+                                </div>
+                                {selectedSeats?.length > 0 &&
+                                  selectedSeats.map((seat, index) => (
+                                    <div
+                                      key={index}
+                                      className="flex flex-row gap-[1vw] mb-[1vw] items-center"
                                     >
-                                      {item.Coupon}
-                                    </p>
-                                    <p className="text-[1vw] font-semibold text-[#A4A4A4]">
-                                      {item.details}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
+                                      {/* Seat Number */}
+                                      <div className="flex-1">
+                                        <p className="text-[1.1vw] font-semibold">
+                                          Seat No: {seat}
+                                        </p>
+                                      </div>
 
-                          <div className="h-[2vw] w-full">
-                            <div className="">
-                              <Formik
-                                initialValues={{
-                                  name: "",
-                                }}
-                                validationSchema={validationSchema}
-                                onSubmit={(values) => {
-                                  // Handle form submission
-                                  // setShowRegister(true);
-                                  localStorage.setItem("page1", true);
-                                  localStorage.setItem(
-                                    "occupation",
-                                    values.option
-                                  );
-                                  localStorage.setItem(
-                                    "mobile",
-                                    values.mobileData
-                                  );
-                                }}
-                              >
-                                {({ handleChange, isSubmitting }) => (
-                                  <Form className="flex px-[1vw] mt-[0.8vw] relative">
-                                    <GiSevenPointedStar
-                                      size={"2vw"}
-                                      className="absolute left-[1.5vw] top-[0.5vw]"
-                                      // color="color"
-                                      style={{ color: colorcode.theme }}
-                                    />
-                                    <p className="text-white font-bold absolute left-[2vw] top-[0.75vw]">
-                                      %
-                                    </p>
-                                    <Field
-                                      type="text"
-                                      name="name"
-                                      placeholder="Enter promo code"
-                                      className="border-dashed border-[0.1vw]  outline-none text-[1.2vw] h-[3vw] w-[75%] rounded-l-[0.5vw]  pl-[3vw] "
-                                      style={{
-                                        // color: colorcode.theme,
-                                        borderColor: colorcode.theme,
-                                        // background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`
-                                      }}
-                                      onChange={(e) => {
-                                        setPromoCode(e.target.value);
-                                        handleChange(e);
-                                        console.log(
-                                          e.target.value,
-                                          "promoCode11"
-                                        );
-                                      }}
-                                    />
+                                      {/* Operator Name */}
+                                      <div className="flex-1 relative">
+                                        <Field
+                                          type="text"
+                                          disabled={enableInput}
+                                          // name={`user_name_${index}`}
+                                          name
+                                          placeholder="User Name"
+                                          value={
+                                            travelerDetails[index]?.user_name ||
+                                            values[`user_name_${index}`] ||
+                                            ""
+                                          }
+                                          onChange={(e) => {
+                                            handleChange(e);
+                                            setFieldValue(
+                                              `user_name_${index}`,
+                                              e.target.value
+                                            );
+                                            setTravelerDetails(
+                                              (prevDetails) => ({
+                                                ...prevDetails,
+                                                [index]: {
+                                                  ...prevDetails[index],
+                                                  user_name: e.target.value,
+                                                  seat,
+                                                },
+                                              })
+                                            );
+                                          }}
+                                          className={`${
+                                            !isSubmitting || !enableInput
+                                              ? `cursor-pointer`
+                                              : "cursor-not-allowed"
+                                          }  border-r-[0.5vw] border-[.1vw] text-[1.2vw] h-[3vw] w-[15vw] rounded-[0.5vw] outline-none px-[1vw]`}
+                                          style={{
+                                            borderColor:
+                                              busdetails.bus_type_status ===
+                                              "luxury"
+                                                ? "#393939"
+                                                : colorcode.theme,
+                                          }}
+                                        />
+                                        <ErrorMessage
+                                          name={`user_name_${index}`}
+                                          component="div"
+                                          className="text-red-500 text-[0.8vw] absolute top-[3vw] left-[1vw]"
+                                        />
+                                      </div>
+
+                                      {/* Age */}
+                                      <div className="flex-1 relative">
+                                        <Field
+                                          type="text"
+                                          disabled={enableInput}
+                                          name={`age_${index}`}
+                                          placeholder="Age"
+                                          maxLength={2}
+                                          value={
+                                            travelerDetails[index]?.age ||
+                                            values[`age_${index}`] ||
+                                            ""
+                                          }
+                                          onChange={(e) => {
+                                            handleChange(e);
+                                            setFieldValue(
+                                              `age_${index}`,
+                                              e.target.value
+                                            );
+                                            setTravelerDetails(
+                                              (prevDetails) => ({
+                                                ...prevDetails,
+                                                [index]: {
+                                                  ...prevDetails[index],
+                                                  age: e.target.value,
+                                                  seat,
+                                                },
+                                              })
+                                            );
+                                          }}
+                                          className={`${
+                                            !isSubmitting || !enableInput
+                                              ? `cursor-pointer`
+                                              : "cursor-not-allowed"
+                                          } border-r-[0.5vw] border-[.1vw] border-black text-[1.2vw] h-[3vw] w-[6vw] rounded-[0.5vw] outline-none px-[1vw]`}
+                                          style={{
+                                            borderColor:
+                                              busdetails.bus_type_status ===
+                                              "luxury"
+                                                ? "#393939"
+                                                : colorcode.theme,
+                                          }}
+                                        />
+                                        <ErrorMessage
+                                          name={`age_${index}`}
+                                          component="div"
+                                          className="text-red-500 text-[0.8vw] absolute top-[3vw] left-[1vw]"
+                                        />
+                                      </div>
+
+                                      {/* Gender Toggle Buttons */}
+                                      <div className="flex-2">
+                                        <button
+                                          disabled={enableInput}
+                                          type="button"
+                                          name="gender"
+                                          style={{
+                                            background:
+                                              travelerDetails[index]?.gender ===
+                                                "male" ||
+                                              !travelerDetails[index]
+                                                ? busdetails.bus_type_status ===
+                                                  "luxury"
+                                                  ? "#393939"
+                                                  : busdetails.bus_type_status ===
+                                                    "regular"
+                                                  ? colorcode.theme
+                                                  : ""
+                                                : "#ffffff",
+                                            color:
+                                              travelerDetails[index]?.gender !==
+                                                "male" && travelerDetails[index]
+                                                ? busdetails.bus_type_status ===
+                                                  "luxury"
+                                                  ? "#393939"
+                                                  : busdetails.bus_type_status ===
+                                                    "regular"
+                                                  ? colorcode.theme
+                                                  : ""
+                                                : "",
+                                            borderColor:
+                                              travelerDetails[index]?.gender ===
+                                                "male" ||
+                                              !travelerDetails[index]
+                                                ? busdetails.bus_type_status ===
+                                                  "luxury"
+                                                  ? "#393939"
+                                                  : busdetails.bus_type_status ===
+                                                    "regular"
+                                                  ? colorcode.theme
+                                                  : ""
+                                                : "",
+                                          }}
+                                          className={`${
+                                            !isSubmitting || !enableInput
+                                              ? "cursor-pointer"
+                                              : "cursor-not-allowed"
+                                          } 
+                                          h-[3vw] w-[4vw] rounded-l-[0.5vw] text-[1vw] border-[0.1vw] text-white border-[#1F487C]`}
+                                          onClick={() =>
+                                            setTravelerDetails(
+                                              (prevDetails) => ({
+                                                ...prevDetails,
+                                                [index]: {
+                                                  ...prevDetails[index],
+                                                  gender: "male",
+                                                  seat,
+                                                },
+                                              })
+                                            )
+                                          }
+                                        >
+                                          Male
+                                        </button>
+                                        <button
+                                          disabled={enableInput}
+                                          type="button"
+                                          name={`gender_${index}`}
+                                          style={{
+                                            background:
+                                              travelerDetails[index]?.gender ===
+                                                "female" ||
+                                              !travelerDetails[index]
+                                                ? busdetails.bus_type_status ===
+                                                  "luxury"
+                                                  ? "#393939"
+                                                  : busdetails.bus_type_status ===
+                                                    "regular"
+                                                  ? colorcode.theme
+                                                  : "#ffffff"
+                                                : "#ffffff",
+                                            color:
+                                              travelerDetails[index]?.gender !==
+                                                "female" &&
+                                              travelerDetails[index]
+                                                ? busdetails.bus_type_status ===
+                                                  "luxury"
+                                                  ? "#393939"
+                                                  : busdetails.bus_type_status ===
+                                                    "regular"
+                                                  ? colorcode.theme
+                                                  : ""
+                                                : "",
+                                            borderColor:
+                                              travelerDetails[index]?.gender ===
+                                                "female" ||
+                                              !travelerDetails[index]
+                                                ? busdetails.bus_type_status ===
+                                                  "luxury"
+                                                  ? "#393939"
+                                                  : busdetails.bus_type_status ===
+                                                    "regular"
+                                                  ? colorcode.theme
+                                                  : ""
+                                                : "",
+                                          }}
+                                          className={`${
+                                            !isSubmitting || !enableInput
+                                              ? "cursor-pointer"
+                                              : "cursor-not-allowed"
+                                          } text-white h-[3vw] w-[4vw] rounded-r-[0.5vw] border-[0.1vw] text-[1vw] border-[#1F487C]`}
+                                          onClick={() =>
+                                            setTravelerDetails(
+                                              (prevDetails) => ({
+                                                ...prevDetails,
+                                                [index]: {
+                                                  ...prevDetails[index],
+                                                  gender: "female",
+                                                  seat,
+                                                },
+                                              })
+                                            )
+                                          }
+                                        >
+                                          Female
+                                        </button>
+                                      </div>
+
+                                      {/* Dropdown Input */}
+                                      <div className="flex-3">
+                                        <Field
+                                          disabled={enableInput}
+                                          as="select"
+                                          className={`${
+                                            !isSubmitting || !enableInput
+                                              ? `cursor-pointer`
+                                              : "cursor-not-allowed"
+                                          } border-r-[0.5vw] border-[.1vw] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw]`}
+                                          style={{
+                                            borderColor:
+                                              busdetails.bus_type_status ===
+                                              "luxury"
+                                                ? "#393939"
+                                                : colorcode.theme,
+                                          }}
+                                          name={`dropdown_${index}`}
+                                          onChange={(e) =>
+                                            handleDropdownChange(
+                                              e,
+                                              index,
+                                              setFieldValue
+                                            )
+                                          }
+                                        >
+                                          <option value="">Passenger</option>
+                                          {passengerdatalist?.length > 0 &&
+                                            passengerdatalist.map(
+                                              (passenger, idx) => (
+                                                <option
+                                                  key={idx}
+                                                  value={
+                                                    passenger.tbs_add_pax_id
+                                                  }
+                                                >
+                                                  {passenger.user_name}
+                                                </option>
+                                              )
+                                            )}
+                                        </Field>
+                                      </div>
+                                    </div>
+                                  ))}
+                              </div>
+                              {registerfulldetails?.terms == true ? (
+                                ""
+                              ) : (
+                                <>
+                                  <div className="flex pt-[2vw] items-center justify-between">
+                                    <div className="flex gap-[0.5vw]">
+                                      <Field
+                                        disabled={enableInput}
+                                        type="checkbox"
+                                        name="terms"
+                                        className="h-[1.5vw] w-[1.5vw]"
+                                        checked={values.terms}
+                                        onChange={(e) => {
+                                          handleChange(e);
+                                          setFieldValue(
+                                            "terms",
+                                            e.target.value
+                                          );
+                                          setTermsChecked(e.target.checked);
+                                          console.log(
+                                            e.target.checked,
+                                            "setTermsChecked"
+                                          );
+                                        }}
+                                      />
+                                      <p>
+                                        Yes and I accept the{" "}
+                                        <span>Terms and conditions</span>
+                                      </p>
+                                    </div>
+                                    {sumbitbutton && (
+                                      <FaEdit
+                                        size={"2vw"}
+                                        color={
+                                          busdetails.bus_type_status ===
+                                          "luxury"
+                                            ? "#393939"
+                                            : busdetails.bus_type_status ===
+                                              "regular"
+                                            ? colorcode.theme
+                                            : ""
+                                        }
+                                        className="cursor-pointer ml-[15vw]"
+                                        onClick={() => {
+                                          setEnableInput(false);
+                                          //fetchBookingDetail(mobilenum);
+                                          console.log(mobilenum, "mobilenum");
+                                        }}
+                                      />
+                                    )}
 
                                     <button
-                                      onClick={handlePromoCode}
-                                      className=" w-[25%] h-[3vw] rounded-r-[0.5vw] text-white  font-bold flex items-center justify-center"
+                                      type="submit"
                                       style={{
-                                        backgroundColor: colorcode.theme,
+                                        backgroundColor:
+                                          isValid && termschecked
+                                            ? busdetails.bus_type_status ===
+                                              "luxury"
+                                              ? "#393939"
+                                              : busdetails.bus_type_status ===
+                                                "regular"
+                                              ? colorcode.theme
+                                              : ""
+                                            : "gray",
+                                      }}
+                                      className={`${
+                                        (!isSubmitting &&
+                                          isValid &&
+                                          termschecked) ||
+                                        !enableInput
+                                          ? "cursor-pointer"
+                                          : "cursor-not-allowed"
+                                      }  
+                                  w-[18vw] h-[2.5vw] rounded-[0.5vw] ml-[1vw]`}
+                                      disabled={enableInput}
+                                      onClick={() => {
+                                        setMobilenum(
+                                          storedMobile &&
+                                            storedMobile != "undefined"
+                                            ? sessionStorage.getItem(
+                                                "user_mobile"
+                                              )
+                                            : values.mobile
+                                        );
+                                        console.log(
+                                          "passenger detail",
+                                          travelerDetails
+                                        );
                                       }}
                                     >
-                                      Apply
+                                      <span className="text-white text-[1.1vw] font-semibold">
+                                        {isSubmitting && isValid
+                                          ? `Update to Pay ₹ ${discount}`
+                                          : `Continue to Pay ₹ ${discount}`}
+                                      </span>
                                     </button>
-                                  </Form>
-                                )}
-                              </Formik>{" "}
-                              {/* <Formik
+                                  </div>
+                                  <ErrorMessage
+                                    name="terms"
+                                    component="div"
+                                    className="text-red-500 text-[0.8vw] ml-[2vw]"
+                                  />
+                                </>
+                              )}
+                            </Form>
+                          )}
+                        </Formik>
+                      </div>
+                    </div>
+                    {showPrice ? (
+                      <div className="grid grid-cols-2 gap-[2vw] pt-[2vw] h-[25vw]">
+                        <div
+                          className={`${
+                            busdetails.bus_type_status === "luxury"
+                              ? "bg-[#FFEEC9]"
+                              : "bg-white"
+                          } col-span-1 h-[25vw] w-full  rounded-[0.5vw] pb-[2vw]`}
+                          style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
+                        >
+                          <div
+                            className="row-span-6 h-auto w-full  rounded-[0.5vw] pb-[2vw]"
+                            style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
+                          >
+                            <h1
+                              className="text-[1.5vw] font-semibold bg-gradient-to-r px-[1vw] py-[0.5vw] from-[#2E78AE] to-[#1F487C] bg-clip-text text-transparent"
+                              style={{
+                                color:
+                                  busdetails.bus_type_status === "luxury"
+                                    ? "#393939"
+                                    : colorcode.theme,
+                              }}
+                            >
+                              Offers
+                            </h1>
+                            <div className="px-[1vw] h-[17vw] overflow-y-auto">
+                              {offers.map((item, index) => (
+                                <div
+                                  key={index}
+                                  className="border-[0.1vw]  rounded-[0.5vw] mb-[1vw]"
+                                  style={{
+                                    borderColor:
+                                      busdetails.bus_type_status === "luxury"
+                                        ? "#393939"
+                                        : colorcode.theme,
+                                  }}
+                                >
+                                  <div className="grid grid-cols-10 m-[0.5vw] w-full">
+                                    <div className="col-span-1 pt-[0.2vw]">
+                                      <input
+                                        type="radio"
+                                        name="offer"
+                                        className="w-full h-auto"
+                                      />
+                                    </div>
+                                    <div className="col-span-9 flex flex-col w-full">
+                                      <p
+                                        className="text-[1.1vw] font-bold"
+                                        // style={{ color: colorcode.theme }}
+                                      >
+                                        {item.Coupon}
+                                      </p>
+                                      <p className="text-[1vw] font-semibold text-[#A4A4A4]">
+                                        {item.details}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+
+                            <div className="h-[2vw] w-full">
+                              <div className="">
+                                <Formik
+                                  initialValues={{
+                                    name: "",
+                                  }}
+                                  validationSchema={validationSchema}
+                                  onSubmit={(values) => {
+                                    // Handle form submission
+                                    // setShowRegister(true);
+                                    localStorage.setItem("page1", true);
+                                    localStorage.setItem(
+                                      "occupation",
+                                      values.option
+                                    );
+                                    localStorage.setItem(
+                                      "mobile",
+                                      values.mobileData
+                                    );
+                                  }}
+                                >
+                                  {({ handleChange, isSubmitting }) => (
+                                    <Form className="flex px-[1vw] mt-[0.8vw] relative">
+                                      <GiSevenPointedStar
+                                        size={"2vw"}
+                                        className="absolute left-[1.5vw] top-[0.5vw]"
+                                        // color="color"
+                                        style={{
+                                          color:
+                                            busdetails.bus_type_status ===
+                                            "luxury"
+                                              ? "#393939"
+                                              : colorcode.theme,
+                                        }}
+                                      />
+                                      <p className="text-white font-bold absolute left-[2vw] top-[0.75vw]">
+                                        %
+                                      </p>
+                                      <Field
+                                        type="text"
+                                        name="name"
+                                        placeholder="Enter promo code"
+                                        className="border-dashed border-[0.1vw]  outline-none text-[1.2vw] h-[3vw] w-[75%] rounded-l-[0.5vw]  pl-[3vw] "
+                                        style={{
+                                          // color: colorcode.theme,
+                                          borderColor:
+                                            busdetails.bus_type_status ===
+                                            "luxury"
+                                              ? "#393939"
+                                              : colorcode.theme,
+                                          // background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`
+                                        }}
+                                        onChange={(e) => {
+                                          setPromoCode(e.target.value);
+                                          handleChange(e);
+                                          console.log(
+                                            e.target.value,
+                                            "promoCode11"
+                                          );
+                                        }}
+                                      />
+
+                                      <button
+                                        onClick={handlePromoCode}
+                                        className=" w-[25%] h-[3vw] rounded-r-[0.5vw] text-white  font-bold flex items-center justify-center"
+                                        style={{
+                                          backgroundColor:
+                                            busdetails.bus_type_status ===
+                                            "luxury"
+                                              ? "#393939"
+                                              : colorcode.theme,
+                                        }}
+                                      >
+                                        Apply
+                                      </button>
+                                    </Form>
+                                  )}
+                                </Formik>{" "}
+                                {/* <Formik
                                 initialValues={{
                                   //value: "",
                                   code: "",
@@ -1371,10 +1629,10 @@ function DrawerDetails({
                                   </Form>
                                 )}
                               </Formik>{" "} */}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        {/* <h1
+                          {/* <h1
                         className="text-[1.5vw] font-semibold bg-gradient-to-r px-[1vw] py-[0.5vw]"
                         style={{
                           color: colorcode.theme,
@@ -1382,9 +1640,9 @@ function DrawerDetails({
                       >
                         Make Payment
                       </h1> */}
-                        {/* <div className="grid grid-cols-5 px-[1vw] "> */}
+                          {/* <div className="grid grid-cols-5 px-[1vw] "> */}
 
-                        {/* <div className="col-span-1 pr-[1vw]">
+                          {/* <div className="col-span-1 pr-[1vw]">
                           <div className="grid grid-rows-6 ">
                             <div
                               style={{
@@ -1489,7 +1747,7 @@ function DrawerDetails({
                             </div>
                           </div>
                         </div> */}
-                        {/* <div className="col-span-4 mt-[0.5vw]">
+                          {/* <div className="col-span-4 mt-[0.5vw]">
                           {paymenttype == "upi" ? (
                             <>
                               <p
@@ -1900,7 +2158,7 @@ function DrawerDetails({
                             </div>
                           );
                         })} */}
-                        {/* <div className="flex items-center mt-[1vw]">
+                          {/* <div className="flex items-center mt-[1vw]">
                                 <img
                                   src={banklist[0].logo}
                                   className={`h-[2vw] w-[3.5vw]`}
@@ -2149,59 +2407,75 @@ function DrawerDetails({
                             </div>
                           )}
                         </div>  */}
-                        {/* </div> */}
-                      </div>
-                      <div
-                        className="col-span-1 h-[25vw] w-full  rounded-[0.5vw] pb-[2vw]"
-                        style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
-                      >
-                        <div className="grid grid-rows-10 h-[30vw] w-full gap-[2vw]">
-                          <div
-                            className="row-span-4 h-[25vw] w-full  rounded-[0.5vw] pb-[2vw]"
-                            style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
-                          >
-                            <h1
-                              className="text-[1.5vw] font-semibold bg-gradient-to-r px-[1vw] py-[0.5vw] "
-                              style={{ color: colorcode.theme }}
-                            >
-                              Fare Details
-                            </h1>
-                            <div className="px-[1vw] flex justify-between">
-                              <p className="text-[1vw]">Base Fare</p>
-                              <p className="text-[1vw]">₹ {discount}</p>
-                            </div>
-                            <div className="px-[1vw] flex justify-between">
-                              <p className="text-[1vw]">GST 3%</p>
-                              <p className="text-[1vw]">
-                                + ₹ {Math.round(discount * 0.03)}
-                              </p>
-                            </div>
-                            <button
-                              className="w-full h-[2.5vw] rounded-b-[0.5vw] mt-[16.3vw] flex items-center justify-between px-[1vw]"
-                              style={{ backgroundColor: colorcode.theme }}
-                              onClick={() => {
-                                setProceed(true);
-                                handleBookingPrice();
+                          {/* </div> */}
+                        </div>
+                        <div
+                          className={`${
+                            busdetails.bus_type_status === "luxury"
+                              ? "bg-[#FFEEC9]"
+                              : "bg-white"
+                          } col-span-1 h-[25vw] w-full  rounded-[0.5vw] pb-[2vw]`}
+                          style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
+                        >
+                          <div className="grid grid-rows-10 h-[30vw] w-full gap-[2vw]">
+                            <div
+                              className="row-span-4 h-[25vw] w-full  rounded-[0.5vw] pb-[2vw]"
+                              style={{
+                                boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
                               }}
                             >
-                              <span className="text-white text-[1.1vw] font-semibold">
-                                Proceed to Pay{" "}
-                                {`₹ ${
-                                  Number(discount) +
-                                  Number(Math.round(discount * 0.03))
-                                }`}
-                              </span>
-                              <span className="pl-[0.5vw]">
-                                <RiArrowRightDoubleLine
-                                  size={"1.7vw"}
-                                  color="white"
-                                />
-                              </span>
-                            </button>
-                          </div>
-                          <div className="h-[2vw] w-full">
-                            <div className="">
-                              {/* <button
+                              <h1
+                                className="text-[1.5vw] font-semibold bg-gradient-to-r px-[1vw] py-[0.5vw] "
+                                style={{
+                                  color:
+                                    busdetails.bus_type_status === "luxury"
+                                      ? "#393939"
+                                      : colorcode.theme,
+                                }}
+                              >
+                                Fare Details
+                              </h1>
+                              <div className="px-[1vw] flex justify-between">
+                                <p className="text-[1vw]">Base Fare</p>
+                                <p className="text-[1vw]">₹ {discount}</p>
+                              </div>
+                              <div className="px-[1vw] flex justify-between">
+                                <p className="text-[1vw]">GST 3%</p>
+                                <p className="text-[1vw]">
+                                  + ₹ {Math.round(discount * 0.03)}
+                                </p>
+                              </div>
+                              <button
+                                className="w-full h-[2.5vw] rounded-b-[0.5vw] mt-[16.3vw] flex items-center justify-between px-[1vw]"
+                                style={{
+                                  backgroundColor:
+                                    busdetails.bus_type_status === "luxury"
+                                      ? "#393939"
+                                      : colorcode.theme,
+                                }}
+                                onClick={() => {
+                                  setProceed(true);
+                                  handleBookingPrice();
+                                }}
+                              >
+                                <span className="text-white text-[1.1vw] font-semibold">
+                                  Proceed to Pay{" "}
+                                  {`₹ ${
+                                    Number(discount) +
+                                    Number(Math.round(discount * 0.03))
+                                  }`}
+                                </span>
+                                <span className="pl-[0.5vw]">
+                                  <RiArrowRightDoubleLine
+                                    size={"1.7vw"}
+                                    color="white"
+                                  />
+                                </span>
+                              </button>
+                            </div>
+                            <div className="h-[2vw] w-full">
+                              <div className="">
+                                {/* <button
                                       className=" w-[20vw] h-[2.5vw] rounded-[0.5vw] mt-[0.8vw] flex items-center justify-center"
                                       style={{
                                         backgroundColor: colorcode.theme,
@@ -2221,227 +2495,378 @@ function DrawerDetails({
                                         />
                                       </span>
                                     </button> */}
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ) : (
-                    ""
-                  )}
+                    ) : (
+                      ""
+                    )}
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div ref={componentRef}>
+              ) : (
                 <div
-                  className="h-[54vw] w-full rounded-[1vw]"
-                  style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
+                  className={`${
+                    busdetails.bus_type_status === "luxury"
+                      ? "bg-[#FFEEC9]"
+                      : "bg-white"
+                  }`}
+                  ref={componentRef}
                 >
                   <div
-                    className="h-[3vw] w-full rounded-t-[0.5vw] flex justify-between items-center px-[1vw]"
-                    style={{ backgroundColor: colorcode.theme }}
+                    className="h-[54vw] w-full rounded-[1vw]"
+                    style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
                   >
-                    <label className="text-white text-[1.1vw] font-semibold">
-                      {`Booking Id : ${ticketDetail?.Booking_Id}`}
-                    </label>
-                    <label className="text-white text-[1.1vw] font-semibold">
-                      {`Bus Partner Id : ${generateRandomId("CHEN", 12)}`}
-                    </label>
-                  </div>
-                  <div className="px-[1vw] py-[1vw]">
-                    <div className="grid grid-cols-6 w-full h-[18vw]">
-                      <div className="col-span-2 w-[100%] h-full flex">
-                        <div className="w-[80%] h-full items-center justify-center flex flex-col">
-                          <div className="h-[60%] flex justify-center items-center">
-                            <img
-                              src={operatorlogo}
-                              className="w-[5vw] h-[5vw] rounded-full"
-                            />
+                    <div
+                      className="h-[3vw] w-full rounded-t-[0.5vw] flex justify-between items-center px-[1vw]"
+                      style={{
+                        backgroundColor:
+                          busdetails.bus_type_status === "luxury"
+                            ? "#393939"
+                            : colorcode.theme,
+                      }}
+                    >
+                      <label className="text-white text-[1.1vw] font-semibold">
+                        {`Booking Id : ${ticketDetail?.Booking_Id}`}
+                      </label>
+                      <label className="text-white text-[1.1vw] font-semibold">
+                        {`Bus Partner Id : ${generateRandomId("CHEN", 12)}`}
+                      </label>
+                    </div>
+                    <div className="px-[1vw] py-[1vw]">
+                      <div className="grid grid-cols-6 w-full h-[18vw]">
+                        <div className="col-span-2 w-[100%] h-full flex">
+                          <div className="w-[80%] h-full items-center justify-center flex flex-col">
+                            <div className="h-[60%] flex justify-center items-center">
+                              <img
+                                src={operatorlogo}
+                                className="w-[5vw] h-[5vw] rounded-full"
+                              />
+                            </div>
+                            <div className="flex flex-col h-[40%] items-center ">
+                              <p
+                                className="text-[1vw] font-bold"
+                                style={{
+                                  color:
+                                    busdetails.bus_type_status === "luxury"
+                                      ? "#393939"
+                                      : colorcode.theme,
+                                }}
+                              >
+                                {seatplatform}
+                              </p>
+                              <p
+                                className={`${
+                                  busdetails.bus_type_status === "luxury"
+                                    ? "text-[#393939]"
+                                    : "text-[#1F487C]"
+                                } text-[1vw]`}
+                                // style={{ color: colorcode.theme }}
+                              >
+                                {ticketDetail?.Bus_Type}
+                              </p>
+                            </div>
                           </div>
-                          <div className="flex flex-col h-[40%] items-center ">
-                            <p
-                              className="text-[1vw] font-bold"
-                              style={{ color: colorcode.theme }}
+                          <div className="w-[20%] h-full  py-[1vw] flex justify-center">
+                            {/* <img src={bus_complete} className="h-full w-full " /> */}
+                            <div
+                              className="border-dashed border-r-[0.1vw] h-[90%] relative"
+                              style={{
+                                borderColor:
+                                  busdetails.bus_type_status === "luxury"
+                                    ? "#393939"
+                                    : colorcode.theme,
+                              }}
                             >
-                              {seatplatform}
-                            </p>
-                            <p
-                              className="text-[#1F487C]  text-[1vw] "
-                              // style={{ color: colorcode.theme }}
-                            >
-                              {ticketDetail?.Bus_Type}
-                            </p>
+                              <FaBus
+                                className=" absolute top-[-0.5vw] left-[-0.7vw]"
+                                style={{
+                                  color:
+                                    busdetails.bus_type_status === "luxury"
+                                      ? "#393939"
+                                      : colorcode.theme,
+                                }}
+                                size={"1.5vw"}
+                              />
+                              <div className="absolute top-[6vw] left-[-0.5vw]">
+                                <div
+                                  className="h-[1vw] w-[1vw] border-[0.1vw] rounded-full"
+                                  style={{
+                                    borderColor:
+                                      busdetails.bus_type_status === "luxury"
+                                        ? "#393939"
+                                        : colorcode.theme,
+                                    backgroundColor:
+                                      busdetails.bus_type_status === "luxury"
+                                        ? "#FFEEC9"
+                                        : "#ffffff",
+                                  }}
+                                ></div>
+                              </div>{" "}
+                              <FaMapMarkerAlt
+                                size={"1.5vw"}
+                                style={{
+                                  color:
+                                    busdetails.bus_type_status === "luxury"
+                                      ? "#393939"
+                                      : colorcode.theme,
+                                }}
+                                className="absolute left-[-0.7vw] bottom-[-1.2vw]"
+                              />
+                            </div>
                           </div>
                         </div>
-                        <div className="w-[20%] h-full  py-[1vw] flex justify-center">
-                          {/* <img src={bus_complete} className="h-full w-full " /> */}
-                          <div
-                            className="border-dashed border-r-[0.1vw] h-[90%] relative"
-                            // style={{borderColor:colorcode.theme}}
-                          >
-                            <FaBus
-                              className=" absolute top-[-0.5vw] left-[-0.7vw]"
-                              // style={{color:colorcode.theme}}
-                              size={"1.5vw"}
-                            />
-                            <div className=" absolute top-[6vw] left-[-0.5vw]">
-                              <div
-                                className="h-[1vw] w-[1vw] border-[0.1vw]  bg-white rounded-full"
-                                // style={{borderColor:colorcode.theme}}
-                              ></div>
-                            </div>{" "}
-                            <FaMapMarkerAlt
-                              size={"1.5vw"}
-                              // style={{color:colorcode.theme}}
-                              className="absolute left-[-0.7vw] bottom-[-1.2vw]"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-span-4">
-                        <div className="grid grid-rows-7 w-full h-full">
-                          <div className="row-span-3">
-                            <div className="grid grid-cols-4">
-                              <div className="col-span-1 ">
-                                <div className="flex flex-col pl-[1vw] text-left">
-                                  <p
-                                    className="text-[0.8vw] text-[#1F487C] pt-[0.5vw]"
-                                    // style={{ color: colorcode.theme }}
-                                  >
-                                    {/* {dayjs(bus[busIndex]?.Bus_depature_date).format(
+                        <div className="col-span-4">
+                          <div className="grid grid-rows-7 w-full h-full">
+                            <div className="row-span-3">
+                              <div className="grid grid-cols-4">
+                                <div className="col-span-1 ">
+                                  <div className="flex flex-col pl-[1vw] text-left">
+                                    <p
+                                      className={`${
+                                        busdetails.bus_type_status === "luxury"
+                                          ? "text-[#393939]"
+                                          : "text-[#1F487C]"
+                                      } text-[0.8vw] pt-[0.5vw]`}
+                                      // style={{ color: colorcode.theme }}
+                                    >
+                                      {/* {dayjs(bus[busIndex]?.Bus_depature_date).format(
                                 "DD MMM"
                               )} */}
-                                    {dayjs(ticketDetail?.departure_date).format(
-                                      "DD MMM"
-                                    )}
-                                  </p>
+                                      {dayjs(
+                                        ticketDetail?.departure_date
+                                      ).format("DD MMM")}
+                                    </p>
+                                    <p
+                                      className={`${
+                                        busdetails.bus_type_status === "luxury"
+                                          ? "text-[#393939]"
+                                          : "text-[#1F487C]"
+                                      } text-[1.2vw] font-bold`}
+                                      // style={{ color: colorcode.theme }}
+                                    >
+                                      {/* {item.bus_depature} */}
+                                      {/* {bus[busIndex]?.Bus_Depature_time} */}
+                                      {ticketDetail?.departure_time}
+                                    </p>
+                                    <p
+                                      className={`${
+                                        busdetails.bus_type_status === "luxury"
+                                          ? "text-[#393939]"
+                                          : "text-[#1F487C]"
+                                      } text-[0.9vw]`}
+                                      // style={{ color: colorcode.theme }}
+                                    >
+                                      {/* {bus[busIndex]?.Bus_Depature_place} */}
+                                      {ticketDetail?.arrival_name}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="col-span-2 flex-col mt-[0.5vw] items-center w-full justify-center">
+                                  <div className="col-span-2 h-full relative w-full flex items-center justify-center">
+                                    <div
+                                      className={`${
+                                        busdetails.bus_type_status === "luxury"
+                                          ? "bg-[#393939]"
+                                          : "bg-[#1F487C]"
+                                      } absolute left-0 h-[0.5vw] w-[0.5vw] rounded-full`}
+                                    ></div>
+                                    <div
+                                      className={`${
+                                        busdetails.bus_type_status === "luxury"
+                                          ? "border-[#393939]"
+                                          : "border-[#1F487C]"
+                                      } border-[0.15vw] absolute left-0 top-[2.1vw] border-dashed w-[18vw]`}
+                                    ></div>
+                                    <div
+                                      className={`${
+                                        busdetails.bus_type_status === "luxury"
+                                          ? "bg-[#393939]"
+                                          : "bg-[#1F487C]"
+                                      } relative h-[2.1vw] flex w-[5.5vw] rounded-tl-[0.8vw] rounded-tr-[0.8vw] rounded-bl-[0.3vw] 
+                                rounded-br-[0.3vw] text-white text-[1vw] font-bold justify-center items-center`}
+                                      // style={{
+                                      //   zIndex: 2,
+                                      // }}
+                                    >
+                                      {busdetails?.time_duration}
+                                      <div
+                                        className={`${
+                                          busdetails.bus_type_status ===
+                                          "luxury"
+                                            ? "bg-[#393939]"
+                                            : "bg-[#1F487C]"
+                                        } absolute bottom-[-0.8vw] left-[0.8vw] h-[1.3vw] w-[1.3vw] rounded-full flex items-center justify-center `}
+                                        // style={{
+                                        //   zIndex: 1,
+                                        // }}
+                                      >
+                                        <div className="bg-white h-[0.4vw] w-[0.4vw] rounded-full"></div>
+                                      </div>
+                                      <div
+                                        className={`${
+                                          busdetails.bus_type_status ===
+                                          "luxury"
+                                            ? "bg-[#393939]"
+                                            : "bg-[#1F487C]"
+                                        } absolute bottom-[-0.8vw] right-[0.8vw] h-[1.3vw] w-[1.3vw] rounded-full flex items-center justify-center `}
+                                      >
+                                        <div className="bg-white h-[0.4vw] w-[0.4vw] rounded-full"></div>
+                                      </div>
+                                    </div>
+                                    <FaAngleRight
+                                      color={`${
+                                        busdetails.bus_type_status === "luxury"
+                                          ? "#393939"
+                                          : "#1F487C"
+                                      }`}
+                                      size={"1vw"}
+                                      className="absolute right-0"
+                                    />
+                                  </div>
+                                  {/* <img
+                                    src={bus_comp}
+                                    className="h-[3.5vw] w-[22vw] "
+                                  />
                                   <p
-                                    className="font-bold text-[#1F487C] text-[1.2vw]"
+                                    className={`${
+                                      busdetails.bus_type_status === "luxury"
+                                        ? "text-[#393939]"
+                                        : "text-[#1F487C]"
+                                    } text-[1.1vw] font-bold text-center`}
                                     // style={{ color: colorcode.theme }}
                                   >
-                                    {/* {item.bus_depature} */}
-                                    {/* {bus[busIndex]?.Bus_Depature_time} */}
-                                    {ticketDetail?.departure_time}
-                                  </p>
-                                  <p
-                                    className="text-[#1F487C] text-[0.9vw] "
-                                    // style={{ color: colorcode.theme }}
-                                  >
-                                    {/* {bus[busIndex]?.Bus_Depature_place} */}
-                                    {ticketDetail?.arrival_name}
-                                  </p>
+                                    {ticketDetail?.duration}
+                                  </p> */}
+                                </div>
+                                <div className="col-span-1">
+                                  <div className="flex flex-col text-right pr-[1vw]">
+                                    <p
+                                      className={`${
+                                        busdetails.bus_type_status === "luxury"
+                                          ? "text-[#393939]"
+                                          : "text-[#1F487C]"
+                                      } pt-[0.5vw] text-[0.8vw]`}
+                                      // style={{ color: colorcode.theme }}
+                                    >
+                                      {/* {dayjs(bus[busIndex]?.Bus_arrival_date).format(
+                                "DD MMM"
+                              )} */}
+                                      {dayjs(ticketDetail?.arrival_date).format(
+                                        "DD MMM"
+                                      )}
+                                    </p>
+                                    <p
+                                      className={`${
+                                        busdetails.bus_type_status === "luxury"
+                                          ? "text-[#393939]"
+                                          : "text-[#1F487C]"
+                                      } text-[1.2vw] font-bold`}
+                                      // style={{ color: colorcode.theme }}
+                                    >
+                                      {/* {item.bus_arr} */}
+                                      {/* {bus[busIndex]?.Bus_Arrival_time} */}
+                                      {ticketDetail?.arrival_time}
+                                    </p>
+                                    <p
+                                      className={`${
+                                        busdetails.bus_type_status === "luxury"
+                                          ? "text-[#393939]"
+                                          : "text-[#1F487C]"
+                                      } text-[0.9vw]`}
+                                      // style={{ color: colorcode.theme }}
+                                    >
+                                      {/* {bus[busIndex]?.Bus_Arrival_place} */}
+                                      {ticketDetail?.departure_name}
+                                    </p>
+                                  </div>
                                 </div>
                               </div>
-                              <div className="col-span-2 flex-col mt-[0.5vw] items-center w-full justify-center">
-                                <img
-                                  src={bus_comp}
-                                  className="h-[3.5vw] w-[22vw] "
-                                />
+                            </div>
+                            <div className="row-span-2 flex justify-between px-[1vw] ">
+                              <div className="flex flex-col  ">
+                                <p className="text-[1vw] ">
+                                  Boarding Point & Time
+                                </p>
                                 <p
-                                  className="text-center text-[#1F487C] text-[1.1vw] font-bold"
+                                  className={`${
+                                    busdetails.bus_type_status === "luxury"
+                                      ? "text-[#393939]"
+                                      : "text-[#1F487C]"
+                                  }  font-bold text-[1.2vw]`}
                                   // style={{ color: colorcode.theme }}
                                 >
-                                  {/* {item.bus_travel_time} */}
-                                  {/* {bus[busIndex]?.Bus_travel_time} */}
-                                  {ticketDetail?.duration}
-                                </p>
-                              </div>
-                              <div className="col-span-1">
-                                <div className="flex flex-col text-right pr-[1vw]">
-                                  <p
-                                    className="text-[0.8vw] text-[#1F487C] pt-[0.5vw]"
-                                    // style={{ color: colorcode.theme }}
-                                  >
-                                    {/* {dayjs(bus[busIndex]?.Bus_arrival_date).format(
-                                "DD MMM"
-                              )} */}
-                                    {dayjs(ticketDetail?.arrival_date).format(
-                                      "DD MMM"
-                                    )}
-                                  </p>
-                                  <p
-                                    className="font-bold text-[#1F487C] text-[1.2vw] "
-                                    // style={{ color: colorcode.theme }}
-                                  >
-                                    {/* {item.bus_arr} */}
-                                    {/* {bus[busIndex]?.Bus_Arrival_time} */}
-                                    {ticketDetail?.arrival_time}
-                                  </p>
-                                  <p
-                                    className="text-[#1F487C] text-[0.9vw]"
-                                    // style={{ color: colorcode.theme }}
-                                  >
-                                    {/* {bus[busIndex]?.Bus_Arrival_place} */}
-                                    {ticketDetail?.departure_name}
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="row-span-2 flex justify-between px-[1vw] ">
-                            <div className="flex flex-col  ">
-                              <p className="text-[1vw] ">
-                                Boarding Point & Time
-                              </p>
-                              <p
-                                className="text-[#1F487C] font-bold text-[1.2vw]"
-                                // style={{ color: colorcode.theme }}
-                              >
-                                {/* {`${selectedRoutes?.dep_route} : ${dayjs(
+                                  {/* {`${selectedRoutes?.dep_route} : ${dayjs(
                                   selectedRoutes?.dep_time
                                 ).format("DD MMM, HH:mm")}`} */}
-                                {`${
-                                  ticketDetail?.Pickup_Point_and_Time
-                                } : ${dayjs(selectedRoutes?.dep_time).format(
-                                  "HH:mm"
-                                )}`}
-                              </p>
+                                  {`${
+                                    ticketDetail?.Pickup_Point_and_Time
+                                  } : ${dayjs(selectedRoutes?.dep_time).format(
+                                    "HH:mm"
+                                  )}`}
+                                </p>
+                              </div>
+                              <div className="flex flex-col  items-center">
+                                <p className="text-[1vw] ">Seat Number(s)</p>
+                                <p
+                                  className={`${
+                                    busdetails.bus_type_status === "luxury"
+                                      ? "text-[#393939]"
+                                      : "text-[#1F487C]"
+                                  }  font-bold text-[1.1vw]`}
+                                  // style={{ color: colorcode.theme }}
+                                >
+                                  {selectedSeats}
+                                </p>
+                              </div>
                             </div>
-                            <div className="flex flex-col  items-center">
-                              <p className="text-[1vw] ">Seat Number(s)</p>
-                              <p
-                                className=" text-[1.1vw] text-[#1F487C] font-bold"
-                                // style={{ color: colorcode.theme }}
-                              >
-                                {selectedSeats}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="row-span-2 flex px-[1vw] justify-between ">
-                            <div className="flex flex-col  ">
-                              <p className="text-[1vw] ">
-                                Dropping Point & Time
-                              </p>
-                              <p
-                                className="text-[#1F487C] text-[1.1vw] font-bold"
-                                // style={{ color: colorcode.theme }}
-                              >
-                                {`${
-                                  ticketDetail?.Dropping_Point_Time
-                                } : ${dayjs(selectedRoutes?.arr_time).format(
-                                  "HH:mm"
-                                )}`}
-                              </p>
-                            </div>
-                            <div className="relative">
-                              <img
-                                src={ticketview}
-                                className="w-[9vw] h-[3.5vw]"
-                              />
-                              <p className="text-[1.5vw] font-bold text-white absolute left-[2.8vw] top-[0.8vw]">
-                                {`₹ ${
-                                  Number(discount) +
-                                  Number(Math.round(discount * 0.03))
-                                }`}
-                              </p>
+                            <div className="row-span-2 flex px-[1vw] justify-between ">
+                              <div className="flex flex-col  ">
+                                <p className="text-[1vw] ">
+                                  Dropping Point & Time
+                                </p>
+                                <p
+                                  className={`${
+                                    busdetails.bus_type_status === "luxury"
+                                      ? "text-[#393939]"
+                                      : "text-[#1F487C]"
+                                  }  font-bold text-[1.1vw]`}
+                                  // style={{ color: colorcode.theme }}
+                                >
+                                  {`${
+                                    ticketDetail?.Dropping_Point_Time
+                                  } : ${dayjs(selectedRoutes?.arr_time).format(
+                                    "HH:mm"
+                                  )}`}
+                                </p>
+                              </div>
+                              <div className="relative">
+                                {busdetails.bus_type_status === "luxury" ? (
+                                  <img
+                                    src={amountView}
+                                    className="w-[9vw] h-[3.5vw]"
+                                  />
+                                ) : (
+                                  <img
+                                    src={ticketview}
+                                    className="w-[9vw] h-[3.5vw]"
+                                  />
+                                )}
+                                <p className="text-[1.5vw] font-bold text-white absolute left-[2.8vw] top-[0.8vw]">
+                                  {`₹ ${
+                                    Number(discount) +
+                                    Number(Math.round(discount * 0.03))
+                                  }`}
+                                </p>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="h-auto w-full px-[1vw] pt-[1vw]">
-                    {/* <p className="text-[1.4vw] font-bold">Traveller Details:</p>
+                    <div className="h-auto w-full px-[1vw] pt-[1vw]">
+                      {/* <p className="text-[1.4vw] font-bold">Traveller Details:</p>
                     <div className="flex justify-between text-[1.2vw] font-bold pt-[1.5vw]">
                       <div className="flex-1">Name</div>
                       <div className="flex-1">Age</div>
@@ -2464,7 +2889,7 @@ function DrawerDetails({
                       </div>
                     ))} */}
 
-                    {/* <div className="pt-[1.5vw]">
+                      {/* <div className="pt-[1.5vw]">
                       <p className="text-[1.4vw] font-bold">
                         Contact Details :{" "}
                       </p>
@@ -2487,218 +2912,320 @@ function DrawerDetails({
                         <div class="flex w-64">{bookingId?.mobile_number}</div>
                       </div>
                     </div> */}
-                    <div className="grid grid-row-3 w-full h-full gap-[1vw]">
-                      <div class="border-dashed border-2 border-[#1F487C]"></div>
-                      <div className="row-span-1 py-[1vw]">
-                        {ticketDetail?.passenger?.length > 0 &&
-                          ticketDetail?.passenger.map((passenger, index) => (
-                            <div
-                              key={index}
-                              className="grid grid-cols-5 gap-[1.5vw] pt-[1vw]"
-                            >
-                              <div className="col-span-1 pt-[1vw]">
-                                <p
-                                  className="text-[1.1vw] font-semibold"
-                                  // style={{ color: colorcode.theme }}
-                                >
-                                  Traveller Name
-                                </p>
-                              </div>
-                              <div className="col-span-2">
-                                <div
-                                  className="border-r-[0.5vw] border-[0.1vw] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw] relative"
-                                  style={{
-                                    //background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`,
-                                    borderColor: colorcode.theme,
-                                    // color: colorcode.theme,
-                                  }}
-                                >
-                                  <p className="absolute left-[1vw] top-[0.6vw] text-[1.1vw]  font-semibold ">
-                                    {passenger?.user_name}
+                      <div className="grid grid-row-3 w-full h-full gap-[1vw]">
+                        <div
+                          className={`${
+                            busdetails.bus_type_status === "luxury"
+                              ? "border-[#393939]"
+                              : "border-[#1F487C]"
+                          } border-dashed border-2`}
+                        ></div>
+                        <div className="row-span-1 py-[1vw]">
+                          {ticketDetail?.passenger?.length > 0 &&
+                            ticketDetail?.passenger.map((passenger, index) => (
+                              <div
+                                key={index}
+                                className="grid grid-cols-5 gap-[1.5vw] pt-[1vw]"
+                              >
+                                <div className="col-span-1 pt-[1vw]">
+                                  <p
+                                    className="text-[1.1vw] font-semibold"
+                                    // style={{ color: colorcode.theme }}
+                                  >
+                                    Traveller Name
                                   </p>
                                 </div>
-                              </div>
-                              <div className="col-span-2">
-                                <div className="grid grid-cols-3">
-                                  <div className="col-span-1">
-                                    <div
-                                      className="border-r-[0.5vw] bg-gradient-to-r border-[0.1vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw] relative"
-                                      style={{
-                                        //background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`,
-                                        borderColor: colorcode.theme,
-                                        // color: colorcode.theme,
-                                      }}
-                                    >
-                                      <p className="absolute left-[2.5vw] top-[0.6vw] text-[1.1vw]  font-semibold ">
-                                        {passenger?.age}
-                                      </p>
-                                    </div>
+                                <div className="col-span-2">
+                                  <div
+                                    className={`${
+                                      busdetails.bus_type_status === "luxury"
+                                        ? "bg-[#FFEEC9]"
+                                        : "bg-white"
+                                    } border-r-[0.5vw] border-[0.1vw] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw] relative`}
+                                    style={{
+                                      //background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`,
+                                      borderColor:
+                                        busdetails.bus_type_status === "luxury"
+                                          ? "#393939"
+                                          : colorcode.theme,
+                                      // color: colorcode.theme,
+                                    }}
+                                  >
+                                    <p className="absolute left-[1vw] top-[0.6vw] text-[1.1vw]  font-semibold ">
+                                      {passenger?.user_name}
+                                    </p>
                                   </div>
-                                  <div className="col-span-2 gap-[1vw] w-full h-full pl-[1.5vw]">
-                                    <button
-                                      type="button"
-                                      style={{
-                                        ...(passenger?.gender === "male"
-                                          ? {
-                                              backgroundColor: colorcode.theme,
-                                            }
-                                          : {
-                                              //background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`,
-                                              color: colorcode.theme,
-                                              borderColor: colorcode.theme,
-                                            }),
-                                      }}
-                                      className={`${
-                                        passenger?.gender === "male"
-                                          ? " text-white"
-                                          : ""
-                                      } h-[3vw] w-[50%] rounded-l-[0.5vw] border-[0.1vw] border-[#1F487C] `}
-                                      // onClick={() =>
-                                      //   setUserDetails({
-                                      //     ...userdetails,
-                                      //     sex: "male",
-                                      //   })
-                                      // }
-                                    >
-                                      Male
-                                    </button>
-                                    <button
-                                      type="button"
-                                      style={{
-                                        ...(passenger?.gender === "female"
-                                          ? {
-                                              backgroundColor: colorcode.theme,
-                                            }
-                                          : {
-                                              //background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`,
-                                              color: colorcode.theme,
-                                              borderColor: colorcode.theme,
-                                            }),
-                                      }}
-                                      className={`${
-                                        passenger?.gender === "female"
-                                          ? " text-white"
-                                          : ""
-                                      } h-[3vw] w-[50%] rounded-r-[0.5vw] border-[0.1vw] border-[#1F487C]`}
-                                      // onClick={() =>
-                                      //   setUserDetails({
-                                      //     ...userdetails,
-                                      //     sex: "female",
-                                      //   })
-                                      // }
-                                    >
-                                      Female
-                                    </button>
+                                </div>
+                                <div className="col-span-2">
+                                  <div className="grid grid-cols-3">
+                                    <div className="col-span-1">
+                                      <div
+                                        className="border-r-[0.5vw] bg-gradient-to-r border-[0.1vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw] relative"
+                                        style={{
+                                          //background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`,
+                                          borderColor:
+                                            busdetails.bus_type_status ===
+                                            "luxury"
+                                              ? "#393939"
+                                              : colorcode.theme,
+                                          // color: colorcode.theme,
+                                        }}
+                                      >
+                                        <p className="absolute left-[2.5vw] top-[0.6vw] text-[1.1vw]  font-semibold ">
+                                          {passenger?.age}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className="col-span-2 gap-[1vw] w-full h-full pl-[1.5vw]">
+                                      <button
+                                        type="button"
+                                        style={{
+                                          ...(passenger?.gender === "male"
+                                            ? {
+                                                backgroundColor:
+                                                  busdetails.bus_type_status ===
+                                                  "luxury"
+                                                    ? "#393939"
+                                                    : busdetails.bus_type_status ===
+                                                      "regular"
+                                                    ? colorcode.theme
+                                                    : "",
+                                              }
+                                            : {
+                                                //background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`,
+                                                color:
+                                                  busdetails.bus_type_status ===
+                                                  "luxury"
+                                                    ? "#393939"
+                                                    : busdetails.bus_type_status ===
+                                                      "regular"
+                                                    ? colorcode.theme
+                                                    : "",
+                                                borderColor:
+                                                  travelerDetails[index]
+                                                    ?.gender === "male" ||
+                                                  !travelerDetails[index]
+                                                    ? busdetails.bus_type_status ===
+                                                      "luxury"
+                                                      ? "#393939"
+                                                      : colorcode.theme
+                                                    : "",
+                                              }),
+                                        }}
+                                        className={`${
+                                          passenger?.gender === "male"
+                                            ? busdetails.bus_type_status ===
+                                              "luxury"
+                                              ? "text-[#ffff] border-[#393939]"
+                                              : busdetails.bus_type_status ===
+                                                "regular"
+                                              ? "text-[#ffff] border-[#1F487C]"
+                                              : ""
+                                            : ""
+                                        } h-[3vw] w-[50%] rounded-l-[0.5vw] border-[0.1vw] border-[#1F487C]`}
+                                        // onClick={() =>
+                                        //   setUserDetails({
+                                        //     ...userdetails,
+                                        //     sex: "male",
+                                        //   })
+                                        // }
+                                      >
+                                        Male
+                                      </button>
+                                      <button
+                                        type="button"
+                                        style={{
+                                          ...(passenger?.gender === "female"
+                                            ? {
+                                                background:
+                                                  busdetails.bus_type_status ===
+                                                  "luxury"
+                                                    ? "#393939"
+                                                    : busdetails.bus_type_status ===
+                                                      "regular"
+                                                    ? colorcode.theme
+                                                    : "",
+                                              }
+                                            : {
+                                                color:
+                                                  busdetails.bus_type_status ===
+                                                  "luxury"
+                                                    ? "#393939"
+                                                    : colorcode.theme,
+                                                borderColor:
+                                                  travelerDetails[index]
+                                                    ?.gender === "female" ||
+                                                  !travelerDetails[index]
+                                                    ? busdetails.bus_type_status ===
+                                                      "luxury"
+                                                      ? "#393939"
+                                                      : colorcode.theme
+                                                    : "",
+                                              }),
+                                        }}
+                                        className={`${
+                                          passenger?.gender === "female"
+                                            ? busdetails.bus_type_status ===
+                                              "luxury"
+                                              ? "text-[#ffff] border-[#393939]"
+                                              : busdetails.bus_type_status ===
+                                                "regular"
+                                              ? "text-[#ffff] border-[#1F487C]"
+                                              : ""
+                                            : ""
+                                        } h-[3vw] w-[50%] rounded-r-[0.5vw] border-[0.1vw] border-[#1F487C]`}
+                                        // onClick={() =>
+                                        //   setUserDetails({
+                                        //     ...userdetails,
+                                        //     sex: "female",
+                                        //   })
+                                        // }
+                                      >
+                                        Female
+                                      </button>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
-                      </div>
-                      <div className="row-span-1 py-[1vw]">
-                        <div className="grid grid-cols-5 gap-[1.5vw]">
-                          <div className="col-span-1 ">
-                            <p
-                              className="text-[1.1vw] font-semibold"
-                              // style={{ color: colorcode.theme }}
-                            >
-                              Contact Details
-                            </p>
-                          </div>
-                          <div className="col-span-2">
-                            <div
-                              className="border-r-[0.5vw]  border-[0.1vw]  text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw] relative"
-                              style={{
-                                //background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`,
-                                borderColor: colorcode.theme,
-                                // color: colorcode.theme,
-                              }}
-                            >
-                              <p className="absolute left-[1vw] top-[0.6vw] text-[1.1vw]  font-semibold ">
-                                {ticketDetail?.email_id}
+                            ))}
+                        </div>
+                        <div className="row-span-1 py-[1vw]">
+                          <div className="grid grid-cols-5 gap-[1.5vw]">
+                            <div className="col-span-1 ">
+                              <p
+                                className="text-[1.1vw] font-semibold"
+                                // style={{ color: colorcode.theme }}
+                              >
+                                Contact Details
                               </p>
                             </div>
-                          </div>
-                          <div className="col-span-2 flex relative">
-                            <div
-                              className="border-r-[0.1vw] border-py-[0.5vw] border-[0.1vw] text-[1.1vw] h-[3vw] w-[25%] rounded-l-[0.5vw] outline-none px-[1vw] relative"
-                              style={{
-                                //background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`,
-                                borderColor: colorcode.theme,
-                                // color: colorcode.theme,
-                              }}
-                            >
-                              <p
-                                className="absolute left-[1.5vw] top-[0.6vw] text-[1.1vw]  font-semibold "
+                            <div className="col-span-2">
+                              <div
+                                className="border-r-[0.5vw]  border-[0.1vw]  text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw] relative"
                                 style={{
+                                  //background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`,
+                                  borderColor:
+                                    busdetails.bus_type_status === "luxury"
+                                      ? "#393939"
+                                      : colorcode.theme,
                                   // color: colorcode.theme,
-                                  borderColor: colorcode.theme,
                                 }}
                               >
-                                +91
-                              </p>
+                                <p className="absolute left-[1vw] top-[0.6vw] text-[1.1vw]  font-semibold ">
+                                  {ticketDetail?.email_id}
+                                </p>
+                              </div>
                             </div>
-                            <div
-                              className="border-r-[0.5vw] border-[0.1vw]  text-[1.2vw] h-[3vw] w-[75%] rounded-r-[0.5vw] outline-none px-[1vw] relative"
-                              style={{
-                                //background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`,
-                                borderColor: colorcode.theme,
-                                // color: colorcode.theme,
-                              }}
-                            >
-                              <p className="absolute left-[1vw] top-[0.6vw] text-[1.1vw]  font-semibold">
-                                {ticketDetail?.mobile_number}
-                              </p>
+                            <div className="col-span-2 flex relative">
+                              <div
+                                className="border-r-[0.1vw] border-py-[0.5vw] border-[0.1vw] text-[1.1vw] h-[3vw] w-[25%] rounded-l-[0.5vw] outline-none px-[1vw] relative"
+                                style={{
+                                  //background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`,
+                                  borderColor:
+                                    busdetails.bus_type_status === "luxury"
+                                      ? "#393939"
+                                      : colorcode.theme,
+                                  // color: colorcode.theme,
+                                }}
+                              >
+                                <p
+                                  className="absolute left-[1.5vw] top-[0.6vw] text-[1.1vw]  font-semibold "
+                                  style={{
+                                    // color: colorcode.theme,
+                                    borderColor:
+                                      busdetails.bus_type_status === "luxury"
+                                        ? "#393939"
+                                        : colorcode.theme,
+                                  }}
+                                >
+                                  +91
+                                </p>
+                              </div>
+                              <div
+                                className="border-r-[0.5vw] border-[0.1vw]  text-[1.2vw] h-[3vw] w-[75%] rounded-r-[0.5vw] outline-none px-[1vw] relative"
+                                style={{
+                                  //background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`,
+                                  borderColor:
+                                    busdetails.bus_type_status === "luxury"
+                                      ? "#393939"
+                                      : colorcode.theme,
+                                  // color: colorcode.theme,
+                                }}
+                              >
+                                <p className="absolute left-[1vw] top-[0.6vw] text-[1.1vw]  font-semibold">
+                                  {ticketDetail?.mobile_number}
+                                </p>
+                              </div>
                             </div>
                           </div>
                         </div>
+                        <div
+                          className={`${
+                            busdetails.bus_type_status === "luxury"
+                              ? "border-[#393939]"
+                              : "border-[#1F487C]"
+                          } border-dashed border-2`}
+                        ></div>
                       </div>
-                      <div class="border-dashed border-2 border-[#1F487C]"></div>
                     </div>
-                  </div>
-                  <div className="flex items-center justify-between pl-[1vw] pr-[2vw] pt-[1vw]">
-                    <div>
-                      <Barcode
-                        value={generateRandomId("AXER", 12)}
-                        width={3}
-                        height={70}
-                        lineColor={colorcode.theme}
-                      />
-                    </div>
-                    {/* <img
+                    <div className="flex items-center justify-between pl-[1vw] pr-[2vw] pt-[1vw]">
+                      <div>
+                        <Barcode
+                          value={generateRandomId("AXER", 12)}
+                          width={3}
+                          height={70}
+                          lineColor={
+                            busdetails.bus_type_status === "luxury"
+                              ? "#393939"
+                              : colorcode.theme
+                          }
+                        />
+                      </div>
+                      {/* <img
                     className="h-[6vw] w-[6vw] cursor-pointer"
                     src={require("../../assets/download.png")}
                     onClick={generatePDF}
                   /> */}
-                    {/* <div className="cursor-pointer pr-[2vw] pb-[2vw]">
+                      {/* <div className="cursor-pointer pr-[2vw] pb-[2vw]">
                     <div className="border-[.6vw] absolute h-[6vw] w-[6vw] rounded-[50%] border-fuchsia-600"></div>
                     <div className="bg-red-600 relative h-[5vw] w-[5vw] left-[.5vw] top-[.9vw]  rounded-[50%] flex justify-center items-center ">
                     
                     <span><FiDownload size={35} color="white"/></span>
                     </div>
                   </div> */}
-                    <div
-                      className="cursor-pointer pr-[2vw] pb-[2vw] "
-                      onClick={generatePDF}
-                    >
                       <div
-                        className="border-[.6vw] h-[6vw] w-[6vw] rounded-[50%]"
-                        style={{ borderColor: colorcode.gradient }}
+                        className="cursor-pointer pr-[2vw] pb-[2vw] "
+                        onClick={generatePDF}
                       >
                         <div
-                          className="bg-red-600 relative h-[5vw] w-[5vw] right-[.1vw] bottom-[.1vw] rounded-[50%] flex justify-center items-center "
-                          style={{ backgroundColor: colorcode.theme }}
+                          className="border-[.6vw] h-[6vw] w-[6vw] rounded-[50%]"
+                          style={{
+                            borderColor:
+                              busdetails.bus_type_status === "luxury"
+                                ? "#39393983"
+                                : colorcode.gradient,
+                          }}
                         >
-                          <span>
-                            <FiDownload size={35} color="white" />
-                          </span>
+                          <div
+                            className="bg-red-600 relative h-[5vw] w-[5vw] right-[.1vw] bottom-[.1vw] rounded-[50%] flex justify-center items-center "
+                            style={{
+                              backgroundColor:
+                                busdetails.bus_type_status === "luxury"
+                                  ? "#393939"
+                                  : colorcode.theme,
+                            }}
+                          >
+                            <span>
+                              <FiDownload size={35} color="white" />
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </Drawer>
         </div>
         <div className="md:hidden block w-full">

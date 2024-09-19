@@ -302,7 +302,7 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
             className={`flex ${
               sidebarToggle
                 ? "absolute right-[0.8vw] top-[0.5vw]"
-                : "absolute left-[64.5vw] top-[0.5vw]"
+                : "absolute left-[64.5vw] top-[0.2vw]"
             } items-center `}
           >
             <img src={sbus} className="w-[1.4vw] h-[1.5vw] mr-[0.5vw]" />

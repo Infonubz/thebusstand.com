@@ -1179,7 +1179,7 @@ export default function Home1() {
                             />
                             <img
                               src={map}
-                              className="absolute left-0 top-[-4vw]"
+                              className="absolute left-0 top-[-4.1vw]"
                               style={{
                                 // height: "100%",
                                 width: "80%",

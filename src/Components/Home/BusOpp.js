@@ -8,8 +8,9 @@ import profile from "../../../src/assets/Profile.png";
 import ShareButtons from "../MainComponenet/ShareButton";
 import ModalPopup from "../MainComponenet/Modal/ModalPopup";
 import join from "../../assets/join.png";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
+import homesky from "../../assets/BackgroundSky1.png";
 
 const BusOpp = () => {
   const BusOperator = [
@@ -44,6 +45,8 @@ const BusOpp = () => {
     setShowDialog(false);
   };
   const [showDialog, setShowDialog] = useState(false);
+
+  const navigation = useNavigate()
   return (
     <>
       <div className="bg-[#E5FFF1] border-b-2 bg-[#E5FFF1] min-h-screen max-h-auto w-full> md:block hidden">
@@ -51,7 +54,7 @@ const BusOpp = () => {
           <div className="h-[4.5vw] w-full flex">
             <div className="w-[40%] h-[4vw] flex ">
               <img className="w-[6.25vw] h-[4vw]" src={buslogo} />
-              <img src={busstand} className="h-[4vw] w-[20vw] py-[0.1vw]" />
+              <img onClick={()=>navigation('/')} src={busstand} className="h-[4vw] w-[20vw] py-[0.1vw]" />
               <p className="border-r-[0.3vw] border-[#1F487C] mt-[0.2vw] h-[4vw] ml-[1vw]"></p>
               <div className="w-[9vw] h-[3.8vw] mt-[0.3vw] bg-[#1F487C] ml-[2vw] rounded-full  relative">
                 <img
@@ -96,19 +99,50 @@ const BusOpp = () => {
           </div>
         </div>
 
+
+        <div
+          className="relative md:h-[45vw] h-[100%] bg-[#d1f8e3]"
+          style={{ zIndex: 1 }}
+        >
+           <div
+            className="md:h-[10vw] h-[14vw] z-[1] md:z-0 overflow-x-hidden"
+            style={{
+              backgroundImage: `url(${homesky})`,
+              width: "100%",
+              overflow: "hidden",
+              // backgroundSize: "cover",
+              position: "relative",
+              overflowX: "hidden",
+              width: "100%",
+            }}
+          >
+              <label className="absolute left-[30vw] md:left-[30vw] top-[2vw] md:top-[0.1vw] text-[6vw]  md:text-[4vw] text-white font-bold opacity-20">
+              {`Private Bus Operators`}
+            </label>
+            <label className="absolute left-[37vw] top-[5vw] md:top-[2vw] text-[3vw]  md:text-[2vw] text-white font-bold">
+              {"Private Bus Operators"}
+            </label>
+            <div className="cloudhome"></div>
+          </div>
+<div className="absolute top-[7vw] left-[12.5vw] bg-white w-3/4 h-[35vw] rounded-lg md:block hidden">
+          
         <div className="px-[5vw]">
-          <div className=" w-full flex px-[2vw] items-center justify-between mt-[1vw] ">
+          <div className=" w-full flex px-[2vw] items-center justify-between my-[1vw] ">
             <p className="text-[1.5vw] text-[#1F487C] font-bold">
               4500+ Private Bus Operators
             </p>
-          </div>
-          <div className="grid grid-cols-6 w-full px-[2vw] mt-[2vw] ">
+          </div >
+          <div className="max-h-[28vw]  overflow-y-auto">
+          <div className="grid grid-cols-4 w-full px-[2vw] mt-[2vw] ">
             {BusOperator.map((item) => (
               <div className="col-span-1 w-full py-[0.8vw] ">
                 <p className="text-[1.2vw]">{item}</p>
               </div>
             ))}
           </div>
+          </div>
+        </div>
+        </div>
         </div>
       </div>
       <ModalPopup

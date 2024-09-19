@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import buslogo from "../../assets/502-ai 1.png";
 import busstand from "../../assets/busstand.png";
 import bus from "../../assets/bus 1.png";
 import share from "../../assets/Share.png";
 import Partner from "../../assets/Partner.png";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import ticket from "../../assets/ticket.png";
-import { Drawer, Dropdown, Modal, Space } from "antd";
+import { Drawer, Dropdown, Modal, Space, Tooltip } from "antd";
 import { FaTicketAlt, FaUserCircle } from "react-icons/fa";
 import profile from "../../assets/Profile.png";
 import ModalPopup from "../MainComponenet/Modal/ModalPopup";
@@ -17,6 +17,7 @@ import { RiLogoutCircleLine } from "react-icons/ri";
 import { PiUserCircleDuotone } from "react-icons/pi";
 import { toast } from "react-toastify";
 import { capitalizeFirstLetter } from "./Captalization";
+import { MdStarRate } from "react-icons/md";
 
 export default function CommonMainNavbar() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -24,7 +25,7 @@ export default function CommonMainNavbar() {
   const [logModalIsOpen, setLogModalIsOpen] = useState(false);
   const [accDrawer, setAccDrawer] = useState(false);
   const [logMobileIsOpen, setLogMobileIsOpen] = useState(false);
-
+  const [username, setUserName] = useState("");
   const closeLoginModal = () => {
     setLoginIsOpen(false);
   };
@@ -36,7 +37,6 @@ export default function CommonMainNavbar() {
     setLogModalIsOpen(false);
   };
   const navigation = useNavigate();
-  const LoginUser_Name = sessionStorage.getItem("user_name");
   const handleProPage = () => {
     navigation("/main", { state: { tabIndex: 1 } });
   };
@@ -60,6 +60,7 @@ export default function CommonMainNavbar() {
     sessionStorage.clear();
     localStorage.clear();
     toast.success("Logout Successfully");
+    navigation("/");
     // window.location.reload();
   };
   const openLogMobile = () => {
@@ -102,11 +103,18 @@ export default function CommonMainNavbar() {
       ),
     },
   ];
+  useEffect(() => {
+    const LoginUser_Name = sessionStorage.getItem("user_name");
+    setUserName(LoginUser_Name);
+  }, [sessionStorage.getItem("user_name")]);
+  const location = useLocation();
+  console.log(location.pathname, "locationlocation");
+
   return (
     <>
-      <div className="md:h-[3.8vw] bg-[#E5FFF1] h-[10vw] relative  w-full flex md:shadow-lg md:shadow-black">
+      <div className="md:h-[3.8vw] bg-[#E5FFF1] h-[10vw] relative  w-full flex ">
         <div
-          className="w-[40%] md:h-[3.3vw] h-[10vw] flex cursor-pointer"
+          className="w-[19%] md:h-[3.3vw] h-[10vw] flex cursor-pointer"
           onClick={() => navigation("/")}
         >
           <img
@@ -115,107 +123,192 @@ export default function CommonMainNavbar() {
           />
           <img
             src={busstand}
-            className="md:h-[2.8vw] h-[10vw] md:w-[12vw] w-[40vw] py-[0.1vw] absolute md:top-[0.3vw] left-[5vw]"
+            className="md:h-[2.8vw] h-[10vw] md:w-[13.5vw] w-[40vw] py-[0.1vw] absolute md:top-[0.3vw] left-[5vw]"
           />
-          {/* <p className="border-r-[0.3vw] border-[#1F487C] hidden md:block mt-[0.2vw] h-[3.3vw] ml-[1vw]"></p> */}
-          {/* <div className="w-[9vw] h-[3.1vw] mt-[0.3vw]  bg-[#1F487C] ml-[1vw] rounded-full hidden md:block relative">
-            <img
-              src={bus}
-              className="h-[2.4vw] w-[4vw] absolute top-0"
-              style={{ left: "50%", transform: "translateX(-50%)" }}
-            />
-            <p
-              className="text-white  font-semibold absolute bottom-[0.2vw]  text-[0.8vw]"
-              style={{ left: "50%", transform: "translateX(-50%)" }}
-            >
-              Bus Tickets
-            </p>
-          </div> */}
         </div>
-        <a
-          className="w-[20%] h-full  items-center flex justify-center cursor-pointer"
-          href="http://192.168.90.43:8082/"
-        >
-          <img src={Partner} className="w-auto hidden md:block h-[3.3vw]" />
-        </a>
-        <div className="w-[40%]  h-full md:pr-[2vw]   flex gap-[2vw] md:flex items-center md:justify-end justify-end">
-          <div
-            className="flex items-center justify-center gap-[0.5vw] cursor-pointer"
-            onClick={() => setModalIsOpen(true)}
+        {location.pathname != "/dashboard" ? (
+          <a
+            className="w-[20%] h-full  items-center flex justify-center cursor-pointer"
+            href="http://192.168.90.43:8082/"
+            target="_blank"
           >
-            <img
-              className="md:w-[1.6vw] md:h-[1.6vw] w-[7vw] h-[7vw]"
-              src={share}
+            {/* <img src={Partner} className="w-auto hidden md:block h-[3.3vw]" /> */}
+          </a>
+        ) : (
+          <div className="w-[70%] flex items-center justify-center ">
+            <MdStarRate
+              size={"2.5vw"}
+              id="changingText"
+              style={{
+                animation: "colorChange 2s infinite alternate",
+              }}
             />
-            <p className="text-[1.2vw] font-semibold text-[#1F487C] hidden md:block">
-              Share
-            </p>
-          </div>
-          <div
-            className="flex items-center justify-center gap-[0.5vw] cursor-pointer"
-            onClick={() => navigation("/rewards")}
-          >
-            <img
-              className="md:w-[1.6vw] md:h-[1.6vw] w-[7vw] h-[7vw]"
-              src={ticket}
-            />
-            <p className="hidden md:block text-[1.2vw] font-semibold text-[#1F487C]">
-              Rewards/Offers
-            </p>
-          </div>{" "}
-          {/* <div className="flex items-center justify-center gap-[0.5vw]">
-            <div className="md:block hidden">
-              <img className=" w-[1.6vw] h-[1.6vw] " src={profile} />
-            </div>
-            <div className="md:hidden block" onClick={handleLoginPage}>
-              <img className=" w-[7vw] h-[7vw]" src={profile} />
-            </div>
-            <p
-              className="text-[1.2vw] hidden md:block font-semibold text-[#1F487C] cursor-pointer"
-              onClick={() => setLoginIsOpen(true)}
+            <span
+              id="changingText"
+              className="text-[2.1vw] tracking-normal italic px-[0.5vw]"
+              style={{
+                fontFamily: "Calibri",
+                animation: "colorChange 2s infinite alternate",
+              }}
             >
-              {`${
-                sessionStorage.getItem("user_name") &&
-                sessionStorage.getItem("user_name") != "null"
-                  ? sessionStorage.getItem("user_name")
-                  : "Login/SignUp"
-              }`}
-            </p>
-          </div> */}
-          {LoginUser_Name && LoginUser_Name != "null" ? (
-            <div>
-              <Dropdown
-                menu={{
-                  items,
-                }}
-                className="flex items-center gap-[0.5vw] cursor-pointer"
-              >
-                <a onClick={(e) => e.preventDefault()}>
-                  <Space>
-                    <div className="flex items-center  gap-[0.5vw]">
-                      <div>
-                        <FaUserCircle size="1.5vw" color="#1F487C" />
-                      </div>
-                      <p className="text-[1.2vw] font-semibold text-[#1F487C]">
-                        {capitalizeFirstLetter(LoginUser_Name)}
-                      </p>
-                    </div>
-                  </Space>
-                </a>
-              </Dropdown>
-            </div>
-          ) : (
+              We show the best travel rates for the same bus by comparing market
+              apps
+            </span>
+
+            <MdStarRate
+              size={"2.5vw"}
+              id="changingText"
+              style={{
+                animation: "colorChange 2s infinite alternate",
+              }}
+            />
+          </div>
+        )}
+        {location.pathname != "/dashboard" ? (
+          <div className="w-[70%]  h-full md:pr-[2vw]   flex gap-[2vw] md:flex items-center md:justify-end justify-end">
             <div
               className="flex items-center justify-center gap-[0.5vw] cursor-pointer"
-              onClick={() => setLoginIsOpen(true)}
+              onClick={() => setModalIsOpen(true)}
             >
-              <img className="w-[1.6vw] h-[1.6vw]" src={profile} />
-              <p className="text-[1.2vw] font-semibold text-[#1F487C]">
-                Login/SignUp
+              <img
+                className="md:w-[1.6vw] md:h-[1.6vw] w-[7vw] h-[7vw]"
+                src={share}
+              />
+              <p className="text-[1.2vw] font-semibold text-[#1F487C] hidden md:block">
+                Share
               </p>
             </div>
-          )}
-        </div>
+            <div
+              className="flex items-center justify-center gap-[0.5vw] cursor-pointer"
+              onClick={() => navigation("/rewards")}
+            >
+              <img
+                className="md:w-[1.6vw] md:h-[1.6vw] w-[7vw] h-[7vw]"
+                src={ticket}
+              />
+              <p className="hidden md:block text-[1.2vw] font-semibold text-[#1F487C]">
+                Rewards/Offers
+              </p>
+            </div>{" "}
+            {username && username != "null" ? (
+              <div>
+                <Dropdown
+                  menu={{
+                    items,
+                  }}
+                  className="flex items-center gap-[0.5vw] cursor-pointer"
+                >
+                  <a onClick={(e) => e.preventDefault()}>
+                    <Space>
+                      <div className="flex items-center  gap-[0.5vw]">
+                        <div>
+                          <FaUserCircle size="1.5vw" color="#1F487C" />
+                        </div>
+                        <p className="text-[1.2vw] font-semibold text-[#1F487C]">
+                          {capitalizeFirstLetter(username)}
+                        </p>
+                      </div>
+                    </Space>
+                  </a>
+                </Dropdown>
+              </div>
+            ) : (
+              <div
+                className="flex items-center justify-center gap-[0.5vw] cursor-pointer"
+                onClick={() => setLoginIsOpen(true)}
+              >
+                <img className="w-[1.6vw] h-[1.6vw]" src={profile} />
+                <p className="text-[1.2vw] font-semibold text-[#1F487C]">
+                  Login/SignUp
+                </p>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="w-[11%]  h-full  gap-[0.8vw] pr-[1vw]  flex md:flex items-center md:justify-end justify-end">
+            <div
+              className="flex items-center justify-center gap-[0.5vw] cursor-pointer"
+              onClick={() => setModalIsOpen(true)}
+            >
+              <Tooltip
+                placement="bottom"
+                title="Share"
+                className="cursor-pointer"
+                // color="white"
+              >
+                <img
+                  className="md:w-[2.5vw] md:h-[2.5vw] w-[7vw] h-[7vw]"
+                  src={share}
+                />
+              </Tooltip>
+
+              {/* <p className="text-[1.2vw] font-semibold text-[#1F487C] hidden md:block">
+                Share
+              </p> */}
+            </div>
+            <div
+              className="flex items-center justify-center gap-[0.5vw] cursor-pointer"
+              onClick={() => navigation("/rewards")}
+            >
+              <Tooltip
+                placement="bottom"
+                title="Rewards/Offers"
+                className="cursor-pointer"
+                // color="white"
+              >
+                <img
+                  className="md:w-[2.5vw] md:h-[2.5vw] w-[7vw] h-[7vw]"
+                  src={ticket}
+                />
+              </Tooltip>
+
+              {/* <p className="hidden md:block text-[1.2vw] font-semibold text-[#1F487C]">
+                Rewards/Offers
+              </p> */}
+            </div>{" "}
+            {username && username != "null" ? (
+              <div>
+                <Dropdown
+                  menu={{
+                    items,
+                  }}
+                  className="flex items-center gap-[0.5vw] cursor-pointer"
+                >
+                  <a
+                    onClick={(e) => e.preventDefault()}
+                    className="bg-[#1F487C] w-[2.5vw] h-[2.5vw] rounded-full flex items-center justify-center"
+                  >
+                    {/* <Space>
+                      <div className="flex items-center  gap-[0.5vw]">
+                        <div>
+                          <FaUserCircle size="1.5vw" color="#1F487C" />
+                        </div>
+                        <p className="text-[1.2vw] font-semibold text-[#1F487C]">
+                          {capitalizeFirstLetter(username)}
+                        </p>
+                      </div>
+                    </Space> */}
+                    {/* <div className="bg-white w-[1.8vw] h-[1.8vw] rounded-full flex items-center justify-center"> */}
+                      <p className="text-[1.5vw]  text-white font-extrabold">
+                        {capitalizeFirstLetter(username.split("")[0])}
+                      </p>
+                    {/* </div> */}
+                  </a>
+                </Dropdown>
+              </div>
+            ) : (
+              <div
+                className="flex items-center justify-center gap-[0.5vw] cursor-pointer"
+                onClick={() => setLoginIsOpen(true)}
+              >
+                <img className="md:w-[2.5vw] md:h-[2.5vw]" src={profile} />
+                {/* <p className="text-[1.2vw] font-semibold text-[#1F487C]">
+                  Login/SignUp
+                </p> */}
+              </div>
+            )}
+          </div>
+        )}
       </div>
       <ModalPopup
         show={modalIsOpen}

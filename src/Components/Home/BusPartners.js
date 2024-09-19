@@ -19,8 +19,9 @@ import bus7 from "../../assets/Ellipse 1 (8).png";
 import bus8 from "../../assets/Ellipse 1 (9).png";
 import bus10 from "../../assets/Ellipse.png";
 import bus11 from "../../assets/Ellipse 1 (5).png";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
+import homesky from "../../assets/BackgroundSky1.png";
 
 const BusPartners = () => {
   const busdetails = [
@@ -67,6 +68,7 @@ const BusPartners = () => {
     setShowDialog(false);
   };
   const [showDialog, setShowDialog] = useState(false);
+  const navigation = useNavigate()
 
   return (
     <>
@@ -75,7 +77,7 @@ const BusPartners = () => {
           <div className="h-[4.5vw] w-full flex">
             <div className="w-[40%] h-[4vw] flex ">
               <img className="w-[6.25vw] h-[4vw]" src={buslogo} />
-              <img src={busstand} className="h-[4vw] w-[20vw] py-[0.1vw]" />
+              <img onClick={()=>navigation('/')} src={busstand} className="h-[4vw] w-[20vw] py-[0.1vw]" />
               <p className="border-r-[0.3vw] border-[#1F487C] mt-[0.2vw] h-[4vw] ml-[1vw]"></p>
               <div className="w-[9vw] h-[3.8vw] mt-[0.3vw] bg-[#1F487C] ml-[2vw] rounded-full  relative">
                 <img
@@ -120,27 +122,54 @@ const BusPartners = () => {
           </div>
         </div>
 
-        <div className="bg-[#E5FFF1] ">
-          <div>
-            <div className="px-[5vw] ">
-              <p className=" text-[1.5vw] pl-[2vw] text-[#1F487C] font-bold pt-[3vw] pb-[1vw]">
+        <div
+          className="relative md:h-[45vw] h-[100%] bg-[#d1f8e3]"
+          style={{ zIndex: 1 }}
+        >
+           <div
+            className="md:h-[10vw] h-[14vw] z-[1] md:z-0 overflow-x-hidden"
+            style={{
+              backgroundImage: `url(${homesky})`,
+              width: "100%",
+              overflow: "hidden",
+              // backgroundSize: "cover",
+              position: "relative",
+              overflowX: "hidden",
+              width: "100%",
+            }}
+          >
+              <label className="absolute left-[39vw] md:left-[43vw] top-[2vw] md:top-[0.1vw] text-[6vw]  md:text-[4vw] text-white font-bold opacity-20">
+              {`RTCs`}
+            </label>
+            <label className="absolute left-[45vw] top-[5vw] md:top-[2vw] text-[3vw]  md:text-[2vw] text-white font-bold">
+              {"RTCs"}
+            </label>
+            <div className="cloudhome"></div>
+          </div>
+
+<div className="absolute top-[7vw] left-[12.5vw] bg-white w-3/4 h-[35vw] rounded-lg md:block hidden">
+          <div className="">
+            <div className="px-[5vw] py-[1.5vw] ">
+              {/* <p className=" text-[1.5vw] pl-[2vw] text-[#1F487C] font-bold pt-[3vw] pb-[1vw]">
                 We’ve partnered with the world’s best bus companies
-              </p>
-              <div className=" w-full flex px-[2vw] items-center justify-between ">
-                <p className="text-[1.5vw] text-black">26 RTCs</p>
+              </p> */}
+              <div className=" w-full flex px-[2vw] items-center justify-between py-[1vw] ">
+                <p className="text-[1.5vw] text-[#1F487C] font-bold">26 RTCs</p>
               </div>
-              <div className="grid grid-cols-9 w-full py-[1vw]">
+              <div className="max-h-[28vw]  overflow-y-auto">
+              <div className="grid grid-cols-5 w-full py-[1vw]">
                 {busdetails.map((item) => (
-                  <div className="col-span-1 w-full items-center justify-center flex-col">
+                  <div className="col-span-1 w-full items-center justify-center py-[.5vw]  flex-col">
                     <img
                       src={item.logo}
                       className="w-[8vw] h-[8vw] ml-[1vw] rounded-full"
                     />
-                    <p className="text-center py-[0.5vw] text-[1vw]">
+                    <p className="text-center py-[0.5vw] text-[1vw] pr-[3vw]">
                       {item.label}
                     </p>
                   </div>
                 ))}
+              </div>
               </div>
             </div>
 
@@ -153,6 +182,7 @@ const BusPartners = () => {
               <ShareButtons url={"http://localhost:3008/"} />
             </ModalPopup>
           </div>
+        </div>
         </div>
       </div>
 
