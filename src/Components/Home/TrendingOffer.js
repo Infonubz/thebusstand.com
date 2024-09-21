@@ -72,6 +72,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import homesky from "../../assets/BackgroundSky1.png";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
+import Footer from "./Footer";
 
 const TrendingOffer = () => {
   const [showDialog, setShowDialog] = useState(false);
@@ -208,7 +209,7 @@ const TrendingOffer = () => {
   return (
     <>
       <div className="bg-[#E5FFF1] min-h-screen max-h-auto w-full overflow-auto relative  md:block hidden ">
-        <div className="flex flex-col gap-[1vw]">
+        <div className="flex flex-col ">
           {/* <div className="h-[4.5vw] w-full flex">
             <div className="w-[40%] h-[4vw] flex ">
               <img className="w-[6.25vw] h-[4vw]" src={buslogo} />
@@ -281,12 +282,12 @@ const TrendingOffer = () => {
               <div className="cloudhome"></div>
             </div>
             <div className="absolute top-[7vw] left-[12.5vw] bg-white w-3/4 h-[35vw] rounded-lg md:block hidden">
-              <div className=" w-full flex px-[4vw] items-center justify-between my-[1vw] ">
+              <div className=" w-full flex px-[4vw] items-center justify-between mt-[1vw] ">
                 <p className="text-[1.5vw] text-[#1F487C] font-bold">
                   Trending Offers
                 </p>
               </div>
-              <div className="max-h-[28vw] h-full  overflow-y-auto w-[100%] px-[3vw] place-items-center py-[1vw] items-center justify-center flex">
+              <div className="max-h-[28vw] h-full  overflow-y-auto w-[100%] px-[3vw] place-items-center pb-[1vw] items-center justify-center flex">
                 <div className="grid grid-cols-3 w-full h-full items-center flex-col  gap-x-[1vw] justify-center px-[1vw]">
                   {promotionlist?.map((item, index) => (
                     // <>
@@ -316,6 +317,7 @@ const TrendingOffer = () => {
           </div>
         </div>
       </div>
+      <Footer/>
 
       {/* ----------------------------------------MobileView------------------------------------------------ */}
       <div className="md:hidden block ">

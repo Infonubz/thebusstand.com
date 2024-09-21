@@ -1,84 +1,82 @@
-import React, { useEffect, useRef, useState } from "react";
-import buslogo from "../../../src/assets/502-ai 1.png";
-import busstand from "../../../src/assets/busstand.png";
-import bus from "../../../src/assets/bus 1.png";
-import profile from "../../../src/assets/Profile.png";
-import ticket from "../../../src/assets/ticket.png";
-import share from "../../../src/assets//Share.png";
-import bg_build1 from "../../assets/bg_build1.png";
-import bg_build2 from "../../assets/bg_build2.png";
-import vehicle from "../../../src/assets/vehicles.png";
-import {
-  DatePicker,
-  Drawer,
-  Dropdown,
-  Input,
-  Popover,
-  Select,
-  Space,
-} from "antd";
+import React, { useEffect, useState } from "react";
+// import { useRefe } from "react";
+// import buslogo from "../../../src/assets/502-ai 1.png";
+// import busstand from "../../../src/assets/busstand.png";
+// import bus from "../../../src/assets/bus 1.png";
+// import profile from "../../../src/assets/Profile.png";
+// import ticket from "../../../src/assets/ticket.png";
+// import share from "../../../src/assets//Share.png";
+// import bg_build1 from "../../assets/bg_build1.png";
+// import bg_build2 from "../../assets/bg_build2.png";
+// import vehicle from "../../../src/assets/vehicles.png";
+// import {
+//   DatePicker,
+//   Dropdown,
+//   Input,
+//   Popover,
+//   Select,
+//   Space,
+// } from "antd";
+import { Drawer } from "antd";
 import suitcase from "../../../src/assets/suitcase.png";
 import stand_man from "../../assets/stand_man.png";
 import man from "../../assets/man.png";
 import bag from "../../assets/bag.png";
 import map from "../../assets/map.png";
-import stand from "../../assets/stand.png";
+// import stand from "../../assets/stand.png";
 import "../../App.css";
-import {
-  FaArrowLeft,
-  FaArrowRightArrowLeft,
-  FaArrowRightLong,
-  FaBus,
-  FaMapPin,
-} from "react-icons/fa6";
+import { FaArrowLeft, FaArrowRightArrowLeft, FaMapPin } from "react-icons/fa6";
 import dayjs from "dayjs";
-import card1 from "../../assets/card1.png";
-import card2 from "../../assets/card2.png";
-import card3 from "../../assets/card3.png";
-import place1 from "../../assets/Vector (10).png";
-import place2 from "../../assets/Vector (11).png";
-import place4 from "../../assets/Vector (5).png";
-import place5 from "../../assets/Vector (6).png";
-import place6 from "../../assets/Vector (7).png";
-import place7 from "../../assets/Vector (8).png";
-import place8 from "../../assets/Vector (9).png";
-import mumbai from "../../assets/mumbai.png";
+// import card1 from "../../assets/card1.png";
+// import card2 from "../../assets/card2.png";
+// import card3 from "../../assets/card3.png";
+// import place1 from "../../assets/Vector (10).png";
+// import place2 from "../../assets/Vector (11).png";
+// import place4 from "../../assets/Vector (5).png";
+// import place5 from "../../assets/Vector (6).png";
+// import place6 from "../../assets/Vector (7).png";
+// import place7 from "../../assets/Vector (8).png";
+// import place8 from "../../assets/Vector (9).png";
+// import mumbai from "../../assets/mumbai.png";
 import Buses from "./Buses";
 import BusOperator from "./BusOperator";
-import mumbai1 from "../../assets/mumbai1.png";
-import bengaluru from "../../assets/bengaluru.png";
-import pondy from "../../assets/pondy.png";
-import cbe from "../../assets/cbe.png";
+// import mumbai1 from "../../assets/mumbai1.png";
+// import bengaluru from "../../assets/bengaluru.png";
+// import pondy from "../../assets/pondy.png";
+// import cbe from "../../assets/cbe.png";
 import DomesticPlace from "./Domestic";
 import Rating from "./Rating";
-import { useLocation, useNavigate, useParams } from "react-router";
-import { CiCalendar, CiSearch } from "react-icons/ci";
-import { FiCalendar } from "react-icons/fi";
+import { useNavigate, useParams } from "react-router";
+// import { useLocation } from "react-router";
+// import { CiCalendar } from "react-icons/ci";
+import { CiSearch } from "react-icons/ci";
+// import { FiCalendar } from "react-icons/fi";
 import Faqs from "./FAQ";
 import MobileApp from "./Mobile";
 import Footer from "./Footer";
-import Partner from "../../assets/Partner.png";
+// import Partner from "../../assets/Partner.png";
 import { useDispatch, useSelector } from "react-redux";
-import { BUS_DATAS } from "../../Store/type";
-import LocationComponent from "./LocationPermission";
+// import { BUS_DATAS } from "../../Store/type";
+// import LocationComponent from "./LocationPermission";
 // import Modal from "react-modal";
 // import { Button, Modal } from "antd";
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
-import { RxCross2 } from "react-icons/rx";
-import { LuArrowDownUp, LuMapPin } from "react-icons/lu";
-import map1 from "../../assets/Precise.png";
-import map2 from "../../assets/Approx.png";
+// import { RxCross2 } from "react-icons/rx";
+import { LuArrowDownUp } from "react-icons/lu";
+// import map1 from "../../assets/Precise.png";
+// import map2 from "../../assets/Approx.png";
 import { toast } from "react-toastify";
 import GoogleMap from "./GoogleMap";
 import ShareButtons from "../MainComponenet/ShareButton";
-import {
-  IoIosArrowBack,
-  IoIosArrowDown,
-  IoIosArrowForward,
-} from "react-icons/io";
+// import {
+//   IoIosArrowBack,
+//   IoIosArrowDown,
+//   IoIosArrowForward,
+// } from "react-icons/io";
 import locationmap from "../../assets/locationicon.png";
-import { FaMapMarkerAlt, FaTicketAlt, FaUserCircle } from "react-icons/fa";
+import { FaMapMarkerAlt, FaTicketAlt } from "react-icons/fa";
+// import {FaUserCircle } from "react-icons/fa";
 import precius from "../../assets/precius.png";
 import ModalPopup from "../MainComponenet/Modal/ModalPopup";
 import thankyou from "../../assets/thankyou.png";
@@ -88,12 +86,13 @@ import Offers from "./Offers";
 // import { Calendar } from "primereact/calendar";
 import axios from "axios";
 import moment, { min } from "moment";
-import { PiBusThin, PiUserCircleDuotone } from "react-icons/pi";
-import Calendar from "react-calendar";
+import { PiUserCircleDuotone } from "react-icons/pi";
+// import { PiBusThin } from "react-icons/pi";
+// import Calendar from "react-calendar";
 import { LiaCitySolid } from "react-icons/lia";
-import HomePageDatePicker from "./HomeDatePicker";
+// import HomePageDatePicker from "./HomeDatePicker";
 import "./HomeDatePicker.css";
-import DateInput from "../MainComponenet/DatePicker/Components/DateInput";
+// import DateInput from "../MainComponenet/DatePicker/Components/DateInput";
 import "../../Components/Home/Home.css";
 import HomedateInput from "../MainComponenet/DatePicker/Components/HomeDateInput";
 import HomeDateInput from "../MainComponenet/DatePicker/Components/HomeDateInput";
@@ -103,8 +102,8 @@ import { SendTravelDetails } from "../../Api/Dashboard/Dashboard";
 import TopTravelledBusRoutes from "./TopTravelledBusRoutes";
 import { SearchableDropdown } from "./SearchableDropDown";
 import { RiLogoutCircleLine } from "react-icons/ri";
-import { GetUserDetails } from "../../Api/Login/Login";
-import { MdKeyboardDoubleArrowUp } from "react-icons/md";
+// import { GetUserDetails } from "../../Api/Login/Login";
+// import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
 
 const validationSchema = Yup.object().shape({
@@ -124,20 +123,20 @@ const validationSchema = Yup.object().shape({
   to: Yup.string().required("Field is Required"),
 });
 export default function Home1() {
-  const onChange = (value) => {
-    console.log(`selected ${value}`);
-  };
-  const onSearch = (value) => {
-    console.log("search:", value);
-  };
+  // const onChange = (value) => {
+  //   console.log(`selected ${value}`);
+  // };
+  // const onSearch = (value) => {
+  //   console.log("search:", value);
+  // };
 
   // Filter `option.label` match the user type `input`
 
   const getselecteddate = useSelector((state) => state.selected_date);
   console.log(getselecteddate, "getselecteddategetselecteddate");
 
-  const filterOption = (input, option) =>
-    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  // const filterOption = (input, option) =>
+  //   (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   const currentDate = new Date();
   const nextDate1 = new Date();
   nextDate1.setDate(currentDate.getDate() + 1);
@@ -150,74 +149,74 @@ export default function Home1() {
   console.log(dateSelection, "dateselectiondateselectiondateselection");
   console.log(nextDate3, "nextdatenextedatewfaewfawgafdsagewa");
 
-  const offer = [card1, card2, card3, card1, card2, card1, card3];
-  const top_routes = [
-    {
-      from: "Bengaluru",
-      to: "Hyderabad",
-      img: place1,
-      buses: 232,
-    },
-    {
-      from: "Indore",
-      to: "Bhopal",
-      img: place7,
-      buses: 122,
-    },
-    {
-      from: "Hyderabad",
-      to: "Bengaluru",
-      img: place4,
-      buses: 55,
-    },
-    {
-      from: "Bengaluru",
-      to: "Indore",
-      img: place8,
-      buses: 354,
-    },
-    {
-      from: "Chennai",
-      to: "mumbai",
-      img: mumbai,
-      buses: 600,
-    },
-    {
-      from: "Bengaluru",
-      to: "Mumbai",
-      img: mumbai,
-      buses: 50,
-    },
-    {
-      from: "Bengaluru",
-      to: "Goa",
-      img: bengaluru,
-      buses: 400,
-    },
-    {
-      from: "Hyderabad",
-      to: "kolkata",
-      img: place2,
-      buses: 511,
-    },
-    {
-      from: "Bengaluru",
-      to: "Pondicherry",
-      img: pondy,
-      buses: 187,
-    },
-    {
-      from: "Chennai",
-      to: "Coimbatore",
-      img: cbe,
-      buses: 266,
-    },
-  ];
+  // const offer = [card1, card2, card3, card1, card2, card1, card3];
+  // const top_routes = [
+  //   {
+  //     from: "Bengaluru",
+  //     to: "Hyderabad",
+  //     img: place1,
+  //     buses: 232,
+  //   },
+  //   {
+  //     from: "Indore",
+  //     to: "Bhopal",
+  //     img: place7,
+  //     buses: 122,
+  //   },
+  //   {
+  //     from: "Hyderabad",
+  //     to: "Bengaluru",
+  //     img: place4,
+  //     buses: 55,
+  //   },
+  //   {
+  //     from: "Bengaluru",
+  //     to: "Indore",
+  //     img: place8,
+  //     buses: 354,
+  //   },
+  //   {
+  //     from: "Chennai",
+  //     to: "mumbai",
+  //     img: mumbai,
+  //     buses: 600,
+  //   },
+  //   {
+  //     from: "Bengaluru",
+  //     to: "Mumbai",
+  //     img: mumbai,
+  //     buses: 50,
+  //   },
+  //   {
+  //     from: "Bengaluru",
+  //     to: "Goa",
+  //     img: bengaluru,
+  //     buses: 400,
+  //   },
+  //   {
+  //     from: "Hyderabad",
+  //     to: "kolkata",
+  //     img: place2,
+  //     buses: 511,
+  //   },
+  //   {
+  //     from: "Bengaluru",
+  //     to: "Pondicherry",
+  //     img: pondy,
+  //     buses: 187,
+  //   },
+  //   {
+  //     from: "Chennai",
+  //     to: "Coimbatore",
+  //     img: cbe,
+  //     buses: 266,
+  //   },
+  // ];
   const navigation = useNavigate();
 
-  const handleLoginPage = () => {
-    navigation("/Login");
-  };
+  // const handleLoginPage = () => {
+  //   navigation("/Login");
+  // };
 
   const [seatFilter, SetSeatFilter] = useState("");
   const [luxury, setLuxury] = useState(false);
@@ -231,6 +230,18 @@ export default function Home1() {
     semi_sleeper: "",
     luxury_data: false,
   });
+
+  useEffect(() => {
+    setBusDatas((prevBusDatas) => ({
+      ...prevBusDatas,
+      seater: seatFilter === "seater" ? "true" : "false",
+      sleeper: seatFilter === "sleeper" ? "true" : "false",
+      semi_sleeper: seatFilter === "semi_sleeper" ? "true" : "false",
+      date: moment(getselecteddate).format("YYYY-MM-DD"),
+      luxury_data: luxury,
+    }));
+  }, [seatFilter, getselecteddate, luxury]);
+
   const dispatch = useDispatch();
   const [error, setError] = useState({
     from: "",
@@ -238,19 +249,6 @@ export default function Home1() {
     occupation: "",
     mobile: "",
   });
-
-  useEffect(() => {
-    setBusDatas({
-      ...busdatas,
-      seater: seatFilter == "seater" ? "true" : "false",
-      sleeper: seatFilter == "sleeper" ? "true" : "false",
-      semi_sleeper: seatFilter == "semi_sleeper" ? "true" : "false",
-      date: moment(getselecteddate).format("YYYY-MM-DD"),
-      luxury_data: luxury,
-    });
-
-    // setBusDatas({date:moment(getselecteddate).format('YYYY-MM-DD')})
-  }, [seatFilter, getselecteddate, luxury]);
 
   console.log(seatFilter, busdatas.seater, "sssseaaahjhaadsfdsffdsf");
   console.log(busdatas, "datevaluesdfasdf");
@@ -285,7 +283,7 @@ export default function Home1() {
         busdatas,
         luxury
       );
-      console.log(busdatas.from, busdatas.to, "datadata");
+      console.log(busdatas.from, busdatas.to, data, "datadata");
     } catch (error) {
       console.error("Error fetching additional user data", error);
     }
@@ -309,12 +307,12 @@ export default function Home1() {
       ac: checked,
     });
   };
-  const handleflip = () => {
-    setBusDatas({
-      from: busdatas.to,
-      to: busdatas.from,
-    });
-  };
+  // const handleflip = () => {
+  //   setBusDatas({
+  //     from: busdatas.to,
+  //     to: busdatas.from,
+  //   });
+  // };
   const [showDialog, setShowDialog] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -337,6 +335,7 @@ export default function Home1() {
     latitude: null,
     longitude: null,
   });
+  console.log(mapopen, showDialog, "mapopen");
   const handleGrantPermission = () => {
     navigator.permissions
       .query({ name: "geolocation" })
@@ -387,135 +386,139 @@ export default function Home1() {
     setModalIsOpen(false);
     setShowDialog(false);
   };
-  const latitude = 11.1280128;
-  const longitude = 77.3259264;
-  const handlecross = () => {
-    setShowDialog(false);
-  };
+  // const latitude = 11.1280128;
+  // const longitude = 77.3259264;
+  // const handlecross = () => {
+  //   setShowDialog(false);
+  // };
   const [showregister, setShowRegister] = useState(false);
-  console.log(showregister, "showregistershowregister");
-  const handleregister = () => {
-    console.log("registerbutton", registerdata);
 
-    let errors = { occupation: "", mobile: "" };
+  // const handleregister = () => {
+  //   console.log("registerbutton", registerdata);
 
-    // Check if occupation or mobile is empty and set errors
-    if (registerdata.occupation === "") {
-      errors.occupation = "Field is required";
-    }
-    if (registerdata.mobile === "") {
-      errors.mobile = "Field is required";
-    }
+  //   let errors = { occupation: "", mobile: "" };
 
-    // If both occupation and mobile are filled, proceed to register
-    console.log(registerdata.mobile == undefined, "registerdata");
-    if (
-      registerdata.occupation !== "" &&
-      registerdata.mobile !== "" &&
-      registerdata.mobile != undefined &&
-      registerdata.mobile != "undefined"
-    ) {
-      setShowRegister(true);
-      localStorage.setItem("mobile", registerdata.mobile);
-      setError({ occupation: "", mobile: "" }); // Clear errors if registration is successful
-    } else {
-      // If either occupation or mobile is empty, set errors and do not proceed to register
-      setError(errors);
-      setShowRegister(false);
-    }
-  };
+  //   // Check if occupation or mobile is empty and set errors
+  //   if (registerdata.occupation === "") {
+  //     errors.occupation = "Field is required";
+  //   }
+  //   if (registerdata.mobile === "") {
+  //     errors.mobile = "Field is required";
+  //   }
 
-  console.log(showregister, "showregister");
-  const [startIndex, setStartIndex] = useState(0);
+  //   // If both occupation and mobile are filled, proceed to register
+  //   console.log(registerdata.mobile === undefined, "registerdata");
+  //   if (
+  //     registerdata.occupation !== "" &&
+  //     registerdata.mobile !== "" &&
+  //     registerdata.mobile !== undefined &&
+  //     registerdata.mobile !== "undefined"
+  //   ) {
+  //     setShowRegister(true);
+  //     localStorage.setItem("mobile", registerdata.mobile);
+  //     setError({ occupation: "", mobile: "" }); // Clear errors if registration is successful
+  //   } else {
+  //     // If either occupation or mobile is empty, set errors and do not proceed to register
+  //     setError(errors);
+  //     setShowRegister(false);
+  //   }
+  // };
 
-  const prevSlide = () => {
-    const newIndex = Math.max(0, startIndex - 1);
-    setStartIndex(newIndex);
-  };
-  const nextSlide = () => {
-    const newIndex = Math.min(startIndex + 1, offer.length - 5);
-    setStartIndex(newIndex);
-  };
+  // const [startIndex, setStartIndex] = useState(0);
+
+  // const prevSlide = () => {
+  //   const newIndex = Math.max(0, startIndex - 1);
+  //   setStartIndex(newIndex);
+  // };
+  // const nextSlide = () => {
+  //   const newIndex = Math.min(startIndex + 1, offer.length - 5);
+  //   setStartIndex(newIndex);
+  // };
   console.log(busdatas, "busdatas555555");
-  const location = useLocation();
+
+  // const location = useLocation();
+
   const { data } = useParams();
   console.log(data, "location");
-  const [registerdata, setRegisterData] = useState({
-    mobile: "",
-    occupation: "",
-  });
-  const [open, setOpen] = useState(false);
+  // const [registerdata, setRegisterData] = useState({
+  //   mobile: "",
+  //   occupation: "",
+  // });
+  // const [open, setOpen] = useState(false);
 
-  const filtereOptions = [{ id: 1, label: "hi" }];
-  const content = (
-    <div>
-      {filtereOptions.length === 0 ? (
-        <p>No data found</p>
-      ) : (
-        filtereOptions.map((item) => (
-          <div
-            className="flex items-center hover:bg-gray-200 cursor-pointer"
-            // onClick={() => handleonclick(item)}
-            key={item.id} // assuming there's a unique identifier for each item
-          >
-            {/* <span>
-              <FaMapMarkerAlt className="text-[#1F487C]" />
-            </span> */}
-            <p className="py-1 text-md my-1 pl-2">{item.label}</p>
-          </div>
-        ))
-      )}
-    </div>
-  );
-  const handleOpenChange = (newOpen) => {
-    console.log(newOpen, "newOpen");
-    setOpen(true);
-  };
-  const occupation = [
-    {
-      id: 1,
-      label: "Corporate Travellers",
-    },
-    {
-      id: 2,
-      label: "General People",
-    },
-    {
-      id: 3,
-      label: "Physically Challenged Travellers",
-    },
-    {
-      id: 4,
-      label: "Piligrims Travellers",
-    },
-    {
-      id: 5,
-      label: "Senior Citizens",
-    },
-    {
-      id: 6,
-      label: "Student",
-    },
-    {
-      id: 7,
-      label: "Tourist",
-    },
-  ];
-  const [dropdownopen, setDropDownOpen] = useState(false);
-  const handledrop = (item) => {
-    setDropDownOpen(false);
-    setRegisterData({
-      occupation: item.label,
-    });
-    localStorage.setItem("occupation", item.label);
-  };
-  console.log(registerdata.mobile, "registerdata");
+  // const filtereOptions = [{ id: 1, label: "hi" }];
+
+  // const content = (
+  //   <div>
+  //     {filtereOptions.length === 0 ? (
+  //       <p>No data found</p>
+  //     ) : (
+  //       filtereOptions.map((item) => (
+  //         <div
+  //           className="flex items-center hover:bg-gray-200 cursor-pointer"
+  //           // onClick={() => handleonclick(item)}
+  //           key={item.id} // assuming there's a unique identifier for each item
+  //         >
+  //           {/* <span>
+  //             <FaMapMarkerAlt className="text-[#1F487C]" />
+  //           </span> */}
+  //           <p className="py-1 text-md my-1 pl-2">{item.label}</p>
+  //         </div>
+  //       ))
+  //     )}
+  //   </div>
+  // );
+  // const handleOpenChange = (newOpen) => {
+  //   console.log(newOpen, "newOpen");
+  //   setOpen(true);
+  // };
+
+  // const occupation = [
+  //   {
+  //     id: 1,
+  //     label: "Corporate Travellers",
+  //   },
+  //   {
+  //     id: 2,
+  //     label: "General People",
+  //   },
+  //   {
+  //     id: 3,
+  //     label: "Physically Challenged Travellers",
+  //   },
+  //   {
+  //     id: 4,
+  //     label: "Piligrims Travellers",
+  //   },
+  //   {
+  //     id: 5,
+  //     label: "Senior Citizens",
+  //   },
+  //   {
+  //     id: 6,
+  //     label: "Student",
+  //   },
+  //   {
+  //     id: 7,
+  //     label: "Tourist",
+  //   },
+  // ];
+
+  // const [dropdownopen, setDropDownOpen] = useState(false);
+  // const handledrop = (item) => {
+  //   setDropDownOpen(false);
+  //   setRegisterData({
+  //     occupation: item.label,
+  //   });
+  //   localStorage.setItem("occupation", item.label);
+  // };
+  // console.log(registerdata.mobile, "registerdata");
   const [next, setNext] = useState(false);
 
   useEffect(() => {
     const lat = localStorage.getItem("latitude");
-    console.log(lat != null, "lat != null");
-    if (lat == null || lat == "null") {
+    console.log(lat !== null, "lat != null");
+    if (lat === null || lat === "null") {
       const timer = setTimeout(() => {
         setShowDialog(true);
       }, 2000);
@@ -524,7 +527,7 @@ export default function Home1() {
     }
   }, []);
   useEffect(() => {
-    if (next == true) {
+    if (next === true) {
       const timer = setTimeout(() => {
         setShowDialog(false);
       }, 5000);
@@ -542,6 +545,7 @@ export default function Home1() {
     sessionStorage.setItem("isLuxury", luxury);
   }, [selecteddate, seatFilter, busdatas.ac, luxury]);
   console.log(busdatas.ac, "accccccccc");
+  console.log(setSelectedDate, setShowRegister, "setSelectedDate");
   const [tobus, setToBus] = useState("");
   useEffect(() => {
     const all = [
@@ -576,31 +580,31 @@ export default function Home1() {
         label: "Bangalore",
       },
     ];
-    if (busdatas.from == "Pondicherry") {
+    if (busdatas.from === "Pondicherry") {
       console.log(busdatas.from, "busdatas.from");
       setToBus(Coimbatore);
-    } else if (busdatas.from == "Bangalore") {
+    } else if (busdatas.from === "Bangalore") {
       setToBus(Hyderabad);
-    } else if (busdatas.from == "Chennai") {
+    } else if (busdatas.from === "Chennai") {
       setToBus(Bangalore);
     } else {
       setToBus(all);
     }
     console.log(busdatas.from, "85858855");
   }, [busdatas.from]);
-  const [choosedata, setChooseDate] = useState(null);
-  const [showCalendar, setShowCalendar] = useState(false);
+  // const [choosedata, setChooseDate] = useState(null);
+  // const [showCalendar, setShowCalendar] = useState(false);
 
-  const handleDateChange = (e) => {
-    setSelectedDate(e.value);
-    setShowCalendar(false); // Hide calendar after date is selected
-  };
+  // const handleDateChange = (e) => {
+  //   setSelectedDate(e.value);
+  //   setShowCalendar(false); // Hide calendar after date is selected
+  // };
   console.log(localStorage.getItem("longitude"), "mapopen");
   console.log(error, "from");
   // console.log(dayjs(choosedata.value).format("D"), "selecteddate");
   useEffect(() => {
     const updateDate = async () => {
-      const place = localStorage.getItem("departure");
+      //const place = localStorage.getItem("departure");
       const payload = {
         newDate: dayjs(selecteddate).format("YYYY-MM-DD"),
       };
@@ -632,45 +636,45 @@ export default function Home1() {
   // useEffect(() => {
   //   updateDate();
   // }, []);
-  const options = {
-    method: "GET",
-    url: "https://flixbus2.p.rapidapi.com/trips",
-    params: {
-      from_id: "40de8044-8646-11e6-9066-549f350fcb0c",
-      to_id: "40dea87d-8646-11e6-9066-549f350fcb0c",
-      date: "22.05.2024",
-      adult: "1",
-      search_by: "cities",
-      children: "0",
-      bikes: "0",
-      currency: "EUR",
-      locale: "en",
-    },
-    headers: {
-      "x-rapidapi-key": "663403672cmsh49368daaa8b1538p163327jsn5420f90fc5c6",
-      "x-rapidapi-host": "flixbus2.p.rapidapi.com",
-    },
-  };
-
-  const updateDate = async () => {
-    try {
-      const response = await axios.request(options);
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   useEffect(() => {
+    const options = {
+      method: "GET",
+      url: "https://flixbus2.p.rapidapi.com/trips",
+      params: {
+        from_id: "40de8044-8646-11e6-9066-549f350fcb0c",
+        to_id: "40dea87d-8646-11e6-9066-549f350fcb0c",
+        date: "22.05.2024",
+        adult: "1",
+        search_by: "cities",
+        children: "0",
+        bikes: "0",
+        currency: "EUR",
+        locale: "en",
+      },
+      headers: {
+        "x-rapidapi-key": "663403672cmsh49368daaa8b1538p163327jsn5420f90fc5c6",
+        "x-rapidapi-host": "flixbus2.p.rapidapi.com",
+      },
+    };
+
+    const updateDate = async () => {
+      try {
+        const response = await axios.request(options);
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
     updateDate();
   }, []);
 
-  const [registerfulldetails, setRegisterFullDetails] = useState({});
-  const [userdetails, setUserDetails] = useState({
-    sex: "male",
-  });
-  const [sumbitbutton, setSubmitButoon] = useState(false);
-  const [placement, setPlacement] = useState("right");
+  // const [registerfulldetails, setRegisterFullDetails] = useState({});
+  // const [userdetails, setUserDetails] = useState({
+  //   sex: "male",
+  // });
+  // const [sumbitbutton, setSubmitButoon] = useState(false);
+  const placement = "right";
   const [modalshow, setModalShow] = useState(false);
   const onClose = () => {
     setModalShow(false);
@@ -681,56 +685,89 @@ export default function Home1() {
     });
   };
   const [selectinput, setSelectInput] = useState("");
-  const depature_city = [
-    { city: "Chennai", value: "Chennai", state: "Tamilnadu" },
-    { city: "Bangalore", value: "Bangalore", state: "Karnataka" },
-    { city: "Hyderabad", value: "Hyderabad", state: "Telangana" },
-  ];
-  const arrival_city = [
-    { city: "Coimbatore", value: "Coimbatore", state: "Tamilnadu" },
-    { city: "Mumbai", value: "Mumbai", state: "Maharastra" },
-    { city: "Kochi", value: "Kochi", state: "Kerala" },
-  ];
+  // const depature_city = [
+  //   { city: "Chennai", value: "Chennai", state: "Tamilnadu" },
+  //   { city: "Bangalore", value: "Bangalore", state: "Karnataka" },
+  //   { city: "Hyderabad", value: "Hyderabad", state: "Telangana" },
+  // ];
+  // const arrival_city = [
+  //   { city: "Coimbatore", value: "Coimbatore", state: "Tamilnadu" },
+  //   { city: "Mumbai", value: "Mumbai", state: "Maharastra" },
+  //   { city: "Kochi", value: "Kochi", state: "Kerala" },
+  // ];
   const [inputsearch, setInputSearch] = useState({
     from: "",
     to: "",
   });
   const [departurelist, setDepatureList] = useState([]);
+
+  // useEffect(() => {
+  //   if (inputsearch.from) {
+  //     if (selectinput === "from") {
+  //       const depaturedata = depature_city.filter((item) =>
+  //         item.city.toLowerCase().includes(inputsearch.from.toLowerCase())
+  //       );
+  //       setDepatureList(depaturedata);
+  //     } else if (selectinput === "to") {
+  //       const depaturedata = arrival_city.filter((item) =>
+  //         item.city.toLowerCase().includes(inputsearch.to.toLowerCase())
+  //       );
+  //       setDepatureList(depaturedata);
+  //     }
+  //   } else {
+  //     setDepatureList(selectinput === "from" ? depature_city : arrival_city);
+  //   }
+  // }, [inputsearch, selectinput]);
+
   useEffect(() => {
+    const depature_city = [
+      { city: "Chennai", value: "Chennai", state: "Tamilnadu" },
+      { city: "Bangalore", value: "Bangalore", state: "Karnataka" },
+      { city: "Hyderabad", value: "Hyderabad", state: "Telangana" },
+    ];
+    const arrival_city = [
+      { city: "Coimbatore", value: "Coimbatore", state: "Tamilnadu" },
+      { city: "Mumbai", value: "Mumbai", state: "Maharastra" },
+      { city: "Kochi", value: "Kochi", state: "Kerala" },
+    ];
+
     if (inputsearch.from) {
-      if (selectinput == "from") {
+      if (selectinput === "from") {
         const depaturedata = depature_city.filter((item) =>
           item.city.toLowerCase().includes(inputsearch.from.toLowerCase())
         );
         setDepatureList(depaturedata);
-      } else if (selectinput == "to") {
+      } else if (selectinput === "to") {
         const depaturedata = arrival_city.filter((item) =>
           item.city.toLowerCase().includes(inputsearch.to.toLowerCase())
         );
         setDepatureList(depaturedata);
       }
     } else {
-      setDepatureList(selectinput == "from" ? depature_city : arrival_city);
+      setDepatureList(selectinput === "from" ? depature_city : arrival_city);
     }
   }, [inputsearch, selectinput]);
-  const styles = `
-  .custom-date-picker {
-    display: none !important; /* Hide the input field */
-  }
-`;
-  const [homedatepicker, setHomeDatePicker] = useState("");
-  const handleDepatureDateChange = (date, dateString) => {
-    console.log(date.$d, "handleDepatureDateChange");
-    setHomeDatePicker(date.$d);
-    setShowCalendar(false);
-    setSelectedDate(date.$d);
-  };
-  const disablePastDates = (current) => {
-    console.log(current, "current");
-    // Can not select days before today and today
-    return current && current < new Date().setHours(0, 0, 0, 0);
-  };
+
+  //   const styles = `
+  //   .custom-date-picker {
+  //     display: none !important; /* Hide the input field */
+  //   }
+  // `;
+  // const [homedatepicker, setHomeDatePicker] = useState("");
+  // const handleDepatureDateChange = (date, dateString) => {
+  //   console.log(date.$d, "handleDepatureDateChange");
+  //   setHomeDatePicker(date.$d);
+  //   setShowCalendar(false);
+  //   setSelectedDate(date.$d);
+  // };
+  // const disablePastDates = (current) => {
+  //   console.log(current, "current");
+  //   // Can not select days before today and today
+  //   return current && current < new Date().setHours(0, 0, 0, 0);
+  // };
+
   console.log(new Date(nextDate3), "homedatepicker");
+
   // const [fromDate, setFromDate] = useState(new Date());
 
   // useEffect(() => {
@@ -740,16 +777,17 @@ export default function Home1() {
   //   dayjs(selecteddate).format("DD MM"),
   //   "getselecteddategetselecteddate85858"
   // );
+
   const [loginIsOpen, setLoginIsOpen] = useState(false);
   const closeLoginModal = () => {
     setLoginIsOpen(false);
   };
 
-  const nextFieldRef = useRef(null);
+  // const nextFieldRef = useRef(null);
   const [accDrawer, setAccDrawer] = useState(false);
-  const showAccDrawer = () => {
-    setAccDrawer(true);
-  };
+  // const showAccDrawer = () => {
+  //   setAccDrawer(true);
+  // };
   const onAccClose = () => {
     setAccDrawer(false);
   };
@@ -763,61 +801,61 @@ export default function Home1() {
     setLogMobileIsOpen(false);
   };
   const [logModalIsOpen, setLogModalIsOpen] = useState(false);
-  const openLogModal = () => {
-    console.log("openkkkkk");
-    setAccDrawer(false);
-    setLogModalIsOpen(true);
-    sessionStorage.clear();
-    localStorage.clear();
-    toast.success("Logout Successfully");
-    // window.location.reload();
-  };
+  // const openLogModal = () => {
+  //   console.log("openkkkkk");
+  //   setAccDrawer(false);
+  //   setLogModalIsOpen(true);
+  //   sessionStorage.clear();
+  //   localStorage.clear();
+  //   toast.success("Logout Successfully");
+  //   // window.location.reload();
+  // };
   const closeLogModal = () => {
     setLogModalIsOpen(false);
   };
-  const handleProPage = () => {
-    navigation("/main", { state: { tabIndex: 1 } });
-  };
+  // const handleProPage = () => {
+  //   navigation("/main", { state: { tabIndex: 1 } });
+  // };
 
-  const handleBookingPage = () => {
-    navigation("/main", { state: { tabIndex: 3 } });
-  };
-  const LoginUser_Name = sessionStorage.getItem("user_name");
-  const items = [
-    {
-      key: "1",
-      label: (
-        <div
-          className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
-          onClick={handleProPage}
-        >
-          <PiUserCircleDuotone color="#1F487C" size="1.5vw" /> My Account
-        </div>
-      ),
-    },
-    {
-      key: "2",
-      label: (
-        <div
-          className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
-          onClick={handleBookingPage}
-        >
-          <FaTicketAlt color="#1F487C" size="1.5vw" /> Bookings
-        </div>
-      ),
-    },
-    {
-      key: "3",
-      label: (
-        <div
-          className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
-          onClick={openLogModal}
-        >
-          <RiLogoutCircleLine color="#1F487C" size="1.5vw" /> Logout
-        </div>
-      ),
-    },
-  ];
+  // const handleBookingPage = () => {
+  //   navigation("/main", { state: { tabIndex: 3 } });
+  // };
+  // const LoginUser_Name = sessionStorage.getItem("user_name");
+  // const items = [
+  //   {
+  //     key: "1",
+  //     label: (
+  //       <div
+  //         className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+  //         onClick={handleProPage}
+  //       >
+  //         <PiUserCircleDuotone color="#1F487C" size="1.5vw" /> My Account
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     key: "2",
+  //     label: (
+  //       <div
+  //         className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+  //         onClick={handleBookingPage}
+  //       >
+  //         <FaTicketAlt color="#1F487C" size="1.5vw" /> Bookings
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     key: "3",
+  //     label: (
+  //       <div
+  //         className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+  //         onClick={openLogModal}
+  //       >
+  //         <RiLogoutCircleLine color="#1F487C" size="1.5vw" /> Logout
+  //       </div>
+  //     ),
+  //   },
+  // ];
   // useEffect(() => {
   //   GetUserDetails();
   // }, []);
@@ -825,9 +863,9 @@ export default function Home1() {
   const handleVisibleButton = () => {
     setShowGoTop(window.pageYOffset > 50);
   };
-  const handleScrollUp = () => {
-    window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
-  };
+  // const handleScrollUp = () => {
+  //   window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
+  // };
 
   useEffect(() => {
     window.addEventListener("scroll", handleVisibleButton);
@@ -1064,14 +1102,17 @@ export default function Home1() {
 
                             <img
                               src={suitcase}
+                              alt=""
                               className="absolute right-[4vw] bottom-[3.1vw] h-[3vw] w-[1.7vw]"
                             />
                             <img
                               src={bag}
+                              alt=""
                               className="absolute right-[2.6vw] bottom-[3.0vw] h-[2.2vw] w-[1.7vw]"
                             />
                             <img
                               src={man}
+                              alt=""
                               className="absolute right-[-0.8vw] bottom-[1.1vw] h-[6.5vw] w-[3.8vw]"
                             />
                             {/* ------------------------------------------------------------------------------------------------------------------------------------ */}
@@ -1175,10 +1216,12 @@ export default function Home1() {
                       /> */}
                             <img
                               src={stand_man}
+                              alt=""
                               className="absolute right-[-2.8vw] bottom-0 h-[8vw] w-[5vw] pt-[0.5vw]"
                             />
                             <img
                               src={map}
+                              alt=""
                               className="absolute left-0 top-[-4.1vw]"
                               style={{
                                 // height: "100%",
@@ -1266,12 +1309,12 @@ export default function Home1() {
                       <div className="flex gap-[1vw]   pt-[0.5vw] pl-[2vw] items-center w-full ">
                         <button
                           className={`border-[0.15vw] flex ${
-                            seatFilter == "seater"
+                            seatFilter === "seater"
                               ? "bg-[#1F487C] text-white border-white"
                               : "text-black border-[#81A3B6]"
                           } py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
                           onClick={() => {
-                            if (seatFilter == "seater") {
+                            if (seatFilter === "seater") {
                               SetSeatFilter("");
                             } else {
                               SetSeatFilter("seater");
@@ -1318,7 +1361,7 @@ export default function Home1() {
                           </span> */}
                           <span
                             className={` ${
-                              seatFilter == "seater"
+                              seatFilter === "seater"
                                 ? "text-white"
                                 : "text-[#1F487C]"
                             } font-bold inline-flex`}
@@ -1329,12 +1372,12 @@ export default function Home1() {
 
                         <button
                           className={`border-[0.15vw] flex ${
-                            seatFilter == "sleeper"
+                            seatFilter === "sleeper"
                               ? "bg-[#1F487C] text-white border-white"
                               : "text-black border-[#81A3B6]"
                           } py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
                           onClick={() => {
-                            if (seatFilter == "sleeper") {
+                            if (seatFilter === "sleeper") {
                               SetSeatFilter("");
                             } else {
                               SetSeatFilter("sleeper");
@@ -1364,7 +1407,7 @@ export default function Home1() {
                           </span> */}
                           <span
                             className={` ${
-                              seatFilter == "sleeper"
+                              seatFilter === "sleeper"
                                 ? "text-white"
                                 : "text-[#1F487C]"
                             } font-bold`}
@@ -1390,7 +1433,7 @@ export default function Home1() {
                         </button> */}
                         <button
                           className={`border-[0.15vw] flex items-center ${
-                            luxury == true
+                            luxury === true
                               ? "bg-custom-gradient-luxury bg-image-url  text-black border-[#e1db84]"
                               : "text-black border-[#81A3B6]"
                           }  py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
@@ -1404,7 +1447,7 @@ export default function Home1() {
                           </span> */}
                           <span
                             className={`${
-                              luxury == true ? "text-black" : "text-[#1F487C]"
+                              luxury === true ? "text-black" : "text-[#1F487C]"
                             } font-bold`}
                           >
                             Luxury Buses
@@ -1519,12 +1562,12 @@ export default function Home1() {
               <div className="flex items-center w-full gap-[3.5vw] ">
                 <button
                   className={`border-[0.15vw] ${
-                    seatFilter == "seater"
+                    seatFilter === "seater"
                       ? "bg-[#1F487C] text-white"
                       : "text-black border-[#81A3B6]"
                   }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                   onClick={() => {
-                    if (seatFilter == "seater") {
+                    if (seatFilter === "seater") {
                       SetSeatFilter("");
                     } else {
                       SetSeatFilter("seater");
@@ -1535,12 +1578,12 @@ export default function Home1() {
                 </button>
                 <button
                   className={`border-[0.15vw] ${
-                    seatFilter == "sleeper"
+                    seatFilter === "sleeper"
                       ? "bg-[#1F487C] text-white"
                       : "text-black border-[#81A3B6]"
                   }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                   onClick={() => {
-                    if (seatFilter == "sleeper") {
+                    if (seatFilter === "sleeper") {
                       SetSeatFilter("");
                     } else {
                       SetSeatFilter("sleeper");
@@ -1786,7 +1829,7 @@ export default function Home1() {
                   <div
                     className="flex items-center px-[5vw] py-[2vw] bg-white"
                     onClick={() => {
-                      selectinput == "from"
+                      selectinput === "from"
                         ? localStorage.setItem("departure", item.city)
                         : localStorage.setItem("arrival", item.city);
                       setModalShow(false);
@@ -1794,7 +1837,7 @@ export default function Home1() {
                         ...inputsearch,
                         from: "",
                       });
-                      selectinput == "from"
+                      selectinput === "from"
                         ? setBusDatas({
                             ...busdatas,
                             from: item.city,
@@ -1856,7 +1899,7 @@ export default function Home1() {
         height="35vw"
         width="40vw"
       >
-        {showregister == false ? (
+        {showregister === false ? (
           <>
             <div className=" justify-center flex-col">
               <p
@@ -1892,6 +1935,7 @@ export default function Home1() {
               >
                 <img
                   src={locationmap}
+                  alt=""
                   className="'w-[2vw] h-[4vw] absolute left-[-2vw] bottom-[0.4vw]"
                 />
                 <div
@@ -2118,7 +2162,7 @@ export default function Home1() {
               </div>
             </div>
           </>
-        ) : next == false ? (
+        ) : next === false ? (
           <div className="h-[30vw] w-[50vw  justify-center flex-col">
             <p
               className="text-[#1F487C] text-[2.5vw]  font-semibold tracking-wide text-center"
@@ -2158,6 +2202,7 @@ export default function Home1() {
             >
               <img
                 src={locationmap}
+                alt=""
                 className="'w-[2vw] h-[4vw] absolute left-[43.1%] bottom-[0.4vw]"
               />
               <div
@@ -2199,7 +2244,11 @@ export default function Home1() {
                   // currentloaction={currentloaction}
                 />
               ) : (
-                <img src={precius} className="h-[10vw] w-full blur-[0.2vw]" />
+                <img
+                  src={precius}
+                  alt=""
+                  className="h-[10vw] w-full blur-[0.2vw]"
+                />
               )}
             </div>
             {localStorage.getItem("latitude") ? (
@@ -2266,6 +2315,7 @@ export default function Home1() {
             >
               <img
                 src={locationmap}
+                alt=""
                 className="'w-[2vw] h-[4vw] absolute right-[-2vw] bottom-[0.4vw]"
               />
               <div
@@ -2300,7 +2350,7 @@ export default function Home1() {
               </p>
             </div>
             <div className="px-[2vw] pt-[1vw]">
-              <img src={thankyou} className="h-[12vw] w-full " />
+              <img src={thankyou} alt="" className="h-[12vw] w-full " />
             </div>
           </div>
         )}

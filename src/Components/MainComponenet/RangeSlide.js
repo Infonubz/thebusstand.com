@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Slider, InputNumber, Row, Col, ConfigProvider } from "antd";
 import { GoDash } from "react-icons/go";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
@@ -60,7 +60,7 @@ const RangeSlide = ({ value, setValue, boolean, setBoolean, setPriceRange, price
               >
                 CLEAR
               </h3>
-              {boolean.price == true ? (
+              {boolean.price === true ? (
                 <button
                   onClick={() =>
                     setBoolean({

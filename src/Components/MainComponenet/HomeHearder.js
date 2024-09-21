@@ -6,15 +6,16 @@ import bus from "../../../src/assets/bus 1.png";
 import share from "../../../src/assets//Share.png";
 import ticket from "../../../src/assets/ticket.png";
 import profile from "../../../src/assets/Profile.png";
-import ShareButtons from "../MainComponenet/ShareButton";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+// import ShareButtons from "../MainComponenet/ShareButton";
+import { useNavigate } from "react-router-dom";
 import LoginModalPopUp from "../Login/LoginModalPopUp";
 import Login from "../Login/Login";
 import { FaUserCircle } from "react-icons/fa";
 import { PiUserCircleDuotone } from "react-icons/pi";
 import { FaTicketAlt } from "react-icons/fa";
 import { RiLogoutCircleLine } from "react-icons/ri";
-import { Dropdown, Space, Drawer, Modal } from "antd";
+import { Dropdown, Space, Modal } from "antd";
+// import {  Drawer } from "antd";
 import { toast } from "react-toastify";
 
 export default function HomeHearder() {
@@ -53,22 +54,25 @@ export default function HomeHearder() {
   const showAccDrawer = () => {
     setAccDrawer(true);
   };
-  const onAccClose = () => {
-    setAccDrawer(false);
-  };
 
-  const [logMobileIsOpen, setLogMobileIsOpen] = useState(false);
+  // const onAccClose = () => {
+  //   setAccDrawer(false);
+  // };
 
-  const openLogMobile = () => {
-    console.log("open555555hjukajscakjsckas");
-    setAccDrawer(false);
-    setLogMobileIsOpen(true);
-    // navigation("/");
-    // sessionStorage.clear();
-  };
-  const closeLogMobile = () => {
-    setLogMobileIsOpen(false);
-  };
+  // const [logMobileIsOpen, setLogMobileIsOpen] = useState(false);
+
+  console.log(modalIsOpen, accDrawer, "modalIsOpen");
+
+  // const openLogMobile = () => {
+  //   console.log("open555555hjukajscakjsckas");
+  //   setAccDrawer(false);
+  //   setLogMobileIsOpen(true);
+  //   // navigation("/");
+  //   // sessionStorage.clear();
+  // };
+  // const closeLogMobile = () => {
+  //   setLogMobileIsOpen(false);
+  // };
 
   const items = [
     {
@@ -106,7 +110,7 @@ export default function HomeHearder() {
     },
   ];
   console.log(
-    LoginUser_Name != null || LoginUser_Name != "null",
+    LoginUser_Name !== null || LoginUser_Name !== "null",
     "LoginUser_Name"
   );
 
@@ -118,10 +122,12 @@ export default function HomeHearder() {
             <img
               className="w-[6.25vw] h-[4vw]"
               src={buslogo}
+              alt="BusLogo"
               onClick={() => navigation("/")}
             />
             <img
               src={busstand}
+              alt="BusStandLogo"
               className="h-[4vw] w-[20vw] py-[0.1vw]"
               onClick={() => navigation("/")}
             />
@@ -129,6 +135,7 @@ export default function HomeHearder() {
             <div className="w-[9vw] h-[3.8vw] mt-[0.3vw] bg-[#1F487C] ml-[2vw] rounded-full  relative">
               <img
                 src={bus}
+                alt="BusLogo"
                 className="h-[3.1vw] w-[4vw] absolute top-0"
                 style={{ left: "50%", transform: "translateX(-50%)" }}
               />
@@ -141,7 +148,7 @@ export default function HomeHearder() {
             </div>
           </div>
           <div className="w-[25%] h-full items-center flex justify-center ">
-            <img src={Partner} className="w-auto h-full" />
+            <img src={Partner} alt="partner" className="w-auto h-full" />
           </div>
           <div className="w-[35%]  h-full   flex gap-[2vw] items-center justify-center">
             <div
@@ -151,6 +158,7 @@ export default function HomeHearder() {
               <img
                 className="w-[1.6vw] h-[1.6vw]"
                 src={share}
+                alt={share}
                 onClick={() => navigation("/rewards")}
               />
               <p className="text-[1.2vw] font-semibold text-[#1F487C]">Share</p>
@@ -159,13 +167,13 @@ export default function HomeHearder() {
               className="flex items-center justify-center gap-[0.5vw]"
               onClick={() => navigation("/rewards")}
             >
-              <img className="w-[1.6vw] h-[1.6vw]" src={ticket} />
+              <img className="w-[1.6vw] h-[1.6vw]" alt="ticket" src={ticket} />
               <p className="text-[1.2vw] font-semibold text-[#1F487C]">
                 Rewards/Offers
               </p>
             </div>{" "}
             <div>
-              {LoginUser_Name && LoginUser_Name != "null" ? (
+              {LoginUser_Name && LoginUser_Name !== "null" ? (
                 <div>
                   <Dropdown
                     menu={{
@@ -173,20 +181,23 @@ export default function HomeHearder() {
                     }}
                     className="flex items-center gap-[0.5vw]"
                   >
-                    <a onClick={(e) => e.preventDefault()}>
+                    <button
+                      onClick={(e) => e.preventDefault()}
+                      className="flex items-center gap-[0.5vw] bg-transparent border-none cursor-pointer"
+                    >
                       <Space>
-                        <div className="flex items-center  gap-[0.5vw]">
+                        <div className="flex items-center gap-[0.5vw]">
                           <div>
                             <FaUserCircle size="1.5vw" color="#1F487C" />
                           </div>
                           <p className="text-[1.2vw] font-semibold text-[#1F487C]">
-                            {LoginUser_Name == "undefined"
+                            {LoginUser_Name === "undefined"
                               ? "Guest"
                               : LoginUser_Name}
                           </p>
                         </div>
                       </Space>
-                    </a>
+                    </button>
                   </Dropdown>
                 </div>
               ) : (
@@ -194,7 +205,11 @@ export default function HomeHearder() {
                   className="flex items-center justify-center gap-[0.5vw]"
                   onClick={() => setLoginIsOpen(true)}
                 >
-                  <img className="w-[1.6vw] h-[1.6vw]" src={profile} />
+                  <img
+                    className="w-[1.6vw] h-[1.6vw]"
+                    alt="profile"
+                    src={profile}
+                  />
                   <p className="text-[1.2vw] font-semibold text-[#1F487C]">
                     Login/SignUp
                   </p>
@@ -213,10 +228,12 @@ export default function HomeHearder() {
             <img
               className="md:w-[6.25vw] w-[15vw] md:h-[4vw] h-[10vw]"
               src={buslogo}
+              alt="busLogo"
               onClick={() => navigation("/")}
             />
             <img
               src={busstand}
+              alt="busStand"
               className="md:h-[4vw] h-[10vw] md:w-[20vw] w-[40vw] py-[0.1vw]"
               onClick={() => navigation("/")}
             />
@@ -224,6 +241,7 @@ export default function HomeHearder() {
             <div className="w-[9vw] h-[3.8vw] mt-[0.3vw]  bg-[#1F487C] ml-[2vw] rounded-full hidden md:block relative">
               <img
                 src={bus}
+                alt="bus"
                 className="h-[3.1vw] w-[4vw] absolute top-0"
                 style={{ left: "50%", transform: "translateX(-50%)" }}
               />
@@ -236,7 +254,11 @@ export default function HomeHearder() {
             </div>
           </div>
           <div className="w-[25%] h-full  items-center flex justify-center ">
-            <img src={Partner} className="w-[17vw] hidden md:block h-full" />
+            <img
+              src={Partner}
+              alt="partner"
+              className="w-[17vw] hidden md:block h-full"
+            />
           </div>
           <div className="w-[35%]  h-full md:pr-[0vw]  pr-[1vw] flex gap-[2vw] items-center md:justify-center justify-end">
             <div
@@ -246,6 +268,7 @@ export default function HomeHearder() {
               <img
                 className="md:w-[1.6vw] md:h-[1.6vw] w-[7vw] h-[7vw]"
                 src={share}
+                alt="share"
               />
               <p className="text-[1.2vw] font-semibold text-[#1F487C] hidden md:block">
                 Share
@@ -258,6 +281,7 @@ export default function HomeHearder() {
               <img
                 className="md:w-[1.6vw] md:h-[1.6vw] w-[7vw] h-[7vw]"
                 src={ticket}
+                alt="ticket"
               />
               <p className="hidden md:block text-[1.2vw] font-semibold text-[#1F487C]">
                 Rewards/Offers
@@ -265,10 +289,14 @@ export default function HomeHearder() {
             </div>{" "}
             <div className="flex items-center justify-center gap-[0.5vw]">
               <div className="md:block hidden">
-                <img className=" w-[1.6vw] h-[1.6vw] " src={profile} />
+                <img
+                  className="w-[1.6vw] h-[1.6vw] "
+                  src={profile}
+                  alt="profile"
+                />
               </div>
               <div className="md:hidden block" onClick={showAccDrawer}>
-                <img className=" w-[7vw] h-[7vw]" src={profile} />
+                <img className=" w-[7vw] h-[7vw]" src={profile} alt="profile" />
               </div>
               <p className="text-[1.2vw] hidden md:block font-semibold text-[#1F487C] cursor-pointer">
                 Login/SignUp

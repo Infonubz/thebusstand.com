@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Footer from "../Home/Footer";
 // import homesky from "../../assets/homesky.png";
 import HomeHearder from "../MainComponenet/HomeHearder";
@@ -10,7 +10,7 @@ import logo from "../../assets/crmlogo.png";
 import { TbInfoHexagon } from "react-icons/tb";
 import { FiInfo } from "react-icons/fi";
 import { RiArrowRightSLine } from "react-icons/ri";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import layer from "../../assets/BG Image.png";
 import { FaBriefcase } from "react-icons/fa";
 import NavMobile from "./NavMobile";
@@ -28,8 +28,8 @@ const About = () => {
 
   const navigation = useNavigate();
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <div className="bg-[#d1f8e3] ">
@@ -47,7 +47,6 @@ const About = () => {
               // backgroundSize: "cover",
               position: "relative",
               overflowX: "hidden",
-              width: "100%",
             }}
           >
             <label className="absolute left-[39vw] md:left-[42vw] top-[2vw] md:top-[0.1vw] text-[6vw]  md:text-[4vw] text-white font-bold opacity-20">
@@ -57,7 +56,7 @@ const About = () => {
               {"About Us"}
             </label>
             <div className="absolute left-[3vw] top-[4vw] z-[2] text-[7vw] text-white font-bold md:hidden sm:block ">
-              <NavMobile/>
+              <NavMobile />
             </div>
             <div className="cloudhome"></div>
           </div>

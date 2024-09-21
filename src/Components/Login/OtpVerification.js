@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Verification from "../../assets/Verified.gif";
-import { GetUserDetails, SendOTPassword } from "../../Api/Login/Login";
+import {
+  GetUserDetails,
+  SendOTPassword,
+  SendVerificationOTP,
+} from "../../Api/Login/Login";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
@@ -10,6 +14,7 @@ import { useNavigate } from "react-router";
 const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
   const validationSchema = Yup.object().shape({
     otp: Yup.string()
+      .matches(/^\d+$/, "OTP must contain only numeric digits")
       .matches(/^\d{6}$/, "OTP must be exactly 6 digits")
       .required("OTP is required"),
   });
@@ -57,20 +62,50 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
   };
 
   const passenger_mail = sessionStorage.getItem("email_id");
+  const [timeLeft, setTimeLeft] = useState(120); // 2 minutes = 120 seconds
 
+  useEffect(() => {
+    if (timeLeft > 0) {
+      const timerId = setInterval(() => {
+        setTimeLeft(timeLeft - 1);
+      }, 1000); // Decrease every second
+
+      return () => clearInterval(timerId); // Cleanup on component unmount
+    }
+  }, [timeLeft]);
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
+  console.log(timeLeft, "hhhh");
+  const email = {
+    email: sessionStorage.getItem("email_id"),
+  };
+  const handleresend = async () => {
+    try {
+      const response = await SendVerificationOTP(dispatch, email);
+      setTimeLeft(120);
+    } catch {}
+  };
   return (
     <>
-      <div className="md:block hidden">
+      <div className="md:block hidden mt-[1vw]">
         <div className="flex flex-col items-center">
-          <div className="text-[#1F487C] text-[2vw] font-semibold w-[27vw] text-center">
+          <div className="text-[#1F487C] text-[1.5vw] font-extrabold w-[27vw] text-center">
             Sign in to exciting discounts and cashbacks !!
           </div>
-          <div className="text-[1.05vw] opacity-60">
-            To continue, please enter the OTP sent to verify your mobile number
-            or Email Id
-          </div>
 
-          <div className="py-[0.5vw]">
+          <div className="px-[1vw] text-[0.9vw] flex opacity-60 pt-[1vw]">
+            To proceed, please enter the{" "}
+            <span className="font-extrabold px-[0.2vw]">OTP</span> sent to your
+            registered
+          </div>
+          <label className="px-[1vw] text-[0.9vw] opacity-60">
+            mobile number or email address for verification.
+          </label>
+          <div className="pt-[2vw]">
             {passenger_mail ? (
               <div>
                 <div className="w-[27vw] flex items-start text-[1.25vw] font-semibold opacity-60">
@@ -130,12 +165,12 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
                     <Field
                       type="text"
                       name="otp"
-                      placeholder="Enter OTP"
+                      placeholder="Enter Your OTP"
                       value={values.otp}
                       onChange={(e) => {
                         handleChange(e);
                       }}
-                      className="border-[0.1vw] border-slate-500 text-[#1F487C] text-[1.2vw] h-[3vw] w-[27vw] rounded-r-[0.2vw] outline-none px-[1vw]"
+                      className="border-[0.1vw] rounded-[0.5vw] border-slate-500 text-[#1F487C] text-[1.2vw] h-[3vw] w-[27vw]  outline-none px-[1vw]"
                     />
                     <ErrorMessage
                       name="otp"
@@ -143,13 +178,29 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
                       className="text-red-500 text-[0.8vw] absolute top-[3.5vw]"
                     />
                   </div>
-
-                  <button
+                  <div className="flex items-center gap-[1vw]">
+                    <button
+                      onClick={() => handleresend()}
+                      disabled={timeLeft == 0 ? false : true}
+                      className={`text-[#1F487C] ${
+                        timeLeft == 0 ? "cursor-pointer" : " cursor-not-allowed"
+                      } w-[13vw] font-bold h-[2.5vw] border-[0.1vw] rounded-[0.5vw] border-[#1F487C]  text-[1.2vw] bg-white`}
+                    >
+                      {timeLeft == 0 ? "Resend OTP" : formatTime(timeLeft)}
+                    </button>
+                    <button
+                      type="submit"
+                      className="bg-[#1F487C] w-[13vw] font-bold h-[2.5vw] border-[0.1vw] rounded-[0.5vw]  text-[1.2vw] text-white"
+                    >
+                      VERIFY OTP
+                    </button>
+                  </div>
+                  {/* <button
                     type="submit"
-                    className="bg-[#1F487C] w-[27vw] h-[2.5vw] border-[0.1vw] rounded-[0.2vw] border-slate-700 text-[1.2vw] text-white"
+                    className="bg-[#1F487C] w-[27vw] h-[2.5vw] border-[0.1vw] rounded-[0.5vw]  text-[1.2vw] text-white"
                   >
                     VERIFY OTP
-                  </button>
+                  </button> */}
                 </div>
               </Form>
             )}

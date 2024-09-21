@@ -7,6 +7,7 @@ import { RiArrowUpSFill } from "react-icons/ri";
 import { RiArrowDownSFill } from "react-icons/ri";
 import { Input } from "antd";
 import FaQgif from "../../assets/faq.gif";
+import CommonMainNavbar from "../Common/CommonMainNavbar";
 
 const Faq = () => {
   useEffect(() => {
@@ -16,7 +17,7 @@ const Faq = () => {
     <>
       <div className="">
         <div className="">
-          <HomeHearder />
+          <CommonMainNavbar />
         </div>
         <div
           className="relative h-[42vw] bg-[#E5FFF1]"
@@ -42,9 +43,9 @@ const Faq = () => {
             </div>
 
             <div className="absolute grid grid-cols-12 gap-[7.5vw]">
-              <div className="col-start-1 col-span-4 pt-[2vw] pl-[3vw] text-[1.1vw] text-white font-bold">
+              {/* <div className="col-start-1 col-span-4 pt-[2vw] pl-[3vw] text-[1.1vw] text-white font-bold">
               {`Home > FAQs`}
-              </div>
+              </div> */}
               <div className="cloudhome"></div>
               <div className="col-start-6 col-end-12 text-[2.5vw] pt-[1vw] text-white font-bold">
                 Frequently Ask Question

@@ -179,15 +179,15 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
             setDateSelectionColor(false);
           }}
         >
-          <div className=" justify-items-center py-[1.5vw] md:py-0">
+          <div className=" justify-items-center py-[1.5vw] md:py-[0.2vw]">
             <div className="flex flex-col items-center">
-              <p className=" md:text-[0.8vw] text-[2.5vw] text-center">
+              {/* <p className=" md:text-[0.8vw] text-[2.5vw] text-center">
                 {dayjs(currentDate).format("MMM")}
-              </p>
-              <p className="text-center  font-semibold md:text-[1.2vw]">
+              </p> */}
+              <p className="text-center font-semibold md:text-[1.3vw]">
                 {dayjs(currentDate).format("D")}
               </p>
-              <p className="text-center font-semibold text-[2.5vw] md:text-[0.8vw]">
+              <p className="text-center font-semibold text-[2.5vw] md:text-[0.9vw]">
                 {dayjs(currentDate).format("ddd")}
               </p>
             </div>
@@ -206,15 +206,15 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
             setDateSelectionColor(false);
           }}
         >
-          <div className="flex-col py-[1.5vw] md:py-0">
+          <div className="flex-col py-[1.5vw] md:py-[0.2vw]">
             <div className="flex flex-col items-center">
-              <p className=" md:text-[0.8vw] text-[2.5vw] text-center">
+              {/* <p className=" md:text-[0.8vw] text-[2.5vw] text-center">
                 {dayjs(nextDate1).format("MMM")}
-              </p>
-              <p className="text-center  font-semibold md:text-[1.2vw]">
+              </p> */}
+              <p className="text-center  font-semibold md:text-[1.3vw]">
                 {dayjs(nextDate1).format("D")}
               </p>
-              <p className="text-center font-semibold text-[2.5vw] md:text-[0.8vw]">
+              <p className="text-center font-semibold text-[2.5vw] md:text-[0.9vw]">
                 {dayjs(nextDate1).format("ddd")}
               </p>
             </div>
@@ -232,15 +232,15 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
             setDateSelectionColor(false);
           }}
         >
-          <div className="flex-col py-[1.5vw] md:py-0">
+          <div className="flex-col py-[1.5vw] md:py-[0.2vw]">
             <div className="flex flex-col items-center">
-              <p className=" md:text-[0.8vw] text-[2.5vw] text-center">
+              {/* <p className=" md:text-[0.8vw] text-[2.5vw] text-center">
                 {dayjs(nextDate2).format("MMM")}
-              </p>
-              <p className="text-center  font-semibold md:text-[1.2vw]">
+              </p> */}
+              <p className="text-center  font-semibold md:text-[1.3vw]">
                 {dayjs(nextDate2).format("D")}
               </p>
-              <p className="text-center font-semibold text-[2.5vw] md:text-[0.8vw]">
+              <p className="text-center font-semibold text-[2.5vw] md:text-[0.9vw]">
                 {dayjs(nextDate2).format("ddd")}
               </p>
             </div>
@@ -259,15 +259,15 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
             setDateSelectionColor(false);
           }}
         >
-          <div className="flex-col py-[1.5vw] md:py-0">
+          <div className="flex-col py-[1.5vw] md:py-[0.2vw]">
             <div className="flex flex-col items-center">
-              <p className=" md:text-[0.8vw] text-[2.5vw] text-center">
+              {/* <p className=" md:text-[0.8vw] text-[2.5vw] text-center">
                 {dayjs(nextDate3).format("MMM")}
-              </p>
-              <p className="text-center  font-semibold md:text-[1.2vw]">
+              </p> */}
+              <p className="text-center  font-semibold md:text-[1.3vw]">
                 {dayjs(nextDate3).format("D")}
               </p>
-              <p className="text-center font-semibold text-[2.5vw] md:text-[0.8vw]">
+              <p className="text-center font-semibold text-[2.5vw] md:text-[0.9vw]">
                 {dayjs(nextDate3).format("ddd")}
               </p>
             </div>

@@ -6,6 +6,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { GetFeedbacks } from "../../Api/Home/RatingFeedback";
 import { Popover } from "antd";
+import { capitalizeFirstLetter } from "../Common/Captalization";
 
 export default function Rating() {
   // const ratingdata = [
@@ -102,9 +103,12 @@ export default function Rating() {
                   </div>
                 </div>
               </div>
+              {
+                
+              }
               <div className="absolute bottom-[1vw] px-[2vw] items-center justify-center flex">
                {
-                item?.description?.length > 70 ? <Popover content={item.description} trigger="hover" overlayStyle={{ maxWidth: '20vw' }}><p className=" text-[#1F487C] text-[1.1vw]">{`${item?.description?.slice(0,70)}...`}</p></Popover> : <p className=" text-[#1F487C] text-[1.1vw] items-center justify-center flex">{item.description}</p>
+                item?.description?.length > 70 ? <Popover content={item.description} trigger="hover" overlayStyle={{ maxWidth: '20vw' }}><p className=" text-[#1F487C] text-[1.1vw]">{`${capitalizeFirstLetter(item?.description?.slice(0,70))}...`}</p></Popover> : <p className=" text-[#1F487C] text-[1.1vw] items-center justify-center flex">{capitalizeFirstLetter(item.description)}</p>
                } 
               </div>
               <div className="absolute left-[0.2vw] bottom-[-2vw]">

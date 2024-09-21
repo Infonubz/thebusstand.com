@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaBars } from "react-icons/fa"; // Corrected import
+// import { FaBars } from "react-icons/fa"; // Corrected import
 import sbus from "../../assets/sbus.png";
 import { MdOutlineKeyboardDoubleArrowUp } from "react-icons/md";
 import menu from "../../assets/menu.png";
@@ -7,19 +7,21 @@ import { REARRANGE_ORDER, SEARCH_BUTTON } from "../../Store/type";
 import { useDispatch, useSelector } from "react-redux";
 import { MdSort } from "react-icons/md";
 import { TfiMapAlt } from "react-icons/tfi";
-import filterImg from "../../assets/filter.png";
-import { Button, Drawer } from "antd";
+// import filterImg from "../../assets/filter.png";
+import { Drawer } from "antd";
+// import {  Drawer } from "antd";
+
 import SidebarMobile from "./SidebarMobile";
 import { LuSettings2 } from "react-icons/lu";
-import { Googlemap } from "./../Home/GoogleMap";
+// import { Googlemap } from "./../Home/GoogleMap";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
-  const bus_count = useSelector((state) => state.bus_list);
+  // const bus_count = useSelector((state) => state.bus_list);
   const buslist = useSelector((state) => state?.card_detail);
 
   const [sorting, setSorting] = useState("");
-  const [isSortedByPrice, setIsSortedByPrice] = useState(false);
+  // const [isSortedByPrice, setIsSortedByPrice] = useState(false);
 
   console.log(sorting, "sortingsorting");
 
@@ -59,7 +61,7 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
   //   }
   // };
 
-  const [boolean, setBoolean] = useState(false);
+  // const [boolean, setBoolean] = useState(false);
 
   useEffect(() => {
     dispatch({
@@ -68,11 +70,11 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
         price: sorting == "price" ? "TRUE" : "FALSE",
         seats: sorting == "seats" ? "TRUE" : "FALSE",
         rating: sorting == "ratings" ? "TRUE" : "FALSE",
-        arrival: sorting == "arrival" ? "TRUE" : "FALSE",
-        depature: sorting == "departure" ? "TRUE" : "FALSE",
+        arrival: sorting == "arrivalSort" ? "TRUE" : "FALSE",
+        depature: sorting == "departureSort" ? "TRUE" : "FALSE",
       },
     });
-  }, [sorting]);
+  }, [sorting, dispatch]);
 
   const [selectedButton, setSelectedButton] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -120,7 +122,7 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
               className={`border-gray-300 bg-white px-[0.5vw] py-[0.1vw] border-y-2 border-r-[0.1vw] rounded-r-md`}
               onClick={menuhandle}
             >
-              <img src={menu} className="w-[1.2vw] h-[1vw]" />
+              <img src={menu} className="w-[1.2vw] h-[1vw]" alt="" />
             </button>
           ) : (
             ""
@@ -167,7 +169,7 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
 
           <button
             className={`${
-              sorting == "seats" ? "bg-[#1F487C] " : "bg-white border-gray-300"
+              sorting === "seats" ? "bg-[#1F487C] " : "bg-white border-gray-300"
             } px-[0.5vw] w-[4.5vw] py-[0.1vw] border-[0.1vw]  rounded-[0.4vw]`}
             onClick={() => {
               const newValue = sorting === "seats" ? "" : "seats";
@@ -178,12 +180,12 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
             <span className="flex items-center justify-center">
               <p
                 className={`${
-                  sorting == "seats" ? "text-white" : "text-[#1F487C]"
+                  sorting === "seats" ? "text-white" : "text-[#1F487C]"
                 }  text-[0.9vw]  font-bold `}
               >
                 Seats
               </p>
-              {sorting == "seats" ? (
+              {sorting === "seats" ? (
                 <span>
                   <MdOutlineKeyboardDoubleArrowUp
                     color="white"
@@ -198,7 +200,7 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
           </button>
           <button
             className={`${
-              sorting == "ratings"
+              sorting === "ratings"
                 ? "bg-[#1F487C] "
                 : "bg-white border-gray-300"
             } px-[0.2vw] py-[0.1vw] border-[0.1vw] rounded-[0.4vw] w-[5vw]`}
@@ -211,12 +213,12 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
             <span className="flex items-center justify-center">
               <p
                 className={`${
-                  sorting == "ratings" ? "text-white" : "text-[#1F487C]"
+                  sorting === "ratings" ? "text-white" : "text-[#1F487C]"
                 }  text-[0.9vw]  font-bold `}
               >
                 Ratings
               </p>
-              {sorting == "ratings" ? (
+              {sorting === "ratings" ? (
                 <span>
                   <MdOutlineKeyboardDoubleArrowUp
                     color="white"
@@ -231,7 +233,7 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
           </button>
           <button
             className={`${
-              sorting == "arrivalSort"
+              sorting === "arrivalSort"
                 ? "bg-[#1F487C] "
                 : "bg-white  border-gray-300"
             }  py-[0.1vw] border-[0.1vw]  rounded-[0.4vw] w-[6.9vw]`}
@@ -244,12 +246,12 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
             <span className="flex items-center justify-center">
               <p
                 className={`${
-                  sorting == "arrivalSort" ? "text-white" : "text-[#1F487C]"
+                  sorting === "arrivalSort" ? "text-white" : "text-[#1F487C]"
                 }  text-[0.9vw]  font-bold `}
               >
                 Arrival Time
               </p>
-              {sorting == "arrivalSort" ? (
+              {sorting === "arrivalSort" ? (
                 <span>
                   <MdOutlineKeyboardDoubleArrowUp
                     color="white"
@@ -264,12 +266,13 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
           </button>
           <button
             className={`${
-              sorting == "departureSort"
+              sorting === "departureSort"
                 ? "bg-[#1F487C]  "
                 : "bg-white border-gray-300"
             } w-[8.2vw] py-[0.1vw] border-[0.1vw] rounded-[0.4vw]`}
             onClick={() => {
-              const newValue = sorting === "departureSort" ? "" : "departureSort";
+              const newValue =
+                sorting === "departureSort" ? "" : "departureSort";
               setSorting(newValue);
               handleSortingClick(newValue);
             }}
@@ -277,12 +280,12 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
             <span className="flex items-center justify-center">
               <p
                 className={`${
-                  sorting == "departureSort" ? "text-white" : "text-[#1F487C]"
+                  sorting === "departureSort" ? "text-white" : "text-[#1F487C]"
                 }  text-[0.9vw]  font-bold `}
               >
                 Departure Time
               </p>
-              {sorting == "departureSort" ? (
+              {sorting === "departureSort" ? (
                 <span>
                   <MdOutlineKeyboardDoubleArrowUp
                     color="white"
@@ -305,7 +308,11 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
                 : "absolute left-[64.5vw] top-[0.2vw]"
             } items-center `}
           >
-            <img src={sbus} className="w-[1.4vw] h-[1.5vw] mr-[0.5vw]" />
+            <img
+              src={sbus}
+              className="w-[1.4vw] h-[1.5vw] mr-[0.5vw]"
+              alt="sbus"
+            />
             <span className="text-[#1F487C] font-bold  text-[1vw]  px-[0.1vw] flex items-center">
               <span className="pr-[0.4vw]">Showing</span>
               <div className="w-[1.7vw] h-[1.7vw] bg-[#1F487C] text-white mr-[0.4vw] items-center flex justify-center rounded-full">
@@ -436,7 +443,7 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
           <div className="absolute top-[2.5vw] ml-[5vw]">
             <span className="text-[#1F487C] font-bold text-[3.8vw] flex items-center">
               <span>
-                <img src={sbus} className="w-[5.2vw] h-[5.5vw]" />
+                <img src={sbus} className="w-[5.2vw] h-[5.5vw]" alt="sbus" />
               </span>
               <span className="pl-[1.5vw]">Showing</span>
               <span className="text-[3.8vw] pl-[0.8vw] font-extrabold">

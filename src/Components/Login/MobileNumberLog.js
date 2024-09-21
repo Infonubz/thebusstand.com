@@ -15,17 +15,20 @@ import { MdEmail, MdOutlineMail } from "react-icons/md";
 import axios from "axios";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Flex } from "antd";
+import { useNavigate } from "react-router";
 const MobileNumberLog = ({ setCurrentPage }) => {
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
   const validationSchema = Yup.object({
     // mobile: Yup.string()
     //   .required("Mobile number is required")
     //   .matches(/^\d{10}$/, "Mobile number must be exactly 10 digits"),
     email: Yup.string()
-      .email("Invalid email address")
+      .matches(emailPattern, "Invalid email address format") // Custom regex pattern for email
       .required("Email is required"),
   });
 
-  const [toggleNum, setToggleNum] = useState(1);
+  const [toggleNum, setToggleNum] = useState(2);
 
   const handleSuccess = (response) => {
     const token = response.credential;
@@ -63,7 +66,7 @@ const MobileNumberLog = ({ setCurrentPage }) => {
     console.log("Google login failed: ", error);
   };
   console.log(toggleNum, "toggleNumtoggleNum");
-
+  const navigation = useNavigate();
   return (
     <>
       {loading ? (
@@ -81,15 +84,60 @@ const MobileNumberLog = ({ setCurrentPage }) => {
           />
         </div>
       ) : (
-        <div className="md:block hidden">
+        <div className="md:block hidden ">
           <div className="flex flex-col justify-center items-center">
             <div className="text-[#1F487C] text-[1.5vw] font-extrabold  w-[27vw] text-center">
               Sign in to exciting discount and cashbacks !!
             </div>
+            <div className="flex items-center mt-[1vw]">
+              <button
+                className={`border-[#1F487C] cursor-not-allowed border-[0.1vw] rounded-tl-[0.5vw] rounded-bl-[0.5vw] w-[13.5vw] gap-x-[0.5vw] h-[3vw] flex items-center justify-center ${
+                  toggleNum == 1 ? "bg-[#1F487C]" : "bg-white"
+                }`}
+                disabled
+                onClick={() => setToggleNum(1)}
+                // style={{
+                //   transition: "ease-in all 0.3s",
+                // }}
+              >
+                <FaPhoneAlt
+                  color={`${toggleNum == 1 ? "white" : "#1F487C"}`}
+                  size={"1.3vw"}
+                />
+                <span
+                  className={`text-[1.2vw] ${
+                    toggleNum == 1 ? "text-white" : "text-[#1F487C]"
+                  }`}
+                >
+                  Mobile Number
+                </span>
+              </button>
+              <button
+                className={`border-[#1F487C] border-[0.1vw] rounded-tr-[0.5vw] rounded-br-[0.5vw] w-[13.5vw] gap-x-[0.5vw] h-[3vw] flex items-center justify-center ${
+                  toggleNum == 2 ? "bg-[#1F487C]" : "bg-white"
+                }`}
+                // style={{
+                //   transition: "ease-in all 0.3s",
+                // }}
+                onClick={() => setToggleNum(2)}
+              >
+                <MdEmail
+                  color={` ${toggleNum == 2 ? "white" : "#1F487C"}`}
+                  size={"1.6vw"}
+                />
+                <span
+                  className={` text-[1.2vw] ${
+                    toggleNum == 2 ? "text-white" : "text-[#1F487C]"
+                  }`}
+                >
+                  Email Address
+                </span>
+              </button>
+            </div>
             <Formik
               initialValues={{
                 mobile: "",
-                email: "",
+                email: sessionStorage.getItem("email_id") || "",
               }}
               validationSchema={validationSchema}
               onSubmit={(values) => {
@@ -99,51 +147,7 @@ const MobileNumberLog = ({ setCurrentPage }) => {
               enableReinitialize
             >
               {({ isSubmitting, handleSubmit, values, handleChange }) => (
-                <Form className="py-[1vw]" onSubmit={handleSubmit}>
-                  <div className="flex items-center">
-                    <button
-                      className={`border-[#1F487C] border-[0.1vw] rounded-tl-[0.5vw] rounded-bl-[0.5vw] w-[13.5vw] gap-x-[0.5vw] h-[3vw] flex items-center justify-center ${
-                        toggleNum == 1 ? "bg-[#1F487C]" : "bg-white"
-                      }`}
-                      onClick={() => setToggleNum(1)}
-                      // style={{
-                      //   transition: "ease-in all 0.3s",
-                      // }}
-                    >
-                      <FaPhoneAlt
-                        color={`${toggleNum == 1 ? "white" : "#1F487C"}`}
-                        size={"1.3vw"}
-                      />
-                      <span
-                        className={`text-[1.2vw] ${
-                          toggleNum == 1 ? "text-white" : "text-[#1F487C]"
-                        }`}
-                      >
-                        Mobile Number
-                      </span>
-                    </button>
-                    <button
-                      className={`border-[#1F487C] border-[0.1vw] rounded-tr-[0.5vw] rounded-br-[0.5vw] w-[13.5vw] gap-x-[0.5vw] h-[3vw] flex items-center justify-center ${
-                        toggleNum == 2 ? "bg-[#1F487C]" : "bg-white"
-                      }`}
-                      // style={{
-                      //   transition: "ease-in all 0.3s",
-                      // }}
-                      onClick={() => setToggleNum(2)}
-                    >
-                      <MdEmail
-                        color={` ${toggleNum == 2 ? "white" : "#1F487C"}`}
-                        size={"1.6vw"}
-                      />
-                      <span
-                        className={` text-[1.2vw] ${
-                          toggleNum == 2 ? "text-white" : "text-[#1F487C]"
-                        }`}
-                      >
-                        Email Address
-                      </span>
-                    </button>
-                  </div>
+                <Form className="pb-[1vw]" onSubmit={handleSubmit}>
                   <div className="flex flex-col gap-y-[2vw] w-[27vw]">
                     <div className="col-span-2 flex relative mt-[2vw]">
                       {/* <div onClick={() => setToggleNum(1)}>
@@ -275,12 +279,22 @@ const MobileNumberLog = ({ setCurrentPage }) => {
 
               <div className=" w-[27vw] text-[1vw] text-center  text-[#7F7F7F]  mt-[1vw] ">
                 By Signing up, you agree to our
-                <span className="font-semibold text-[#1F487C]">
+                <span
+                  className="font-semibold text-[#1F487C] cursor-pointer"
+                  onClick={() =>
+                    navigation("/terms", { state: { toggleTabs: 2 } })
+                  }
+                >
                   {" "}
                   Terms & Conditions
                 </span>{" "}
                 and{" "}
-                <span className="font-semibold text-[#1F487C]">
+                <span
+                  className="font-semibold text-[#1F487C] cursor-pointer"
+                  onClick={() =>
+                    navigation("/terms", { state: { toggleTabs: 1 } })
+                  }
+                >
                   Privacy Policy
                 </span>
               </div>

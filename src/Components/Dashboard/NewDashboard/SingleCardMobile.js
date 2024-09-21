@@ -15,11 +15,9 @@ import { BiPlug } from "react-icons/bi";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 // import LiveTracking from "./LiveTracking";
-import sliver from '../../../assets/Silver_surfer.png'
+import sliver from "../../../assets/Silver_surfer.png";
 // import DropPick from "./DropPick";
 import { useDispatch, useSelector } from "react-redux";
-
-
 
 import { BsPlug } from "react-icons/bs";
 import { BiSolidBlanket, BiCctv } from "react-icons/bi";
@@ -37,7 +35,7 @@ import LiveTracking from "../LiveTracking";
 import DropPick from "../DropPick";
 import { createMemoryRouter } from "react-router";
 import Advertisement from "../../Advertisement/Ads";
-import thread from '../../../assets/thread.png'
+import thread from "../../../assets/thread.png";
 import BusSeatsLayout from "../BusSeatsLayout/BusSeatsLayout";
 
 const SingleCardMobile = ({ isluxury }) => {
@@ -67,7 +65,6 @@ const SingleCardMobile = ({ isluxury }) => {
 
   console.log(trackingCount, "logloglog");
 
-
   const [spinner, setSpinner] = useState("false");
   useEffect(() => {
     setSpinner(sessionStorage.getItem("loading"));
@@ -79,6 +76,7 @@ const SingleCardMobile = ({ isluxury }) => {
     setSpinner("false");
     console.log("cleartiemout", 2);
   }, 2000);
+  console.log(buslist, "buslistbuslistbuslist");
 
 
   return (
@@ -97,27 +95,32 @@ const SingleCardMobile = ({ isluxury }) => {
               //     : "h-[15vw]"
               //   } w-full mt-[0.5vw] flex-col rounded-[1vw] `}
 
-              className={`${isluxury == "true" || isluxury == true
-                ? "luxury-card"
-                : "bg-white"
-                }  ${dropDown === `liveTracking${index}` ||
-                  dropDown === `policy${index}`
+              className={`${
+                isluxury == "true" || isluxury == true
+                  ? "luxury-card"
+                  : "bg-white"
+              }  ${
+                dropDown === `liveTracking${index}` ||
+                dropDown === `policy${index}`
                   ? "h-auto"
                   : "h-[13vw]" || dropDown === `droppick${index}`
-                    ? "h-auto"
-                    : "h-[13vw]"
-                } w-full mt-[0.5vw] flex-col rounded-[1vw] border-[0.15vw] border-[#C9C9C9]`}
+                  ? "h-auto"
+                  : "h-[13vw]"
+              } w-full mt-[0.5vw] flex-col rounded-[1vw] border-[0.15vw] border-[#C9C9C9]`}
               key={index}
             >
               <div className="flex flex-col gap-y-[3.5vw]">
                 <div className="grid grid-cols-7">
                   <div className=" col-span-5 relative  h-full w-full ">
                     <div>
-                      <img src={
-                        isluxury == "true" || isluxury == true
-                          ? sliver
-                          : backdrop
-                      } className="h-[10vw] w-full" />
+                      <img
+                        src={
+                          isluxury == "true" || isluxury == true
+                            ? sliver
+                            : backdrop
+                        }
+                        className="h-[10vw] w-full"
+                      />
                       <div className="absolute top-[0.25vw] right-[11vw] rounded-full">
                         <img
                           src={logo}
@@ -126,19 +129,21 @@ const SingleCardMobile = ({ isluxury }) => {
                       </div>
                       <label
                         // className="text-white text-[2.5vw] absolute left-[0.5vw] top-[0.1vw] underline underline-offset-2 underline-white"
-                        className={`${isluxury == "true" || isluxury == true
-                          ? "text-black"
-                          : " text-white"
-                          } text-[2.5vw] absolute left-[0.5vw] top-[0.1vw] underline underline-offset-2 underline-white`}
+                        className={`${
+                          isluxury == "true" || isluxury == true
+                            ? "text-black"
+                            : " text-white"
+                        } text-[2.5vw] absolute left-[0.5vw] top-[0.1vw] underline underline-offset-2 underline-white`}
                       >
                         Bus Operator
                       </label>
                       <label
                         // className="text-white text-[4vw] tracking-wider font-semibold absolute left-[0.5vw] top-[3.75vw]"
-                        className={`${isluxury == "true" || isluxury == true
-                          ? "text-black"
-                          : " text-white"
-                          }  text-[4vw] tracking-wider font-semibold absolute left-[0.5vw] top-[3.75vw]`}
+                        className={`${
+                          isluxury == "true" || isluxury == true
+                            ? "text-black"
+                            : " text-white"
+                        }  text-[4vw] tracking-wider font-semibold absolute left-[0.5vw] top-[3.75vw]`}
                       >
                         {item?.Operator_name}
                         <Tooltip
@@ -151,7 +156,6 @@ const SingleCardMobile = ({ isluxury }) => {
                             ? `${item.operator_name.slice(0, 15)}...`
                             : item.operator_name}
                         </Tooltip>
-
                       </label>
                     </div>
                     <div>
@@ -165,19 +169,21 @@ const SingleCardMobile = ({ isluxury }) => {
                       <div className="flex gap-[1vw]">
                         <div
                           // className="text-[#1F487C] text-[3.2vw]"
-                          className={`${isluxury == "true" || isluxury == true
-                            ? "text-black"
-                            : "text-[#1F487C]"
-                            } text-[3.2vw] `}
+                          className={`${
+                            isluxury == "true" || isluxury == true
+                              ? "text-black"
+                              : "text-[#1F487C]"
+                          } text-[3.2vw] `}
                         >
                           {item.seat_availability.avlWindow}
                         </div>
                         <div
                           //  className="text-[#1F487C] text-[3.2vw] w-full"
-                          className={`${isluxury == "true" || isluxury == true
-                            ? "text-black"
-                            : "text-[#1F487C]"
-                            } text-[3.2vw] w-full`}
+                          className={`${
+                            isluxury == "true" || isluxury == true
+                              ? "text-black"
+                              : "text-[#1F487C]"
+                          } text-[3.2vw] w-full`}
                         >
                           Windows Seat
                         </div>
@@ -203,19 +209,21 @@ const SingleCardMobile = ({ isluxury }) => {
                       <div className="col-span-1 flex-col flex items-center justify-center">
                         <label
                           // className="text-[3vw] text-[#868686]"
-                          className={`text-[3vw] ${isluxury == "true" || isluxury == true
-                            ? "text-black"
-                            : "text-[#1F487C]"
-                            } font-semibold opacity-60`}
+                          className={`text-[3vw] ${
+                            isluxury == "true" || isluxury == true
+                              ? "text-black"
+                              : "text-[#1F487C]"
+                          } font-semibold opacity-60`}
                         >
                           {dayjs(item?.departure_date_time).format("DD MMM")}
                         </label>
                         <label
                           // className="text-[3.5vw] text-[#1F487C] font-bold"
-                          className={`text-[3.5vw] ${isluxury == "true" || isluxury == true
-                            ? "text-black"
-                            : "text-[#1F487C]"
-                            } font-bold`}
+                          className={`text-[3.5vw] ${
+                            isluxury == "true" || isluxury == true
+                              ? "text-black"
+                              : "text-[#1F487C]"
+                          } font-bold`}
                         >
                           {dayjs(item?.departure_date_time).format("HH:mm")}
                         </label>
@@ -223,71 +231,77 @@ const SingleCardMobile = ({ isluxury }) => {
                       <div className=" col-span-2 h-full relative w-full flex items-center justify-center">
                         <div
                           // className="bg-[#1F487C] absolute left-[-1vw] h-[3vw] w-[3vw] top-[4vw] rounded-full"
-                          className={`${isluxury == "true" || isluxury == true
-                            ? "bg-black"
-                            : "bg-[#1F487C]"
-                            } absolute left-[-1vw] h-[3vw] w-[3vw] top-[4vw] rounded-full`}
+                          className={`${
+                            isluxury == "true" || isluxury == true
+                              ? "bg-black"
+                              : "bg-[#1F487C]"
+                          } absolute left-[-1vw] h-[3vw] w-[3vw] top-[4vw] rounded-full`}
                         ></div>
                         <div
                           //  className="border-[#1F487C] border-t-[1vw] absolute left-[3vw] top-[5vw] border-dashed w-[22.5vw]"
-                          className={`${isluxury == "true" || isluxury == true
-                            ? "border-black"
-                            : "border-[#1F487C]"
-                            } border-t-[1vw] absolute left-[3vw] top-[5vw] border-dashed w-[22.5vw]`}
+                          className={`${
+                            isluxury == "true" || isluxury == true
+                              ? "border-black"
+                              : "border-[#1F487C]"
+                          } border-t-[1vw] absolute left-[3vw] top-[5vw] border-dashed w-[22.5vw]`}
                         ></div>
                         <div
                           // className="bg-[#1F487C] relative h-[6.5vw] flex w-[17vw] rounded-tl-[1.5vw] rounded-tr-[1.5vw] rounded-bl-[0.5vw] rounded-br-[1vw] text-white text-[2.5vw] font-bold justify-center items-center"
-                          className={`${isluxury == "true" || isluxury == true
-                            ? "bg-black"
-                            : "bg-[#1F487C]"
-                            }  relative h-[6.5vw] flex w-[17vw] rounded-tl-[1.5vw] rounded-tr-[1.5vw] rounded-bl-[0.5vw] rounded-br-[0.5vw] text-white text-[2.5vw] font-bold justify-center items-center`}
+                          className={`${
+                            isluxury == "true" || isluxury == true
+                              ? "bg-black"
+                              : "bg-[#1F487C]"
+                          }  relative h-[6.5vw] flex w-[17vw] rounded-tl-[1.5vw] rounded-tr-[1.5vw] rounded-bl-[0.5vw] rounded-br-[0.5vw] text-white text-[2.5vw] font-bold justify-center items-center`}
                         >
                           {item.time_duration} Hrs
                           <div
                             // className="bg-[#1F487C] absolute bottom-[-2vw] left-[1.5vw] h-[3.75vw] w-[3.75vw] rounded-full flex items-center justify-center "
-                            className={`${isluxury == "true" || isluxury == true
-                              ? "bg-black"
-                              : "bg-[#1F487C]"
-                              } absolute bottom-[-2vw] left-[1.5vw] h-[3.75vw] w-[3.75vw] rounded-full flex items-center justify-center `}
-                          >
-                          </div>
+                            className={`${
+                              isluxury == "true" || isluxury == true
+                                ? "bg-black"
+                                : "bg-[#1F487C]"
+                            } absolute bottom-[-2vw] left-[1.5vw] h-[3.75vw] w-[3.75vw] rounded-full flex items-center justify-center `}
+                          ></div>
                           <div className="absolute top-[5.6vw] left-[2.4vw] bg-white  h-[2vw] w-[2vw] rounded-full"></div>
                           <div
                             // className="bg-[#1F487C] absolute bottom-[-2vw] right-[1.5vw] h-[3.75vw] w-[3.75vw] rounded-full flex items-center justify-center "
-                            className={`${isluxury == "true" || isluxury == true
-                              ? "bg-black"
-                              : "bg-[#1F487C]"
-                              } absolute bottom-[-2vw] right-[1.5vw] h-[3.75vw] w-[3.75vw] rounded-full flex items-center justify-center `}
-                          >
-                          </div>
+                            className={`${
+                              isluxury == "true" || isluxury == true
+                                ? "bg-black"
+                                : "bg-[#1F487C]"
+                            } absolute bottom-[-2vw] right-[1.5vw] h-[3.75vw] w-[3.75vw] rounded-full flex items-center justify-center `}
+                          ></div>
                           <div className="absolute top-[5.6vw] right-[2.4vw] bg-white  h-[2vw] w-[2vw] rounded-full"></div>
                         </div>
                         <FaAngleRight
                           // color="#1F487C"
                           size={"5vw"}
-                          color={`${isluxury == "true" || isluxury == true
-                            ? "black"
-                            : "#1F487C"
-                            }`}
+                          color={`${
+                            isluxury == "true" || isluxury == true
+                              ? "black"
+                              : "#1F487C"
+                          }`}
                           className="absolute right-[-0.5vw] top-[3vw]"
                         />
                       </div>
                       <div className="col-span-1 flex-col flex items-center justify-center">
                         <label
                           // className="text-[3vw] text-[#868686]"
-                          className={`text-[3vw] ${isluxury == "true" || isluxury == true
-                            ? "text-black"
-                            : "text-[#1F487C]"
-                            } font-semibold opacity-60`}
+                          className={`text-[3vw] ${
+                            isluxury == "true" || isluxury == true
+                              ? "text-black"
+                              : "text-[#1F487C]"
+                          } font-semibold opacity-60`}
                         >
                           {dayjs(item?.arrival_date_time).format("DD MMM")}
                         </label>
                         <label
                           // className="text-[3.5vw] text-[#1F487C] font-bold"
-                          className={`text-[3.5vw] ${isluxury == "true" || isluxury == true
-                            ? "text-black"
-                            : "text-[#1F487C]"
-                            } font-bold`}
+                          className={`text-[3.5vw] ${
+                            isluxury == "true" || isluxury == true
+                              ? "text-black"
+                              : "text-[#1F487C]"
+                          } font-bold`}
                         >
                           {dayjs(item?.arrival_date_time).format("HH:mm")}
                         </label>
@@ -322,10 +336,11 @@ const SingleCardMobile = ({ isluxury }) => {
                   <div className=" w-[20vw] px-[4vw] flex items-end py-[1vw] absolute right-0  ">
                     <div className="absolute top-[0.5vw] left-[3vw]">
                       <p
-                        className={`absolute left-[-5vw] top-[-5vw] w-[15vw]  text-[3vw] ${isluxury == "true" || isluxury == true
-                          ? "text-black"
-                          : "text-[#1F487C]"
-                          }`}
+                        className={`absolute left-[-5vw] top-[-5vw] w-[15vw]  text-[3vw] ${
+                          isluxury == "true" || isluxury == true
+                            ? "text-black"
+                            : "text-[#1F487C]"
+                        }`}
                       >
                         Starting @
                       </p>
@@ -345,16 +360,18 @@ const SingleCardMobile = ({ isluxury }) => {
                       {/* </div> */}
                       <div className="relative flex items-center">
                         <div
-                          className={`absolute top-[-0.25vw] left-[-10vw] w-[24vw] h-[10vw] ${isluxury == true || isluxury == "true"
-                            ? "bg-custom-gradient"
-                            : "clip-trapezoid"
-                            } `}
+                          className={`absolute top-[-0.25vw] left-[-10vw] w-[24vw] h-[10vw] ${
+                            isluxury == true || isluxury == "true"
+                              ? "bg-custom-gradient"
+                              : "clip-trapezoid"
+                          } `}
                         >
                           <p
-                            className={` absolute top-[2vw] left-[6.2vw] font-bold text-[4vw] ${isluxury == true || isluxury == "true"
-                              ? "text-black"
-                              : "text-white"
-                              } `}
+                            className={` absolute top-[2vw] left-[6.2vw] font-bold text-[4vw] ${
+                              isluxury == true || isluxury == "true"
+                                ? "text-black"
+                                : "text-white"
+                            } `}
                           >
                             ₹ {Math.round(item.lowest_price.price)}
                           </p>
@@ -365,24 +382,27 @@ const SingleCardMobile = ({ isluxury }) => {
                               } `}
                           ></div> */}
                           <div
-                            className={`absolute right-0 top-[-2.1vw] -rotate-90 w-0 h-0 border-l-[2vw] border-l-transparent border-r-[2vw] border-r-transparent border-b-[4vw] ${isluxury == "true" || isluxury == true
-                              ? "border-b-[#FFEB76]"
-                              : "border-b-white"
-                              }`}
+                            className={`absolute right-0 top-[-2.1vw] -rotate-90 w-0 h-0 border-l-[2vw] border-l-transparent border-r-[2vw] border-r-transparent border-b-[4vw] ${
+                              isluxury == "true" || isluxury == true
+                                ? "border-b-[#FFEB76]"
+                                : "border-b-white"
+                            }`}
                           ></div>
                           <div
-                            className={`absolute right-0 bottom-[-2.1vw] -rotate-90 w-0 h-0 border-l-[2vw] border-l-transparent border-r-[2vw] border-r-transparent border-b-[4vw] ${isluxury == "true" || isluxury == true
-                              ? "border-b-[#FFEB76]"
-                              : "border-b-white"
-                              }`}
+                            className={`absolute right-0 bottom-[-2.1vw] -rotate-90 w-0 h-0 border-l-[2vw] border-l-transparent border-r-[2vw] border-r-transparent border-b-[4vw] ${
+                              isluxury == "true" || isluxury == true
+                                ? "border-b-[#FFEB76]"
+                                : "border-b-white"
+                            }`}
                           ></div>
                           <div className="bg-[#61B00F] absolute top-1/2 right-0 transform -translate-y-1/2 w-[4vw] h-[3vw] flex items-center justify-center">
                             <div className="bg-[#2D5C05] w-[2vw] h-[2vw] rounded-full flex items-center justify-center">
                               <div
-                                className={` ${isluxury == "true" || isluxury == true
-                                  ? "bg-[#FFEB76]"
-                                  : "bg-white"
-                                  } w-[1.2vw] h-[1.2vw] rounded-full`}
+                                className={` ${
+                                  isluxury == "true" || isluxury == true
+                                    ? "bg-[#FFEB76]"
+                                    : "bg-white"
+                                } w-[1.2vw] h-[1.2vw] rounded-full`}
                               ></div>
                             </div>
                           </div>
@@ -394,10 +414,11 @@ const SingleCardMobile = ({ isluxury }) => {
                         {/* <div class="relative w-96 h-36 bg-blue-600 clip-trapezoid"></div> */}
 
                         <div
-                          className={`absolute top-[-5.5vw] left-[-16.5vw] w-[10vw]  h-[20vw] ${isluxury == "true" || isluxury == true
-                            ? "bg-[#FFEB76]"
-                            : "bg-white"
-                            } rounded-r-full `}
+                          className={`absolute top-[-5.5vw] left-[-16.5vw] w-[10vw]  h-[20vw] ${
+                            isluxury == "true" || isluxury == true
+                              ? "bg-[#FFEB76]"
+                              : "bg-white"
+                          } rounded-r-full `}
                         ></div>
                         {/* <div className="absolute top-[-1vw] right-[-16vw] w-[4vw] h-[8vw] bg-white rounded-l-full flex items-center justify-center "></div> */}
                         <div className=" absolute top-[-6.5vw] left-[-25vw] w-[20vw] h-[20vw]">
@@ -418,21 +439,23 @@ const SingleCardMobile = ({ isluxury }) => {
                 <div className="px-[1vw] ">
                   <div className="flex items-center gap-[0.5vw] pt-[2.5vw] pb-[0.5vw]">
                     <div
-                      className={`${item.rating >= 4
-                        ? "border-[#61B00F]"
-                        : item.rating >= 2
+                      className={`${
+                        item.rating >= 4
+                          ? "border-[#61B00F]"
+                          : item.rating >= 2
                           ? "border-orange-400"
-                          : "border-red-600"
-                        } border-[0.1vw] rounded-[0.4vw] flex`}
+                          : "text-[#61B00F]"
+                      } border-[0.1vw] rounded-[0.4vw] flex`}
                     >
                       <div className="h-[4vw] rounded-[0.8vw]">
                         <div
                           className={` 
-                            ${item.rating >= 4
-                              ? "bg-[#61B00F]"
-                              : item.rating >= 2
+                            ${
+                              item.rating >= 4
+                                ? "bg-[#61B00F]"
+                                : item.rating >= 2
                                 ? "bg-orange-400"
-                                : "bg-red-600"
+                                : "text-[#61B00F]"
                             } 
                             flex h-[4vw] items-center rounded-r-none justify-center`}
                         >
@@ -456,20 +479,22 @@ const SingleCardMobile = ({ isluxury }) => {
                         <div className="flex items-center justify-center h-full">
                           <IoPersonSharp
                             size={"3vw"}
-                            className={`${item.rating >= 4
-                              ? "text-[#61B00F]"
-                              : item.rating >= 2
+                            className={`${
+                              item.rating >= 4
+                                ? "text-[#61B00F]"
+                                : item.rating >= 2
                                 ? "text-orange-400"
-                                : "text-red-600"
-                              } ml-[0.5vw]`}
+                                : "text-[#61B00F]"
+                            } ml-[0.5vw]`}
                           />
                           <p
-                            className={`text-[3vw] font-bold px-[1vw] ${item.rating >= 4
-                              ? "text-[#61B00F]"
-                              : item.rating >= 2
+                            className={`text-[3vw] font-bold px-[1vw] ${
+                              item.rating >= 4
+                                ? "text-[#61B00F]"
+                                : item.rating >= 2
                                 ? "text-orange-400"
-                                : "text-red-600"
-                              }`}
+                                : "text-[#61B00F]"
+                            }`}
                           >
                             {/* {`${item.rated_users}`} */}
                             1.7K
@@ -483,61 +508,76 @@ const SingleCardMobile = ({ isluxury }) => {
                         onClick={() => toggleDropDown(`liveTracking${index}`)}
                       >
                         <div>
-                          <MdMyLocation size="3vw"
-                            color={`${isluxury == "true" || isluxury == true
-                              ? "black"
-                              : "#1F487C"
-                              }`} />
+                          <MdMyLocation
+                            size="3vw"
+                            color={`${
+                              isluxury == "true" || isluxury == true
+                                ? "black"
+                                : "#1F487C"
+                            }`}
+                          />
                         </div>
                         <div>
                           <BiPlug
-                            color={`${isluxury == "true" || isluxury == true
-                              ? "black"
-                              : "#1F487C"
-                              }`}
-                            size="3vw " />
+                            color={`${
+                              isluxury == "true" || isluxury == true
+                                ? "black"
+                                : "#1F487C"
+                            }`}
+                            size="3vw "
+                          />
                         </div>
                         <div>
                           <BiSolidBlanket
-                            color={`${isluxury == "true" || isluxury == true
-                              ? "black"
-                              : "#1F487C"
-                              }`}
-                            size="3vw" />
+                            color={`${
+                              isluxury == "true" || isluxury == true
+                                ? "black"
+                                : "#1F487C"
+                            }`}
+                            size="3vw"
+                          />
                         </div>
                         <div>
                           <p
                             // className="text-[3vw] text-[#1F487C]"
-                            className={`text-[3vw]  ${isluxury == "true" || isluxury == true
-                              ? "text-black"
-                              : "text-[#1F487C]"
-                              }`}
+                            className={`text-[3vw]  ${
+                              isluxury == "true" || isluxury == true
+                                ? "text-black"
+                                : "text-[#1F487C]"
+                            }`}
                           >
                             +{item.amenities.length - 3}
                           </p>
                         </div>
                         <div>
                           {dropDown === `liveTracking${index}` ? (
-                            <IoIosArrowUp color={`${isluxury == "true" || isluxury == true
-                              ? "black"
-                              : "#1F487C"
+                            <IoIosArrowUp
+                              color={`${
+                                isluxury == "true" || isluxury == true
+                                  ? "black"
+                                  : "#1F487C"
                               }`}
-                              size="3vw" />
+                              size="3vw"
+                            />
                           ) : (
-                            <IoIosArrowDown color={`${isluxury == "true" || isluxury == true
-                              ? "black"
-                              : "#1F487C"
+                            <IoIosArrowDown
+                              color={`${
+                                isluxury == "true" || isluxury == true
+                                  ? "black"
+                                  : "#1F487C"
                               }`}
-                              size="3vw" />
+                              size="3vw"
+                            />
                           )}
                         </div>
                       </div>
                       <div
                         // className="h-[3vw] w-[0.3vw] bg-[#1F487C] gap-[1vw]"
-                        className={`h-[3vw] w-[0.3vw] gap-[1vw] ${isluxury == "true" || isluxury == true
-                          ? "bg-black"
-                          : "bg-[#1F487C]"
-                          }`}
+                        className={`h-[3vw] w-[0.3vw] gap-[1vw] ${
+                          isluxury == "true" || isluxury == true
+                            ? "bg-black"
+                            : "bg-[#1F487C]"
+                        }`}
                       ></div>
                       <div
                         className="flex items-center cursor-pointer gap-[0.5vw]"
@@ -545,37 +585,43 @@ const SingleCardMobile = ({ isluxury }) => {
                       >
                         <div
                           // className="text-[#1F487C] text-[2.2vw]"
-                          className={`text-[2vw]  ${isluxury == "true" || isluxury == true
-                            ? "text-black"
-                            : "text-[#1F487C]"
-                            }`}
+                          className={`text-[2vw]  ${
+                            isluxury == "true" || isluxury == true
+                              ? "text-black"
+                              : "text-[#1F487C]"
+                          }`}
                         >
                           Boarding & Dropping Points
                         </div>
                         <div>
                           {dropDown === `droppick${index}` ? (
                             <IoIosArrowUp
-                              color={`${isluxury == "true" || isluxury == true
-                                ? "black"
-                                : "#1F487C"
-                                }`}
-                              size="3vw" />
+                              color={`${
+                                isluxury == "true" || isluxury == true
+                                  ? "black"
+                                  : "#1F487C"
+                              }`}
+                              size="3vw"
+                            />
                           ) : (
                             <IoIosArrowDown
-                              color={`${isluxury == "true" || isluxury == true
-                                ? "black"
-                                : "#1F487C"
-                                }`}
-                              size="3vw" />
+                              color={`${
+                                isluxury == "true" || isluxury == true
+                                  ? "black"
+                                  : "#1F487C"
+                              }`}
+                              size="3vw"
+                            />
                           )}
                         </div>
                       </div>
                       <div
                         // className="h-[3vw] w-[0.3vw] bg-[#000000] gap-[1vw]"
-                        className={`h-[3vw] w-[0.3vw] gap-[1vw] ${isluxury == "true" || isluxury == true
-                          ? "bg-black"
-                          : "bg-[#1F487C]"
-                          }`}
+                        className={`h-[3vw] w-[0.3vw] gap-[1vw] ${
+                          isluxury == "true" || isluxury == true
+                            ? "bg-black"
+                            : "bg-[#1F487C]"
+                        }`}
                       ></div>
                       <div
                         className="flex items-center cursor-pointer gap-[0.5vw]"
@@ -583,28 +629,33 @@ const SingleCardMobile = ({ isluxury }) => {
                       >
                         <div
                           // className="text-[#1F487C] text-[2.2vw]"
-                          className={`text-[2vw]  ${isluxury == "true" || isluxury == true
-                            ? "text-black"
-                            : "text-[#1F487C]"
-                            }`}
+                          className={`text-[2vw]  ${
+                            isluxury == "true" || isluxury == true
+                              ? "text-black"
+                              : "text-[#1F487C]"
+                          }`}
                         >
                           Other Policies
                         </div>
                         <div>
                           {dropDown === `policy${index}` ? (
                             <IoIosArrowUp
-                              color={`${isluxury == "true" || isluxury == true
-                                ? "black"
-                                : "#1F487C"
-                                }`}
-                              size="3vw" />
+                              color={`${
+                                isluxury == "true" || isluxury == true
+                                  ? "black"
+                                  : "#1F487C"
+                              }`}
+                              size="3vw"
+                            />
                           ) : (
                             <IoIosArrowDown
-                              color={`${isluxury == "true" || isluxury == true
-                                ? "black"
-                                : "#1F487C"
-                                }`}
-                              size="3vw" />
+                              color={`${
+                                isluxury == "true" || isluxury == true
+                                  ? "black"
+                                  : "#1F487C"
+                              }`}
+                              size="3vw"
+                            />
                           )}
                         </div>
                       </div>
@@ -624,6 +675,7 @@ const SingleCardMobile = ({ isluxury }) => {
                     trackingCount={trackingCount}
                     setTrackingCount={setTrackingCount}
                     amenities={item.amenities}
+                    bus_type_status={item}
                   />
                 </div>
               )}
@@ -633,13 +685,13 @@ const SingleCardMobile = ({ isluxury }) => {
                     index={index}
                     boarding={item.boarding}
                     dropping={item.dropping}
+                    bus_type_status={item}
                   />
                 </div>
               )}
               {dropDown === `policy${index}` && (
                 <div className="bg-gray-200 h-auto w-full mt-[1vw] rounded-[0.5vw] mb-[1vw]">
-
-                  <Policy />
+                  <Policy bus_type_status={item} />
                 </div>
               )}
               {dropDown === `seat${index}` && (

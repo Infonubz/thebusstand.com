@@ -31,6 +31,9 @@ export default function MyAccountsDetails() {
     const tabIndex = location.state?.tabIndex || 1;
     setCurrentTab(tabIndex);
   }, [location.state]);
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   const navigation = useNavigate();
   return (
     <div className="bg-[#E5FFF1]">
@@ -51,9 +54,9 @@ export default function MyAccountsDetails() {
           <label className="absolute left-[4vw] top-[1.5vw] text-[1.4vw] z-[1] text-white font-bold">
             <span
               className="pr-[0.5vw]  underline underline-offset-2 cursor-pointer "
-              onClick={() => navigation("/")}
+              onClick={() => navigation("/dashboard")}
             >
-              Home
+              Dashboard
             </span>
             {`> My Account > ${
               currenttab === 1

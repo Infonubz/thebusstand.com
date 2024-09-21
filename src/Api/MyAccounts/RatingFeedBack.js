@@ -9,6 +9,16 @@ const api = axios.create({
 });
 const apiUrl = process.env.REACT_APP_API_URL;
 export const PostFeedBack = async (rating, nameValue, feedback, occValue) => {
+      const occId =
+      occValue === "Business" ? 1 :
+      occValue === "General Public" ? 2 :
+      occValue === "Physically Challenged" ? 3 :
+      occValue === "Pilgrim Traveler" ? 4 :
+      occValue === "Senior Citizen" ? 5 :
+      occValue === "Student" ? 6 :
+      occValue === "Tourist" ? 7 :
+      occValue === "Corporate Traveler" ? 8 :
+     2
   try {
     const response = await axios.post(`${apiUrl}/feedback`, {
       tbs_passenger_id: sessionStorage.getItem("passenger_id"),
@@ -16,12 +26,27 @@ export const PostFeedBack = async (rating, nameValue, feedback, occValue) => {
       rating: rating,
       description: feedback,
       occupation: occValue,
+      occupation_id:occId,
     });
     toast.success(response.data);
   } catch (err) {
     console.log(err);
   }
 };
+
+export const GetFeedbackById = async () =>{
+  const id = sessionStorage.getItem("passenger_id")
+  try{
+    const response = await axios.get(`${apiUrl}/passenger-details/${id}`)
+   console.log(response.data,"ddddjjjjjjdjdjhfh")
+    return response.data
+  }
+  catch(err){
+    handleError(err)
+  }
+}
+
+
 export const GetFeedbacks = async (dispatch, id) => {
   try {
     const response = await axios.post(`${apiUrl}/feedback-By-Rating`, {

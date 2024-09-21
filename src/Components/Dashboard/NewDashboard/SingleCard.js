@@ -598,10 +598,12 @@ export default function SingleCard() {
                             className="h-[3.5vw] w-full"
                           />
                           <div className="absolute top-[0.2vw] right-[9vw] rounded-full">
-                            <img
-                              src={logo}
-                              className="w-[2.5vw] h-[2.5vw] rounded-full"
-                            />
+                            {item.logos != null && (
+                              <img
+                                src={`http://192.168.90.47:4001${item.logos}`}
+                                className="w-[2.5vw] h-[2.5vw] rounded-full"
+                              />
+                            )}
                           </div>
                           <label
                             className={`${
@@ -921,7 +923,7 @@ export default function SingleCard() {
                               ? "border-[#61B00F]"
                               : item.rating >= 2
                               ? "border-orange-400"
-                              : "border-red-600"
+                              : "border-[#61B00F]"
                           } border-[0.1vw] rounded-[0.4vw] flex`}
                         >
                           <div className="h-[1.5vw] rounded-[0.4vw]">
@@ -932,7 +934,7 @@ export default function SingleCard() {
                                 ? "bg-[#61B00F]"
                                 : item.rating >= 2
                                 ? "bg-orange-400"
-                                : "bg-red-600"
+                                : "bg-[#61B00F]"
                             }
                             flex h-[2vw] items-center  rounded-l-[0.4vw] rounded-r-none justify-center`}
                             >
@@ -949,7 +951,7 @@ export default function SingleCard() {
                             </div>
                           </div>
                           <div className="h-[2vw] ">
-                            <div className="flex items-center justify-center h-full">
+                            <div className="flex items-center justify-center h-full bg-white rounded-r-[0.5vw]">
                               <IoPersonSharp
                                 size={"1vw"}
                                 className={`${
@@ -957,7 +959,7 @@ export default function SingleCard() {
                                     ? "text-[#61B00F]"
                                     : item.rating >= 2
                                     ? "text-orange-400"
-                                    : "text-red-600"
+                                    : "text-[#61B00F]"
                                 } ml-[0.5vw]`}
                               />
                               <p
@@ -966,7 +968,7 @@ export default function SingleCard() {
                                     ? "text-[#61B00F]"
                                     : item.rating >= 2
                                     ? "text-orange-400"
-                                    : "text-red-600"
+                                    : "text-[#61B00F]"
                                 }`}
                               >
                                 {/* {`${item.rated_users}`} */}

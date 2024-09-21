@@ -1,21 +1,17 @@
-import bus from "../../assets/bus.png";
+// import bus from "../../assets/bus.png";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import "react-calendar/dist/Calendar.css"; // Import the styles
-import { DownOutlined, UserOutlined } from "@ant-design/icons";
-import nlogo from "../../assets/logo.png";
-import profile from "../../assets/Profile.png";
-import ticket from "../../assets/ticket.png";
-import share from "../../assets/Share.png";
-import {
-  MdKeyboardArrowLeft,
-  MdKeyboardArrowRight,
-  MdStarRate,
-} from "react-icons/md";
+// import { DownOutlined, UserOutlined } from "@ant-design/icons";
+// import nlogo from "../../assets/logo.png";
+// import profile from "../../assets/Profile.png";
+// import ticket from "../../assets/ticket.png";
+// import share from "../../assets/Share.png";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 // import "../src/Components/TextMoving/TextMoving.css"; // Import the stylesheet
 import "tailwindcss/tailwind.css"; // Make sure you have Tailwind CSS imported in your project
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Drawer, Popover, Select } from "antd";
-import { Space, TimePicker, DatePicker } from "antd";
+import { Drawer, Popover, Select } from "antd";
+// import { Space, TimePicker, DatePicker } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import {
   BUS_SEARCH,
@@ -25,68 +21,68 @@ import {
 } from "../../Store/type";
 // import logo from "./logo.svg";
 import moment from "moment";
-import busstand from "../../assets/busstand.png";
+// import busstand from "../../assets/busstand.png";
 import ShareButtons from "./ShareButton";
 import Modal from "react-modal";
-import Popup from "reactjs-popup";
+// import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css"; // Importing the default styling
 import dropdown from "../../assets/dropdown.png";
-import { CalendarComponent } from "@syncfusion/ej2-react-calendars";
+// import { CalendarComponent } from "@syncfusion/ej2-react-calendars";
 // import TimePicker from "@mui/lab/TimePicker";
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 // import { LocalizationProvider, MobileTimePicker } from "@mui/x-date-pickers";
 // import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import time from "../../assets/time.png";
-import date from "../../assets/date.png";
-import { IoMdTime } from "react-icons/io";
+// import time from "../../assets/time.png";
+// import date from "../../assets/date.png";
+// import { IoMdTime } from "react-icons/io";
 import { FaArrowLeft, FaArrowRight, FaMapMarkerAlt } from "react-icons/fa";
 import split from "../../assets/split.png";
-import doubleducker from "../../assets/doubleducker.png";
-import buslogo from "../../assets/502-ai 1.png";
+// import doubleducker from "../../assets/doubleducker.png";
+// import buslogo from "../../assets/502-ai 1.png";
 import "../../App.css";
 // import { Calendar } from "primereact/calendar";
 import "../../Components/MainComponenet/Datepicker.css";
-import TimePick from "./TimePicker";
-import { timePickerInput } from "analogue-time-picker";
-import Sidebar from "./Sidebar";
+// import TimePick from "./TimePicker";
+// import { timePickerInput } from "analogue-time-picker";
+// import Sidebar from "./Sidebar";
 import "../../Components/MainComponenet/TimePicker.css";
-import TimePickerComponent from "./TimePicker";
+// import TimePickerComponent from "./TimePicker";
 import axios from "axios";
-import { Navigate, useLocation, useNavigate, useParams } from "react-router";
-import bus2 from "../../assets/doubleducker.png";
-import { RWebShare } from "react-web-share";
+import { useLocation, useNavigate } from "react-router";
+// import bus2 from "../../assets/doubleducker.png";
+// import { RWebShare } from "react-web-share";
 // import 'antd/dist/antd.css';
 // import "antd/dist/reset.css";
 import "./Antd.css";
-import ResponsiveTimePickers from "./NewTimePicker";
+// import ResponsiveTimePickers from "./NewTimePicker";
 import DateInput from "./DatePicker/Components/DateInput";
 import "./DatePicker/style.css";
 import { CiSearch } from "react-icons/ci";
 import { LiaCitySolid } from "react-icons/lia";
-import { SmileOutlined } from "@ant-design/icons";
-import { Dropdown } from "antd";
-import { PiNavigationArrowFill } from "react-icons/pi";
+// import { SmileOutlined } from "@ant-design/icons";
+// import { Dropdown } from "antd";
+// import { PiNavigationArrowFill } from "react-icons/pi";
 import { PiUserCircleDuotone } from "react-icons/pi";
 import { FaTicketAlt } from "react-icons/fa";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { SendTravelDetails } from "../../Api/Dashboard/Dashboard";
-import { IoArrowBackCircle } from "react-icons/io5";
-import { TiArrowBackOutline } from "react-icons/ti";
-import { TbArrowBackUpDouble } from "react-icons/tb";
+// import { IoArrowBackCircle } from "react-icons/io5";
+// import { TiArrowBackOutline } from "react-icons/ti";
+// import { TbArrowBackUpDouble } from "react-icons/tb";
 import Calendar from "react-calendar";
-import newbus from "../../assets/newbus.png";
+// import newbus from "../../assets/newbus.png";
 import newbus1 from "../../assets/newbus1.png";
 import LoginModalPopUp from "../Login/LoginModalPopUp";
 import Login from "../Login/Login";
-import { FaUserCircle } from "react-icons/fa";
-import { toast } from "react-toastify";
+// import { FaUserCircle } from "react-icons/fa";
+// import { toast } from "react-toastify";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
 
 // import bus1 from "../../assets/bus";
 // import bus from "../../assets/bus.png";
 // import styled from "styled-components";
 const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
-  const [startDate, setStartDate] = useState(new Date());
+  // const [startDate, setStartDate] = useState(new Date());
   const location = useLocation();
   const currentplace = location.state?.currentplace || "";
   console.log(currentplace, "currentplace");
@@ -107,11 +103,13 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   const [fromValue, setFromValue] = useState("");
 
   useEffect(() => {
-    // Update the state when traveldetails.to.value changes
+    // Update the state when traveldetails.to.value or traveldetails.from.value changes
     setToValue(traveldetails.to.value);
     setFromValue(traveldetails.from.value);
     console.log(toValue, "traveldetailsto");
     console.log(fromValue, "traveldetailsfrom");
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [traveldetails.to.value, traveldetails.from.value]);
 
   const busdata = useSelector((state) => state.bus_data);
@@ -160,12 +158,12 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   const handleChangeFromValue = (value) => {
     setFromValue(value);
 
-    if (value == "Pondicherry") {
+    if (value === "Pondicherry") {
       console.log(value, "busdatas");
       setToBus(Coimbatore);
-    } else if (value == "Bangalore") {
+    } else if (value === "Bangalore") {
       setToBus(Hyderabad);
-    } else if (value == "Chennai") {
+    } else if (value === "Chennai") {
       setToBus(Bangalore);
     } else {
       setToBus(all);
@@ -262,9 +260,9 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
     { value: "Goa", label: "Goa" },
     { value: "Hyderabad", label: "Hyderabad" },
   ];
-  const onSearch = (value) => {
-    console.log("search:", value);
-  };
+  // const onSearch = (value) => {
+  //   console.log("search:", value);
+  // };
   const handleSearch = () => {
     localStorage.setItem("arrival", toValue);
     localStorage.setItem("selectdate", fromDate);
@@ -280,35 +278,35 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
     // handlefilter();
     localStorage.setItem("search", false);
   };
-  const onChange = (date, dateString) => {
-    console.log(date, dateString);
-  };
-  const handleSwap = () => {
-    setTraveldetails({
-      ...traveldetails,
-      from: traveldetails.to,
-      to: traveldetails.from,
-    });
-  };
+  // const onChange = (date, dateString) => {
+  //   console.log(date, dateString);
+  // };
+  // const handleSwap = () => {
+  //   setTraveldetails({
+  //     ...traveldetails,
+  //     from: traveldetails.to,
+  //     to: traveldetails.from,
+  //   });
+  // };
   console.log(traveldetails, "hhhh");
 
-  const filterOption = (input, option) =>
-    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  // const filterOption = (input, option) =>
+  //   (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-  const [time, setTime] = useState(new Date());
+  // const [time, setTime] = useState(new Date());
 
-  const handleChange = (newTime) => {
-    setTime(newTime);
-  };
+  // const handleChange = (newTime) => {
+  //   setTime(newTime);
+  // };
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const openModal = () => {
-    console.log("open");
-    setModalIsOpen(true);
-    dispatch({
-      type: SHARE_BUTTON,
-      payload: true,
-    });
-  };
+  // const openModal = () => {
+  //   console.log("open");
+  //   setModalIsOpen(true);
+  //   dispatch({
+  //     type: SHARE_BUTTON,
+  //     payload: true,
+  //   });
+  // };
 
   const closeModal = () => {
     console.log("close");
@@ -319,20 +317,20 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
     });
   };
 
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+  // const [selectedDate, setSelectedDate] = React.useState(new Date());
 
-  const handleDateChange = (e) => {
-    setTraveldetails({
-      ...traveldetails,
-      date: e.value,
-    });
-    localStorage.setItem("selectdate", e.value);
-  };
-  const disablePastDates = (current) => {
-    // Can not select days before today and today
-    return current && current < new Date().setHours(0, 0, 0, 0);
-  };
-  let dateValue = new Date();
+  // const handleDateChange = (e) => {
+  //   setTraveldetails({
+  //     ...traveldetails,
+  //     date: e.value,
+  //   });
+  //   localStorage.setItem("selectdate", e.value);
+  // };
+  // const disablePastDates = (current) => {
+  //   // Can not select days before today and today
+  //   return current && current < new Date().setHours(0, 0, 0, 0);
+  // };
+  // let dateValue = new Date();
   // const CalendarContainer = styled.div`
   //   /* ~~~ container styles ~~~ */
   //   max-width: 600px;
@@ -342,16 +340,16 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   //   padding: 10px;
   //   border-radius: 3px;
   // `;.
-  const format = "HH:mm";
+  // const format = "HH:mm";
   const handleonclick = (item) => {
     console.log(item, "itemitem");
     setTraveldetails({ ...traveldetails, from: item });
     localStorage.setItem("departure", item.label);
-    if (localStorage.getItem("departure") == "Chennai") {
+    if (localStorage.getItem("departure") === "Chennai") {
       localStorage.setItem("arrival", "Hyderabad");
-    } else if (localStorage.getItem("departure") == "Bangalore") {
+    } else if (localStorage.getItem("departure") === "Bangalore") {
       localStorage.setItem("arrival", "Goa");
-    } else if (localStorage.getItem("departure") == "Pondicherry") {
+    } else if (localStorage.getItem("departure") === "Pondicherry") {
       localStorage.setItem("arrival", "Coimbatore");
     }
     setOpen(false);
@@ -457,7 +455,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   }, []);
 
   useEffect(() => {
-    if (filterText.trim() !== "" || toopen == true) {
+    if (filterText.trim() !== "" || toopen === true) {
       setFilteredToOptions(
         tooptions.filter((item) =>
           item.label.toLowerCase().includes(filterText.toLowerCase())
@@ -466,9 +464,10 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
     } else {
       setFilteredToOptions(tooptions);
     }
-  }, [filterText]);
+  }, [filterText, toopen, tooptions]);
+
   useEffect(() => {
-    if (filterText.trim() !== "" || open == true) {
+    if (filterText.trim() !== "" || open === true) {
       setFilteredOptions(
         options.filter((item) =>
           item.label.toLowerCase().includes(filterText.toLowerCase())
@@ -477,11 +476,12 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
     } else {
       setFilteredOptions(options);
     }
-  }, [filterText]);
-  const [boolean, setBoolean] = useState(false);
+  }, [filterText, open, options]);
+
+  // const [boolean, setBoolean] = useState(false);
   console.log(filterText, "traveldetails");
   useEffect(() => {
-    if (toopen == false || open == false) {
+    if (toopen === false || open === false) {
       setFilterText("");
     }
   }, [toopen, open]);
@@ -504,8 +504,8 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
 
   // timepicker
 
-  const [showTime, setShowTime] = useState(null);
-  const inputRef = useRef(null);
+  // const [showTime, setShowTime] = useState(null);
+  // const inputRef = useRef(null);
 
   // useEffect(() => {
   //   if (!inputRef.current) return;
@@ -526,71 +526,71 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   //   };
   // }, [onTimeChanged]);
 
-  const attachChangeEventToValueChange = (input, handler) => {
-    Object.defineProperty(input, "value", {
-      ...Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value"),
-      set: function (val) {
-        const oldValue = input.value;
-        Object.getOwnPropertyDescriptor(
-          HTMLInputElement.prototype,
-          "value"
-        ).set.apply(this, arguments);
-        if (oldValue !== input.value) {
-          const time = parseTime(input.value);
-          if (time) {
-            handler(time.hour, time.minute);
-          }
-        }
-      },
-    });
-  };
+  // const attachChangeEventToValueChange = (input, handler) => {
+  //   Object.defineProperty(input, "value", {
+  //     ...Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value"),
+  //     set: function (val) {
+  //       const oldValue = input.value;
+  //       Object.getOwnPropertyDescriptor(
+  //         HTMLInputElement.prototype,
+  //         "value"
+  //       ).set.apply(this, arguments);
+  //       if (oldValue !== input.value) {
+  //         const time = parseTime(input.value);
+  //         if (time) {
+  //           handler(time.hour, time.minute);
+  //         }
+  //       }
+  //     },
+  //   });
+  // };
 
-  const parseTime = (time) => {
-    const validate = /^\s*\d{1,2}\s*:\s*\d{1,2}\s*((am)|(pm))?\s*$/i;
-    if (!time || !validate.test(time)) return null;
+  // const parseTime = (time) => {
+  //   const validate = /^\s*\d{1,2}\s*:\s*\d{1,2}\s*((am)|(pm))?\s*$/i;
+  //   if (!time || !validate.test(time)) return null;
 
-    const split = time.split(":");
-    let hour = parseInt(split[0]);
-    const minute = parseInt(split[1]);
+  //   const split = time.split(":");
+  //   let hour = parseInt(split[0]);
+  //   const minute = parseInt(split[1]);
 
-    // Ensure hour is within 12-hour format
-    if (hour > 12) {
-      hour -= 12;
-    } else if (hour === 0) {
-      hour = 12;
-    }
+  //   // Ensure hour is within 12-hour format
+  //   if (hour > 12) {
+  //     hour -= 12;
+  //   } else if (hour === 0) {
+  //     hour = 12;
+  //   }
 
-    // Determine AM/PM
-    const amPm = hour >= 12 ? "pm" : "am";
+  //   // Determine AM/PM
+  //   const amPm = hour >= 12 ? "pm" : "am";
 
-    return { hour, minute, amPm };
-  };
+  //   return { hour, minute, amPm };
+  // };
   console.log(busdata, "busdata");
 
   // Get current date
-  const currentDate = new Date();
+  // const currentDate = new Date();
   // Get the start of the current month
-  const startOfMonth = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth(),
-    1
-  );
+  // const startOfMonth = new Date(
+  //   currentDate.getFullYear(),
+  //   currentDate.getMonth(),
+  //   1
+  // );
   // Get the end of the current month
-  const endOfMonth = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth() + 1,
-    0
-  );
-  const handleTimeChanged = (hour, minute) => {
-    console.log(`Time selected: ${hour}:${minute}`);
-  };
-  const [TimePickerlist, setTimePickerlist] = useState("");
-  const Clockonchange = (time, timString) => {
-    console.log(time, "timing");
-    console.log(timString, "timStringtimString");
-    setTimePickerlist(timString);
-    handlefilter(timString);
-  };
+  // const endOfMonth = new Date(
+  //   currentDate.getFullYear(),
+  //   currentDate.getMonth() + 1,
+  //   0
+  // );
+  // const handleTimeChanged = (hour, minute) => {
+  //   console.log(`Time selected: ${hour}:${minute}`);
+  // };
+  // const [TimePickerlist, setTimePickerlist] = useState("");
+  // const Clockonchange = (time, timString) => {
+  //   console.log(time, "timing");
+  //   console.log(timString, "timStringtimString");
+  //   setTimePickerlist(timString);
+  //   handlefilter(timString);
+  // };
   const handlefilter = async (timString) => {
     try {
       const payload = {
@@ -616,7 +616,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
         start_time: timString,
         // timedeparture:"6:00 AM to 11:00 AM"
       };
-      const place = localStorage.getItem("departure");
+      // const place = localStorage.getItem("departure");
       // const response = await axios.get(
       //   place === "Chennai"
       //     ? "http://192.168.90.47:3000/chennai_src"
@@ -643,9 +643,16 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
       console.error("Error", error);
     }
   };
+  const depature = localStorage.getItem("departure");
+
+  // const handlefilter = useCallback(() => {
+  //   // Your filter logic here
+  // }, []);
+
   useEffect(() => {
     handlefilter();
-  }, [localStorage.getItem("departure")]);
+  }, [depature]);
+
   const [modalshow, setModalShow] = useState(false);
   const [selectinput, setSelectInput] = useState("");
   const [inputsearch, setInputSearch] = useState({
@@ -663,101 +670,102 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   console.log(traveldetails.date, "TimePickerlist");
   const [departurelist, setdepartureList] = useState([]);
   useEffect(() => {
+    const departure_city = [
+      { city: "Chennai", value: "Chennai", state: "Tamilnadu" },
+      { city: "Bangalore", value: "Bangalore", state: "Karnataka" },
+      { city: "Hyderabad", value: "Hyderabad", state: "Telangana" },
+      { city: "Pondicherry", value: "Pondicherry", state: "Tamilnadu" },
+    ];
+    const arrival_city = [
+      { city: "Coimbatore", value: "Coimbatore", state: "Tamilnadu" },
+      { city: "Mumbai", value: "Mumbai", state: "Maharastra" },
+      { city: "Kochi", value: "Kochi", state: "Kerala" },
+    ];
     if (inputsearch.from) {
-      if (selectinput == "from") {
+      if (selectinput === "from") {
         const departuredata = departure_city.filter((item) =>
           item.city.toLowerCase().includes(inputsearch.from.toLowerCase())
         );
         setdepartureList(departuredata);
-      } else if (selectinput == "to") {
+      } else if (selectinput === "to") {
         const departuredata = arrival_city.filter((item) =>
           item.city.toLowerCase().includes(inputsearch.to.toLowerCase())
         );
         setdepartureList(departuredata);
       }
     } else {
-      setdepartureList(selectinput == "from" ? departure_city : arrival_city);
+      setdepartureList(selectinput === "from" ? departure_city : arrival_city);
     }
   }, [inputsearch, selectinput]);
-  const departure_city = [
-    { city: "Chennai", value: "Chennai", state: "Tamilnadu" },
-    { city: "Bangalore", value: "Bangalore", state: "Karnataka" },
-    { city: "Hyderabad", value: "Hyderabad", state: "Telangana" },
-    { city: "Pondicherry", value: "Pondicherry", state: "Tamilnadu" },
-  ];
-  const arrival_city = [
-    { city: "Coimbatore", value: "Coimbatore", state: "Tamilnadu" },
-    { city: "Mumbai", value: "Mumbai", state: "Maharastra" },
-    { city: "Kochi", value: "Kochi", state: "Kerala" },
-  ];
+
   const navigation = useNavigate();
-  const currentUrl = window.location.href;
+  // const currentUrl = window.location.href;
   const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState(null);
+  // const [toDate, setToDate] = useState(null);
   console.log(fromDate, "fromDate");
 
-  const handleProPage = () => {
-    navigation("/main", { state: { tabIndex: 1 } });
-  };
+  // const handleProPage = () => {
+  //   navigation("/main", { state: { tabIndex: 1 } });
+  // };
 
-  const handleBookingPage = () => {
-    navigation("/main", { state: { tabIndex: 3 } });
-  };
+  // const handleBookingPage = () => {
+  //   navigation("/main", { state: { tabIndex: 3 } });
+  // };
 
   const [logModalIsOpen, setLogModalIsOpen] = useState(false);
-  const openLogModal = () => {
-    console.log("openhomeee");
-    setAccDrawer(false);
-    setLogModalIsOpen(true);
-    sessionStorage.clear();
-    localStorage.clear();
-    navigation("/");
-    toast.success("Logout Successfully");
-  };
+  // const openLogModal = () => {
+  //   console.log("openhomeee");
+  //   setAccDrawer(false);
+  //   setLogModalIsOpen(true);
+  //   sessionStorage.clear();
+  //   localStorage.clear();
+  //   navigation("/");
+  //   toast.success("Logout Successfully");
+  // };
   const closeLogModal = () => {
     setLogModalIsOpen(false);
   };
 
-  const items = [
-    {
-      key: "1",
-      label: (
-        <div
-          className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
-          onClick={handleProPage}
-        >
-          <PiUserCircleDuotone color="#1F487C" size="1.5vw" /> My Account
-        </div>
-      ),
-    },
-    {
-      key: "2",
-      label: (
-        <div
-          className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
-          onClick={handleBookingPage}
-        >
-          <FaTicketAlt color="#1F487C" size="1.5vw" /> Bookings
-        </div>
-      ),
-    },
-    {
-      key: "3",
-      label: (
-        <div
-          className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
-          onClick={openLogModal}
-        >
-          <RiLogoutCircleLine color="#1F487C" size="1.5vw" /> Logout
-        </div>
-      ),
-    },
-  ];
+  // const items = [
+  //   {
+  //     key: "1",
+  //     label: (
+  //       <div
+  //         className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+  //         onClick={handleProPage}
+  //       >
+  //         <PiUserCircleDuotone color="#1F487C" size="1.5vw" /> My Account
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     key: "2",
+  //     label: (
+  //       <div
+  //         className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+  //         onClick={handleBookingPage}
+  //       >
+  //         <FaTicketAlt color="#1F487C" size="1.5vw" /> Bookings
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     key: "3",
+  //     label: (
+  //       <div
+  //         className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+  //         onClick={openLogModal}
+  //       >
+  //         <RiLogoutCircleLine color="#1F487C" size="1.5vw" /> Logout
+  //       </div>
+  //     ),
+  //   },
+  // ];
 
   const [accDrawer, setAccDrawer] = useState(false);
-  const showAccDrawer = () => {
-    setAccDrawer(true);
-  };
+  // const showAccDrawer = () => {
+  //   setAccDrawer(true);
+  // };
   const onAccClose = () => {
     setAccDrawer(false);
   };
@@ -775,7 +783,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   const formattedDate = moment(fromDate).format("DD-MM-YYYY");
   const mobileformattedDate = moment(fromDate).format("DD MMM ddd");
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // const [openDate,setOpenDate]=useState(false)
 
@@ -798,9 +806,9 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
     setOpenDatee(false);
   };
 
-  const handleDateChangee = (date, dateString) => {
-    setSelectedDatee(dateString);
-  };
+  // const handleDateChangee = (date, dateString) => {
+  //   setSelectedDatee(dateString);
+  // };
 
   const LoginUser_Name = sessionStorage.getItem("user_name");
 
@@ -808,7 +816,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   const closeLoginModal = () => {
     setLoginIsOpen(false);
   };
-  console.log(LoginUser_Name == "null", "gggggggg");
+  console.log(LoginUser_Name === "null", "gggggggg");
 
   return (
     <>
@@ -892,6 +900,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
           <img
             src={newbus1}
             className="absolute md:block hidden top-[1.7vw] h-[8.1vw] w-[21.75vw]   left-[-3vw]"
+            alt=""
             // style={{
             //   transform: "rotateY(180deg)",
             // }}
@@ -954,6 +963,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                         <img
                           src={dropdown}
                           className="h-[7.5vw] md:h-[2.7vw] md:w-full "
+                          alt=""
                         />
                         <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.5vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
                           {traveldetails?.from?.value?.toUpperCase()}
@@ -972,6 +982,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                       <img
                         src={dropdown}
                         className="h-[7.5vw] md:h-[2.7vw] md:w-full "
+                        alt=""
                       />
                       <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.5vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
                         {traveldetails?.from?.value?.toUpperCase()}
@@ -993,6 +1004,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                         <img
                           src={split}
                           className="w-[7vw] h-[7.5vw] md:h-[2.5vw] md:w-[2.5vw]"
+                          alt=""
                         />
                         <FaArrowRightArrowLeft
                           color="white"
@@ -1042,6 +1054,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                         <img
                           src={dropdown}
                           className="h-[7.5vw] md:h-[2.7vw] w-full "
+                          alt=""
                         />
                         <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.6vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
                           {/* {traveldetails?.to?.value?.toUpperCase()} */}
@@ -1061,6 +1074,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                       <img
                         src={dropdown}
                         className="h-[7.5vw] md:h-[2.7vw] w-full "
+                        alt=""
                       />
                       <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.6vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
                         {traveldetails?.to?.value?.toUpperCase()}
@@ -1280,7 +1294,11 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                   />
                 ) : (
                   <div className="relative custnav">
-                    <img src={split} className=" md:w-[13vw] md:h-[3vw]" />
+                    <img
+                      src={split}
+                      className=" md:w-[13vw] md:h-[3vw]"
+                      alt=""
+                    />
                     <div className=" absolute md:bottom-[.6vw] md:left-[3vw] md:text-[1.3vw] text-white  bottom-[1.9vw] text-[2.5vw] left-[3.5vw]">
                       {fromValue}
                     </div>
@@ -1293,7 +1311,11 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                     // onClick={handleSwap}
                     className=" cursor-not-allowed"
                   >
-                    <img src={split} className="md:h-[2.5vw] md:w-[2.5vw]" />
+                    <img
+                      src={split}
+                      className="md:h-[2.5vw] md:w-[2.5vw]"
+                      alt="split"
+                    />
                     <FaArrowRightArrowLeft
                       color="white"
                       size={"1.2vw"}
@@ -1358,6 +1380,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                     <img
                       src={split}
                       className=" md:w-[13vw] md:h-[3vw] flex justify-center"
+                      alt="split"
                     />
                     <div className=" absolute md:bottom-[.6vw] md:left-[3vw] md:text-[1.3vw] text-white  bottom-[1.9vw] text-[2.5vw] left-[3.5vw]">
                       {toValue}
@@ -1394,6 +1417,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                       <img
                         src={split}
                         className="w-[13vw] h-[3vw] felx justify-center"
+                        alt="split"
                       />
                       <div className="absolute bottom-[.6vw] left-[3vw] text-[1.3vw] text-white">
                         {formattedDate}
@@ -1606,7 +1630,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                   <div
                     className="flex items-center px-[5vw] py-[2vw] bg-white"
                     onClick={() => {
-                      selectinput == "from"
+                      selectinput === "from"
                         ? localStorage.setItem("departure", item.city)
                         : localStorage.setItem("arrival", item.city);
                       setModalShow(false);

@@ -1,43 +1,51 @@
-import React, { useState } from "react";
-import { Rate , Select } from "antd";
+import React, { useEffect, useState } from "react";
+import { Rate, Select } from "antd";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import rating_img from "../../../assets/ratings_gif.gif";
 import { FaStar } from "react-icons/fa";
-import { PostFeedBack } from "../../../Api/MyAccounts/RatingFeedBack";
+import {
+  GetFeedbackById,
+  PostFeedBack,
+} from "../../../Api/MyAccounts/RatingFeedBack";
+const { Option } = Select;
 
-const { Option } = Select; // Destructure Option from Select
-
-export const RatingFeedBack = ({setRatingModal}) => {
+export const RatingFeedBack = ({ setRatingModal }) => {
   const [value, setValue] = useState(0);
 
   const [nameValue, setNameValue] = useState("");
   const [occValue, setOccValue] = useState("");
-  const [error,setError] = useState(false)
-  const [required,setRequired] = useState (false)
+  const [error, setError] = useState(false);
+  const [required, setRequired] = useState(false);
+  const [getValues, setGetValues] = useState("");
 
   const validationSchema = Yup.object({
     feedback: Yup.string()
       .required("Feedback is required")
       .min(10, "Feedback must be at least 10 characters")
       .max(300, "Feedback must be less than 300 characters"),
- 
   });
 
-  console.log("errororororor" , error , nameValue, occValue , value);
- const handleClick = () =>{
-
-    if(value > 0 && nameValue && occValue){
-        console.log("im printing");
-        setError(true)
-        setRequired(false)
+  console.log("errororororor", error, nameValue, occValue, value);
+  const handleClick = () => {
+    if (
+      value > 0 &&
+      (nameValue || getValues.user_name) &&
+      (occValue || getValues.occupation)
+    ) {
+      console.log("im printing");
+      setError(true);
+      setRequired(false);
+      if (getValues) {
+        setNameValue(getValues.user_name);
+        setOccValue(getValues.occupation);
+      }
+    } else {
+      setError(false);
+      setRequired(true);
+      console.log("im  not printing");
     }
-    else{
-        setError(false)
-        setRequired(true)
-        console.log("im  not printing");
-    }
- }
+  };
 
   const getColorForValue = (value) => {
     if (value <= 0) return "#FF0000";
@@ -50,11 +58,22 @@ export const RatingFeedBack = ({setRatingModal}) => {
 
   const desc = ["Terrible", "Bad", "Okay", "Good", "Excellent"];
 
-  const handleSubmit = (feed) =>{
-    console.log("iam callinffgggg",value,nameValue,feed.feedback,occValue);
-    PostFeedBack(value,nameValue,feed.feedback,occValue)
-    setRatingModal(false)
-  }
+  const handleSubmit = (feed) => {
+    console.log("iam callinffgggg", value, nameValue, feed.feedback, occValue);
+    PostFeedBack(value, nameValue, feed.feedback, occValue);
+    setRatingModal(false);
+  };
+
+  useEffect(() => {
+    const feedback = async () => {
+      const response = await GetFeedbackById();
+      if (response) {
+        setGetValues(response);
+        console.log(response, "lszfmjdsfksdhgj");
+      }
+    };
+    feedback();
+  }, []);
 
   return (
     <>
@@ -70,7 +89,7 @@ export const RatingFeedBack = ({setRatingModal}) => {
           <Form onSubmit={handleSubmit}>
             {error ? (
               <div>
-                <div className="overflow-hidden w-full h-[34.25vw] rounded-lg py-[1.5vw] px-[2.5vw]">
+                <div className="overflow-hidden w-full h-[34.25vw] rounded-lg py-[1.5vw] px-[2.5vw] over">
                   <span className="text-[#1F487C] font-bold text-[1.5vw]">
                     Enjoy our Website?
                   </span>
@@ -229,7 +248,12 @@ export const RatingFeedBack = ({setRatingModal}) => {
                   </div>
                 </div>
                 <div className=" flex justify-end px-[2vw] gap-x-[1vw]">
-                    <button onClick={()=>setError(false)} className="bg-[#1F487C] text-[1.2vw] text-white font-bold rounded-full w-[6vw] h-[2.5vw]">Back</button>
+                  <button
+                    onClick={() => setError(false)}
+                    className="bg-[#1F487C] text-[1.2vw] text-white font-bold rounded-full w-[6vw] h-[2.5vw]"
+                  >
+                    Back
+                  </button>
                   <button
                     type="submit"
                     className="bg-[#1F487C] text-[1.2vw] text-white font-bold rounded-full w-[13vw] h-[2.5vw]"
@@ -275,15 +299,21 @@ export const RatingFeedBack = ({setRatingModal}) => {
                         />
                       </div>
                     )}
-                     { required === true ? <div  className="text-red-800 ml-[.5vw] text-[.8vw] bottom-[-.5vw] absolute">Rating is required</div>:""}
+                    {required === true ? (
+                      <div className="text-red-800 ml-[.5vw] text-[.8vw] bottom-[-.5vw] absolute">
+                        Rating is required
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className="flex flex-col gap-y-[1vw]">
                     <div className="flex justify-between py-[2vw] gap-x-[.5vw]">
                       <div className="relative">
-                         <input
-                        type="text"
-                        //   name="name"
-                        value={nameValue}
+                        <input
+                          type="text"
+                          //   name="name"
+                          value={getValues.user_name}
                           placeholder="Enter Name"
                           onChange={(e) => {
                             // Call Formik's handleChange function
@@ -291,12 +321,32 @@ export const RatingFeedBack = ({setRatingModal}) => {
                           }}
                           className="p-2 border border-gray-300 pl-[1vw] rounded-[1.5vw] placeholder:text-[#1F487C] outline-none w-full bg-[#D0E5FF4D] text-[#1F487C] h-[3vw]"
                         />
-                       
-                       {required === true ?  <div  className="text-red-800 ml-[.5vw] text-[.8vw] absolute">name is required</div> : ""}
-                        
+
+                        {required === true ? (
+                          <div className="text-red-800 ml-[.5vw] text-[.8vw] absolute">
+                            name is required
+                          </div>
+                        ) : (
+                          ""
+                        )}
                       </div>
-                      <div className="relative">
-                        {/* <input
+                      {getValues ? (
+                        <span>
+                          {" "}
+                          <input
+                            type="text"
+                            //   name="name"
+                            onChange={(e) => setOccValue(e.target.value)}
+                            value={getValues.occupation}
+                            // placeholder=""
+
+                            className="p-2 border border-gray-300 pl-[1vw] rounded-[1.5vw] placeholder:text-[#1F487C] outline-none w-full bg-[#D0E5FF4D] text-[#1F487C] h-[3vw]"
+                          />
+                        </span>
+                      ) : (
+                        <span>
+                          <div className="relative">
+                            {/* <input
                         type="text"
                         //   name="occupation"
                           placeholder="Enter Occupation"
@@ -306,6 +356,56 @@ export const RatingFeedBack = ({setRatingModal}) => {
                           }}
                           className="p-2 border border-gray-300 pl-[1vw] rounded-2xl placeholder:text-[#1F487C] outline-none w-full bg-[#D0E5FF4D] text-[#1F487C] h-[3vw]"
                         /> */}
+                            <Select
+                              placeholder="Select Occupation"
+                              onChange={(value) => setOccValue(value)}
+                              className="w-[14.5vw] h-[3vw] border border-gray-300   bg-[#D0E5FF4D] text-[#1F487C]"
+                              style={{
+                                borderRadius: "6vw",
+                                backgroundColor: "black",
+                                color: "#1F487C",
+                              }}
+                            >
+                              <Option value="Business">Business</Option>
+                              <Option value="General Public">
+                                General Public
+                              </Option>
+                              <Option value="Physically Challenged">
+                                Physically Challenged
+                              </Option>
+                              <Option value="Pilgrim Traveler">
+                                Pilgrim Traveler
+                              </Option>
+                              <Option value="Senior Citizen">
+                                Senior Citizen
+                              </Option>
+                              <Option value="Student">Student</Option>
+                              <Option value="Tourist">Tourist</Option>
+                              <Option value="Corporate Traveler">
+                                Corporate Traveler
+                              </Option>
+                            </Select>
+                            {required === true ? (
+                              <div className="text-red-800 ml-[.5vw] text-[.8vw] absolute">
+                                Occupation is required
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>{" "}
+                        </span>
+                      )}
+                      {/* <div className="relative">
+                        <input
+                        type="text"
+                        //   name="occupation"
+                          placeholder="Enter Occupation"
+                          onChange={(e) => {
+                            // Call Formik's handleChange function
+                            setOccValue(e.target.value);
+                          }}
+                          className="p-2 border border-gray-300 pl-[1vw] rounded-2xl placeholder:text-[#1F487C] outline-none w-full bg-[#D0E5FF4D] text-[#1F487C] h-[3vw]"
+                        />
                          <Select
                           placeholder="Select Occupation"
                           onChange={(value) => setOccValue(value)}
@@ -325,13 +425,13 @@ export const RatingFeedBack = ({setRatingModal}) => {
                           <Option value="Corporate Travelers">Corporate Travelers</Option>
                         </Select>
                        {required === true ? <div  className="text-red-800 ml-[.5vw] text-[.8vw] absolute">Occupation is required</div> : ""}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
                 <div className=" flex justify-end px-[2vw]">
                   <button
-                  type="button"
+                    type="button"
                     onClick={handleClick}
                     className="bg-[#1F487C] text-[1.2vw] text-white font-bold rounded-full w-[13vw] h-[2.5vw]"
                   >

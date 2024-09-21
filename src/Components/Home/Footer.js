@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import Bus from "../../assets/502-ai 1 (2).png";
 import FaceBook from "../../assets/Facebook.png";
 import InstaGram from "../../assets/Instagram.png";
-import thebusstand from "../../assets/thebusstand.png";
+//import thebusstand from "../../assets/thebusstand.png";
 import twitter from "../../assets/Twitter.png";
 import Youtube from "../../assets/Youtube.png";
-import ads from "../../assets/We cover 100% of the bus routes.png";
+//import ads from "../../assets/We cover 100% of the bus routes.png";
 import Tabbings from "./Tabbings";
-import FooterBg from "../../assets/FooterBG.png";
+//import FooterBg from "../../assets/FooterBG.png";
 import Footer1 from "../Footer/Footer";
 import "../../Components/Home/Footer.css";
-import { IoIosArrowDropupCircle } from "react-icons/io";
+//import { IoIosArrowDropupCircle } from "react-icons/io";
 import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 const Footer = () => {
   const footerdata = [
@@ -71,6 +71,8 @@ const Footer = () => {
   useEffect(() => {
     window.addEventListener("scroll", handleVisibleButton);
   }, []);
+  console.log(top, "top")
+
   return (
     <>
       {/* <div

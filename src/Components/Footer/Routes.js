@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
-import HomeHearder from "../MainComponenet/HomeHearder";
 import homesky from "../../assets/homesky.png";
 import Footer1 from "./Footer";
 import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
-import { GetOperators, OperatorFilters } from "../../Api/Dashboard/Dashboard";
-import { useDispatch, useSelector } from "react-redux";
-import { IoSearch } from "react-icons/io5";
 import "../../App.css";
 import { LuSend } from "react-icons/lu";
 import { Input } from "antd";
 import { GrLocation } from "react-icons/gr";
 import { CgArrowsExchangeV } from "react-icons/cg";
+import CommonMainNavbar from "../Common/CommonMainNavbar";
 
 const Routes = () => {
   const data = [
@@ -73,8 +70,7 @@ const Routes = () => {
 
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [selectedLetter, setSelectedLetter] = useState("");
-  const [startIndex, setStartIndex] = useState(0);
-  const getoperator = useSelector((state) => state.get_operator_list);
+  // const [startIndex, setStartIndex] = useState(0);
 
   const handleNextClick = () => {
     setSelectedIndex((prevIndex) => {
@@ -83,13 +79,13 @@ const Routes = () => {
     });
   };
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <div className="">
         <div className="">
-          <HomeHearder />
+          <CommonMainNavbar />
         </div>
         <div
           className="relative h-[42vw] bg-[#E5FFF1]"
@@ -129,53 +125,51 @@ const Routes = () => {
           <div className="grid grid-cols-5 gap-[3vw]">
             <div className="col-span-1">
               <div className="absolute top-[7vw] px-[3vw] flex flex-col">
-                <div className="bg-white w-[20vw] flex flex-col h-[17vw] relative rounded-[1vw]">
+                <div className="bg-white w-[20vw] flex flex-col h-[17vw] rounded-[1vw]">
                   <div className="flex pt-[1vw]">
                     <p className="pl-[2.5vw] text-[1.5vw] font-bold text-[#1F487C] text-center justify-center items-center">
                       Search for Bus Routes
                     </p>
                   </div>
-                  <div className="flex relative pl-[1.5vw]  pt-[1.5vw]">
-                    <Input
-                      size="large"
-                      className="p-[0.5vw] w-[17vw]"
-                      placeholder="Leaving from"
-                      prefix={
-                        <LuSend
-                          style={{
-                            color: "#1F487C",
-                            height: "2vw",
-                            width: "2vw",
-                            paddingRight: "0.7vw",
-                          }}
-                        />
-                      }
-                    />
+
+                  <div className="relative">
+                    <div className="relative pl-[1.5vw]  pt-[1.5vw]">
+                      <Input
+                        size="large"
+                        className="p-[0.5vw] w-[17vw]"
+                        placeholder="Leaving from"
+                        prefix={
+                          <LuSend
+                            style={{
+                              color: "#1F487C",
+                              height: "2vw",
+                              width: "2vw",
+                              paddingRight: "0.7vw",
+                            }}
+                          />
+                        }
+                      />
+                    </div>
+                    <div className="relative pl-[1.5vw] pt-[0.5vw]">
+                      <Input
+                        size="large"
+                        className="p-[0.5vw] w-[17vw]"
+                        placeholder="Going to"
+                        prefix={
+                          <GrLocation
+                            style={{
+                              color: "#1F487C",
+                              height: "2vw",
+                              width: "2vw",
+                              paddingRight: "0.7vw",
+                            }}
+                          />
+                        }
+                      />
+                    </div>
                   </div>
-                  <div className="flex relative pl-[1.5vw] pt-[0.5vw]">
-                    <Input
-                      size="large"
-                      className="p-[0.5vw] w-[17vw]"
-                      placeholder="Going to"
-                      prefix={
-                        <GrLocation
-                          style={{
-                            color: "#1F487C",
-                            height: "2vw",
-                            width: "2vw",
-                            paddingRight: "0.7vw",
-                          }}
-                        />
-                      }
-                    />
-                  </div>
-                  <div className="flex absolute pl-[15vw] pt-[6.9vw]">
-                    <button
-                      className="bg-[#1F487C] flex px-[0.2vw] text-white text-[1.4vw] justify-end h-[4.3vh] gap-[0.5vw] items-end rounded-[0.5vw]"
-                      // onClick={() =>
-                      //   document.getElementById("xlsxFile").click()
-                      // }
-                    >
+                  <div className="absolute left-[18.5vw] text-right items-end pt-[7vw] z-10">
+                    <button className="bg-[#1F487C] px-[0.2vw] text-white text-[1.4vw] justify-end h-[4.3vh] gap-[0.5vw] items-end rounded-[0.5vw]">
                       <CgArrowsExchangeV
                         style={{
                           color: "#f9fafc",
@@ -186,12 +180,7 @@ const Routes = () => {
                     </button>
                   </div>
                   <div className="flex pl-[3.8vw] pt-[2vw]">
-                    <button
-                      className="bg-[#1F4B7F] flex px-[3vw] text-white text-[1.4vw] justify-center h-[5vh] gap-[0.5vw] items-center rounded-[0.5vw]"
-                      // onClick={() =>
-                      //   document.getElementById("xlsxFile").click()
-                      // }
-                    >
+                    <button className="bg-[#1F4B7F] flex px-[3vw] text-white text-[1.4vw] justify-center h-[5vh] gap-[0.5vw] items-center rounded-[0.5vw]">
                       SEARCH
                     </button>
                   </div>
@@ -209,7 +198,7 @@ const Routes = () => {
                     text-[1.2vw] text-[#1F487C] pt-[1vw] h-[2vw] w-[2vw] ml-[0.2vw] cursor-pointer
                    ${
                      selectedIndex === index
-                       ? "text-white h-[2vw] w-[2vw] bg-[#1F487C] rounded-md ml-[0.2vw] mt-[1vw] pt-[0vw] flex"
+                       ? "text-white h-[2vw] w-[2vw] bg-[#1F487C] rounded-md ml-[0.2vw] mt-[1vw] pt-0 flex"
                        : ""
                    }
                  `}

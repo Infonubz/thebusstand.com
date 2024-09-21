@@ -105,7 +105,12 @@ export default function BusSeatsLayout({
   console.log(selectedseatprice, selectedSeats, "selectedseatprice");
 
   const handleSeatClick = (seat) => {
-    if (seat.status === "BFF" || seat.status === "BFA" || seat.status === "BFM")
+    if (
+      seat.status === "BFF" ||
+      seat.status === "BFA" ||
+      seat.status === "BFM" ||
+      seat.status == "on_booking"
+    )
       return;
 
     setSelectedSeats((prevSelectedSeats) => {
@@ -301,6 +306,8 @@ export default function BusSeatsLayout({
       case "AFM":
       case "BFM":
         return "border-blue-500";
+      case "on_booking":
+        return "border-gray-400";
       default:
         return "border-gray-400";
     }
@@ -321,6 +328,8 @@ export default function BusSeatsLayout({
         return "bg-blue-100";
       case "BFF":
         return "bg-pink-100";
+      case "on_booking":
+        return "bg-gray-200";
       default:
         return "bg-white";
     }
@@ -339,6 +348,8 @@ export default function BusSeatsLayout({
         return "Booked For Female";
       case "BFM":
         return "Booked For Male";
+      case "on_booking":
+        return "Seat Locked";
       default:
         return "";
     }
@@ -351,6 +362,10 @@ export default function BusSeatsLayout({
         return "gray";
       case "AFF":
         return "#FF26E5";
+      case "AFM":
+        return "blue";
+      case "on_booking":
+        return "gray";
       default:
         return "#4caf50";
     }
@@ -359,12 +374,13 @@ export default function BusSeatsLayout({
 
   return (
     <div className="px-[0.5vw]">
-      <div 
-       className={`${
-        busdetails.bus_type_status === "luxury"
-          ? "bg-[#FFEEC9]"
-          : "bg-[#EEEDED]"
-      }  border-x-[0.1vw] border-b-[0.1vw] rounded-b-[0.5vw]`}>
+      <div
+        className={`${
+          busdetails.bus_type_status === "luxury"
+            ? "bg-[#FFEEC9]"
+            : "bg-[#EEEDED]"
+        }  border-x-[0.1vw] border-b-[0.1vw] rounded-b-[0.5vw]`}
+      >
         <div className="h-[4vw] w-full   ">
           <div className="grid grid-cols-4 w-full h-full pt-[1vw] px-[1vw]  items-center">
             <div className="col-span-3 pl-[4vw]">
@@ -375,15 +391,25 @@ export default function BusSeatsLayout({
                 } h-[2.5vw] w-[6vw] rounded-l-[0.5vw] font-bold  border-y-[0.1vw] border-l-[0.1vw]`}
                 onClick={() => SetCurrentRate(1)}
                 style={{
-                  background:busdetails.bus_type_status === "luxury" && currentrate == 1 ? "#000000" 
-                  : busdetails.bus_type_status === "regular" && currentrate == 1? "#1F487C" : "white",
-                  borderColor: 
+                  background:
+                    busdetails.bus_type_status === "luxury" && currentrate == 1
+                      ? "#393939"
+                      : busdetails.bus_type_status === "regular" &&
+                        currentrate == 1
+                      ? "#1F487C"
+                      : "white",
+                  borderColor:
                     busdetails.bus_type_status === "luxury"
-                      ? "#000000"
+                      ? "#393939"
                       : "#1F487C",
-                  color:currentrate == 1 ? "white" 
-                  : busdetails.bus_type_status === "luxury" ? "#000000" 
-                  : busdetails.bus_type_status === "regular" ? "#1F487C": "white",
+                  color:
+                    currentrate == 1
+                      ? "white"
+                      : busdetails.bus_type_status === "luxury"
+                      ? "#393939"
+                      : busdetails.bus_type_status === "regular"
+                      ? "#1F487C"
+                      : "white",
                 }}
               >
                 All
@@ -397,15 +423,26 @@ export default function BusSeatsLayout({
                     } h-[2.5vw] w-[6vw]   font-bold  border-y-[0.1vw] border-r-[0.1vw]`}
                     onClick={() => SetCurrentRate(item)}
                     style={{
-                      background:busdetails.bus_type_status === "luxury" && currentrate == item ? "#000000" 
-                      : busdetails.bus_type_status === "regular" && currentrate == item? "#1F487C" : "white",
-                      borderColor: 
+                      background:
+                        busdetails.bus_type_status === "luxury" &&
+                        currentrate == item
+                          ? "#393939"
+                          : busdetails.bus_type_status === "regular" &&
+                            currentrate == item
+                          ? "#1F487C"
+                          : "white",
+                      borderColor:
                         busdetails.bus_type_status === "luxury"
-                          ? "#000000"
+                          ? "#393939"
                           : "#1F487C",
-                      color:currentrate == item ? "white" 
-                      : busdetails.bus_type_status === "luxury" ? "#000000" 
-                      : busdetails.bus_type_status === "regular" ? "#1F487C": "white",
+                      color:
+                        currentrate == item
+                          ? "white"
+                          : busdetails.bus_type_status === "luxury"
+                          ? "#393939"
+                          : busdetails.bus_type_status === "regular"
+                          ? "#1F487C"
+                          : "white",
                     }}
                   >
                     {`₹ ${item}`}
@@ -441,11 +478,13 @@ export default function BusSeatsLayout({
             </div>
           </div>
         </div>{" "}
-        <div className={`${
-        busdetails.bus_type_status === "luxury"
-          ? "bg-[#FFEEC9]"
-          : "bg-[#EEEDED]"
-      }  grid grid-cols-2 h-[55vw] pt-[1vw] w-full rounded-b-[0.5vw]`}>
+        <div
+          className={`${
+            busdetails.bus_type_status === "luxury"
+              ? "bg-[#FFEEC9]"
+              : "bg-[#EEEDED]"
+          }  grid grid-cols-2 h-[55vw] pt-[1vw] w-full rounded-b-[0.5vw]`}
+        >
           <div className="col-span-1 h-full w-full">
             <div className="grid grid-cols-2 h-full w-full px-[5vw] gap-[1.5vw]">
               <div className={`col-span-1 h-full w-full py-[1vw]`}>
@@ -749,8 +788,10 @@ export default function BusSeatsLayout({
                 <p
                   className="text-center py-[0.5vw]  text-white rounded-tl-[0.45vw] rounded-tr-[0.45vw] text-[1.2vw]"
                   style={{
-                    backgroundColor: busdetails.bus_type_status === "luxury"
-                    ? "#000000": "#1F487C",
+                    backgroundColor:
+                      busdetails.bus_type_status === "luxury"
+                        ? "#393939"
+                        : "#1F487C",
                   }}
                 >
                   PICKUP POINT
@@ -776,17 +817,22 @@ export default function BusSeatsLayout({
                         backgroundColor:
                           selectedRoutes?.dep_route == item.name
                             ? busdetails.bus_type_status === "luxury"
-                              ? "#FFE5AB" 
+                              ? "#FFE5AB"
                               : busdetails.bus_type_status === "regular"
-                              ? "#E7E9EB" 
-                              : "white" 
-                            : "white" 
-                        }}>
+                              ? "#E7E9EB"
+                              : "white"
+                            : "white",
+                      }}
+                    >
                       {selectedRoutes?.dep_route == item.name ? (
                         <span className="absolute right-[1vw] top-[0.8vw]">
-                          <HiCheckCircle 
-                          size={"1.2vw"} 
-                          color={busdetails.bus_type_status === "luxury"? "#000000": "#1F487C"}  
+                          <HiCheckCircle
+                            size={"1.2vw"}
+                            color={
+                              busdetails.bus_type_status === "luxury"
+                                ? "#393939"
+                                : "#1F487C"
+                            }
                           />
                         </span>
                       ) : (
@@ -811,8 +857,10 @@ export default function BusSeatsLayout({
                 <p
                   className="text-center py-[0.5vw]  text-white rounded-tl-[0.45vw] rounded-tr-[0.45vw] text-[1.2vw]"
                   style={{
-                    backgroundColor:  busdetails.bus_type_status === "luxury"
-                    ? "#000000": "#1F487C",
+                    backgroundColor:
+                      busdetails.bus_type_status === "luxury"
+                        ? "#393939"
+                        : "#1F487C",
                   }}
                 >
                   DROP POINT
@@ -836,19 +884,24 @@ export default function BusSeatsLayout({
                       }
                       style={{
                         backgroundColor:
-                        selectedRoutes?.arri_route == item.name
+                          selectedRoutes?.arri_route == item.name
                             ? busdetails.bus_type_status === "luxury"
-                              ? "#FFE5AB" 
+                              ? "#FFE5AB"
                               : busdetails.bus_type_status === "regular"
-                              ? "#E7E9EB" 
-                              : "white" 
-                            : "white" 
+                              ? "#E7E9EB"
+                              : "white"
+                            : "white",
                       }}
                     >
                       {selectedRoutes.arri_route == item.name ? (
                         <span className="absolute right-[1vw] top-[0.8vw]">
-                          <HiCheckCircle size={"1.2vw"} 
-                          color={busdetails.bus_type_status === "luxury"? "#000000": "#1F487C"} 
+                          <HiCheckCircle
+                            size={"1.2vw"}
+                            color={
+                              busdetails.bus_type_status === "luxury"
+                                ? "#393939"
+                                : "#1F487C"
+                            }
                           />
                         </span>
                       ) : (
@@ -920,9 +973,13 @@ export default function BusSeatsLayout({
                       onClick={() => setShowModal(!modalshow)}
                       style={{
                         backgroundColor:
-                          selectedSeats?.length > 0 ? 
-                          busdetails.bus_type_status === "luxury" ? "#000000"
-                          : busdetails.bus_type_status === "regular"? "#1F487C" : "#9CA3AF" : "#9CA3AF"
+                          selectedSeats?.length > 0
+                            ? busdetails.bus_type_status === "luxury"
+                              ? "#393939"
+                              : busdetails.bus_type_status === "regular"
+                              ? "#1F487C"
+                              : "#9CA3AF"
+                            : "#9CA3AF",
                       }}
                     >
                       Continue

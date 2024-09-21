@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import HomeHearder from "../MainComponenet/HomeHearder";
 import homesky from "../../assets/homesky.png";
 import Footer1 from "./Footer";
 import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
@@ -7,6 +6,8 @@ import { GetOperators, OperatorFilters } from "../../Api/Dashboard/Dashboard";
 import { useDispatch, useSelector } from "react-redux";
 import { BiSolidSearch } from "react-icons/bi";
 import "../../App.css";
+import CommonMainNavbar from "../Common/CommonMainNavbar";
+import { Empty } from "antd";
 
 const Operators = () => {
   const data = [
@@ -38,25 +39,25 @@ const Operators = () => {
     { id: 26, name: "Z" },
   ];
 
-  const [selectedIndex, setSelectedIndex] = useState(null);
-  const [selectedLetter, setSelectedLetter] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedLetter, setSelectedLetter] = useState("A");
   const [operatorData, setOperatorData] = useState();
   const getoperator = useSelector((state) => state.get_operator_list);
 
   const handleNextClick = () => {
     setSelectedIndex((prevIndex) => {
       const nextIndex = prevIndex !== null ? (prevIndex + 1) % data.length : 0;
-      setSelectedLetter(data[nextIndex].name);  // Set the next letter
+      setSelectedLetter(data[nextIndex].name); // Set the next letter
       return nextIndex;
     });
   };
 
-  const searchOperators = async (e) =>{
+  const searchOperators = async (e) => {
     console.log(e.target.value, "targetvalue");
-    setSelectedLetter(e.target.value)
+    setSelectedLetter(e.target.value);
     const data = await OperatorFilters(selectedLetter, e);
     setOperatorData(data);
-  }
+  };
 
   const FilterOperator = async () => {
     console.log(selectedLetter, "getoperator");
@@ -81,13 +82,13 @@ const Operators = () => {
     GetOperators(dispatch);
   }, []);
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <div className="">
         <div className="">
-          <HomeHearder />
+          <CommonMainNavbar />
         </div>
         <div
           className="relative h-[42vw] bg-[#E5FFF1]"
@@ -97,7 +98,7 @@ const Operators = () => {
         >
           {/* <img src={homesky} className="w-full h-[10vw] bg-[#2B8EE4]" /> */}
           <div
-            className=" h-[10vw] overflow-x-hidden"
+            className="h-[10vw] overflow-x-hidden"
             style={{
               backgroundImage: `url(${homesky})`,
               overflow: "hidden",
@@ -134,7 +135,7 @@ const Operators = () => {
                     text-[1.2vw] text-[#1F487C] pt-[1vw] h-[2vw] w-[2vw] ml-[0.2vw] cursor-pointer
                    ${
                      selectedIndex === index
-                       ? "text-white pt-[0vw] h-[2vw] w-[2vw] bg-[#1F487C] rounded-md ml-[0.2vw] mt-[1vw] flex"
+                       ? "text-white pt-0 h-[2vw] w-[2vw] bg-[#1F487C] rounded-md ml-[0.2vw] flex mt-[1vw]"
                        : ""
                    }
                  `}
@@ -143,7 +144,7 @@ const Operators = () => {
                       setSelectedLetter(item.name);
                     }}
                   >
-                    <div className="flex h-[2vw] w-[2vw] pl-[0.6vw] text-center items-center justify-center">
+                    <div className="flex h-[2vw] w-[2vw] pl-[0.6vw]">
                       {item.name}
                     </div>
                     <div className="flext h-[2vw] ml-[1vw] border-solid border border-l-[#1f477c49]"></div>
@@ -151,26 +152,26 @@ const Operators = () => {
                 ))}
               </div>
               <div className="flex-1 pl-[0.4vw] text-[1.1vw] text-[#1F487C] pt-[0.7vw]">
-                  <button
-                    type="button"
-                    className="flex items-center px-[0.5vw] text-[#1F487C] text-[1vw] border-solid border border-[#1f477ca8] justify-center h-[2.5vw] gap-[0.5vw] rounded-lg"
-                    onClick={handleNextClick}
-                  >
-                    Next
-                    <span>
-                      <MdOutlineKeyboardDoubleArrowRight
-                        style={{
-                          color: "#1F487C",
-                          height: "1.5vw",
-                          width: "1.4vw",
-                        }}
-                      />
-                    </span>
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  className="flex items-center px-[0.5vw] text-[#1F487C] text-[1vw] border-solid border border-[#1f477ca8] justify-center h-[2.5vw] gap-[0.5vw] rounded-lg"
+                  onClick={handleNextClick}
+                >
+                  Next
+                  <span>
+                    <MdOutlineKeyboardDoubleArrowRight
+                      style={{
+                        color: "#1F487C",
+                        height: "1.5vw",
+                        width: "1.4vw",
+                      }}
+                    />
+                  </span>
+                </button>
+              </div>
               <div className="flex pl-[1vw]">
                 <div className="flex search items-center gap-[0.5vw]">
-                 <BiSolidSearch
+                  <BiSolidSearch
                     className="search-icon pl-[1vw]"
                     style={{
                       color: "#e7eaec",
@@ -180,7 +181,7 @@ const Operators = () => {
                   />
                   <input
                     type="text"
-                    className="opSearch-input text-white outline-none pl-[0.1vw]"
+                    className="opSearch-input text-[1.1vw] text-white outline-none pl-[0.1vw]"
                     placeholder="Search Operators"
                     onChange={(e) => {
                       searchOperators(e);
@@ -193,19 +194,22 @@ const Operators = () => {
           <div className="absolute top-[10vw] px-[3vw]">
             <div className="bg-white w-[94vw] h-[27vw] relative rounded-[1vw]">
               <div className="grid grid-flow-col grid-rows-7 px-[2vw] mt-[2vw]">
-                {operatorData?.operator_name?.map((item, index) => (
-                  <div
-                    className="flex items-center justify-between"
-                    key={index}
-                  >
+                {operatorData?.operator_name?.length > 0 ? (
+                  operatorData?.operator_name?.map((item, index) => (
                     <div
-                      className="text-[#1F487C] font-bold text-[1.2vw] p-[1vw]"
+                      className="flex items-center justify-between"
                       key={index}
                     >
-                      {item}
+                      <div className="text-[#1F487C] font-bold text-[1.2vw] p-[1vw]">
+                        {item}
+                      </div>
                     </div>
+                  ))
+                ) : (
+                  <div className="absolute">
+                    <Empty className="pl-[40vw] pt-[7vw]" />
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>

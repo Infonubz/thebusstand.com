@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Popover, Result, Tooltip } from "antd";
 import { Button, Drawer, Radio, Space } from "antd";
 import complete from "../../assets/complete.png";
 import ticketbus from "../../assets/ticketbus.png";
@@ -15,6 +16,7 @@ import { FaFileDownload, FaMapMarkerAlt } from "react-icons/fa";
 import ticketview from "../../assets/ticket_view.png";
 import amountView from "../../assets/Group.png";
 import { FaAngleRight } from "react-icons/fa6";
+import backgroundImg from "../../assets/SINGLECARD_BG.png";
 
 import upi from "../../assets/upi.png";
 import phonepay from "../../assets/phonepay.png";
@@ -49,7 +51,6 @@ import {
   sendBookingPrice,
   TicketViewDetails,
 } from "../../Api/MyAccounts/MyBookings";
-import SINGLECARD_BG from "../../assets/SINGLECARD_BG.png";
 import { FaPhoneFlip } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { FaEdit } from "react-icons/fa";
@@ -287,7 +288,7 @@ function DrawerDetails({
     }`;
     console.log(totalAmount, bookingId, selectedSeats, busdetails);
     setTimeout(() => {
-      setShowModal(false);
+      // setShowModal(false);
       setRatingModal(true);
     }, [5000]);
     try {
@@ -317,7 +318,7 @@ function DrawerDetails({
   const handleTicketDetail = async () => {
     console.log(busBookingId, "response for ticket id");
     try {
-      const response = await TicketViewDetails(busBookingId, mobilenum);
+      const response = await TicketViewDetails(busBookingId, mobileInput);
       setTicketDetail(response);
       console.log(response, "response for ticketdtl");
     } catch (error) {
@@ -343,8 +344,8 @@ function DrawerDetails({
         travelerDetails,
         // localStorage.getItem("departure_date"),
         new Date(),
-        values.email,
-        values.mobile,
+        emailInput,
+        mobileInput,
         // sessionStorage.getItem("user_email_id"),
         // sessionStorage.getItem("user_mobile"),
         bookingId
@@ -399,7 +400,7 @@ function DrawerDetails({
 
   const green = "#c3eee1";
 
-  console.log(promoCode, "promoCode");
+  console.log(termschecked, "termschecked");
   console.log("submit form", busBookingId);
   const [ratingModal, setRatingModal] = useState(false);
   const closeRatingModal = () => {
@@ -414,20 +415,22 @@ function DrawerDetails({
 
   const storedEmail = sessionStorage.getItem("user_email_id");
   const storedMobile = sessionStorage.getItem("user_mobile");
+  const [emailInput, setEmailInput] = useState(storedEmail || "");
+  const [mobileInput, setMobileInput] = useState(storedMobile || "");
   const navigation = useNavigate();
   const user_id = sessionStorage.getItem("user_id");
   useEffect(() => {
-    if (storedEmail && storedEmail !== "undefined" && storedEmail !== "null") {
-      setIsEmailDisabled(true);
-    }
+    // if (storedEmail && storedEmail !== "undefined" && storedEmail !== "null") {
+    //   setIsEmailDisabled(true);
+    // }
 
-    if (
-      storedMobile &&
-      storedMobile !== "undefined" &&
-      storedEmail !== "null"
-    ) {
-      setIsMobileDisabled(true);
-    }
+    // if (
+    //   storedMobile &&
+    //   storedMobile !== "undefined" &&
+    //   storedEmail !== "null"
+    // ) {
+    //   setIsMobileDisabled(true);
+    // }
     if (user_id) {
       GetUserDetails(navigation);
     }
@@ -444,6 +447,12 @@ function DrawerDetails({
             open={modalshow}
             key={placement}
             width={"60%"}
+            // style={{
+            //   backgroundImage: busdetails.bus_type_status === "luxury"
+            //   ? `url(${backgroundImg}),linear-gradient(to right, #F8C550, #FFEB76, #FFE173)`
+            //   : "#ffffff",
+            //   zIndex: 2,
+            // }}
           >
             <div>
               {!continuenext ? (
@@ -455,11 +464,11 @@ function DrawerDetails({
                         busdetails.bus_type_status === "luxury"
                           ? " bg-[#FFEEC9]"
                           : "  bg-white"
-                      }  h-[20vw] w-full F rounded-[0.5vw]`}
+                      }  h-[24vw] w-full F rounded-[0.5vw]`}
                       style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
                     >
                       <div
-                        className="flex h-[4vw] w-full px-[1vw] pt-[0.5vw] mb-4 rounded-t-[1vw]"
+                        className="flex h-[4vw] w-full px-[1vw] pt-[0.5vw] mb-4 rounded-t-[0.5vw]"
                         style={{
                           backgroundColor:
                             busdetails.bus_type_status === "luxury"
@@ -619,7 +628,7 @@ function DrawerDetails({
                                         busdetails.bus_type_status === "luxury"
                                           ? "bg-[#393939]"
                                           : "bg-[#1F487C]"
-                                      } relative h-[2.1vw] flex w-[5.5vw] rounded-tl-[0.8vw] rounded-tr-[0.8vw] rounded-bl-[0.3vw] 
+                                      } relative h-[2.1vw] flex w-[5.5vw] rounded-tl-[0.5vw] rounded-tr-[0.5vw] rounded-bl-[0.3vw] 
                                 rounded-br-[0.3vw] text-white text-[1vw] font-bold justify-center items-center`}
                                       // style={{
                                       //   zIndex: 2,
@@ -637,7 +646,7 @@ function DrawerDetails({
                                         //   zIndex: 1,
                                         // }}
                                       >
-                                        <div className="bg-white h-[0.4vw] w-[0.4vw] rounded-full"></div>
+                                        <div className="bg-white h-[0.6vw] w-[0.6vw] rounded-full"></div>
                                       </div>
                                       <div
                                         className={`${
@@ -647,7 +656,7 @@ function DrawerDetails({
                                             : "bg-[#1F487C]"
                                         } absolute bottom-[-0.8vw] right-[0.8vw] h-[1.3vw] w-[1.3vw] rounded-full flex items-center justify-center `}
                                       >
-                                        <div className="bg-white h-[0.4vw] w-[0.4vw] rounded-full"></div>
+                                        <div className="bg-white h-[0.6vw] w-[0.6vw] rounded-full"></div>
                                       </div>
                                     </div>
                                     <FaAngleRight
@@ -721,9 +730,32 @@ function DrawerDetails({
 
                                   // }}
                                 >
-                                  {`${selectedRoutes?.dep_route} : ${dayjs(
-                                    selectedRoutes?.dep_time
-                                  ).format("DD MMM, HH:mm")}`}
+                                  {selectedRoutes?.dep_route?.length > 25 ? (
+                                    <Tooltip
+                                      placement="top"
+                                      title={selectedRoutes?.dep_route}
+                                      className="cursor-pointer"
+                                      color={
+                                        busdetails.bus_type_status === "luxury"
+                                          ? "#393939"
+                                          : colorcode.theme
+                                      }
+                                    >
+                                      {`${selectedRoutes?.dep_route.slice(
+                                        0,
+                                        20
+                                      )}... : ${dayjs(
+                                        selectedRoutes?.dep_time
+                                      ).format("DD MMM, HH:mm")}`}
+                                    </Tooltip>
+                                  ) : (
+                                    `${selectedRoutes?.dep_route.slice(
+                                      0,
+                                      20
+                                    )} : ${dayjs(
+                                      selectedRoutes?.dep_time
+                                    ).format("DD MMM, HH:mm")}`
+                                  )}
                                 </p>
                               </div>
                               <div className="flex flex-col items-center">
@@ -761,9 +793,32 @@ function DrawerDetails({
                                   //   color: colorcode.theme,
                                   // }}
                                 >
-                                  {`${selectedRoutes?.arri_route} : ${dayjs(
-                                    selectedRoutes?.arr_time
-                                  ).format("DD MMM, HH:mm")}`}
+                                  {selectedRoutes?.arri_route?.length > 25 ? (
+                                    <Tooltip
+                                      placement="top"
+                                      title={selectedRoutes?.arri_route}
+                                      className="cursor-pointer"
+                                      color={
+                                        busdetails.bus_type_status === "luxury"
+                                          ? "#393939"
+                                          : colorcode.theme
+                                      }
+                                    >
+                                      {`${selectedRoutes?.arri_route.slice(
+                                        0,
+                                        20
+                                      )}... : ${dayjs(
+                                        selectedRoutes?.arr_time
+                                      ).format("DD MMM, HH:mm")}`}
+                                    </Tooltip>
+                                  ) : (
+                                    `${selectedRoutes?.arri_route.slice(
+                                      0,
+                                      20
+                                    )} : ${dayjs(
+                                      selectedRoutes?.arr_time
+                                    ).format("DD MMM, HH:mm")}`
+                                  )}
                                 </p>
                               </div>
                               <div className="relative">
@@ -799,7 +854,7 @@ function DrawerDetails({
                       style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
                     >
                       <div
-                        className="flex h-[4vw] w-full px-[1vw] pt-[0.5vw] mb-7 rounded-t-[1vw]"
+                        className="flex h-[4vw] w-full px-[1vw] pt-[0.5vw] mb-7 rounded-t-[0.5vw]"
                         style={{
                           backgroundColor:
                             busdetails.bus_type_status === "luxury"
@@ -824,17 +879,12 @@ function DrawerDetails({
                       <div className="h-auto w-full px-[1vw]">
                         <Formik
                           initialValues={{
-                            email:
-                              storedEmail &&
-                              storedEmail !== "undefined" &&
-                              storedEmail !== "null"
-                                ? storedEmail
-                                : "",
+                            email: emailInput || "",
                             mobile:
-                              storedMobile &&
-                              storedMobile !== "undefined" &&
-                              storedMobile !== "null"
-                                ? storedMobile
+                              mobileInput &&
+                              mobileInput !== "undefined" &&
+                              mobileInput !== "null"
+                                ? mobileInput
                                 : "",
                             user_name:
                               selectedSeats.map(
@@ -883,19 +933,14 @@ function DrawerDetails({
                                       <Field
                                         type="text"
                                         name="email"
-                                        disabled={
-                                          isEmailDisabled || enableInput
-                                        }
+                                        // disabled={
+                                        //   isEmailDisabled || enableInput
+                                        // }
                                         placeholder="Email ID"
-                                        value={
-                                          storedEmail &&
-                                          storedEmail !== "undefined" &&
-                                          storedEmail !== "null"
-                                            ? storedEmail
-                                            : values.email
-                                        }
+                                        value={emailInput}
                                         onChange={(e) => {
                                           handleChange(e);
+                                          setEmailInput(e.target.value);
                                           setFieldValue(
                                             "email",
                                             e.target.value
@@ -923,24 +968,19 @@ function DrawerDetails({
                                         component="div"
                                         className="text-red-500 text-[0.8vw] absolute top-[3vw] left-[1vw]"
                                       />
-                                      <ErrorMessage
-                                        name="email"
-                                        component="div"
-                                        className="text-red-500 text-[0.8vw] absolute top-[3vw] left-[1vw]"
-                                      />
                                     </div>
                                     <div className="flex-3 relative">
                                       <Field
                                         as="select"
                                         name="option"
-                                        disabled={
-                                          isMobileDisabled || enableInput
-                                        }
+                                        // disabled={
+                                        //   isMobileDisabled || enableInput
+                                        // }
                                         className={`${
                                           !isSubmitting || !enableInput
                                             ? `cursor-pointer`
                                             : "cursor-not-allowed"
-                                        } border-r-[0.1vw] border-[.1vw] border-py-[0.5vw] text-[1.1vw] h-[3vw] w-[25%] rounded-l-[0.5vw] outline-none px-[1vw]`}
+                                        } border-r-[0.1vw] border-[0.1vw] border-py-[0.5vw] text-[1.1vw] h-[3vw] w-[25%] rounded-l-[0.5vw] outline-none px-[1vw]`}
                                         style={{
                                           borderColor:
                                             busdetails.bus_type_status ===
@@ -965,20 +1005,15 @@ function DrawerDetails({
                                       <Field
                                         type="text"
                                         name="mobile"
-                                        disabled={
-                                          isMobileDisabled || enableInput
-                                        }
+                                        // disabled={
+                                        //   isMobileDisabled || enableInput
+                                        // }
                                         placeholder="Mobile Number"
                                         maxLength={10}
-                                        value={
-                                          storedMobile &&
-                                          storedMobile !== "undefined" &&
-                                          storedMobile !== "null"
-                                            ? storedMobile
-                                            : values.mobile
-                                        }
+                                        value={mobileInput}
                                         onChange={(e) => {
                                           handleChange(e);
+                                          setMobileInput(e.target.value);
                                           setFieldValue(
                                             "mobile",
                                             e.target.value
@@ -1018,15 +1053,15 @@ function DrawerDetails({
                                         this email address and mobile number.
                                       </p>
                                       <div className="px-[0.5vw]">
-                                        <div 
-                                        className="border-b-[0.2vw] w-full"
-                                        style={{
-                                          borderColor:
-                                            busdetails.bus_type_status ===
-                                            "luxury"
-                                              ? "#393939"
-                                              : colorcode.theme,
-                                        }}
+                                        <div
+                                          className="border-b-[0.2vw] w-full"
+                                          style={{
+                                            borderColor:
+                                              busdetails.bus_type_status ===
+                                              "luxury"
+                                                ? "#393939"
+                                                : colorcode.theme,
+                                          }}
                                         ></div>
                                       </div>
                                     </div>
@@ -1326,10 +1361,12 @@ function DrawerDetails({
                                     <div className="flex gap-[0.5vw]">
                                       <Field
                                         disabled={enableInput}
+                                        id="custom-checkbox"
                                         type="checkbox"
                                         name="terms"
                                         className="h-[1.5vw] w-[1.5vw]"
                                         checked={values.terms}
+                                        //color="#393939"
                                         onChange={(e) => {
                                           handleChange(e);
                                           setFieldValue(
@@ -1394,14 +1431,14 @@ function DrawerDetails({
                                   w-[18vw] h-[2.5vw] rounded-[0.5vw] ml-[1vw]`}
                                       disabled={enableInput}
                                       onClick={() => {
-                                        setMobilenum(
-                                          storedMobile &&
-                                            storedMobile != "undefined"
-                                            ? sessionStorage.getItem(
-                                                "user_mobile"
-                                              )
-                                            : values.mobile
-                                        );
+                                        // setMobilenum(
+                                        //   storedMobile &&
+                                        //     storedMobile != "undefined"
+                                        //     ? sessionStorage.getItem(
+                                        //         "user_mobile"
+                                        //       )
+                                        //     : values.mobile
+                                        // );
                                         console.log(
                                           "passenger detail",
                                           travelerDetails
@@ -2684,7 +2721,7 @@ function DrawerDetails({
                                         busdetails.bus_type_status === "luxury"
                                           ? "bg-[#393939]"
                                           : "bg-[#1F487C]"
-                                      } relative h-[2.1vw] flex w-[5.5vw] rounded-tl-[0.8vw] rounded-tr-[0.8vw] rounded-bl-[0.3vw] 
+                                      } relative h-[2.1vw] flex w-[5.5vw] rounded-tl-[0.5vw] rounded-tr-[0.5vw] rounded-bl-[0.3vw] 
                                 rounded-br-[0.3vw] text-white text-[1vw] font-bold justify-center items-center`}
                                       // style={{
                                       //   zIndex: 2,
@@ -2702,7 +2739,7 @@ function DrawerDetails({
                                         //   zIndex: 1,
                                         // }}
                                       >
-                                        <div className="bg-white h-[0.4vw] w-[0.4vw] rounded-full"></div>
+                                        <div className="bg-white h-[0.6vw] w-[0.6vw] rounded-full"></div>
                                       </div>
                                       <div
                                         className={`${
@@ -2712,7 +2749,7 @@ function DrawerDetails({
                                             : "bg-[#1F487C]"
                                         } absolute bottom-[-0.8vw] right-[0.8vw] h-[1.3vw] w-[1.3vw] rounded-full flex items-center justify-center `}
                                       >
-                                        <div className="bg-white h-[0.4vw] w-[0.4vw] rounded-full"></div>
+                                        <div className="bg-white h-[0.6vw] w-[0.6vw] rounded-full"></div>
                                       </div>
                                     </div>
                                     <FaAngleRight
@@ -2865,6 +2902,15 @@ function DrawerDetails({
                         </div>
                       </div>
                     </div>
+                    <ModalPopup
+                      show={ratingModal}
+                      onClose={closeRatingModal}
+                      height="40vw"
+                      width="37.5vw"
+                      padding="0px"
+                    >
+                      <RatingFeedBack setRatingModal={setRatingModal} />
+                    </ModalPopup>
                     <div className="h-auto w-full px-[1vw] pt-[1vw]">
                       {/* <p className="text-[1.4vw] font-bold">Traveller Details:</p>
                     <div className="flex justify-between text-[1.2vw] font-bold pt-[1.5vw]">
@@ -3232,16 +3278,6 @@ function DrawerDetails({
           <DrawerMobile />
         </div>
       </div>
-
-      <ModalPopup
-        show={ratingModal}
-        onClose={closeRatingModal}
-        height="40vw"
-        width="37.5vw"
-        padding="0px"
-      >
-        <RatingFeedBack />
-      </ModalPopup>
     </>
   );
 }

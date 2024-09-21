@@ -8,6 +8,7 @@ import { useNavigate } from "react-router";
 import BG_IMAGE from '../../assets/BG Image.png'
 import HomeHearder from "../MainComponenet/HomeHearder";
 import homesky from "../../assets/BackgroundSky1.png";
+import CommonMainNavbar from "../Common/CommonMainNavbar";
 
 const TermsConditions = () => {
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ const TermsConditions = () => {
       </div>
       <div className="md:hidden block fixed top-0">
         <div className="fixed top-0 left-0 right-0 bg-[#E5FFF1] z-10">
-          <HomeHearder />
+          <CommonMainNavbar />
         </div>
         <div
           className="relative h-[30vw] w-[100%]"

@@ -169,7 +169,6 @@ export const GetSeatLayout = async (busid, dispatch) => {
 //     return null;
 //   }
 // };
-
 export const Filters = async (
   departure,
   arrival,
@@ -214,8 +213,8 @@ export const Filters = async (
         price: sort === "price" ? true : false,
         seats: sort === "seats" ? true : false,
         ratings: sort === "ratings" ? true : false,
-        departure_time: sort === "arrivalSort" ? true : false,
-        arrival_time: sort === "departureSort" ? true : false,
+        departure_time: sort === "departureSort" ? true : false,
+        arrival_time: sort === "arrivalSort" ? true : false,
       },
     ],
     regular_bus: NormalBus,

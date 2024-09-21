@@ -25,7 +25,7 @@ export default function CommonMainNavbar() {
   const [logModalIsOpen, setLogModalIsOpen] = useState(false);
   const [accDrawer, setAccDrawer] = useState(false);
   const [logMobileIsOpen, setLogMobileIsOpen] = useState(false);
-  const [username, setUserName] = useState("");
+  const [username, setUserName] = useState(sessionStorage.getItem("user_name"));
   const closeLoginModal = () => {
     setLoginIsOpen(false);
   };
@@ -108,7 +108,7 @@ export default function CommonMainNavbar() {
     setUserName(LoginUser_Name);
   }, [sessionStorage.getItem("user_name")]);
   const location = useLocation();
-  console.log(location.pathname, "locationlocation");
+  console.log(sessionStorage.getItem("user_name"), "locationlocationlocationlocation");
 
   return (
     <>

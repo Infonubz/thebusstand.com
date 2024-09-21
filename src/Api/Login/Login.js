@@ -101,6 +101,23 @@ export const SendPassengerName = async (dispatch, values) => {
     user_name: values.name,
     // email_id: sessionStorage.getItem("email_id"),
     mobile_number: values.mobile,
+    occupation: values.occupation,
+    occupation_id:
+    values.occupation === "Business"?
+    1 :
+      values.occupation === "GeneralPublic"
+        ? 2
+        : values.occupation === "PhysicallyChallenged"
+        ? 3
+        : values.occupation === "PilgrimTravelers"
+        ? 4
+        : values.occupation === "SeniorCitizens"
+        ? 5
+        : values.occupation === "Students"
+        ? 6
+        : values.occupation === "Tourist"
+        ? 7
+        : 8,
   };
   console.log(payload.email_id, "verificationforotp");
   const user_id = sessionStorage.getItem("user_id");
@@ -116,8 +133,8 @@ export const SendPassengerName = async (dispatch, values) => {
       },
     });
     toast.success(response?.data?.message);
-    window.location.reload()
-    GetUserDetails()
+    // window.location.reload();
+    GetUserDetails();
     console.log(response, "OTP_VERIFICATION");
     return response.data;
   } catch (error) {
