@@ -27,7 +27,6 @@ import {
 // import { BiMapPin } from "react-icons/bi";
 // import { useNavigate } from "react-router";
 // import Map from "../Dashboard/Map";
-import axios from "axios";
 import {
   Filters,
   Drop_Point_List,
@@ -37,6 +36,7 @@ import { FaRegStar, FaStar } from "react-icons/fa";
 import RangeSlide from "./RangeSlide";
 import { FaBus } from "react-icons/fa";
 import { RiBusFill } from "react-icons/ri";
+import axios from "axios";
 
 const Sidebar = ({ sidebarToggle, share }) => {
   const arrange_data = useSelector((state) => state.rearrange);
