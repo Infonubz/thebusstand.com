@@ -72,9 +72,6 @@
     "dev": "tailwindcss -i ./src/input.css -o ./src/output.css --watch"
   },
   "jest": {
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.js"
-    ],
     "transform": {
       "^.+\\.[t|j]sx?$": "babel-jest"
     },
