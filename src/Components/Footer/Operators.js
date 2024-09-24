@@ -3,7 +3,7 @@ import homesky from "../../assets/homesky.png";
 import Footer1 from "./Footer";
 import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 import { GetOperators, OperatorFilters } from "../../Api/Dashboard/Dashboard";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { BiSolidSearch } from "react-icons/bi";
 import "../../App.css";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
@@ -42,7 +42,7 @@ const Operators = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedLetter, setSelectedLetter] = useState("A");
   const [operatorData, setOperatorData] = useState();
-  const getoperator = useSelector((state) => state.get_operator_list);
+  //const getoperator = useSelector((state) => state.get_operator_list);
 
   const handleNextClick = () => {
     setSelectedIndex((prevIndex) => {
@@ -59,31 +59,35 @@ const Operators = () => {
     setOperatorData(data);
   };
 
-  const FilterOperator = async () => {
-    console.log(selectedLetter, "getoperator");
-    try {
-      const data = await OperatorFilters(selectedLetter);
-      setOperatorData(data);
-      console.log(data, "datadata1");
-    } catch (error) {
-      console.error("Error fetching data", error);
-    }
-  };
+
   const dispatch = useDispatch();
+
   useEffect(() => {
+    const FilterOperator = async () => {
+      console.log(selectedLetter, "getoperator");
+      try {
+        const data = await OperatorFilters(selectedLetter);
+        setOperatorData(data);
+        console.log(data, "datadata1");
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
+
     if (selectedLetter) {
       FilterOperator();
-    } else {
-      setOperatorData(getoperator);
-    }
+    }   
   }, [selectedLetter]);
 
   useEffect(() => {
+
     GetOperators(dispatch);
-  }, []);
+  }, [dispatch]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  
   return (
     <>
       <div className="">
@@ -135,7 +139,7 @@ const Operators = () => {
                     text-[1.2vw] text-[#1F487C] pt-[1vw] h-[2vw] w-[2vw] ml-[0.2vw] cursor-pointer
                    ${
                      selectedIndex === index
-                       ? "text-white pt-0 h-[2vw] w-[2vw] bg-[#1F487C] rounded-md ml-[0.2vw] flex mt-[1vw]"
+                       ? "text-white pt-[0vw] pt-0 h-[2vw] w-[2vw] bg-[#1F487C] rounded-md ml-[0.2vw] flex mt-[1vw]"
                        : ""
                    }
                  `}

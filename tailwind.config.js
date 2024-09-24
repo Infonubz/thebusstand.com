@@ -9,12 +9,16 @@ module.exports = {
       backgroundImage: {
         // "custom-gradient-luxury":
         //   "linear-gradient(to right, #F8C550, #FFEB76, #FFE173)",
-          "custom-gradient-luxury":
+        "custom-gradient-luxury":
           "linear-gradient(to right, #F8C550, #FFEB76, #FFE173)",
         "custom-gradient": "linear-gradient(135deg, #F8F8F8 0%, #E7EBEE 100%)",
       },
     },
-
+    variants: {
+      extend: {
+        fill: ["hover", "focus"], // Add fill variants if needed
+      },
+    },
     fontFamily: {
       sans: ["Lato"],
       // sans: ['Inter', 'sans-serif'],

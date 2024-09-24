@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import Promotion from "../../MainComponenet/Promotion";
+//import Promotion from "../../MainComponenet/Promotion";
 import backdrop from "../../../assets/backdrop.png";
 import { FaAngleRight } from "react-icons/fa6";
 import { MdEventSeat } from "react-icons/md";
-import lowprice from "../../../assets/lowprice.png";
+//import lowprice from "../../../assets/lowprice.png";
 import dayjs from "dayjs";
-import { Tooltip } from "antd";
-import logo from "../../../assets/Operator_logos/161.png";
-import { MdAirlineSeatReclineExtra, MdStarRate } from "react-icons/md";
+//import { Tooltip } from "antd";
+//import logo from "../../../assets/Operator_logos/161.png";
+import { MdStarRate } from "react-icons/md";
+// import { MdAirlineSeatReclineExtra } from "react-icons/md";
 import { IoPersonSharp } from "react-icons/io5";
 // import { MdMyLocation } from "react-icons/md";
 import { BiPlug } from "react-icons/bi";
@@ -17,18 +18,14 @@ import { IoIosArrowUp } from "react-icons/io";
 import LiveTracking from "../LiveTracking";
 import Policy from "../Policy";
 import DropPick from "../DropPick";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  GetCardDetails,
-  SendTravelDetails,
-} from "../../../Api/Dashboard/Dashboard";
-import { BsPlug } from "react-icons/bs";
-import { BiSolidBlanket, BiCctv } from "react-icons/bi";
-import { PiWifiMedium } from "react-icons/pi";
-import { FaBottleWater, FaFirstAid } from "react-icons/fa";
-import { IoTicketOutline } from "react-icons/io5";
-import { MdOutlineLight } from "react-icons/md";
-import { GiWaterBottle } from "react-icons/gi";
+import { useSelector } from "react-redux";
+// import { useDispatch } from "react-redux";
+// import {
+//   GetCardDetails,
+//   SendTravelDetails,
+// } from "../../../Api/Dashboard/Dashboard";
+// import { BsPlug } from "react-icons/bs";
+import { BiSolidBlanket } from "react-icons/bi";
 import { MdMyLocation } from "react-icons/md";
 import Advertisement from "../../Advertisement/Ads";
 import OurLowPrice from "../../../assets/OurLowPrice.png";
@@ -37,7 +34,6 @@ import { AiOutlineExclamationCircle } from "react-icons/ai";
 import thread from "../../../assets/thread.png";
 import sliver from "../../../assets/Silver_surfer.png";
 import SINGLECARD_BG from "../../../assets/SINGLECARD_BG.png";
-import giff from "../../../assets/Gif5.gif";
 import SingleCardMobile from "./SingleCardMobile";
 import { GetUserDetails } from "../../../Api/Login/Login";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -125,8 +121,8 @@ export default function SingleCard() {
     if (user_id) {
       GetUserDetails(navigation);
     }
-  }, [user_id]);
-  const dispatch = useDispatch();
+  }, [user_id, navigation]);
+  //const dispatch = useDispatch();
   // useEffect(() => {
   //   SendTravelDetails(
   //     dispatch,
@@ -138,7 +134,7 @@ export default function SingleCard() {
   useEffect(() => {
     setSpinner(sessionStorage.getItem("loading"));
     // setSpinner(true)
-  }, [sessionStorage.getItem("loading")]);
+  }, []);
 
   console.log(sessionStorage.getItem("loading"), spinner, "spinnerrrrrrrrrrr");
 
@@ -536,7 +532,7 @@ export default function SingleCard() {
         className={`bg-[#E5FFF1] md:block hidden px-[0.5vw] min-h-screen max-h-auto pb-[1vw] relative`}
       >
         <Advertisement />
-        {spinner == true ? (
+        {spinner === true ? (
           <div
             className=""
             style={{
@@ -596,11 +592,13 @@ export default function SingleCard() {
                                 : backdrop
                             }
                             className="h-[3.5vw] w-full"
+                            alt="theme"
                           />
                           <div className="absolute top-[0.2vw] right-[9vw] rounded-full">
                             {item.logos != null && (
                               <img
                                 src={`http://192.168.90.47:4001${item.logos}`}
+                                alt="logos"
                                 className="w-[2.5vw] h-[2.5vw] rounded-full"
                               />
                             )}
@@ -884,6 +882,7 @@ export default function SingleCard() {
                                   </div>
                                   <img
                                     src={thread}
+                                    alt="thread"
                                     className="w-[6vw] h-[7vw] absolute top-[-3.4vw] right-[-2vw] "
                                   />
                                 </div>
@@ -899,7 +898,10 @@ export default function SingleCard() {
                                 ></div>
                                 {/* <div className="absolute top-[-1vw] right-[-16vw] w-[4vw] h-[8vw] bg-white rounded-l-full flex items-center justify-center "></div> */}
                                 <div className=" absolute top-[-2vw] left-[-7.5vw] w-[9vw] h-[9vw]">
-                                  <img src={OurLowPrice} className=" " />
+                                  <img src={OurLowPrice}
+                                  alt="lowPrice"
+                                   className=" "
+                                    />
                                 </div>
                               </div>
                               <button

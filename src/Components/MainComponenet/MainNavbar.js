@@ -9,7 +9,7 @@ import "react-calendar/dist/Calendar.css"; // Import the styles
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 // import "../src/Components/TextMoving/TextMoving.css"; // Import the stylesheet
 import "tailwindcss/tailwind.css"; // Make sure you have Tailwind CSS imported in your project
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Drawer, Popover, Select } from "antd";
 // import { Space, TimePicker, DatePicker } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -250,16 +250,17 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
 
   console.log(localStorage.getItem("departure"), "hhhhhhhhhhhh");
 
-  const options = [
+  const options = useMemo(() => [
     { value: "Chennai", label: "Chennai" },
     { value: "Bangalore", label: "Bangalore" },
     { value: "Pondicherry", label: "Pondicherry" },
-  ];
-  const tooptions = [
+  ], []);
+  
+  const tooptions = useMemo(() => [
     { value: "Coimbatore", label: "Coimbatore" },
     { value: "Goa", label: "Goa" },
     { value: "Hyderabad", label: "Hyderabad" },
-  ];
+  ], []);
   // const onSearch = (value) => {
   //   console.log("search:", value);
   // };

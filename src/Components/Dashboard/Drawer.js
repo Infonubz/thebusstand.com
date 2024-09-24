@@ -1,39 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { Popover, Result, Tooltip } from "antd";
-import { Button, Drawer, Radio, Space } from "antd";
+import { Tooltip } from "antd";
+import { Drawer } from "antd";
 import complete from "../../assets/complete.png";
-import ticketbus from "../../assets/ticketbus.png";
-import bus_complete from "../../assets/bus_complete.png";
-import bus_comp from "../../assets/bus_comp.png";
-import redbus from "../../assets/redbus.png";
+// import ticketbus from "../../assets/ticketbus.png";
+// import bus_complete from "../../assets/bus_complete.png";
+// import bus_comp from "../../assets/bus_comp.png";
+// import redbus from "../../assets/redbus.png";
 import operatorlogo from "../../assets/Operator_logos/7.png";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "../../App.css";
 import { FaBus } from "react-icons/fa6";
-import { RiArrowRightDoubleLine, RiMapPin3Line } from "react-icons/ri";
-import { FaFileDownload, FaMapMarkerAlt } from "react-icons/fa";
+import { RiArrowRightDoubleLine } from "react-icons/ri";
+import { FaMapMarkerAlt } from "react-icons/fa";
 import ticketview from "../../assets/ticket_view.png";
 import amountView from "../../assets/Group.png";
 import { FaAngleRight } from "react-icons/fa6";
-import backgroundImg from "../../assets/SINGLECARD_BG.png";
-
-import upi from "../../assets/upi.png";
-import phonepay from "../../assets/phonepay.png";
-import gpay from "../../assets/gpay.png";
-import bank from "../../assets/bank.png";
-import wallet from "../../assets/wallet.png";
-import card from "../../assets/card.png";
-import { IoCardSharp } from "react-icons/io5";
-import { BsBank2 } from "react-icons/bs";
-import { GiSevenPointedStar, GiWallet } from "react-icons/gi";
+// import backgroundImg from "../../assets/SINGLECARD_BG.png";
+// import upi from "../../assets/upi.png";
+// import phonepay from "../../assets/phonepay.png";
+// import gpay from "../../assets/gpay.png";
+// import bank from "../../assets/bank.png";
+// import wallet from "../../assets/wallet.png";
+// import card from "../../assets/card.png";
+// import { IoCardSharp } from "react-icons/io5";
+// import { BsBank2 } from "react-icons/bs";
+import { GiSevenPointedStar } from "react-icons/gi";
+// import { GiWallet } from "react-icons/gi";
 import dayjs from "dayjs";
-import platformlogo from "./Logo";
-import state from "../../assets/state_bank.jpg";
-import kotak from "../../assets/kotak.png";
-import hdfc from "../../assets/hdfc.png";
-import icici from "../../assets/icici.png";
-import axis from "../../assets/axis.png";
+// import state from "../../assets/state_bank.jpg";
+// import kotak from "../../assets/kotak.png";
+// import hdfc from "../../assets/hdfc.png";
+// import icici from "../../assets/icici.png";
+// import axis from "../../assets/axis.png";
 import Barcode from "react-barcode";
 import { useRef } from "react";
 import html2canvas from "html2canvas";
@@ -47,17 +46,16 @@ import {
 } from "../../Api/MyAccounts/Passenger";
 import {
   SendBookingDetails,
-  GetBookingDetails,
+  // GetBookingDetails,
   sendBookingPrice,
   TicketViewDetails,
 } from "../../Api/MyAccounts/MyBookings";
-import { FaPhoneFlip } from "react-icons/fa6";
+// import { FaPhoneFlip } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { FaEdit } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
+// import { MdEmail } from "react-icons/md";
 import ModalPopup from "../MainComponenet/Modal/ModalPopup";
 import { RatingFeedBack } from "../Home/MyAccounts/RatingFeedBack";
-import { TicketBooking } from "../../Api/Dashboard/Dashboard";
 import { toast } from "react-toastify";
 import { GetUserDetails } from "../../Api/Login/Login";
 import { useNavigate } from "react-router";
@@ -76,8 +74,8 @@ function DrawerDetails({
   setShowModal,
   busdetails,
   seatplatform,
-  type,
-  busprice,
+  // type,
+  // busprice,
   selectedSeats,
   selectedRoutes,
   discount,
@@ -93,13 +91,13 @@ function DrawerDetails({
     { Coupon: "WEEKEND50", details: "Avail 50% off on weekend bus travel." },
   ];
 
-  const banklist = [
-    { logo: state, bank: "State Bank of India" },
-    { logo: kotak, bank: "Kotak Bank" },
-    { logo: axis, bank: "Axis Bank" },
-    { logo: hdfc, bank: "HDFC Bank" },
-    { logo: icici, bank: "ICICI Bank" },
-  ];
+  // const banklist = [
+  //   { logo: state, bank: "State Bank of India" },
+  //   { logo: kotak, bank: "Kotak Bank" },
+  //   { logo: axis, bank: "Axis Bank" },
+  //   { logo: hdfc, bank: "HDFC Bank" },
+  //   { logo: icici, bank: "ICICI Bank" },
+  // ];
 
   const validationSchema = Yup.object().shape({
     mobile: Yup.string()
@@ -136,18 +134,18 @@ function DrawerDetails({
     //terms: Yup.bool().oneOf([true], "Terms must be accepted"),
   });
 
-  const capitalizeFirstLetter = (string) => {
-    return string
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
+  // const capitalizeFirstLetter = (string) => {
+  //   return string
+  //     .split(" ")
+  //     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+  //     .join(" ");
+  // };
 
-  const [open, setOpen] = useState(true);
-  const [placement, setPlacement] = useState("right");
-  const [paymenttype, setPaymentType] = useState("upi");
+  //const [open, setOpen] = useState(true);
+  //const [placement, setPlacement] = useState("right");
+  // const [paymenttype, setPaymentType] = useState("upi");
   const [registerfulldetails, setRegisterFullDetails] = useState({});
-  const [selectbank, setSelectBank] = useState("");
+  // const [selectbank, setSelectBank] = useState("");
   const [continuenext, setContinue] = useState(false);
   const [sumbitbutton, setSubmitButon] = useState(false);
   const [enableInput, setEnableInput] = useState(false);
@@ -155,17 +153,24 @@ function DrawerDetails({
 
   const [termschecked, setTermsChecked] = useState(false);
   const [passengerId, setPassengerId] = useState("");
-  const [editenable, setEditEnable] = useState(true);
+  // const [editenable, setEditEnable] = useState(true);
   const [bookingId, setBookingId] = useState();
-  const [mobilenum, setMobilenum] = useState();
-  const [proceed, setProceed] = useState(false);
+  //const [mobilenum, setMobilenum] = useState();
+  //const [proceed, setProceed] = useState(false);
   const [showPrice, setShowPrice] = useState(false);
   const [busBookingId, setBusBookingId] = useState("");
   const [ticketDetail, setTicketDetail] = useState({});
   const [promoCode, setPromoCode] = useState("");
-  const [userdetails, setUserDetails] = useState({
-    sex: localStorage.getItem("sex") || "male",
-  });
+  // const [userdetails, setUserDetails] = useState({
+  //   sex: localStorage.getItem("sex") || "male",
+  // });
+
+  
+  const storedEmail = sessionStorage.getItem("user_email_id");
+  const storedMobile = sessionStorage.getItem("user_mobile");
+  const [emailInput, setEmailInput] = useState(storedEmail || "");
+  const [mobileInput, setMobileInput] = useState(storedMobile || "");
+
   const [Passengerdata, setPassengerData] = useState({
     mobile: "",
     email: "",
@@ -178,15 +183,15 @@ function DrawerDetails({
   );
   const dispatch = useDispatch();
 
-  const showDrawer = () => {
-    setOpen(true);
-  };
+  // const showDrawer = () => {
+  //   setOpen(true);
+  // };
   const onClose = () => {
     setShowModal(false);
   };
-  const onChange = (e) => {
-    setPlacement(e.target.value);
-  };
+  // const onChange = (e) => {
+  //   setPlacement(e.target.value);
+  // };
 
   useEffect(() => {
     setTravelerDetails(
@@ -220,23 +225,26 @@ function DrawerDetails({
       pdf.save(`${registerfulldetails.name}.pdf`);
     });
   };
-  const handleFormChange = (values) => {
-    setRegisterFullDetails(values);
-    localStorage.setItem("mobile", values.mobile);
-  };
+
+  // const handleFormChange = (values) => {
+  //   setRegisterFullDetails(values);
+  //   localStorage.setItem("mobile", values.mobile);
+  // };
+
   useEffect(() => {
     if (localStorage.getItem("occupation")) {
-      setPassengerData({
-        ...Passengerdata,
+      setPassengerData((prevPassengerdata) => ({
+        ...prevPassengerdata,
         mobile: localStorage.getItem("mobile"),
         email: "",
         age: localStorage.getItem("age"),
         occupation: localStorage.getItem("occupation"),
-        gender: localStorage.getItem("sex"),
+        sex: localStorage.getItem("sex"),
         name: localStorage.getItem("name"),
-      });
+      }));
     }
   }, []);
+  
 
   const [travelerDetails, setTravelerDetails] = useState(
     selectedSeats.reduce((acc, seat, index) => {
@@ -315,23 +323,25 @@ function DrawerDetails({
   //   }
   // }, [proceed]);
 
-  const handleTicketDetail = async () => {
-    console.log(busBookingId, "response for ticket id");
-    try {
-      const response = await TicketViewDetails(busBookingId, mobileInput);
-      setTicketDetail(response);
-      console.log(response, "response for ticketdtl");
-    } catch (error) {
-      console.error("Error", error);
-    }
-  };
+
 
   useEffect(() => {
+    const handleTicketDetail = async () => {
+      console.log(busBookingId, "response for ticket id");
+      try {
+        const response = await TicketViewDetails(busBookingId, mobileInput);
+        setTicketDetail(response);
+        console.log(response, "response for ticketdtl");
+      } catch (error) {
+        console.error("Error", error);
+      }
+    };
+
     console.log(busBookingId, "response for ticket id");
     if (busBookingId) {
       handleTicketDetail();
     }
-  }, [busBookingId]);
+  }, [busBookingId, mobileInput]);
 
   const handleSubmit = async (values) => {
     console.log(values.email, values.mobile, "handle Submit");
@@ -362,19 +372,20 @@ function DrawerDetails({
     }
   };
 
-  const fetchGetPassenger = async () => {
-    console.log(passengerId, "passengerId");
-    const updateData = passengerId;
-    try {
-      const data = await GetPassengById(updateData);
-      console.log(data, "datadata");
-    } catch (error) {
-      console.error("Error fetching additional user data", error);
-    }
-  };
-
   console.log(travelerDetails, "selectedSeats12");
   useEffect(() => {
+
+    const fetchGetPassenger = async () => {
+      console.log(passengerId, "passengerId");
+      const updateData = passengerId;
+      try {
+        const data = await GetPassengById(updateData);
+        console.log(data, "datadata");
+      } catch (error) {
+        console.error("Error fetching additional user data", error);
+      }
+    };
+
     console.log(passengerId, "passengerId");
     if (passengerId) {
       fetchGetPassenger();
@@ -398,7 +409,7 @@ function DrawerDetails({
 
   const colorcode = platformTheme(seatplatform);
 
-  const green = "#c3eee1";
+  //const green = "#c3eee1";
 
   console.log(termschecked, "termschecked");
   console.log("submit form", busBookingId);
@@ -406,17 +417,16 @@ function DrawerDetails({
   const closeRatingModal = () => {
     setRatingModal(false);
   };
-  const handleRatings = () => {
-    setRatingModal(true);
-  };
 
-  const [isEmailDisabled, setIsEmailDisabled] = useState(false);
-  const [isMobileDisabled, setIsMobileDisabled] = useState(false);
+  console.log(Passengerdata, "Passengerdata")
 
-  const storedEmail = sessionStorage.getItem("user_email_id");
-  const storedMobile = sessionStorage.getItem("user_mobile");
-  const [emailInput, setEmailInput] = useState(storedEmail || "");
-  const [mobileInput, setMobileInput] = useState(storedMobile || "");
+  // const handleRatings = () => {
+  //   setRatingModal(true);
+  // };
+
+  //const [isEmailDisabled, setIsEmailDisabled] = useState(false);
+  //const [isMobileDisabled, setIsMobileDisabled] = useState(false);
+
   const navigation = useNavigate();
   const user_id = sessionStorage.getItem("user_id");
   useEffect(() => {
@@ -434,18 +444,18 @@ function DrawerDetails({
     if (user_id) {
       GetUserDetails(navigation);
     }
-  }, []);
+  }, [user_id, navigation]);
 
   return (
     <>
       <div>
         <div className="md:block hidden">
           <Drawer
-            placement={placement}
+            placement={"right"}
             closable={false}
             onClose={onClose}
             open={modalshow}
-            key={placement}
+            key={"right"}
             width={"60%"}
             // style={{
             //   backgroundImage: busdetails.bus_type_status === "luxury"
@@ -476,7 +486,10 @@ function DrawerDetails({
                               : colorcode.theme,
                         }}
                       >
-                        <img src={complete} className="h-[2.5vw] w-[2.5vw]" />
+                        <img 
+                        src={complete}
+                        alt="complete" 
+                        className="h-[2.5vw] w-[2.5vw]" />
                         <div className="h-[2vw]">
                           <h1
                             className="text-[1.5vw] text-white font-semibold "
@@ -495,6 +508,7 @@ function DrawerDetails({
                               {" "}
                               <img
                                 src={imageurl}
+                                alt="imageUrl"
                                 className="w-[5vw] h-[5vw] rounded-full"
                               />
                             </div>
@@ -825,11 +839,13 @@ function DrawerDetails({
                                 {busdetails.bus_type_status === "luxury" ? (
                                   <img
                                     src={amountView}
+                                    alt="amountView"
                                     className="w-[9vw] h-[3.5vw]"
                                   />
                                 ) : (
                                   <img
                                     src={ticketview}
+                                    alt="ticketView"
                                     className="w-[9vw] h-[3.5vw]"
                                   />
                                 )}
@@ -863,7 +879,11 @@ function DrawerDetails({
                         }}
                       >
                         {termschecked ? (
-                          <img src={complete} className="h-[2.5vw] w-[2.5vw]" />
+                          <img 
+                          src={complete}
+                          alt="completeImage"
+                           className="h-[2.5vw] w-[2.5vw]"
+                            />
                         ) : (
                           ""
                         )}
@@ -951,7 +971,7 @@ function DrawerDetails({
                                           // );
                                         }}
                                         className={`${
-                                          !isSubmitting || !isEmailDisabled
+                                          !isSubmitting 
                                             ? `cursor-pointer`
                                             : "cursor-not-allowed"
                                         } border-r-[0.5vw] border-[.1vw] text-[1.2vw] h-[3vw] w-[21vw] rounded-[0.5vw] outline-none px-[1vw]`}
@@ -1024,7 +1044,7 @@ function DrawerDetails({
                                           // );
                                         }}
                                         className={`${
-                                          !isSubmitting || !isMobileDisabled
+                                          !isSubmitting
                                             ? `cursor-pointer`
                                             : "cursor-not-allowed"
                                         } border-r-[0.5vw] border-black border-[0.1vw] text-[1.2vw] h-[3vw] w-[75%] rounded-r-[0.5vw] outline-none px-[1vw]`}
@@ -1353,7 +1373,7 @@ function DrawerDetails({
                                     </div>
                                   ))}
                               </div>
-                              {registerfulldetails?.terms == true ? (
+                              {registerfulldetails?.terms === true ? (
                                 ""
                               ) : (
                                 <>
@@ -1401,7 +1421,6 @@ function DrawerDetails({
                                         onClick={() => {
                                           setEnableInput(false);
                                           //fetchBookingDetail(mobilenum);
-                                          console.log(mobilenum, "mobilenum");
                                         }}
                                       />
                                     )}
@@ -2491,7 +2510,7 @@ function DrawerDetails({
                                       : colorcode.theme,
                                 }}
                                 onClick={() => {
-                                  setProceed(true);
+                                  //setProceed(true);
                                   handleBookingPrice();
                                 }}
                               >
@@ -2578,6 +2597,7 @@ function DrawerDetails({
                             <div className="h-[60%] flex justify-center items-center">
                               <img
                                 src={operatorlogo}
+                                alt="operatorLogo"
                                 className="w-[5vw] h-[5vw] rounded-full"
                               />
                             </div>
@@ -2882,11 +2902,13 @@ function DrawerDetails({
                                 {busdetails.bus_type_status === "luxury" ? (
                                   <img
                                     src={amountView}
+                                    alt="amountView"
                                     className="w-[9vw] h-[3.5vw]"
                                   />
                                 ) : (
                                   <img
                                     src={ticketview}
+                                    alt="ticketView"
                                     className="w-[9vw] h-[3.5vw]"
                                   />
                                 )}

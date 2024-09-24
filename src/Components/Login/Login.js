@@ -52,28 +52,33 @@ const Login = ({ closeLoginModal, setLoginIsOpen }) => {
     <>
       <div className="flex">
         <div className="w-[25vw] h-[35vw] bg-[#1F487C] flex items-center justify-center">
-          <img src={Password} className="w-[20vw] h-[20vw]" />
+          <img 
+          src={Password} 
+          alt="password"
+          className="w-[20vw] h-[20vw]" />
         </div>
         <div className="">
           <div className="w-[10vw]">
-            <img src={TBSLOGO} />
+            <img 
+            alt="tbsLogo"
+            src={TBSLOGO} />
           </div>
           <div className="px-[5vw]">
             {/* {renderStepComponent()} */}
-            {CurrentPage == 0 ? (
+            {CurrentPage === 0 ? (
               <MobileNumberLog
                 // nextPage={nextPage}
                 setCurrentPage={setCurrentPage}
                 setLoginIsOpen={setLoginIsOpen}
               />
-            ) : CurrentPage == 1 ? (
+            ) : CurrentPage === 1 ? (
               <OtpVerification
                 // nextPage={nextPage}
                 // prevStep={prevStep}
                 setCurrentPage={setCurrentPage}
                 setLoginIsOpen={setLoginIsOpen}
               />
-            ) : CurrentPage == 2 ? (
+            ) : CurrentPage === 2 ? (
               <LoginProfile
                 // prevStep={prevStep}
                 // closeLoginModal={closeLoginModal}

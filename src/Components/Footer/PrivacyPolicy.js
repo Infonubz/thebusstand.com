@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Footer from "../Home/Footer";
 import TermsIndex from "../Terms&Conditions/Index";
 import { useDispatch, useSelector } from "react-redux";
 import { GetFooterTabs } from "../../Api/FooterTabs/FooterTabs";
-import { IoIosArrowRoundBack } from "react-icons/io";
-import { useNavigate } from "react-router";
+//import { IoIosArrowRoundBack } from "react-icons/io";
+//import { useNavigate } from "react-router";
 import BG_IMAGE from '../../assets/BG Image.png'
 import HomeHearder from "../MainComponenet/HomeHearder";
 import homesky from "../../assets/BackgroundSky1.png";
@@ -23,6 +23,7 @@ const PrivacyPolicy = () => {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
   return (
     <>
       <div className="md:block hidden">

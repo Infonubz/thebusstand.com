@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Footer from "../Home/Footer";
 import TermsIndex from "../Terms&Conditions/Index";
 import { useDispatch, useSelector } from "react-redux";
 import { GetFooterTabs } from "../../Api/FooterTabs/FooterTabs";
-import { IoIosArrowRoundBack } from "react-icons/io";
-import { useNavigate } from "react-router";
+//import { IoIosArrowRoundBack } from "react-icons/io";
+//import { useNavigate } from "react-router";
 import BG_IMAGE from '../../assets/BG Image.png'
-import HomeHearder from "../MainComponenet/HomeHearder";
+//import HomeHearder from "../MainComponenet/HomeHearder";
 import homesky from "../../assets/BackgroundSky1.png";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
 
@@ -15,15 +15,17 @@ const TermsConditions = () => {
   const conditionsMobile = useSelector((state) => state?.tbs_info || [])
   console.log(conditionsMobile.terms_conditions, 'consoleconsole');
 
-  const navigation = useNavigate()
+  // const navigation = useNavigate()
   useEffect(() => {
     GetFooterTabs(dispatch);
   }, [dispatch]);
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
   const terms_conditions = conditionsMobile?.terms_conditions
   console.log(terms_conditions, 'terms_conditions');
+
   return (
     <>
       <div className="md:block hidden">

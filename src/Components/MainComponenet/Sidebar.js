@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import {
-  MdAirlineSeatIndividualSuite,
-  MdAirlineSeatReclineExtra,
-} from "react-icons/md";
-import { TbAirConditioning, TbAirConditioningDisabled } from "react-icons/tb";
+import React, { useCallback, useEffect, useState } from "react";
+// import {
+//   MdAirlineSeatIndividualSuite,
+//   MdAirlineSeatReclineExtra,
+// } from "react-icons/md";
+// import { TbAirConditioning, TbAirConditioningDisabled } from "react-icons/tb";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { LuSunrise, LuSunset } from "react-icons/lu";
 import { IoSunnyOutline } from "react-icons/io5";
@@ -17,16 +17,16 @@ import s_non_ac from "../../assets/s_non_ac.png";
 import s_c_non_ac from "../../assets/s_c_non_ac.png";
 import seats from "../../assets/seats.png";
 import sleeper from "../../assets/seat_sleep.png";
-import { useDispatch, useSelector, useStore } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   FILTER,
-  GET_DATA,
+  // GET_DATA,
   GET_FILTER_DATA,
-  CARD_DETAIL,
+  // CARD_DETAIL,
 } from "../../Store/type";
-import { BiMapPin } from "react-icons/bi";
-import { useNavigate } from "react-router";
-import Map from "../Dashboard/Map";
+// import { BiMapPin } from "react-icons/bi";
+// import { useNavigate } from "react-router";
+// import Map from "../Dashboard/Map";
 import axios from "axios";
 import {
   Filters,
@@ -44,9 +44,9 @@ const Sidebar = ({ sidebarToggle, share }) => {
   // const [vehiclevalue, setVehicleValue] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalname, setModalname] = useState("");
-  const [finalpickupdata, setFinalPickupData] = useState([]);
-  const [finaldropdata, setFinalDropData] = useState([]);
-  const [finaloperatordata, setFinalOperatorData] = useState([]);
+  // const [finalpickupdata, setFinalPickupData] = useState([]);
+  // const [finaldropdata, setFinalDropData] = useState([]);
+  // const [finaloperatordata, setFinalOperatorData] = useState([]);
   const [modalsearch, setModalSearch] = useState("");
   const [handlesearchValue, setHandleSearchValue] = useState("");
   const [handlesearchAmenities, setHandleSearchAmenities] = useState("");
@@ -58,21 +58,21 @@ const Sidebar = ({ sidebarToggle, share }) => {
   const [dropchecked, setDropChecked] = useState({});
   const [operatorchecked, setOperatorChecked] = useState({});
   const [showingdata, setShowingData] = useState([]);
-  const [modalpickupsearch, setModalpickupsearch] = useState("");
-  const [busData, setBusData] = useState();
+  // const [modalpickupsearch, setModalpickupsearch] = useState("");
+  // const [busData, setBusData] = useState();
   const [value, setValue] = useState([0, 3000]);
 
-  const buslist = useSelector((state) => state?.card_detail);
+  // const buslist = useSelector((state) => state?.card_detail);
   const [pickUp_list, setPickUpList] = useState({});
   const drop_Point_List = useSelector((state) => state?.drop_point_list);
-  const [selectedPickupPoint, setSelectedPickupPoint] = useState("");
-  const [selectedDroppingPoint, setSelectedDroppingPoint] = useState("");
+  // const [selectedPickupPoint, setSelectedPickupPoint] = useState("");
+  // const [selectedDroppingPoint, setSelectedDroppingPoint] = useState("");
 
-  const [searchvalue, setSearchValue] = useState({
-    pickup: "",
-    drop: "",
-    operator: "",
-  });
+  // const [searchvalue, setSearchValue] = useState({
+  //   pickup: "",
+  //   drop: "",
+  //   operator: "",
+  // });
   const [filtervalue, setFitervalue] = useState({
     ac: false,
     non_ac: false,
@@ -86,12 +86,12 @@ const Sidebar = ({ sidebarToggle, share }) => {
     // time_6:00 PM to 11:00 PM: false,
     // time_11:00 PM to 6:00 AM: false,
   });
-  const [pickuptimefiltervalue, setPickupTimeFitervalue] = useState({
-    // time_6:00 AM to 11:00 AM: false,
-    // time_11:00 AM to 6:00 PM: false,
-    // time_6:00 PM to 11:00 PM: false,
-    // time_11:00 PM to 6:00 AM: false,
-  });
+  // const [pickuptimefiltervalue, setPickupTimeFitervalue] = useState({
+  //   // time_6:00 AM to 11:00 AM: false,
+  //   // time_11:00 AM to 6:00 PM: false,
+  //   // time_6:00 PM to 11:00 PM: false,
+  //   // time_11:00 PM to 6:00 AM: false,
+  // });
   const [boolean, setBoolean] = useState({
     pickup: true,
     drop: true,
@@ -141,44 +141,44 @@ const Sidebar = ({ sidebarToggle, share }) => {
     setSeatTypeFilter("");
   };
   const dispatch = useDispatch();
-  const operators = [
-    { place: "InterCity SmartBus", count: "85" },
-    { place: "Sharma Travels", count: "113" },
-    { place: "SPS Travels", count: "67" },
-    { place: "KPN Travels", count: "20" },
-    { place: "National Travels", count: "67" },
-    { place: "Orange Travels", count: "77" },
-    { place: "Bharath Travels", count: "77" },
-  ];
-  const travel_operator = operators.slice(0, 5);
-  const place = [
-    { place: "Avinashi", count: "113" },
-    { place: "Palladam", count: "85" },
-    { place: "Pushpa", count: "67" },
-    { place: "New Bus Stand", count: "20" },
-    { place: "Sri nagar", count: "67" },
-    { place: "Old Bus Stand", count: "15" },
-    { place: "Gandhi nagar", count: "18" },
-    { place: "Town hall", count: "50" },
-    { place: "Old Bus Stand", count: "15" },
-    { place: "Gandhi nagar", count: "18" },
-    { place: "Town hall", count: "50" },
-  ];
-  const drop_place = [
-    { place: "KMCH", count: "113" },
-    { place: "Airport", count: "85" },
-    { place: "RS Puram", count: "67" },
-    { place: "Gandhipuram", count: "20" },
-    { place: "Saravanampatti", count: "67" },
-  ];
-  const amenities = [
-    { amenities: "WIFI", count: 12, id: 1 },
-    { amenities: "Water bottle", count: 15, id: 2 },
-    { amenities: "Toilet", count: 6, id: 3 },
-    { amenities: "Track My Bus", count: 52, id: 4 },
-    { amenities: "Blankets", count: 74, id: 5 },
-    { amenities: "Charging Point", count: 30, id: 6 },
-  ];
+  // const operators = [
+  //   { place: "InterCity SmartBus", count: "85" },
+  //   { place: "Sharma Travels", count: "113" },
+  //   { place: "SPS Travels", count: "67" },
+  //   { place: "KPN Travels", count: "20" },
+  //   { place: "National Travels", count: "67" },
+  //   { place: "Orange Travels", count: "77" },
+  //   { place: "Bharath Travels", count: "77" },
+  // ];
+  // const travel_operator = operators.slice(0, 5);
+  // const place = [
+  //   { place: "Avinashi", count: "113" },
+  //   { place: "Palladam", count: "85" },
+  //   { place: "Pushpa", count: "67" },
+  //   { place: "New Bus Stand", count: "20" },
+  //   { place: "Sri nagar", count: "67" },
+  //   { place: "Old Bus Stand", count: "15" },
+  //   { place: "Gandhi nagar", count: "18" },
+  //   { place: "Town hall", count: "50" },
+  //   { place: "Old Bus Stand", count: "15" },
+  //   { place: "Gandhi nagar", count: "18" },
+  //   { place: "Town hall", count: "50" },
+  // ];
+  // const drop_place = [
+  //   { place: "KMCH", count: "113" },
+  //   { place: "Airport", count: "85" },
+  //   { place: "RS Puram", count: "67" },
+  //   { place: "Gandhipuram", count: "20" },
+  //   { place: "Saravanampatti", count: "67" },
+  // ];
+  // const amenities = [
+  //   { amenities: "WIFI", count: 12, id: 1 },
+  //   { amenities: "Water bottle", count: 15, id: 2 },
+  //   { amenities: "Toilet", count: 6, id: 3 },
+  //   { amenities: "Track My Bus", count: 52, id: 4 },
+  //   { amenities: "Blankets", count: 74, id: 5 },
+  //   { amenities: "Charging Point", count: 30, id: 6 },
+  // ];
 
   // const handleAmenities = (item) => {
   //   const isAmenitySelected = amenitiesvalue.includes(item);
@@ -193,12 +193,12 @@ const Sidebar = ({ sidebarToggle, share }) => {
   //   }
   // };
 
-  const capitalizeFirstLetter = (string) => {
-    return string
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
+  // const capitalizeFirstLetter = (string) => {
+  //   return string
+  //     .split(" ")
+  //     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+  //     .join(" ");
+  // };
 
   const amenitiesClear = () => {
     setAmenitiesValue({});
@@ -276,36 +276,24 @@ const Sidebar = ({ sidebarToggle, share }) => {
   const pickuptimeClear = () => {
     setPickUpTime("");
   };
-  useEffect(() => {
-    if (modalname == "pickup") {
-      setShowingData(pickupfullist);
-    } else if (modalname == "drop") {
-      setShowingData(dropfulllist);
-    } else if (modalname == "amenities") {
-      console.log("hii");
-      setShowingData(amenitieslist);
-    } else {
-      setShowingData(opertorfulllist);
-    }
-  }, [modalname]);
 
   // console.log(showingdata,"showejsdkffdxe");
   useEffect(() => {
-    if (modalname == "pickup") {
+    if (modalname === "pickup") {
       const filteredData = showingdata.filter((item) =>
         item?.name?.toLowerCase()?.includes(modalsearch?.toLowerCase())
       );
       // const groupedPlaces = groupByFirstLetter(filteredData);
       // setModalShowData(groupedPlaces);
       setModalShowData(filteredData);
-    } else if (modalname == "drop") {
+    } else if (modalname === "drop") {
       const filteredData = showingdata.filter((item) =>
         item?.name?.toLowerCase()?.includes(modalsearch?.toLowerCase())
       );
       // const groupedPlaces = groupByFirstLetter(filteredData);
       // setModalShowData(groupedPlaces);
       setModalShowData(filteredData);
-    } else if (modalname == "amenities") {
+    } else if (modalname === "amenities") {
       const filteredData = showingdata.filter((item) =>
         item?.amenity?.toLowerCase()?.includes(modalsearch?.toLowerCase())
       );
@@ -313,7 +301,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
       // setModalShowData(groupedPlaces);
       setModalShowData(filteredData);
     } else {
-      const filteredData = showingdata.filter((item) =>
+      const filteredData = showingdata?.filter((item) =>
         item?.operator?.toLowerCase()?.includes(modalsearch?.toLowerCase())
       );
       // const groupedPlaces = groupByFirstLetter(filteredData);
@@ -322,35 +310,35 @@ const Sidebar = ({ sidebarToggle, share }) => {
     }
   }, [modalname, modalsearch, showingdata]);
   console.log(modalsearch, "modalsearch");
-  useEffect(() => {
-    const pickupslice = place.slice(0, 5);
-    const dropslice = drop_place.slice(0, 5);
-    const travelslice = travel_operator.slice(0, 5);
-    if (searchvalue.pickup) {
-      const filteredData = place.filter((item) =>
-        item.place.toLowerCase().includes(searchvalue.pickup.toLowerCase())
-      );
-      setFinalPickupData(filteredData);
-    } else {
-      setFinalPickupData(pickupslice);
-    }
-    if (searchvalue.drop) {
-      const filteredData = drop_place.filter((item) =>
-        item.place.toLowerCase().includes(searchvalue.drop.toLowerCase())
-      );
-      setFinalDropData(filteredData);
-    } else {
-      setFinalDropData(dropslice);
-    }
-    if (searchvalue.operator) {
-      const filteredData = travel_operator.filter((item) =>
-        item.place.toLowerCase().includes(searchvalue.operator.toLowerCase())
-      );
-      setFinalOperatorData(filteredData);
-    } else {
-      setFinalOperatorData(travelslice);
-    }
-  }, [searchvalue]);
+  // useEffect(() => {
+  //   // const pickupslice = place.slice(0, 5);
+  //   // const dropslice = drop_place.slice(0, 5);
+  //   // const travelslice = travel_operator.slice(0, 5);
+  //   if (searchvalue.pickup) {
+  //     // const filteredData = place.filter((item) =>
+  //     //   item.place.toLowerCase().includes(searchvalue.pickup.toLowerCase())
+  //     // );
+  //     // setFinalPickupData(filteredData);
+  //   } else {
+  //     // setFinalPickupData(pickupslice);
+  //   }
+  //   if (searchvalue.drop) {
+  //     // const filteredData = drop_place.filter((item) =>
+  //     //   item.place.toLowerCase().includes(searchvalue.drop.toLowerCase())
+  //     // );
+  //     // setFinalDropData(filteredData);
+  //   } else {
+  //     // setFinalDropData(dropslice);
+  //   }
+  //   if (searchvalue.operator) {
+  //     // const filteredData = travel_operator.filter((item) =>
+  //     //   item.place.toLowerCase().includes(searchvalue.operator.toLowerCase())
+  //     // );
+  //     // setFinalOperatorData(filteredData);
+  //   } else {
+  //     // setFinalOperatorData(travelslice);
+  //   }
+  // }, [searchvalue]);
 
   useEffect(() => {
     const filterfun = () => {
@@ -364,22 +352,22 @@ const Sidebar = ({ sidebarToggle, share }) => {
     filterfun();
   }, [filtervalue, dispatch]);
   // const groupedPlaces = groupByFirstLetter(showingdata);
-  const handleonapply = () => {
-    setModalIsOpen(false);
-  };
-  const navigation = useNavigate();
-  const [isMapPage, setIsMapPage] = useState(false);
-  const handleradius = () => {
-    setFitervalue({ ...filtervalue, radius: !filtervalue.radius });
-    // navigation("/map");
-    if (isMapPage) {
-      navigation("/dashboard");
-      localStorage.setItem("depature", "Chennai");
-    } else {
-      navigation("/map");
-    }
-    setIsMapPage(!isMapPage);
-  };
+  // const handleonapply = () => {
+  //   setModalIsOpen(false);
+  // };
+  // const navigation = useNavigate();
+  // const [isMapPage, setIsMapPage] = useState(false);
+  // const handleradius = () => {
+  //   setFitervalue({ ...filtervalue, radius: !filtervalue.radius });
+  //   // navigation("/map");
+  //   if (isMapPage) {
+  //     navigation("/dashboard");
+  //     localStorage.setItem("depature", "Chennai");
+  //   } else {
+  //     navigation("/map");
+  //   }
+  //   setIsMapPage(!isMapPage);
+  // };
   // useEffect(() => {
   //   if (filtervalue.radius) {
   //     navigation("/map");
@@ -397,50 +385,53 @@ const Sidebar = ({ sidebarToggle, share }) => {
   const [pickuptime, setPickUpTime] = useState("");
   const [droptime, setDropTime] = useState("");
   console.log(acfilter, "filtervalue.radius");
-  const [departure, setDeparture] = useState("");
-  const [arrival, setArrival] = useState("");
-  const [seatsSorting, setseatsSorting] = useState("false");
-  const [priceSorting, setpriceSorting] = useState("false");
-  const [ratingSorting, setratingSorting] = useState("false");
-  const [arrivalSorting, setarrivalSorting] = useState("false");
-  const [departureSorting, setdepartureSorting] = useState("false");
+  // const [departure, setDeparture] = useState("");
+  // const [arrival, setArrival] = useState("");
+  // const [seatsSorting, setseatsSorting] = useState("false");
+  // const [priceSorting, setpriceSorting] = useState("false");
+  // const [ratingSorting, setratingSorting] = useState("false");
+  // const [arrivalSorting, setarrivalSorting] = useState("false");
+  // const [departureSorting, setdepartureSorting] = useState("false");
   const [priceRange, setPriceRange] = useState({
     min: 0,
     max: 3000,
   });
 
+  const localSrgAc = localStorage.getItem("ac");
+  const localSrgSeat = localStorage.getItem("seatType");
+
   useEffect(() => {
-    if (localStorage.getItem("ac") == "true") {
+    if (localStorage.getItem("ac") === "true") {
       setAcFilter("ac");
       console.log(localStorage.getItem("ac"), "joooooooo");
     }
     if (localStorage.getItem("seatType")) {
       setSeatTypeFilter(localStorage.getItem("seatType"));
     }
-    if (localStorage.getItem("departure")) {
-      setDeparture(localStorage.getItem("departure"));
-    }
-    if (localStorage.getItem("arrival")) {
-      setArrival(localStorage.getItem("arrival"));
-    }
-    if (localStorage.getItem("sort") == "seats") {
-      setseatsSorting(localStorage.getItem("sort"));
-    }
-    if (localStorage.getItem("sort") == "price") {
-      setpriceSorting(localStorage.getItem("sort"));
-    }
-    if (localStorage.getItem("sort") == "ratings") {
-      setratingSorting(localStorage.getItem("sort"));
-    }
-    if (localStorage.getItem("sort") == "arrivalSort") {
-      setarrivalSorting(localStorage.getItem("sort"));
-    }
-    if (localStorage.getItem("sort") == "departureSort") {
-      setdepartureSorting(localStorage.getItem("sort"));
-    }
-  }, [localStorage.getItem("ac"), localStorage.getItem("seatType")]);
+    // if (localStorage.getItem("departure")) {
+    //   // setDeparture(localStorage.getItem("departure"));
+    // }
+    // if (localStorage.getItem("arrival")) {
+    //   // setArrival(localStorage.getItem("arrival"));
+    // }
+    // if (localStorage.getItem("sort") === "seats") {
+    //   // setseatsSorting(localStorage.getItem("sort"));
+    // }
+    // if (localStorage.getItem("sort") === "price") {
+    //   // setpriceSorting(localStorage.getItem("sort"));
+    // }
+    // if (localStorage.getItem("sort") === "ratings") {
+    //   // setratingSorting(localStorage.getItem("sort"));
+    // }
+    // if (localStorage.getItem("sort") === "arrivalSort") {
+    //   // setarrivalSorting(localStorage.getItem("sort"));
+    // }
+    // if (localStorage.getItem("sort") === "departureSort") {
+    //   // setdepartureSorting(localStorage.getItem("sort"));
+    // }
+  }, [localSrgAc, localSrgSeat]);
 
-  const handleAllFilters = async () => {
+  const handleAllFilters = useCallback(async () => {
     sessionStorage.setItem("loading", true);
     try {
       const pickupcheck = Object.keys(pickupchecked).filter(
@@ -491,20 +482,17 @@ const Sidebar = ({ sidebarToggle, share }) => {
         NormalBus,
         dispatch
       );
-      setBusData(allFilters);
+      // setBusData(allFilters);
       console.log(allFilters, "allFilters");
       console.log(pickuptime, "pickuptime");
     } catch (error) {
       console.error("Error", error);
     }
-  };
-  useEffect(() => {
-    handleAllFilters();
-  }, [
-    localStorage.getItem("departure"),
-    localStorage.getItem("arrival"),
-    localStorage.getItem("departure_date"),
-    sessionStorage.getItem("isLuxury"),
+  },[
+    // locSrgDep,
+    // locSrgarr,
+    // locSrgDepDte,
+    // sesSrgLux,
     busType,
     acfilter,
     seattypefilter,
@@ -515,12 +503,44 @@ const Sidebar = ({ sidebarToggle, share }) => {
     amenitiesvalue,
     operatorchecked,
     priceRange,
-    localStorage.getItem("sort"),
+    // locSrgSort,
     NormalBus,
     dispatch,
   ]);
+  const locSrgDep = localStorage.getItem("departure");
+  const locSrgarr = localStorage.getItem("arrival");
+  const locSrgDepDte = localStorage.getItem("departure_date");
+  const sesSrgLux = sessionStorage.getItem("isLuxury");
+  const locSrgSort = localStorage.getItem("sort");
+  useEffect(() => {
+    handleAllFilters();
+  }, [
+    // localStorage.getItem("departure"),
+    // localStorage.getItem("arrival"),
+    // localStorage.getItem("departure_date"),
+    // sessionStorage.getItem("isLuxury"),
+    locSrgDep,
+    locSrgarr,
+    locSrgDepDte,
+    sesSrgLux,
+    busType,
+    acfilter,
+    seattypefilter,
+    pickuptime,
+    droptime,
+    pickupchecked,
+    dropchecked,
+    amenitiesvalue,
+    operatorchecked,
+    priceRange,
+    // localStorage.getItem("sort"),
+    locSrgSort,
+    NormalBus,
+    handleAllFilters,
+    dispatch,
+  ]);
 
-  const handleDropPoint = async () => {
+  const handleDropPoint = useCallback(async () => {
     try {
       const dropPiontFilter = await Drop_Point_List(
         localStorage.getItem("departure"),
@@ -533,14 +553,22 @@ const Sidebar = ({ sidebarToggle, share }) => {
     } catch (error) {
       console.error("Error", error);
     }
-  };
+  }, [dispatch]);
+
+  const locSrgSdate = localStorage.getItem("selectdate");
+
   useEffect(() => {
     handleDropPoint();
     console.log(drop_Point_List, "drop_Point_List");
   }, [
-    localStorage.getItem("departure"),
-    localStorage.getItem("arrival"),
-    localStorage.getItem("selectdate"),
+    // localStorage.getItem("departure"),
+    // localStorage.getItem("arrival"),
+    // localStorage.getItem("selectdate"),
+    locSrgDep,
+    locSrgarr,
+    locSrgSdate,
+    drop_Point_List,
+    handleDropPoint,
     dispatch,
   ]);
 
@@ -577,16 +605,17 @@ const Sidebar = ({ sidebarToggle, share }) => {
     });
   };
 
-  const Search = async (e) => {
-    const response = await handleSearch(e, dispatch);
+  const Search = async (e, values) => {
+    console.log(values, "log11111searchhh");
+    const response = await handleSearch(dispatch, e, values);
     const searchData = response?.data || [];
-    if (handlesearchValue === "Amenities") {
+    if (handlesearchValue === "amenities") {
       setHandleSearchAmenities(searchData);
-    } else if (handlesearchValue === "Drop") {
+    } else if (handlesearchValue === "dropping") {
       setHandleSearchDrop(searchData);
-    } else if (handlesearchValue === "Pickup") {
+    } else if (handlesearchValue === "boarding") {
       setHandleSearchPickup(searchData);
-    } else if (handlesearchValue === "Operators") {
+    } else if (handlesearchValue === "operators") {
       setHandleSearchOperators(searchData);
     }
     console.log("search Amenities", searchData);
@@ -607,25 +636,25 @@ const Sidebar = ({ sidebarToggle, share }) => {
     });
   };
 
-  const handlePickup_checkbox = (e, name) => {
-    if (e.target.checked) {
-      setSelectedPickupPoint(name);
-      console.log(name, "drop checked");
-    } else {
-      setSelectedPickupPoint(""); // Clear the selection if unchecked
-    }
-  };
+  // const handlePickup_checkbox = (e, name) => {
+  //   if (e.target.checked) {
+  //     // setSelectedPickupPoint(name);
+  //     console.log(name, "drop checked");
+  //   } else {
+  //     // setSelectedPickupPoint(""); // Clear the selection if unchecked
+  //   }
+  // };
 
-  const handledrop_Checkbox = (e, name) => {
-    if (e.target.checked) {
-      setSelectedDroppingPoint(name);
-      console.log(name, "drop checked");
-    } else {
-      setSelectedDroppingPoint(""); // Clear the selection if unchecked
-    }
-  };
+  // const handledrop_Checkbox = (e, name) => {
+  //   if (e.target.checked) {
+  //     // setSelectedDroppingPoint(name);
+  //     console.log(name, "drop checked");
+  //   } else {
+  //     // setSelectedDroppingPoint(""); // Clear the selection if unchecked
+  //   }
+  // };
 
-  const handlefilter = async () => {
+  const handlefilter = useCallback(async () => {
     // console.log(amenitiesvalue, "searchvaluesearchvalue");
     console.log(pickupchecked, "pickupchecked");
     try {
@@ -633,7 +662,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
         (key) => operatorchecked[key]
       );
 
-      const transformedData = amenitiesvalue.reduce((acc, item) => {
+      const transformedData = amenitiesvalue?.reduce((acc, item) => {
         // Check if item exists and set its value to true
         acc[item] = true;
         return acc;
@@ -670,7 +699,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
       };
 
       console.log(operatorchecked, "dropcheck");
-      const place = localStorage.getItem("depature");
+      // const place = localStorage.getItem("depature");
       // const response = await axios.get(
       //   place === "Chennai"
       //     ? "http://192.168.90.47:3000/chennai_src"
@@ -696,13 +725,23 @@ const Sidebar = ({ sidebarToggle, share }) => {
     } catch (error) {
       console.error("Error", error);
     }
-  };
+  },[ acfilter,
+    seattypefilter,
+    // searchvalue,
+    pickupchecked,
+    operatorchecked,
+    amenitiesvalue,
+    pickuptime,
+    droptime,
+    arrange_data,
+    dispatch
+  ]);
   useEffect(() => {
-    handlefilter();
+    handlefilter()
   }, [
     acfilter,
     seattypefilter,
-    searchvalue,
+    // searchvalue,
     pickupchecked,
     dropchecked,
     operatorchecked,
@@ -710,8 +749,11 @@ const Sidebar = ({ sidebarToggle, share }) => {
     pickuptime,
     droptime,
     arrange_data,
-    localStorage.getItem("depature"),
-    localStorage.getItem("arrival"),
+    // localStorage.getItem("depature"),
+    // localStorage.getItem("arrival"),
+    locSrgDep,
+    locSrgarr,
+    handlefilter,
   ]);
 
   // useEffect(() => {
@@ -740,86 +782,86 @@ const Sidebar = ({ sidebarToggle, share }) => {
   const fulllist = useSelector((state) => state.get_data);
   console.log(fulllist, "searchvaluesearchvalue555");
 
-  const filter = fulllist.map((item) => {
-    return item?.Pickup_points.split(",");
-  });
-  const find = filter.filter((item, index) => {
-    return item[0] == "Siruseri";
-  });
+  // const filter = fulllist.map((item) => {
+  //   return item?.Pickup_points.split(",");
+  // });
+  // const find = filter.filter((item, index) => {
+  //   return item[0] === "Siruseri";
+  // });
 
-  const splitData = (data) => {
-    const splitArrays = [];
-    for (let i = 0; i < data.length; i += 8) {
-      splitArrays.push(data.slice(i, i + 8));
-    }
-    return splitArrays;
-  };
+  // const splitData = (data) => {
+  //   const splitArrays = [];
+  //   for (let i = 0; i < data.length; i += 8) {
+  //     splitArrays.push(data.slice(i, i + 8));
+  //   }
+  //   return splitArrays;
+  // };
 
-  const groupedData = fulllist.reduce((acc, obj) => {
-    const key = `operator${obj.bus_operator_id}`;
-    if (!acc[key]) {
-      acc[key] = [];
-    }
-    acc[key].push(obj);
-    return acc;
-  }, {});
+  // const groupedData = fulllist.reduce((acc, obj) => {
+  //   const key = `operator${obj.bus_operator_id}`;
+  //   if (!acc[key]) {
+  //     acc[key] = [];
+  //   }
+  //   acc[key].push(obj);
+  //   return acc;
+  // }, {});
   const [amenitieslist, setAmenitiesList] = useState([]);
-  const [dropponitlist, setDropPointList] = useState([]);
+  // const [dropponitlist, setDropPointList] = useState([]);
   const [dropfulllist, setDropFullList] = useState([]);
-  const [pickuppointlist, setPickupPointlist] = useState([]);
+  // const [pickuppointlist, setPickupPointlist] = useState([]);
   const [pickupfullist, setPickupFullList] = useState([]);
-  const [opertorlist, setOperatorList] = useState([]);
+  // const [opertorlist, setOperatorList] = useState([]);
   const [opertorfulllist, setOperatorFullList] = useState([]);
 
   useEffect(() => {
     // amenities
-    const Amenities = fulllist.map((item) => {
-      return item.Amenities.split(",");
-    });
+    // const Amenities = fulllist.map((item) => {
+    //   return item.Amenities.split(",");
+    // });
 
-    const AmenitiesArray = [].concat(...Amenities);
-    const AmenitiesCount = AmenitiesArray.reduce((acc, val) => {
-      acc[val] = (acc[val] || 0) + 1;
-      return acc;
-    }, {});
+    // const AmenitiesArray = [].concat(...Amenities);
+    // const AmenitiesCount = AmenitiesArray.reduce((acc, val) => {
+    //   acc[val] = (acc[val] || 0) + 1;
+    //   return acc;
+    // }, {});
 
-    const AmenitiesData = Object.entries(AmenitiesCount)
-      .filter(([place, count]) => place.trim() !== "")
-      .map(([place, count]) => ({
-        place,
-        count,
-      }));
+    // const AmenitiesData = Object.entries(AmenitiesCount)
+    //   .filter(([place, count]) => place.trim() !== "")
+    //   .map(([place, count]) => ({
+    //     place,
+    //     count,
+    //   }));
 
     setAmenitiesList(pickUp_list?.amenities);
     console.log(pickUp_list, "picskjdsfkjdsf");
 
     // droppoints
-    const Droppoints = fulllist.map((item) => {
-      return item.Drop_points.split(",");
-    });
-    const DroppointsArray = [].concat(...Droppoints);
-    const DroppointsCount = DroppointsArray.reduce((acc, val) => {
-      acc[val] = (acc[val] || 0) + 1;
-      return acc;
-    }, {});
+    // const Droppoints = fulllist.map((item) => {
+    //   return item.Drop_points.split(",");
+    // });
+    // const DroppointsArray = [].concat(...Droppoints);
+    // const DroppointsCount = DroppointsArray.reduce((acc, val) => {
+    //   acc[val] = (acc[val] || 0) + 1;
+    //   return acc;
+    // }, {});
 
-    const DroppointsData = Object.entries(DroppointsCount)
-      .filter(([place, count]) => place.trim() !== "")
-      .map(([place, count]) => ({
-        place,
-        count,
-      }));
+    // const DroppointsData = Object.entries(DroppointsCount)
+    //   .filter(([place, count]) => place.trim() !== "")
+    //   .map(([place, count]) => ({
+    //     place,
+    //     count,
+    //   }));
 
     setDropFullList(pickUp_list?.dropping_points);
-    const travelslice = DroppointsData?.slice(0, 5);
-    if (searchvalue.drop) {
-      const filteredData = DroppointsData.filter((item) =>
-        item.place.toLowerCase().includes(searchvalue.drop.toLowerCase())
-      );
-      setDropPointList(filteredData);
-    } else {
-      setDropPointList(travelslice);
-    }
+    // const travelslice = DroppointsData?.slice(0, 5);
+    // if (searchvalue.drop) {
+    //   const filteredData = DroppointsData.filter((item) =>
+    //     item.place.toLowerCase().includes(searchvalue.drop.toLowerCase())
+    //   );
+    //   setDropPointList(filteredData);
+    // } else {
+    //   setDropPointList(travelslice);
+    // }
 
     // pickuppoint
     const Pickuppoints = fulllist?.map((item) => {
@@ -827,29 +869,29 @@ const Sidebar = ({ sidebarToggle, share }) => {
     });
 
     const PickuppointsArray = [].concat(...Pickuppoints);
-    const PickuppointsCount = PickuppointsArray.reduce((acc, val) => {
+    const PickuppointsCount = PickuppointsArray?.reduce((acc, val) => {
       acc[val] = (acc[val] || 0) + 1;
       return acc;
     }, {});
 
     console.log(PickuppointsCount, "PickuppointsArray");
-    const PickuppointsData = Object.entries(PickuppointsCount)
-      .filter(([place, count]) => place.trim() !== "")
-      .map(([place, count]) => ({
-        place,
-        count,
-      }));
+    // const PickuppointsData = Object.entries(PickuppointsCount)
+    //   .filter(([place, count]) => place.trim() !== "")
+    //   .map(([place, count]) => ({
+    //     place,
+    //     count,
+    //   }));
 
     setPickupFullList(pickUp_list?.boarding_points);
-    const pickupslice = PickuppointsData?.slice(0, 5);
-    if (searchvalue.pickup) {
-      const filteredData = PickuppointsData.filter((item) =>
-        item.place.toLowerCase().includes(searchvalue.pickup.toLowerCase())
-      );
-      setPickupPointlist(filteredData);
-    } else {
-      setPickupPointlist(pickupslice);
-    }
+    // const pickupslice = PickuppointsData?.slice(0, 5);
+    // if (searchvalue.pickup) {
+    //   const filteredData = PickuppointsData.filter((item) =>
+    //     item.place.toLowerCase().includes(searchvalue.pickup.toLowerCase())
+    //   );
+    //   setPickupPointlist(filteredData);
+    // } else {
+    //   setPickupPointlist(pickupslice);
+    // }
 
     // travel operator
     const Bus_operator_name = fulllist.map((item) => {
@@ -858,7 +900,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
     const uniqueArray = [...new Set(Bus_operator_name)];
     console.log(uniqueArray, "Bus_operator_name");
 
-    const travelcount = uniqueArray.reduce((acc, val) => {
+    const travelcount = uniqueArray?.reduce((acc, val) => {
       acc[val] = (acc[val] || 0) + 1;
       return acc;
     }, {});
@@ -869,18 +911,18 @@ const Sidebar = ({ sidebarToggle, share }) => {
         place,
         count,
       }));
-    const travelopertorslice = traveldata.slice(0, 5);
+    // const travelopertorslice = traveldata.slice(0, 5);
 
     setOperatorFullList(pickUp_list?.operators);
     console.log(opertorfulllist, "operatoresdfxsdfs");
-    if (searchvalue.operator) {
-      const filteredData = traveldata.filter((item) =>
-        item.place.toLowerCase().includes(searchvalue.operator.toLowerCase())
-      );
-      setOperatorList(filteredData);
-    } else {
-      setOperatorList(travelopertorslice);
-    }
+    // if (searchvalue.operator) {
+    //   const filteredData = traveldata.filter((item) =>
+    //     item.place.toLowerCase().includes(searchvalue.operator.toLowerCase())
+    //   );
+    //   setOperatorList(filteredData);
+    // } else {
+    //   setOperatorList(travelopertorslice);
+    // }
     console.log(traveldata, "Bus_operator_name");
     // const traveloperatorarray = [].concat(...traveloperator);
     // const traveloperatorcount = traveloperatorarray.reduce((acc, val) => {
@@ -904,10 +946,16 @@ const Sidebar = ({ sidebarToggle, share }) => {
     //   setPickupPointlist(traveloperatorslice);
     // }
     // console.log(modalshowdata,"shdifjsodfhsdf");
-  }, [searchvalue, fulllist, pickUp_list]);
+  }, [
+    // searchvalue ,
+    fulllist,
+    pickUp_list,
+    opertorfulllist,
+  ]);
+  console.log(pickUp_list?.operators, "cccvveeddfhf");
   const sortedList = modalshowdata
-    .slice()
-    .sort((a, b) =>
+    ?.slice()
+    ?.sort((a, b) =>
       modalname === "amenities"
         ? a?.amenity?.localeCompare(b?.amenity)
         : modalname === "operators"
@@ -919,7 +967,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
   console.log(share, "shareshareshare");
   const sharing = useSelector((state) => state.share);
   console.log(sharing, "sharing");
-  const logoimage = "file://akritnas/nubiznez/Operator_logos/ss.png";
+  // const logoimage = "file://akritnas/nubiznez/Operator_logos/ss.png";
   // useEffect(() => {
   //   const interval = setInterval(() => {
   //     // window.location.reload();
@@ -947,11 +995,24 @@ const Sidebar = ({ sidebarToggle, share }) => {
   //   return () => clearInterval(interval);
   // }, [localStorage.getItem("depature")]);
 
-  const isTimeRangeEqual = (range1, range2) => {
-    return range1.start === range2.start && range1.end === range2.end;
-  };
+  // const isTimeRangeEqual = (range1, range2) => {
+  //   return range1.start === range2.start && range1.end === range2.end;
+  // };
 
   console.log(priceRange, "priceRange");
+
+  useEffect(() => {
+    if (modalname === "pickup") {
+      setShowingData(pickupfullist);
+    } else if (modalname === "drop") {
+      setShowingData(dropfulllist);
+    } else if (modalname === "amenities") {
+      console.log("hii");
+      setShowingData(amenitieslist);
+    } else {
+      setShowingData(opertorfulllist);
+    }
+  }, [modalname, amenitieslist, dropfulllist, opertorfulllist, pickupfullist]);
 
   return (
     <>
@@ -960,7 +1021,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
           sidebarToggle ? "hidden" : "block"
         } w-[18vw] bg-[#E5FFF1] h-full fixed  pt-[1vw]  z-1 md:block hidden`}
         style={{
-          zIndex: modalIsOpen || sharing == true ? 1 : 0,
+          zIndex: modalIsOpen || sharing === true ? 1 : 0,
           // fontFamily:"Lato"
         }}
       >
@@ -1025,7 +1086,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                 >
                   CLEAR
                 </h3>
-                {boolean.vehicle == true ? (
+                {boolean.vehicle === true ? (
                   <button
                     onClick={() =>
                       setBoolean({
@@ -1116,14 +1177,14 @@ const Sidebar = ({ sidebarToggle, share }) => {
                   <div className="grid grid-cols-2 pt-[0.9vw] gap-[0.8vw] mx-[0.6vw]">
                     <button
                       className={`${
-                        acfilter == "ac" ? "bg-[#1F487C]" : "bg-white"
+                        acfilter === "ac" ? "bg-[#1F487C]" : "bg-white"
                       }  ${
-                        acfilter == "ac"
+                        acfilter === "ac"
                           ? "text-white border-[#1F487C]"
                           : "border-gray-300"
                       } w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
                       onClick={() => {
-                        if (acfilter == "ac") {
+                        if (acfilter === "ac") {
                           setAcFilter("");
                         } else {
                           setAcFilter("ac");
@@ -1134,10 +1195,18 @@ const Sidebar = ({ sidebarToggle, share }) => {
                         {/* <span>
                     <TbAirConditioning size={15} className="mx-1 " />
                   </span> */}
-                        {acfilter == "ac" ? (
-                          <img src={s_c_ac} className="w-[1.3vw] h-[1.2vw]" />
+                        {acfilter === "ac" ? (
+                          <img
+                            src={s_c_ac}
+                            alt="AcImg"
+                            className="w-[1.3vw] h-[1.2vw]"
+                          />
                         ) : (
-                          <img src={s_ac} className="w-[1.3vw] h-[1.2vw]" />
+                          <img
+                            src={s_ac}
+                            alt="acimg"
+                            className="w-[1.3vw] h-[1.2vw]"
+                          />
                         )}
                         <span
                           className={`${filtervalue.ac} font-semibold  text-[1vw]`}
@@ -1148,14 +1217,14 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     </button>
                     <button
                       className={`${
-                        acfilter == "non_ac" ? "bg-[#1F487C]" : "bg-white"
+                        acfilter === "non_ac" ? "bg-[#1F487C]" : "bg-white"
                       } ${
-                        acfilter == "non_ac"
+                        acfilter === "non_ac"
                           ? "text-white border-[#1F487C]"
                           : "border-gray-300"
                       } w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
                       onClick={() => {
-                        if (acfilter == "non_ac") {
+                        if (acfilter === "non_ac") {
                           setAcFilter("");
                         } else {
                           setAcFilter("non_ac");
@@ -1166,13 +1235,18 @@ const Sidebar = ({ sidebarToggle, share }) => {
                         {/* <span>
                     <TbAirConditioningDisabled size={20} className="mx-1" />
                   </span> */}
-                        {acfilter == "non_ac" ? (
+                        {acfilter === "non_ac" ? (
                           <img
                             src={s_c_non_ac}
+                            alt="NonAcImg"
                             className="w-[1.3vw] h-[1.2vw]"
                           />
                         ) : (
-                          <img src={s_non_ac} className="w-[1.3vw] h-[1.2vw]" />
+                          <img
+                            src={s_non_ac}
+                            alt="nonAcimg"
+                            className="w-[1.3vw] h-[1.2vw]"
+                          />
                         )}
                         <span className="font-semibold text-[1vw]">Non AC</span>
                       </div>
@@ -1182,16 +1256,16 @@ const Sidebar = ({ sidebarToggle, share }) => {
                   <div className="grid grid-cols-2 pt-[0.9vw]  gap-[0.8vw] mx-[0.6vw]">
                     <button
                       className={`${
-                        seattypefilter == "sleeper"
+                        seattypefilter === "sleeper"
                           ? "bg-[#1F487C]"
                           : "bg-white"
                       } h-full ${
-                        seattypefilter == "sleeper"
+                        seattypefilter === "sleeper"
                           ? "text-white border-[#1F487C]"
                           : "border-gray-300"
                       } w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
                       onClick={() => {
-                        if (seattypefilter == "sleeper") {
+                        if (seattypefilter === "sleeper") {
                           setSeatTypeFilter("");
                         } else {
                           setSeatTypeFilter("sleeper");
@@ -1202,7 +1276,11 @@ const Sidebar = ({ sidebarToggle, share }) => {
                         {/* <span>
                     <MdAirlineSeatIndividualSuite size={20} className="pl-1" />
                   </span> */}
-                        <img src={sleeper} className="w-[2vw] h-[1vw]" />
+                        <img
+                          src={sleeper}
+                          alt="SleeperImg"
+                          className="w-[2vw] h-[1vw]"
+                        />
                         <span className="font-semibold  text-[1vw]">
                           Sleeper
                         </span>
@@ -1210,9 +1288,11 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     </button>
                     <button
                       className={`${
-                        seattypefilter == "seater" ? "bg-[#1F487C]" : "bg-white"
+                        seattypefilter === "seater"
+                          ? "bg-[#1F487C]"
+                          : "bg-white"
                       } h-full ${
-                        seattypefilter == "seater"
+                        seattypefilter === "seater"
                           ? "text-white border-[#1F487C]"
                           : "border-gray-300 "
                       }w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
@@ -1228,7 +1308,11 @@ const Sidebar = ({ sidebarToggle, share }) => {
                         {/* <span>
                     <MdAirlineSeatReclineExtra size={20} className="pl-1" />
                   </span> */}
-                        <img src={seats} className="w-[1.3vw] h-[1.2vw]" />
+                        <img
+                          src={seats}
+                          alt="SeatImg"
+                          className="w-[1.3vw] h-[1.2vw]"
+                        />
                         <span className="font-semibold text-[1vw]">Seater</span>
                       </div>
                     </button>
@@ -1272,7 +1356,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                 >
                   CLEAR
                 </h3>
-                {boolean.pickup == true ? (
+                {boolean.pickup === true ? (
                   <button
                     onClick={() =>
                       setBoolean({
@@ -1297,7 +1381,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                 )}
               </div>
             </div>
-            {boolean.pickup == true ? (
+            {boolean.pickup === true ? (
               <>
                 <div className="px-[0.6vw] py-[0.4vw]">
                   {/* <input className="border-2 border-gray-300 h-8 rounded-md w-full mb-4" /> */}
@@ -1306,13 +1390,13 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     placeholder="Search"
                     className="mb-[1vw] text-[1vw] h-[2.5vw] "
                     onChange={(e) => {
-                      setHandleSearchValue("Pickup");
-                      Search(e);
+                      setHandleSearchValue("boarding");
+                      Search(e, "boarding");
                     }}
                   />
                   <div>
-                    {handlesearchPickup?.boarding_points?.length > 0 &&
-                      handlesearchPickup?.boarding_points
+                    {handlesearchPickup?.boarding_point?.length > 0 &&
+                      handlesearchPickup?.boarding_point
                         ?.slice(0, 5)
                         .map((item, i) => (
                           <div
@@ -1352,7 +1436,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                             </div>
                           </div>
                         ))}
-                    {handlesearchPickup?.message && (
+                    {handlesearchPickup?.boarding_point?.length <= 0  ?(
                       <div className="flex items-center justify-between mx-[.5vw]">
                         <div className="flex items-center my-[0.25vw]">
                           <span className="text-[1vw]">
@@ -1361,9 +1445,9 @@ const Sidebar = ({ sidebarToggle, share }) => {
                           </span>
                         </div>
                       </div>
-                    )}
+                    ):""}
                     {!handlesearchPickup?.message &&
-                    !handlesearchPickup?.boarding_points &&
+                    !handlesearchPickup?.boarding_point &&
                     pickUp_list?.boarding_points?.length > 0
                       ? pickUp_list.boarding_points
                           ?.slice(0, 5)
@@ -1443,7 +1527,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                   >
                     CLEAR
                   </h3>
-                  {boolean.pickup_time == true ? (
+                  {boolean.pickup_time === true ? (
                     <button
                       onClick={() =>
                         setBoolean({
@@ -1474,11 +1558,11 @@ const Sidebar = ({ sidebarToggle, share }) => {
                 <div className="grid grid-cols-2 pt-[0.5vw]  gap-[0.5vw] mx-[0.5vw] ">
                   <button
                     className={`${
-                      pickuptime == "6am-11am" ? "bg-[#1F487C]" : "bg-white"
+                      pickuptime === "6am-11am" ? "bg-[#1F487C]" : "bg-white"
                     } h-full ${
-                      pickuptime == "6am-11am" ? "text-white " : ""
+                      pickuptime === "6am-11am" ? "text-white " : ""
                     } w-full  ${
-                      pickuptime == "6am-11am"
+                      pickuptime === "6am-11am"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
                     } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
@@ -1489,7 +1573,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     //   })
                     // }
                     onClick={() => {
-                      if (pickuptime == "6am-11am") {
+                      if (pickuptime === "6am-11am") {
                         setPickUpTime("");
                       } else {
                         setPickUpTime("6am-11am");
@@ -1505,11 +1589,11 @@ const Sidebar = ({ sidebarToggle, share }) => {
                   </button>
                   <button
                     className={`${
-                      pickuptime == "11am-6pm" ? "bg-[#1F487C]" : "bg-white"
+                      pickuptime === "11am-6pm" ? "bg-[#1F487C]" : "bg-white"
                     } h-full ${
-                      pickuptime == "11am-6pm" ? "text-white " : ""
+                      pickuptime === "11am-6pm" ? "text-white " : ""
                     } w-full  ${
-                      pickuptime == "11am-6pm"
+                      pickuptime === "11am-6pm"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
                     } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
@@ -1520,7 +1604,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     //   })
                     // }
                     onClick={() => {
-                      if (pickuptime == "11am-6pm") {
+                      if (pickuptime === "11am-6pm") {
                         setPickUpTime("");
                       } else {
                         setPickUpTime("11am-6pm");
@@ -1538,11 +1622,11 @@ const Sidebar = ({ sidebarToggle, share }) => {
                 <div className="grid grid-cols-2 pt-[1vw]  gap-[0.5vw] mx-[0.5vw] mb-[1vw]">
                   <button
                     className={`${
-                      pickuptime == "6pm-11pm" ? "bg-[#1F487C]" : "bg-white"
+                      pickuptime === "6pm-11pm" ? "bg-[#1F487C]" : "bg-white"
                     } h-full ${
-                      pickuptime == "6pm-11pm" ? "text-white " : ""
+                      pickuptime === "6pm-11pm" ? "text-white " : ""
                     } w-full  ${
-                      pickuptime == "6pm-11pm"
+                      pickuptime === "6pm-11pm"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
                     } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
@@ -1553,7 +1637,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     //   })
                     // }
                     onClick={() => {
-                      if (pickuptime == "6pm-11pm") {
+                      if (pickuptime === "6pm-11pm") {
                         setPickUpTime("");
                       } else {
                         setPickUpTime("6pm-11pm");
@@ -1569,11 +1653,11 @@ const Sidebar = ({ sidebarToggle, share }) => {
                   </button>
                   <button
                     className={`${
-                      pickuptime == "11pm-6am" ? "bg-[#1F487C]" : "bg-white"
+                      pickuptime === "11pm-6am" ? "bg-[#1F487C]" : "bg-white"
                     } h-full ${
-                      pickuptime == "11pm-6am" ? "text-white " : ""
+                      pickuptime === "11pm-6am" ? "text-white " : ""
                     } w-full  ${
-                      pickuptime == "11pm-6am"
+                      pickuptime === "11pm-6am"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
                     } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
@@ -1584,7 +1668,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     //   })
                     // }
                     onClick={() => {
-                      if (pickuptime == "11pm-6am") {
+                      if (pickuptime === "11pm-6am") {
                         setPickUpTime("");
                       } else {
                         setPickUpTime("11pm-6am");
@@ -1619,7 +1703,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                 >
                   CLEAR
                 </h3>
-                {boolean.operators == true ? (
+                {boolean.operators === true ? (
                   <button
                     onClick={() =>
                       setBoolean({
@@ -1651,72 +1735,125 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     prefix={<CiSearch size={"1.1vw"} />}
                     placeholder="Search"
                     className="mb-[1vw] text-[1vw] h-[2.5vw] "
-                    onChange={(e) =>
-                      setSearchValue({
-                        ...searchvalue,
-                        operator: e.target.value,
-                      })
-                    }
+                    // onChange={(e) =>
+                    //   setSearchValue({
+                    //     ...searchvalue,
+                    //     operator: e.target.value,
+                    //   })
+                    // }
+                    onChange={(e) => {
+                      setHandleSearchValue("operators");
+                      Search(e, "operators");
+                    }}
                   />
                   <div>
-                    {pickUp_list?.operators?.length > 0
-                      ? pickUp_list.operators.slice(0, 5).map((item, i) => {
-                          console.log(item, "itemitemitem");
-                          return (
-                            <div
-                              className="flex items-center justify-between"
-                              key={i}
-                            >
-                              <div className="flex items-center my-[0.25vw]">
-                                <input
-                                  type="checkbox"
-                                  className="w-[1.2vw] h-[1.2vw] mr-[0.5vw]"
-                                  onChange={(e) =>
-                                    handleoperatorCheckbox(e, item.operator)
-                                  }
-                                  checked={
-                                    operatorchecked[item.operator] || false
-                                  }
-                                />
-                                <span className="pt-[0.2vw] text-[1vw] items-center">
-                                  {item?.operator?.length > 26 ? (
-                                    <Popover
-                                      content={
+                    {handlesearchOperators?.operators?.length > 0 &&
+                      handlesearchOperators?.operators
+                        ?.slice(0, 5)
+                        .map((item, i) => (
+                          <div
+                            className="flex items-center justify-between mx-[.5vw]"
+                            key={i}
+                          >
+                            <div className="flex items-center my-[0.25vw]">
+                              <input
+                                type="checkbox"
+                                className="w-[1.2vw] h-[1.2vw] mr-[0.4vw]"
+                                onChange={(e) => {
+                                  handleoperatorCheckbox(e, item.operator);
+                                }}
+                                checked={
+                                  operatorchecked[item.operator] || false
+                                }
+                              />
+                              <span className="text-[1vw]">
+                                {item?.operator?.length > 26 ? (
+                                  <Popover
+                                    content={
+                                      item.operator?.charAt(0)?.toUpperCase() +
+                                      item.operator?.slice(1)?.toLowerCase()
+                                    }
+                                    trigger="hover"
+                                  >
+                                    <span>
+                                      {item.operator?.charAt(0)?.toUpperCase() +
                                         item.operator
-                                          ?.charAt(0)
-                                          ?.toUpperCase() +
-                                        item.operator?.slice(1)?.toLowerCase()
-                                      }
-                                      trigger="hover"
-                                    >
-                                      <span>
-                                        {item.operator
-                                          ?.charAt(0)
-                                          ?.toUpperCase() +
-                                          item.operator
-                                            ?.slice(1)
-                                            ?.toLowerCase()
-                                            .substring(0, 26) +
-                                          "..."}
-                                      </span>{" "}
-                                    </Popover>
-                                  ) : (
+                                          ?.slice(1)
+                                          ?.toLowerCase()
+                                          ?.substring(0, 26) +
+                                        "..."}
+                                    </span>{" "}
+                                  </Popover>
+                                ) : (
+                                  item.operator?.charAt(0)?.toUpperCase() +
+                                  item.operator?.slice(1)?.toLowerCase()
+                                )}
+                              </span>
+                            </div>
+                            {/* <div>
+                              {console.log(item.count,"counttsdkjfjnskdfn")}
+                              <span className="text-[0.8vw]">{`(${item?.count})`}</span>
+                            </div> */}
+                          </div>
+                        ))}
+                    {handlesearchOperators?.operators?.length <= 0 ? (
+                      <div className="flex items-center justify-between mx-[.5vw]">
+                        <div className="flex items-center my-[0.25vw]">
+                          <span className="text-[1vw]">
+                            {/* {handlesearchDrop?.message} */}
+                            No matching operators found.
+                          </span>
+                        </div>
+                      </div>
+                    ):""}
+                    {!handlesearchOperators?.message &&
+                      !handlesearchOperators?.operators &&
+                      pickUp_list?.operators?.length > 0 &&
+                      pickUp_list.operators?.slice(0, 5).map((item, i) => (
+                        <div
+                          className="flex items-center justify-between"
+                          key={i}
+                        >
+                          <div className="flex items-center my-[0.25vw]">
+                            <input
+                              type="checkbox"
+                              className="w-[1.2vw] h-[1.2vw] mr-[0.6vw]"
+                              onChange={(e) =>
+                                handleoperatorCheckbox(e, item.operator)
+                              }
+                              checked={operatorchecked[item.operator] || false}
+                            />
+                            <span className=" text-[1vw] pt-[0.1vw] items-center">
+                              {item?.operator?.length > 26 ? (
+                                <Popover
+                                  content={
                                     item.operator?.charAt(0)?.toUpperCase() +
                                     item.operator?.slice(1)?.toLowerCase()
-                                  )}
-                                </span>
-                              </div>
-                              {/* Uncomment the below line if you want to display the count */}
-                              {/* <div>
-            <span className="text-[0.8vw]">{`(${item.count})`}</span>
-          </div> */}
-                            </div>
-                          );
-                        })
-                      : ""}
-
+                                  }
+                                  trigger="hover"
+                                >
+                                  <span>
+                                    {item.operator?.charAt(0)?.toUpperCase() +
+                                      item.operator
+                                        ?.slice(1)
+                                        ?.toLowerCase()
+                                        ?.substring(0, 26) +
+                                      "..."}
+                                  </span>{" "}
+                                </Popover>
+                              ) : (
+                                item.operator?.charAt(0)?.toUpperCase() +
+                                item.operator?.slice(1)?.toLowerCase()
+                              )}
+                            </span>
+                          </div>
+                          {/* <div>
+                              <span className="text-[0.8vw]">{`(${item?.count})`}</span>
+                            </div> */}
+                        </div>
+                      ))}
                     <p
-                      className="text-[#1F487C] font-bold text-[0.8vw] pt-[0.5vw] cursor-pointer"
+                      className="text-[#1F487C] font-bold text-[0.8vw] pt-[0.6vw] cursor-pointer"
                       onClick={() => openModal("operators")}
                     >{`SHOW ALL (${pickUp_list?.operators?.length})`}</p>
                   </div>
@@ -1745,7 +1882,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                 >
                   CLEAR
                 </h3>
-                {boolean.drop == true ? (
+                {boolean.drop === true ? (
                   <button
                     onClick={() =>
                       setBoolean({
@@ -1770,7 +1907,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                 )}
               </div>
             </div>
-            {boolean.drop == true && (
+            {boolean.drop === true && (
               <>
                 <div className="px-[0.6vw] pb-[0.6vw]">
                   {/* <input className="border-2 border-gray-300 h-8 rounded-md w-full mb-4" /> */}
@@ -1779,13 +1916,13 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     placeholder="Search"
                     className="mb-[1vw] text-[1vw] h-[2.5vw] "
                     onChange={(e) => {
-                      setHandleSearchValue("Drop");
-                      Search(e);
+                      setHandleSearchValue("dropping");
+                      Search(e, "dropping");
                     }}
                   />
                   <div>
-                    {handlesearchDrop?.dropping_points?.length > 0 &&
-                      handlesearchDrop?.dropping_points
+                    {handlesearchDrop?.dropping_point?.length > 0 &&
+                      handlesearchDrop?.dropping_point
                         ?.slice(0, 5)
                         .map((item, i) => (
                           <div
@@ -1831,7 +1968,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                             </div>
                           </div>
                         ))}
-                    {handlesearchDrop?.message && (
+                    {handlesearchDrop?.dropping_point?.length <= 0 ? (
                       <div className="flex items-center justify-between mx-[.5vw]">
                         <div className="flex items-center my-[0.25vw]">
                           <span className="text-[1vw]">
@@ -1840,10 +1977,10 @@ const Sidebar = ({ sidebarToggle, share }) => {
                           </span>
                         </div>
                       </div>
-                    )}
+                    ) :""}
 
                     {!handlesearchDrop?.message &&
-                      !handlesearchDrop?.dropping_points &&
+                      !handlesearchDrop?.dropping_point &&
                       pickUp_list?.dropping_points?.length > 0 &&
                       pickUp_list.dropping_points
                         ?.slice(0, 5)
@@ -1920,7 +2057,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                   >
                     CLEAR
                   </h3>
-                  {boolean.drop_time == true ? (
+                  {boolean.drop_time === true ? (
                     <button
                       onClick={() =>
                         setBoolean({
@@ -1951,11 +2088,11 @@ const Sidebar = ({ sidebarToggle, share }) => {
                 <div className="grid grid-cols-2 pt-[0.5vw]  gap-[0.5vw] mx-[0.5vw] ">
                   <button
                     className={`${
-                      droptime == "6am-11am" ? "bg-[#1F487C]" : "bg-white"
+                      droptime === "6am-11am" ? "bg-[#1F487C]" : "bg-white"
                     } h-full ${
-                      droptime == "6am-11am" ? "text-white " : ""
+                      droptime === "6am-11am" ? "text-white " : ""
                     } w-full  ${
-                      droptime == "6am-11am"
+                      droptime === "6am-11am"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
                     } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
@@ -1966,7 +2103,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     //   })
                     // }
                     onClick={() => {
-                      if (droptime == "6am-11am") {
+                      if (droptime === "6am-11am") {
                         setDropTime("");
                       } else {
                         setDropTime("6am-11am");
@@ -1982,11 +2119,11 @@ const Sidebar = ({ sidebarToggle, share }) => {
                   </button>
                   <button
                     className={`${
-                      droptime == "11am-6pm" ? "bg-[#1F487C]" : "bg-white"
+                      droptime === "11am-6pm" ? "bg-[#1F487C]" : "bg-white"
                     } h-full ${
-                      droptime == "11am-6pm" ? "text-white " : ""
+                      droptime === "11am-6pm" ? "text-white " : ""
                     } w-full  ${
-                      droptime == "11am-6pm"
+                      droptime === "11am-6pm"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
                     } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
@@ -1997,7 +2134,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     //   })
                     // }
                     onClick={() => {
-                      if (droptime == "11am-6pm") {
+                      if (droptime === "11am-6pm") {
                         setDropTime("");
                       } else {
                         setDropTime("11am-6pm");
@@ -2015,11 +2152,11 @@ const Sidebar = ({ sidebarToggle, share }) => {
                 <div className="grid grid-cols-2 pt-[1vw]  gap-[0.5vw] mx-[0.5vw] mb-[1vw]">
                   <button
                     className={`${
-                      droptime == "6pm-11pm" ? "bg-[#1F487C]" : "bg-white"
+                      droptime === "6pm-11pm" ? "bg-[#1F487C]" : "bg-white"
                     } h-full ${
-                      droptime == "6pm-11pm" ? "text-white " : ""
+                      droptime === "6pm-11pm" ? "text-white " : ""
                     } w-full  ${
-                      droptime == "6pm-11pm"
+                      droptime === "6pm-11pm"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
                     } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
@@ -2030,7 +2167,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     //   })
                     // }
                     onClick={() => {
-                      if (droptime == "6pm-11pm") {
+                      if (droptime === "6pm-11pm") {
                         setDropTime("");
                       } else {
                         setDropTime("6pm-11pm");
@@ -2046,11 +2183,11 @@ const Sidebar = ({ sidebarToggle, share }) => {
                   </button>
                   <button
                     className={`${
-                      droptime == "11pm-6am" ? "bg-[#1F487C]" : "bg-white"
+                      droptime === "11pm-6am" ? "bg-[#1F487C]" : "bg-white"
                     } h-full ${
-                      droptime == "11pm-6am" ? "text-white " : ""
+                      droptime === "11pm-6am" ? "text-white " : ""
                     } w-full  ${
-                      droptime == "11pm-6am"
+                      droptime === "11pm-6am"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
                     } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
@@ -2061,7 +2198,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     //   })
                     // }
                     onClick={() => {
-                      if (droptime == "11pm-6am") {
+                      if (droptime === "11pm-6am") {
                         setDropTime("");
                       } else {
                         setDropTime("11pm-6am");
@@ -2094,7 +2231,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                 >
                   CLEAR
                 </h3>
-                {boolean.amenities == true ? (
+                {boolean.amenities === true ? (
                   <button
                     onClick={() =>
                       setBoolean({
@@ -2127,8 +2264,8 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     placeholder="Search"
                     className="mb-[1vw] text-[1vw] h-[2.5vw] "
                     onChange={(e) => {
-                      setHandleSearchValue("Amenities");
-                      Search(e);
+                      setHandleSearchValue("amenities");
+                      Search(e, "amenities");
                     }}
                   />
                   <div>
@@ -2179,7 +2316,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                             </div>
                           </div>
                         ))}
-                    {handlesearchAmenities?.message && (
+                    {handlesearchAmenities?.amenities?.length <= 0 ?(
                       <div className="flex items-center justify-between mx-[.5vw]">
                         <div className="flex items-center my-[0.25vw]">
                           <span className="text-[1vw]">
@@ -2188,7 +2325,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                           </span>
                         </div>
                       </div>
-                    )}
+                    ): ""}
                     {!handlesearchAmenities?.message &&
                       !handlesearchAmenities?.amenities &&
                       pickUp_list?.amenities?.length > 0 &&
@@ -2260,7 +2397,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                 >
                   CLEAR
                 </h3>
-                {boolean.ratings == true ? (
+                {boolean.ratings === true ? (
                   <button
                     onClick={() =>
                       setBoolean({
@@ -2490,7 +2627,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
             </div>
             <div className="h-[20vw] w-full grid grid-flow-col grid-rows-10  pb-[1vw] overflow-x-auto overflow-y-hidden">
               {console.log(sortedList, "listisjfkjdsjfkjdsnf")}
-              {sortedList.map((item, i) => (
+              {sortedList?.map((item, i) => (
                 // <p key={item.place} className="whitespace-nowrap pr-[5vw] ">
                 //   {item.place}
                 // </p>
@@ -2531,7 +2668,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                         : item.name?.charAt(0)?.toUpperCase() +
                           item.name?.slice(1)?.toLowerCase()}
                       <span className="pl-[1vw]">
-                        {modalname != "operators" && `(${item.count})`}
+                        {modalname !== "operators" && `(${item.count})`}
                       </span>
                     </span>
                   </div>

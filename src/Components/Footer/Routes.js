@@ -68,8 +68,8 @@ const Routes = () => {
     { id: 26, name: "Kanyakumari" },
   ];
 
-  const [selectedIndex, setSelectedIndex] = useState(null);
-  const [selectedLetter, setSelectedLetter] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedLetter, setSelectedLetter] = useState("A");
   // const [startIndex, setStartIndex] = useState(0);
 
   const handleNextClick = () => {
@@ -81,6 +81,7 @@ const Routes = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  console.log(selectedLetter, "selectedLetter");
   return (
     <>
       <div className="">
@@ -198,7 +199,7 @@ const Routes = () => {
                     text-[1.2vw] text-[#1F487C] pt-[1vw] h-[2vw] w-[2vw] ml-[0.2vw] cursor-pointer
                    ${
                      selectedIndex === index
-                       ? "text-white h-[2vw] w-[2vw] bg-[#1F487C] rounded-md ml-[0.2vw] mt-[1vw] pt-0 flex"
+                       ? "text-white h-[2vw] w-[2vw] bg-[#1F487C] rounded-md ml-[0.2vw] mt-[1vw] pt-[0vw] pt-0 flex"
                        : ""
                    }
                  `}

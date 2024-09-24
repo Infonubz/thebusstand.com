@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import Verification from "../../assets/Verified.gif";
+//import Verification from "../../assets/Verified.gif";
 import {
   GetUserDetails,
   SendOTPassword,
   SendVerificationOTP,
 } from "../../Api/Login/Login";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 
@@ -19,11 +19,11 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
       .required("OTP is required"),
   });
 
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupMessage, setPopupMessage] = useState("");
+  //const [showPopup, setShowPopup] = useState(false);
+ // const [popupMessage, setPopupMessage] = useState("");
   const dispatch = useDispatch();
 
-  const Email_Id = useSelector((state) => state.send_otp);
+  //const Email_Id = useSelector((state) => state.send_otp);
   const navigation = useNavigate();
   const handleOtpSubmit = async (values, { setErrors }) => {
     console.log("response85858");
@@ -48,7 +48,7 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
       sessionStorage.setItem("passenger_id", response.user.tbs_passenger_id);
       sessionStorage.setItem("user_id", response.user.tbs_passenger_id);
       toast.success(response.message);
-      if (response.user.status == 2) {
+      if (response.user.status === 2) {
         setLoginIsOpen(false);
         GetUserDetails(navigation);
       } else {
@@ -86,9 +86,11 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
   const handleresend = async () => {
     try {
       const response = await SendVerificationOTP(dispatch, email);
+      console.log(response, "response")
       setTimeLeft(120);
     } catch {}
   };
+
   return (
     <>
       <div className="md:block hidden mt-[1vw]">
@@ -181,12 +183,12 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
                   <div className="flex items-center gap-[1vw]">
                     <button
                       onClick={() => handleresend()}
-                      disabled={timeLeft == 0 ? false : true}
+                      disabled={timeLeft === 0 ? false : true}
                       className={`text-[#1F487C] ${
-                        timeLeft == 0 ? "cursor-pointer" : " cursor-not-allowed"
+                        timeLeft === 0 ? "cursor-pointer" : " cursor-not-allowed"
                       } w-[13vw] font-bold h-[2.5vw] border-[0.1vw] rounded-[0.5vw] border-[#1F487C]  text-[1.2vw] bg-white`}
                     >
-                      {timeLeft == 0 ? "Resend OTP" : formatTime(timeLeft)}
+                      {timeLeft === 0 ? "Resend OTP" : formatTime(timeLeft)}
                     </button>
                     <button
                       type="submit"
@@ -212,7 +214,7 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
           </div> */}
         </div>
 
-        {showPopup && (
+        {/* {showPopup && (
           <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-4 flex flex-col items-center rounded">
               <div>
@@ -225,7 +227,7 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
               <p className="text-[#1F487C] text-[1.2vw]">{popupMessage}</p>
             </div>
           </div>
-        )}
+        )} */}
       </div>
       {/* ---MobileView--- */}
       <div className="md:hidden block ">
@@ -323,7 +325,7 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
           </div> */}
         </div>
 
-        {showPopup && (
+        {/* {showPopup && (
           <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-4 flex flex-col items-center rounded">
               <div>
@@ -336,7 +338,7 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
               <p className="text-[#1F487C] text-[4vw]">{popupMessage}</p>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </>
   );

@@ -67,11 +67,11 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
     dispatch({
       type: REARRANGE_ORDER,
       payload: {
-        price: sorting == "price" ? "TRUE" : "FALSE",
-        seats: sorting == "seats" ? "TRUE" : "FALSE",
-        rating: sorting == "ratings" ? "TRUE" : "FALSE",
-        arrival: sorting == "arrivalSort" ? "TRUE" : "FALSE",
-        depature: sorting == "departureSort" ? "TRUE" : "FALSE",
+        price: sorting === "price" ? "TRUE" : "FALSE",
+        seats: sorting === "seats" ? "TRUE" : "FALSE",
+        rating: sorting === "ratings" ? "TRUE" : "FALSE",
+        arrival: sorting === "arrivalSort" ? "TRUE" : "FALSE",
+        depature: sorting === "departureSort" ? "TRUE" : "FALSE",
       },
     });
   }, [sorting, dispatch]);

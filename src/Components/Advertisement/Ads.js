@@ -5,12 +5,12 @@ import { GetAds } from "../../Api/Home/Home";
 
 export default function Advertisement() {
   const getlist = useSelector((state) => state.ads_list);
-  const [ads, setAds] = useState([
-    localStorage.getItem("hy1"),
-    localStorage.getItem("hy2"),
-    localStorage.getItem("hy3"),
-    localStorage.getItem("hy4"),
-  ]);
+  // const [ads, setAds] = useState([
+  //   localStorage.getItem("hy1"),
+  //   localStorage.getItem("hy2"),
+  //   localStorage.getItem("hy3"),
+  //   localStorage.getItem("hy4"),
+  // ]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -46,8 +46,8 @@ export default function Advertisement() {
 
   useEffect(() => {
     GetAds(dispatch);
-    setAds(getlist);
-  }, []);
+    //setAds(getlist);
+  }, [dispatch]);
 
   return (
     <div className="slide-container 

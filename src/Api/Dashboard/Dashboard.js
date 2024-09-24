@@ -337,12 +337,32 @@ export const sendBookingPrice = async (
   }
 };
 
-export const handleSearch = async (e, dispatch) => {
+export const handleSearch = async (dispatch ,e ,searchField) => {
+
+  console.log(searchField,"log11111searchhh222222");
+
+  // try{
+  //   const response = await axios.post(`${apiUrl}/search-board-drop`,{
+  //   source_name: localStorage.getItem("departure"),
+  //   destination_name: localStorage.getItem("arrival"),
+  //   departure_date_time:  localStorage.getItem("selectdate")  ,
+  //   type:searchField,
+  //   search_term: e.target.value 
+  //   })
+  //   dispatch({ type: DROP_POINT_LIST, payload: response });
+  //   return response;
+  // }
+  //   catch (error) {
+  //   handleError(error);
+  //   return null;
+  // }
+
   const payload = {
     source_name: localStorage.getItem("departure"),
     destination_name: localStorage.getItem("arrival"),
     departure_date_time:  localStorage.getItem("selectdate")  ,
-    search_term: e.target.value
+    type:searchField,
+    searchTerm: e.target.value
   };
 
   console.log(payload, "payload payload");

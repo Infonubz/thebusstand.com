@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import Footer from "../Home/Footer";
+import React, { useEffect } from "react";
+//import Footer from "../Home/Footer";
 import HomeHearder from "../MainComponenet/HomeHearder";
 import homesky from "../../assets/homesky.png";
 import Footer1 from "./Footer";

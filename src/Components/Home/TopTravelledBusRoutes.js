@@ -7,14 +7,17 @@ export default function TopTravelledBusRoutes() {
   const dispatch = useDispatch();
   useEffect(() => {
     GetTopBusRoutes(dispatch);
-  }, []);
+  }, [dispatch]);
+
   const getroutes = useSelector((state) => state.top_route_list);
+
   console.log(getroutes, "getroutesgetroutes");
-  const sanitizePath = (path) => {
-    const sanitizedPath = path.replace(/\\\\/g, "file://").replace(/\\/g, "//");
-    console.log(encodeURI(sanitizedPath), "techimage");
-    return encodeURI(sanitizedPath);
-  };
+
+  // const sanitizePath = (path) => {
+  //   const sanitizedPath = path.replace(/\\\\/g, "file://").replace(/\\/g, "//");
+  //   console.log(encodeURI(sanitizedPath), "techimage");
+  //   return encodeURI(sanitizedPath);
+  // };
 
   return (
     <>
@@ -85,6 +88,7 @@ export default function TopTravelledBusRoutes() {
                     <img
                       src={`http://192.168.90.47:4001${item.image}`}
                       className="h-full w-full px-[2vw] pt-[2vw] rounded-lg"
+                      alt={item.from}
                       style={{
                         borderRadius: "1.5vw",
                       }}
