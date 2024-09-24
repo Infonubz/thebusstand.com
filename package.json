@@ -19,7 +19,6 @@
     "analogue-time-picker": "^1.0.2",
     "antd": "^5.18.0",
     "axios": "^1.6.8",
-    "cheerio": "^1.0.0-rc.12",
     "country-state-city": "^3.2.1",
     "cross-env": "^7.0.3",
     "dayjs": "^1.11.11",
@@ -78,6 +77,9 @@
     },
     "transformIgnorePatterns": [
       "/node_modules/(?!axios)/"
+    ],
+    "setupFiles": [
+      "<rootDir>/src/setupTests.js"
     ]
   },
   "eslintConfig": {
