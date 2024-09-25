@@ -1458,6 +1458,8 @@ export default function BusSeatsLayout({
             : "bg-[#EEEDED]"
         }  border-x-[0.1vw] border-b-[0.1vw] rounded-b-[0.5vw]`}
       >
+        {getseats?.length>0?
+        <>
         <div className="h-[4vw] w-full   ">
           <div className="grid grid-cols-4 w-full h-full pt-[1vw] px-[1vw]  items-center">
             <div className="col-span-3 pl-[4vw]">
@@ -1554,7 +1556,7 @@ export default function BusSeatsLayout({
               </div>
             </div>
           </div>
-        </div>{" "}
+        </div>
         <div
           className={`${
             busdetails.bus_type_status === "luxury"
@@ -2303,6 +2305,8 @@ export default function BusSeatsLayout({
             </div>
           </div>
         </div>
+        </>:
+        <div></div>}
       </div>
     </div>
   );
