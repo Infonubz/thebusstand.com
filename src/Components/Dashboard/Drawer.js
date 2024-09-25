@@ -74,6 +74,7 @@ function DrawerDetails({
   setShowModal,
   busdetails,
   seatplatform,
+  seatDetails,
   // type,
   // busprice,
   selectedSeats,
@@ -165,7 +166,6 @@ function DrawerDetails({
   //   sex: localStorage.getItem("sex") || "male",
   // });
 
-  
   const storedEmail = sessionStorage.getItem("user_email_id");
   const storedMobile = sessionStorage.getItem("user_mobile");
   const [emailInput, setEmailInput] = useState(storedEmail || "");
@@ -195,13 +195,38 @@ function DrawerDetails({
 
   useEffect(() => {
     setTravelerDetails(
-      selectedSeats.map((seat, index) => ({
-        name: "",
-        age: "",
-        gender: "male", // Default to male
-      }))
+      selectedSeats.map((seat, index) => {
+        // Find the seat status from setSeatDetails using the seat number
+        const seatStatus = seatDetails[seat]?.Status;
+
+        // Determine gender based on the seatStatus
+        let gender = "male"; // Default to male
+        if (seatStatus === "AFF") {
+          gender = "female";
+        } else if (seatStatus === "AFM" || seatStatus === "AFA") {
+          gender = "male";
+        }
+
+        // Return traveler details object with the determined gender
+        return {
+          user_name: "",
+          age: "",
+          gender: gender, // Set gender based on seat status
+          seat: "",
+        };
+      })
     );
-  }, [selectedSeats]);
+  }, [selectedSeats, seatDetails]);
+
+  // useEffect(() => {
+  //   setTravelerDetails(
+  //     selectedSeats.map((seat, index) => ({
+  //       name: "",
+  //       age: "",
+  //       gender: "male", // Default to male
+  //     }))
+  //   );
+  // }, [selectedSeats]);
 
   useEffect(() => {
     GetPassengerData(dispatch);
@@ -244,7 +269,6 @@ function DrawerDetails({
       }));
     }
   }, []);
-  
 
   const [travelerDetails, setTravelerDetails] = useState(
     selectedSeats.reduce((acc, seat, index) => {
@@ -253,14 +277,59 @@ function DrawerDetails({
     }, {})
   );
 
+  // const handleDropdownChange = (e, index, setFieldValue) => {
+  //   const selectedPassengerId = e.target.value;
+  //   const selectedPassenger = passengerdatalist.find(
+  //     (passenger) => passenger.tbs_add_pax_id === selectedPassengerId
+  //   );
+
+  //   if (selectedPassenger) {
+  //     // Update travelerDetails state
+  //     setTravelerDetails((prevDetails) => ({
+  //       ...prevDetails,
+  //       [index]: {
+  //         user_name: selectedPassenger.user_name,
+  //         age: selectedPassenger.age,
+  //         gender: selectedPassenger.gender,
+  //         seat: selectedSeats[index],
+  //       },
+  //     }));
+
+  //     // update Formik's values
+  //     setFieldValue(`user_name_${index}`, selectedPassenger.user_name);
+  //     setFieldValue(`age_${index}`, selectedPassenger.age);
+  //     setFieldValue(`gender_${index}`, selectedPassenger.gender);
+  //     setPassengerId(selectedPassengerId);
+
+  //     console.log("Updated travelerDetails", {
+  //       user_name: selectedPassenger.user_name,
+  //       age: selectedPassenger.age,
+  //       gender: selectedPassenger.gender,
+  //       seat: selectedSeats[index],
+  //     });
+  //   }
+  // };
+
   const handleDropdownChange = (e, index, setFieldValue) => {
     const selectedPassengerId = e.target.value;
     const selectedPassenger = passengerdatalist.find(
       (passenger) => passenger.tbs_add_pax_id === selectedPassengerId
     );
-
+  
+    const seatStatus = seatDetails[selectedSeats[index]]?.Status;
+  
     if (selectedPassenger) {
-      // Update travelerDetails state
+      // Check gender match based on seat status
+      if (
+        (seatStatus === "AFF" && selectedPassenger.gender !== "female") ||
+        (seatStatus === "AFM" && selectedPassenger.gender !== "male") ||
+        (seatStatus === "AFA" && !["male", "female"].includes(selectedPassenger.gender))
+      ) {
+        toast.error("Selected passenger does not match.");
+        return; // Prevent selection if gender doesn't match seat status
+      }
+  
+      // Update travelerDetails state if gender matches seat status
       setTravelerDetails((prevDetails) => ({
         ...prevDetails,
         [index]: {
@@ -270,13 +339,13 @@ function DrawerDetails({
           seat: selectedSeats[index],
         },
       }));
-
+  
       // update Formik's values
       setFieldValue(`user_name_${index}`, selectedPassenger.user_name);
       setFieldValue(`age_${index}`, selectedPassenger.age);
       setFieldValue(`gender_${index}`, selectedPassenger.gender);
       setPassengerId(selectedPassengerId);
-
+  
       console.log("Updated travelerDetails", {
         user_name: selectedPassenger.user_name,
         age: selectedPassenger.age,
@@ -285,7 +354,7 @@ function DrawerDetails({
       });
     }
   };
-
+  
   const handlePromoCode = async () => {
     console.log(promoCode, "Promocode Submit");
   };
@@ -294,7 +363,13 @@ function DrawerDetails({
     const totalAmount = `${
       Number(discount) + Number(Math.round(discount * 0.03))
     }`;
-    console.log(totalAmount, bookingId, selectedSeats, busdetails);
+    console.log(
+      totalAmount,
+      bookingId,
+      selectedSeats,
+      busdetails,
+      "busdetails"
+    );
     setTimeout(() => {
       // setShowModal(false);
       setRatingModal(true);
@@ -322,8 +397,6 @@ function DrawerDetails({
   //     handleBookingPrice();
   //   }
   // }, [proceed]);
-
-
 
   useEffect(() => {
     const handleTicketDetail = async () => {
@@ -374,7 +447,6 @@ function DrawerDetails({
 
   console.log(travelerDetails, "selectedSeats12");
   useEffect(() => {
-
     const fetchGetPassenger = async () => {
       console.log(passengerId, "passengerId");
       const updateData = passengerId;
@@ -418,7 +490,7 @@ function DrawerDetails({
     setRatingModal(false);
   };
 
-  console.log(Passengerdata, "Passengerdata")
+  console.log(Passengerdata, "Passengerdata");
 
   // const handleRatings = () => {
   //   setRatingModal(true);
@@ -486,10 +558,11 @@ function DrawerDetails({
                               : colorcode.theme,
                         }}
                       >
-                        <img 
-                        src={complete}
-                        alt="complete" 
-                        className="h-[2.5vw] w-[2.5vw]" />
+                        <img
+                          src={complete}
+                          alt="complete"
+                          className="h-[2.5vw] w-[2.5vw]"
+                        />
                         <div className="h-[2vw]">
                           <h1
                             className="text-[1.5vw] text-white font-semibold "
@@ -879,11 +952,11 @@ function DrawerDetails({
                         }}
                       >
                         {termschecked ? (
-                          <img 
-                          src={complete}
-                          alt="completeImage"
-                           className="h-[2.5vw] w-[2.5vw]"
-                            />
+                          <img
+                            src={complete}
+                            alt="completeImage"
+                            className="h-[2.5vw] w-[2.5vw]"
+                          />
                         ) : (
                           ""
                         )}
@@ -971,7 +1044,7 @@ function DrawerDetails({
                                           // );
                                         }}
                                         className={`${
-                                          !isSubmitting 
+                                          !isSubmitting || !enableInput
                                             ? `cursor-pointer`
                                             : "cursor-not-allowed"
                                         } border-r-[0.5vw] border-[.1vw] text-[1.2vw] h-[3vw] w-[21vw] rounded-[0.5vw] outline-none px-[1vw]`}
@@ -1044,7 +1117,7 @@ function DrawerDetails({
                                           // );
                                         }}
                                         className={`${
-                                          !isSubmitting
+                                          !isSubmitting || !enableInput
                                             ? `cursor-pointer`
                                             : "cursor-not-allowed"
                                         } border-r-[0.5vw] border-black border-[0.1vw] text-[1.2vw] h-[3vw] w-[75%] rounded-r-[0.5vw] outline-none px-[1vw]`}
@@ -1087,291 +1160,353 @@ function DrawerDetails({
                                     </div>
                                   </div>
                                 </div>
-                                {selectedSeats?.length > 0 &&
-                                  selectedSeats.map((seat, index) => (
-                                    <div
-                                      key={index}
-                                      className="flex flex-row gap-[1vw] mb-[1vw] items-center"
-                                    >
-                                      {/* Seat Number */}
-                                      <div className="flex-1">
-                                        <p className="text-[1.1vw] font-semibold">
-                                          Seat No: {seat}
-                                        </p>
-                                      </div>
+                                {Object.entries(seatDetails).length > 0 &&
+                                  Object.entries(seatDetails).map(
+                                    ([seatNumber, seatDetail], index) => (
+                                      <div
+                                        key={index}
+                                        className="flex flex-row gap-[1vw] mb-[1vw] items-center"
+                                      >
+                                        {/* Seat Number */}
+                                        <div className="flex-1">
+                                          <p className="text-[1.1vw] font-semibold">
+                                            Seat No: {seatDetail.Seat}
+                                          </p>
+                                        </div>
 
-                                      {/* Operator Name */}
-                                      <div className="flex-1 relative">
-                                        <Field
-                                          type="text"
-                                          disabled={enableInput}
-                                          // name={`user_name_${index}`}
-                                          name
-                                          placeholder="User Name"
-                                          value={
-                                            travelerDetails[index]?.user_name ||
-                                            values[`user_name_${index}`] ||
-                                            ""
-                                          }
-                                          onChange={(e) => {
-                                            handleChange(e);
-                                            setFieldValue(
-                                              `user_name_${index}`,
-                                              e.target.value
-                                            );
-                                            setTravelerDetails(
-                                              (prevDetails) => ({
-                                                ...prevDetails,
-                                                [index]: {
-                                                  ...prevDetails[index],
-                                                  user_name: e.target.value,
-                                                  seat,
-                                                },
-                                              })
-                                            );
-                                          }}
-                                          className={`${
-                                            !isSubmitting || !enableInput
-                                              ? `cursor-pointer`
-                                              : "cursor-not-allowed"
-                                          }  border-r-[0.5vw] border-[.1vw] text-[1.2vw] h-[3vw] w-[15vw] rounded-[0.5vw] outline-none px-[1vw]`}
-                                          style={{
-                                            borderColor:
-                                              busdetails.bus_type_status ===
-                                              "luxury"
-                                                ? "#393939"
-                                                : colorcode.theme,
-                                          }}
-                                        />
-                                        <ErrorMessage
-                                          name={`user_name_${index}`}
-                                          component="div"
-                                          className="text-red-500 text-[0.8vw] absolute top-[3vw] left-[1vw]"
-                                        />
-                                      </div>
-
-                                      {/* Age */}
-                                      <div className="flex-1 relative">
-                                        <Field
-                                          type="text"
-                                          disabled={enableInput}
-                                          name={`age_${index}`}
-                                          placeholder="Age"
-                                          maxLength={2}
-                                          value={
-                                            travelerDetails[index]?.age ||
-                                            values[`age_${index}`] ||
-                                            ""
-                                          }
-                                          onChange={(e) => {
-                                            handleChange(e);
-                                            setFieldValue(
-                                              `age_${index}`,
-                                              e.target.value
-                                            );
-                                            setTravelerDetails(
-                                              (prevDetails) => ({
-                                                ...prevDetails,
-                                                [index]: {
-                                                  ...prevDetails[index],
-                                                  age: e.target.value,
-                                                  seat,
-                                                },
-                                              })
-                                            );
-                                          }}
-                                          className={`${
-                                            !isSubmitting || !enableInput
-                                              ? `cursor-pointer`
-                                              : "cursor-not-allowed"
-                                          } border-r-[0.5vw] border-[.1vw] border-black text-[1.2vw] h-[3vw] w-[6vw] rounded-[0.5vw] outline-none px-[1vw]`}
-                                          style={{
-                                            borderColor:
-                                              busdetails.bus_type_status ===
-                                              "luxury"
-                                                ? "#393939"
-                                                : colorcode.theme,
-                                          }}
-                                        />
-                                        <ErrorMessage
-                                          name={`age_${index}`}
-                                          component="div"
-                                          className="text-red-500 text-[0.8vw] absolute top-[3vw] left-[1vw]"
-                                        />
-                                      </div>
-
-                                      {/* Gender Toggle Buttons */}
-                                      <div className="flex-2">
-                                        <button
-                                          disabled={enableInput}
-                                          type="button"
-                                          name="gender"
-                                          style={{
-                                            background:
-                                              travelerDetails[index]?.gender ===
-                                                "male" ||
-                                              !travelerDetails[index]
-                                                ? busdetails.bus_type_status ===
-                                                  "luxury"
-                                                  ? "#393939"
-                                                  : busdetails.bus_type_status ===
-                                                    "regular"
-                                                  ? colorcode.theme
-                                                  : ""
-                                                : "#ffffff",
-                                            color:
-                                              travelerDetails[index]?.gender !==
-                                                "male" && travelerDetails[index]
-                                                ? busdetails.bus_type_status ===
-                                                  "luxury"
-                                                  ? "#393939"
-                                                  : busdetails.bus_type_status ===
-                                                    "regular"
-                                                  ? colorcode.theme
-                                                  : ""
-                                                : "",
-                                            borderColor:
-                                              travelerDetails[index]?.gender ===
-                                                "male" ||
-                                              !travelerDetails[index]
-                                                ? busdetails.bus_type_status ===
-                                                  "luxury"
-                                                  ? "#393939"
-                                                  : busdetails.bus_type_status ===
-                                                    "regular"
-                                                  ? colorcode.theme
-                                                  : ""
-                                                : "",
-                                          }}
-                                          className={`${
-                                            !isSubmitting || !enableInput
-                                              ? "cursor-pointer"
-                                              : "cursor-not-allowed"
-                                          } 
-                                          h-[3vw] w-[4vw] rounded-l-[0.5vw] text-[1vw] border-[0.1vw] text-white border-[#1F487C]`}
-                                          onClick={() =>
-                                            setTravelerDetails(
-                                              (prevDetails) => ({
-                                                ...prevDetails,
-                                                [index]: {
-                                                  ...prevDetails[index],
-                                                  gender: "male",
-                                                  seat,
-                                                },
-                                              })
-                                            )
-                                          }
-                                        >
-                                          Male
-                                        </button>
-                                        <button
-                                          disabled={enableInput}
-                                          type="button"
-                                          name={`gender_${index}`}
-                                          style={{
-                                            background:
-                                              travelerDetails[index]?.gender ===
-                                                "female" ||
-                                              !travelerDetails[index]
-                                                ? busdetails.bus_type_status ===
-                                                  "luxury"
-                                                  ? "#393939"
-                                                  : busdetails.bus_type_status ===
-                                                    "regular"
-                                                  ? colorcode.theme
-                                                  : "#ffffff"
-                                                : "#ffffff",
-                                            color:
-                                              travelerDetails[index]?.gender !==
-                                                "female" &&
+                                        {/* Operator Name */}
+                                        <div className="flex-1 relative">
+                                          <Field
+                                            type="text"
+                                            disabled={enableInput}
+                                            name={`user_name_${index}`}
+                                            placeholder="User Name"
+                                            value={
                                               travelerDetails[index]
-                                                ? busdetails.bus_type_status ===
-                                                  "luxury"
+                                                ?.user_name ||
+                                              values[`user_name_${index}`] ||
+                                              ""
+                                            }
+                                            onChange={(e) => {
+                                              handleChange(e);
+                                              setFieldValue(
+                                                `user_name_${index}`,
+                                                e.target.value
+                                              );
+                                              setTravelerDetails(
+                                                (prevDetails) => ({
+                                                  ...prevDetails,
+                                                  [index]: {
+                                                    ...prevDetails[index],
+                                                    user_name: e.target.value,
+                                                    seat: seatDetail.Seat,
+                                                  },
+                                                })
+                                              );
+                                            }}
+                                            className={`${
+                                              !isSubmitting || !enableInput
+                                                ? `cursor-pointer`
+                                                : "cursor-not-allowed"
+                                            }  border-r-[0.5vw] border-[.1vw] text-[1.2vw] h-[3vw] w-[15vw] rounded-[0.5vw] outline-none px-[1vw]`}
+                                            style={{
+                                              borderColor:
+                                                busdetails.bus_type_status ===
+                                                "luxury"
                                                   ? "#393939"
-                                                  : busdetails.bus_type_status ===
-                                                    "regular"
-                                                  ? colorcode.theme
-                                                  : ""
-                                                : "",
-                                            borderColor:
-                                              travelerDetails[index]?.gender ===
-                                                "female" ||
-                                              !travelerDetails[index]
-                                                ? busdetails.bus_type_status ===
-                                                  "luxury"
-                                                  ? "#393939"
-                                                  : busdetails.bus_type_status ===
-                                                    "regular"
-                                                  ? colorcode.theme
-                                                  : ""
-                                                : "",
-                                          }}
-                                          className={`${
-                                            !isSubmitting || !enableInput
-                                              ? "cursor-pointer"
-                                              : "cursor-not-allowed"
-                                          } text-white h-[3vw] w-[4vw] rounded-r-[0.5vw] border-[0.1vw] text-[1vw] border-[#1F487C]`}
-                                          onClick={() =>
-                                            setTravelerDetails(
-                                              (prevDetails) => ({
-                                                ...prevDetails,
-                                                [index]: {
-                                                  ...prevDetails[index],
-                                                  gender: "female",
-                                                  seat,
-                                                },
-                                              })
-                                            )
-                                          }
-                                        >
-                                          Female
-                                        </button>
-                                      </div>
+                                                  : colorcode.theme,
+                                            }}
+                                          />
+                                          <ErrorMessage
+                                            name={`user_name_${index}`}
+                                            component="div"
+                                            className="text-red-500 text-[0.8vw] absolute top-[3vw] left-[1vw]"
+                                          />
+                                        </div>
 
-                                      {/* Dropdown Input */}
-                                      <div className="flex-3">
-                                        <Field
-                                          disabled={enableInput}
-                                          as="select"
-                                          className={`${
-                                            !isSubmitting || !enableInput
-                                              ? `cursor-pointer`
-                                              : "cursor-not-allowed"
-                                          } border-r-[0.5vw] border-[.1vw] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw]`}
-                                          style={{
-                                            borderColor:
-                                              busdetails.bus_type_status ===
-                                              "luxury"
-                                                ? "#393939"
-                                                : colorcode.theme,
-                                          }}
-                                          name={`dropdown_${index}`}
-                                          onChange={(e) =>
-                                            handleDropdownChange(
-                                              e,
-                                              index,
-                                              setFieldValue
-                                            )
-                                          }
-                                        >
-                                          <option value="">Passenger</option>
-                                          {passengerdatalist?.length > 0 &&
-                                            passengerdatalist.map(
-                                              (passenger, idx) => (
-                                                <option
-                                                  key={idx}
-                                                  value={
-                                                    passenger.tbs_add_pax_id
-                                                  }
-                                                >
-                                                  {passenger.user_name}
-                                                </option>
+                                        {/* Age */}
+                                        <div className="flex-1 relative">
+                                          <Field
+                                            type="text"
+                                            disabled={enableInput}
+                                            name={`age_${index}`}
+                                            placeholder="Age"
+                                            maxLength={2}
+                                            value={
+                                              travelerDetails[index]?.age ||
+                                              values[`age_${index}`] ||
+                                              ""
+                                            }
+                                            onChange={(e) => {
+                                              handleChange(e);
+                                              setFieldValue(
+                                                `age_${index}`,
+                                                e.target.value
+                                              );
+                                              setTravelerDetails(
+                                                (prevDetails) => ({
+                                                  ...prevDetails,
+                                                  [index]: {
+                                                    ...prevDetails[index],
+                                                    age: e.target.value,
+                                                    seat: seatDetail.Seat,
+                                                  },
+                                                })
+                                              );
+                                            }}
+                                            className={`${
+                                              !isSubmitting || !enableInput
+                                                ? `cursor-pointer`
+                                                : "cursor-not-allowed"
+                                            } border-r-[0.5vw] border-[.1vw] border-black text-[1.2vw] h-[3vw] w-[6vw] rounded-[0.5vw] outline-none px-[1vw]`}
+                                            style={{
+                                              borderColor:
+                                                busdetails.bus_type_status ===
+                                                "luxury"
+                                                  ? "#393939"
+                                                  : colorcode.theme,
+                                            }}
+                                          />
+                                          <ErrorMessage
+                                            name={`age_${index}`}
+                                            component="div"
+                                            className="text-red-500 text-[0.8vw] absolute top-[3vw] left-[1vw]"
+                                          />
+                                        </div>
+
+                                        {/* Gender Toggle Buttons */}
+                                        <div className="flex-2">
+                                          <button
+                                            disabled={enableInput ||
+                                              seatDetails[selectedSeats[index]]
+                                                ?.Status !== "AFA"
+                                            }
+                                            type="button"
+                                            name="gender"
+                                            style={{
+                                              background:
+                                                travelerDetails[index]
+                                                  ?.gender === "male" ||
+                                                !travelerDetails[index]
+                                                  ? busdetails.bus_type_status ===
+                                                    "luxury"
+                                                    ? "#393939"
+                                                    : busdetails.bus_type_status ===
+                                                      "regular"
+                                                    ? colorcode.theme
+                                                    : ""
+                                                  : "#ffffff",
+                                              color:
+                                                travelerDetails[index]
+                                                  ?.gender !== "male" &&
+                                                travelerDetails[index]
+                                                  ? busdetails.bus_type_status ===
+                                                    "luxury"
+                                                    ? "#393939"
+                                                    : busdetails.bus_type_status ===
+                                                      "regular"
+                                                    ? colorcode.theme
+                                                    : ""
+                                                  : "",
+                                              borderColor:
+                                                travelerDetails[index]
+                                                  ?.gender === "male" ||
+                                                !travelerDetails[index]
+                                                  ? busdetails.bus_type_status ===
+                                                    "luxury"
+                                                    ? "#393939"
+                                                    : busdetails.bus_type_status ===
+                                                      "regular"
+                                                    ? colorcode.theme
+                                                    : ""
+                                                  : "",
+                                            }}
+                                            className={`${
+                                              !isSubmitting || !enableInput
+                                                ? "cursor-pointer"
+                                                : "cursor-not-allowed"
+                                            } h-[3vw] w-[4vw] rounded-l-[0.5vw] text-[1vw] border-[0.1vw] text-white border-[#1F487C]`}
+                                            onClick={() =>
+                                              setTravelerDetails(
+                                                (prevDetails) => ({
+                                                  ...prevDetails,
+                                                  [index]: {
+                                                    ...prevDetails[index],
+                                                    gender: "male",
+                                                    seat: seatDetail.Seat,
+                                                  },
+                                                })
                                               )
-                                            )}
-                                        </Field>
+                                            }
+                                          >
+                                            Male
+                                          </button>
+                                          <button
+                                            disabled={enableInput ||
+                                              seatDetails[selectedSeats[index]]
+                                                ?.Status !== "AFA"
+                                            }
+                                            type="button"
+                                            name={`gender_${index}`}
+                                            style={{
+                                              background:
+                                                travelerDetails[index]
+                                                  ?.gender === "female" ||
+                                                !travelerDetails[index]
+                                                  ? busdetails.bus_type_status ===
+                                                    "luxury"
+                                                    ? "#393939"
+                                                    : busdetails.bus_type_status ===
+                                                      "regular"
+                                                    ? colorcode.theme
+                                                    : "#ffffff"
+                                                  : "#ffffff",
+                                              color:
+                                                travelerDetails[index]
+                                                  ?.gender !== "female" &&
+                                                travelerDetails[index]
+                                                  ? busdetails.bus_type_status ===
+                                                    "luxury"
+                                                    ? "#393939"
+                                                    : busdetails.bus_type_status ===
+                                                      "regular"
+                                                    ? colorcode.theme
+                                                    : ""
+                                                  : "",
+                                              borderColor:
+                                                travelerDetails[index]
+                                                  ?.gender === "female" ||
+                                                !travelerDetails[index]
+                                                  ? busdetails.bus_type_status ===
+                                                    "luxury"
+                                                    ? "#393939"
+                                                    : busdetails.bus_type_status ===
+                                                      "regular"
+                                                    ? colorcode.theme
+                                                    : ""
+                                                  : "",
+                                            }}
+                                            className={`${
+                                              !isSubmitting || !enableInput
+                                                ? "cursor-pointer"
+                                                : "cursor-not-allowed"
+                                            } text-white h-[3vw] w-[4vw] rounded-r-[0.5vw] border-[0.1vw] text-[1vw] border-[#1F487C]`}
+                                            onClick={() =>
+                                              setTravelerDetails(
+                                                (prevDetails) => ({
+                                                  ...prevDetails,
+                                                  [index]: {
+                                                    ...prevDetails[index],
+                                                    gender: "female",
+                                                    seat: seatDetail.Seat,
+                                                  },
+                                                })
+                                              )
+                                            }
+                                          >
+                                            Female
+                                          </button>
+                                        </div>
+
+                                        {/* Dropdown Input */}
+                                        <div className="flex-3">
+                                          {/* <Field
+                                            disabled={enableInput}
+                                            as="select"
+                                            className={`${
+                                              !isSubmitting || !enableInput
+                                                ? `cursor-pointer`
+                                                : "cursor-not-allowed"
+                                            } border-r-[0.5vw] border-[.1vw] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw]`}
+                                            style={{
+                                              borderColor:
+                                                busdetails.bus_type_status ===
+                                                "luxury"
+                                                  ? "#393939"
+                                                  : colorcode.theme,
+                                            }}
+                                            name={`dropdown_${index}`}
+                                            onChange={(e) =>
+                                              handleDropdownChange(
+                                                e,
+                                                index,
+                                                setFieldValue
+                                              )
+                                            }
+                                          >
+                                            <option value="">Passenger</option>
+                                            {passengerdatalist?.length > 0 &&
+                                              passengerdatalist.filter((passenger) => {
+                                                  const seatStatus =seatDetails[selectedSeats[index] ]?.Status;
+                                                  // Filter based on seat status
+                                                  if (seatStatus === "AFF") {
+                                                    return (passenger.gender ==="female");
+                                                  } else if (
+                                                    seatStatus === "AFM"
+                                                  ) {
+                                                    return (passenger.gender ==="male");
+                                                  } else if (
+                                                    seatStatus === "AFA"
+                                                  ) {
+                                                    // Allow both male and female for AFA status
+                                                    return ( passenger.gender ==="male" || passenger.gender ==="female");
+                                                  }
+                                                  // Allow all passengers if no specific gender requirement
+                                                  return true;
+                                                })
+                                                .map((passenger, idx) => (
+                                                  <option
+                                                    key={idx}
+                                                    value={passenger.tbs_add_pax_id}
+                                                  >
+                                                    {passenger.user_name}
+                                                  </option>
+                                                ))}
+                                          </Field> */}
+
+                                          <Field
+                                            disabled={enableInput}
+                                            as="select"
+                                            className={`${
+                                              !isSubmitting || !enableInput
+                                                ? `cursor-pointer`
+                                                : "cursor-not-allowed"
+                                            } border-r-[0.5vw] border-[.1vw] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw]`}
+                                            style={{
+                                              borderColor:
+                                                busdetails.bus_type_status ===
+                                                "luxury"
+                                                  ? "#393939"
+                                                  : colorcode.theme,
+                                            }}
+                                            name={`dropdown_${index}`}
+                                            onChange={(e) =>
+                                              handleDropdownChange(
+                                                e,
+                                                index,
+                                                setFieldValue
+                                              )
+                                            }
+                                          >
+                                            <option value="">Passenger</option>
+                                            {passengerdatalist?.length > 0 &&
+                                              passengerdatalist.map(
+                                                (passenger, idx) => (
+                                                  <option
+                                                    key={idx}
+                                                    value={
+                                                      passenger.tbs_add_pax_id
+                                                    }
+                                                  >
+                                                    {passenger.user_name}
+                                                  </option>
+                                                )
+                                              )}
+                                          </Field>
+                                        </div>
                                       </div>
-                                    </div>
-                                  ))}
+                                    )
+                                  )}
                               </div>
                               {registerfulldetails?.terms === true ? (
                                 ""

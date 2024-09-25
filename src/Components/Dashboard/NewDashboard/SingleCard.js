@@ -594,12 +594,16 @@ export default function SingleCard() {
                             className="h-[3.5vw] w-full"
                             alt="theme"
                           />
-                          <div className="absolute top-[0.2vw] right-[9vw] rounded-full">
+                          <div className="absolute top-0 right-[2vw] rounded-full">
                             {item.logos != null && (
                               <img
                                 src={`http://192.168.90.47:4001${item.logos}`}
                                 alt="logos"
-                                className="w-[2.5vw] h-[2.5vw] rounded-full"
+                                className={`w-[3.5vw] h-[3.5vw] rounded-full  ${
+                                  item.bus_type_status === "luxury"
+                                    ? "shadow-lg shadow-[rgba(255, 238, 201, 0.9)]" 
+                                    : "shadow-lg shadow-[rgba(238, 237, 237, 0.7)]" 
+                                }`}
                               />
                             )}
                           </div>
@@ -898,10 +902,11 @@ export default function SingleCard() {
                                 ></div>
                                 {/* <div className="absolute top-[-1vw] right-[-16vw] w-[4vw] h-[8vw] bg-white rounded-l-full flex items-center justify-center "></div> */}
                                 <div className=" absolute top-[-2vw] left-[-7.5vw] w-[9vw] h-[9vw]">
-                                  <img src={OurLowPrice}
-                                  alt="lowPrice"
-                                   className=" "
-                                    />
+                                  <img
+                                    src={OurLowPrice}
+                                    alt="lowPrice"
+                                    className=" "
+                                  />
                                 </div>
                               </div>
                               <button
@@ -1180,6 +1185,7 @@ export default function SingleCard() {
                         trackingCount={trackingCount}
                         setTrackingCount={setTrackingCount}
                         amenities={item.amenities}
+                        busType={item.bus_type_status}
                       />
                     </div>
                   )}
@@ -1189,12 +1195,13 @@ export default function SingleCard() {
                         index={index}
                         boarding={item.boarding}
                         dropping={item.dropping}
+                        busType={item.bus_type_status}
                       />
                     </div>
                   )}
                   {dropDown === `policy${index}` && (
                     <div className="bg-gray-200 h-auto w-full mt-[1vw] rounded-[0.5vw] mb-[1vw]">
-                      <Policy />
+                      <Policy busType={item.bus_type_status} />
                     </div>
                   )}
                   {dropDown === `seat${index}` && (

@@ -1,50 +1,73 @@
-import React, { useEffect, useState } from "react";
-import {
-  MdAirlineSeatIndividualSuite,
-  MdAirlineSeatReclineExtra,
-} from "react-icons/md";
-import {
-  TbAirConditioning,
-  TbAirConditioningDisabled,
-  TbRuler2,
-} from "react-icons/tb";
+import React, { useCallback, useEffect, useState } from "react";
+// import {
+//   MdAirlineSeatIndividualSuite,
+//   MdAirlineSeatReclineExtra,
+// } from "react-icons/md";
+// import {
+//   TbAirConditioning,
+//   TbAirConditioningDisabled,
+//   TbRuler2,
+// } from "react-icons/tb";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { LuSunrise, LuSunset } from "react-icons/lu";
 import { IoSunnyOutline } from "react-icons/io5";
 import { PiMoonLight } from "react-icons/pi";
 import { Input } from "antd";
 import { CiSearch } from "react-icons/ci";
-import Modal from "react-modal";
+// import Modal from "react-modal";
 import s_ac from "../../assets/s_ac.png";
 import s_c_ac from "../../assets/s_c_ac.png";
 import s_non_ac from "../../assets/s_non_ac.png";
 import s_c_non_ac from "../../assets/s_c_non_ac.png";
 import seats from "../../assets/seats.png";
 import sleeper from "../../assets/seat_sleep.png";
-import { useDispatch, useSelector, useStore } from "react-redux";
-import { FILTER, GET_DATA, GET_FILTER_DATA } from "../../Store/type";
-import { BiMapPin } from "react-icons/bi";
-import { useNavigate } from "react-router";
-import Map from "../Dashboard/Map";
+import { useDispatch, useSelector } from "react-redux";
+import { FILTER, GET_FILTER_DATA } from "../../Store/type";
+// import { BiMapPin } from "react-icons/bi";
+// import { useNavigate } from "react-router";
+// import Map from "../Dashboard/Map";
 import axios from "axios";
 import { Drawer } from "antd";
+import { Filters, Drop_Point_List } from "../../Api/Dashboard/Dashboard";
+import RangeSlide from "./RangeSlide";
+import { RiBusFill } from "react-icons/ri";
+import { FaBus } from "react-icons/fa";
 
 const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDrawerName, setIsDrawerName] = useState("");
   const [drawerSearch, setDrawerSearch] = useState("");
 
+
+  const [amenitieslist, setAmenitiesList] = useState([]);
+  console.log(amenitieslist, 'amenitieslist_amenitieslist');
+
+  // const [dropponitlist, setDropPointList] = useState([]);
+  const [dropfulllist, setDropFullList] = useState([]);
+  // const [pickuppointlist, setPickupPointlist] = useState([]);
+  const [pickupfullist, setPickupFullList] = useState([]);
+  console.log(pickupfullist, 'pickingFullList_mobile');
+  // const [opertorlist, setOperatorList] = useState([]);
+  const [opertorfulllist, setOperatorFullList] = useState([]);
+
+
+  // const drop_Point_List = useSelector((state) => state?.drop_point_list);
+
   const toggleDrawer = (name) => {
     setIsDrawerOpen(!isDrawerOpen);
     setIsDrawerName(name);
+    sessionStorage.setItem('isluxury', false)
   };
   const [showingdata, setShowingData] = useState([]);
   const [drawershowdata, setDrawerShowData] = useState([]);
+  console.log(drawershowdata, 'line_64_checking')
+  console.log(showingdata, 'drawer_show_data');
 
-  const openDrawer = (name) => {
-    setIsDrawerName(name);
-    setIsDrawerOpen(isDrawerOpen);
-  };
+  // const openDrawer = (name) => {
+  //   setIsDrawerName(name);
+  //   setIsDrawerOpen(isDrawerOpen);
+  // };
+  // const [busData, setBusData] = useState();
 
   const closeDrawer = () => {
     setDrawerSearch("");
@@ -52,42 +75,46 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
   };
 
   useEffect(() => {
-    if (isDrawerName == "pickup") {
+    if (isDrawerName === "pickup") {
       setShowingData(pickupfullist);
-    } else if (isDrawerName == "drop") {
+
+    } else if (isDrawerName === "drop") {
       setShowingData(dropfulllist);
-    } else if (isDrawerName == "amenities") {
+    } else if (isDrawerName === "amenities") {
       console.log("hii");
       setShowingData(amenitieslist);
     } else {
       setShowingData(opertorfulllist);
     }
-  }, [isDrawerName]);
+  }, [isDrawerName, pickupfullist, dropfulllist, amenitieslist, opertorfulllist]);
+
   useEffect(() => {
-    if (isDrawerName == "pickup") {
-      const filteredData = showingdata.filter((item) =>
-        item.place.toLowerCase().includes(drawerSearch.toLowerCase())
+    if (isDrawerName === "pickup") {
+      const filteredData = showingdata?.filter((item) =>
+        item?.name?.toLowerCase()?.includes(drawerSearch?.toLowerCase())
+      );
+      // const groupedPlaces = groupByFirstLetter(filteredData);
+      // setModalShowData(groupedPlaces);
+      console.log(filteredData, 'filter_dataa');
+
+      setDrawerShowData(filteredData);
+    } else if (isDrawerName === "drop") {
+      const filteredData = showingdata?.filter((item) =>
+        item.name?.toLowerCase()?.includes(drawerSearch?.toLowerCase())
       );
       // const groupedPlaces = groupByFirstLetter(filteredData);
       // setModalShowData(groupedPlaces);
       setDrawerShowData(filteredData);
-    } else if (isDrawerName == "drop") {
-      const filteredData = showingdata.filter((item) =>
-        item.place.toLowerCase().includes(drawerSearch.toLowerCase())
-      );
-      // const groupedPlaces = groupByFirstLetter(filteredData);
-      // setModalShowData(groupedPlaces);
-      setDrawerShowData(filteredData);
-    } else if (isDrawerName == "amenities") {
-      const filteredData = showingdata.filter((item) =>
-        item.place.toLowerCase().includes(drawerSearch.toLowerCase())
+    } else if (isDrawerName === "amenities") {
+      const filteredData = showingdata?.filter((item) =>
+        item?.amenity?.toLowerCase()?.includes(drawerSearch?.toLowerCase())
       );
       // const groupedPlaces = groupByFirstLetter(filteredData);
       // setModalShowData(groupedPlaces);
       setDrawerShowData(filteredData);
     } else {
-      const filteredData = showingdata.filter((item) =>
-        item.place.toLowerCase().includes(drawerSearch.toLowerCase())
+      const filteredData = showingdata?.filter((item) =>
+        item?.operator?.toLowerCase()?.includes(drawerSearch?.toLowerCase())
       );
       // const groupedPlaces = groupByFirstLetter(filteredData);
       // setModalShowData(groupedPlaces);
@@ -95,21 +122,29 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
     }
   }, [isDrawerName, drawerSearch, showingdata]);
 
+  const capitalizeFirstLetter = (string) => {
+    return string
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
   const arrange_data = useSelector((state) => state.rearrange);
-  const [amenitiesvalue, setAmenitiesValue] = useState([]);
+  const [amenitiesvalue, setAmenitiesValue] = useState({});
   // const [vehiclevalue, setVehicleValue] = useState([]);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [modalname, setModalname] = useState("");
-  const [finalpickupdata, setFinalPickupData] = useState([]);
-  const [finaldropdata, setFinalDropData] = useState([]);
-  const [finaloperatordata, setFinalOperatorData] = useState([]);
-  const [modalsearch, setModalSearch] = useState("");
-  const [modalshowdata, setModalShowData] = useState([]);
+  // const [modalIsOpen, setModalIsOpen] = useState(false);
+  // const [modalname, setModalname] = useState("");
+  // const [finalpickupdata, setFinalPickupData] = useState([]);
+  // const [finaldropdata, setFinalDropData] = useState([]);
+  // const [finaloperatordata, setFinalOperatorData] = useState([]);
+  // const [modalsearch, setModalSearch] = useState("");
+  // const [modalshowdata, setModalShowData] = useState([]);
+  // console.log(modalshowdata, 'modal_show_mobile')
   const [pickupchecked, setPickupChecked] = useState({});
   const [dropchecked, setDropChecked] = useState({});
   const [operatorchecked, setOperatorChecked] = useState({});
   //const [showingdata, setShowingData] = useState([]);
-  const [modalpickupsearch, setModalpickupsearch] = useState("");
+  // const [modalpickupsearch, setModalpickupsearch] = useState("");
   const [searchvalue, setSearchValue] = useState({
     pickup: "",
     drop: "",
@@ -123,18 +158,19 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
     amenities: [],
     radius: false,
   });
+  console.log(filtervalue, 'filter_valuee')
   const [timefiltervalue, setTimeFitervalue] = useState({
-    // time_6:00 AM to 11:00 AM: false,
-    // time_11:00 AM to 6:00 PM: false,
-    // time_6:00 PM to 11:00 PM: false,
-    // time_11:00 PM to 6:00 AM: false,
+    // time_6am-11am: false,
+    // time_11am-6pm: false,
+    // time_6pm-11pm: false,
+    // time_11pm-6am: false,
   });
-  const [pickuptimefiltervalue, setPickupTimeFitervalue] = useState({
-    // time_6:00 AM to 11:00 AM: false,
-    // time_11:00 AM to 6:00 PM: false,
-    // time_6:00 PM to 11:00 PM: false,
-    // time_11:00 PM to 6:00 AM: false,
-  });
+  // const [pickuptimefiltervalue, setPickupTimeFitervalue] = useState({
+  //   // time_6am-11am: false,
+  //   // time_11am-6pm: false,
+  //   // time_6pm-11pm: false,
+  //   // time_11pm-6am: false,
+  // });
   const [boolean, setBoolean] = useState({
     pickup: true,
     drop: true,
@@ -157,7 +193,7 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
     setDropChecked({});
     setOperatorChecked({});
     setPickupChecked({});
-    setAmenitiesValue([]);
+    setAmenitiesValue({});
     setFitervalue({
       ac: false,
       non_ac: false,
@@ -168,70 +204,73 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
     });
     setTimeFitervalue({
       ...timefiltervalue,
-      // time_6:00 AM to 11:00 AM: false,
-      // time_11:00 AM to 6:00 PM: false,
-      // time_6:00 PM to 11:00 PM: false,
-      // time_11:00 PM to 6:00 AM: false,
+      // time_6am-11am: false,
+      // time_11am-6pm: false,
+      // time_6pm-11pm: false,
+      // time_11pm-6am: false,
     });
     setDropTime("");
     setPickUpTime("");
     setAcFilter("");
     setSeatTypeFilter("");
+    setBusType("");
+    setNoramlBus("");
   };
   const dispatch = useDispatch();
-  const operators = [
-    { place: "InterCity SmartBus", count: "85" },
-    { place: "Sharma Travels", count: "113" },
-    { place: "SPS Travels", count: "67" },
-    { place: "KPN Travels", count: "20" },
-    { place: "National Travels", count: "67" },
-    { place: "Orange Travels", count: "77" },
-    { place: "Bharath Travels", count: "77" },
-  ];
-  const travel_operator = operators.slice(0, 5);
-  const place = [
-    { place: "Avinashi", count: "113" },
-    { place: "Palladam", count: "85" },
-    { place: "Pushpa", count: "67" },
-    { place: "New Bus Stand", count: "20" },
-    { place: "Sri nagar", count: "67" },
-    { place: "Old Bus Stand", count: "15" },
-    { place: "Gandhi nagar", count: "18" },
-    { place: "Town hall", count: "50" },
-    { place: "Old Bus Stand", count: "15" },
-    { place: "Gandhi nagar", count: "18" },
-    { place: "Town hall", count: "50" },
-  ];
-  const drop_place = [
-    { place: "KMCH", count: "113" },
-    { place: "Airport", count: "85" },
-    { place: "RS Puram", count: "67" },
-    { place: "Gandhipuram", count: "20" },
-    { place: "Saravanampatti", count: "67" },
-  ];
-  const amenities = [
-    { amenities: "WIFI", count: 12, id: 1 },
-    { amenities: "Water bottle", count: 15, id: 2 },
-    { amenities: "Toilet", count: 6, id: 3 },
-    { amenities: "Track My Bus", count: 52, id: 4 },
-    { amenities: "Blankets", count: 74, id: 5 },
-    { amenities: "Charging Point", count: 30, id: 6 },
-  ];
-  const handleAmenities = (item) => {
-    const isAmenitySelected = amenitiesvalue.includes(item);
-    const tag = amenities.includes(item);
-    if (isAmenitySelected) {
-      // If amenity is already selected, remove it
-      setAmenitiesValue(amenitiesvalue.filter((amenity) => amenity !== item));
-    } else {
-      // If amenity is not selected, add it
-      setAmenitiesValue([...amenitiesvalue, item]);
-    }
-  };
+  // const operators = [
+  //   { place: "InterCity SmartBus", count: "85" },
+  //   { place: "Sharma Travels", count: "113" },
+  //   { place: "SPS Travels", count: "67" },
+  //   { place: "KPN Travels", count: "20" },
+  //   { place: "National Travels", count: "67" },
+  //   { place: "Orange Travels", count: "77" },
+  //   { place: "Bharath Travels", count: "77" },
+  // ];
+  // const travel_operator = operators.slice(0, 5);
+  // const place = [
+  //   { place: "Avinashi", count: "113" },
+  //   { place: "Palladam", count: "85" },
+  //   { place: "Pushpa", count: "67" },
+  //   { place: "New Bus Stand", count: "20" },
+  //   { place: "Sri nagar", count: "67" },
+  //   { place: "Old Bus Stand", count: "15" },
+  //   { place: "Gandhi nagar", count: "18" },
+  //   { place: "Town hall", count: "50" },
+  //   { place: "Old Bus Stand", count: "15" },
+  //   { place: "Gandhi nagar", count: "18" },
+  //   { place: "Town hall", count: "50" },
+  // ];
+  // const drop_place = [
+  //   { place: "KMCH", count: "113" },
+  //   { place: "Airport", count: "85" },
+  //   { place: "RS Puram", count: "67" },
+  //   { place: "Gandhipuram", count: "20" },
+  //   { place: "Saravanampatti", count: "67" },
+  // ];
+  // const amenities = [
+  //   { amenities: "WIFI", count: 12, id: 1 },
+  //   { amenities: "Water bottle", count: 15, id: 2 },
+  //   { amenities: "Toilet", count: 6, id: 3 },
+  //   { amenities: "Track My Bus", count: 52, id: 4 },
+  //   { amenities: "Blankets", count: 74, id: 5 },
+  //   { amenities: "Charging Point", count: 30, id: 6 },
+  // ];
+  // const handleAmenities = (item) => {
+  //   const isAmenitySelected = amenitiesvalue.includes(item);
+  //   const tag = amenities.includes(item);
+  //   if (isAmenitySelected) {
+  //     // If amenity is already selected, remove it
+  //     setAmenitiesValue(amenitiesvalue.filter((amenity) => amenity !== item));
+  //   } else {
+  //     // If amenity is not selected, add it
+  //     setAmenitiesValue([...amenitiesvalue, item]);
+  //   }
+  // };
   const amenitiesClear = () => {
-    setAmenitiesValue([]);
+    setAmenitiesValue({});
   };
   console.log(amenitiesvalue, "amenitiesvalue");
+
   const vehicleclear = () => {
     // setVehicleClear([]);
     // setFitervalue({
@@ -244,28 +283,30 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
     // });
     setAcFilter("");
     setSeatTypeFilter("");
+    setBusType("");
+    setNoramlBus("");
   };
-  const openModal = (name) => {
-    setModalname(name);
-    setModalIsOpen(true);
-  };
+  // const openModal = (name) => {
+  //   setModalname(name);
+  //   setModalIsOpen(true);
+  // };
 
-  const closeModal = () => {
-    setModalIsOpen(false);
-    setModalSearch("");
-  };
+  // const closeModal = () => {
+  //   setModalIsOpen(false);
+  //   setModalSearch("");
+  // };
 
-  const groupByFirstLetter = (places) => {
-    const groupedPlaces = {};
-    places.forEach((item) => {
-      const firstLetter = item.place.charAt(0).toUpperCase();
-      if (!groupedPlaces[firstLetter]) {
-        groupedPlaces[firstLetter] = [];
-      }
-      groupedPlaces[firstLetter].push(item);
-    });
-    return groupedPlaces;
-  };
+  // const groupByFirstLetter = (places) => {
+  //   const groupedPlaces = {};
+  //   places?.forEach((item) => {
+  //     const firstLetter = item.place?.charAt(0)?.toUpperCase();
+  //     if (!groupedPlaces[firstLetter]) {
+  //       groupedPlaces[firstLetter] = [];
+  //     }
+  //     groupedPlaces[firstLetter].push(item);
+  //   });
+  //   return groupedPlaces;
+  // };
 
   const handlePickupCheckbox = (event, itemName) => {
     const { checked } = event.target;
@@ -281,6 +322,22 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
       }
     });
   };
+
+  const handleAmenityCheckbox = (event, itemName) => {
+    const { checked } = event?.target;
+
+    setAmenitiesValue((prevState) => {
+      if (checked) {
+        console.log(prevState, "drop checked");
+        return { ...prevState, [itemName]: true };
+      } else {
+        const updatedItems = { ...prevState };
+        delete updatedItems[itemName];
+        return updatedItems;
+      }
+    });
+  };
+
 
   const handledropCheckbox = (event, itemName) => {
     const { checked } = event.target;
@@ -318,89 +375,47 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
   const timeClear = () => {
     // setTimeFitervalue({
     //   ...timefiltervalue,
-    //   time_6:00 AM to 11:00 AM: false,
-    //   time_11:00 AM to 6:00 PM: false,
-    //   time_6:00 PM to 11:00 PM: false,
-    //   time_11:00 PM to 6:00 AM: false,
+    //   time_6am-11am: false,
+    //   time_11am-6pm: false,
+    //   time_6pm-11pm: false,
+    //   time_11pm-6am: false,
     // });
     setDropTime("");
   };
   const pickuptimeClear = () => {
     setPickUpTime("");
   };
-  useEffect(() => {
-    if (modalname == "pickup") {
-      setShowingData(pickupfullist);
-    } else if (modalname == "drop") {
-      setShowingData(dropfulllist);
-    } else if (modalname == "amenities") {
-      console.log("hii");
-      setShowingData(amenitieslist);
-    } else {
-      setShowingData(opertorfulllist);
-    }
-  }, [modalname]);
-  useEffect(() => {
-    if (modalname == "pickup") {
-      const filteredData = showingdata.filter((item) =>
-        item.place.toLowerCase().includes(modalsearch.toLowerCase())
-      );
-      // const groupedPlaces = groupByFirstLetter(filteredData);
-      // setModalShowData(groupedPlaces);
-      setModalShowData(filteredData);
-    } else if (modalname == "drop") {
-      const filteredData = showingdata.filter((item) =>
-        item.place.toLowerCase().includes(modalsearch.toLowerCase())
-      );
-      // const groupedPlaces = groupByFirstLetter(filteredData);
-      // setModalShowData(groupedPlaces);
-      setModalShowData(filteredData);
-    } else if (modalname == "amenities") {
-      const filteredData = showingdata.filter((item) =>
-        item.place.toLowerCase().includes(modalsearch.toLowerCase())
-      );
-      // const groupedPlaces = groupByFirstLetter(filteredData);
-      // setModalShowData(groupedPlaces);
-      setModalShowData(filteredData);
-    } else {
-      const filteredData = showingdata.filter((item) =>
-        item.place.toLowerCase().includes(modalsearch.toLowerCase())
-      );
-      // const groupedPlaces = groupByFirstLetter(filteredData);
-      // setModalShowData(groupedPlaces);
-      setModalShowData(filteredData);
-    }
-  }, [modalname, modalsearch, showingdata]);
-  console.log(modalshowdata, "showing");
-  useEffect(() => {
-    const pickupslice = place.slice(0, 5);
-    const dropslice = drop_place.slice(0, 5);
-    const travelslice = travel_operator.slice(0, 5);
-    if (searchvalue.pickup) {
-      const filteredData = place.filter((item) =>
-        item.place.toLowerCase().includes(searchvalue.pickup.toLowerCase())
-      );
-      setFinalPickupData(filteredData);
-    } else {
-      setFinalPickupData(pickupslice);
-    }
-    if (searchvalue.drop) {
-      const filteredData = drop_place.filter((item) =>
-        item.place.toLowerCase().includes(searchvalue.drop.toLowerCase())
-      );
-      setFinalDropData(filteredData);
-    } else {
-      setFinalDropData(dropslice);
-    }
-    if (searchvalue.operator) {
-      const filteredData = travel_operator.filter((item) =>
-        item.place.toLowerCase().includes(searchvalue.operator.toLowerCase())
-      );
-      setFinalOperatorData(filteredData);
-    } else {
-      setFinalOperatorData(travelslice);
-    }
-  }, [searchvalue]);
+
+
+  // useEffect(() => {
+  //   // const pickupslice = place.slice(0, 5);
+  //   const dropslice = drop_place.slice(0, 5);
+  //   const travelslice = travel_operator.slice(0, 5);
+  //   if (searchvalue.pickup) {
+  //     const filteredData = place.filter((item) =>
+  //       item.place.toLowerCase().includes(searchvalue.pickup.toLowerCase())
+  //     );
+  //     setFinalPickupData(filteredData);
+  //   } else {
+  //     setFinalPickupData(pickupslice);
+  //   }
+  //   if (searchvalue.drop) {
+  //     const filteredData = drop_place.filter((item) =>
+  //       item.place.toLowerCase().includes(searchvalue.drop.toLowerCase())
+  //     );
+  //     setFinalDropData(filteredData);
+  //   } else {
+  //     setFinalDropData(dropslice);
+  //   }
+  //   if (searchvalue.operator) {
+  //     const filteredData = travel_operator.filter((item) =>
+  //       item.place.toLowerCase().includes(searchvalue.operator.toLowerCase())
+  //     );
+  //     setFinalOperatorData(filteredData);
+  //   } else {
+  //     setFinalOperatorData(travelslice);
+  //   }
+  // }, [searchvalue]);
 
   useEffect(() => {
     const filterfun = () => {
@@ -413,23 +428,23 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
     };
     filterfun();
   }, [filtervalue, dispatch]);
-  const groupedPlaces = groupByFirstLetter(showingdata);
-  const handleonapply = () => {
-    setModalIsOpen(false);
-  };
-  const navigation = useNavigate();
-  const [isMapPage, setIsMapPage] = useState(false);
-  const handleradius = () => {
-    setFitervalue({ ...filtervalue, radius: !filtervalue.radius });
-    // navigation("/map");
-    if (isMapPage) {
-      navigation("/dashboard");
-      localStorage.setItem("depature", "Chennai");
-    } else {
-      navigation("/map");
-    }
-    setIsMapPage(!isMapPage);
-  };
+  // const groupedPlaces = groupByFirstLetter(showingdata);
+  // const handleonapply = () => {
+  //   setModalIsOpen(false);
+  // };
+  // const navigation = useNavigate();
+  // const [isMapPage, setIsMapPage] = useState(false);
+  // const handleradius = () => {
+  //   setFitervalue({ ...filtervalue, radius: !filtervalue.radius });
+  //   // navigation("/map");
+  //   if (isMapPage) {
+  //     navigation("/dashboard");
+  //     localStorage.setItem("depature", "Chennai");
+  //   } else {
+  //     navigation("/map");
+  //   }
+  //   setIsMapPage(!isMapPage);
+  // };
   // useEffect(() => {
   //   if (filtervalue.radius) {
   //     navigation("/map");
@@ -438,21 +453,162 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
   //   }
   // }, []);
   const busdata = useSelector((state) => state.bus_data);
+  console.log(busdata, 'busdata_working_')
+  const [busType, setBusType] = useState(
+    JSON.parse(sessionStorage.getItem("isLuxury"))
+  );
+  const [NormalBus, setNoramlBus] = useState(false);
   const [acfilter, setAcFilter] = useState("");
   const [seattypefilter, setSeatTypeFilter] = useState("");
   const [pickuptime, setPickUpTime] = useState("");
   const [droptime, setDropTime] = useState("");
+  const [pickUp_list, setPickUpList] = useState({});
+  console.log(pickUp_list.boarding_points, 'pick_upcc_mob')
+  const [priceRange, setPriceRange] = useState({
+    min: 0,
+    max: 3000,
+  });
+
+  const departure_local = localStorage.getItem("depature")
+  const arrival_local = localStorage.getItem("arrival")
+  const departure_date_local = localStorage.getItem("departure_date")
+  const isLuxury_local = sessionStorage.getItem("isLuxury")
+  const sort_local = localStorage.getItem("sort")
+  const set_ac_local = localStorage.getItem("ac")
+  const seatType_local = localStorage.getItem("seatType")
+  console.log(busType, "GOLDEN_TICKET")
   console.log(acfilter, "filtervalue.radius");
+  console.log(seattypefilter, 'seattypefileterer');
+
   useEffect(() => {
-    if (localStorage.getItem("ac") == "true") {
+    if (localStorage.getItem("ac") === "true") {
       setAcFilter("ac");
       console.log(localStorage.getItem("ac"), "joooooooo");
     }
     if (localStorage.getItem("seatType")) {
       setSeatTypeFilter(localStorage.getItem("seatType"));
     }
-  }, [localStorage.getItem("ac"), localStorage.getItem("seatType")]);
-  const handlefilter = async () => {
+  }, [set_ac_local, seatType_local]);
+
+
+
+  const handleAllFilters = useCallback(async () => {
+    try {
+      const pickupcheck = Object.keys(pickupchecked).filter(
+        (key) => pickupchecked[key]
+      );
+      const operatorcheck = Object.keys(operatorchecked).filter(
+        (key) => operatorchecked[key]
+      );
+      const dropcheck = Object.keys(dropchecked).filter(
+        (key) => dropchecked[key]
+      );
+      const amenitycheck = Object.keys(amenitiesvalue).filter(
+        (key) => amenitiesvalue[key]
+      );
+      let dateTimeString = localStorage.getItem("selectdate");
+
+      if (dateTimeString) {
+        // Parse the string into a Date object
+        let dateObj = new Date(dateTimeString);
+
+        // Format the date to "YYYY-MM-DD"
+        const formattedDate =
+          dateObj.getFullYear() +
+          "-" +
+          ("0" + (dateObj.getMonth() + 1)).slice(-2) +
+          "-" +
+          ("0" + dateObj.getDate()).slice(-2);
+
+        // Store the formatted date back in localStorage
+        localStorage.setItem("departure_date", formattedDate);
+      }
+
+      const allFilters = await Filters(
+        // localStorage.getItem("departure"),
+        departure_local,
+        // localStorage.getItem("arrival"),
+        arrival_local,
+        // localStorage.getItem("departure_date"),
+        departure_date_local,
+        busType,
+        acfilter,
+        seattypefilter,
+        pickuptime,
+        droptime,
+        pickupcheck,
+        dropcheck,
+        amenitycheck,
+        operatorcheck,
+        priceRange,
+        localStorage.getItem("sort"),
+        NormalBus,
+        dispatch
+      );
+      // setBusData(allFilters);
+      console.log(allFilters, "allFilters");
+      console.log(pickuptime, "pickuptime");
+    } catch (error) {
+      console.error("Error", error);
+    }
+  }, [busType, acfilter, seattypefilter, pickuptime, droptime, pickupchecked, dropchecked, amenitiesvalue, operatorchecked, priceRange, NormalBus, departure_local, arrival_local, departure_date_local, dispatch])
+
+  useEffect(() => {
+    handleAllFilters();
+  }, [
+    // localStorage.getItem("departure"),
+    // localStorage.getItem("arrival"),
+    // localStorage.getItem("departure_date"),
+    // ,
+    handleAllFilters,
+    isLuxury_local,
+    // busType,
+    // acfilter,
+    // seattypefilter,
+    // pickuptime,
+    // droptime,
+    // pickupchecked,
+    // dropchecked,
+    // amenitiesvalue,
+    // operatorchecked,
+    // priceRange,
+    sort_local,
+    // localStorage.getItem("sort"),
+    // sessionStorage.setItem("isLuxury", false),
+    // busIsLuxury,
+    // NormalBus,
+    // dispatch,
+  ]);
+
+  const handleDropPoint = useCallback(async () => {
+    try {
+      const dropPointFilter = await Drop_Point_List(
+        localStorage.getItem("departure"),
+        localStorage.getItem("arrival"),
+        localStorage.getItem("selectdate"),
+        dispatch
+      );
+      console.log(dropPointFilter, "dropPointFilter");
+      setPickUpList(dropPointFilter);
+    } catch (error) {
+      console.error("Error", error);
+    }
+  }, [dispatch]);
+
+  const selectdate_local = localStorage.getItem("selectdate")
+
+
+  useEffect(() => {
+    handleDropPoint();
+  }, [
+    handleDropPoint,
+    departure_local,
+    arrival_local,
+    selectdate_local,
+    dispatch,
+  ]);
+
+  const handlefilter = useCallback(async () => {
     // console.log(amenitiesvalue, "searchvaluesearchvalue");
     console.log(pickupchecked, "pickupchecked");
     try {
@@ -466,7 +622,7 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
         (key) => operatorchecked[key]
       );
 
-      const transformedData = amenitiesvalue.reduce((acc, item) => {
+      const transformedData = amenitiesvalue?.reduce((acc, item) => {
         // Check if item exists and set its value to true
         acc[item] = true;
         return acc;
@@ -487,7 +643,7 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
         NON_AC: acfilter === "non_ac" ? "TRUE" : "FALSE",
         Seater: seattypefilter === "seater" ? "TRUE" : "FALSE",
         Sleeper: seattypefilter === "sleeper" ? "TRUE" : "FALSE",
-        Semi_sleeper: seattypefilter === "semi_sleeper" ? "TRUE" : "FALSE",
+        Semi_sleeper: seattypefilter === "is_Luxury" ? "TRUE" : "FALSE",
         pickupPoints: pickupcheck.join(","),
         dropPoints: dropcheck.join(","),
         selectedOperators: operatorcheck.join(","),
@@ -499,10 +655,10 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
         arrival: arrange_data.arrival ? arrange_data.arrival : "FALSE",
         seats: arrange_data.seats ? arrange_data.seats : "FASLE",
         rating: arrange_data.rating ? arrange_data.rating : "FALSE",
-        // timeDepature:"6:00 AM to 11:00 AM"
+        // timeDepature:"6am-11am"
       };
+      console.log(payload, "sidebarMobile_payload")
       console.log(operatorchecked, "dropcheck");
-      const place = localStorage.getItem("depature");
       // const response = await axios.get(
       //   place === "Chennai"
       //     ? "http://192.168.90.47:3000/chennai_src"
@@ -524,27 +680,32 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
         type: GET_FILTER_DATA,
         payload: response.data,
       });
-      console.log("Response", response.data);
+      console.log("Response", response);
     } catch (error) {
       console.error("Error", error);
     }
-  };
+  }, [acfilter, seattypefilter, pickupchecked, dropchecked, operatorchecked, amenitiesvalue, pickuptime, arrange_data, droptime, dispatch])
   useEffect(() => {
     handlefilter();
+    // sessionStorage.setItem("isLuxury", busIsLuxury);
   }, [
-    acfilter,
-    seattypefilter,
+    // acfilter,
+    // seattypefilter,
     searchvalue,
-    pickupchecked,
-    dropchecked,
-    operatorchecked,
-    amenitiesvalue,
-    pickuptime,
-    droptime,
-    arrange_data,
-    localStorage.getItem("depature"),
-    localStorage.getItem("arrival"),
+    // pickupchecked,
+    // dropchecked,
+    // operatorchecked,
+    // amenitiesvalue,
+    // pickuptime,
+    // droptime,
+    // arrange_data,
+    departure_local,
+    arrival_local,
+    handlefilter,
+    // sessionStorage.setItem("isLuxury", false)
+    // busIsLuxury
   ]);
+
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -572,79 +733,79 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
   const fulllist = useSelector((state) => state.get_data);
   console.log(fulllist, "searchvaluesearchvalue555");
 
-  const filter = fulllist.map((item) => {
-    return item?.Pickup_points.split(",");
-  });
-  const find = filter.filter((item, index) => {
-    return item[0] == "Siruseri";
-  });
+  // const filter = fulllist.map((item) => {
+  //   return item?.Pickup_points.split(",");
+  // });
+  // const find = filter.filter((item, index) => {
+  //   return item[0] == "Siruseri";
+  // });
 
-  const splitData = (data) => {
-    const splitArrays = [];
-    for (let i = 0; i < data.length; i += 8) {
-      splitArrays.push(data.slice(i, i + 8));
-    }
-    return splitArrays;
-  };
+  // const splitData = (data) => {
+  //   const splitArrays = [];
+  //   for (let i = 0; i < data.length; i += 8) {
+  //     splitArrays.push(data.slice(i, i + 8));
+  //   }
+  //   return splitArrays;
+  // };
 
-  const groupedData = fulllist.reduce((acc, obj) => {
-    const key = `operator${obj.bus_operator_id}`;
-    if (!acc[key]) {
-      acc[key] = [];
-    }
-    acc[key].push(obj);
-    return acc;
-  }, {});
-  const [amenitieslist, setAmenitiesList] = useState([]);
-  const [dropponitlist, setDropPointList] = useState([]);
-  const [dropfulllist, setDropFullList] = useState([]);
-  const [pickuppointlist, setPickupPointlist] = useState([]);
-  const [pickupfullist, setPickupFullList] = useState([]);
-  const [opertorlist, setOperatorList] = useState([]);
-  const [opertorfulllist, setOperatorFullList] = useState([]);
+  // const groupedData = fulllist.reduce((acc, obj) => {
+  //   const key = `operator${obj.bus_operator_id}`;
+  //   if (!acc[key]) {
+  //     acc[key] = [];
+  //   }
+  //   acc[key].push(obj);
+  //   return acc;
+  // }, {});
+
+
 
   useEffect(() => {
     // amenities
-    const Amenities = fulllist.map((item) => {
-      return item.Amenities.split(",");
-    });
-    const AmenitiesArray = [].concat(...Amenities);
-    const AmenitiesCount = AmenitiesArray.reduce((acc, val) => {
-      acc[val] = (acc[val] || 0) + 1;
-      return acc;
-    }, {});
-    const AmenitiesData = Object.entries(AmenitiesCount)
-      .filter(([place, count]) => place.trim() !== "")
-      .map(([place, count]) => ({
-        place,
-        count,
-      }));
-    setAmenitiesList(AmenitiesData);
+    // const Amenities = fulllist.map((item) => {
+    //   return item.Amenities.split(",");
+    // });
+    // const AmenitiesArray = [].concat(...Amenities);
+    // const AmenitiesCount = AmenitiesArray.reduce((acc, val) => {
+    //   acc[val] = (acc[val] || 0) + 1;
+    //   return acc;
+    // }, {});
+
+    // const AmenitiesData = Object.entries(AmenitiesCount)
+    //   .filter(([place, count]) => place.trim() !== "")
+    //   .map(([place, count]) => ({
+    //     place,
+    //     count,
+    //   }));
+    // // setAmenitiesList(AmenitiesData);
+
+    setAmenitiesList(pickUp_list?.amenities);
+    console.log(pickUp_list, 'settamininties')
     // droppoints
-    const Droppoints = fulllist.map((item) => {
-      return item.Drop_points.split(",");
-    });
-    const DroppointsArray = [].concat(...Droppoints);
-    const DroppointsCount = DroppointsArray.reduce((acc, val) => {
-      acc[val] = (acc[val] || 0) + 1;
-      return acc;
-    }, {});
-    const DroppointsData = Object.entries(DroppointsCount)
-      .filter(([place, count]) => place.trim() !== "")
-      .map(([place, count]) => ({
-        place,
-        count,
-      }));
-    setDropFullList(DroppointsData);
-    const travelslice = DroppointsData.slice(0, 5);
-    if (searchvalue.drop) {
-      const filteredData = DroppointsData.filter((item) =>
-        item.place.toLowerCase().includes(searchvalue.drop.toLowerCase())
-      );
-      setDropPointList(filteredData);
-    } else {
-      setDropPointList(travelslice);
-    }
+    // const Droppoints = fulllist.map((item) => {
+    //   return item.Drop_points.split(",");
+    // });
+    // const DroppointsArray = [].concat(...Droppoints);
+    // const DroppointsCount = DroppointsArray.reduce((acc, val) => {
+    //   acc[val] = (acc[val] || 0) + 1;
+    //   return acc;
+    // }, {});
+    // const DroppointsData = Object.entries(DroppointsCount)
+    //   .filter(([place, count]) => place.trim() !== "")
+    //   .map(([place, count]) => ({
+    //     place,
+    //     count,
+    //   }));
+    // setDropFullList(DroppointsData);
+    setDropFullList(pickUp_list?.dropping_points);
+    // const travelslice = DroppointsData.slice(0, 5);
+    // if (searchvalue.drop) {
+    //   const filteredData = DroppointsData.filter((item) =>
+    //     item.place.toLowerCase().includes(searchvalue.drop.toLowerCase())
+    //   );
+    //   setDropPointList(filteredData);
+    // } else {
+    //   setDropPointList(travelslice);
+    // }
     // pickuppoint
     const Pickuppoints = fulllist.map((item) => {
       return item.Pickup_points.split(",");
@@ -655,22 +816,24 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
       return acc;
     }, {});
     console.log(PickuppointsCount, "PickuppointsArray");
-    const PickuppointsData = Object.entries(PickuppointsCount)
-      .filter(([place, count]) => place.trim() !== "")
-      .map(([place, count]) => ({
-        place,
-        count,
-      }));
-    setPickupFullList(PickuppointsData);
-    const pickupslice = PickuppointsData.slice(0, 5);
-    if (searchvalue.pickup) {
-      const filteredData = PickuppointsData.filter((item) =>
-        item.place.toLowerCase().includes(searchvalue.pickup.toLowerCase())
-      );
-      setPickupPointlist(filteredData);
-    } else {
-      setPickupPointlist(pickupslice);
-    }
+    // const PickuppointsData = Object.entries(PickuppointsCount)
+    //   .filter(([place, count]) => place.trim() !== "")
+    //   .map(([place, count]) => ({
+    //     place,
+    //     count,
+    //   }));
+    // setPickupFullList(PickuppointsData);
+    setPickupFullList(pickUp_list?.boarding_points);
+    console.log(pickUp_list.boarding_points, 'mobile_pickuplist')
+    // const pickupslice = PickuppointsData.slice(0, 5);
+    // if (searchvalue.pickup) {
+    //   const filteredData = PickuppointsData.filter((item) =>
+    //     item.place.toLowerCase().includes(searchvalue.pickup.toLowerCase())
+    //   );
+    //   setPickupPointlist(filteredData);
+    // } else {
+    //   setPickupPointlist(pickupslice);
+    // }
     // travel operator
     const Bus_operator_name = fulllist.map((item) => {
       return item.Bus_operator_name;
@@ -689,17 +852,19 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
         place,
         count,
       }));
-    const travelopertorslice = traveldata.slice(0, 5);
+    // const travelopertorslice = traveldata.slice(0, 5);
     setOperatorFullList(traveldata);
-    if (searchvalue.operator) {
-      const filteredData = traveldata.filter((item) =>
-        item.place.toLowerCase().includes(searchvalue.operator.toLowerCase())
-      );
-      setOperatorList(filteredData);
-    } else {
-      setOperatorList(travelopertorslice);
-    }
-    console.log(traveldata, "Bus_operator_name");
+    setOperatorFullList(pickUp_list?.operators);
+
+    // if (searchvalue.operator) {
+    //   const filteredData = traveldata.filter((item) =>
+    //     item.place.toLowerCase().includes(searchvalue.operator.toLowerCase())
+    //   );
+    //   setOperatorList(filteredData);
+    // } else {
+    //   setOperatorList(travelopertorslice);
+    // }
+    // console.log(traveldata, "Bus_operator_name");
     // const traveloperatorarray = [].concat(...traveloperator);
     // const traveloperatorcount = traveloperatorarray.reduce((acc, val) => {
     //   acc[val] = (acc[val] || 0) + 1;
@@ -721,15 +886,22 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
     // } else {
     //   setPickupPointlist(traveloperatorslice);
     // }
-  }, [searchvalue, fulllist]);
+  }, [searchvalue, fulllist, pickUp_list]);
   const sortedList = drawershowdata
-    .slice()
-    .sort((a, b) => a.place.localeCompare(b.place));
-  console.log(dropponitlist, "dropponitlist");
+    ?.slice()
+    ?.sort((a, b) =>
+      isDrawerName === "amenities"
+        ? a?.amenity?.localeCompare(b?.amenity)
+        : isDrawerName === "operators"
+          ? a?.operator?.localeCompare(b?.operator)
+          : a?.name?.localeCompare(b?.name)
+    );
+  console.log(sortedList, "dropponitlist");
   console.log(share, "shareshareshare");
   const sharing = useSelector((state) => state.share);
   console.log(sharing, "sharing");
-  const logoimage = "file://akritnas/nubiznez/Operator_logos/ss.png";
+
+  // const logoimage = "file://akritnas/nubiznez/Operator_logos/ss.png";
   // useEffect(() => {
   //   const interval = setInterval(() => {
   //     // window.location.reload();
@@ -756,37 +928,38 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
   //   // 5 * 60 * 1000
   //   return () => clearInterval(interval);
   // }, [localStorage.getItem("depature")]);
-  const [plusvalues, setPlusvalues] = useState(0);
-  const updateStartIndex = () => {
-    const width = window.innerWidth;
-    if (width < 640) {
-      // mobile
-      setPlusvalues(1);
-    } else if (width < 1024) {
-      // tablet
-      setPlusvalues(3);
-    } else {
-      // laptop and above
-      setPlusvalues(5);
-    }
-  };
+  // const [plusvalues, setPlusvalues] = useState(0);
+  // const updateStartIndex = () => {
+  //   const width = window.innerWidth;
+  //   if (width < 640) {
+  //     // mobile
+  //     setPlusvalues(1);
+  //   } else if (width < 1024) {
+  //     // tablet
+  //     setPlusvalues(3);
+  //   } else {
+  //     // laptop and above
+  //     setPlusvalues(5);
+  //   }
+  // };
+  // useEffect(() => {
+  //   updateStartIndex(); // Set initial startIndex based on screen size
+  //   window.addEventListener("resize", updateStartIndex); // Update startIndex on window resize
 
-  useEffect(() => {
-    updateStartIndex(); // Set initial startIndex based on screen size
-    window.addEventListener("resize", updateStartIndex); // Update startIndex on window resize
+  //   return () => {
+  //     window.removeEventListener("resize", updateStartIndex); // Cleanup event listener on component unmount
+  //   };
+  // }, []);
 
-    return () => {
-      window.removeEventListener("resize", updateStartIndex); // Cleanup event listener on component unmount
-    };
-  }, []);
   console.log(sidebarToggle, "sidebarToggle");
   console.log(drawershowdata, "drawershowdatadrawershowdata");
+  console.log(sessionStorage.getItem('isLuxury'), "luxury_Value")
   return (
     <>
       <div
         className={`w-full bg-[#E5FFF1] h-full overflow-y-auto overflow-y-auto pt-[1vw] z-1`}
         style={{
-          zIndex: modalIsOpen || sharing == true ? 1 : 0,
+          // zIndex: modalIsOpen || sharing === true ? 1 : 0,
           // fontFamily:"Lato"
         }}
       >
@@ -830,7 +1003,7 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                 >
                   CLEAR
                 </h3>
-                {boolean.vehicle == true ? (
+                {boolean.vehicle === true ? (
                   <button
                     onClick={() =>
                       setBoolean({
@@ -857,15 +1030,76 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
             </div>
             {boolean.vehicle ? (
               <>
-                <div className="grid grid-cols-2 pt-[1vw] gap-[3.5vw] mx-[1.5vw]">
+
+                <div className="grid grid-cols-2 pt-[2vw] gap-[3.5vw] mx-[1vw]">
                   <button
-                    className={`${acfilter == "ac" ? "bg-[#1F487C]" : "bg-white"
-                      }  ${acfilter == "ac"
+                    className={`${NormalBus ? "bg-[#1F487C]" : "bg-white"}  ${NormalBus
+                      ? "text-white border-[#1F487C]"
+                      : "border-gray-300"
+                      } w-full border-[0.1vw] rounded-md cursor-pointer `}
+                    onClick={() => {
+                      if (NormalBus) {
+                        setNoramlBus(false);
+                        sessionStorage.setItem("isNoramlBus", false);
+                      } else {
+                        setNoramlBus(true);
+                        sessionStorage.setItem("isNoramlBus", true);
+                      }
+                    }}
+                  >
+                    <div className="flex justify-center items-center">
+                      <div className="py-[0.5vw] flex  items-center justify-center gap-[1vw]">
+                        <span>
+                          {" "}
+                          <RiBusFill className="w-[5vw] h-[5vw]" />
+                        </span>
+                        <span className="font-semibold  text-[5vw]">
+                          Normal
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    className={`${busType ? "bg-custom-gradient-luxury bg-image-url" : "bg-white"
+                      } h-full ${busType
+                        ? "text-black border-custom-gradient-luxury bg-image-url"
+                        : "border-gray-300 "
+                      } w-full border-[0.1vw] rounded-[1.2vw] cursor-pointer `}
+                    onClick={() => {
+                      if (busType) {
+                        setBusType(false);
+                        sessionStorage.setItem("isLuxury", false);
+
+                      } else {
+                        setBusType(true);
+                        sessionStorage.setItem("isLuxury", true);
+                      }
+                    }}
+                  >
+                    <div className="flex justify-center items-center">
+                      <div className="py-[2vw] flex gap-[1vw] items-center justify-center">
+                        <FaBus className="w-[5vw] h-[5vw]" />
+                        <span className="font-semibold  text-[5vw]">
+                          Luxury
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+
+
+
+
+
+                <div className="grid grid-cols-2 pt-[2vw] gap-[3.5vw] mx-[1.5vw]">
+                  <button
+                    className={`${acfilter === "ac" ? "bg-[#1F487C]" : "bg-white"
+                      }  ${acfilter === "ac"
                         ? "text-white border-[#1F487C]"
                         : "border-gray-300"
                       } w-full border-[0.1vw] rounded-md cursor-pointer `}
                     onClick={() => {
-                      if (acfilter == "ac") {
+                      if (acfilter === "ac") {
                         setAcFilter("");
                       } else {
                         setAcFilter("ac");
@@ -876,10 +1110,10 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                       {/* <span>
                     <TbAirConditioning size={15} className="mx-1 " />
                   </span> */}
-                      {acfilter == "ac" ? (
-                        <img src={s_c_ac} className="w-[5.5vw] h-[5.5vw]" />
+                      {acfilter === "ac" ? (
+                        <img src={s_c_ac} className="w-[5.5vw] h-[5.5vw]" alt="s_c_ac" />
                       ) : (
-                        <img src={s_ac} className="w-[5.5vw] h-[5.5vw]" />
+                        <img src={s_ac} className="w-[5.5vw] h-[5.5vw]" alt="s_ac" />
                       )}
                       <span
                         className={`${filtervalue.ac} font-semibold  text-[5vw]`}
@@ -889,13 +1123,13 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                     </div>
                   </button>
                   <button
-                    className={`${acfilter == "non_ac" ? "bg-[#1F487C]" : "bg-white"
-                      } ${acfilter == "non_ac"
+                    className={`${acfilter === "non_ac" ? "bg-[#1F487C]" : "bg-white"
+                      } ${acfilter === "non_ac"
                         ? "text-white border-[#1F487C]"
                         : "border-gray-300"
                       } w-full border-[0.1vw]  rounded-md cursor-pointer `}
                     onClick={() => {
-                      if (acfilter == "non_ac") {
+                      if (acfilter === "non_ac") {
                         setAcFilter("");
                       } else {
                         setAcFilter("non_ac");
@@ -906,10 +1140,10 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                       {/* <span>
                     <TbAirConditioningDisabled size={20} className="mx-1" />
                   </span> */}
-                      {acfilter == "non_ac" ? (
-                        <img src={s_c_non_ac} className="w-[5.5vw] h-[5.5vw]" />
+                      {acfilter === "non_ac" ? (
+                        <img src={s_c_non_ac} className="w-[5.5vw] h-[5.5vw]" alt="s_c_non_ac" />
                       ) : (
-                        <img src={s_non_ac} className="w-[5.5vw] h-[5.5vw]" />
+                        <img src={s_non_ac} className="w-[5.5vw] h-[5.5vw]" alt="s_non_ac" />
                       )}
                       <span className="font-semibold  text-[5vw]">Non AC</span>
                     </div>
@@ -918,13 +1152,13 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
 
                 <div className="grid grid-cols-2 pt-[2vw] gap-[3.5vw] mx-[1vw]">
                   <button
-                    className={`${seattypefilter == "sleeper" ? "bg-[#1F487C]" : "bg-white"
-                      } h-full ${seattypefilter == "sleeper"
+                    className={`${seattypefilter === "sleeper" ? "bg-[#1F487C]" : "bg-white"
+                      } h-full ${seattypefilter === "sleeper"
                         ? "text-white border-[#1F487C]"
                         : "border-gray-300"
                       } w-full border-[0.1vw]  rounded-md cursor-pointer `}
                     onClick={() => {
-                      if (seattypefilter == "sleeper") {
+                      if (seattypefilter === "sleeper") {
                         setSeatTypeFilter("");
                       } else {
                         setSeatTypeFilter("sleeper");
@@ -935,13 +1169,13 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                       {/* <span>
                     <MdAirlineSeatIndividualSuite size={20} className="pl-1" />
                   </span> */}
-                      <img src={sleeper} className="w-[7.5vw] h-[4.5vw]" />
+                      <img src={sleeper} className="w-[7.5vw] h-[4.5vw]" alt="sleeper" />
                       <span className="font-semibold text-[5vw]">Sleeper</span>
                     </p>
                   </button>
                   <button
-                    className={`${seattypefilter == "seater" ? "bg-[#1F487C]" : "bg-white"
-                      } h-full ${seattypefilter == "seater"
+                    className={`${seattypefilter === "seater" ? "bg-[#1F487C]" : "bg-white"
+                      } h-full ${seattypefilter === "seater"
                         ? "text-white border-[#1F487C]"
                         : "border-gray-300 "
                       } w-full border-[0.1vw] rounded-md cursor-pointer `}
@@ -957,50 +1191,22 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                       {/* <span>
                     <MdAirlineSeatReclineExtra size={20} className="pl-1" />
                   </span> */}
-                      <img src={seats} className="w-[6vw] h-[6vw]" />
+                      <img src={seats} className="w-[6vw] h-[6vw]" alt="seats_type" />
                       <span className="font-semibold text-[5vw]">Seater</span>
                     </div>
                   </button>
                 </div>
-                <div className=" mx-[0.6vw] my-[2vw] pt-[1vw]">
-                  <button
-                    className={`${seattypefilter == "semi_sleeper"
-                        ? "bg-[#1F487C]"
-                        : "bg-white"
-                      } h-full ${seattypefilter == "semi_sleeper"
-                        ? "text-white border-[#1F487C]"
-                        : "border-gray-300 "
-                      } w-full border-[0.1vw] rounded-md cursor-pointer `}
-                    onClick={() => {
-                      if (seattypefilter === "semi_sleeper") {
-                        setSeatTypeFilter("");
-                      } else {
-                        setSeatTypeFilter("semi_sleeper");
-                      }
-                    }}
-                  >
-                    <div className="flex justify-center items-center">
-                      <div className="py-[2vw] flex gap-[3.5vw] items-center justify-center">
-                        <img src={sleeper} className="w-[5.5vw] h-[5.5vw]" />
-                        <span className="font-semibold  text-[5vw]">
-                          Semi Sleeper
-                        </span>
-                      </div>
-                      {/* <p className="mx-[0.5vw]">+</p>
-                      <div className="py-[0.5vw] flex gap-[0.5vw] items-center justify-center">
-                        <img src={seats} className="w-[1.3vw] h-[1.2vw]" />
-                        <span className="font-semibold text-[1vw]">Seater</span>
-                      </div> */}
-                    </div>
-                  </button>
-                </div>
+
               </>
             ) : (
               ""
             )}
             <p className="my-[4vw] border-b-[0.01vw] border-gray-300"></p>
           </div>
-
+          <div>
+            <RangeSlide setPriceRange={setPriceRange} priceRange={priceRange} />
+            <p className="my-[0.5vw] border-b-[0.01vw] border-gray-300"></p>
+          </div>
           <div className="">
             <div className="grid grid-cols-4 justify-between items-center my-[4vw]">
               <div className="col-span-3">
@@ -1019,7 +1225,7 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                 >
                   CLEAR
                 </h3>
-                {boolean.pickup == true ? (
+                {boolean.pickup === true ? (
                   <button
                     onClick={() =>
                       setBoolean({
@@ -1044,14 +1250,14 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                 )}
               </div>
             </div>
-            {boolean.pickup == true ? (
+            {boolean.pickup === true ? (
               <>
                 <div className="px-[2vw] py-[2.5vw]">
                   {/* <input className="border-2 border-gray-300 h-8 rounded-md w-full mb-4" /> */}
                   <Input
                     prefix={<CiSearch size={"5.5vw"} />}
                     placeholder="Search"
-                    className="mb-[3vw] text-[5vw] h-[10vw]"
+                    className="filter-input mb-[3vw] text-[5vw] h-[10vw]"
                     onChange={(e) =>
                       setSearchValue({
                         ...searchvalue,
@@ -1060,7 +1266,7 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                     }
                   />
                   {/* 81110 66300 */}
-                  {pickuppointlist.map((item, i) => (
+                  {/* {pickuppointlist.map((item, i) => (
                     <div className="flex items-center justify-between" key={i}>
                       <div className="flex items-center my-[3vw]">
                         <input
@@ -1076,12 +1282,31 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                           })`}</span>
                       </div>
                     </div>
-                  ))}
+                  ))} */}
+                  {pickUp_list?.boarding_points?.length > 0 ? pickUp_list.boarding_points.slice(0, 5).map((item, i) =>
+                  (
+                    <div className="flex items-center justify-between" key={i}>
+                      <div className="flex items-center my-[3vw] gap-[2vw]">
+                        <input
+                          type="checkbox"
+                          className=" filter-input w-[5vw] h-[5vw] mr-[1.5vw]"
+                          onChange={(e) => handlePickupCheckbox(e, item.name)}
+                          checked={pickupchecked[item.name] || false}
+                        />
+                        <span className="text-[4.1vw]">{item.name}</span>
+                      </div>
+                      <div>
+                        <span className="text-[4.1vw]">{`(${item?.count})`}</span>
+                      </div>
+                    </div>
+                  ))
+                    :
+                    ""}
                   <p
                     className="text-[#1F487C] font-bold text-[3.8vw] pt-[3.5vw] cursor-pointer"
                     //onClick={() => openModal("pickup")}
                     onClick={() => toggleDrawer("pickup")}
-                  >{`SHOW ALL (${pickupfullist.length})`}</p>
+                  >{`SHOW ALL (${pickUp_list?.boarding_points?.length})`}</p>
                 </div>
               </>
             ) : (
@@ -1109,7 +1334,7 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                   >
                     CLEAR
                   </h3>
-                  {boolean.pickup_time == true ? (
+                  {boolean.pickup_time === true ? (
                     <button
                       onClick={() =>
                         setBoolean({
@@ -1139,25 +1364,25 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
               <>
                 <div className="grid grid-cols-2 pt-[3vw] gap-[3vw] mx-[1vw] ">
                   <button
-                    className={`${pickuptime == "6:00 AM to 11:00 AM"
-                        ? "bg-[#1F487C]"
-                        : "bg-white"
-                      } h-full ${pickuptime == "6:00 AM to 11:00 AM" ? "text-white " : ""
-                      } w-full  ${pickuptime == "6:00 AM to 11:00 AM"
+                    className={`${pickuptime === "6am-11am"
+                      ? "bg-[#1F487C]"
+                      : "bg-white"
+                      } h-full ${pickuptime === "6am-11am" ? "text-white " : ""
+                      } w-full  ${pickuptime === "6am-11am"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
                       } rounded-md cursor-pointer flex flex-col items-center justify-center py-[1.5vw]`}
                     // onClick={() =>
                     //   setTimeFitervalue({
                     //     ...timefiltervalue,
-                    //     time_6:00 AM to 11:00 AM: !timefiltervalue.time_6:00 AM to 11:00 AM,
+                    //     time_6am-11am: !timefiltervalue.time_6am-11am,
                     //   })
                     // }
                     onClick={() => {
-                      if (pickuptime == "6:00 AM to 11:00 AM") {
+                      if (pickuptime === "6am-11am") {
                         setPickUpTime("");
                       } else {
-                        setPickUpTime("6:00 AM to 11:00 AM");
+                        setPickUpTime("6am-11am");
                       }
                     }}
                   >
@@ -1169,25 +1394,25 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                     </span>
                   </button>
                   <button
-                    className={`${pickuptime == "11:00 AM to 6:00 PM"
-                        ? "bg-[#1F487C]"
-                        : "bg-white"
-                      } h-full ${pickuptime == "11:00 AM to 6:00 PM" ? "text-white " : ""
-                      } w-full  ${pickuptime == "6am_11pm"
+                    className={`${pickuptime === "11am-6pm"
+                      ? "bg-[#1F487C]"
+                      : "bg-white"
+                      } h-full ${pickuptime === "11am-6pm" ? "text-white " : ""
+                      } w-full  ${pickuptime === "6am_11pm"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
                       } rounded-md cursor-pointer flex flex-col items-center justify-center py-[1.5vw]`}
                     // onClick={() =>
                     //   setTimeFitervalue({
                     //     ...timefiltervalue,
-                    //     time_11:00 AM to 6:00 PM: !timefiltervalue.time_11:00 AM to 6:00 PM,
+                    //     time_11am-6pm: !timefiltervalue.time_11am-6pm,
                     //   })
                     // }
                     onClick={() => {
-                      if (pickuptime == "11:00 AM to 6:00 PM") {
+                      if (pickuptime === "11am-6pm") {
                         setPickUpTime("");
                       } else {
-                        setPickUpTime("11:00 AM to 6:00 PM");
+                        setPickUpTime("11am-6pm");
                       }
                     }}
                   >
@@ -1201,25 +1426,25 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                 </div>
                 <div className="grid grid-cols-2 pt-[3vw] gap-[3vw] mx-[1vw] mb-[2.5vw]">
                   <button
-                    className={`${pickuptime == "6:00 PM to 11:00 PM"
-                        ? "bg-[#1F487C]"
-                        : "bg-white"
-                      } h-full ${pickuptime == "6:00 PM to 11:00 PM" ? "text-white" : ""
-                      } w-full border-[0.1vw] ${pickuptime == "6:00 PM to 11:00 PM"
+                    className={`${pickuptime === "6pm-11pm"
+                      ? "bg-[#1F487C]"
+                      : "bg-white"
+                      } h-full ${pickuptime === "6pm-11pm" ? "text-white" : ""
+                      } w-full border-[0.1vw] ${pickuptime === "6pm-11pm"
                         ? "border-[#1F487C]"
                         : "border-gray-300"
                       } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[1.5vw]`}
                     // onClick={() =>
                     //   setTimeFitervalue({
                     //     ...timefiltervalue,
-                    //     time_6:00 PM to 11:00 PM: !timefiltervalue.time_6:00 PM to 11:00 PM,
+                    //     time_6pm-11pm: !timefiltervalue.time_6pm-11pm,
                     //   })
                     // }
                     onClick={() => {
-                      if (pickuptime == "6:00 PM to 11:00 PM") {
+                      if (pickuptime === "6pm-11pm") {
                         setPickUpTime("");
                       } else {
-                        setPickUpTime("6:00 PM to 11:00 PM");
+                        setPickUpTime("6pm-11pm");
                       }
                     }}
                   >
@@ -1231,25 +1456,25 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                     </span>
                   </button>
                   <button
-                    className={`${pickuptime == "11:00 PM to 6:00 AM"
-                        ? "bg-[#1F487C]"
-                        : "bg-white"
-                      } h-full ${pickuptime == "11:00 PM to 6:00 AM" ? "text-white" : ""
-                      } w-full border-[0.1vw] ${pickuptime == "11:00 PM to 6:00 AM"
+                    className={`${pickuptime === "11pm-6am"
+                      ? "bg-[#1F487C]"
+                      : "bg-white"
+                      } h-full ${pickuptime === "11pm-6am" ? "text-white" : ""
+                      } w-full border-[0.1vw] ${pickuptime === "11pm-6am"
                         ? "border-[#1F487C]"
                         : "border-gray-300"
                       } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[1.5vw]`}
                     // onClick={() =>
                     //   setTimeFitervalue({
                     //     ...timefiltervalue,
-                    //     time_11:00 PM to 6:00 AM: !timefiltervalue.time_11:00 PM to 6:00 AM,
+                    //     time_11pm-6am: !timefiltervalue.time_11pm-6am,
                     //   })
                     // }
                     onClick={() => {
-                      if (pickuptime == "11:00 PM to 6:00 AM") {
+                      if (pickuptime === "11pm-6am") {
                         setPickUpTime("");
                       } else {
-                        setPickUpTime("11:00 PM to 6:00 AM");
+                        setPickUpTime("11pm-6am");
                       }
                     }}
                   >
@@ -1281,7 +1506,7 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                 >
                   CLEAR
                 </h3>
-                {boolean.operators == true ? (
+                {boolean.operators === true ? (
                   <button
                     onClick={() =>
                       setBoolean({
@@ -1306,14 +1531,14 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                 )}
               </div>
             </div>
-            {boolean.operators == true ? (
+            {boolean.operators === true ? (
               <>
                 <div className="px-[1vw] pb-[2vw] pt-[2vw]">
                   {/* <input className="border-2 border-gray-300 h-8 rounded-md w-full mb-4" /> */}
                   <Input
                     prefix={<CiSearch className="" size={"5.5vw"} />}
                     placeholder="Search"
-                    className="mb-[3vw] h-[10vw] text-[5vw]"
+                    className=" filter-input mb-[3vw] h-[10vw] text-[5vw]"
                     onChange={(e) =>
                       setSearchValue({
                         ...searchvalue,
@@ -1321,35 +1546,37 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                       })
                     }
                   />
-                  {opertorlist.map((item, i) => {
-                    console.log(item, "itemitemitem");
+                  {pickUp_list?.operators?.length > 0 ? pickUp_list.operators.slice(0, 5).map((item, i) => {
                     return (
                       <div
                         className="flex items-center justify-between"
                         key={i}
                       >
-                        <div className="flex items-center my-[3vw]">
+                        <div className="flex items-center my-[3vw]  gap-[2vw]">
                           <input
                             type="checkbox"
-                            className="w-[5vw] h-[5vw] mr-[1.5vw]"
+                            className=" filter-input w-[5vw] h-[5vw] mr-[1.5vw]"
                             onChange={(e) =>
-                              handleoperatorCheckbox(e, item.place)
+                              handleoperatorCheckbox(e, item.operator)
                             }
-                            checked={operatorchecked[item.place] || false}
+                            checked={operatorchecked[item.operator] || false}
                           />
-                          <span className="text-[4.1vw]">{item.place}</span>
+                          <span className="text-[4.1vw]">{capitalizeFirstLetter(item.operator)}</span>
                         </div>
                         <div>
                           {/* <span className="text-[0.8vw]">{`(${item.count})`}</span> */}
                         </div>
                       </div>
                     );
-                  })}
+                  })
+                    :
+                    ""}
+
                   <p
                     className="text-[#1F487C] font-bold text-[3.8vw] pt-[3vw] cursor-pointer"
                     // onClick={() => openModal("operators")}
                     onClick={() => toggleDrawer("operators")}
-                  >{`SHOW ALL (${opertorlist.length})`}</p>
+                  >{`SHOW ALL (${pickUp_list?.operators?.length})`}</p>
                 </div>
               </>
             ) : (
@@ -1375,7 +1602,7 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                 >
                   CLEAR
                 </h3>
-                {boolean.drop == true ? (
+                {boolean.drop === true ? (
                   <button
                     onClick={() =>
                       setBoolean({
@@ -1400,43 +1627,48 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                 )}
               </div>
             </div>
-            {boolean.drop == true ? (
+            {boolean.drop === true ? (
               <>
                 <div className="px-[1vw] pb-[2vw] pt-[3vw]">
                   {/* <input className="border-2 border-gray-300 h-8 rounded-md w-full mb-4" /> */}
                   <Input
                     prefix={<CiSearch size={"5.5vw"} />}
                     placeholder="Search"
-                    className="mb-[2vw] h-[10vw] text-[5vw]"
-                    onChange={(e) =>
+                    className=" filter-input mb-[2vw] h-[10vw] text-[5vw]"
+                    // onChange={(e) =>
+                    //   setSearchValue({
+                    //     ...searchvalue,
+                    //     drop: e.target.value,
+                    //   })}
+                    onChange={(e) => {
                       setSearchValue({
                         ...searchvalue,
                         drop: e.target.value,
-                      })
-                    }
+                      });
+                    }}
                   />
-                  {dropponitlist.map((item, i) => (
+                  {pickUp_list?.dropping_points?.length > 0 ? pickUp_list.dropping_points.slice(0, 5).map((item, i) => (
                     <div className="flex items-center justify-between" key={i}>
-                      <div className="flex items-center my-[3vw]">
+                      <div className="flex items-center my-[3vw] gap-[2vw]">
                         <input
                           type="checkbox"
-                          className="w-[5vw] h-[5vw] mr-[1vw]"
-                          onChange={(e) => handledropCheckbox(e, item.place)}
-                          checked={dropchecked[item.place] || false}
+                          className=" filter-input w-[5vw] h-[5vw] mr-[1vw]"
+                          onChange={(e) => handledropCheckbox(e, item.name)}
+                          checked={dropchecked[item.name] || false}
                         />
-                        <span className=" text-[4.1vw]">{item.place}</span>
+                        <span className=" text-[4.1vw]">{item.name}</span>
                       </div>
                       <div>
-                        <span className="text-[4.1vw]">{`(${item.count / 8
-                          })`}</span>
+                        <span className="text-[4.1vw]">{`(${item.count})`}</span>
                       </div>
                     </div>
-                  ))}
+                  ))
+                    : ""}
                   <p
                     className="text-[#1F487C] font-bold text-[3.8vw] pt-[3vw] cursor-pointer"
                     // onClick={() => openModal("drop")}
                     onClick={() => toggleDrawer("drop")}
-                  >{`SHOW ALL (${dropfulllist.length})`}</p>
+                  >{`SHOW ALL (${pickUp_list?.dropping_points?.length})`}</p>
                 </div>
               </>
             ) : (
@@ -1463,7 +1695,7 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                   >
                     CLEAR
                   </h3>
-                  {boolean.drop_time == true ? (
+                  {boolean.drop_time === true ? (
                     <button
                       onClick={() =>
                         setBoolean({
@@ -1493,25 +1725,25 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
               <>
                 <div className="grid grid-cols-2 pt-[3vw] gap-[3vw] mx-[1vw] ">
                   <button
-                    className={`${droptime == "6:00 AM to 11:00 AM"
-                        ? "bg-[#1F487C]"
-                        : "bg-white"
-                      } h-full ${droptime == "6:00 AM to 11:00 AM" ? "text-white " : ""
-                      } w-full  ${droptime == "6:00 AM to 11:00 AM"
+                    className={`${droptime === "6am-11am"
+                      ? "bg-[#1F487C]"
+                      : "bg-white"
+                      } h-full ${droptime === "6am-11am" ? "text-white " : ""
+                      } w-full  ${droptime === "6am-11am"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
                       } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[2vw]`}
                     // onClick={() =>
                     //   setTimeFitervalue({
                     //     ...timefiltervalue,
-                    //     time_6:00 AM to 11:00 AM: !timefiltervalue.time_6:00 AM to 11:00 AM,
+                    //     time_6am-11am: !timefiltervalue.time_6am-11am,
                     //   })
                     // }
                     onClick={() => {
-                      if (droptime == "6:00 AM to 11:00 AM") {
+                      if (droptime === "6am-11am") {
                         setDropTime("");
                       } else {
-                        setDropTime("6:00 AM to 11:00 AM");
+                        setDropTime("6am-11am");
                       }
                     }}
                   >
@@ -1523,25 +1755,25 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                     </span>
                   </button>
                   <button
-                    className={`${droptime == "11:00 AM to 6:00 PM"
-                        ? "bg-[#1F487C]"
-                        : "bg-white"
-                      } h-full ${droptime == "11:00 AM to 6:00 PM" ? "text-white " : ""
-                      } w-full  ${droptime == "6am_11pm"
+                    className={`${droptime === "11am-6pm"
+                      ? "bg-[#1F487C]"
+                      : "bg-white"
+                      } h-full ${droptime === "11am-6pm" ? "text-white " : ""
+                      } w-full  ${droptime === "6am_11pm"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
                       } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[2vw]`}
                     // onClick={() =>
                     //   setTimeFitervalue({
                     //     ...timefiltervalue,
-                    //     time_11:00 AM to 6:00 PM: !timefiltervalue.time_11:00 AM to 6:00 PM,
+                    //     time_11am-6pm: !timefiltervalue.time_11am-6pm,
                     //   })
                     // }
                     onClick={() => {
-                      if (droptime == "11:00 AM to 6:00 PM") {
+                      if (droptime === "11am-6pm") {
                         setDropTime("");
                       } else {
-                        setDropTime("11:00 AM to 6:00 PM");
+                        setDropTime("11am-6pm");
                       }
                     }}
                   >
@@ -1555,25 +1787,25 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                 </div>
                 <div className="grid grid-cols-2 pt-[2vw] gap-[3vw] mx-[1vw] mb-[3vw]">
                   <button
-                    className={`${droptime == "6:00 PM to 11:00 PM"
-                        ? "bg-[#1F487C]"
-                        : "bg-white"
-                      } h-full ${droptime == "6:00 PM to 11:00 PM" ? "text-white" : ""
-                      } w-full border-[0.1vw] ${droptime == "6:00 PM to 11:00 PM"
+                    className={`${droptime === "6pm-11pm"
+                      ? "bg-[#1F487C]"
+                      : "bg-white"
+                      } h-full ${droptime === "6pm-11pm" ? "text-white" : ""
+                      } w-full border-[0.1vw] ${droptime === "6pm-11pm"
                         ? "border-[#1F487C]"
                         : "border-gray-300"
                       } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[2vw]`}
                     // onClick={() =>
                     //   setTimeFitervalue({
                     //     ...timefiltervalue,
-                    //     time_6:00 PM to 11:00 PM: !timefiltervalue.time_6:00 PM to 11:00 PM,
+                    //     time_6pm-11pm: !timefiltervalue.time_6pm-11pm,
                     //   })
                     // }
                     onClick={() => {
-                      if (droptime == "6:00 PM to 11:00 PM") {
+                      if (droptime === "6pm-11pm") {
                         setDropTime("");
                       } else {
-                        setDropTime("6:00 PM to 11:00 PM");
+                        setDropTime("6pm-11pm");
                       }
                     }}
                   >
@@ -1585,25 +1817,25 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                     </span>
                   </button>
                   <button
-                    className={`${droptime == "11:00 PM to 6:00 AM"
-                        ? "bg-[#1F487C]"
-                        : "bg-white"
-                      } h-full ${droptime == "11:00 PM to 6:00 AM" ? "text-white" : ""
-                      } w-full border-[0.1vw] ${droptime == "11:00 PM to 6:00 AM"
+                    className={`${droptime === "11pm-6am"
+                      ? "bg-[#1F487C]"
+                      : "bg-white"
+                      } h-full ${droptime === "11pm-6am" ? "text-white" : ""
+                      } w-full border-[0.1vw] ${droptime === "11pm-6am"
                         ? "border-[#1F487C]"
                         : "border-gray-300"
                       } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[2vw]`}
                     // onClick={() =>
                     //   setTimeFitervalue({
                     //     ...timefiltervalue,
-                    //     time_11:00 PM to 6:00 AM: !timefiltervalue.time_11:00 PM to 6:00 AM,
+                    //     time_11pm-6am: !timefiltervalue.time_11pm-6am,
                     //   })
                     // }
                     onClick={() => {
-                      if (droptime == "11:00 PM to 6:00 AM") {
+                      if (droptime === "11pm-6am") {
                         setDropTime("");
                       } else {
-                        setDropTime("11:00 PM to 6:00 AM");
+                        setDropTime("11pm-6am");
                       }
                     }}
                   >
@@ -1634,7 +1866,7 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                 >
                   CLEAR
                 </h3>
-                {boolean.amenities == true ? (
+                {boolean.amenities === true ? (
                   <button
                     onClick={() =>
                       setBoolean({
@@ -1660,223 +1892,40 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
               </div>
             </div>
             <div>
-              {boolean.amenities ? (
-                <div className="flex flex-wrap gap-[3vw] py-[2vw] px-[1vw]">
-                  {amenitieslist.slice(0, 5).map((item,i) => (
-                    // <button
-                    //   className={`${
-                    //     amenitiesvalue?.includes(item.place)
-                    //       ? "bg-[#1F487C] text-white border-[#1F487C] border-[0.1vw]"
-                    //       : "bg-white border-gray-300 border-[0.1vw]"
-                    //   } py-[2vw] px-[2vw] rounded-[0.6vw]  cursor-pointer`}
-                    //   onClick={() => handleAmenities(item.place)}
-                    // >
-                    //   <p className="text-[4.1vw]">{`${item.place} (${
-                    //     item.count / 8
-                    //   })`}</p>
-                    // </button>
+              {boolean.amenities && (
+                <div className="flex-col items-center justify-center gap-[1vw] py-[2vw] px-[1vw]">
 
-                    <div className="flex items-center justify-between" key={i}>
-                      <div className="flex items-center my-[0.25vw]">
+                  {pickUp_list?.amenities?.length > 0 ? pickUp_list?.amenities.slice(0, 5).map((item, i) => (
+                    <div className=" items-center justify-between" key={i}>
+                      <div className="flex items-center my-[0.25vw] gap-[2vw]">
                         <input
                           type="checkbox"
-                          className="w-[5vw] h-[5vw] mr-[0.4vw]"
-                          onChange={() => handleAmenities(item.place)}
-                          checked={amenitiesvalue?.includes(item.place)}
-                        // checked={amenitiesvalue[item.place]|| false}
+                          className=" filter-input w-[5vw] h-[5vw] mr-[0.4vw]"
+                          // onChange={() => handleAmenities(item.amenity)}
+                          onChange={(e) => handleAmenityCheckbox(e, item.amenity)}
+                          // checked={amenitiesvalue?.includes(item.amenity)}
+                          checked={amenitiesvalue[item.amenity] || false}
                         />
-                        <span className="text-[4.5vw]">{item.place}</span>
+                        <span className="text-[4.5vw]">{capitalizeFirstLetter(item.amenity)}</span>
                       </div>
                       <div>
-                        <span className="text-[0.8vw]">{`(${item.count / 8})`}</span>
+                        <span className="text-[0.8vw]">{`(${item.count})`}</span>
                       </div>
                     </div>
-                  ))}
+                  ))
+                    : ""
+                  }
                 </div>
-              ) : (
-                ""
               )}
               <p
                 className="text-[#1F487C] font-bold text-[3.8vw] pt-[3vw] cursor-pointer pl-[1vw]"
                 // onClick={() => openModal("amenities")}
                 onClick={() => toggleDrawer("amenities")}
-              >{`${`SHOW ALL (${amenitieslist.length}`})`}</p>{" "}
+              >{`${`SHOW ALL (${pickUp_list?.amenities?.length}`})`}</p>{" "}
               <p className="mt-[2vw] border-b-[0.01vw] border-gray-300"></p>
             </div>
           </div>
         </div>
-        <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={closeModal}
-          style={{
-            overlay: {
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
-            },
-            content: {
-              width: "45%", // Adjust width as needed
-              height: "60%", // Adjust height as needed
-              margin: "11vw 35vw",
-              padding: "0px",
-            },
-          }}
-        >
-          <h1 className="border-l-[0.4vw] pl-[0.6vw] pt-[0.25vw] text-[1.5vw] border-[#1F487C]">
-            {modalname === "pickup"
-              ? "Pickup Point"
-              : modalname === "drop"
-                ? "Drop Point"
-                : modalname == "amenities"
-                  ? "Amenities"
-                  : "Travel Operator"}
-          </h1>
-          <div className="p-[1vw] overflow-x-auto ">
-            {" "}
-            <Input
-              prefix={<CiSearch size={"1vw"} />}
-              placeholder="Search"
-              className="mb-[0.6vw] text-[1vw] h-[2vw]"
-              onChange={(e) => setModalSearch(e.target.value)}
-            />
-            {/* <div className="flex flex-wrap">
-              {Object.entries(modalshowdata).map(([row, letters], index) => (
-                <div key={index} className="w-1/3 px-[0.6vw]">
-                  <h2 className="text-[#1F487C] my-[0.6vw] text-[1vw] font-semibold text-center">
-                    {row}
-                  </h2>
-                  {letters.map((item, j) => (
-                    <div
-                      className="flex items-center justify-between gap-4"
-                      key={j}
-                    >
-                      <div className="flex items-center my-[0.25vw]">
-                        <input
-                          type="checkbox"
-                          className="w-[1.2vw] h-[1.2vw] mr-[0.6vw]"
-                          onChange={(e) =>
-                            modalname === "pickup"
-                              ? handlePickupCheckbox(e, item.place)
-                              : modalname === "drop"
-                              ? handledropCheckbox(e, item.place)
-                              : modalname === "amenities"
-                              ? handleAmenities(item.place)
-                              : handleoperatorCheckbox(e, item.place)
-                          }
-                          checked={
-                            modalname === "pickup"
-                              ? pickupchecked[item.place] || false
-                              : modalname === "drop"
-                              ? dropchecked[item.place]
-                              : operatorchecked[item.place]
-                          }
-                        />
-                        <span className="pt-1 text-[1vw]">{item.place}</span>
-                      </div>
-                      <div>
-                        <span className="text-[0.8vw]">{`(${
-                          item.count / 8
-                        })`}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div> */}
-            <div className="h-[20vw] w-full grid grid-flow-col grid-rows-10  pb-[1vw] overflow-x-auto overflow-y-hidden">
-              {sortedList.map((item, i) => (
-                // <p key={item.place} className="whitespace-nowrap pr-[5vw] ">
-                //   {item.place}
-                // </p>
-                <div
-                  className="flex items-center justify-between pr-[5vw]"
-                  key={i}
-                >
-                  <div className="whitespace-nowrap items-center flex justify-center">
-                    <input
-                      type="checkbox"
-                      className="w-[1.1vw] h-[1.1vw] mr-[0.6vw]"
-                      onChange={(e) =>
-                        modalname === "pickup"
-                          ? handlePickupCheckbox(e, item.place)
-                          : modalname === "drop"
-                            ? handledropCheckbox(e, item.place)
-                            : modalname === "amenities"
-                              ? handleAmenities(item.place)
-                              : handleoperatorCheckbox(e, item.place)
-                      }
-                      checked={
-                        modalname === "pickup"
-                          ? pickupchecked[item.place] || false
-                          : modalname === "drop"
-                            ? dropchecked[item.place]
-                            : operatorchecked[item.place]
-                      }
-                    />
-                    <span className="pt-1 text-[1vw]">
-                      {item.place.charAt(0).toUpperCase() +
-                        item.place.slice(1).toLowerCase()}
-                      <span className="pl-[1vw]">
-                        {" "}
-                        {`(${modalname != "operators" ? item.count / 8 : item.count
-                          })`}
-                      </span>
-                    </span>
-                  </div>
-                  {/* <div>
-                    <span className="text-[0.8vw]">{`(${
-                      item.count / 8
-                    })`}</span>
-                  </div> */}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* <div className="w-full">
-            {Object.entries(modalshowdata).map(([row, letters], index) => (
-              <div key={index} className="grid grid-flow-row">
-                {letters
-                  .reduce((chunks, item, i) => {
-                    if (i % 5 === 0) chunks.push(letters.slice(i, i + 5));
-                    return chunks;
-                  }, [])
-                  .map((chunk, i) => (
-                    <div key={i} className="grid grid-flow-col">
-                      {chunk.map((item, j) => (
-                        <div key={j} className="w-[10vw]">
-                          {item.place}
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-              </div>
-            ))}
-          </div> */}
-
-          {/* <div className="grid grid-flow-col h-[20vw] grid-rows-2">
-            {Object.entries(modalshowdata).map(([row, letters], index) => (
-              <div key={index} className="">
-                <h2 className="text-[#1F487C] text-[1vw] font-semibold p-[1vw]">
-                  {row}
-                </h2>
-                {letters.map((item, index) => (
-                  <p key={index}>{item.place}</p>
-                ))}
-              </div>
-            ))}
-          </div> */}
-
-          {/* <div class="flex justify-center items-center w-full  py-[1vw]">
-            <button class="bg-[#1F487C] w-[20%] py-[0.5vw] rounded-full text-[1vw] text-white font-semibold mr-[0.6vw]">
-              Cancel
-            </button>
-            <button
-              class="bg-[#03CCF4] w-[20%] py-[0.25vw] rounded-full text-[1vw] text-white font-semibold ml-2"
-              onClick={handleonapply}
-            >
-              Apply
-            </button>
-          </div> */}
-        </Modal>
 
         <Drawer
           closable
@@ -1896,16 +1945,16 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
               ? "Pickup Point"
               : isDrawerName === "drop"
                 ? "Drop Point"
-                : isDrawerName == "amenities"
+                : isDrawerName === "amenities"
                   ? "Amenities"
                   : "Travel Operator"}
           </h1>
-          <div className="p-[3vw] overflow-x-auto ">
+          <div className="p-[3vw] ">
             {" "}
             <Input
               prefix={<CiSearch size={"5vw"} />}
               placeholder="Search"
-              className="mb-[3vw] text-[4.5vw] h-[10vw]"
+              className=" filter-input mb-[3vw] text-[4.5vw] h-[10vw] "
               onChange={(e) => setDrawerSearch(e.target.value)}
             />
             {/* <div className="flex flex-wrap">
@@ -1951,8 +2000,8 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                                 </div>
                           ))}
                         </div> */}
-            <div className="h-full w-full grid grid-flow-col grid-rows-10 pb-[3vw] overflow-x-auto overflow-y-hidden">
-              {sortedList.map((item, i) => (
+            <div className=" h-[70vh] overflow-x-hidden">
+              {sortedList?.map((item, i) => (
                 // <p key={item.place} className="whitespace-nowrap pr-[5vw] ">
                 //   {item.place}
                 // </p>
@@ -1963,35 +2012,48 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
                   <div className="whitespace-nowrap items-center flex justify-center my-[2.5vw]">
                     <input
                       type="checkbox"
-                      className="w-[6vw] h-[6vw] mr-[3vw] pt-[2vw]"
+                      className=" w-[6vw] h-[6vw] mr-[3vw] pt-[2vw]"
                       onChange={(e) =>
                         isDrawerName === "pickup"
-                          ? handlePickupCheckbox(e, item.place)
+                          ? handlePickupCheckbox(e, item.name)
                           : isDrawerName === "drop"
-                            ? handledropCheckbox(e, item.place)
+                            ? handledropCheckbox(e, item.name)
                             : isDrawerName === "amenities"
-                              ? handleAmenities(item.place)
-                              : handleoperatorCheckbox(e, item.place)
+                              ? handleAmenityCheckbox(e, item.amenity)
+                              : handleoperatorCheckbox(e, item.operator)
                       }
-                       checked={
+                      checked={
                         isDrawerName === "pickup"
-                          ? pickupchecked[item.place] || false
+                          ? pickupchecked[item.name] || false
                           : isDrawerName === "drop"
-                            ? dropchecked[item.place] || false
+                            ? dropchecked[item.name] || false
                             : isDrawerName === "amenities"
-                              ? amenitiesvalue.includes(item.place)
-                              : operatorchecked[item.place]
+                              ? amenitiesvalue[item.amenity]
+                              : operatorchecked[item.operator]
                       }
                     />
-                    <span className="text-[4.5vw]">
+                    {/* <span className="text-[4.5vw]">
                       {item.place.charAt(0).toUpperCase() +
                         item.place.slice(1).toLowerCase()}
                       <span className="pl-[4vw]">
                         {" "}
                         {`(${isDrawerName != "operators"
-                            ? item.count / 8
-                            : item.count
+                          ? item.count / 8
+                          : item.count
                           })`}
+                      </span>
+                    </span> */}
+                    <span className="pt-1 text-[4vw]">
+                      {isDrawerName === "amenities"
+                        ? item.amenity?.charAt(0).toUpperCase() +
+                        item.amenity?.slice(1).toLowerCase()
+                        : isDrawerName === "operators"
+                          ? item.operator?.charAt(0).toUpperCase() +
+                          item.operator?.slice(1).toLowerCase()
+                          : item.name?.charAt(0).toUpperCase() +
+                          item.name?.slice(1).toLowerCase()}
+                      <span className="pl-[1vw]">
+                        {isDrawerName !== "operators" && item.count}
                       </span>
                     </span>
                   </div>

@@ -108,7 +108,7 @@ export default function Rating() {
               }
               <div className="absolute bottom-[1vw] px-[2vw] items-center justify-center flex">
                {
-                item?.description?.length > 70 ? <Popover content={item.description} trigger="hover" overlayStyle={{ maxWidth: '20vw' }}><p className=" text-[#1F487C] text-[1.1vw]">{`${capitalizeFirstLetter(item?.description?.slice(0,70))}...`}</p></Popover> : <p className=" text-[#1F487C] text-[1.1vw] items-center justify-center flex">{capitalizeFirstLetter(item.description)}</p>
+                item?.description?.length > 60 ? <Popover content={item.description} trigger="hover" overlayStyle={{ maxWidth: '20vw' }}><p className=" text-[#1F487C] text-[1.1vw]">{`${capitalizeFirstLetter(item?.description?.slice(0,60))}...`}</p></Popover> : <p className=" text-[#1F487C] text-[1.1vw] items-center justify-center flex">{capitalizeFirstLetter(item.description)}</p>
                } 
               </div>
               <div className="absolute left-[0.2vw] bottom-[-2vw]">

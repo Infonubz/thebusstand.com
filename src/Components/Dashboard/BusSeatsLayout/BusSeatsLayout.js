@@ -1124,25 +1124,82 @@ export default function BusSeatsLayout({
   }, [selectedseatprice]);
   console.log(selectedseatprice, selectedSeats, "selectedseatprice");
 
+  // const handleSeatClick = (seat) => {
+  //   if (
+  //     seat.status === "BFF" ||
+  //     seat.status === "BFA" ||
+  //     seat.status === "BFM" ||
+  //     seat.status === "on_booking"
+  //   )
+  //     return;
+
+  //   setSelectedSeats((prevSelectedSeats) => {
+  //     if (prevSelectedSeats.includes(seat.id)) {
+  //       return prevSelectedSeats.filter(
+  //         (selectedSeat) => selectedSeat !== seat.id
+  //       );
+  //     } else {
+  //       if (prevSelectedSeats.length < 6) {
+  //         return [...prevSelectedSeats, seat.id];
+  //       } else {
+  //         toast.warning("You can book maximum six seats only.");
+  //         return prevSelectedSeats;
+  //       }
+  //     }
+  //   });
+
+  //   setSelectedSeatsPrice((prevSelectedSeatsPrice) => {
+  //     const seatIndex = selectedSeats.indexOf(seat.id);
+
+  //     if (seatIndex !== -1) {
+  //       return prevSelectedSeatsPrice.filter((_, i) => i !== seatIndex);
+  //     } else {
+  //       if (prevSelectedSeatsPrice.length < 6) {
+  //         return [...prevSelectedSeatsPrice, seat.fare.totalNetFare];
+  //       } else {
+  //         //toast.warning("You can book only six seats.");
+  //         return prevSelectedSeatsPrice;
+  //       }
+  //     }
+  //   });
+  // };
+  const [seatDetails, setSeatDetails] = useState(
+    selectedSeats.reduce((acc, seat, index) => {
+      acc[index] = { Seat: "", Status: "" };
+      return acc;
+    }, {})
+  );
+
   const handleSeatClick = (seat) => {
     if (
       seat.status === "BFF" ||
       seat.status === "BFA" ||
       seat.status === "BFM" ||
-      seat.status === "on_booking"
+      seat.status == "on_booking"
     )
       return;
 
     setSelectedSeats((prevSelectedSeats) => {
       if (prevSelectedSeats.includes(seat.id)) {
+        // Remove seat from selectedSeats
+        setSeatDetails((prevSeatDetails) => {
+          const updatedDetails = { ...prevSeatDetails };
+          delete updatedDetails[seat.id]; // Remove seat from seatDetails
+          return updatedDetails;
+        });
         return prevSelectedSeats.filter(
           (selectedSeat) => selectedSeat !== seat.id
         );
       } else {
+        // Add seat to selectedSeats
         if (prevSelectedSeats.length < 6) {
+          setSeatDetails((prevSeatDetails) => ({
+            ...prevSeatDetails,
+            [seat.id]: { Seat: seat.id, Status: seat.status }, // Store seat ID and its status
+          }));
           return [...prevSelectedSeats, seat.id];
         } else {
-          toast.warning("You can book maximum six seats only.");
+          toast.warning("You can book only six seats.");
           return prevSelectedSeats;
         }
       }
@@ -1516,14 +1573,17 @@ export default function BusSeatsLayout({
                       <svg
                         width="1.5vw"
                         height="1.5vw"
-                        viewBox="0 0 87 101"
-                        fill="none"
+                        viewBox="0 0 32 37"
+                        fill="white"
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M8.5533 37.5279V18.7798C8.5533 9.46053 16.1081 1.90576 25.4274 1.90576H61.9878C71.3071 1.90576 78.8619 9.46075 78.8619 18.78C78.8619 28.3043 78.8619 37.5275 78.8619 37.5275M78.8619 37.5275L81.6745 37.5277C83.7454 37.5278 85.424 39.2066 85.424 41.2775V93.7748C85.424 96.8812 82.9058 99.3995 79.7994 99.3995H6.67839C3.57196 99.3995 1.05371 96.8812 1.05371 93.7748V41.2777C1.05371 39.2068 2.73255 37.5279 4.8035 37.5279H12.3031C14.374 37.5279 16.0529 39.2068 16.0529 41.2777V82.5254C16.0529 85.6319 18.5711 88.1501 21.6776 88.1501H66.6751C69.7815 88.1501 72.2998 85.6319 72.2998 82.5254V41.2775C72.2998 39.2066 73.9785 37.5278 76.0493 37.5277L78.8619 37.5275Z"
+                          d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998V11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H3.55687Z"
+                          fill="white"
+                        />
+                        <path
+                          d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998C28.9099 9.12696 28.9099 11.5352 28.9099 11.5352M28.9099 11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H4.6386C5.53474 11.5354 6.2612 12.2619 6.2612 13.158V29.9671C6.2612 31.3113 7.35089 32.401 8.69509 32.401H24.1098C25.454 32.401 26.5437 31.3113 26.5437 29.9671V13.1579C26.5437 12.2618 27.2701 11.5353 28.1661 11.5353L28.9099 11.5352Z"
                           stroke="#298121"
-                          stroke-width="1.8749"
                         />
                       </svg>
                     </span>
@@ -1536,14 +1596,17 @@ export default function BusSeatsLayout({
                       <svg
                         width="1.5vw"
                         height="1.5vw"
-                        viewBox="0 0 87 101"
-                        fill="none"
+                        viewBox="0 0 32 37"
+                        fill="white"
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M8.5533 37.5279V18.7798C8.5533 9.46053 16.1081 1.90576 25.4274 1.90576H61.9878C71.3071 1.90576 78.8619 9.46075 78.8619 18.78C78.8619 28.3043 78.8619 37.5275 78.8619 37.5275M78.8619 37.5275L81.6745 37.5277C83.7454 37.5278 85.424 39.2066 85.424 41.2775V93.7748C85.424 96.8812 82.9058 99.3995 79.7994 99.3995H6.67839C3.57196 99.3995 1.05371 96.8812 1.05371 93.7748V41.2777C1.05371 39.2068 2.73255 37.5279 4.8035 37.5279H12.3031C14.374 37.5279 16.0529 39.2068 16.0529 41.2777V82.5254C16.0529 85.6319 18.5711 88.1501 21.6776 88.1501H66.6751C69.7815 88.1501 72.2998 85.6319 72.2998 82.5254V41.2775C72.2998 39.2066 73.9785 37.5278 76.0493 37.5277L78.8619 37.5275Z"
+                          d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998V11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H3.55687Z"
+                          fill="white"
+                        />
+                        <path
+                          d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998C28.9099 9.12696 28.9099 11.5352 28.9099 11.5352M28.9099 11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H4.6386C5.53474 11.5354 6.2612 12.2619 6.2612 13.158V29.9671C6.2612 31.3113 7.35089 32.401 8.69509 32.401H24.1098C25.454 32.401 26.5437 31.3113 26.5437 29.9671V13.1579C26.5437 12.2618 27.2701 11.5353 28.1661 11.5353L28.9099 11.5352Z"
                           stroke="#FF00D5"
-                          stroke-width="1.8749"
                         />
                       </svg>
                     </span>
@@ -1556,14 +1619,17 @@ export default function BusSeatsLayout({
                       <svg
                         width="1.5vw"
                         height="1.5vw"
-                        viewBox="0 0 87 101"
-                        fill="none"
+                        viewBox="0 0 32 37"
+                        fill="white"
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          d="M8.5533 37.5279V18.7798C8.5533 9.46053 16.1081 1.90576 25.4274 1.90576H61.9878C71.3071 1.90576 78.8619 9.46075 78.8619 18.78C78.8619 28.3043 78.8619 37.5275 78.8619 37.5275M78.8619 37.5275L81.6745 37.5277C83.7454 37.5278 85.424 39.2066 85.424 41.2775V93.7748C85.424 96.8812 82.9058 99.3995 79.7994 99.3995H6.67839C3.57196 99.3995 1.05371 96.8812 1.05371 93.7748V41.2777C1.05371 39.2068 2.73255 37.5279 4.8035 37.5279H12.3031C14.374 37.5279 16.0529 39.2068 16.0529 41.2777V82.5254C16.0529 85.6319 18.5711 88.1501 21.6776 88.1501H66.6751C69.7815 88.1501 72.2998 85.6319 72.2998 82.5254V41.2775C72.2998 39.2066 73.9785 37.5278 76.0493 37.5277L78.8619 37.5275Z"
+                          d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998V11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H3.55687Z"
+                          fill="white"
+                        />
+                        <path
+                          d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998C28.9099 9.12696 28.9099 11.5352 28.9099 11.5352M28.9099 11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H4.6386C5.53474 11.5354 6.2612 12.2619 6.2612 13.158V29.9671C6.2612 31.3113 7.35089 32.401 8.69509 32.401H24.1098C25.454 32.401 26.5437 31.3113 26.5437 29.9671V13.1579C26.5437 12.2618 27.2701 11.5353 28.1661 11.5353L28.9099 11.5352Z"
                           stroke="#0088D3"
-                          stroke-width="1.8749"
                         />
                       </svg>
                     </span>
@@ -1726,7 +1792,9 @@ export default function BusSeatsLayout({
           <div className="col-span-3 h-full w-full">
             <div className="grid grid-cols-2 h-full w-full px-[2vw] gap-[1.5vw]">
               <div className={`col-span-1 h-full w-full py-[1vw]`}>
-                <div className="border-[0.1vw] border-gray-400 h-[53vw] w-full rounded-[0.5vw] relative bg-white">
+                <div
+                  className={`border-[0.1vw] border-gray-400 h-[53vw] w-full rounded-[0.5vw] relative bg-white`}
+                >
                   <p className="text-[1vw] absolute top-[-1.5vw] left-[3vw] text-center">
                     {"Lower List".toUpperCase()}
                     {`(${lowerdeck?.length})`}
@@ -1735,7 +1803,13 @@ export default function BusSeatsLayout({
                     <RiSteering2Fill size={"2vw"} />
                   </span>
                   <div className="border-l-[0.2vw] border-[#EEEDED] absolute left-[-0.15vw] top-[3vw] h-[3vw]"></div>
-                  <div className="border-r-[0.1vw] border-t-[0.1vw] border-b-[0.1vw] bg-[#EEEDED] border-gray-400 h-[3vw] left-[-0.05vw] w-[3vw] top-[3vw] absolute"></div>
+                  <div
+                    className={`border-r-[0.1vw] border-t-[0.1vw] border-b-[0.1vw] ${
+                      busdetails.bus_type_status === "luxury"
+                        ? "bg-[#FFEEC9]"
+                        : "bg-[#EEEDED]"
+                    } border-gray-400 h-[3vw] left-[-0.05vw] w-[3vw] top-[3vw] absolute`}
+                  ></div>
                   <div className="grid grid-rows-6 h-full w-full gap-[1vw] pt-[6vw] py-[1vw]">
                     <div>
                       <div>
@@ -2217,6 +2291,7 @@ export default function BusSeatsLayout({
                     selectedSeats={selectedSeats}
                     selectedRoutes={selectedRoutes}
                     busdetails={busdetails}
+                    seatDetails={seatDetails}
                     // seatplatform={seatplatform}
                     //type={type}
                     discount={totalprice}
