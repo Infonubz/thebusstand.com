@@ -41,6 +41,5 @@ test('renders learn react link', async () => {
   });
 
   // Custom matcher to check if "learn react" is in the document
-  expect(screen.getByText((content, element) => content.includes("learn react"))).toBeInTheDocument();
-});
+  expect(await screen.findByText(/learn react/i)).toBeInTheDocument();});
 
