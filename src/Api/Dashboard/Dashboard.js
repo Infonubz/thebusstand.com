@@ -117,13 +117,14 @@ export const TicketBooking = async (busdetails, seat, travelerDetails) => {
     return null;
   }
 };
-export const GetSeatLayout = async (busid, dispatch) => {
+export const GetSeatLayout = async (busid, dispatch,setLayoutLoading) => {
   const payload = {
     bus_id: busid,
   };
 
   const url = `${apiUrl}/seatLayout-ById`;
   const method = "post";
+  setLayoutLoading(true)
   try {
     const response = await api({
       method,
@@ -135,6 +136,10 @@ export const GetSeatLayout = async (busid, dispatch) => {
     });
     console.log(response, "locationdatas");
     dispatch({ type: SEAT_LAYOUT, payload: response.data });
+    // setTimeout(() => {
+    //   setLayoutLoading(false)
+    // }, 2000);
+    setLayoutLoading(false)
     console.log(response.data, "submitlocationdata");
     return response.data;
   } catch (error) {

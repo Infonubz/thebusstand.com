@@ -19,22 +19,20 @@
 //   const linkElement = screen.getByText(/learn react/i);
 //   expect(linkElement).toBeInTheDocument();
 // });
-import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
+import { render, screen } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 import App from './App';
-
-const mockStore = configureMockStore();
-const store = mockStore({
-  bus_search: {},  // Ensure the state matches what your app expects
-});
-
-test('renders learn react link', () => {
-  render(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+import { busreducer } from "./Store/Reducer";
+const root = ReactDOM.createRoot(document.getElementById("root"));
+const store = createStore(busreducer);
+test('renders learn react link', async () => {
+  await act(async () => {
+    render(
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
+  });
+  expect(screen.getByText(/learn react/i)).toBeInTheDocument();
 });

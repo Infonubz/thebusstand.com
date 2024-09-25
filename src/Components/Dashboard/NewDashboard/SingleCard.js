@@ -39,7 +39,7 @@ import { GetUserDetails } from "../../../Api/Login/Login";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin, Space } from "antd";
 import { useNavigate } from "react-router";
-
+// import orange_travel_logo from "../../../assets/orange.png"
 export default function SingleCard() {
   // const [dropDown, setDropDown] = useState(0)
   const [dropDown, setDropDown] = useState(null);
@@ -51,7 +51,7 @@ export default function SingleCard() {
   console.log(trackingCount, "trackingCounttrackingCount");
 
   const buslist = useSelector((state) => state?.card_detail);
-  console.log(buslist, "buslistbuslist");
+  console.log(dropDown, "dropDowndropDowndropDown");
 
   // const buslist = [
   //   {
@@ -598,11 +598,12 @@ export default function SingleCard() {
                             {item.logos != null && (
                               <img
                                 src={`http://192.168.90.47:4001${item.logos}`}
+                                // src={orange_travel_logo}
                                 alt="logos"
-                                className={`w-[3.5vw] h-[3.5vw] rounded-full  ${
+                                className={`w-[3.5vw] h-[3.5vw] rounded-full bg-white  ${
                                   item.bus_type_status === "luxury"
-                                    ? "shadow-lg shadow-[rgba(255, 238, 201, 0.9)]" 
-                                    : "shadow-lg shadow-[rgba(238, 237, 237, 0.7)]" 
+                                    ? "shadow-lg shadow-[rgba(255, 238, 201, 0.9)]"
+                                    : "shadow-lg shadow-[rgba(238, 237, 237, 0.7)]"
                                 }`}
                               />
                             )}
@@ -913,7 +914,11 @@ export default function SingleCard() {
                                 className="absolute top-[6vw] left-[2vw] w-[9vw] h-[2.2vw]  bg-[#61B00F] text-white text-[1.1vw] font-semibold rounded-[0.3vw]"
                                 onClick={() => toggleDropDown(`seat${index}`)}
                               >
-                                Show Seats
+                                {`${
+                                  dropDown === `seat${index}`
+                                    ? "Hide Seats"
+                                    : "Show Seats"
+                                }`}
                               </button>
                             </div>
                           </div>

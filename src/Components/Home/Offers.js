@@ -220,11 +220,12 @@ function Offers() {
           </div>
           <div className="h-[85%] w-full md:mt-0 mt-[5vw]">
             <div className="grid lg:grid-cols-5 md:grid-cols-3  w-full h-full items-center gap-[1vw] justify-center px-[2vw]">
-              {promotionlist
-                .slice(startIndex, startIndex + plusvalues)
-                .map((item, index) => (
-                  <>
-                    {/* <div className="relative">
+              {promotionlist?.length > 0 &&
+                promotionlist
+                  .slice(startIndex, startIndex + plusvalues)
+                  .map((item, index) => (
+                    <>
+                      {/* <div className="relative">
                       <img
                         src={item?.img}
                         className="w-[80vw] lg:h-[80%] md:h-[12vw] h-[40vw]"
@@ -241,20 +242,20 @@ function Offers() {
                         />
                       </div>
                     </div> */}
-                    <div className="relative">
-                      <div className="absolute left-[4.5vw] top-0">
-                        <div className="bg-[#E5FFF1] w-[1.6vw] h-[0.8vw] rounded-b-full"></div>
+                      <div className="relative">
+                        <div className="absolute left-[4.5vw] top-0">
+                          <div className="bg-[#E5FFF1] w-[1.6vw] h-[0.8vw] rounded-b-full"></div>
+                        </div>
+                        <img
+                          src={`http://192.168.90.47:4000${item?.background_image}`}
+                          className="w-[80vw] lg:h-[80%] md:h-[12vw] h-[40vw]"
+                        />
+                        <div className="absolute left-[4.5vw] bottom-0">
+                          <div className="bg-[#E5FFF1] w-[1.6vw] h-[0.8vw] rounded-t-full rounded-b-[0.5vw]"></div>
+                        </div>
                       </div>
-                      <img
-                        src={`http://192.168.90.47:4000${item?.background_image}`}
-                        className="w-[80vw] lg:h-[80%] md:h-[12vw] h-[40vw]"
-                      />
-                      <div className="absolute left-[4.5vw] bottom-0">
-                        <div className="bg-[#E5FFF1] w-[1.6vw] h-[0.8vw] rounded-t-full rounded-b-[0.5vw]"></div>
-                      </div>
-                    </div>
-                  </>
-                ))}
+                    </>
+                  ))}
             </div>
           </div>
           <div className="absolute left-[-3vw] top-[50%]">
