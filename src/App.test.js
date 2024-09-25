@@ -23,10 +23,14 @@ import { Provider } from 'react-redux';
 import { render, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import App from './App';
-import { busreducer } from "./Store/Reducer";
-const root = ReactDOM.createRoot(document.getElementById("root"));
+import { createStore } from 'redux';  // Ensure createStore is imported
+import { busreducer } from "./Store/Reducer";  // Import your reducer
+
+// Create the store for testing
 const store = createStore(busreducer);
+
 test('renders learn react link', async () => {
+  // Render the App component with the store provider
   await act(async () => {
     render(
       <Provider store={store}>
@@ -34,5 +38,8 @@ test('renders learn react link', async () => {
       </Provider>
     );
   });
+
+  // Assert that the "learn react" text is rendered in the document
   expect(screen.getByText(/learn react/i)).toBeInTheDocument();
 });
+
