@@ -37,7 +37,7 @@ import SINGLECARD_BG from "../../../assets/SINGLECARD_BG.png";
 import SingleCardMobile from "./SingleCardMobile";
 import { GetUserDetails } from "../../../Api/Login/Login";
 import { LoadingOutlined } from "@ant-design/icons";
-import { Spin, Space } from "antd";
+import { Spin, Space, Empty } from "antd";
 import { useNavigate } from "react-router";
 // import orange_travel_logo from "../../../assets/orange.png"
 export default function SingleCard() {
@@ -557,7 +557,7 @@ export default function SingleCard() {
           </div>
         ) : (
           <>
-            {buslist?.length > 0 &&
+            {buslist?.length > 0 ? (
               buslist?.map((item, index) => (
                 <div
                   className={`${
@@ -1220,7 +1220,19 @@ export default function SingleCard() {
                     </div>
                   )}
                 </div>
-              ))}
+              ))
+            ) : (
+              <div className="flex items-center justify-center mt-[5vw]">
+                <Empty
+                  description="No Buses Found"
+                  className=" rounded-full p-[1vw]"
+                  // style={{
+                  //   backgroundColor: "white",
+                  //   color:"black"
+                  // }}
+                />
+              </div>
+            )}
           </>
         )}
       </div>
