@@ -59,20 +59,25 @@ export default function Buses() {
         </p>
         <div className=" w-full flex px-[2vw] items-center justify-between ">
           <p className="text-[1.5vw] text-black">26 RTCs</p>
-          <Link to='/BusPartners'><button className="border-[0.1vw] border-[#AAAAAA] px-[1.5vw] py-[0.2vw] rounded-full text-[1vw] bg-white shadow-lg">
+          <Link to="/BusPartners">
+            <button className="border-[0.1vw] border-[#AAAAAA] px-[1.5vw] py-[0.2vw] rounded-full text-[1vw] bg-white shadow-lg">
               View all
-            </button></Link>
+            </button>
+          </Link>
         </div>
         <div className="grid grid-cols-9 w-full py-[1vw]">
-          {busdetails.map((item) => (
-            <div className="col-span-1 w-full items-center justify-center flex-col">
-              <img
-                src={item.logo}
-                className="w-[8vw] h-[8vw] ml-[1vw] rounded-full"
-              />
-              <p className="text-center py-[0.5vw] text-[1vw]">{item.label}</p>
-            </div>
-          ))}
+          {busdetails?.length > 0 &&
+            busdetails.map((item) => (
+              <div className="col-span-1 w-full items-center justify-center flex-col">
+                <img
+                  src={item.logo}
+                  className="w-[8vw] h-[8vw] ml-[1vw] rounded-full"
+                />
+                <p className="text-center py-[0.5vw] text-[1vw]">
+                  {item.label}
+                </p>
+              </div>
+            ))}
         </div>
       </div>
 
@@ -83,8 +88,11 @@ export default function Buses() {
         </p>
         <div className=" w-full flex px-[2vw] items-center justify-between ">
           <p className="text-[3vw] text-black">26 RTCs</p>
-          <Link to='/BusPartners'  className="text-[#1F487C] px-[2vw] py-[2vw] md:border-[0.1vw] text-[3vw] md:border-[#AAAAAA] md:px-[1.5vw] md:py-[0.2vw] rounded-full md:text-[1vw] ">
-              View all
+          <Link
+            to="/BusPartners"
+            className="text-[#1F487C] px-[2vw] py-[2vw] md:border-[0.1vw] text-[3vw] md:border-[#AAAAAA] md:px-[1.5vw] md:py-[0.2vw] rounded-full md:text-[1vw] "
+          >
+            View all
           </Link>
           {/* <button className="border-[0.1vw] border-[#AAAAAA] px-[1.5vw] py-[0.2vw] rounded-full text-[1vw] bg-white shadow-lg">
             View all
@@ -92,17 +100,20 @@ export default function Buses() {
         </div>
         <div className="relative overflow-x-auto scrollbar-hide">
           <div className="flex w-full py-[1vw]">
-            {busdetails.map((item) => (
-              <div className=" w-[25vw] flex-shrink-0">
-                {/* <div className="w-[40vw]"> */}
+            {busdetails.length > 0 &&
+              busdetails?.map((item) => (
+                <div className=" w-[25vw] flex-shrink-0">
+                  {/* <div className="w-[40vw]"> */}
                   <img
                     src={item.logo}
                     className="w-[25vw] h-[25vw]  rounded-full"
                   />
-                  <p className="text-center py-[0.5vw] text-[3vw]">{item.label}</p>
-                {/* </div> */}
-              </div>
-            ))}
+                  <p className="text-center py-[0.5vw] text-[3vw]">
+                    {item.label}
+                  </p>
+                  {/* </div> */}
+                </div>
+              ))}
           </div>
         </div>
       </div>

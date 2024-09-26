@@ -275,7 +275,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetPassengById, GetPassengerData, SubmitPassengerData } from "../../../../Api/MyAccounts/Passenger";
 import { PASSENGER_DATA } from "../../../../Store/type";
 
-const AddPassengers = ({ prevStep, setPassData, passData, updateData, setUpdateData, isEdit }) => {
+const AddPassengers = ({ prevStep, setPassData, passData, updateData, setUpdateData, isEdit ,setSpinning}) => {
     const validationSchema = Yup.object().shape({
         name: Yup.string()
             .min(2, "Name must be at least 2 characters long")
@@ -304,10 +304,11 @@ const AddPassengers = ({ prevStep, setPassData, passData, updateData, setUpdateD
     const dispatch = useDispatch();
 
     const handleSubmit = async (values) => {
+        setSpinning(true)
         try {
-            const data = await SubmitPassengerData(values, updateData, dispatch,);
+            const data = await SubmitPassengerData(values, updateData, dispatch);
             // toast.success(data?.message);
-            GetPassengerData(dispatch);
+            GetPassengerData(dispatch,setSpinning);
             prevStep();
             console.log(data);
         } catch (error) {

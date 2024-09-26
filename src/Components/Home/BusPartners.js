@@ -72,8 +72,8 @@ const BusPartners = () => {
   const [showDialog, setShowDialog] = useState(false);
   const navigation = useNavigate();
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <div className="bg-[#E5FFF1] bg-[#E5FFF1] min-h-screen max-h-auto w-full  md:block hidden ">
@@ -117,17 +117,18 @@ const BusPartners = () => {
                 </div>
                 <div className="max-h-[28vw]  overflow-y-auto">
                   <div className="grid grid-cols-5 w-full py-[1vw]">
-                    {busdetails.map((item) => (
-                      <div className="col-span-1 w-full items-center justify-center py-[.5vw]  flex-col">
-                        <img
-                          src={item.logo}
-                          className="w-[8vw] h-[8vw] ml-[1vw] rounded-full"
-                        />
-                        <p className="text-center py-[0.5vw] text-[1vw] pr-[3vw]">
-                          {item.label}
-                        </p>
-                      </div>
-                    ))}
+                    {busdetails?.length > 0 &&
+                      busdetails?.map((item) => (
+                        <div className="col-span-1 w-full items-center justify-center py-[.5vw]  flex-col">
+                          <img
+                            src={item.logo}
+                            className="w-[8vw] h-[8vw] ml-[1vw] rounded-full"
+                          />
+                          <p className="text-center py-[0.5vw] text-[1vw] pr-[3vw]">
+                            {item.label}
+                          </p>
+                        </div>
+                      ))}
                   </div>
                 </div>
               </div>
@@ -167,19 +168,20 @@ const BusPartners = () => {
           </div>
           <div className="relative overflow-y-auto scrollbar-hide">
             <div className="grid grid-cols-2 w-full py-[1vw] place-items-center">
-              {busdetails.map((item) => (
-                <div className=" w-[25vw] flex-shrink-0">
-                  {/* <div className="w-[40vw]"> */}
-                  <img
-                    src={item.logo}
-                    className="w-[25vw] h-[25vw]  rounded-full"
-                  />
-                  <p className="text-center py-[0.5vw] text-[3vw]">
-                    {item.label}
-                  </p>
-                  {/* </div> */}
-                </div>
-              ))}
+              {busdetails?.length > 0 &&
+                busdetails?.map((item) => (
+                  <div className=" w-[25vw] flex-shrink-0">
+                    {/* <div className="w-[40vw]"> */}
+                    <img
+                      src={item.logo}
+                      className="w-[25vw] h-[25vw]  rounded-full"
+                    />
+                    <p className="text-center py-[0.5vw] text-[3vw]">
+                      {item.label}
+                    </p>
+                    {/* </div> */}
+                  </div>
+                ))}
             </div>
           </div>
         </div>

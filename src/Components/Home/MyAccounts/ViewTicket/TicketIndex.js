@@ -8,7 +8,9 @@ import empty from "../../../../assets/empty.png";
 import booking_bus from "../../../../assets/booking_bus.png";
 import dayjs from "dayjs";
 import { IoPersonOutline } from "react-icons/io5";
-import { Popover } from "antd";
+import { Popover, Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+
 
 
 const validationSchema = Yup.object({
@@ -25,11 +27,13 @@ const TicketIndex = () => {
   const [ticketDetails, setTicketDetails] = useState("");
   const [passCount, setPassCount] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [spinning,setSpinning] = useState(false);
 
   const handleSubmit = async(values) => {
     console.log(values, "response for ticket");
+    setSpinning(true)
     try {
-      const response = await TicketViewDetails(values?.ticketNumber, values?.phoneNumber);
+      const response = await TicketViewDetails(values?.ticketNumber, values?.phoneNumber,setSpinning);
       console.log(response, "response for ticketdtl");
       setShowList(true);
       setTicketDetails(response);
@@ -80,7 +84,7 @@ const TicketIndex = () => {
                   name="ticketNumber"
                   placeholder="Ticket Number *"
                   type="text"
-                  className="border-[.1vw] rounded-[.5vw] w-[23vw] h-[3vw] border-gray-400 pl-[1vw] placeholder-[#1F487C]"
+                  className="border-[.1vw] rounded-[.5vw] w-[23vw] h-[3vw] border-gray-400 pl-[1vw] text-[#1F487C] placeholder-[#1F487C]"
                   onChange={(e) => {
                     handleChange(e);
                     setFieldValue("ticketNumber", e.target.value);
@@ -97,7 +101,7 @@ const TicketIndex = () => {
                   name="phoneNumber"
                   placeholder="Phone Number *"
                   type="text"
-                  className="border-[.1vw] rounded-[.5vw] w-[23vw] h-[3vw] border-gray-400 pl-[1vw] placeholder-[#1F487C]"
+                  className="border-[.1vw] rounded-[.5vw] w-[23vw] h-[3vw] border-gray-400 pl-[1vw] text-[#1F487C] placeholder-[#1F487C]"
                   onChange={(e) => {
                     handleChange(e);
                     setFieldValue("phoneNumber", e.target.value);
@@ -127,6 +131,35 @@ const TicketIndex = () => {
       {ticketDetails ? (
         <div className="h-[35vw]  overflow-y-scroll ">
           {/* {ticketDetails?.map((item) => ( */}
+          {spinning ? (
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              // background: "rgba(0, 0, 0, 0.2)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 1000,
+            }}
+          >
+            <Spin
+              className="pl-[20vw]"
+              style={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              spinning={spinning}
+              indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />}
+            />
+          </div>
+        ) : (
             <div className="grid grid-rows-12 w-full  max-h-[22vw] bg-white mt-[1vw] border-[0.1vw] border-gray-400 relative">
               <div className="absolute left-[-1.5vw] top-[1.6vw] ">
                 <div
@@ -269,6 +302,7 @@ const TicketIndex = () => {
                 </div>
               </div>
             </div>
+        )}
            {/* ))} */}
         </div>
       ) : (

@@ -48,72 +48,98 @@ import UserAgreement from "./Components/Footer/UserAgreement";
 import PrivacyPolicy from "./Components/Footer/PrivacyPolicy";
 import Terms from "./Components/Footer/Terms&Conditions";
 import Faq from "./Components/Footer/FAQ";
-import Login from "./Components/Login/Login";
+//import Login from "./Components/Login/Login";
 import LoginMobile from "./Components/Login/LoginMobile";
 import Help from "./Components/Home/MyAccounts/Help/Help";
-import ScrollToTop from "../src/Components/Common/ScrollTop";
+//import ScrollToTop from "../src/Components/Common/ScrollTop";
+import { Navigate } from "react-router-dom";
+
+function MainRoute({ element: Component }) {
+  const userId = sessionStorage.getItem("user_id");
+  return userId ? <Component /> : <Navigate to="/" />;
+}
+
+function DashboardRoute({ element: Component }) {
+  const departure = localStorage.getItem("departure");
+  const arrival = localStorage.getItem("arrival");
+  const selectdate = localStorage.getItem("selectdate");
+  const data = departure && arrival && selectdate;
+  return data ? (<Component />) : (<Navigate to="/" />);
+}
+
 function App() {
   const [sidebarToggle, setSidebarToggle] = useState(false);
-  const menu = localStorage.getItem("search");
+  //const menu = localStorage.getItem("search");
   const menulist = useSelector((state) => state.bus_search);
+
   console.log(menulist, "menulist");
+
   useEffect(() => {
     if (menulist) {
       setSidebarToggle(true);
     }
   }, [menulist]);
+
   return (
     <>
       {/* <ScrollToTop> */}
-        <ToastContainer />
-        <Router>
-          <Routes>
-            <Route path="/" element={<Home1 />} />
-            {/* <Route path="/dashboard" element={<MainPage />} /> */}
-            <Route path="/" element={<MainPage />}>
-              <Route path="/dashboard" element={<SingleCard />} />
-              <Route path="/map" element={<Map />} />
-            </Route>
-            <Route path="/viewall" element={<Viewall />} />
-            <Route path="/dashboard/userinfo" element={<DrawerMobile />} />
+      <ToastContainer />
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home1 />} />
+          {/* <Route path="/dashboard" element={<MainPage />} /> */}
+          <Route path="/" element={<MainPage />}>
             <Route
-              path="/dashboard/userinfo/payment"
-              element={<PaymentMobile />}
+              path="/dashboard"
+              element={<DashboardRoute element={SingleCard} />}
             />
-            <Route
-              path="/dashboard/userinfo/payment/viewticket"
-              element={<TicketMobile />}
-            />
-            <Route path="/powerbi" element={<PowerBIReport />} />
-            <Route path="/BusOpp" element={<BusOpp />} />
-            <Route path="/BusPartners" element={<BusPartners />} />
-            <Route path="/TrendingOffer" element={<TrendingOffer />} />
-            <Route path="/dashboard/ViewSeats" element={<BusSeat />} />
-            <Route
-              path="/dashboard/viewSeats/PickUppoint"
-              element={<PickUpDrop />}
-            />
-            <Route path="/main" element={<MyAccountsDetails />} />
-            <Route path="/accounts/Passengers" element={<MPassengerIndex />} />
-            <Route path="/accounts/Bookings" element={<BookingIndex />} />
-            <Route path="/accounts/refferals" element={<MobileReferrals />} />
-            <Route path="/accounts/help" element={<Help />} />
-            <Route path="/rewards" element={<Rewardsandoffers />} />
-            <Route path="/Login" element={<LoginMobile />} />
 
-            <Route path="/offers" element={<Offers />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/operators" element={<Operators />} />
-            <Route path="/routes" element={<Routes1 />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/agreement" element={<UserAgreement />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/faq" element={<Faq />} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/map" element={<Map />} />
+          </Route>
+          <Route path="/viewall" element={<Viewall />} />
+          <Route path="/dashboard/userinfo" element={<DrawerMobile />} />
+          <Route
+            path="/dashboard/userinfo/payment"
+            element={<PaymentMobile />}
+          />
+          <Route
+            path="/dashboard/userinfo/payment/viewticket"
+            element={<TicketMobile />}
+          />
+          <Route path="/powerbi" element={<PowerBIReport />} />
+          <Route path="/BusOpp" element={<BusOpp />} />
+          <Route path="/BusPartners" element={<BusPartners />} />
+          <Route path="/TrendingOffer" element={<TrendingOffer />} />
+          <Route path="/dashboard/ViewSeats" element={<BusSeat />} />
+          <Route
+            path="/dashboard/viewSeats/PickUppoint"
+            element={<PickUpDrop />}
+          />
+          <Route
+            path="/main"
+            element={<MainRoute element={MyAccountsDetails} />}
+          />
+          {/* <Route path="/main" element={<MyAccountsDetails />} /> */}
+          <Route path="/accounts/Passengers" element={<MPassengerIndex />} />
+          <Route path="/accounts/Bookings" element={<BookingIndex />} />
+          <Route path="/accounts/refferals" element={<MobileReferrals />} />
+          <Route path="/accounts/help" element={<Help />} />
+          <Route path="/rewards" element={<Rewardsandoffers />} />
+          <Route path="/Login" element={<LoginMobile />} />
 
-            {/* // <Route path="/map" element={<MapIndex />} />s */}
-          </Routes>
-        </Router>
+          <Route path="/offers" element={<Offers />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/operators" element={<Operators />} />
+          <Route path="/routes" element={<Routes1 />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/agreement" element={<UserAgreement />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/faq" element={<Faq />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+
+          {/* // <Route path="/map" element={<MapIndex />} />s */}
+        </Routes>
+      </Router>
       {/* </ScrollToTop> */}
     </>
   );
@@ -172,3 +198,4 @@ export default App;
 // }
 
 // export default App;
+

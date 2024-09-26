@@ -13,15 +13,16 @@ export default function PopularPlaces() {
         </button>
       </div>
       <div className="grid grid-cols-8 w-full py-[1vw]">
-        {busdetails.map((item) => (
-          <div className="col-span-1 w-full items-center justify-center flex-col">
-            <img
-              src={item.logo}
-              className="w-[9vw] h-[9vw] ml-[1vw] rounded-full"
-            />
-            <p className="text-center py-[0.5vw] text-[1vw]">{item.label}</p>
-          </div>
-        ))}
+        {busdetails?.length > 0 &&
+          busdetails.map((item) => (
+            <div className="col-span-1 w-full items-center justify-center flex-col">
+              <img
+                src={item.logo}
+                className="w-[9vw] h-[9vw] ml-[1vw] rounded-full"
+              />
+              <p className="text-center py-[0.5vw] text-[1vw]">{item.label}</p>
+            </div>
+          ))}
       </div>
     </div>
   );

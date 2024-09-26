@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-
 export default function BusOperator() {
   const BusOperator = [
     "SRS Travels",
@@ -35,23 +34,28 @@ export default function BusOperator() {
         <p className="md:text-[1.5vw] text-[5vw] text-[#1F487C] font-bold">
           4500+ Private Bus Operators
         </p>
-        <Link to='/BusOpp'><button className="text-[2.5vw] text-[#1F487C] md:border-[0.1vw] md:border-[#AAAAAA] md:px-[1.5vw] md:py-[0.2vw] md:rounded-full md:text-[1vw] md:bg-white md:shadow-lg">
-              View all
-            </button></Link>
+        <Link to="/BusOpp">
+          <button className="text-[2.5vw] text-[#1F487C] md:border-[0.1vw] md:border-[#AAAAAA] md:px-[1.5vw] md:py-[0.2vw] md:rounded-full md:text-[1vw] md:bg-white md:shadow-lg">
+            View all
+          </button>
+        </Link>
       </div>
       <div className="grid md:grid-cols-6 grid-cols-3 w-full  px-[2vw] my-[2vw] ">
-        {BusOperator.map((item) => (
-          <div className="col-span-1 w-full py-[0.8vw]">
-            <p className="md:text-[1.2vw] text-[2.8vw]">{item}</p>
-          </div>
-        ))}
+        {BusOperator.length > 0 &&
+          BusOperator?.map((item) => (
+            <div className="col-span-1 w-full py-[0.8vw]">
+              <p className="md:text-[1.2vw] text-[2.8vw]">{item}</p>
+            </div>
+          ))}
       </div>
       <div className="px-[2vw] my-[1vw]">
         <p className="md:text-[1.5vw] text-[4vw] text-[#1F487C] font-bold">
           Why Booking Buses with thebusstand.com ?{" "}
         </p>
         <p className="md:text-[1.1vw] text-[3vw] md:leading-[2.5vw] leading-[5vw] tracking-wide  md:tracking-wider mt-[1vw]">
-          <span className="font-bold md:text-[1.3vw] text-[2.8vw]">thebusstand.com</span>
+          <span className="font-bold md:text-[1.3vw] text-[2.8vw]">
+            thebusstand.com
+          </span>
           <span className="pl-[0.5vw]">
             is India's largest brand for online bus ticket booking and offers an
             easy-to-use online bus ticket booking service, With over 36 million

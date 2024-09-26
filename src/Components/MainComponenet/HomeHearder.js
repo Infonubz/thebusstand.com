@@ -129,7 +129,10 @@ export default function HomeHearder() {
               src={busstand}
               alt="BusStandLogo"
               className="h-[4vw] w-[20vw] py-[0.1vw]"
-              onClick={() => navigation("/")}
+              onClick={() => {
+                navigation("/");
+                localStorage.clear();
+              }}
             />
             <p className="border-r-[0.3vw] border-[#1F487C] mt-[0.2vw] h-[4vw] ml-[1vw]"></p>
             <div className="w-[9vw] h-[3.8vw] mt-[0.3vw] bg-[#1F487C] ml-[2vw] rounded-full  relative">

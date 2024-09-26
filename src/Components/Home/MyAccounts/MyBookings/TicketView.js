@@ -15,7 +15,9 @@ import dayjs from "dayjs";
 import html2canvas from "html2canvas";
 // import { toPng } from 'html-to-image';
 import jsPDF from "jspdf";
+
 import { savePDF } from "@progress/kendo-react-pdf";
+
 
 const TicketView = ({ showModal, setShowModal, ticketDetails }) => {
   const colorcode = {
@@ -136,9 +138,10 @@ const TicketView = ({ showModal, setShowModal, ticketDetails }) => {
         key={"right"}
         width={"60%"}
       >
-        <div ref={componentRef} id="capture">
+        <div >
           {/* {ticketDetails.map((item)=>( */}
           <div
+          ref={componentRef} id="capture"
             className="h-auto w-full rounded-[1vw]"
             style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
           >

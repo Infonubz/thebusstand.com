@@ -250,17 +250,23 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
 
   console.log(localStorage.getItem("departure"), "hhhhhhhhhhhh");
 
-  const options = useMemo(() => [
-    { value: "Chennai", label: "Chennai" },
-    { value: "Bangalore", label: "Bangalore" },
-    { value: "Pondicherry", label: "Pondicherry" },
-  ], []);
-  
-  const tooptions = useMemo(() => [
-    { value: "Coimbatore", label: "Coimbatore" },
-    { value: "Goa", label: "Goa" },
-    { value: "Hyderabad", label: "Hyderabad" },
-  ], []);
+  const options = useMemo(
+    () => [
+      { value: "Chennai", label: "Chennai" },
+      { value: "Bangalore", label: "Bangalore" },
+      { value: "Pondicherry", label: "Pondicherry" },
+    ],
+    []
+  );
+
+  const tooptions = useMemo(
+    () => [
+      { value: "Coimbatore", label: "Coimbatore" },
+      { value: "Goa", label: "Goa" },
+      { value: "Hyderabad", label: "Hyderabad" },
+    ],
+    []
+  );
   // const onSearch = (value) => {
   //   console.log("search:", value);
   // };
@@ -827,7 +833,13 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
           <div className="md:h-[0.3vw] md:block hidden w-full bg-[#E5FFF1] opacity-90"></div>
           <div className="grid md:hidden block w-full  h-[12vw]">
             <div className="items-center flex justify-around text-white">
-              <div onClick={() => navigation("/")} className="text-[4vw]">
+              <div
+                onClick={() => {
+                  navigation("/");
+                  localStorage.clear();
+                }}
+                className="text-[4vw]"
+              >
                 <FaArrowLeft />
               </div>
               <div className="flex justify-between gap-[2vw] text-[4vw]">

@@ -10,13 +10,15 @@ export default function PassengerIndex() {
     const [passData, setPassData] = useState("")
     const [updateData, setUpdateData] = useState("")
     const [isEdit,setIsEdit] = useState(false)
+    const [spinning,setSpinning] = useState(false)
     
     const passengerdata = useSelector((state) => state?.passenger_data.add_passenger_details)
     console.log(passengerdata, "passengerdatapassengerdata")
     const dispatch = useDispatch();
 
     useEffect(() => {
-        GetPassengerData(dispatch);
+        setSpinning(true)
+        GetPassengerData(dispatch,setSpinning);
     }, [dispatch]);
 
     const nextPage = () => {
@@ -37,7 +39,9 @@ export default function PassengerIndex() {
                     updateData={updateData}
                     setPassData={setPassData}
                     setUpdateData={setUpdateData}
-                    setIsEdit={setIsEdit} />
+                    setIsEdit={setIsEdit}
+                    spinning={spinning} />
+                    
                 : <AddPassengers
                     nextPage={nextPage}
                     prevStep={prevStep} 
@@ -47,6 +51,7 @@ export default function PassengerIndex() {
                     setPassData={setPassData}
                     setUpdateData={setUpdateData}
                     isEdit={isEdit}
+                    setSpinning={setSpinning}
                     />
 
             }

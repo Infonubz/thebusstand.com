@@ -1824,48 +1824,49 @@ export default function Home1() {
               />
             </div>
             <div className="h-[100%]  w-full">
-              {departurelist.map((item, i) => (
-                <>
-                  <div
-                    className="flex items-center px-[5vw] py-[2vw] bg-white"
-                    onClick={() => {
-                      selectinput === "from"
-                        ? localStorage.setItem("departure", item.city)
-                        : localStorage.setItem("arrival", item.city);
-                      setModalShow(false);
-                      setInputSearch({
-                        ...inputsearch,
-                        from: "",
-                      });
-                      selectinput === "from"
-                        ? setBusDatas({
-                            ...busdatas,
-                            from: item.city,
-                          })
-                        : setBusDatas({
-                            ...busdatas,
-                            to: item.city,
-                          });
-                    }}
-                  >
-                    <span>
-                      <LiaCitySolid size={"6.5vw"} />
-                    </span>
-                    <div className="flex-col items-center pl-[2vw]">
-                      <p key={i} className="text-[5vw] pl-[2vw]">
-                        {item.city}
-                      </p>
-                      <p
-                        key={i}
-                        className=" text-gray-500 text-[3.5vw] pl-[2vw] "
-                      >
-                        {item.state}
-                      </p>
+              {departurelist?.length > 0 &&
+                departurelist?.map((item, i) => (
+                  <>
+                    <div
+                      className="flex items-center px-[5vw] py-[2vw] bg-white"
+                      onClick={() => {
+                        selectinput === "from"
+                          ? localStorage.setItem("departure", item.city)
+                          : localStorage.setItem("arrival", item.city);
+                        setModalShow(false);
+                        setInputSearch({
+                          ...inputsearch,
+                          from: "",
+                        });
+                        selectinput === "from"
+                          ? setBusDatas({
+                              ...busdatas,
+                              from: item.city,
+                            })
+                          : setBusDatas({
+                              ...busdatas,
+                              to: item.city,
+                            });
+                      }}
+                    >
+                      <span>
+                        <LiaCitySolid size={"6.5vw"} />
+                      </span>
+                      <div className="flex-col items-center pl-[2vw]">
+                        <p key={i} className="text-[5vw] pl-[2vw]">
+                          {item.city}
+                        </p>
+                        <p
+                          key={i}
+                          className=" text-gray-500 text-[3.5vw] pl-[2vw] "
+                        >
+                          {item.state}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="border-b-[0.2vw] border-gray-400 w-full"></div>
-                </>
-              ))}
+                    <div className="border-b-[0.2vw] border-gray-400 w-full"></div>
+                  </>
+                ))}
             </div>
           </div>
         </div>

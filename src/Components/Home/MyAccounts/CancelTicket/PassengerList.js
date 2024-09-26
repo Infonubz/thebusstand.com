@@ -1,13 +1,14 @@
 import React, { useState, useMemo } from "react";
-import { Table, Checkbox } from "antd";
+import { Table, Checkbox, Spin } from "antd";
 import { TbTicketOff } from "react-icons/tb";
 import ModalPopup from "../../../MainComponenet/Modal/ModalPopup";
 import { useDispatch, useSelector } from "react-redux";
 import { CancelTicket } from "../../../../Api/MyAccounts/MyBookings";
 import { TiArrowRightOutline } from "react-icons/ti";
 import moment from "moment";
+import { LoadingOutlined } from "@ant-design/icons";
 
-const PassengerList = () => {
+const PassengerList = ({spinning,setSpinning}) => {
   const cancelledDetails = useSelector((state) => state.get_ticket_to_cancel);
   const [deletemodalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [nameToDelete, setNameToDelete] = useState([]);
@@ -49,8 +50,11 @@ const PassengerList = () => {
   const dispatch = useDispatch();
 
   const handleCancel = () => {
-    CancelTicket(deleteId, dispatch);
-    setDeleteModalIsOpen(false);
+      setSpinning(true)
+      CancelTicket(dispatch,deleteId,setSpinning);
+      setDeleteModalIsOpen(false);
+    
+    
   };
 
   const handleSelectAll = (e) => {
@@ -199,6 +203,36 @@ const PassengerList = () => {
 
   return (
     <div>
+      {spinning ? (
+          // <div
+          //   style={{
+          //     position: "fixed",
+          //     top: 0,
+          //     left: 0,
+          //     width: "100%",
+          //     height: "100%",
+          //     // background: "rgba(0, 0, 0, 0.2)",
+          //     display: "flex",
+          //     justifyContent: "center",
+          //     alignItems: "center",
+          //     zIndex: 1000,
+          //   }}
+          // >
+            <Spin
+              className="pl-[20vw]"
+              style={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 1000,
+              }}
+              spinning={spinning}
+              indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />}
+            />
+          
+        ) : (
       <span className="flex gap-x-[3vw]">
         {cancelledDetails?.length > 0
           ? cancelledDetails?.map((value) => (
@@ -231,10 +265,12 @@ const PassengerList = () => {
             ))
           : ""}
 
-        <div
-          className="flex justify-center items-center cursor-pointer bg-[#FFC1C180] w-[12vw] rounded-full h-[2.5vw] gap-[1vw] mb-[1vw]"
+        <button
+          className={`flex justify-center items-center bg-[#FFC1C180] ${deleteId.Booking_Id && deleteId.mobile_number && deleteId.seat_numbers ? "cursor-pointer":"cursor-not-allowed bg-gray-500" }  w-[12vw] rounded-full h-[2.5vw] gap-[1vw] mb-[1vw]`}
           onClick={() => {
-            setDeleteModalIsOpen(true);
+            if(deleteId.Booking_Id && deleteId.mobile_number && deleteId.seat_numbers){
+              setDeleteModalIsOpen(true);
+            }
           }}
         >
           <div>
@@ -243,8 +279,9 @@ const PassengerList = () => {
           <div className="text-[1.1vw] text-[#C62B2B] font-bold">
             Cancel Ticket
           </div>
-        </div>
+        </button>
       </span>
+        )}
 
       <div>
         <Table

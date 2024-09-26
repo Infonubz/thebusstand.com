@@ -18,14 +18,17 @@ const validationSchema = Yup.object({
 const CancelIndex = () => {
  
   const [showTable,setShowtable] = useState(false)
- 
+  const [spinning,setSpinning] = useState(false)
  
   const dispatch = useDispatch();
   const handleSubmit = (values) => {
+    setSpinning(true)
     console.log("Form Data:", values);
-   GetCancelTicket(dispatch, values.ticketNumber, values.phoneNumber)
+   GetCancelTicket(dispatch, values.ticketNumber, values.phoneNumber,setSpinning)
    setShowtable(true)
   };
+
+  
  
   return (
     <div className="w-full h-auto bg-white rounded-[.9vw] border-b-[0.1vw] ">
@@ -100,7 +103,7 @@ const CancelIndex = () => {
         )}
       </Formik>
       {
-        showTable === true ?<div className="px-[3.5vw] pb-[2vw]"><PassengerList /></div>   :""
+        showTable === true ?<div className="px-[3.5vw] pb-[2vw]"><PassengerList spinning={spinning} setSpinning={setSpinning} /></div>   :""
       }
      
     </div>

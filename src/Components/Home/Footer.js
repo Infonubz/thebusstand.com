@@ -71,7 +71,7 @@ const Footer = () => {
   useEffect(() => {
     window.addEventListener("scroll", handleVisibleButton);
   }, []);
-  console.log(top, "top")
+  console.log(top, "top");
 
   return (
     <>
@@ -184,16 +184,17 @@ const Footer = () => {
       {/* mobile */}
       <div className="md:hidden block h-auto bg-black w-full py-[1vw]  relative">
         <div className="grid grid-cols-2 row-auto w-full h-full px-[3vw]">
-          {footerdata.map((item) => (
-            <div>
-              <p className="text-white  font-bold text-[4vw] w-full items-center py-[2vw]  flex">
-                {item.label}
-              </p>
-              {item.list.map((data) => (
-                <p className="text-white text-[2.5vw]">{data}</p>
-              ))}
-            </div>
-          ))}
+          {footerdata?.length > 0 &&
+            footerdata?.map((item) => (
+              <div>
+                <p className="text-white  font-bold text-[4vw] w-full items-center py-[2vw]  flex">
+                  {item.label}
+                </p>
+                {item.list.map((data) => (
+                  <p className="text-white text-[2.5vw]">{data}</p>
+                ))}
+              </div>
+            ))}
         </div>
 
         <div className=" flex absolute right-[1vw] bottom-0 my-[1vw] gap-[2vw]">

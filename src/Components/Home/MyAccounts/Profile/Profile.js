@@ -30,7 +30,7 @@ const HomeProfile = () => {
   });
 
   // const [isModalOpen, setIsModalOpen] = useState(false);
-  const [spinning, setSpinning] = React.useState(false);
+  const [spinning, setSpinning] = useState(false);
 
   // const showModal = () => {
   //   setIsModalOpen(true);
@@ -70,8 +70,9 @@ const HomeProfile = () => {
   // }, []);
 
   useEffect(() => {
+    setSpinning(true)
     if (!hasFetched.current) {
-      GetProfileById(dispatch, "tbs-pax1001");
+      GetProfileById(dispatch, "tbs-pax1001",setSpinning);
       console.log("hitesting");
       hasFetched.current = true;
     }
@@ -90,7 +91,7 @@ const HomeProfile = () => {
               left: 0,
               width: "100%",
               height: "100%",
-              background: "rgba(0, 0, 0, 0.2)",
+              // background: "rgba(0, 0, 0, 0.2)",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -133,13 +134,13 @@ const HomeProfile = () => {
               values.age = age;
               GetUserDetails();
               // Simulating network delay with setTimeout
-              setTimeout(async () => {
-                await UpdateProfile(values);
+              
+                await UpdateProfile(values,setSpinning);
                 console.log(values, "valuesvalues");
                 toast.success("Updated Successfully");
-                setSpinning(false);
+                // setSpinning(false);
                 setEditEnable(false);
-              }, 2000); // Adjust timeout duration as needed
+               // Adjust timeout duration as needed
             } catch (error) {
               console.error("Error updating profile", error);
               setSpinning(false); // Stop spinner in case of error

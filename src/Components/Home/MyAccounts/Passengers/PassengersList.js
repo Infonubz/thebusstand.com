@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button } from 'antd';
+import { Table, Button, Spin } from 'antd';
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
@@ -10,9 +10,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetPassengById, GetPassengerData } from "../../../../Api/MyAccounts/Passenger";
 import ModalPopup from "../../../MainComponenet/Modal/ModalPopup";
 import Delete from "./Delete";
+import { LoadingOutlined } from "@ant-design/icons";
 
-export default function PassengersList({ nextPage, passengerdata, setPassData, passData, updateData, setUpdateData ,setIsEdit}) {
+export default function PassengersList({ nextPage, passengerdata, setPassData, passData, updateData, setUpdateData ,setIsEdit,spinning}) {
 
+ 
   const getDataById = (id) => {
     GetPassengById(id)
   }
@@ -135,8 +137,7 @@ export default function PassengersList({ nextPage, passengerdata, setPassData, p
 
   return (
     <>
-
-      <div className="flex justify-between">
+       <div className="flex justify-between">
         <div className=" order-first text-[#1F487C] font-semibold font-size: 1.2vw;">Saved Passenger</div>
         <div className="order-last text-[#1F487C] font-semibold cursor-pointer font-size-[1.2vw] flex items-center gap-[0.5vw]" onClick={handleNextPage}><IoMdAdd size='1.5vw' /> Add New Passenger</div>
       </div>
@@ -144,6 +145,35 @@ export default function PassengersList({ nextPage, passengerdata, setPassData, p
         <div className="text-[#1F487C] text-[1vw] py-[0.5vw]">You have {passengerdata?.length} Traveller(s)</div>
       </div>
       <div>
+      {spinning ? (
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              // background: "rgba(0, 0, 0, 0.2)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 1000,
+            }}
+          >
+            <Spin
+              className="pl-[20vw]"
+              style={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              spinning={spinning}
+              indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />}
+            />
+          </div>
+        ) : (
         <Table
           className="Passenger-class"
           columns={columns}
@@ -155,6 +185,7 @@ export default function PassengersList({ nextPage, passengerdata, setPassData, p
             target: 'sorter-icon',
           }}
         />
+        )}
       </div>
 
       <ModalPopup
@@ -170,7 +201,9 @@ export default function PassengersList({ nextPage, passengerdata, setPassData, p
           api={`http://192.168.90.47:4001/api/add-passenger-details/${deleteId}`}
         />
       </ModalPopup>
+       
     </>
+        
   );
 }
 
