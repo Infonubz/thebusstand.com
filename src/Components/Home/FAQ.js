@@ -5,18 +5,18 @@ import { SlArrowUp } from "react-icons/sl";
 import "../../Components/Home/FAQ.css";
 import { GetFAQS } from "../../Api/Home/Home";
 import { useDispatch, useSelector } from "react-redux";
+import ColorCodes from "../Common/ColorCodes";
 
 const Faqs = () => {
   const [isToggled, setIsToggled] = useState(0);
 
-  const fetchedFaqs = useSelector((state)=>state?.faqs)
-  const generalFaqs=fetchedFaqs[0]?.general;
-  console.log(generalFaqs,"generalFaqs")
-  const ticket_relatedFaqs=fetchedFaqs[0]?.ticket_related;
-  const paymentFaqs=fetchedFaqs[0]?.payment;
-  const cancelation_refundFaqs=fetchedFaqs[0]?.cancelation_refund;
-  const insuranceFaqs=fetchedFaqs[0]?.insurance;
-  
+  const fetchedFaqs = useSelector((state) => state?.faqs);
+  const generalFaqs = fetchedFaqs[0]?.general;
+  console.log(generalFaqs, "generalFaqs");
+  const ticket_relatedFaqs = fetchedFaqs[0]?.ticket_related;
+  const paymentFaqs = fetchedFaqs[0]?.payment;
+  const cancelation_refundFaqs = fetchedFaqs[0]?.cancelation_refund;
+  const insuranceFaqs = fetchedFaqs[0]?.insurance;
 
   const dispatch = useDispatch();
 
@@ -87,11 +87,13 @@ const Faqs = () => {
     console.log(id);
     setBtnId(id);
   };
+  // const colors = ColorCodes();
+  const colors = useSelector((state) => state.themecolors[0]);
 
   return (
     <>
       <div className="px-[5vw] md:mt-[2vw] mb-[5vw]">
-        <p className="text-[4vw] pl-[2vw] text-[#1F487C] font-bold pt-[0.5vw] md:text-[1.5vw] md:pl-[2vw] md:font-bold md:pt-[1vw] md:pb-[1vw]">
+        <p className={`text-[4vw] pl-[2vw] text-[${colors.primary}] font-bold pt-[0.5vw] md:text-[1.5vw] md:pl-[2vw] md:font-bold md:pt-[1vw] md:pb-[1vw]`}>
           FAQs Related to bus tickets Booking{" "}
         </p>
         <div className="px-[2vw]">
@@ -196,7 +198,7 @@ const Faqs = () => {
               </div>
             </TabPanel>
             <TabPanel>
-            <div className="py-[2vh] flex flex-col flex-wrap gap-[1vw]">
+              <div className="py-[2vh] flex flex-col flex-wrap gap-[1vw]">
                 {paymentFaqs?.map((info) => (
                   // < div className='bg-white rounded-lg border border-slate-300 w-fit p-5' >
                   <div
@@ -230,7 +232,7 @@ const Faqs = () => {
               </div>
             </TabPanel>
             <TabPanel>
-            <div className="py-[2vh] flex flex-col flex-wrap gap-[1vw]">
+              <div className="py-[2vh] flex flex-col flex-wrap gap-[1vw]">
                 {cancelation_refundFaqs?.map((info) => (
                   // < div className='bg-white rounded-lg border border-slate-300 w-fit p-5' >
                   <div
@@ -264,7 +266,7 @@ const Faqs = () => {
               </div>
             </TabPanel>
             <TabPanel>
-            <div className="py-[2vh] flex flex-col flex-wrap gap-[1vw]">
+              <div className="py-[2vh] flex flex-col flex-wrap gap-[1vw]">
                 {insuranceFaqs?.map((info) => (
                   // < div className='bg-white rounded-lg border border-slate-300 w-fit p-5' >
                   <div
@@ -299,7 +301,7 @@ const Faqs = () => {
             </TabPanel>
           </Tabs>
           <div className="float-end pr-[0vw] ">
-            <h2 className="text-[#1F487C] text-[1.1vw] font-semibold cursor-pointer">
+            <h2 className={`text-[${colors.primary}] text-[1.1vw] font-semibold cursor-pointer`}>
               View all FAQs
             </h2>
           </div>

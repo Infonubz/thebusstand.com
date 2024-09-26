@@ -1,3 +1,8 @@
+let dynamicColors = {
+  primary: '#48A1E4',
+  background: '#CEDFEF',
+};
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{html,js}"],
@@ -5,6 +10,10 @@ module.exports = {
     extend: {
       boxShadow: {
         "3xl": "0 35px 60px -15px rgba(0, 0, 0, 0.3)",
+      },
+      colors: {
+        primary: dynamicColors.background, // Orange
+        background: dynamicColors.background, // Black
       },
       backgroundImage: {
         // "custom-gradient-luxury":

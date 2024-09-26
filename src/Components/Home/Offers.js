@@ -62,6 +62,7 @@ import { Link } from "react-router-dom";
 import TrendingOffer from "../Home/TrendingOffer";
 import { useDispatch, useSelector } from "react-redux";
 import { GetPromotion } from "../../Api/Home/Home";
+import ColorCodes from "../Common/ColorCodes";
 
 function Offers() {
   const [startIndex, setStartIndex] = useState(0);
@@ -202,12 +203,23 @@ function Offers() {
   useEffect(() => {
     GetPromotion(dispatch);
   }, []);
+  // const colors=ColorCodes()
+  const colors = useSelector((state) => state.themecolors[0]);
+console.log(colors,"colorscolorscolorscolorscolors");
+
   return (
     <div>
       <div className="absolute w-full md:block hidden md:top-[35vw] top-[122vw] px-[5vw] h-[20vw] ">
-        <div className="bg-[#E5FFF1] w-[100%] h-[15vw] rounded-[2vw]  shadow-black relative">
+        <div
+          className={`bg-[${colors.background}] w-[100%] h-[15vw] rounded-[2vw]  shadow-black relative`}
+          style={{
+            backgroundColor: colors.background,
+          }}
+        >
           <div className="h-[20%] w-full md:flex px-[2vw] items-center justify-between pt-[1vw] ">
-            <p className="md:text-[1.5vw] text-[5vw] font-bold text-[#1F487C]">
+            <p
+              className={`md:text-[1.5vw] text-[5vw] font-bold text-[${colors.primary}]`}
+            >
               Trending Offers
             </p>
             <div className="">
@@ -244,14 +256,18 @@ function Offers() {
                     </div> */}
                       <div className="relative">
                         <div className="absolute left-[4.5vw] top-0">
-                          <div className="bg-[#E5FFF1] w-[1.6vw] h-[0.8vw] rounded-b-full"></div>
+                          <div
+                            className={`bg-[${colors.background}] w-[1.6vw] h-[0.8vw] rounded-b-full`}
+                          ></div>
                         </div>
                         <img
                           src={`http://192.168.90.47:4000${item?.background_image}`}
                           className="w-[80vw] lg:h-[80%] md:h-[12vw] h-[40vw]"
                         />
                         <div className="absolute left-[4.5vw] bottom-0">
-                          <div className="bg-[#E5FFF1] w-[1.6vw] h-[0.8vw] rounded-t-full rounded-b-[0.5vw]"></div>
+                          <div
+                            className={`bg-[${colors.background}] w-[1.6vw] h-[0.8vw] rounded-t-full rounded-b-[0.5vw]`}
+                          ></div>
                         </div>
                       </div>
                     </>
@@ -264,7 +280,7 @@ function Offers() {
               onClick={prevSlide}
               style={{ zIndex: -10 }}
             >
-              <IoIosArrowBack size={"2.5vw"} color="#1F487C" />
+              <IoIosArrowBack size={"2.5vw"} color={`${colors.primary}`} />
             </button>
           </div>
           <div className="absolute right-[-3vw] top-[50%]">
@@ -272,7 +288,7 @@ function Offers() {
               className="cursor-pointer  p-2 rounded-full "
               onClick={nextSlide}
             >
-              <IoIosArrowForward size={"2.5vw"} color="#1F487C" />
+              <IoIosArrowForward size={"2.5vw"} color={`${colors.primary}`} />
             </button>
           </div>
         </div>
@@ -282,12 +298,14 @@ function Offers() {
 
       <div className="absolute w-full md:hidden block md:top-[35vw] top-[126vw] px-[5vw] h-[20vw]">
         <div className="flex items-center justify-between mt-[1vw] ">
-          <p className="md:text-[1.5vw] text-[5vw] font-bold text-[#1F487C]">
+          <p
+            className={`md:text-[1.5vw] text-[5vw] font-bold text-[${colors.primary}]`}
+          >
             Trending Offers
           </p>
           <Link
             to="/TrendingOffer"
-            className="text-[#1F487C] px-[2vw] py-[2vw] md:border-[0.1vw] text-[3vw] md:border-[#AAAAAA] md:px-[1.5vw] md:py-[0.2vw] rounded-full md:text-[1vw] "
+            className={`text-[${colors.primary}] px-[2vw] py-[2vw] md:border-[0.1vw] text-[3vw] md:border-[#AAAAAA] md:px-[1.5vw] md:py-[0.2vw] rounded-full md:text-[1vw] `}
           >
             View all
           </Link>

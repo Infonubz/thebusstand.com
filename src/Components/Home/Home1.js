@@ -105,6 +105,7 @@ import { RiLogoutCircleLine } from "react-icons/ri";
 // import { GetUserDetails } from "../../Api/Login/Login";
 // import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
+import ColorCodes from "../Common/ColorCodes";
 
 const validationSchema = Yup.object().shape({
   occupation: Yup.string()
@@ -460,7 +461,7 @@ export default function Home1() {
   //           key={item.id} // assuming there's a unique identifier for each item
   //         >
   //           {/* <span>
-  //             <FaMapMarkerAlt className="text-[#1F487C]" />
+  //             <FaMapMarkerAlt className="text-[${colors.primary}]" />
   //           </span> */}
   //           <p className="py-1 text-md my-1 pl-2">{item.label}</p>
   //         </div>
@@ -826,10 +827,10 @@ export default function Home1() {
   //     key: "1",
   //     label: (
   //       <div
-  //         className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+  //         className="text-[${colors.primary}] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
   //         onClick={handleProPage}
   //       >
-  //         <PiUserCircleDuotone color="#1F487C" size="1.5vw" /> My Account
+  //         <PiUserCircleDuotone color="${colors.primary}" size="1.5vw" /> My Account
   //       </div>
   //     ),
   //   },
@@ -837,10 +838,10 @@ export default function Home1() {
   //     key: "2",
   //     label: (
   //       <div
-  //         className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+  //         className="text-[${colors.primary}] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
   //         onClick={handleBookingPage}
   //       >
-  //         <FaTicketAlt color="#1F487C" size="1.5vw" /> Bookings
+  //         <FaTicketAlt color="${colors.primary}" size="1.5vw" /> Bookings
   //       </div>
   //     ),
   //   },
@@ -848,10 +849,10 @@ export default function Home1() {
   //     key: "3",
   //     label: (
   //       <div
-  //         className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+  //         className="text-[${colors.primary}] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
   //         onClick={openLogModal}
   //       >
-  //         <RiLogoutCircleLine color="#1F487C" size="1.5vw" /> Logout
+  //         <RiLogoutCircleLine color="${colors.primary}" size="1.5vw" /> Logout
   //       </div>
   //     ),
   //   },
@@ -893,10 +894,18 @@ export default function Home1() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   console.log(scrollPercentage.toFixed(2), "teswtinggggg");
-
+  const colors = ColorCodes();
+  // console.log(`${colors.background}`, "hhhhhhhhhhhh");
+  // const colors = useSelector((state) => state.themecolors[0]);
+  console.log(colors, "colorcolor");
+  const primary = colors.primary;
+  const background = colors.background;
   return (
     <div
-      className="bg-[#E5FFF1]  min-h-screen max-h-auto w-full overflow-auto  relative"
+      className={`bg-background min-h-screen max-h-auto w-full overflow-auto relative`}
+      style={{
+        backgroundColor: colors.background,
+      }}
 
       // style={{
       //   backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -925,8 +934,8 @@ export default function Home1() {
             src={busstand}
             className="md:h-[4vw] h-[10vw] md:w-[20vw] w-[40vw] py-[0.1vw]"
           />
-          <p className="border-r-[0.3vw] border-[#1F487C] hidden md:block mt-[0.2vw] h-[4vw] ml-[1vw]"></p>
-          <div className="w-[9vw] h-[3.8vw] mt-[0.3vw]  bg-[#1F487C] ml-[2vw] rounded-full hidden md:block relative">
+          <p className="border-r-[0.3vw] border-[${colors.primary}] hidden md:block mt-[0.2vw] h-[4vw] ml-[1vw]"></p>
+          <div className="w-[9vw] h-[3.8vw] mt-[0.3vw]  bg-[${colors.primary}] ml-[2vw] rounded-full hidden md:block relative">
             <img
               src={bus}
               className="h-[3.1vw] w-[4vw] absolute top-0"
@@ -952,7 +961,7 @@ export default function Home1() {
               className="md:w-[1.6vw] md:h-[1.6vw] w-[7vw] h-[7vw]"
               src={share}
             />
-            <p className="text-[1.2vw] font-semibold text-[#1F487C] hidden md:block">
+            <p className="text-[1.2vw] font-semibold text-[${colors.primary}] hidden md:block">
               Share
             </p>
           </div>
@@ -964,7 +973,7 @@ export default function Home1() {
               className="md:w-[1.6vw] md:h-[1.6vw] w-[7vw] h-[7vw]"
               src={ticket}
             />
-            <p className="hidden md:block text-[1.2vw] font-semibold text-[#1F487C]">
+            <p className="hidden md:block text-[1.2vw] font-semibold text-[${colors.primary}]">
               Rewards/Offers
             </p>
           </div>{" "}
@@ -981,9 +990,9 @@ export default function Home1() {
                   <Space>
                     <div className="flex items-center  gap-[1vw]">
                       <div>
-                        <FaUserCircle size="1.5vw" color="#1F487C" />
+                        <FaUserCircle size="1.5vw" color="${colors.primary}" />
                       </div>
-                      <p className="text-[1.2vw] font-semibold text-[#1F487C]">
+                      <p className="text-[1.2vw] font-semibold text-[${colors.primary}]">
                         {LoginUser_Name == "undefined"
                           ? "Guest"
                           : LoginUser_Name}
@@ -999,7 +1008,7 @@ export default function Home1() {
               onClick={() => setLoginIsOpen(true)}
             >
               <img className="w-[1.6vw] h-[1.6vw]" src={profile} />
-              <p className="text-[1.2vw] font-semibold text-[#1F487C]">
+              <p className="text-[1.2vw] font-semibold text-[${colors.primary}]">
                 Login/SignUp
               </p>
             </div>
@@ -1074,13 +1083,14 @@ export default function Home1() {
           }) => (
             <Form onSubmit={handleSubmit}>
               <div
-                className="bg-[#E5FFF1] absolute rounded-[2vw] grid grid-cols-5 "
+                className={`bg-[${colors.background}] absolute rounded-[2vw] grid grid-cols-5 `}
                 style={{
                   height: "45%",
                   width: "80%",
                   left: "10%",
                   top: "20%",
                   // zIndex:1
+                  backgroundColor: colors.background,
                 }}
               >
                 <div className="col-span-3  w-full h-full ">
@@ -1090,13 +1100,19 @@ export default function Home1() {
                       <div className="grid grid-cols-9 w-full h-full px-[2vw]">
                         <div className="col-span-4 w-full h-full items-center justify-center flex">
                           <div
-                            className=" bg-[#1F487C] rounded-[0.5vw] relative"
+                            className={`bg-[${colors.primary}] rounded-[0.5vw] relative`}
                             style={{
                               width: "100%",
                               height: "80%",
+                              backgroundColor: colors.primary,
                             }}
                           >
-                            <p className="text-[1.8vw] text-[#1F487C] font-extrabold absolute left-0 bottom-[3.5vw] drop-shadow-lg shadow-black header">
+                            <p
+                              className={`text-[1.8vw] text-[${colors.primary}] font-extrabold absolute left-0 bottom-[3.5vw] drop-shadow-lg shadow-black header`}
+                              style={{
+                                color: colors.primary,
+                              }}
+                            >
                               Time to Travel
                             </p>
 
@@ -1195,7 +1211,7 @@ export default function Home1() {
                         </div>
                         <div className="col-span-1 w-full h-full items-center justify-center flex cursor-not-allowed">
                           <FaArrowRightArrowLeft
-                            color="#1F487C"
+                            color={`${colors.primary}`}
                             className=" cursor-not-allowed"
                             size={"2vw"}
                             // onClick={handleflip}
@@ -1203,11 +1219,12 @@ export default function Home1() {
                         </div>
                         <div className="col-span-4 w-full h-full  items-center justify-center flex ">
                           <div
-                            className=" bg-[#1F487C] rounded-md relative  "
+                            className={` bg-[${colors.primary}] rounded-md relative  `}
                             style={{
                               width: "100%",
                               height: "80%",
                               // zIndex: 1,
+                              backgroundColor: colors.primary,
                             }}
                           >
                             {/* <img
@@ -1310,7 +1327,7 @@ export default function Home1() {
                         <button
                           className={`border-[0.15vw] flex ${
                             seatFilter === "seater"
-                              ? "bg-[#1F487C] text-white border-white"
+                              ? `bg-[${colors.primary}] text-white border-white`
                               : "text-black border-[#81A3B6]"
                           } py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
                           onClick={() => {
@@ -1325,35 +1342,35 @@ export default function Home1() {
                             <div
                               className={`border-t-[0.1vw] ${
                                 seatFilter == "seater"
-                                  ? "bg-white border-[#1F487C]"
-                                  : "bg-[#1F487C] border-white"
+                                  ? "bg-white border-[${colors.primary}]"
+                                  : "bg-[${colors.primary}] border-white"
                               } border-l-[0.1vw] border-r-[0.1vw] rounded-t-[0.1vw] h-[0.9vw] w-[1vw] relative flex items-center justify-center cursor-pointer`}
                             >
                               <div
                                 className={`border-b-[0.1vw] ${
                                   seatFilter == "seater"
-                                    ? "bg-white border-[#1F487C]"
-                                    : "bg-[#1F487C] border-white"
+                                    ? "bg-white border-[${colors.primary}]"
+                                    : "bg-[${colors.primary}] border-white"
                                 } border-l-[0.1vw] border-r-[0.1vw]  h-[0.9vw] w-[1.2vw] absolute top-[0.4vw] flex items-center justify-center`}
                               ></div>
                               <div
                                 className={`border-b-[0.1vw]  ${
                                   seatFilter == "seater"
-                                    ? " border-[#1F487C]"
+                                    ? " border-[${colors.primary}]"
                                     : " border-white"
                                 } border-l-[0.1vw] border-r-[0.1vw] h-[0.7vw] w-[0.8vw] absolute top-[0.4vw] flex items-center justify-center`}
                               ></div>
                               <div
                                 className={`border-t-[0.1vw] ${
                                   seatFilter == "seater"
-                                    ? "bg-white border-[#1F487C]"
-                                    : "bg-[#1F487C] border-white"
+                                    ? "bg-white border-[${colors.primary}]"
+                                    : "bg-[${colors.primary}] border-white"
                                 } absolute top-[0.4vw] w-[0.25vw] left-[-0.15vw]`}
                               ></div>
                               <div
                                 className={`border-t-[0.1vw]  ${
                                   seatFilter == "seater"
-                                    ? " border-[#1F487C]"
+                                    ? " border-[${colors.primary}]"
                                     : " border-white"
                                 } absolute top-[0.4vw] w-[0.25vw] right-[-0.15vw]`}
                               ></div>
@@ -1363,7 +1380,7 @@ export default function Home1() {
                             className={` ${
                               seatFilter === "seater"
                                 ? "text-white"
-                                : "text-[#1F487C]"
+                                : `text-[${colors.primary}]`
                             } font-bold inline-flex`}
                           >
                             Seater
@@ -1373,7 +1390,7 @@ export default function Home1() {
                         <button
                           className={`border-[0.15vw] flex ${
                             seatFilter === "sleeper"
-                              ? "bg-[#1F487C] text-white border-white"
+                              ? `bg-[${colors.primary}] text-white border-white`
                               : "text-black border-[#81A3B6]"
                           } py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
                           onClick={() => {
@@ -1392,14 +1409,14 @@ export default function Home1() {
                             <div
                               className={`border-[0.1vw] ${
                                 seatFilter == "sleeper"
-                                  ? "border-[#1F487C] bg-white"
-                                  : "border-white bg-[#1F487C]"
-                              } border-[#1F487C] h-[2vw] w-[1vw] rounded-[0.1vw] relative flex items-center justify-center cursor-pointer`}
+                                  ? "border-[${colors.primary}] bg-white"
+                                  : "border-white bg-[${colors.primary}]"
+                              } border-[${colors.primary}] h-[2vw] w-[1vw] rounded-[0.1vw] relative flex items-center justify-center cursor-pointer`}
                             >
                               <div
                                 className={`border-[0.1vw]  ${
                                   seatFilter == "sleeper"
-                                    ? "border-[#1F487C] bg-[#1F487C]"
+                                    ? "border-[${colors.primary}] bg-[${colors.primary}]"
                                     : "border-white bg-white"
                                 }  w-[0.5vw] h-[0.2vw] absolute bottom-[0.3vw] rounded-[0.1vw]`}
                               ></div>
@@ -1409,7 +1426,7 @@ export default function Home1() {
                             className={` ${
                               seatFilter === "sleeper"
                                 ? "text-white"
-                                : "text-[#1F487C]"
+                                : `text-[${colors.primary}]`
                             } font-bold`}
                           >
                             Sleeper
@@ -1418,7 +1435,7 @@ export default function Home1() {
                         {/* <button
                           className={`border-[0.15vw] ${
                             seatFilter == "semi_sleeper"
-                              ? "bg-[#1F487C] text-white"
+                              ? "bg-[${colors.primary}] text-white"
                               : "text-black border-[#81A3B6]"
                           }  py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
                           onClick={() => {
@@ -1447,7 +1464,9 @@ export default function Home1() {
                           </span> */}
                           <span
                             className={`${
-                              luxury === true ? "text-black" : "text-[#1F487C]"
+                              luxury === true
+                                ? "text-black"
+                                : `text-[${colors.primary}]`
                             } font-bold`}
                           >
                             Luxury Buses
@@ -1480,7 +1499,10 @@ export default function Home1() {
                     <div className="row-span-2 w-full h-full items-center justify-center flex">
                       <button
                         type="submit"
-                        className="bg-[#1F487C] px-[4vw] py-[0.5vw] rounded-md text-[1.5vw] text-white "
+                        className={`bg-${colors.primary} px-[4vw] py-[0.5vw] rounded-md text-[1.5vw] text-white`}
+                        style={{
+                          backgroundColor: colors.primary,
+                        }}
                         onClick={handlebussearch}
                       >
                         Search Buses
@@ -1509,22 +1531,24 @@ export default function Home1() {
               >
                 <span className="pr-[3vw]">
                   {" "}
-                  {/* <PiBusThin size={"7vw"} color="#1F487C" /> */}
-                  <FaMapPin size={"7vw"} color="#1F487C" />
+                  {/* <PiBusThin size={"7vw"} color="${colors.primary}" /> */}
+                  <FaMapPin size={"7vw"} color={`${colors.primary}`} />
                 </span>
-                <p className="text-[#1F487C] text-[5vw] ">
+                <p className={`text-[${colors.primary}] text-[5vw] `}>
                   {/* {localStorage.getItem("depature")
                     ? localStorage.getItem("depature")
                     : "Tiruppur"} */}
                   {busdatas.from ? busdatas.from : "From"}
                 </p>
-                <div className="border-b-[0.1vw] border-[#1F487C] left-[10vw] w-[80%] absolute top-[12vw]"></div>
+                <div
+                  className={`border-b-[0.1vw] border-[${colors.primary}] left-[10vw] w-[80%] absolute top-[12vw]`}
+                ></div>
               </div>
               <div className="absolute top-[7vw] right-[2vw]">
                 <LuArrowDownUp
                   size={"9vw"}
                   color="white"
-                  className="bg-[#1F487C] p-[2vw] rounded-full"
+                  className={`bg-[${colors.primary}] p-[2vw] rounded-full`}
                 />
               </div>
             </div>
@@ -1538,21 +1562,23 @@ export default function Home1() {
               <div className="flex items-center relative">
                 <span className="pr-[3vw]">
                   {" "}
-                  <FaMapMarkerAlt size={"7vw"} color="#1F487C" />
+                  <FaMapMarkerAlt size={"7vw"} color={`${colors.primary}`} />
                 </span>
-                <p className="text-[#1F487C] text-[5vw] ">
+                <p className={`text-[${colors.primary}] text-[5vw] `}>
                   {" "}
                   {/* {localStorage.getItem("arrival")
                     ? localStorage.getItem("arrival")
                     : "Coimbatore"} */}
                   {busdatas.to ? busdatas.to : "To"}
                 </p>
-                {/* <div className="border-b-[0.1vw] border-[#1F487C] w-full absolute top-[10vw]"></div> */}
+                {/* <div className="border-b-[0.1vw] border-[${colors.primary}] w-full absolute top-[10vw]"></div> */}
               </div>
             </div>
             <div className="row-span-1 relative">
               <div className="flex gap-[4.5vw] w-full h-full items-center  ">
-                <p className=" text-[4vw] text-[#1F487C] absolute top-[-5vw] left-0">
+                <p
+                  className={` text-[4vw] text-[${colors.primary}] absolute top-[-5vw] left-0`}
+                >
                   Departure Date
                 </p>
                 <HomeDateInput />
@@ -1563,7 +1589,7 @@ export default function Home1() {
                 <button
                   className={`border-[0.15vw] ${
                     seatFilter === "seater"
-                      ? "bg-[#1F487C] text-white"
+                      ? `bg-[${colors.primary}] text-white`
                       : "text-black border-[#81A3B6]"
                   }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                   onClick={() => {
@@ -1579,7 +1605,7 @@ export default function Home1() {
                 <button
                   className={`border-[0.15vw] ${
                     seatFilter === "sleeper"
-                      ? "bg-[#1F487C] text-white"
+                      ? `bg-[${colors.primary}] text-white`
                       : "text-black border-[#81A3B6]"
                   }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                   onClick={() => {
@@ -1595,7 +1621,7 @@ export default function Home1() {
                 {/* <button
                   className={`border-[0.15vw] ${
                     seatFilter == "semi_sleeper"
-                      ? "bg-[#1F487C] text-white"
+                      ? "bg-[${colors.primary}] text-white"
                       : "text-black border-[#81A3B6]"
                   }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                   onClick={() => {
@@ -1624,8 +1650,11 @@ export default function Home1() {
             </div>
             <div className="row-span-1 mt-[4vw] items-center justify-center  flex">
               <button
-                className="bg-[#1F487C] text-white text-[5vw] w-full py-[2vw] rounded-[2vw]"
+                className={`bg-${colors.primary} px-[4vw] py-[0.5vw] rounded-md text-[1.5vw] text-white`}
                 onClick={handlebussearch}
+                style={{
+                  backgroundColor: colors.primary,
+                }}
               >
                 Search Buses
               </button>
@@ -1635,7 +1664,7 @@ export default function Home1() {
       </div>
       <Offers />
       {/* <div className="mt-[16vw] md:block hidden px-[5vw]">
-        <p className=" text-[1.5vw] pl-[2vw] text-[#1F487C] font-bold">
+        <p className=" text-[1.5vw] pl-[2vw] text-[${colors.primary}] font-bold">
           Top Travelled Bus Routes{" "}
         </p>
         <div className="grid grid-cols-5 w-full h-full gap-[1vw] mt-[1.5vw] px-[2vw]">
@@ -1679,7 +1708,7 @@ export default function Home1() {
         </div>
         <div className="grid grid-cols-2 w-full h-full grid-flow-row gap-[2vw] mt-[1.5vw] px-[2vw]">
           {top_routes.map((item) => (
-            <div className="col-span-1  border-[0.1vw] border-[#1F487C] shadow-md shadow-[#1F487C] rounded-[0.5vw]">
+            <div className="col-span-1  border-[0.1vw] border-[${colors.primary}] shadow-md shadow-[${colors.primary}] rounded-[0.5vw]">
               <div className="grid grid-cols-7 w-full h-full">
                 <div className="col-span-1 w-full h-full items-center justify-center p-[0.5vw]">
                   <img
@@ -1712,7 +1741,7 @@ export default function Home1() {
         </div>
       </div> */}
       {/* <div className="mt-[175vw] px-[5vw] md:hidden block">
-        <p className=" text-[5vw] pl-[2vw] text-[#1F487C] font-bold">
+        <p className=" text-[5vw] pl-[2vw] text-[${colors.primary}] font-bold">
           Top Travelled Bus Routes{" "}
         </p>
         <div className="relative overflow-x-auto scrollbar-hide mt-[2vw]">
@@ -1777,8 +1806,15 @@ export default function Home1() {
         width={"100%"}
         className="custom-drawer"
       >
-        <div className="bg-[#E5FFF1] w-full h-full">
-          <div className="h-[15vw] w-full bg-[#1F487C] relative items-center flex justify-center">
+        <div
+          className={`bg-[${colors.background}] w-full h-full`}
+          style={{
+            backgroundColor: colors.background,
+          }}
+        >
+          <div
+            className={`h-[15vw] w-full bg-[${colors.primary}] relative items-center flex justify-center`}
+          >
             <span className="absolute left-[5vw]">
               <FaArrowLeft
                 color="white"
@@ -1805,15 +1841,20 @@ export default function Home1() {
               //   })
               // }
             /> */}
-            <div className="relative items-center flex  bg-[#E5FFF1] w-full justify-center h-[18vw]">
+            <div
+              className={`relative items-center flex  bg-[${colors.background}] w-full justify-center h-[18vw]`}
+              style={{
+                backgroundColor: colors.background,
+              }}
+            >
               <CiSearch
                 size={"6vw"}
-                color="#1F487C"
+                color={`${colors.primary}`}
                 className="absolute left-[6vw]"
               />
               <input
                 placeholder="Search your city"
-                className="text-[5vw] h-[12vw] pl-[12vw] w-[95%] bg-white rounded-full outline-none border-[0.1vw] border-[#1F487C]  custom-search custom-placeholder"
+                className={`text-[5vw] h-[12vw] pl-[12vw] w-[95%] bg-white rounded-full outline-none border-[0.1vw] border-[${colors.primary}]  custom-search custom-placeholder`}
                 onChange={(e) => {
                   setInputSearch({
                     ...inputsearch,
@@ -1904,7 +1945,7 @@ export default function Home1() {
           <>
             <div className=" justify-center flex-col">
               <p
-                className="text-[#1F487C] text-[2.5vw]  font-semibold tracking-wide text-center"
+                className={`text-[${colors.primary}] text-[2.5vw]  font-semibold tracking-wide text-center`}
                 style={{
                   fontFamily: "Playfair Display",
                 }}
@@ -1931,7 +1972,9 @@ export default function Home1() {
 
               <div
                 className={`border-b-[0.2vw] ${
-                  showregister ? "border-[#1F487C]" : " border-[#8EA3BD]"
+                  showregister
+                    ? `border-[${colors.primary}]`
+                    : " border-[#8EA3BD]"
                 } relative mx-[3vw] my-[3vw]`}
               >
                 <img
@@ -1940,34 +1983,34 @@ export default function Home1() {
                   className="'w-[2vw] h-[4vw] absolute left-[-2vw] bottom-[0.4vw]"
                 />
                 <div
-                  className={
-                    " bg-[#1F487C]  w-[1vw] h-[1vw] absolute rounded-full  left-[-0.5vw] bottom-[-0.5vw]"
-                  }
+                  className={` bg-[${colors.primary}]  w-[1vw] h-[1vw] absolute rounded-full  left-[-0.5vw] bottom-[-0.5vw]`}
                 >
-                  <p className="text-[#1F487C] absolute left-[-1vw] bottom-[-1.8vw] text-[1.2vw] font-bold">
+                  <p
+                    className={`text-[${colors.primary}] absolute left-[-1vw] bottom-[-1.8vw] text-[1.2vw] font-bold`}
+                  >
                     TIME
                   </p>
                 </div>
                 <div
                   className={`${
-                    showregister ? "bg-[#1F487C]" : "bg-[#8EA3BD]"
+                    showregister ? `bg-[${colors.primary}]` : "bg-[#8EA3BD]"
                   } w-[1vw] h-[1vw] absolute rounded-full  right-[-0.5vw] bottom-[-0.5vw]`}
                 ></div>
                 <p
                   className={`${
-                    showregister ? "text-[#1F487C]" : "text-[#8EA3BD]"
+                    showregister ? `text-[${colors.primary}]` : "text-[#8EA3BD]"
                   }  absolute left-[47.5%] bottom-[-2.3vw] text-[1.3vw] font-bold`}
                 >
                   To
                 </p>
                 <div
                   className={`${
-                    showregister ? `bg-[#1F487C]` : "bg-[#8EA3BD]"
+                    showregister ? `bg-[${colors.primary}]` : "bg-[#8EA3BD]"
                   } w-[1vw] h-[1vw] absolute rounded-full  left-[48%] bottom-[-0.5vw]`}
                 ></div>
                 <p
                   className={`${
-                    showregister ? "text-[#1F487C]" : "text-[#8EA3BD]"
+                    showregister ? `text-[${colors.primary}]` : "text-[#8EA3BD]"
                   } absolute right-[-2vw] bottom-[-2.3vw] text-[1.3vw] font-bold`}
                 >
                   TRAVEL
@@ -1988,14 +2031,18 @@ export default function Home1() {
                 }}
               >
                 <div className=" flex flex-col items-center gap-y-[1vw]">
-                  <div className="font-bold text-[1.7vw] text-[#1F487C]">
+                  <div
+                    className={`font-bold text-[1.7vw] text-[${colors.primary}]`}
+                  >
                     Are you Sure you want to Log Out ?
                   </div>
-                  <div className="text-[1.2vw] px-[4vw] text-center text-[#1F487C]">
+                  <div
+                    className={`text-[1.2vw] px-[4vw] text-center text-[${colors.primary}]`}
+                  >
                     Tickets Booking is Faster when you are Logged In
                   </div>
                   <button
-                    className=" bg-[#1F487C] text-[1.4vw] w-[20vw] h-[3.5vw] text-white rounded-full font-bold "
+                    className={` bg-[${colors.primary}] text-[1.4vw] w-[20vw] h-[3.5vw] text-white rounded-full font-bold `}
                     onClick={() => {
                       console.log("hiiiiii", "main");
 
@@ -2005,13 +2052,15 @@ export default function Home1() {
                   >
                     Yes, Log Out
                   </button>
-                  <button className="  border-[0.2vw] border-[#1F487C] text-[1.4vw] w-[20vw] h-[3.5vw] text-[#1F487C] rounded-full font-bold">
+                  <button
+                    className={`  border-[0.2vw] border-[${colors.primary}] text-[1.4vw] w-[20vw] h-[3.5vw] text-[${colors.primary}] rounded-full font-bold`}
+                  >
                     Cancel
                   </button>
                 </div>
               </Modal>
               {/* <div className="px-[2vw] pt-[3vw] relative">
-                <div className=" w-full border-[0.1vw]  rounded-[0.5vw] h-[3vw] flex border-[#1F487C]">
+                <div className=" w-full border-[0.1vw]  rounded-[0.5vw] h-[3vw] flex border-[${colors.primary}]">
                   <div className=" w-[88%] rounded-l-[0.5vw]  items-center flex">
                     <p
                       className={`px-[1vw] text-[1.1vw] ${
@@ -2026,7 +2075,7 @@ export default function Home1() {
                     </p>
                   </div>
                   <div
-                    className="w-[12%] rounded-r-[0.3vw] bg-[#1F487C] flex items-center justify-center cursor-pointer"
+                    className="w-[12%] rounded-r-[0.3vw] bg-[${colors.primary}] flex items-center justify-center cursor-pointer"
                     onClick={() => setDropDownOpen(!dropdownopen)}
                   >
                     <IoIosArrowDown size={"1.5vw"} color="white" />
@@ -2052,7 +2101,7 @@ export default function Home1() {
               <div className="flex w-full mt-[3vw] px-[2vw]">
                 <input
                   type="number"
-                  class="border-[0.1vw] border-[#1F487C] text-[1.5vw] h-[3vw] w-[60%] rounded-l-[0.5vw] outline-none px-[1vw] no-spinner"
+                  class="border-[0.1vw] border-[${colors.primary}] text-[1.5vw] h-[3vw] w-[60%] rounded-l-[0.5vw] outline-none px-[1vw] no-spinner"
                   placeholder="PHONE NUMBER"
                   pattern="[0-9]{10}"
                   maxLength="10"
@@ -2065,7 +2114,7 @@ export default function Home1() {
                 />
 
                 <button
-                  className={`bg-[#1F487C] text-white h-[3vw] w-[40%] text-[1.1vw] rounded-r-[0.5vw] ${
+                  className={`bg-[${colors.primary}] text-white h-[3vw] w-[40%] text-[1.1vw] rounded-r-[0.5vw] ${
                     registerdata.mobile == "" || undefined
                       ? ""
                       : "cursor-pointer"
@@ -2102,7 +2151,7 @@ export default function Home1() {
                           type="text"
                           name="mobileData"
                           placeholder="Mobile Number"
-                          className="border-[0.1vw] border-[#1F487C] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw] "
+                          className="border-[0.1vw] border-[${colors.primary}] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw] "
                         />
                         <ErrorMessage
                           name="mobileData"
@@ -2115,7 +2164,7 @@ export default function Home1() {
                         <Field
                           as="select"
                           name="option"
-                          className="border-[0.1vw] border-[#1F487C] text-[1.1vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw] "
+                          className="border-[0.1vw] border-[${colors.primary}] text-[1.1vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw] "
                         >
                           <option
                             value=""
@@ -2139,13 +2188,13 @@ export default function Home1() {
 
                       <div className=" justify-between  flex mt-[3vw]">
                         <button
-                          className="text-white bg-[#1F487C] h-[2.5vw] text-[1.1vw]  w-[8vw] rounded-[0.8vw]"
+                          className="text-white bg-[${colors.primary}] h-[2.5vw] text-[1.1vw]  w-[8vw] rounded-[0.8vw]"
                           // onClick={handleGrantPermission}
                         >
                           Cancel
                         </button>
                         <button
-                          className="text-white bg-[#1F487C] h-[2.5vw] text-[1.1vw] w-[8vw] rounded-[0.8vw]"
+                          className="text-white bg-[${colors.primary}] h-[2.5vw] text-[1.1vw] w-[8vw] rounded-[0.8vw]"
                           // onClick={handleDenyPermission}
                           // onClick={() => setNext(true)}
                           type="submit"
@@ -2166,7 +2215,7 @@ export default function Home1() {
         ) : next === false ? (
           <div className="h-[30vw] w-[50vw  justify-center flex-col">
             <p
-              className="text-[#1F487C] text-[2.5vw]  font-semibold tracking-wide text-center"
+              className={`text-[${colors.primary}] text-[2.5vw]  font-semibold tracking-wide text-center`}
               style={{
                 fontFamily: "Playfair Display",
               }}
@@ -2198,7 +2247,7 @@ export default function Home1() {
                 borderStyle: `solid`,
                 borderWidth: `0.2vw`,
                 borderColor: `transparent`,
-                borderImage: `linear-gradient(to right, #1F487C 50%, #8EA3BD 50%) 1`,
+                borderImage: `linear-gradient(to right, ${colors.primary} 50%, #8EA3BD 50%) 1`,
               }}
             >
               <img
@@ -2207,11 +2256,11 @@ export default function Home1() {
                 className="'w-[2vw] h-[4vw] absolute left-[43.1%] bottom-[0.4vw]"
               />
               <div
-                className={
-                  " bg-[#1F487C]  w-[1vw] h-[1vw] absolute rounded-full  left-[-0.5vw] bottom-[-0.5vw]"
-                }
+                className={`bg-[${colors.primary}]  w-[1vw] h-[1vw] absolute rounded-full  left-[-0.5vw] bottom-[-0.5vw]`}
               >
-                <p className="text-[#1F487C] absolute left-[-1vw] bottom-[-1.8vw] text-[1.2vw] font-bold">
+                <p
+                  className={`text-[${colors.primary}] absolute left-[-1vw] bottom-[-1.8vw] text-[1.2vw] font-bold`}
+                >
                   TIME
                 </p>
               </div>
@@ -2220,14 +2269,14 @@ export default function Home1() {
                  w-[1vw] h-[1vw] absolute rounded-full  right-[-0.5vw] bottom-[-0.5vw]`}
               ></div>
               <p
-                className={` text-[#1F487C]
+                className={` text-[${colors.primary}]
                   absolute left-[47.5%] bottom-[-2.3vw] text-[1.3vw] font-bold`}
               >
                 To
               </p>
               <div
                 className={`
-                  bg-[#1F487C]
+                  bg-[${colors.primary}]
                  w-[1vw] h-[1vw] absolute rounded-full  left-[48%] bottom-[-0.5vw]`}
               ></div>
               <p
@@ -2255,13 +2304,13 @@ export default function Home1() {
             {localStorage.getItem("latitude") ? (
               <div className=" justify-between px-[2vw] flex mt-[2vw]">
                 <button
-                  className="text-white bg-[#1F487C] h-[2.5vw] text-[1.1vw]  w-[8vw] rounded-[0.8vw]"
+                  className={`text-white bg-[${colors.primary}] h-[2.5vw] text-[1.1vw]  w-[8vw] rounded-[0.8vw]`}
                   // onClick={handleGrantPermission}
                 >
                   Cancel
                 </button>
                 <button
-                  className="text-white bg-[#1F487C] h-[2.5vw] text-[1.1vw] w-[8vw] rounded-[0.8vw]"
+                  className={`text-white bg-[${colors.primary}] h-[2.5vw] text-[1.1vw] w-[8vw] rounded-[0.8vw]`}
                   // onClick={handleDenyPermission}
                   onClick={() => setNext(true)}
                 >
@@ -2271,13 +2320,13 @@ export default function Home1() {
             ) : (
               <div className=" justify-between px-[2vw] flex mt-[2vw]">
                 <button
-                  className="text-white bg-[#1F487C] h-[2.5vw] text-[1.1vw]  w-[8vw] rounded-[0.8vw]"
+                  className={`text-white bg-[${colors.primary}] h-[2.5vw] text-[1.1vw]  w-[8vw] rounded-[0.8vw]`}
                   onClick={handleGrantPermission}
                 >
                   Allow
                 </button>
                 <button
-                  className="text-white bg-[#1F487C] h-[2.5vw] text-[1.1vw] w-[8vw] rounded-[0.8vw]"
+                  className={`text-white bg-[${colors.primary}] h-[2.5vw] text-[1.1vw] w-[8vw] rounded-[0.8vw]`}
                   onClick={handleDenyPermission}
                 >
                   Don't Allow
@@ -2288,7 +2337,7 @@ export default function Home1() {
         ) : (
           <div className="h-[30vw] w-[50vw  justify-center flex-col">
             <p
-              className="text-[#1F487C] text-[2.5vw]  font-semibold tracking-wide text-center"
+              className={`text-[${colors.primary}] text-[2.5vw]  font-semibold tracking-wide text-center`}
               style={{
                 fontFamily: "Playfair Display",
               }}
@@ -2311,7 +2360,7 @@ export default function Home1() {
                 borderStyle: `solid`,
                 borderWidth: `0.2vw`,
                 borderColor: `transparent`,
-                borderImage: `linear-gradient(to right, #1F487C 50%, #1F487C 50%) 1`,
+                borderImage: `linear-gradient(to right, ${colors.primary} 50%, ${colors.primary} 50%) 1`,
               }}
             >
               <img
@@ -2320,31 +2369,31 @@ export default function Home1() {
                 className="'w-[2vw] h-[4vw] absolute right-[-2vw] bottom-[0.4vw]"
               />
               <div
-                className={
-                  " bg-[#1F487C]  w-[1vw] h-[1vw] absolute rounded-full  left-[-0.5vw] bottom-[-0.5vw]"
-                }
+                className={` bg-[${colors.primary}]  w-[1vw] h-[1vw] absolute rounded-full  left-[-0.5vw] bottom-[-0.5vw]`}
               >
-                <p className="text-[#1F487C] absolute left-[-1vw] bottom-[-1.8vw] text-[1.2vw] font-bold">
+                <p
+                  className={`text-[${colors.primary}] absolute left-[-1vw] bottom-[-1.8vw] text-[1.2vw] font-bold`}
+                >
                   TIME
                 </p>
               </div>
               <div
-                className={`  bg-[#1F487C]
+                className={`  bg-[${colors.primary}]
                w-[1vw] h-[1vw] absolute rounded-full  right-[-0.5vw] bottom-[-0.5vw]`}
               ></div>
               <p
-                className={` text-[#1F487C]
+                className={` text-[${colors.primary}]
                 absolute left-[47.5%] bottom-[-2.3vw] text-[1.3vw] font-bold`}
               >
                 To
               </p>
               <div
                 className={`
-                bg-[#1F487C]
+                bg-[${colors.primary}]
                w-[1vw] h-[1vw] absolute rounded-full  left-[48%] bottom-[-0.5vw]`}
               ></div>
               <p
-                className={` text-[#1F487C]
+                className={` text-[${colors.primary}]
               absolute right-[-2vw] bottom-[-2.3vw] text-[1.3vw] font-bold`}
               >
                 TRAVEL
@@ -2376,17 +2425,22 @@ export default function Home1() {
         className="custom-drawer"
       >
         <div className="grid grid-rows-3 gap-y-[2vw]">
-          <div className="text-[#1F487C] text-[5vw] px-[2vw] flex items-center gap-[5vw]">
-            <PiUserCircleDuotone color="#1F487C" size="5vw" /> My Account
-          </div>
-          <div className="text-[#1F487C] text-[5vw] px-[2vw] flex items-center gap-[5vw]">
-            <FaTicketAlt color="#1F487C" size="5vw" /> Bookings
+          <div
+            className={`text-[${colors.primary}] text-[5vw] px-[2vw] flex items-center gap-[5vw]`}
+          >
+            <PiUserCircleDuotone color="${colors.primary}" size="5vw" /> My
+            Account
           </div>
           <div
-            className="text-[#1F487C] text-[5vw] px-[2vw] flex items-center gap-[5vw]"
+            className={`text-[${colors.primary}] text-[5vw] px-[2vw] flex items-center gap-[5vw]`}
+          >
+            <FaTicketAlt color="${colors.primary}" size="5vw" /> Bookings
+          </div>
+          <div
+            className={`text-[${colors.primary}] text-[5vw] px-[2vw] flex items-center gap-[5vw]`}
             onClick={openLogMobile}
           >
-            <RiLogoutCircleLine color="#1F487C" size="5vw" /> Logout
+            <RiLogoutCircleLine color={`${colors.primary}`} size="5vw" /> Logout
           </div>
         </div>
       </Drawer>
@@ -2402,14 +2456,16 @@ export default function Home1() {
         className="custom-drawer"
       >
         <div className=" flex flex-col items-center gap-y-[5vw]">
-          <div className="font-bold text-[5vw] text-[#1F487C]">
+          <div className={`font-bold text-[5vw] text-[${colors.primary}]`}>
             Are you Sure you want to Log Out ?
           </div>
-          <div className="text-[4vw] px-[10vw] text-center text-[#1F487C]">
+          <div
+            className={`text-[4vw] px-[10vw] text-center text-[${colors.primary}]`}
+          >
             Tickets Booking is Faster when you are Logged In
           </div>
           <button
-            className=" bg-[#1F487C] text-[4vw] w-3/4 h-[10vw] text-white rounded-md font-bold"
+            className={` bg-[${colors.primary}] text-[4vw] w-3/4 h-[10vw] text-white rounded-md font-bold`}
             onClick={() => {
               console.log("hiiiiii", "main");
 
@@ -2419,7 +2475,9 @@ export default function Home1() {
           >
             Yes, Log Out
           </button>
-          <button className="  border-[0.2vw] border-[#1F487C] text-[4vw] w-3/4 h-[10vw] text-[#1F487C] rounded-md font-bold">
+          <button
+            className={`border-[0.2vw] border-[${colors.primary}] text-[4vw] w-3/4 h-[10vw] text-[${colors.primary}] rounded-md font-bold`}
+          >
             Cancel
           </button>
         </div>
@@ -2436,17 +2494,22 @@ export default function Home1() {
         className="custom-drawer"
       >
         <div className="grid grid-rows-3 gap-y-[2vw]">
-          <div className="text-[#1F487C] text-[5vw] px-[2vw] flex items-center gap-[5vw]">
-            <PiUserCircleDuotone color="#1F487C" size="5vw" /> My Account
-          </div>
-          <div className="text-[#1F487C] text-[5vw] px-[2vw] flex items-center gap-[5vw]">
-            <FaTicketAlt color="#1F487C" size="5vw" /> Bookings
+          <div
+            className={`text-[${colors.primary}] text-[5vw] px-[2vw] flex items-center gap-[5vw]`}
+          >
+            <PiUserCircleDuotone color="${colors.primary}" size="5vw" /> My
+            Account
           </div>
           <div
-            className="text-[#1F487C] text-[5vw] px-[2vw] flex items-center gap-[5vw]"
+            className={`text-[${colors.primary}] text-[5vw] px-[2vw] flex items-center gap-[5vw]`}
+          >
+            <FaTicketAlt color="${colors.primary}" size="5vw" /> Bookings
+          </div>
+          <div
+            className={`text-[${colors.primary}] text-[5vw] px-[2vw] flex items-center gap-[5vw]`}
             onClick={openLogMobile}
           >
-            <RiLogoutCircleLine color="#1F487C" size="5vw" /> Logout
+            <RiLogoutCircleLine color={`${colors.primary}`} size="5vw" /> Logout
           </div>
         </div>
       </Drawer>
@@ -2484,7 +2547,7 @@ export default function Home1() {
 //             <Field
 //               as="select"
 //               name="option"
-//               className="border-[0.1vw] border-py-[0.5vw] border-[#1F487C] placeholder-blue to-white border-[#1F487C] text-[#1F487C] text-[1.1vw] h-[3vw] w-[30%] rounded-l-[0.5vw] outline-none px-[1vw]"
+//               className="border-[0.1vw] border-py-[0.5vw] border-[${colors.primary}] placeholder-blue to-white border-[${colors.primary}] text-[${colors.primary}] text-[1.1vw] h-[3vw] w-[30%] rounded-l-[0.5vw] outline-none px-[1vw]"
 //             >
 //               <option
 //                 value=""
@@ -2497,7 +2560,7 @@ export default function Home1() {
 //               name="mobile"
 //               placeholder="Mobile Number"
 //               maxLength={10}
-//               className="border-y-[0.1vw] border-r-[0.5vw] bg-gradient-to-r placeholder-blue to-white border-[#1F487C] text-[#1F487C] text-[1.2vw] h-[3vw] w-[70%] rounded-r-[0.5vw] outline-none px-[1vw]"
+//               className="border-y-[0.1vw] border-r-[0.5vw] bg-gradient-to-r placeholder-blue to-white border-[${colors.primary}] text-[${colors.primary}] text-[1.2vw] h-[3vw] w-[70%] rounded-r-[0.5vw] outline-none px-[1vw]"
 //             />
 //             <ErrorMessage
 //               name="mobile"
@@ -2510,9 +2573,9 @@ export default function Home1() {
 //               type="button"
 //               className={`${
 //                 userdetails.sex === "male"
-//                   ? "bg-[#1F487C] text-white"
-//                   : "bg-gradient-to-r  to-white text-[#1F487C]"
-//               } h-[3vw] w-[50%] rounded-l-[0.5vw] border-[0.1vw] border-[#1F487C]`}
+//                   ? "bg-[${colors.primary}] text-white"
+//                   : "bg-gradient-to-r  to-white text-[${colors.primary}]"
+//               } h-[3vw] w-[50%] rounded-l-[0.5vw] border-[0.1vw] border-[${colors.primary}]`}
 //               onClick={() =>
 //                 setUserDetails({
 //                   ...userdetails,
@@ -2526,9 +2589,9 @@ export default function Home1() {
 //               type="button"
 //               className={`${
 //                 userdetails.sex === "female"
-//                   ? "bg-[#1F487C] text-white"
-//                   : "bg-gradient-to-r  to-white text-[#1F487C]"
-//               } h-[3vw] w-[50%] rounded-r-[0.5vw] border-[0.1vw] border-[#1F487C]`}
+//                   ? "bg-[${colors.primary}] text-white"
+//                   : "bg-gradient-to-r  to-white text-[${colors.primary}]"
+//               } h-[3vw] w-[50%] rounded-r-[0.5vw] border-[0.1vw] border-[${colors.primary}]`}
 //               onClick={() =>
 //                 setUserDetails({
 //                   ...userdetails,
@@ -2549,7 +2612,7 @@ export default function Home1() {
 //               name="age"
 //               placeholder="Age"
 //               maxLength={2} // Enforce the character limit
-//               className="border-r-[0.5vw] bg-gradient-to-r border-[0.1vw]  placeholder-blue to-white border-[#1F487C] text-[#1F487C] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw]"
+//               className="border-r-[0.5vw] bg-gradient-to-r border-[0.1vw]  placeholder-blue to-white border-[${colors.primary}] text-[${colors.primary}] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw]"
 //             />
 //             <ErrorMessage
 //               name="age"
@@ -2562,7 +2625,7 @@ export default function Home1() {
 //               as="select"
 //               name="occupation"
 //               placeholder="Occupation"
-//               className="border-r-[0.5vw] bg-gradient-to-r border-[0.1vw]  placeholder-blue to-white border-[#1F487C] text-[#1F487C] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw]"
+//               className="border-r-[0.5vw] bg-gradient-to-r border-[0.1vw]  placeholder-blue to-white border-[${colors.primary}] text-[${colors.primary}] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw]"
 //             >
 //               <option
 //                 value=""
@@ -2589,13 +2652,13 @@ export default function Home1() {
 //     </div>
 //     <div className="justify-between flex mt-[3vw]">
 //       <button
-//         className="text-white bg-[#1F487C] h-[2.5vw] text-[1.1vw] w-[8vw] rounded-[0.8vw]"
+//         className="text-white bg-[${colors.primary}] h-[2.5vw] text-[1.1vw] w-[8vw] rounded-[0.8vw]"
 //         type="button"
 //       >
 //         Cancel
 //       </button>
 //       <button
-//         className="text-white bg-[#1F487C] h-[2.5vw] text-[1.1vw] w-[8vw] rounded-[0.8vw]"
+//         className="text-white bg-[${colors.primary}] h-[2.5vw] text-[1.1vw] w-[8vw] rounded-[0.8vw]"
 //         type="submit"
 //         disabled={isSubmitting}
 //       >

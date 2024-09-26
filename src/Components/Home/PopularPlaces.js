@@ -1,9 +1,14 @@
 import React from "react";
+import ColorCodes from "../Common/ColorCodes";
+import { useSelector } from "react-redux";
 
 export default function PopularPlaces() {
+  // const colors=ColorCodes()
+  const colors = useSelector((state) => state.themecolors[0]);
+
   return (
     <div className="px-[5vw] ">
-      <p className=" text-[1.5vw] pl-[2vw] text-[#1F487C] font-bold pt-[3vw] pb-[1vw]">
+      <p className={`text-[1.5vw] pl-[2vw] text-[${colors.primary}] font-bold pt-[3vw] pb-[1vw]`}>
         We’ve partnered with the world’s best bus companies
       </p>
       <div className=" w-full flex px-[2vw] items-center justify-between ">

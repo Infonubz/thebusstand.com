@@ -28,6 +28,7 @@ import {
   SEND_OTP,
   BOOKING_DETAILS_STATUS,
   GET_TICKET_TO_CANCEL,
+  GET_THEME_COLORS,
 } from "./type";
 
 const initial = {
@@ -56,6 +57,12 @@ const initial = {
   get_operator_list: [],
   feed_back: [],
   send_otp: [],
+  themecolors: [
+    {
+      primary: "#1F487C",
+      background: "#E5FFF1",
+    },
+  ],
 };
 
 export const busreducer = (state = initial, action) => {
@@ -252,7 +259,12 @@ export const busreducer = (state = initial, action) => {
         get_ticket_to_cancel: payload,
       };
     }
-
+    case GET_THEME_COLORS: {
+      return {
+        ...state,
+        get_colors: [...state.themecolors, payload],
+      };
+    }
     default: {
       return state;
     }

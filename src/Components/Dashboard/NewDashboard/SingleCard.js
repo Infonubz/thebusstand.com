@@ -39,6 +39,7 @@ import { GetUserDetails } from "../../../Api/Login/Login";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin, Space, Empty } from "antd";
 import { useNavigate } from "react-router";
+import ColorCodes from "../../Common/ColorCodes";
 // import orange_travel_logo from "../../../assets/orange.png"
 export default function SingleCard() {
   // const [dropDown, setDropDown] = useState(0)
@@ -153,6 +154,8 @@ export default function SingleCard() {
   console.log(trackingCount, "logloglog");
   const isluxury = sessionStorage.getItem("isLuxury");
   console.log(isluxury, "isluxuryisluxury");
+  const colors = ColorCodes();
+  console.log(colors.background, "colorscolors");
 
   return (
     // <div>
@@ -766,7 +769,7 @@ export default function SingleCard() {
                         <div className="row-span-3  flex flex-col">
                           <div className="border-r-[0.2vw] border-l-[0.2vw] w-[15.5vw] h-auto border-slate-400 border-dashed relative top-[1vw]">
                             <div className="flex flex-col items-center  border-dashed px-[1vw] gap-[1vw]">
-                              {item.seat_availability.avlWindow ? (
+                              {item.seat_availability.avlFemale ? (
                                 <div className="flex gap-[0.5vw] ">
                                   <div
                                     className={`${
@@ -776,7 +779,7 @@ export default function SingleCard() {
                                         : "text-[#1F487C]"
                                     } text-[1.1vw] `}
                                   >
-                                    {item.seat_availability.avlWindow}
+                                    {item.seat_availability.avlFemale}
                                   </div>
                                   <div
                                     className={`${
@@ -786,7 +789,7 @@ export default function SingleCard() {
                                         : "text-[#1F487C]"
                                     } text-[1.1vw] w-full`}
                                   >
-                                    Windows Seat Left
+                                    Female Seat Left
                                   </div>
                                 </div>
                               ) : (
@@ -798,7 +801,7 @@ export default function SingleCard() {
                                     />
                                   </div>
                                   <div className="text-[#FF0000] text-[1.1vw] w-full">
-                                    Windows Seats Sold out
+                                    Female Seats Sold out
                                   </div>
                                 </div>
                               )}
@@ -807,7 +810,7 @@ export default function SingleCard() {
                                   <MdEventSeat color="#C62B2B" size="2vw" />
                                 </div>
                                 <div className="text-[1.2vw] text-[#C62B2B] font-bold">
-                                  {item.seat_availability.avlAll} Seats Left
+                                  {item.seat_availability.total} Seats Left
                                 </div>
                               </div>
                             </div>

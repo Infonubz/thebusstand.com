@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetFeedbacks } from "../../Api/Home/RatingFeedback";
 import { Popover } from "antd";
 import { capitalizeFirstLetter } from "../Common/Captalization";
+import ColorCodes from "../Common/ColorCodes";
 
 export default function Rating() {
   // const ratingdata = [
@@ -69,11 +70,13 @@ export default function Rating() {
     setStartIndex(newIndex);
   };
   console.log(startIndex, "startIndex");
+  // const colors=ColorCodes()
 
+  const colors = useSelector((state) => state.themecolors[0]);
 
   return (
     <div className="px-[5vw] py-[1vw] ">
-      <p className="text-[3.2vw] my-[2vw] md:my-0  md:text-[1.6vw]  text-[#1F487C] font-bold pt-[1vw] px-[2vw] pb-[1vw]">
+      <p className={`text-[3.2vw] my-[2vw] md:my-0  md:text-[1.6vw]  text-[${colors.primary}] font-bold pt-[1vw] px-[2vw] pb-[1vw]`}>
         Here’s what a few of our customers have to say about us
       </p>
       {/* DesktopView */}
@@ -108,11 +111,11 @@ export default function Rating() {
               }
               <div className="absolute bottom-[1vw] px-[2vw] items-center justify-center flex">
                {
-                item?.description?.length > 60 ? <Popover content={item.description} trigger="hover" overlayStyle={{ maxWidth: '20vw' }}><p className=" text-[#1F487C] text-[1.1vw]">{`${capitalizeFirstLetter(item?.description?.slice(0,60))}...`}</p></Popover> : <p className=" text-[#1F487C] text-[1.1vw] items-center justify-center flex">{capitalizeFirstLetter(item.description)}</p>
+                item?.description?.length > 60 ? <Popover content={item.description} trigger="hover" overlayStyle={{ maxWidth: '20vw' }}><p className={` text-[${colors.primary}] text-[1.1vw]`}>{`${capitalizeFirstLetter(item?.description?.slice(0,60))}...`}</p></Popover> : <p className={`text-[${colors.primary}] text-[1.1vw] items-center justify-center flex`}>{capitalizeFirstLetter(item.description)}</p>
                } 
               </div>
               <div className="absolute left-[0.2vw] bottom-[-2vw]">
-                <p className="text-[1.1vw] text-[#1F487C] font-bold">
+                <p className={`text-[1.1vw] text-[${colors.primary}] font-bold`}>
                   {item.name}
                 </p>
               </div>
@@ -136,7 +139,7 @@ export default function Rating() {
               className="cursor-pointer  p-2 rounded-full "
               onClick={nextSlide}
             >
-              <IoIosArrowForward size={"2vw"} color="#1F487C" />
+              <IoIosArrowForward size={"2vw"} color={`${colors.primary}`} />
             </button>
           </div>
         </div>
@@ -174,7 +177,7 @@ export default function Rating() {
                   <p className="text-black text-[3.5vw] text-wrap">{item.description}</p>
                 </div>
                 <div className="absolute left-[0.2vw] bottom-[8.5vw]">
-                  <p className="text-[3.5vw] text-[#1F487C] font-bold">{item.name}</p>
+                  <p className={`text-[3.5vw] text-[${colors.primary}] font-bold`}>{item.name}</p>
                 </div>
                 <div className="absolute left-[0.2vw] bottom-[4.5vw]">
                   <p className="text-[3vw] text-[#8DA0A8]">{item.occupation}</p>

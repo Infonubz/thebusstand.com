@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ColorCodes from "../Common/ColorCodes";
+import { useSelector } from "react-redux";
 
 export default function BusOperator() {
   const BusOperator = [
@@ -28,14 +30,16 @@ export default function BusOperator() {
     "Shatabdi Travels",
     "Mahasagar Travels",
   ];
+  // const colors = ColorCodes();
+  const colors = useSelector((state) => state.themecolors[0]);
   return (
     <div className="px-[5vw]">
       <div className=" w-full flex px-[2vw] items-center justify-between mt-[1vw] ">
-        <p className="md:text-[1.5vw] text-[5vw] text-[#1F487C] font-bold">
+        <p className={`md:text-[1.5vw] text-[5vw] text-[${colors.primary}] font-bold`}>
           4500+ Private Bus Operators
         </p>
         <Link to="/BusOpp">
-          <button className="text-[2.5vw] text-[#1F487C] md:border-[0.1vw] md:border-[#AAAAAA] md:px-[1.5vw] md:py-[0.2vw] md:rounded-full md:text-[1vw] md:bg-white md:shadow-lg">
+          <button className={`text-[2.5vw] text-[${colors.primary}] md:border-[0.1vw] md:border-[#AAAAAA] md:px-[1.5vw] md:py-[0.2vw] md:rounded-full md:text-[1vw] md:bg-white md:shadow-lg`}>
             View all
           </button>
         </Link>
@@ -49,7 +53,7 @@ export default function BusOperator() {
           ))}
       </div>
       <div className="px-[2vw] my-[1vw]">
-        <p className="md:text-[1.5vw] text-[4vw] text-[#1F487C] font-bold">
+        <p className={`md:text-[1.5vw] text-[4vw] text-[${colors.primary}] font-bold`}>
           Why Booking Buses with thebusstand.com ?{" "}
         </p>
         <p className="md:text-[1.1vw] text-[3vw] md:leading-[2.5vw] leading-[5vw] tracking-wide  md:tracking-wider mt-[1vw]">

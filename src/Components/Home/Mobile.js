@@ -9,8 +9,13 @@ import { App } from "antd";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "../../Components/Home/Mobile.css";
 import { Rate } from "antd";
+import ColorCodes from "../Common/ColorCodes";
+import { useSelector } from "react-redux";
 const MobileApp = () => {
   const [modalshow, setModalShow] = useState(false);
+  // const colors = ColorCodes();
+  const colors = useSelector((state) => state.themecolors[0]);
+
   return (
     <>
       <div
@@ -49,8 +54,9 @@ const MobileApp = () => {
                 <div className="flex flex-col ">
                   <div className="flex">
                     <div
-                      className={` cursor-pointer ${modalshow ? "bg-[#B3C2D4]" : ""
-                        } rounded-[1vw] w-[10vw] py-[0.5vw]`}
+                      className={` cursor-pointer ${
+                        modalshow ? "bg-[#B3C2D4]" : ""
+                      } rounded-[1vw] w-[10vw] py-[0.5vw]`}
                       onClick={() => setModalShow(!modalshow)}
                     >
                       <p className="text-[1.4vw] text-white text-center">
@@ -58,8 +64,9 @@ const MobileApp = () => {
                       </p>
                     </div>
                     <div
-                      className={` cursor-pointer ${modalshow ? "" : "bg-[#B3C2D4]"
-                        } rounded-[1vw] w-[10vw] py-[0.5vw]`}
+                      className={` cursor-pointer ${
+                        modalshow ? "" : "bg-[#B3C2D4]"
+                      } rounded-[1vw] w-[10vw] py-[0.5vw]`}
                       onClick={() => setModalShow(!modalshow)}
                     >
                       <div className="text-[1.4vw] text-white text-center">
@@ -74,7 +81,11 @@ const MobileApp = () => {
                         download the app.
                       </div>
                       <div className="relative">
-                        <button className="absolute top-[0.25vw] right-[7.6vw] w-[13vw] h-[3.25vw] bg-white rounded-full text-[#1F4B7F] font-bold">Search</button>
+                        <button
+                          className={`absolute top-[0.25vw] right-[7.6vw] w-[13vw] h-[3.25vw] bg-white rounded-full text-[${colors.primary}] font-bold`}
+                        >
+                          Search
+                        </button>
                         <input
                           type="text"
                           className="inputbox  pl-[1vw] font-InterFont rounded-[1vw]    outline-none "
@@ -90,7 +101,11 @@ const MobileApp = () => {
                         download the app.
                       </div>
                       <div className="relative">
-                        <button className="absolute top-[0.25vw] right-[2.5vw] w-[13vw] h-[3.25vw] bg-white rounded-full text-[#1F4B7F] font-bold">Search</button>
+                        <button
+                          className={`absolute top-[0.25vw] right-[2.5vw] w-[13vw] h-[3.25vw] bg-white rounded-full text-[${colors.primary}] font-bold`}
+                        >
+                          Search
+                        </button>
                         <input
                           type="email"
                           className="inputbox  pl-[1vw] font-InterFont rounded-[1vw]    outline-none "
@@ -119,11 +134,7 @@ const MobileApp = () => {
                     </div>
                   </div>
                   <div>
-                    <img
-                      src={Award}
-                      alt="Award"
-                      className="w-[15vw] h-[6vw]"
-                    />
+                    <img src={Award} alt="Award" className="w-[15vw] h-[6vw]" />
                   </div>
                 </div>
               </div>

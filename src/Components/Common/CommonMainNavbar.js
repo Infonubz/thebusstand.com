@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import buslogo from "../../assets/502-ai 1.png";
 import busstand from "../../assets/busstand.png";
 //import bus from "../../assets/bus 1.png";
@@ -13,6 +13,7 @@ import ModalPopup from "../MainComponenet/Modal/ModalPopup";
 import ShareButtons from "../MainComponenet/ShareButton";
 import LoginModalPopUp from "../Login/LoginModalPopUp";
 import Login from "../Login/Login";
+import LoginMobile from "../Login/LoginMobile";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { PiUserCircleDuotone } from "react-icons/pi";
 import { toast } from "react-toastify";
@@ -22,12 +23,14 @@ import { MdStarRate } from "react-icons/md";
 export default function CommonMainNavbar() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [loginIsOpen, setLoginIsOpen] = useState(false);
+  const [loginMobileIsOpen, setLoginMobileIsOpen] = useState(false);
   const [logModalIsOpen, setLogModalIsOpen] = useState(false);
   const [accDrawer, setAccDrawer] = useState(false);
   const [logMobileIsOpen, setLogMobileIsOpen] = useState(false);
-  const [username, setUserName] = useState(sessionStorage.getItem("user_name"));
+  //const [LoginUser_Name, setLoginUser_Name] = useState(sessionStorage.getItem("user_name"));
   const closeLoginModal = () => {
     setLoginIsOpen(false);
+    setLoginMobileIsOpen(false);
   };
   const closeModal = () => {
     setModalIsOpen(false);
@@ -73,10 +76,10 @@ export default function CommonMainNavbar() {
       key: "1",
       label: (
         <div
-          className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+          className="text-[#1F487C] text-[3.5vw] md:text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
           onClick={handleProPage}
         >
-          <PiUserCircleDuotone color="#1F487C" size="1.5vw" /> My Account
+          <PiUserCircleDuotone color="#1F487C" className="h-[5vw] w-[5vw] md:h-[1.5vw] md:w-[1.5vw]" /> My Account
         </div>
       ),
     },
@@ -84,10 +87,10 @@ export default function CommonMainNavbar() {
       key: "2",
       label: (
         <div
-          className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+          className="text-[#1F487C] text-[3.5vw] md:text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
           onClick={handleBookingPage}
         >
-          <FaTicketAlt color="#1F487C" size="1.5vw" /> Bookings
+          <FaTicketAlt color="#1F487C" className="h-[5vw] w-[5vw] md:h-[1.5vw] md:w-[1.5vw]" /> Bookings
         </div>
       ),
     },
@@ -95,18 +98,22 @@ export default function CommonMainNavbar() {
       key: "3",
       label: (
         <div
-          className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+          className="text-[#1F487C] text-[3.5vw] md:text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
           onClick={openLogModal}
         >
-          <RiLogoutCircleLine color="#1F487C" size="1.5vw" /> Logout
+          <RiLogoutCircleLine color="#1F487C" className="h-[5vw] w-[5vw] md:h-[1.5vw] md:w-[1.5vw]" /> Logout
         </div>
       ),
     },
   ];
-  useEffect(() => {
-    const LoginUser_Name = sessionStorage.getItem("user_name");
-    setUserName(LoginUser_Name);
-  }, []);
+  const LoginUser_Name = sessionStorage.getItem("user_name");
+
+  // useEffect(() => {
+  //   const LoginUser_Name = sessionStorage.getItem("user_name");
+  //   setLoginUser_Name(LoginUser_Name);
+  //   console.log(LoginUser_Name,"User Name");
+  // }, []);
+
   const location = useLocation();
   console.log(
     sessionStorage.getItem("user_name"),
@@ -118,7 +125,10 @@ export default function CommonMainNavbar() {
       <div className="md:h-[3.8vw] bg-[#E5FFF1] h-[10vw] relative  w-full flex ">
         <div
           className="w-[19%] md:h-[3.3vw] h-[10vw] flex cursor-pointer"
-          onClick={() => navigation("/")}
+          onClick={() => {
+            navigation("/");
+            localStorage.clear();
+          }}
         >
           <img
             className="md:w-[4.7vw] w-[15vw] md:h-[3vw] h-[10vw] pl-[0.2vw] absolute top-[0.2vw]"
@@ -128,7 +138,7 @@ export default function CommonMainNavbar() {
           <img
             src={busstand}
             alt="busStandLogo"
-            className="md:h-[2.8vw] h-[10vw] md:w-[13.5vw] w-[40vw] py-[0.1vw] absolute md:top-[0.3vw] left-[5vw]"
+            className="md:h-[2.8vw] h-[10vw] md:w-[13.5vw] w-[40vw] py-[0.1vw] absolute md:top-[0.3vw] left-[15.5vw] md:left-[5vw]"
           />
         </div>
         {location.pathname !== "/dashboard" ? (
@@ -141,17 +151,18 @@ export default function CommonMainNavbar() {
             {/* <img src={Partner} className="w-auto hidden md:block h-[3.3vw]" /> */}
           </a>
         ) : (
-          <div className="w-[70%] flex items-center justify-center ">
+          <div className="w-[60%] md:w-[70%] flex items-center justify-center ">
             <MdStarRate
               size={"2.5vw"}
               id="changingText"
+              className="md:block hidden "
               style={{
                 animation: "colorChange 2s infinite alternate",
               }}
             />
             <span
               id="changingText"
-              className="text-[2.1vw] tracking-normal italic px-[0.5vw]"
+              className="md:block hidden text-[2.1vw] tracking-normal italic px-[0.5vw]"
               style={{
                 fontFamily: "Calibri",
                 animation: "colorChange 2s infinite alternate",
@@ -164,6 +175,7 @@ export default function CommonMainNavbar() {
             <MdStarRate
               size={"2.5vw"}
               id="changingText"
+              className="md:block hidden "
               style={{
                 animation: "colorChange 2s infinite alternate",
               }}
@@ -171,7 +183,7 @@ export default function CommonMainNavbar() {
           </div>
         )}
         {location.pathname !== "/dashboard" ? (
-          <div className="w-[70%]  h-full md:pr-[2vw]   flex gap-[2vw] md:flex items-center md:justify-end justify-end">
+          <div className="w-[70%] h-full md:pr-[2vw] flex gap-[2vw] md:flex items-center md:justify-end justify-end">
             <div
               className="flex items-center justify-center gap-[0.5vw] cursor-pointer"
               onClick={() => setModalIsOpen(true)}
@@ -198,17 +210,17 @@ export default function CommonMainNavbar() {
                 Rewards/Offers
               </p>
             </div>{" "}
-            {username && username !== "null" ? (
+            {LoginUser_Name && LoginUser_Name !== "null" ? (
               <div>
                 <Dropdown
                   menu={{
                     items,
                   }}
-                  className="flex items-center gap-[0.5vw] cursor-pointer"
+                  className="md:block hidden flex items-center gap-[0.5vw] cursor-pointer"
                 >
                   <button
                     onClick={(e) => e.preventDefault()}
-                    className="flex items-center gap-[0.5vw] bg-transparent border-none cursor-pointer"
+                    className=" flex items-center gap-[0.5vw] bg-transparent border-none cursor-pointer"
                   >
                     <Space>
                       <div className="flex items-center gap-[0.5vw]">
@@ -216,31 +228,59 @@ export default function CommonMainNavbar() {
                           <FaUserCircle size="1.5vw" color="#1F487C" />
                         </div>
                         <p className="text-[1.2vw] font-semibold text-[#1F487C]">
-                          {capitalizeFirstLetter(username)}
+                          {capitalizeFirstLetter(LoginUser_Name)}
                         </p>
                       </div>
                     </Space>
                   </button>
                 </Dropdown>
+                <Dropdown
+                  menu={{
+                    items,
+                  }}
+                  className="block md:hidden flex items-center gap-[0.5vw] cursor-pointer"
+                >
+                  <button
+                    onClick={(e) => e.preventDefault()}
+                    className="bg-[#1F487C] mr-[1vw] w-[7.5vw] h-[7.5vw] rounded-full flex items-center justify-center"
+                  >
+                    <p className="text-[4vw] text-white font-extrabold">
+                      {capitalizeFirstLetter(LoginUser_Name.split("")[0])}
+                    </p>
+                  </button>
+                </Dropdown>
               </div>
             ) : (
-              <div
-                className="flex items-center justify-center gap-[0.5vw] cursor-pointer"
-                onClick={() => setLoginIsOpen(true)}
-              >
-                <img
-                  className="w-[1.6vw] h-[1.6vw]"
-                  src={profile}
-                  alt="profile"
-                />
-                <p className="text-[1.2vw] font-semibold text-[#1F487C]">
-                  Login/SignUp
-                </p>
-              </div>
+              <>
+                <div
+                  className="hidden md:flex items-center justify-center gap-[0.5vw] cursor-pointer"
+                  onClick={() => setLoginIsOpen(true)}
+                >
+                  <img
+                    className="w-[1.6vw] h-[1.6vw]"
+                    src={profile}
+                    alt="profile"
+                  />
+                  <p className="text-[1.2vw] font-semibold text-[#1F487C]">
+                    Login/SignUp
+                  </p>
+                </div>
+
+                <div
+                  className="block md:hidden flex items-center justify-center gap-[0.5vw] cursor-pointer"
+                  onClick={() => setLoginMobileIsOpen(true)}
+                >
+                  <img
+                    className="w-[7vw] h-[7vw] mr-[1vw]"
+                    src={profile}
+                    alt="profile"
+                  />
+                </div>
+              </>
             )}
           </div>
         ) : (
-          <div className="w-[11%]  h-full  gap-[0.8vw] pr-[1vw]  flex md:flex items-center md:justify-end justify-end">
+          <div className="w-[25%] md:w-[11%] h-full gap-[1vw] md:gap-[0.8vw] pr-[1vw]  flex md:flex items-center md:justify-end justify-end">
             <div
               className="flex items-center justify-center gap-[0.5vw] cursor-pointer"
               onClick={() => setModalIsOpen(true)}
@@ -252,7 +292,7 @@ export default function CommonMainNavbar() {
                 // color="white"
               >
                 <img
-                  className="md:w-[2.5vw] md:h-[2.5vw] w-[7vw] h-[7vw]"
+                  className="md:w-[2.5vw] md:h-[2.5vw] w-[10vw] h-[7vw]"
                   src={share}
                   alt="shareImage"
                 />
@@ -273,7 +313,7 @@ export default function CommonMainNavbar() {
                 // color="white"
               >
                 <img
-                  className="md:w-[2.5vw] md:h-[2.5vw] w-[7vw] h-[7vw]"
+                  className="md:w-[2.5vw] md:h-[2.5vw] w-[10vw] h-[7vw]"
                   src={ticket}
                   alt="ticketImage"
                 />
@@ -283,7 +323,7 @@ export default function CommonMainNavbar() {
                 Rewards/Offers
               </p> */}
             </div>{" "}
-            {username && username !== "null" ? (
+            {LoginUser_Name && LoginUser_Name !== "null" ? (
               <div>
                 <Dropdown
                   menu={{
@@ -293,10 +333,10 @@ export default function CommonMainNavbar() {
                 >
                   <button
                     onClick={(e) => e.preventDefault()}
-                    className="bg-[#1F487C] w-[2.5vw] h-[2.5vw] rounded-full flex items-center justify-center"
+                    className="bg-[#1F487C] w-[7.5vw] h-[7.5vw] md:w-[2.5vw] md:h-[2.5vw] rounded-full flex items-center justify-center"
                   >
-                    <p className="text-[1.5vw] text-white font-extrabold">
-                      {capitalizeFirstLetter(username.split("")[0])}
+                    <p className="text-[4vw] md:text-[1.5vw] text-white font-extrabold">
+                      {capitalizeFirstLetter(LoginUser_Name.split("")[0])}
                     </p>
                   </button>
                   {/* <Space>
@@ -305,7 +345,7 @@ export default function CommonMainNavbar() {
                           <FaUserCircle size="1.5vw" color="#1F487C" />
                         </div>
                         <p className="text-[1.2vw] font-semibold text-[#1F487C]">
-                          {capitalizeFirstLetter(username)}
+                          {capitalizeFirstLetter(LoginUser_Name)}
                         </p>
                       </div>
                     </Space> */}
@@ -315,19 +355,34 @@ export default function CommonMainNavbar() {
                 </Dropdown>
               </div>
             ) : (
-              <div
-                className="flex items-center justify-center gap-[0.5vw] cursor-pointer"
-                onClick={() => setLoginIsOpen(true)}
-              >
-                <img
-                  className="md:w-[2.5vw] md:h-[2.5vw]"
-                  src={profile}
-                  alt="profile"
-                />
-                {/* <p className="text-[1.2vw] font-semibold text-[#1F487C]">
+              <>
+                <div
+                  className="block md:hidden flex items-center justify-center gap-[0.5vw] cursor-pointer"
+                  onClick={() => setLoginMobileIsOpen(true)}
+                >
+                  <img
+                    className="w-[10vw] h-[7vw]"
+                    src={profile}
+                    alt="profile"
+                  />
+                  {/* <p className="text-[1.2vw] font-semibold text-[#1F487C]">
                   Login/SignUp
                 </p> */}
-              </div>
+                </div>
+                <div
+                  className="md:block hidden flex items-center justify-center gap-[0.5vw] cursor-pointer"
+                  onClick={() => setLoginIsOpen(true)}
+                >
+                  <img
+                    className=":w-[2.5vw] h-[2.5vw]"
+                    src={profile}
+                    alt="profile"
+                  />
+                  {/* <p className="text-[1.2vw] font-semibold text-[#1F487C]">
+                  Login/SignUp
+                </p> */}
+                </div>
+              </>
             )}
           </div>
         )}
@@ -348,6 +403,14 @@ export default function CommonMainNavbar() {
       >
         <Login setLoginIsOpen={setLoginIsOpen} />
       </LoginModalPopUp>
+      <ModalPopup
+        show={loginMobileIsOpen}
+        onClose={closeLoginModal}
+        height="65%"
+        width="94%"
+      >
+        <LoginMobile setLoginMobileIsOpen={setLoginMobileIsOpen} />
+      </ModalPopup>
       <Modal
         isOpen={logModalIsOpen}
         onRequestClose={closeLogModal}
@@ -478,7 +541,7 @@ export default function CommonMainNavbar() {
 //   const [logModalIsOpen, setLogModalIsOpen] = useState(false);
 //   const [accDrawer, setAccDrawer] = useState(false);
 //   const [logMobileIsOpen, setLogMobileIsOpen] = useState(false);
-//   const [username, setUserName] = useState("");
+//   const [LoginUser_Name, setLoginUser_Name] = useState("");
 //   const [hovered, setHovered] = useState(false);
 //   const [currentIcon, setCurrentIcon] = useState("login");
 
@@ -561,7 +624,7 @@ export default function CommonMainNavbar() {
 //   ];
 //   useEffect(() => {
 //     const LoginUser_Name = sessionStorage.getItem("user_name");
-//     setUserName(LoginUser_Name);
+//     setLoginUser_Name(LoginUser_Name);
 //   }, [sessionStorage.getItem("user_name")]);
 //   const location = useLocation();
 //   console.log(location.pathname, "locationlocation");
@@ -652,7 +715,7 @@ export default function CommonMainNavbar() {
 //                 Rewards/Offers
 //               </p>
 //             </div>{" "}
-//             {username && username !== "null" ? (
+//             {LoginUser_Name && LoginUser_Name !== "null" ? (
 //               <div>
 //                 <Dropdown
 //                   menu={{
@@ -667,7 +730,7 @@ export default function CommonMainNavbar() {
 //                           <FaUserCircle size="1.5vw" color="#1F487C" />
 //                         </div>
 //                         <p className="text-[1.2vw] font-semibold text-[#1F487C]">
-//                           {capitalizeFirstLetter(username)}
+//                           {capitalizeFirstLetter(LoginUser_Name)}
 //                         </p>
 //                       </div>
 //                     </Space>
@@ -754,7 +817,7 @@ export default function CommonMainNavbar() {
 //                 ""
 //               )}
 //             </div>{" "}
-//             {username && username !== "null" ? (
+//             {LoginUser_Name && LoginUser_Name !== "null" ? (
 //               <div className="flex  items-center ">
 //                 <Dropdown
 //                   menu={{
@@ -775,13 +838,13 @@ export default function CommonMainNavbar() {
 //                           <FaUserCircle size="1.5vw" color="#1F487C" />
 //                         </div>
 //                         <p className="text-[1.2vw] font-semibold text-[#1F487C]">
-//                           {capitalizeFirstLetter(username)}
+//                           {capitalizeFirstLetter(LoginUser_Name)}
 //                         </p>
 //                       </div>
 //                     </Space> */}
 //                     {/* <div className="bg-white w-[1.8vw] h-[1.8vw] rounded-full flex items-center justify-center"> */}
 //                     {/* <p className="text-[1.5vw]  text-white font-extrabold">
-//                       {capitalizeFirstLetter(username.split("")[0])}
+//                       {capitalizeFirstLetter(LoginUser_Name.split("")[0])}
 //                     </p>
 //                     </div>
 //                   </a> */}
@@ -789,7 +852,7 @@ export default function CommonMainNavbar() {
 //                 <FaUserCircle   className="text-[2vw] text-[#1F487c] font-[1vw]"
 //               onMouseEnter={() => setCurrentIcon("login")}
 //               onMouseLeave={() => setCurrentIcon("login")}/>
-//                 {currentIcon == "login" ?  username?.length > 8?<span className="text-[1.5vw] pl-[.2vw] font-semibold text-[#1F487C] transition-opacity flex  duration-300">{username.substring(0,7)}...</span> :<span className="text-[1.5vw] pl-[.2vw] font-semibold text-[#1F487C] transition-opacity duration-300">{username}</span> : ""}
+//                 {currentIcon == "login" ?  LoginUser_Name?.length > 8?<span className="text-[1.5vw] pl-[.2vw] font-semibold text-[#1F487C] transition-opacity flex  duration-300">{LoginUser_Name.substring(0,7)}...</span> :<span className="text-[1.5vw] pl-[.2vw] font-semibold text-[#1F487C] transition-opacity duration-300">{LoginUser_Name}</span> : ""}
 //           </span>
 //           </Dropdown>
 //               </div>

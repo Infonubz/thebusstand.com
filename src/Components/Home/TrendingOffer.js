@@ -73,6 +73,7 @@ import { useSelector } from "react-redux";
 import homesky from "../../assets/BackgroundSky1.png";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
 import Footer from "./Footer";
+import ColorCodes from "../Common/ColorCodes";
 
 const TrendingOffer = () => {
   const [showDialog, setShowDialog] = useState(false);
@@ -205,17 +206,19 @@ const TrendingOffer = () => {
   };
   const promotionlist = useSelector((state) => state?.promo_list);
   console.log(promotionlist, "promotionlist");
-
+  const colors = ColorCodes();
   return (
     <>
-      <div className="bg-[#E5FFF1] min-h-screen max-h-auto w-full overflow-auto relative  md:block hidden ">
+      <div
+        className={`bg-[${colors.background}] min-h-screen max-h-auto w-full overflow-auto relative  md:block hidden `}
+      >
         <div className="flex flex-col ">
           {/* <div className="h-[4.5vw] w-full flex">
             <div className="w-[40%] h-[4vw] flex ">
               <img className="w-[6.25vw] h-[4vw]" src={buslogo} />
               <img src={busstand} className="h-[4vw] w-[20vw] py-[0.1vw]" />
-              <p className="border-r-[0.3vw] border-[#1F487C] mt-[0.2vw] h-[4vw] ml-[1vw]"></p>
-              <div className="w-[9vw] h-[3.8vw] mt-[0.3vw] bg-[#1F487C] ml-[2vw] rounded-full  relative">
+              <p className="border-r-[0.3vw] border-[${colors.primary}] mt-[0.2vw] h-[4vw] ml-[1vw]"></p>
+              <div className="w-[9vw] h-[3.8vw] mt-[0.3vw] bg-[${colors.primary}] ml-[2vw] rounded-full  relative">
                 <img
                   src={bus}
                   className="h-[3.1vw] w-[4vw] absolute top-0"
@@ -238,19 +241,19 @@ const TrendingOffer = () => {
                 onClick={() => setModalIsOpen(true)}
               >
                 <img className="w-[1.6vw] h-[1.6vw]" src={share} />
-                <p className="text-[1.2vw] font-semibold text-[#1F487C]">
+                <p className="text-[1.2vw] font-semibold text-[${colors.primary}]">
                   Share
                 </p>
               </div>
               <div className="flex items-center justify-center gap-[0.5vw]">
                 <img className="w-[1.6vw] h-[1.6vw]" src={ticket} />
-                <p className="text-[1.2vw] font-semibold text-[#1F487C]">
+                <p className="text-[1.2vw] font-semibold text-[${colors.primary}]">
                   Rewards/Offers
                 </p>
               </div>{" "}
               <div className="flex items-center justify-center gap-[0.5vw]">
                 <img className="w-[1.6vw] h-[1.6vw]" src={profile} />
-                <p className="text-[1.2vw] font-semibold text-[#1F487C]">
+                <p className="text-[1.2vw] font-semibold text-[${colors.primary}]">
                   Login/SignUp
                 </p>
               </div>
@@ -283,7 +286,9 @@ const TrendingOffer = () => {
             </div>
             <div className="absolute top-[7vw] left-[12.5vw] bg-white w-3/4 h-[35vw] rounded-lg md:block hidden">
               <div className=" w-full flex px-[4vw] items-center justify-between mt-[1vw] ">
-                <p className="text-[1.5vw] text-[#1F487C] font-bold">
+                <p
+                  className={`text-[1.5vw] text-[${colors.primary}] font-bold`}
+                >
                   Trending Offers
                 </p>
               </div>
@@ -317,11 +322,11 @@ const TrendingOffer = () => {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
 
       {/* ----------------------------------------MobileView------------------------------------------------ */}
       <div className="md:hidden block ">
-        <div className="bg-[#1f487c] ">
+        <div className={`bg-[${colors.primary}] `}>
           <div className="grid grid-cols-6 items-center px-[5vw]">
             <div className="col-span-2 py-5">
               <NavLink to="/">
@@ -331,7 +336,9 @@ const TrendingOffer = () => {
             <div className="col-span-2 text-white">TrendingOfferzzz</div>
           </div>
         </div>
-        <div className=" bg-[#E5FFF1] min-h-screen max-h-auto overflow-auto absolute w-full ">
+        <div
+          className={` bg-[${colors.background}] min-h-screen max-h-auto overflow-auto absolute w-full `}
+        >
           <div className=" grid grid-row w-full h-full gap-[1vw] item-center px-[3vw] py-[5vw]">
             {currentoffers.map((item, index) => (
               // <div className="col-span-1 w-full h-full items-center  gap-2 flex ">

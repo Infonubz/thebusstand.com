@@ -12,6 +12,8 @@ import Footer1 from "../Footer/Footer";
 import "../../Components/Home/Footer.css";
 //import { IoIosArrowDropupCircle } from "react-icons/io";
 import { MdKeyboardDoubleArrowUp } from "react-icons/md";
+import ColorCodes from "../Common/ColorCodes";
+import { useSelector } from "react-redux";
 const Footer = () => {
   const footerdata = [
     {
@@ -72,6 +74,8 @@ const Footer = () => {
     window.addEventListener("scroll", handleVisibleButton);
   }, []);
   console.log(top, "top");
+// const colors =ColorCodes()
+const colors = useSelector((state) => state.themecolors[0]);
 
   return (
     <>
@@ -173,7 +177,7 @@ const Footer = () => {
           </div> */}
           <div className="absolute bottom-[3vw] right-[2vw]">
             <button
-              className="bg-[#1F487C] text-white text-[1vw] p-[1vw] rounded-full shadow-lg shadow-white"
+              className="bg-[${colors.primary}] text-white text-[1vw] p-[1vw] rounded-full shadow-lg shadow-white"
               onClick={handleScrollUp}
             >
               <MdKeyboardDoubleArrowUp size={"2vw"} />

@@ -11,6 +11,8 @@ import bus10 from "../../assets/Ellipse.png";
 import bus11 from "../../assets/Ellipse 1 (5).png";
 import bus9 from "../../assets/Ellipse.png";
 import { Link } from "react-router-dom";
+import ColorCodes from "../Common/ColorCodes";
+import { useSelector } from "react-redux";
 
 const busdetails = [
   {
@@ -50,11 +52,13 @@ const busdetails = [
     logo: bus8,
   },
 ];
+// const colors =ColorCodes()
 export default function Buses() {
+  const colors = useSelector((state) => state.themecolors[0]);
   return (
     <>
       <div className="px-[5vw] md:block hidden ">
-        <p className=" text-[1.5vw] pl-[2vw] text-[#1F487C] font-bold pt-[3vw] pb-[1vw]">
+        <p className={`text-[1.5vw] pl-[2vw] text-[${colors.primary}] font-bold pt-[3vw] pb-[1vw]`}>
           We’ve partnered with the world’s best bus companies
         </p>
         <div className=" w-full flex px-[2vw] items-center justify-between ">
@@ -83,14 +87,14 @@ export default function Buses() {
 
       {/* mobile */}
       <div className="px-[5vw] md:hidden block">
-        <p className=" text-[3.5vw] pl-[2vw] text-[#1F487C] font-bold pt-[3vw] pb-[1vw]">
+        <p className={` text-[3.5vw] pl-[2vw] text-[${colors.primary}] font-bold pt-[3vw] pb-[1vw]`}>
           We’ve partnered with the world’s best bus companies
         </p>
         <div className=" w-full flex px-[2vw] items-center justify-between ">
           <p className="text-[3vw] text-black">26 RTCs</p>
           <Link
             to="/BusPartners"
-            className="text-[#1F487C] px-[2vw] py-[2vw] md:border-[0.1vw] text-[3vw] md:border-[#AAAAAA] md:px-[1.5vw] md:py-[0.2vw] rounded-full md:text-[1vw] "
+            className={`text-[${colors.primary}] px-[2vw] py-[2vw] md:border-[0.1vw] text-[3vw] md:border-[#AAAAAA] md:px-[1.5vw] md:py-[0.2vw] rounded-full md:text-[1vw] `}
           >
             View all
           </Link>

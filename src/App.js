@@ -14,7 +14,6 @@ import LocationComponent from "./Components/Home/LocationPermission";
 import MapIndex from "./Components/Dashboard/MapIndex";
 import DashboardLayout from "./Components/Dashboard/DashboardLayout";
 import Map from "./Components/Dashboard/Map";
-import Viewall from "./Components/Home/Viewall";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Dashboard from "./Components/Dashboard/Dashboard";
@@ -96,7 +95,6 @@ function App() {
 
             <Route path="/map" element={<Map />} />
           </Route>
-          <Route path="/viewall" element={<Viewall />} />
           <Route path="/dashboard/userinfo" element={<DrawerMobile />} />
           <Route
             path="/dashboard/userinfo/payment"

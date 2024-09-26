@@ -19,6 +19,7 @@ import cbe from "../../assets/cbe.png";
 import bus from "../../assets/502-ai 1.png";
 import { GetPdp } from "../../Api/Home/Home";
 import { useDispatch, useSelector } from "react-redux";
+import ColorCodes from "../Common/ColorCodes";
 
 // const busdetails = [
 //   {
@@ -66,10 +67,15 @@ export default function DomesticPlace() {
 
   const popular_domestic_presence = useSelector((state) => state?.pdp);
   console.log(popular_domestic_presence, "popular_domestic_presence");
+  // const colors = ColorCodes();
+  const colors = useSelector((state) => state.themecolors[0]);
+
   return (
     <>
       <div className="px-[5vw] md:block hidden">
-        <p className=" text-[1.5vw] pl-[2vw] text-[#1F487C] font-bold pt-[3vw] pb-[1vw]">
+        <p
+          className={`text-[1.5vw] pl-[2vw] text-[${colors.primary}] font-bold pt-[3vw] pb-[1vw]`}
+        >
           Popular Domestic Presence
         </p>
 
@@ -78,7 +84,7 @@ export default function DomesticPlace() {
             <div className="col-span-1 w-full items-center justify-center flex-col">
               <img
                 src={`http://192.168.90.47:4001${item.image}`}
-                className="w-[9vw] h-[9vw] ml-[1.8vw] rounded-full shadow-md shadow-[#1F487C]"
+                className={`w-[9vw] h-[9vw] ml-[1.8vw] rounded-full shadow-md shadow-[${colors.primary}]`}
               />
               <p className="text-center py-[0.8vw] text-[1.2vw] font-bold">
                 {item?.source_name?.toUpperCase()}
@@ -86,7 +92,9 @@ export default function DomesticPlace() {
             </div>
           ))}
         </div>
-        <p className=" text-[1.5vw] pl-[2vw] text-[#1F487C] font-bold pt-[1vw] pb-[1vw]">
+        <p
+          className={` text-[1.5vw] pl-[2vw] text-[${colors.primary}] font-bold pt-[1vw] pb-[1vw]`}
+        >
           Deals on thebusstand.com
         </p>
         <p className="pl-[2vw] text-[1.1vw] leading-[2.5vw] tracking-wider">
@@ -105,14 +113,18 @@ export default function DomesticPlace() {
               </p>
               <p className="flex  text-[1.3vw] mt-[0.5vw] tracking-wider">
                 <span>
-                  <span className="font-bold text-[#1F487C] text-[1.5vw] pr-[0.4vw]">
+                  <span
+                    className={`font-bold text-[${colors.primary}] text-[1.5vw] pr-[0.4vw]`}
+                  >
                     4152
                   </span>
                   <span className="text-[#4A4A4A] pr-[1vw]">Deals</span>
                 </span>
                 <span className="w-[0.15vw] h-[2.2vw] bg-black"></span>
                 <span className="pl-[1vw]">
-                  <span className="font-bold text-[#1F487C] text-[1.5vw]">
+                  <span
+                    className={`font-bold text-[${colors.primary}] text-[1.5vw]`}
+                  >
                     1648
                   </span>
                   <span className="text-[#4A4A4A] pr-[1vw] pl-[0.5vw]">
@@ -122,7 +134,9 @@ export default function DomesticPlace() {
                 <span className="w-[0.15vw] h-[2.2vw] bg-black"></span>
 
                 <span className="pl-[1vw]">
-                  <span className="font-bold text-[#1F487C] text-[1.5vw]">
+                  <span
+                    className={`font-bold text-[${colors.primary}] text-[1.5vw]`}
+                  >
                     21542
                   </span>
                   <span className="text-[#4A4A4A] pr-[1vw] pl-[0.5vw]">
@@ -132,7 +146,9 @@ export default function DomesticPlace() {
               </p>
             </div>
             <div className="col-span-1 flex items-center ">
-              <p className="text-[3vw] text-[#1F487C] font-bold">20% OFF</p>
+              <p className={`text-[3vw] text-[${colors.primary}] font-bold`}>
+                20% OFF
+              </p>
             </div>
             <div className="col-span-1 items-center justify-center flex">
               <button className="bg-white px-[2vw] py-[0.5vw] shadow-lg rounded-full">
@@ -144,7 +160,9 @@ export default function DomesticPlace() {
       </div>
       {/* // mobile */}
       <div className="px-[5vw] md:hidden block">
-        <p className=" text-[vw] pl-[2vw] text-[#1F487C] font-bold pt-[3vw] pb-[1vw]">
+        <p
+          className={`text-[vw] pl-[2vw] text-[${colors.primary}] font-bold pt-[3vw] pb-[1vw]`}
+        >
           Popular Domestic Presence
         </p>
         {/* <div className="relative overflow-x-auto scrollbar-hide">
@@ -154,7 +172,7 @@ export default function DomesticPlace() {
                 <div className="w-[30vw] ">
                   <img
                     src={item.logo}
-                    className="w-[25vw] h-[25vw] ml-[1.8vw] rounded-full shadow-md shadow-[#1F487C]"
+                    className="w-[25vw] h-[25vw] ml-[1.8vw] rounded-full shadow-md shadow-[${colors.primary}]"
                   />
                   <p className="text-center py-[0.8vw] text-[3vw] font-bold">
                     {item.label.toUpperCase()}
@@ -171,8 +189,8 @@ export default function DomesticPlace() {
                 <div className="w-[20vw] mr-[5vw] flex-shrink-0 ml-[1vw]">
                   {/* <div className="w-[40vw]"> */}
                   <img
-                      src={`http://192.168.90.47:4001${item.image}`}
-                      className="w-[20vw] h-[20vw]  rounded-full shadow-md shadow-[#1F487C]"
+                    src={`http://192.168.90.47:4001${item.image}`}
+                    className={`w-[20vw] h-[20vw]  rounded-full shadow-md shadow-[${colors.primary}]`}
                   />
                   <p className="text-center py-[0.8vw] mt-[2vw] text-[3vw] font-bold">
                     {item?.source_name?.toUpperCase()}
@@ -183,7 +201,9 @@ export default function DomesticPlace() {
             )}
           </div>
         </div>
-        <p className=" text-[4vw] pl-[2vw] text-[#1F487C] font-bold pt-[1vw] pb-[1vw]">
+        <p
+          className={` text-[4vw] pl-[2vw] text-[${colors.primary}] font-bold pt-[1vw] pb-[1vw]`}
+        >
           Deals on thebusstand.com
         </p>
         <p className="pl-[2vw] text-[3vw] leading-[5vw] tracking-wider">
@@ -203,14 +223,18 @@ export default function DomesticPlace() {
               </p>
               <p className="flex  text-[3vw] mt-[0.5vw] absolute left-[30vw] top-[12vw] tracking-wider">
                 <span>
-                  <span className="font-bold text-[#1F487C] text-[3vw] pr-[1.5vw] ">
+                  <span
+                    className={`font-bold text-[${colors.primary}] text-[3vw] pr-[1.5vw] `}
+                  >
                     4152
                   </span>
                   <span className="text-[#4A4A4A] pr-[1vw] ">Deals</span>
                 </span>
                 <span className="w-[0.15vw] h-[4vw] bg-black"></span>
                 <span className="pl-[1vw]">
-                  <span className="font-bold text-[#1F487C] text-[3vw]">
+                  <span
+                    className={`font-bold text-[${colors.primary}] text-[3vw]`}
+                  >
                     1648
                   </span>
                   <span className="text-[#4A4A4A] pr-[1vw] pl-[1.5vw]">
@@ -220,7 +244,9 @@ export default function DomesticPlace() {
                 {/* <span className="w-[0.15vw] h-[4vw] bg-black"></span> */}
               </p>
               <span className="pl-[1vw] absolute left-[29vw] top-[15vw]">
-                <span className="font-bold text-[#1F487C] text-[3vw]">
+                <span
+                  className={`font-bold text-[${colors.primary}] text-[3vw]`}
+                >
                   21542
                 </span>
                 <span className="text-[#4A4A4A] text-[3vw] pr-[1vw] pl-[1.5vw]">
@@ -230,13 +256,17 @@ export default function DomesticPlace() {
             </div>
             {/* </div> */}
             <div className="absolute top-[7vw] right-[30vw] ">
-              <p className="text-[4vw] text-[#1F487C] font-bold">20% OFF</p>
+              <p className={`text-[4vw] text-[${colors.primary}] font-bold`}>
+                20% OFF
+              </p>
             </div>
-            <button className="absolute bottom-[1vw] item-center flex left-[2vw]  justify-center w-[95%] py-[1.5vw] bg-[#1F487C] text-white">
+            <button
+              className={`absolute bottom-[1vw] item-center flex left-[2vw]  justify-center w-[95%] py-[1.5vw] bg-[${colors.primary}] text-white`}
+            >
               Book now
             </button>
             {/* <div className="col-span-1 items-center justify-center flex">
-              <p className="text-[3vw] text-[#1F487C] font-bold">20% OFF</p>
+              <p className="text-[3vw] text-[${colors.primary}] font-bold">20% OFF</p>
               <button className="bg-white px-[2vw] py-[0.5vw] shadow-lg rounded-full">
                 Book now
               </button>

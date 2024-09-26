@@ -24,6 +24,8 @@ import { IoMdArrowBack } from "react-icons/io";
 import homesky from "../../assets/BackgroundSky1.png";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
 import Footer from "./Footer";
+import ColorCodes from "../Common/ColorCodes";
+import { useSelector } from "react-redux";
 
 const BusPartners = () => {
   const busdetails = [
@@ -74,9 +76,14 @@ const BusPartners = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  // const colors = ColorCodes();
+  const colors = useSelector((state) => state.themecolors[0]);
+
   return (
     <>
-      <div className="bg-[#E5FFF1] bg-[#E5FFF1] min-h-screen max-h-auto w-full  md:block hidden ">
+      <div
+        className={`bg-[${colors.background}] bg-[${colors.background}] min-h-screen max-h-auto w-full  md:block hidden`}
+      >
         <CommonMainNavbar />
 
         <div
@@ -107,11 +114,13 @@ const BusPartners = () => {
           <div className="absolute top-[7vw] left-[12.5vw] bg-white w-3/4 h-[35vw] rounded-lg md:block hidden">
             <div className="">
               <div className="px-[5vw] py-[1.5vw] ">
-                {/* <p className=" text-[1.5vw] pl-[2vw] text-[#1F487C] font-bold pt-[3vw] pb-[1vw]">
+                {/* <p className=" text-[1.5vw] pl-[2vw] text-[${colors.primary}] font-bold pt-[3vw] pb-[1vw]">
                 We’ve partnered with the world’s best bus companies
               </p> */}
                 <div className=" w-full flex px-[2vw] items-center justify-between py-[1vw] ">
-                  <p className="text-[1.5vw] text-[#1F487C] font-bold">
+                  <p
+                    className={`text-[1.5vw] text-[${colors.primary}] font-bold`}
+                  >
                     26 RTCs
                   </p>
                 </div>
@@ -149,7 +158,7 @@ const BusPartners = () => {
       {/* ------------------------MObileView----------------------------------- */}
 
       <div className=" md:hidden block">
-        <div className="bg-[#1f487c] ">
+        <div className={`bg-[${colors.primary}] `}>
           <div className="grid grid-cols-6 items-center px-[5vw]">
             <div className="col-span-2 py-5">
               <NavLink to="/">
@@ -159,8 +168,12 @@ const BusPartners = () => {
             <div className="col-span-2 text-white">Bus Operators</div>
           </div>
         </div>
-        <div className=" bg-[#E5FFF1] min-h-screen max-h-auto overflow-auto absolute w-full ">
-          <p className=" text-[3.5vw] pl-[2vw] text-[#1F487C] font-bold pt-[3vw] pb-[1vw]">
+        <div
+          className={`bg-[${colors.background}] min-h-screen max-h-auto overflow-auto absolute w-full `}
+        >
+          <p
+            className={` text-[3.5vw] pl-[2vw] text-[${colors.primary}] font-bold pt-[3vw] pb-[1vw]`}
+          >
             We’ve partnered with the world’s best bus companies
           </p>
           <div className=" w-full flex px-[2vw] items-center justify-between ">

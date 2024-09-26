@@ -14,6 +14,8 @@ import homesky from "../../assets/BackgroundSky1.png";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
 import Footer from "./Footer";
 import Footer1 from "../Footer/Footer";
+import ColorCodes from "../Common/ColorCodes";
+import { useSelector } from "react-redux";
 
 const BusOpp = () => {
   const BusOperator = [
@@ -53,9 +55,12 @@ const BusOpp = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  // const colors=ColorCodes()
+  const colors = useSelector((state) => state.themecolors[0]);
+
   return (
     <>
-      <div className="bg-[#E5FFF1] border-b-2 bg-[#E5FFF1] min-h-screen max-h-auto w-full> md:block hidden">
+      <div className={`bg-[${colors.background}] border-b-2 bg-[${colors.background}] min-h-screen max-h-auto w-full> md:block hidden`}>
         <CommonMainNavbar />
 
         <div
@@ -85,7 +90,7 @@ const BusOpp = () => {
           <div className="absolute top-[7vw] left-[12.5vw] bg-white w-3/4 h-[35vw] rounded-lg md:block hidden">
             <div className="px-[5vw]">
               <div className=" w-full flex px-[2vw] items-center justify-between my-[1vw] ">
-                <p className="text-[1.5vw] text-[#1F487C] font-bold">
+                <p className={`text-[1.5vw] text-[${colors.primary}] font-bold`}>
                   4500+ Private Bus Operators
                 </p>
               </div>
@@ -114,7 +119,7 @@ const BusOpp = () => {
 
       {/* ------------------------MobileView------------------- */}
       <div className="md:hidden block">
-        <div className="bg-[#1f487c] ">
+        <div className={`bg-[${colors.primary}] `}>
           <div className="grid grid-cols-6 items-center px-[5vw]">
             <div className="col-span-2 py-5">
               <NavLink to="/">
@@ -124,9 +129,9 @@ const BusOpp = () => {
             <div className="col-span-2 text-white">Bus Companies</div>
           </div>
         </div>
-        <div className=" bg-[#E5FFF1] min-h-screen max-h-auto overflow-auto absolute w-full ">
+        <div className={`bg-[${colors.background}] min-h-screen max-h-auto overflow-auto absolute w-full `}>
           <div className=" w-full flex px-[2vw] items-center justify-between ">
-            <p className="md:text-[1.5vw] text-[5vw] text-[#1F487C] font-bold">
+            <p className={`md:text-[1.5vw] text-[5vw] text-[${colors.primary}] font-bold`}>
               4500+ Private Bus Operators
             </p>
           </div>

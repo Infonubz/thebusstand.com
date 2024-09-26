@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { GetTopBusRoutes } from "../../Api/Home/Home";
 import { useDispatch, useSelector } from "react-redux";
 import { FaArrowRightLong } from "react-icons/fa6";
+import ColorCodes from "../Common/ColorCodes";
 
 export default function TopTravelledBusRoutes() {
   const dispatch = useDispatch();
@@ -18,11 +19,13 @@ export default function TopTravelledBusRoutes() {
   //   console.log(encodeURI(sanitizedPath), "techimage");
   //   return encodeURI(sanitizedPath);
   // };
-
+  const colors = ColorCodes();
   return (
     <>
       <div className="mt-[16vw] md:block hidden px-[5vw]">
-        <p className=" text-[1.5vw] pl-[2vw] text-[#1F487C] font-bold">
+        <p
+          className={`text-[1.5vw] pl-[2vw] text-[${colors.primary}] font-bold`}
+        >
           Top Travelled Bus Routes{" "}
         </p>
         <div className="grid grid-cols-5 w-full h-full gap-[1vw] mt-[1.5vw] px-[2vw]">
@@ -70,7 +73,7 @@ export default function TopTravelledBusRoutes() {
         </div>
       </div>
       <div className="mt-[175vw] px-[5vw] md:hidden block">
-        <p className=" text-[5vw] pl-[2vw] text-[#1F487C] font-bold">
+        <p className={`text-[5vw] pl-[2vw] text-[${colors.primary}] font-bold`}>
           Top Travelled Bus Routes{" "}
         </p>
         <div className="relative overflow-x-auto scrollbar-hide mt-[2vw]">
