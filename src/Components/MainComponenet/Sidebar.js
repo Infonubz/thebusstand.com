@@ -27,6 +27,7 @@ import {
 // import { BiMapPin } from "react-icons/bi";
 // import { useNavigate } from "react-router";
 // import Map from "../Dashboard/Map";
+import axios from "axios";
 import {
   Filters,
   Drop_Point_List,
@@ -36,7 +37,6 @@ import { FaRegStar, FaStar } from "react-icons/fa";
 import RangeSlide from "./RangeSlide";
 import { FaBus } from "react-icons/fa";
 import { RiBusFill } from "react-icons/ri";
-import axios from "axios";
 
 const Sidebar = ({ sidebarToggle, share }) => {
   const arrange_data = useSelector((state) => state.rearrange);
@@ -1400,7 +1400,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                         ?.slice(0, 5)
                         .map((item, i) => (
                           <div
-                            className="flex items-center justify-between mx-[.5vw]"
+                            className="flex items-center justify-between "
                             key={i}
                           >
                             <div className="flex items-center my-[0.25vw]">
@@ -2274,7 +2274,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                         ?.slice(0, 5)
                         .map((item, i) => (
                           <div
-                            className="flex items-center justify-between mx-[.5vw]"
+                            className="flex items-center justify-between"
                             key={i}
                           >
                             <div className="flex items-center my-[0.25vw]">
@@ -2331,7 +2331,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                       pickUp_list?.amenities?.length > 0 &&
                       pickUp_list.amenities.slice(0, 5).map((item, i) => (
                         <div
-                          className="flex items-center justify-between mx-[.5vw]"
+                          className="flex items-center justify-between"
                           key={i}
                         >
                           <div className="flex items-center my-[0.25vw]">

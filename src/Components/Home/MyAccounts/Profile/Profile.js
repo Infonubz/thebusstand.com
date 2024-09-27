@@ -135,7 +135,7 @@ const HomeProfile = () => {
               GetUserDetails();
               // Simulating network delay with setTimeout
               setTimeout(async () => {
-                await UpdateProfile(values);
+                await UpdateProfile(values,setSpinning);
                 console.log(values, "valuesvalues");
                 toast.success("Updated Successfully");
                 setSpinning(false);

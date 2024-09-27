@@ -4,6 +4,7 @@ import TBSLOGO from '../../assets/TBS Logo.png'
 import MobileNumberLog from './MobileNumberLog'
 import OtpVerification from './OtpVerification'
 import LoginProfile from './LoginProfile'
+import { IoMdArrowBack } from "react-icons/io";
 
 
 const LoginMobile = () => {
@@ -20,7 +21,7 @@ const LoginMobile = () => {
     const renderStepComponent = () => {
         switch (CurrentPage) {
             case 0:
-                return <MobileNumberLog nextPage={nextPage} />;
+                return <MobileNumberLog nextPage={setCurrentPage} />;
             case 1:
                 return <OtpVerification nextPage={nextPage} prevStep={prevStep} />;
             case 2:
@@ -33,13 +34,30 @@ const LoginMobile = () => {
 
     return (
         <>
-            <div className='flex flex-col items-center '>
+            <div className='flex flex-col items-center mt-[5vw]'>
                 <div className=' flex justify-items-center'>
-                    <img src={Password} className='w-[70vw] h-[70vw]' />
+                    <img src={Password} className='w-[45vw] h-[38vw]' />
                 </div>
-                <div className='px-[5vw]'>
-                    {renderStepComponent()}
-                </div>
+                <div className="px-[5vw]">
+            {/* {renderStepComponent()} */}
+            {CurrentPage === 0 ? (
+              <MobileNumberLog
+                setCurrentPage={setCurrentPage}
+              />
+            ) : CurrentPage === 1 ? (
+              <OtpVerification
+                setCurrentPage={setCurrentPage}
+              />
+            ) : CurrentPage === 2 ? (
+              <LoginProfile
+                setCurrentPage={setCurrentPage}
+              />
+            ) : (
+              <MobileNumberLog
+                setCurrentPage={setCurrentPage}
+              />
+            )}
+          </div>
             </div>
         </>
     )

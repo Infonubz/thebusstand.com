@@ -125,7 +125,7 @@ const ShareButtons = ({ url, title, imageUrl }) => {
           <span className="mt-[0.5vw] font-semibold text-[1.1vw]">Email</span>
         </div>
         <div className="justify-center items-center h-full w-full flex flex-col">
-          <div className="bg-red-200 p-[0.5vw] rounded-full flex justify-center items-center">
+          <div className="bg-yellow-200 p-[0.5vw] rounded-full flex justify-center items-center">
             {/* <PinterestShareButton
               url={url}
               media={imageUrl}
@@ -136,14 +136,14 @@ const ShareButtons = ({ url, title, imageUrl }) => {
             </PinterestShareButton> */}
             <SocialIcon
               size={"3.5vw"}
-              style={{ width: "3.5vw", height: "3.5vw" }}
+              style={{ width: "3.5vw", height: "3.5vw"}}
               url="https://www.snapchat.com"
               target="_blank" 
               rel="noopener noreferrer"
             />
           </div>
           <span className="mt-[0.5vw] font-semibold text-[1.1vw]">
-            snapchat
+            Snapchat
           </span>
         </div>
       </div>
@@ -157,7 +157,8 @@ const ShareButtons = ({ url, title, imageUrl }) => {
           >
             <p className="text-[1.2vw]">
               {url}
-              {location.pathname} </p>
+              {location.pathname} 
+              </p>
               
           </div>
           <button

@@ -166,14 +166,14 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
 
   return (
     <>
-      <div className="p-[0.5vw] gap-[4.5vw] md:gap-[1.5vw] grid grid-cols-5">
+      <div className="p-[0.5vw] gap-[3vw] md:gap-[1.5vw] grid grid-cols-5">
         <div
           className={`${
             dayjs(selectedDate).format("D") == dayjs(currentDate).format("D") &&
             dateSelectionColor === false
               ? "bg-[#1F487C] text-white"
               : "bg-[#E5FFF1] text-black"
-          }  cursor-pointer w-[12vw] h-[16vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[0.4vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
+          }  cursor-pointer w-[14vw] h-[14vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[2vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[1vw] border-r-[1vw] md:border-t-[0.4vw] md:border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
           onClick={() => {
             setSelectedDate(currentDate);
             setDateSelectionColor(false);
@@ -199,7 +199,7 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
             dateSelectionColor === false
               ? "bg-[#1F487C] text-white"
               : "bg-[#E5FFF1] text-black"
-          }  cursor-pointer w-[12vw] h-[16vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[0.4vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
+          }  cursor-pointer w-[14vw] h-[14vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[2vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[1vw] border-r-[1vw] md:border-t-[0.4vw] md:border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
           onClick={() => {
             setSelectedDate(nextDate1);
 
@@ -226,7 +226,7 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
             dateSelectionColor === false
               ? "bg-[#1F487C] text-white"
               : "bg-[#E5FFF1] text-black"
-          }  cursor-pointer w-[12vw] h-[16vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[0.4vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
+          } cursor-pointer w-[14vw] h-[14vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[2vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[1vw] border-r-[1vw] md:border-t-[0.4vw] md:border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
           onClick={() => {
             setSelectedDate(nextDate2);
             setDateSelectionColor(false);
@@ -252,7 +252,7 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
             dateSelectionColor === false
               ? "bg-[#1F487C] text-white"
               : "bg-[#E5FFF1] text-black"
-          }  cursor-pointer w-[12vw] h-[16vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[0.4vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
+          }  cursor-pointer w-[14vw] h-[14vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[2vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[1vw] border-r-[1vw] md:border-t-[0.4vw] md:border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C]`}
           onClick={() => {
             setSelectedDate(nextDate3);
 
@@ -418,7 +418,7 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
 
               <div
                 ref={popupRef}
-                className="relative cursor-pointer w-[12vw] h-[16vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[0.4vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] bg-[#E5FFF1] text-black"
+                className="relative cursor-pointer w-[14vw] h-[14vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[2vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[1vw] border-r-[1vw] md:border-t-[0.4vw] md:border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C]"
               >
                 {/* <input
                                     defaultValue={
@@ -441,7 +441,7 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
                                 /> */}
                 {selectedDate ? (
                   <div
-                    className={`flex-col absolute top-[50%] left-[50%] transform translate-y-[-50%] translate-x-[-50%] z-10`}
+                    className={`flex-col absolute top-[-1vw] left-[-1%] md:top-[47%] md:left-[52%] transform md:translate-y-[-50%] md:translate-x-[-50%] z-10`}
                     onClick={() => {
                       setShowPopup(!showPopup);
                     }}
@@ -453,11 +453,11 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
                         dateSelectionColor === true
                           ? "bg-[#1F487C] text-white"
                           : "bg-[#E5FFF1] text-black"
-                      } cursor-pointer w-[12vw] h-[16vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[0.4vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
+                      } cursor-pointer w-[14vw] h-[14vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[2vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[1vw] border-r-[1vw] md:border-t-[0.4vw] md:border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
                       onClick={() => setSelectedDate(dateSelection)}
                     >
                       {dateSelectionColor === true ? (
-                        <div className="flex flex-col items-center md:mt-0 mt-[2vw]">
+                        <div className="flex flex-col items-center md:mt-0 mt-[-.5vw]">
                           <p className=" md:text-[0.8vw] text-[2.5vw] text-center">
                             {dayjs(dateSelection).format("MMM")}
                           </p>
@@ -473,9 +473,9 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
                           onClick={() => {
                             setShowPopup(!showPopup);
                           }}
-                          className="flex flex-col items-center justify-center mt-[3.5vw]  md:mt-[.7vw]"
+                          className="flex flex-col items-center justify-center mt-[1.2vw]  md:mt-[.7vw]"
                         >
-                          <p className="text-center font-semibold md:text-[1.2vw]">
+                          <p className="text-center  font-semibold md:text-[1.2vw]">
                             <MdOutlineCalendarMonth className="md:text-xl text-3xl" />
                           </p>
                           <p className="text-center font-semibold text-[2.5vw] md:text-[0.8vw]">

@@ -268,7 +268,7 @@ export default function CommonMainNavbar() {
 
                 <div
                   className="block md:hidden flex items-center justify-center gap-[0.5vw] cursor-pointer"
-                  onClick={() => setLoginMobileIsOpen(true)}
+                   onClick={() => navigation('/Login')}
                 >
                   <img
                     className="w-[7vw] h-[7vw] mr-[1vw]"
@@ -358,16 +358,13 @@ export default function CommonMainNavbar() {
               <>
                 <div
                   className="block md:hidden flex items-center justify-center gap-[0.5vw] cursor-pointer"
-                  onClick={() => setLoginMobileIsOpen(true)}
+                  onClick={() => navigation('/Login')}
                 >
                   <img
                     className="w-[10vw] h-[7vw]"
                     src={profile}
                     alt="profile"
                   />
-                  {/* <p className="text-[1.2vw] font-semibold text-[#1F487C]">
-                  Login/SignUp
-                </p> */}
                 </div>
                 <div
                   className="md:block hidden flex items-center justify-center gap-[0.5vw] cursor-pointer"
@@ -403,14 +400,20 @@ export default function CommonMainNavbar() {
       >
         <Login setLoginIsOpen={setLoginIsOpen} />
       </LoginModalPopUp>
-      <ModalPopup
-        show={loginMobileIsOpen}
+      <Drawer
+        //show={loginMobileIsOpen}
         onClose={closeLoginModal}
-        height="65%"
-        width="94%"
+        placement={"bottom"}
+        closable={true}
+        open={loginMobileIsOpen}
+        // key={"right"}
+        // width={"75%"}
+        className="custom-drawer"
+        height="100%"
+        width="100%"
       >
         <LoginMobile setLoginMobileIsOpen={setLoginMobileIsOpen} />
-      </ModalPopup>
+      </Drawer>
       <Modal
         isOpen={logModalIsOpen}
         onRequestClose={closeLogModal}

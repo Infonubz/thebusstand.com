@@ -62,7 +62,7 @@
     "yup": "^1.4.0"
   },
   "scripts": {
-    "start": "set PORT=3008 && react-scripts start GENERATE_SOURCEMAP=false --no-source-maps",
+    "start": "set PORT=8080 && react-scripts start GENERATE_SOURCEMAP=false --no-source-maps",
     "build": "CI=false cross-env GENERATE_SOURCEMAP=false NODE_OPTIONS=--max-old-space-size=16488 react-scripts build",
     "test": "react-scripts test --detectOpenHandles --passWithNoTests",
 

@@ -25,6 +25,34 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
 
   //const Email_Id = useSelector((state) => state.send_otp);
   const navigation = useNavigate();
+  
+
+  const handleMobileOtpSubmit = async (values, { setErrors }) => {
+    console.log("response85858");
+
+    try {
+      const response = await SendOTPassword(
+        dispatch,
+        values,
+        sessionStorage.getItem("email_id")
+      );
+      sessionStorage.setItem("passenger_id", response.user.tbs_passenger_id);
+      sessionStorage.setItem("user_id", response.user.tbs_passenger_id);
+      toast.success(response.message);
+      navigation('/');
+      if (response.user.status === 2) {
+        setLoginIsOpen(false);
+        GetUserDetails(navigation);
+      } else {
+        setCurrentPage(2);
+      }
+      console.log(response.tbs_passenger_id, "passengers_idd");
+    } catch (error) {
+      console.error("An error occurred:", error);
+      setErrors({ otp: "Invalid OTP" });
+    }
+  };
+
   const handleOtpSubmit = async (values, { setErrors }) => {
     console.log("response85858");
 
@@ -233,25 +261,28 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
       <div className="md:hidden block ">
         <div className="flex flex-col gap-y-[4vw] justify-items-center">
           <div className="pt-[6vw]">
-            <div className="text-[#1F487C] text-[6vw] font-semibold text-center">
+            <div className="text-[#1F487C] pt-[2vw] text-[6vw] font-semibold text-center">
               Sign into exciting discounts and cashbacks !!
             </div>
-            <div className="text-[3.5vw] opacity-60 text-center">
+            <div className="text-[3.5vw] pt-[2vw] opacity-60 text-center">
               To continue, please enter the OTP sent to verify your mobile
               number
             </div>
           </div>
-          <div className="py-[0.5vw] grid grid-rows-2 gap-y-[2vw]">
+          <div className="">
             {passenger_mail ? (
-              <div>
-                <div className="flex items-start text-[4.5vw] font-semibold opacity-60">
+              <div className="pt-[6vw]">
+                <div className="flex items-start text-[5vw] font-semibold opacity-60">
                   Email Id
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[4.5vw] font-bold order-first">
+                  <span className="text-[4vw] font-bold order-first">
                     {passenger_mail}
                   </span>
-                  <span className="cursor-pointer text-[4.5vw] order-last border-[0.1vw] text-[#1F487C] font-bold">
+                  <span className="cursor-pointer text-[4.5vw] order-last text-[#1F487C] font-semibold"
+                   onClick={() => {
+                    setCurrentPage(0);
+                  }}>
                     CHANGE
                   </span>
                 </div>
@@ -265,7 +296,10 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
                   <span className="text-[4.5vw] font-bold order-first">
                     +91 96885 53316
                   </span>
-                  <span className="cursor-pointer text-[4.5vw] order-last border-[0.1vw] text-[#1F487C] font-bold">
+                  <span className="cursor-pointer text-[4.5vw] order-last border-[0.1vw] text-[#1F487C] font-bold"
+                   onClick={() => {
+                    setCurrentPage(0);
+                  }}>
                     CHANGE
                   </span>
                 </div>
@@ -278,7 +312,7 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
               otp: "",
             }}
             validationSchema={validationSchema}
-            onSubmit={handleOtpSubmit}
+            onSubmit={handleMobileOtpSubmit}
             enableReinitialize
           >
             {({
@@ -289,18 +323,18 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
               handleChange,
               setErrors,
             }) => (
-              <Form className="py-[1vw]" onSubmit={handleSubmit}>
-                <div className="flex flex-col gap-y-[7vw] relative">
+              <Form className="" onSubmit={handleSubmit}>
+                <div className="flex flex-col gap-y-[5vw] relative">
                   <div className=" ">
                     <Field
-                      type="text"
+                      type="number"
                       name="otp"
                       placeholder="Enter OTP"
                       value={values.otp}
                       onChange={(e) => {
                         handleChange(e);
                       }}
-                      className="customize-placeholder border-[0.1vw] border-slate-500 text-[#1F487C] text-[3.7vw] h-[13vw] w-full rounded-r-[0.2vw] outline-none px-[1vw]"
+                      className="customize-placeholder border-[0.1vw] border-slate-500 text-[#1F487C] text-[3.7vw] h-[13vw] w-full rounded-[1.5vw] outline-none px-[1.5vw]"
                     />
                     <ErrorMessage
                       name="otp"
@@ -308,12 +342,23 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
                       className="text-red-500 text-[3.5vw] absolute"
                     />
                   </div>
-                  <button
-                    type="submit"
-                    className="bg-[#1F487C] w-full h-[13vw] border-[0.1vw] rounded-[1vw] border-slate-700 text-[4.5vw] text-white"
-                  >
-                    VERIFY OTP
-                  </button>
+                  <div className="flex items-center gap-[2vw]">
+                    <button
+                      onClick={() => handleresend()}
+                      disabled={timeLeft === 0 ? false : true}
+                      className={`text-[#1F487C] ${
+                        timeLeft === 0 ? "cursor-pointer" : " cursor-not-allowed"
+                      } w-[45vw] font-bold h-[11vw] border-[0.1vw] rounded-[1.2vw] border-[#1F487C] text-[4vw] bg-white`}
+                    >
+                      {timeLeft === 0 ? "Resend OTP" : formatTime(timeLeft)}
+                    </button>
+                    <button
+                      type="submit"
+                      className="bg-[#1F487C] w-[45vw] font-bold h-[11vw] border-[0.1vw] rounded-[1.2vw] text-[4vw] text-white"
+                    >
+                      VERIFY OTP
+                    </button>
+                  </div>
                 </div>
               </Form>
             )}
