@@ -69,13 +69,16 @@
     "eject": "react-scripts eject",
     "dev": "tailwindcss -i ./src/input.css -o ./src/output.css --watch"
   },
+  
   "jest": {
     "transform": {
       "^.+\\.[t|j]sx?$": "babel-jest"
     },
     "transformIgnorePatterns": [
       "/node_modules/(?!axios)/"
-    ]
+    ],
+    "testMatch": ["<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"]
+
   },
   "eslintConfig": {
     "extends": [
