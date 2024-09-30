@@ -91,7 +91,25 @@ export const UpdateProfile = async (profilevalues,setSpinning) => {
     state: profilevalues.state,
     state_id: profilevalues.state_id || "TN",
     age: profilevalues.age,
+    occupation:profilevalues.occupation,
+    occupation_id:
+    profilevalues.occupation === "Business"?
+    1 :
+    profilevalues.occupation === "GeneralPublic"
+        ? 2
+        : profilevalues.occupation === "PhysicallyChallenged"
+        ? 3
+        : profilevalues.occupation === "PilgrimTravelers"
+        ? 4
+        : profilevalues.occupation === "SeniorCitizens"
+        ? 5
+        : profilevalues.occupation === "Students"
+        ? 6
+        : profilevalues.occupation === "Tourist"
+        ? 7
+        : 8,
   };
+  
   console.log(profilevalues, "profilevalues");
 
   const user_id = sessionStorage.getItem("user_id");

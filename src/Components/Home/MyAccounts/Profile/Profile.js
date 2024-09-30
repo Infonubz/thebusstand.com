@@ -134,13 +134,13 @@ const HomeProfile = () => {
               values.age = age;
               GetUserDetails();
               // Simulating network delay with setTimeout
-              setTimeout(async () => {
+              // setTimeout(async () => {
                 await UpdateProfile(values,setSpinning);
                 console.log(values, "valuesvalues");
                 toast.success("Updated Successfully");
                 setSpinning(false);
                 setEditEnable(false);
-              }, 2000); // Adjust timeout duration as needed
+              // }, 2000); // Adjust timeout duration as needed
             } catch (error) {
               console.error("Error updating profile", error);
               setSpinning(false); // Stop spinner in case of error
@@ -449,58 +449,63 @@ const HomeProfile = () => {
                       />
                     </div>
                     <div className="relative z-0 w-full pt-[1.5vw]">
-                      <Field
+                    <Field
                         as="select"
                         name="occupation"
                         id="occupation"
-                        className={`${
-                          editenable ? `cursor-pointer` : "cursor-not-allowed"
-                        } block py-[0.5vw] px-2 w-[27vw] h-[3vw] text-[1vw] text-[#1F487C] bg-transparent border border-gray-400 rounded-[0.5vw]
-                         focus:outline-none focus:ring-0 focus:border-[#1F487C] peer`}
+                        className="block py-[0.5vw] px-2 w-[27vw] h-[3vw] text-[1vw] text-[#1F487C] bg-transparent border border-gray-300 rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
                         autocomplete="off"
                         onChange={handleChange}
                         disabled={!editenable}
                         // disabled={true}
                       >
-                        <option
+                        <option value="Business">Business</option>
+                        <option value="GeneralPublic">General Public</option>
+                        <option value="PhysicallyChallenged">Physically Challenged</option>
+                        <option value="PilgrimTravelers">Pilgrim Traveler</option>
+                        <option value="SeniorCitizens">Senior Citizen</option>
+                        <option value="Students">Student</option>
+                        <option value="Tourist">Tourist</option>
+                        <option value="CorporateTravelers">Corporate Traveler</option>
+                        {/* <option
                           value=""
                           label="Occupation"
-                          className="text-gray-400 text-[1vw]"
+                          className="text-gray-400 text-[1.1vw]"
                         />
                         <option
                           value="General Public"
                           label="General Public"
-                          className="text-[1vw] text-[#1F487C]"
+                          className="text-gray-400 text-[1.1vw]"
                         />
-                        <option
+                         <option
                           value="Physically Challenged"
                           label="Physically Challenged"
-                          className="text-[1vw] text-[#1F487C]"
+                          className="text-gray-400 text-[1.1vw]"
                         />
-                        <option
+                         <option
                           value="Pilgrim Travelers"
                           label="Pilgrim Travelers"
-                          className="text-[1vw] text-[#1F487C]"
+                          className="text-gray-400 text-[1.1vw]"
                         />
-                        <option
+                         <option
                           value="Senior Citizens"
                           label="Senior Citizens"
-                          className="text-[1vw] text-[#1F487C]"
+                          className="text-gray-400 text-[1.1vw]"
                         />
-                        <option
+                         <option
                           value="Students"
                           label="Students"
-                          className="text-[1vw] text-[#1F487C]"
+                          className="text-gray-400 text-[1.1vw]"
                         />
-                        <option
+                         <option
                           value="Tourist"
                           label="Tourist"
-                          className="text-[1vw] text-[#1F487C]"
-                        />
-                      </Field>
+                          className="text-gray-400 text-[1.1vw]"
+                        /> */}
+                        </Field>
                       <label
                         htmlFor="occupation"
-                        className={`absolute text-[1.4vw] font-bold text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[2.3vw] left-[0vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] peer-focus:text-[1vw] peer-focus:scale-75 peer-focus:-translate-y-[2vw] ${
+                        className={`absolute text-[1.2vw] text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[1vw] left-[0vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] peer-focus:text-[1vw] peer-focus:scale-75 peer-focus:-translate-y-[2vw] ${
                           values.occupation
                             ? "-translate-y-[2vw]"
                             : "-translate-y-[2vw]"

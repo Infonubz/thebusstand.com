@@ -311,9 +311,25 @@ console.log(colors,"colorscolorscolorscolorscolors");
           </Link>
         </div>
 
-        <div className="relative overflow-x-auto scrollbar-hide mt-[2vw]">
-          <div className="flex">
-            {currentoffers.map((item, index) => (
+        <div className="flex overflow-x-auto scrollbar-hide mt-[2vw]">
+          {/* <div className="flex"> */}
+
+          {promotionlist?.length > 0 && promotionlist.map((item, index) => (
+    <div key={index} className="relative flex-shrink-0 mr-[2vw]">
+      <img
+        src={`http://192.168.90.47:4000${item?.background_image}`}
+        className="w-[80vw] lg:h-[80%] md:h-[12vw] h-[45vw] relative z-10" // Ensure z-index is higher
+      />
+      <div className=" absolute border-dashed  border-white h-[38vw] border-[.4vw]  top-[4.5vw] left-[26vw] z-20" ></div>
+      <span className="absolute left-[22vw] top-[-.2vw] z-20">
+        <div className={`bg-[${colors.background}]  border-none w-[8vw] h-[4vw] rounded-b-full`}></div>
+      </span>
+      <span className="absolute left-[22vw] bottom-[-.2vw] z-20">
+        <div className={`bg-[${colors.background}]  border-none w-[8vw] h-[4vw] rounded-t-full`}></div>
+      </span>
+    </div>
+  ))}
+            {/* {currentoffers.map((item, index) => (
               <div key={index} className="relative flex-shrink-0 mr-[4vw]">
                 <img src={item?.img} className="w-[80vw] h-[45vw]" />
                 <p className="absolute text-[4vw] font-semibold left-[7vw] bottom-[12vw] text-white">
@@ -328,8 +344,8 @@ console.log(colors,"colorscolorscolorscolorscolors");
                   />
                 </div>
               </div>
-            ))}
-          </div>
+            ))} */}
+          {/* </div> */}
         </div>
       </div>
     </div>

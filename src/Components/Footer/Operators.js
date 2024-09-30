@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { BiSolidSearch } from "react-icons/bi";
 import "../../App.css";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
+import { useNavigate } from "react-router";
 import { Empty } from "antd";
 
 const Operators = () => {
@@ -44,6 +45,8 @@ const Operators = () => {
   const [operatorData, setOperatorData] = useState();
   //const getoperator = useSelector((state) => state.get_operator_list);
 
+  const navigation = useNavigate();
+
   const handleNextClick = () => {
     setSelectedIndex((prevIndex) => {
       const nextIndex = prevIndex !== null ? (prevIndex + 1) % data.length : 0;
@@ -58,7 +61,6 @@ const Operators = () => {
     const data = await OperatorFilters(selectedLetter, e);
     setOperatorData(data);
   };
-
 
   const dispatch = useDispatch();
 
@@ -76,18 +78,17 @@ const Operators = () => {
 
     if (selectedLetter) {
       FilterOperator();
-    }   
+    }
   }, [selectedLetter]);
 
   useEffect(() => {
-
     GetOperators(dispatch);
   }, [dispatch]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  
+
   return (
     <>
       <div className="">
@@ -119,9 +120,15 @@ const Operators = () => {
             </div>
 
             <div className="absolute grid grid-cols-12 gap-[7.5vw]">
-              <div className="col-start-1 col-span-4 pt-[2vw] pl-[3vw] text-[1.2vw] text-white font-bold">
-                {`Home > Operators`}
-              </div>
+              <label className="absolute left-[4vw] top-[1.5vw] text-[1.4vw] z-[1] text-white font-bold">
+                <span
+                  className="pr-[0.5vw] underline-offset-2 cursor-pointer "
+                  onClick={() => navigation("/dashboard")}
+                >
+                  Dashboard
+                </span>
+                {`> Operators`}
+              </label>
               <div className="cloudhome"></div>
               <div className="col-start-6 col-end-12 pl-[4vw] text-[2.5vw] pt-[1vw] text-white font-bold">
                 Operators List
@@ -130,32 +137,28 @@ const Operators = () => {
             <div className="absolute top-[5.5vw] px-[2vw] grid grid-cols-8 w-full"></div>
           </div>
           <div className="absolute top-[7vw] px-[3vw] flex flex-col">
-            <div className="bg-white w-[94vw] flex flex-row h-[4vw] border-solid border border-t-[#7f8792] border-b-[#1F487C] border-x-[#1f477caf] relative rounded-t-[1vw]">
-              <div className="flex flex-row gap-[0.6vw] ml-[1vw] font-bold text-center">
+            <div className="bg-white pl-[1vw] w-[94vw] flex flex-row h-[4vw] border-solid border border-t-[#7f8792] border-b-[#1F487C] border-x-[#1f477caf] relative rounded-t-[1vw]">
+              <div className="flex flex-row gap-[0.4vw] font-bold text-center">
                 {data.map((item, index) => (
-                  <div
-                    key={item.id}
-                    className={`flex
-                    text-[1.2vw] text-[#1F487C] pt-[1vw] h-[2vw] w-[2vw] ml-[0.2vw] cursor-pointer
-                   ${
-                     selectedIndex === index
-                       ? "text-white pt-[0vw] pt-0 h-[2vw] w-[2vw] bg-[#1F487C] rounded-md ml-[0.2vw] flex mt-[1vw]"
-                       : ""
-                   }
-                 `}
-                    onClick={() => {
-                      setSelectedIndex(index);
-                      setSelectedLetter(item.name);
-                    }}
-                  >
-                    <div className="flex h-[2vw] w-[2vw] pl-[0.6vw]">
-                      {item.name}
-                    </div>
-                    <div className="flext h-[2vw] ml-[1vw] border-solid border border-l-[#1f477c49]"></div>
+                  <div key={item.id} className="flex items-center">
+                    <button
+                      className={`
+          text-[1.2vw] text-[#1F487C] h-[2vw] w-[2vw] mt-[0.1vw] cursor-pointer ml-[0.1vw]
+          ${selectedIndex === index ? "text-white bg-[#1F487C] rounded-md" : ""}
+        `}
+                      onClick={() => {
+                        setSelectedIndex(index);
+                        setSelectedLetter(item.name);
+                      }}
+                    >
+                      <div className="text-center">{item.name}</div>
+                    </button>
+                    <div className="h-[2vw] border-solid border ml-[0.2vw] border-l-[#1f477c49]"></div>
                   </div>
                 ))}
               </div>
-              <div className="flex-1 pl-[0.4vw] text-[1.1vw] text-[#1F487C] pt-[0.7vw]">
+
+              <div className="flex-1 text-[1.1vw] text-[#1F487C] pt-[0.7vw]">
                 <button
                   type="button"
                   className="flex items-center px-[0.5vw] text-[#1F487C] text-[1vw] border-solid border border-[#1f477ca8] justify-center h-[2.5vw] gap-[0.5vw] rounded-lg"
@@ -173,7 +176,7 @@ const Operators = () => {
                   </span>
                 </button>
               </div>
-              <div className="flex pl-[1vw]">
+              <div className="flex pl-[0.4vw]">
                 <div className="flex search items-center gap-[0.5vw]">
                   <BiSolidSearch
                     className="search-icon pl-[1vw]"

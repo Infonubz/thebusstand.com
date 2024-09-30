@@ -81,6 +81,7 @@ function DrawerDetails({
   selectedRoutes,
   discount,
   imageurl,
+  setDropDown
 }) {
   const offers = [
     { Coupon: "BUSSAVE10", details: "Get 10% off on all bus tickets." },
@@ -188,6 +189,7 @@ function DrawerDetails({
   // };
   const onClose = () => {
     setShowModal(false);
+    setDropDown(null);
   };
   // const onChange = (e) => {
   //   setPlacement(e.target.value);

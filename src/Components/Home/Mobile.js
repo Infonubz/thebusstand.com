@@ -5,16 +5,41 @@ import iphone from "../../assets/iPhone 13 Pro.png";
 import Award from "../../assets/Award.png";
 import AppStore from "../../assets/AppStore.png";
 import GoogleStore from "../../assets/GoogleStore.png";
-import { App } from "antd";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import * as Yup from "yup";
+// import { App } from "antd";
+// import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "../../Components/Home/Mobile.css";
-import { Rate } from "antd";
-import ColorCodes from "../Common/ColorCodes";
-import { useSelector } from "react-redux";
+// import { Rate } from "antd";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { sendAppLink } from "../../Api/Home/Home";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string()
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      "Invalid email address format"
+    )
+    .required("Email is required"),
+});
+
+
 const MobileApp = () => {
+
   const [modalshow, setModalShow] = useState(false);
-  // const colors = ColorCodes();
-  const colors = useSelector((state) => state.themecolors[0]);
+
+  const dispatch = useDispatch();
+
+  const handleSubmitlink = async(values) => {
+    try{
+    const sendLink = await sendAppLink(dispatch, values);
+    console.log(sendLink, "send app link");
+    toast.success(sendLink.message);
+    }catch(error){
+      console.error(error, "Error")
+    }
+  };
 
   return (
     <>
@@ -74,47 +99,88 @@ const MobileApp = () => {
                       </div>
                     </div>
                   </div>
-                  {modalshow ? (
-                    <div className="">
-                      <div className="font-InterFont text-white text-[1.3vw] py-[1vw]">
-                        Enter your phone number to receive a text with a link to
-                        download the app.
-                      </div>
-                      <div className="relative">
-                        <button
-                          className={`absolute top-[0.25vw] right-[7.6vw] w-[13vw] h-[3.25vw] bg-white rounded-full text-[${colors.primary}] font-bold`}
-                        >
-                          Search
-                        </button>
-                        <input
-                          type="text"
-                          className="inputbox  pl-[1vw] font-InterFont rounded-[1vw]    outline-none "
-                          placeholder="+91 Mobile Number"
-                          style={{}}
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="">
-                      <div className="font-InterFont text-white text-[1.3vw] py-[1vw]">
-                        Enter your Email to receive a text with a link to
-                        download the app.
-                      </div>
-                      <div className="relative">
-                        <button
-                          className={`absolute top-[0.25vw] right-[2.5vw] w-[13vw] h-[3.25vw] bg-white rounded-full text-[${colors.primary}] font-bold`}
-                        >
-                          Search
-                        </button>
-                        <input
-                          type="email"
-                          className="inputbox  pl-[1vw] font-InterFont rounded-[1vw]    outline-none "
-                          placeholder="Email"
-                          style={{}}
-                        />
-                      </div>
-                    </div>
-                  )}
+                  <div>
+                    <Formik
+                      initialValues={{
+                        email: "",
+                        mobile: ""
+                      }}
+                      validationSchema={validationSchema}
+                      onSubmit={(values, { resetForm }) => { 
+                        handleSubmitlink(values);
+                        console.log(values, "values");
+                        resetForm(); 
+                      }}
+                      enableReinitialize={false}
+                    >
+                      {({
+                        isSubmitting,
+                        isValid,
+                        handleChange,
+                        handleSubmit,
+                      }) => (
+                        <Form onSubmit={handleSubmit}>
+                          {modalshow ? (
+                            <div className="">
+                              <div className="font-InterFont text-white text-[1.3vw] py-[1vw]">
+                                Enter your phone number to receive a text with a
+                                link to download the app.
+                              </div>
+                              <div className="relative">
+                                <button className="absolute top-[0.37vw] right-[6.4vw] w-[8vw] h-[3vw] bg-white rounded-full text-[#1F4B7F] font-bold text-[1.2vw]">
+                                  Submit
+                                </button>
+                                <Field
+                                  type="text" 
+                                  name="mobile"
+                                  placeholder="+91 Mobile Number"
+                                  // value={values }
+                                  onChange={(e) => {
+                                    handleChange(e);
+                                  }}
+                                  className={`text-[1.2vw] h-[3.8vw] w-[36vw] bg-[#ffffff9a] rounded-[1vw] outline-none px-[1vw]`}
+                                />
+                                <ErrorMessage
+                                  name="mobile"
+                                  component="div"
+                                  className="text-red-500 text-[0.8vw] absolute top-[3vw] left-[1vw]"
+                                />
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="">
+                              <div className="font-InterFont text-white text-[1.3vw] py-[1vw]">
+                                Enter your Email to receive a text with a link
+                                to download the app.
+                              </div>
+                              <div className="relative">
+                                <button 
+                                type="submit"
+                                className="absolute top-[0.37vw] right-[1.3vw] w-[8vw] h-[3vw] bg-white rounded-full text-[#1F4B7F] font-bold text-[1.2vw]">
+                                  Submit
+                                </button>
+                                <Field
+                                  type="text" 
+                                  name="email"
+                                  placeholder="Email"
+                                  //value={values}
+                                  onChange={(e) => {
+                                    handleChange(e);
+                                  }}
+                                  className={`text-[1.2vw] h-[3.8vw] w-[36vw] bg-[#ffffff9a] rounded-[1vw] outline-none px-[1vw]`}
+                                />
+                                <ErrorMessage
+                                  name="email"
+                                  component="div"
+                                  className="text-red-500 text-[0.8vw] absolute top-[4vw] left-[1vw]"
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </Form>
+                      )}
+                    </Formik>
+                  </div>
                 </div>
               </div>
               <div className="row-span-2">

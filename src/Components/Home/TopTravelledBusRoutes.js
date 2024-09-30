@@ -120,7 +120,12 @@ export default function TopTravelledBusRoutes() {
           <div className="flex">
             {getroutes?.length > 0 &&
               getroutes?.map((item) => (
-                <div className="w-[55vw] mr-[2vw] flex-shrink-0  h-[54vw] bg-gradient-to-t from-[#126DAF] border-t-[0.5vw] rounded-lg border-[#0D99FF]">
+                <div
+                  onClick={() => {
+                    handleRoutes(item);
+                  }}
+                  className="w-[55vw] mr-[2vw] flex-shrink-0  h-[54vw] bg-gradient-to-t from-[#126DAF] border-t-[0.5vw] rounded-lg border-[#0D99FF]"
+                >
                   <div
                     className=""
                     style={{

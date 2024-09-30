@@ -22,7 +22,7 @@ const MainPage = () => {
           <Sidebar sidebarToggle={sidebarToggle} />
           <div className="flex flex-col flex-1">
             <div
-              className={` ${sidebarToggle ? "" : "md:ml-[18vw] ml-0"} fixed w-full mt-[0.5vw]`}
+              className={` ${sidebarToggle ? "" : "md:pl-[18vw] ml-0"} fixed w-full mt-[6vw]`}
               // style={{
               //   zIndex: 1,
               // }}
@@ -38,7 +38,7 @@ const MainPage = () => {
               <Sample />
             </div> */}
             <main
-              className={` ${sidebarToggle ? "" : "md:ml-[18vw] ml-0"} md:mt-[2.9vw] md:pt-0 pt-[1vw] z-1`}
+              className={` ${sidebarToggle ? "" : "md:ml-[18vw] ml-0"} md:mt-[2.9vw] mt-[20vw] md:pt-0 pt-[1vw] z-1`}
             >
               <Outlet />
             </main>

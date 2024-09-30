@@ -50,7 +50,7 @@ export default function Advertisement() {
   }, [dispatch]);
 
   return (
-    <div className="slide-container 
+    <div className="slide-container
     
      md:pt-0">
       <div className="relative">

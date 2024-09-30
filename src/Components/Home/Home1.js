@@ -461,7 +461,7 @@ export default function Home1() {
   //           key={item.id} // assuming there's a unique identifier for each item
   //         >
   //           {/* <span>
-  //             <FaMapMarkerAlt className="text-[${colors.primary}]" />
+  //             <FaMapMarkerAlt className="text-[#1F487C]" />
   //           </span> */}
   //           <p className="py-1 text-md my-1 pl-2">{item.label}</p>
   //         </div>
@@ -702,6 +702,8 @@ export default function Home1() {
   });
   const [departurelist, setDepatureList] = useState([]);
 
+  console.log(departurelist, "depedaaataasd");
+
   // useEffect(() => {
   //   if (inputsearch.from) {
   //     if (selectinput === "from") {
@@ -721,10 +723,23 @@ export default function Home1() {
   // }, [inputsearch, selectinput]);
 
   useEffect(() => {
+    // const depature_city = [
+    //   { city: "Chennai", value: "Chennai", state: "Tamilnadu" },
+    //   { city: "Bangalore", value: "Bangalore", state: "Karnataka" },
+    //   { city: "Hyderabad", value: "Hyderabad", state: "Telangana" },
+    // ];
     const depature_city = [
-      { city: "Chennai", value: "Chennai", state: "Tamilnadu" },
-      { city: "Bangalore", value: "Bangalore", state: "Karnataka" },
-      { city: "Hyderabad", value: "Hyderabad", state: "Telangana" },
+      {
+        value: "Pondicherry",
+        city: "Pondicherry",
+        state: "Pondicherry",
+      },
+      {
+        value: "Bangalore",
+        city: "Bangalore",
+        state: "Karnataka",
+      },
+      { value: "Chennai", city: "Chennai", state: "TamilNadu" },
     ];
     const arrival_city = [
       { city: "Coimbatore", value: "Coimbatore", state: "Tamilnadu" },
@@ -743,9 +758,28 @@ export default function Home1() {
           item.city.toLowerCase().includes(inputsearch.to.toLowerCase())
         );
         setDepatureList(depaturedata);
+        // if (localStorage.getItem("departure") === "Pondicherry" ){
+        //   setDepatureList({ city: "Coimbatore", value: "Coimbatore", state: "Tamilnadu" })
+        // }
       }
     } else {
-      setDepatureList(selectinput === "from" ? depature_city : arrival_city);
+      // setDepatureList(selectinput === "from" ? depature_city : arrival_city);
+      const locdep = localStorage.getItem("departure");
+      setDepatureList(
+        selectinput === "from"
+          ? depature_city
+          : locdep === "Pondicherry"
+          ? [{ city: "Coimbatore", value: "Coimbatore", state: "Tamilnadu" }]
+          : locdep === "Bangalore"
+          ? [{ city: "Hyderabad", value: "Hyderabad", state: "Telugana" }]
+          : [
+              {
+                value: "Bangalore",
+                city: "Bangalore",
+                state: "Karnataka",
+              },
+            ]
+      );
     }
   }, [inputsearch, selectinput]);
 
@@ -827,10 +861,10 @@ export default function Home1() {
   //     key: "1",
   //     label: (
   //       <div
-  //         className="text-[${colors.primary}] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+  //         className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
   //         onClick={handleProPage}
   //       >
-  //         <PiUserCircleDuotone color="${colors.primary}" size="1.5vw" /> My Account
+  //         <PiUserCircleDuotone color="#1F487C" size="1.5vw" /> My Account
   //       </div>
   //     ),
   //   },
@@ -838,10 +872,10 @@ export default function Home1() {
   //     key: "2",
   //     label: (
   //       <div
-  //         className="text-[${colors.primary}] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+  //         className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
   //         onClick={handleBookingPage}
   //       >
-  //         <FaTicketAlt color="${colors.primary}" size="1.5vw" /> Bookings
+  //         <FaTicketAlt color="#1F487C" size="1.5vw" /> Bookings
   //       </div>
   //     ),
   //   },
@@ -849,10 +883,10 @@ export default function Home1() {
   //     key: "3",
   //     label: (
   //       <div
-  //         className="text-[${colors.primary}] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
+  //         className="text-[#1F487C] text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
   //         onClick={openLogModal}
   //       >
-  //         <RiLogoutCircleLine color="${colors.primary}" size="1.5vw" /> Logout
+  //         <RiLogoutCircleLine color="#1F487C" size="1.5vw" /> Logout
   //       </div>
   //     ),
   //   },
@@ -895,11 +929,6 @@ export default function Home1() {
   }, []);
   console.log(scrollPercentage.toFixed(2), "teswtinggggg");
   const colors = ColorCodes();
-  // console.log(`${colors.background}`, "hhhhhhhhhhhh");
-  // const colors = useSelector((state) => state.themecolors[0]);
-  console.log(colors, "colorcolor");
-  const primary = colors.primary;
-  const background = colors.background;
   return (
     <div
       className={`bg-background min-h-screen max-h-auto w-full overflow-auto relative`}
@@ -912,108 +941,108 @@ export default function Home1() {
       // }}
     >
       {/* <div className="absolute bottom-[4vw] right-[2vw]">
-        <button
-          className="bg-blue-800 text-white text-[1vw] p-[1vw] rounded-full shadow-lg shadow-white"
-          onClick={handleScrollUp}
-        >
-          <MdKeyboardDoubleArrowUp size={"2vw"} />
-        </button>
-      </div> */}
+      <button
+        className="bg-blue-800 text-white text-[1vw] p-[1vw] rounded-full shadow-lg shadow-white"
+        onClick={handleScrollUp}
+      >
+        <MdKeyboardDoubleArrowUp size={"2vw"} />
+      </button>
+    </div> */}
       {/* <div
-        className="md:h-[4.5vw] h-[10vw]  w-full flex md:shadow-lg md:shadow-black"
-        style={{
-          zIndex: 1,
-        }}
-      > */}
+      className="md:h-[4.5vw] h-[10vw]  w-full flex md:shadow-lg md:shadow-black"
+      style={{
+        zIndex: 1,
+      }}
+    > */}
       {/* <div className="w-[40%] md:h-[4vw] h-[10vw] flex ">
+        <img
+          className="md:w-[6.25vw] w-[15vw] md:h-[4vw] h-[10vw]"
+          src={buslogo}
+        />
+        <img
+          src={busstand}
+          className="md:h-[4vw] h-[10vw] md:w-[20vw] w-[40vw] py-[0.1vw]"
+        />
+        <p className="border-r-[0.3vw] border-[${colors.primary}] hidden md:block mt-[0.2vw] h-[4vw] ml-[1vw]"></p>
+        <div className="w-[9vw] h-[3.8vw] mt-[0.3vw]  bg-[${colors.primary}] ml-[2vw] rounded-full hidden md:block relative">
           <img
-            className="md:w-[6.25vw] w-[15vw] md:h-[4vw] h-[10vw]"
-            src={buslogo}
+            src={bus}
+            className="h-[3.1vw] w-[4vw] absolute top-0"
+            style={{ left: "50%", transform: "translateX(-50%)" }}
           />
+          <p
+            className="text-white  font-semibold absolute bottom-[0.2vw]  text-[0.8vw]"
+            style={{ left: "50%", transform: "translateX(-50%)" }}
+          >
+            Bus Tickets
+          </p>
+        </div>
+      </div>
+      <div className="w-[25%] h-full  items-center flex justify-center ">
+        <img src={Partner} className="w-auto hidden md:block h-full" />
+      </div>
+      <div className="w-[35%]  h-full md:pr-[0vw]  pr-[1vw] flex gap-[2vw] items-center md:justify-center justify-end">
+        <div
+          className="flex items-center justify-center gap-[0.5vw] cursor-pointer"
+          onClick={() => setModalIsOpen(true)}
+        >
           <img
-            src={busstand}
-            className="md:h-[4vw] h-[10vw] md:w-[20vw] w-[40vw] py-[0.1vw]"
+            className="md:w-[1.6vw] md:h-[1.6vw] w-[7vw] h-[7vw]"
+            src={share}
           />
-          <p className="border-r-[0.3vw] border-[${colors.primary}] hidden md:block mt-[0.2vw] h-[4vw] ml-[1vw]"></p>
-          <div className="w-[9vw] h-[3.8vw] mt-[0.3vw]  bg-[${colors.primary}] ml-[2vw] rounded-full hidden md:block relative">
-            <img
-              src={bus}
-              className="h-[3.1vw] w-[4vw] absolute top-0"
-              style={{ left: "50%", transform: "translateX(-50%)" }}
-            />
-            <p
-              className="text-white  font-semibold absolute bottom-[0.2vw]  text-[0.8vw]"
-              style={{ left: "50%", transform: "translateX(-50%)" }}
+          <p className="text-[1.2vw] font-semibold text-[${colors.primary}] hidden md:block">
+            Share
+          </p>
+        </div>
+        <div
+          className="flex items-center justify-center gap-[0.5vw]"
+          onClick={() => navigation("/rewards")}
+        >
+          <img
+            className="md:w-[1.6vw] md:h-[1.6vw] w-[7vw] h-[7vw]"
+            src={ticket}
+          />
+          <p className="hidden md:block text-[1.2vw] font-semibold text-[${colors.primary}]">
+            Rewards/Offers
+          </p>
+        </div>{" "}
+
+        {LoginUser_Name && LoginUser_Name != "null" ? (
+          <div>
+            <Dropdown
+              menu={{
+                items,
+              }}
+              className="flex items-center gap-[0.5vw] cursor-pointer"
             >
-              Bus Tickets
-            </p>
+              <a onClick={(e) => e.preventDefault()}>
+                <Space>
+                  <div className="flex items-center  gap-[1vw]">
+                    <div>
+                      <FaUserCircle size="1.5vw" color="${colors.primary}" />
+                    </div>
+                    <p className="text-[1.2vw] font-semibold text-[${colors.primary}]">
+                      {LoginUser_Name == "undefined"
+                        ? "Guest"
+                        : LoginUser_Name}
+                    </p>
+                  </div>
+                </Space>
+              </a>
+            </Dropdown>
           </div>
-        </div>
-        <div className="w-[25%] h-full  items-center flex justify-center ">
-          <img src={Partner} className="w-auto hidden md:block h-full" />
-        </div>
-        <div className="w-[35%]  h-full md:pr-[0vw]  pr-[1vw] flex gap-[2vw] items-center md:justify-center justify-end">
+        ) : (
           <div
             className="flex items-center justify-center gap-[0.5vw] cursor-pointer"
-            onClick={() => setModalIsOpen(true)}
+            onClick={() => setLoginIsOpen(true)}
           >
-            <img
-              className="md:w-[1.6vw] md:h-[1.6vw] w-[7vw] h-[7vw]"
-              src={share}
-            />
-            <p className="text-[1.2vw] font-semibold text-[${colors.primary}] hidden md:block">
-              Share
+            <img className="w-[1.6vw] h-[1.6vw]" src={profile} />
+            <p className="text-[1.2vw] font-semibold text-[${colors.primary}]">
+              Login/SignUp
             </p>
           </div>
-          <div
-            className="flex items-center justify-center gap-[0.5vw]"
-            onClick={() => navigation("/rewards")}
-          >
-            <img
-              className="md:w-[1.6vw] md:h-[1.6vw] w-[7vw] h-[7vw]"
-              src={ticket}
-            />
-            <p className="hidden md:block text-[1.2vw] font-semibold text-[${colors.primary}]">
-              Rewards/Offers
-            </p>
-          </div>{" "}
-
-          {LoginUser_Name && LoginUser_Name != "null" ? (
-            <div>
-              <Dropdown
-                menu={{
-                  items,
-                }}
-                className="flex items-center gap-[0.5vw] cursor-pointer"
-              >
-                <a onClick={(e) => e.preventDefault()}>
-                  <Space>
-                    <div className="flex items-center  gap-[1vw]">
-                      <div>
-                        <FaUserCircle size="1.5vw" color="${colors.primary}" />
-                      </div>
-                      <p className="text-[1.2vw] font-semibold text-[${colors.primary}]">
-                        {LoginUser_Name == "undefined"
-                          ? "Guest"
-                          : LoginUser_Name}
-                      </p>
-                    </div>
-                  </Space>
-                </a>
-              </Dropdown>
-            </div>
-          ) : (
-            <div
-              className="flex items-center justify-center gap-[0.5vw] cursor-pointer"
-              onClick={() => setLoginIsOpen(true)}
-            >
-              <img className="w-[1.6vw] h-[1.6vw]" src={profile} />
-              <p className="text-[1.2vw] font-semibold text-[${colors.primary}]">
-                Login/SignUp
-              </p>
-            </div>
-          )}
-        </div> */}
+        )}
+      </div> */}
       <CommonMainNavbar />
       {/* </div> */}
       <div className="hero relative md:block hidden">
@@ -1030,15 +1059,15 @@ export default function Home1() {
         {/* <div className="build_1"></div> */}
         {/* <div className="cloud1"></div> */}
         {/* <img
-          src={require("../../assets/passingclouds1.png")}
-          className="absolute top-0 "
-        /> */}
+        src={require("../../assets/passingclouds1.png")}
+        className="absolute top-0 "
+      /> */}
         <div className="bg_build2 "></div>
         <div className="cloud1"></div>
         <div className="vehicle-container">
           {/* {/* <div className="cloud2"></div> */}
           {/* <div className="cloud3"></div> 
-           <div className="cloud4"></div>  */}
+         <div className="cloud4"></div>  */}
           {/* <div className="build_1"></div> */}
           <div className="flight"></div>
           <div className="scooter"></div>
@@ -1133,40 +1162,40 @@ export default function Home1() {
                             />
                             {/* ------------------------------------------------------------------------------------------------------------------------------------ */}
                             {/* <Field name="from">
-                              {({ field }) => (
-                                <Select
-                                  // {...field}
-                                  suffixIcon={null}
-                                  showSearch
-                                  placeholder={<div className="text-[1.2vw]">From</div>}
-                                  optionFilterProp="label"
-                                  filterSort={(optionA, optionB) =>
-                                    (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                            {({ field }) => (
+                              <Select
+                                // {...field}
+                                suffixIcon={null}
+                                showSearch
+                                placeholder={<div className="text-[1.2vw]">From</div>}
+                                optionFilterProp="label"
+                                filterSort={(optionA, optionB) =>
+                                  (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                                }
+                                onChange={(value) => {
+                                  setBusDatas({
+                                    ...busdatas,
+                                    from: value,
+                                  });
+                                  setFieldValue("from", value); // Set Formik field value
+                                  localStorage.setItem("departure", value); // Save to localStorage if needed
+                                  handleChange({
+                                    target: { name: "from", value: value },
+                                  }); // Notify Formik of change
+                                  if (nextFieldRef.current) {
+                                    nextFieldRef.current.focus();
                                   }
-                                  onChange={(value) => {
-                                    setBusDatas({
-                                      ...busdatas,
-                                      from: value,
-                                    });
-                                    setFieldValue("from", value); // Set Formik field value
-                                    localStorage.setItem("departure", value); // Save to localStorage if needed
-                                    handleChange({
-                                      target: { name: "from", value: value },
-                                    }); // Notify Formik of change
-                                    if (nextFieldRef.current) {
-                                      nextFieldRef.current.focus();
-                                    }
-                                  }}
-                                  className="w-full h-full pl-[0.1vw] pb-[0.1vw] pt-[0.3vw] pr-[2vw]"
-                                  options={[
-                                    { value: "Chennai", label: "Chennai" },
-                                    { value: "Bangalore", label: "Bangalore" },
-                                    { value: "Salem", label: "Salem" },
-                                    { value: "Coimbatore", label: "Coimbatore" },
-                                  ]}
-                                />
-                              )}
-                            </Field> */}
+                                }}
+                                className="w-full h-full pl-[0.1vw] pb-[0.1vw] pt-[0.3vw] pr-[2vw]"
+                                options={[
+                                  { value: "Chennai", label: "Chennai" },
+                                  { value: "Bangalore", label: "Bangalore" },
+                                  { value: "Salem", label: "Salem" },
+                                  { value: "Coimbatore", label: "Coimbatore" },
+                                ]}
+                              />
+                            )}
+                          </Field> */}
                             <div
                               style={{
                                 width: "88%",
@@ -1228,9 +1257,9 @@ export default function Home1() {
                             }}
                           >
                             {/* <img
-                        src={stand}
-                        className="absolute right-[2vw] bottom-0 h-[8.2vw] w-[1.6vw] pt-[1vw]"
-                      /> */}
+                      src={stand}
+                      className="absolute right-[2vw] bottom-0 h-[8.2vw] w-[1.6vw] pt-[1vw]"
+                    /> */}
                             <img
                               src={stand_man}
                               alt=""
@@ -1247,37 +1276,37 @@ export default function Home1() {
                               }}
                             />
                             {/* <Field name="to">
-                              {({ field }) => (
-                                <>
-                                  <Select
-                                    ref={nextFieldRef}
-                                    showSearch // Enable search functionality
-                                    suffixIcon={null} // This removes the dropdown arrow
-                                    placeholder={<div className="text-[1.2vw]">To</div>}
-                                    optionFilterProp="label"
-                                    filterSort={(optionA, optionB) =>
-                                      (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                                    }
-                                    onChange={(value) => {
-                                      setBusDatas({
-                                        ...busdatas,
-                                        to: value,
-                                      });
-                                      localStorage.setItem("arrival", value);
-                                      setFieldValue("to", value);
-                                      handleChange({
-                                        target: { name: "to", value: value },
-                                      });
-                                    }}
-                                    value={busdatas.to || undefined} // Ensure placeholder is shown when no value is selected
-                                    onSearch={onSearch}
-                                    filterOption={filterOption}
-                                    className="w-full h-full pl-[0.1vw] pb-[0.1vw] pt-[0.3vw] outline-none pr-[2vw] text-[1vw] custom-select"
-                                    options={tobus}
-                                  />
-                                </>
-                              )}
-                            </Field> */}
+                            {({ field }) => (
+                              <>
+                                <Select
+                                  ref={nextFieldRef}
+                                  showSearch // Enable search functionality
+                                  suffixIcon={null} // This removes the dropdown arrow
+                                  placeholder={<div className="text-[1.2vw]">To</div>}
+                                  optionFilterProp="label"
+                                  filterSort={(optionA, optionB) =>
+                                    (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                                  }
+                                  onChange={(value) => {
+                                    setBusDatas({
+                                      ...busdatas,
+                                      to: value,
+                                    });
+                                    localStorage.setItem("arrival", value);
+                                    setFieldValue("to", value);
+                                    handleChange({
+                                      target: { name: "to", value: value },
+                                    });
+                                  }}
+                                  value={busdatas.to || undefined} // Ensure placeholder is shown when no value is selected
+                                  onSearch={onSearch}
+                                  filterOption={filterOption}
+                                  className="w-full h-full pl-[0.1vw] pb-[0.1vw] pt-[0.3vw] outline-none pr-[2vw] text-[1vw] custom-select"
+                                  options={tobus}
+                                />
+                              </>
+                            )}
+                          </Field> */}
                             <div
                               style={{
                                 width: "88%",
@@ -1339,43 +1368,43 @@ export default function Home1() {
                           }}
                         >
                           {/* <span className="">
+                          <div
+                            className={`border-t-[0.1vw] ${
+                              seatFilter == "seater"
+                                ? "bg-white border-[${colors.primary}]"
+                                : "bg-[${colors.primary}] border-white"
+                            } border-l-[0.1vw] border-r-[0.1vw] rounded-t-[0.1vw] h-[0.9vw] w-[1vw] relative flex items-center justify-center cursor-pointer`}
+                          >
+                            <div
+                              className={`border-b-[0.1vw] ${
+                                seatFilter == "seater"
+                                  ? "bg-white border-[${colors.primary}]"
+                                  : "bg-[${colors.primary}] border-white"
+                              } border-l-[0.1vw] border-r-[0.1vw]  h-[0.9vw] w-[1.2vw] absolute top-[0.4vw] flex items-center justify-center`}
+                            ></div>
+                            <div
+                              className={`border-b-[0.1vw]  ${
+                                seatFilter == "seater"
+                                  ? " border-[${colors.primary}]"
+                                  : " border-white"
+                              } border-l-[0.1vw] border-r-[0.1vw] h-[0.7vw] w-[0.8vw] absolute top-[0.4vw] flex items-center justify-center`}
+                            ></div>
                             <div
                               className={`border-t-[0.1vw] ${
                                 seatFilter == "seater"
                                   ? "bg-white border-[${colors.primary}]"
                                   : "bg-[${colors.primary}] border-white"
-                              } border-l-[0.1vw] border-r-[0.1vw] rounded-t-[0.1vw] h-[0.9vw] w-[1vw] relative flex items-center justify-center cursor-pointer`}
-                            >
-                              <div
-                                className={`border-b-[0.1vw] ${
-                                  seatFilter == "seater"
-                                    ? "bg-white border-[${colors.primary}]"
-                                    : "bg-[${colors.primary}] border-white"
-                                } border-l-[0.1vw] border-r-[0.1vw]  h-[0.9vw] w-[1.2vw] absolute top-[0.4vw] flex items-center justify-center`}
-                              ></div>
-                              <div
-                                className={`border-b-[0.1vw]  ${
-                                  seatFilter == "seater"
-                                    ? " border-[${colors.primary}]"
-                                    : " border-white"
-                                } border-l-[0.1vw] border-r-[0.1vw] h-[0.7vw] w-[0.8vw] absolute top-[0.4vw] flex items-center justify-center`}
-                              ></div>
-                              <div
-                                className={`border-t-[0.1vw] ${
-                                  seatFilter == "seater"
-                                    ? "bg-white border-[${colors.primary}]"
-                                    : "bg-[${colors.primary}] border-white"
-                                } absolute top-[0.4vw] w-[0.25vw] left-[-0.15vw]`}
-                              ></div>
-                              <div
-                                className={`border-t-[0.1vw]  ${
-                                  seatFilter == "seater"
-                                    ? " border-[${colors.primary}]"
-                                    : " border-white"
-                                } absolute top-[0.4vw] w-[0.25vw] right-[-0.15vw]`}
-                              ></div>
-                            </div>
-                          </span> */}
+                              } absolute top-[0.4vw] w-[0.25vw] left-[-0.15vw]`}
+                            ></div>
+                            <div
+                              className={`border-t-[0.1vw]  ${
+                                seatFilter == "seater"
+                                  ? " border-[${colors.primary}]"
+                                  : " border-white"
+                              } absolute top-[0.4vw] w-[0.25vw] right-[-0.15vw]`}
+                            ></div>
+                          </div>
+                        </span> */}
                           <span
                             className={` ${
                               seatFilter === "seater"
@@ -1402,26 +1431,26 @@ export default function Home1() {
                           }}
                         >
                           {/* <span
-                            style={{
-                              transform: "rotate(90deg)",
-                            }}
-                         >
+                          style={{
+                            transform: "rotate(90deg)",
+                          }}
+                       >
+                          <div
+                            className={`border-[0.1vw] ${
+                              seatFilter == "sleeper"
+                                ? "border-[${colors.primary}] bg-white"
+                                : "border-white bg-[${colors.primary}]"
+                            } border-[${colors.primary}] h-[2vw] w-[1vw] rounded-[0.1vw] relative flex items-center justify-center cursor-pointer`}
+                          >
                             <div
-                              className={`border-[0.1vw] ${
+                              className={`border-[0.1vw]  ${
                                 seatFilter == "sleeper"
-                                  ? "border-[${colors.primary}] bg-white"
-                                  : "border-white bg-[${colors.primary}]"
-                              } border-[${colors.primary}] h-[2vw] w-[1vw] rounded-[0.1vw] relative flex items-center justify-center cursor-pointer`}
-                            >
-                              <div
-                                className={`border-[0.1vw]  ${
-                                  seatFilter == "sleeper"
-                                    ? "border-[${colors.primary}] bg-[${colors.primary}]"
-                                    : "border-white bg-white"
-                                }  w-[0.5vw] h-[0.2vw] absolute bottom-[0.3vw] rounded-[0.1vw]`}
-                              ></div>
-                            </div>
-                          </span> */}
+                                  ? "border-[${colors.primary}] bg-[${colors.primary}]"
+                                  : "border-white bg-white"
+                              }  w-[0.5vw] h-[0.2vw] absolute bottom-[0.3vw] rounded-[0.1vw]`}
+                            ></div>
+                          </div>
+                        </span> */}
                           <span
                             className={` ${
                               seatFilter === "sleeper"
@@ -1433,21 +1462,21 @@ export default function Home1() {
                           </span>
                         </button>
                         {/* <button
-                          className={`border-[0.15vw] ${
-                            seatFilter == "semi_sleeper"
-                              ? "bg-[${colors.primary}] text-white"
-                              : "text-black border-[#81A3B6]"
-                          }  py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
-                          onClick={() => {
-                            if (seatFilter == "semi_sleeper") {
-                              SetSeatFilter("");
-                            } else {
-                              SetSeatFilter("semi_sleeper");
-                            }
-                          }}
-                        >
-                          Semi Sleeper
-                        </button> */}
+                        className={`border-[0.15vw] ${
+                          seatFilter == "semi_sleeper"
+                            ? "bg-[${colors.primary}] text-white"
+                            : "text-black border-[#81A3B6]"
+                        }  py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
+                        onClick={() => {
+                          if (seatFilter == "semi_sleeper") {
+                            SetSeatFilter("");
+                          } else {
+                            SetSeatFilter("semi_sleeper");
+                          }
+                        }}
+                      >
+                        Semi Sleeper
+                      </button> */}
                         <button
                           className={`border-[0.15vw] flex items-center ${
                             luxury === true
@@ -1457,11 +1486,11 @@ export default function Home1() {
                           onClick={() => setLuxury(!luxury)}
                         >
                           {/* <span className="pr-[0.5vw]">
-                            <FaBus
-                              size={"1vw"}
-                              color={`${luxury == true ? "black" : "1F487C"}`}
-                            />
-                          </span> */}
+                          <FaBus
+                            size={"1vw"}
+                            color={`${luxury == true ? "black" : "1F487C"}`}
+                          />
+                        </span> */}
                           <span
                             className={`${
                               luxury === true
@@ -1473,8 +1502,8 @@ export default function Home1() {
                           </span>
                         </button>
                         {/* <button className="border-[0.15vw] border-[#81A3B6] py-[0.3vw] px-[1.5vw] rounded-full text-[1vw]">
-                    Semi-Sleeper
-                  </button> */}
+                  Semi-Sleeper
+                </button> */}
                         <div className="flex items-center justify-center pl-[1vw] gap-[1vw]">
                           <input
                             type="checkbox"
@@ -1531,24 +1560,22 @@ export default function Home1() {
               >
                 <span className="pr-[3vw]">
                   {" "}
-                  {/* <PiBusThin size={"7vw"} color="${colors.primary}" /> */}
-                  <FaMapPin size={"7vw"} color={`${colors.primary}`} />
+                  {/* <PiBusThin size={"7vw"} color="#1F487C" /> */}
+                  <FaMapPin size={"7vw"} color="#1F487C" />
                 </span>
-                <p className={`text-[${colors.primary}] text-[5vw] `}>
+                <p className="text-[#1F487C] text-[5vw] ">
                   {/* {localStorage.getItem("depature")
                     ? localStorage.getItem("depature")
                     : "Tiruppur"} */}
                   {busdatas.from ? busdatas.from : "From"}
                 </p>
-                <div
-                  className={`border-b-[0.1vw] border-[${colors.primary}] left-[10vw] w-[80%] absolute top-[12vw]`}
-                ></div>
+                <div className="border-b-[0.1vw] border-[#1F487C] left-[10vw] w-[80%] absolute top-[12vw]"></div>
               </div>
               <div className="absolute top-[7vw] right-[2vw]">
                 <LuArrowDownUp
                   size={"9vw"}
                   color="white"
-                  className={`bg-[${colors.primary}] p-[2vw] rounded-full`}
+                  className="bg-[#1F487C] p-[2vw] rounded-full"
                 />
               </div>
             </div>
@@ -1562,34 +1589,32 @@ export default function Home1() {
               <div className="flex items-center relative">
                 <span className="pr-[3vw]">
                   {" "}
-                  <FaMapMarkerAlt size={"7vw"} color={`${colors.primary}`} />
+                  <FaMapMarkerAlt size={"7vw"} color="#1F487C" />
                 </span>
-                <p className={`text-[${colors.primary}] text-[5vw] `}>
+                <p className="text-[#1F487C] text-[5vw] ">
                   {" "}
                   {/* {localStorage.getItem("arrival")
                     ? localStorage.getItem("arrival")
                     : "Coimbatore"} */}
                   {busdatas.to ? busdatas.to : "To"}
                 </p>
-                {/* <div className="border-b-[0.1vw] border-[${colors.primary}] w-full absolute top-[10vw]"></div> */}
+                {/* <div className="border-b-[0.1vw] border-[#1F487C] left-[10vw] w-[80%] absolute top-[12vw]"></div> */}
               </div>
             </div>
             <div className="row-span-1 relative">
               <div className="flex gap-[4.5vw] w-full h-full items-center  ">
-                <p
-                  className={` text-[4vw] text-[${colors.primary}] absolute top-[-5vw] left-0`}
-                >
+                <p className=" text-[4vw] text-[#1F487C] absolute top-[-6vw] left-[.4vw]">
                   Departure Date
                 </p>
                 <HomeDateInput />
               </div>
             </div>
             <div className="row-span-1 items-center mt-[2vw] relative">
-              <div className="flex items-center w-full gap-[3.5vw] ">
+              <div className="flex items-center justify-between w-full ">
                 <button
                   className={`border-[0.15vw] ${
                     seatFilter === "seater"
-                      ? `bg-[${colors.primary}] text-white`
+                      ? "bg-[#1F487C] text-white"
                       : "text-black border-[#81A3B6]"
                   }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                   onClick={() => {
@@ -1605,7 +1630,7 @@ export default function Home1() {
                 <button
                   className={`border-[0.15vw] ${
                     seatFilter === "sleeper"
-                      ? `bg-[${colors.primary}] text-white`
+                      ? "bg-[#1F487C] text-white"
                       : "text-black border-[#81A3B6]"
                   }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                   onClick={() => {
@@ -1618,10 +1643,27 @@ export default function Home1() {
                 >
                   Sleeper
                 </button>
+                <button
+                  className={`border-[0.15vw]  ${
+                    luxury === true
+                      ? "bg-custom-gradient-luxury bg-image-url  text-black border-[#e1db84]"
+                      : "text-black border-[#81A3B6]"
+                  }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
+                  onClick={() => {
+                    setLuxury(!luxury);
+                    // if (seatFilter == "semi_sleeper") {
+                    //   SetSeatFilter("");
+                    // } else {
+                    //   SetSeatFilter("semi_sleeper");
+                    // }
+                  }}
+                >
+                  Luxury Bus
+                </button>
                 {/* <button
                   className={`border-[0.15vw] ${
                     seatFilter == "semi_sleeper"
-                      ? "bg-[${colors.primary}] text-white"
+                      ? "bg-[#1F487C] text-white"
                       : "text-black border-[#81A3B6]"
                   }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                   onClick={() => {
@@ -1650,11 +1692,8 @@ export default function Home1() {
             </div>
             <div className="row-span-1 mt-[4vw] items-center justify-center  flex">
               <button
-                className={`bg-${colors.primary} px-[4vw] py-[0.5vw] rounded-md text-[1.5vw] text-white`}
+                className="bg-[#1F487C] text-white text-[5vw] w-full py-[2vw] rounded-[2vw]"
                 onClick={handlebussearch}
-                style={{
-                  backgroundColor: colors.primary,
-                }}
               >
                 Search Buses
               </button>
@@ -1664,130 +1703,130 @@ export default function Home1() {
       </div>
       <Offers />
       {/* <div className="mt-[16vw] md:block hidden px-[5vw]">
-        <p className=" text-[1.5vw] pl-[2vw] text-[${colors.primary}] font-bold">
-          Top Travelled Bus Routes{" "}
-        </p>
-        <div className="grid grid-cols-5 w-full h-full gap-[1vw] mt-[1.5vw] px-[2vw]">
+      <p className=" text-[1.5vw] pl-[2vw] text-[${colors.primary}] font-bold">
+        Top Travelled Bus Routes{" "}
+      </p>
+      <div className="grid grid-cols-5 w-full h-full gap-[1vw] mt-[1.5vw] px-[2vw]">
+        {top_routes.map((item) => (
+          <div className="col-span-1 w-full h-[18vw] bg-gradient-to-t from-[#126DAF] border-t-[0.2vw] rounded-lg border-[#0D99FF]">
+            <div
+              className=""
+              style={{
+                height: "75%",
+                width: "100%",
+              }}
+            >
+              <img
+                src={item.img}
+                className="h-full w-full p-[0.7vw] rounded-lg"
+                style={{
+                  borderRadius: "1.5vw",
+                }}
+              />
+            </div>
+            <div
+              className=""
+              style={{
+                height: "25%",
+                width: "100%",
+              }}
+            >
+              <div className="gap-[1vw] flex items-center text-white pl-[1vw] font-bold w-full ">
+                <span className="text-[0.9vw]">
+                  {item.from.toUpperCase()}
+                </span>
+                <span>
+                  <FaArrowRightLong size={"1vw"} />
+                </span>
+                <span className="text-[0.9vw]">{item.to.toUpperCase()}</span>
+              </div>
+              <p className="text-white pl-[1vw] font-bold text-[1vw] pt-[0.3vw]">{`${item.buses} Buses`}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="grid grid-cols-2 w-full h-full grid-flow-row gap-[2vw] mt-[1.5vw] px-[2vw]">
+        {top_routes.map((item) => (
+          <div className="col-span-1  border-[0.1vw] border-[${colors.primary}] shadow-md shadow-[${colors.primary}] rounded-[0.5vw]">
+            <div className="grid grid-cols-7 w-full h-full">
+              <div className="col-span-1 w-full h-full items-center justify-center p-[0.5vw]">
+                <img
+                  src={item.img}
+                  className="h-[5vw] w-[5vw] rounded-[0.5vw]"
+                />
+              </div>
+              <div className="col-span-4 w-full h-full relative  items-center    font-semibold px-[0.5vw]">
+                <div className="gap-[1vw] flex items-center absolute top-[1.5vw] w-full ">
+                  <span className="text-[1vw]">{item.from}</span>
+                  <span>
+                    <FaArrowRightLong size={"1vw"} />
+                  </span>
+                  <span className="text-[1vw]">{item.to}</span>
+                </div>
+                <div className="w-full absolute bottom-[1.5vw]">
+                  <span className="text-[0.7vw] text-[#727E78]">
+                    (316 Buses)
+                  </span>
+                </div>
+              </div>
+              <div className="col-span-2 w-full h-full flex items-center justify-center">
+                <button className="px-[1vw] py-[0.5vw] border-[0.1vw] rounded-full font-bold bg-white text-[0.8vw] shadow-md border-[#AAAAAA]">
+                  View all buses
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div> */}
+      {/* <div className="mt-[175vw] px-[5vw] md:hidden block">
+      <p className=" text-[5vw] pl-[2vw] text-[${colors.primary}] font-bold">
+        Top Travelled Bus Routes{" "}
+      </p>
+      <div className="relative overflow-x-auto scrollbar-hide mt-[2vw]">
+        <div className="flex">
           {top_routes.map((item) => (
-            <div className="col-span-1 w-full h-[18vw] bg-gradient-to-t from-[#126DAF] border-t-[0.2vw] rounded-lg border-[#0D99FF]">
+            <div className="w-[55vw] mr-[2vw] flex-shrink-0  h-[54vw] bg-gradient-to-t from-[#126DAF] border-t-[0.5vw] rounded-lg border-[#0D99FF]">
               <div
                 className=""
                 style={{
-                  height: "75%",
-                  width: "100%",
+                  height: "40vw",
+                  width: "55vw",
                 }}
               >
                 <img
                   src={item.img}
-                  className="h-full w-full p-[0.7vw] rounded-lg"
+                  className="h-full w-full px-[2vw] pt-[2vw] rounded-lg"
                   style={{
                     borderRadius: "1.5vw",
                   }}
                 />
               </div>
               <div
-                className=""
+                className="pt-[1vw]"
                 style={{
-                  height: "25%",
+                  height: "10vw",
                   width: "100%",
                 }}
               >
-                <div className="gap-[1vw] flex items-center text-white pl-[1vw] font-bold w-full ">
-                  <span className="text-[0.9vw]">
+                <div className="gap-[1vw] flex items-center text-white pl-[2.5vw] font-bold w-full ">
+                  <span className="text-[3.5vw]">
                     {item.from.toUpperCase()}
                   </span>
                   <span>
                     <FaArrowRightLong size={"1vw"} />
                   </span>
-                  <span className="text-[0.9vw]">{item.to.toUpperCase()}</span>
+                  <span className="text-[3.5vw]">
+                    {item.to.toUpperCase()}
+                  </span>
                 </div>
-                <p className="text-white pl-[1vw] font-bold text-[1vw] pt-[0.3vw]">{`${item.buses} Buses`}</p>
+                <p className="text-white pl-[2.5vw] font-bold text-[3.5vw]">{`${item.buses} Buses`}</p>
               </div>
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-2 w-full h-full grid-flow-row gap-[2vw] mt-[1.5vw] px-[2vw]">
-          {top_routes.map((item) => (
-            <div className="col-span-1  border-[0.1vw] border-[${colors.primary}] shadow-md shadow-[${colors.primary}] rounded-[0.5vw]">
-              <div className="grid grid-cols-7 w-full h-full">
-                <div className="col-span-1 w-full h-full items-center justify-center p-[0.5vw]">
-                  <img
-                    src={item.img}
-                    className="h-[5vw] w-[5vw] rounded-[0.5vw]"
-                  />
-                </div>
-                <div className="col-span-4 w-full h-full relative  items-center    font-semibold px-[0.5vw]">
-                  <div className="gap-[1vw] flex items-center absolute top-[1.5vw] w-full ">
-                    <span className="text-[1vw]">{item.from}</span>
-                    <span>
-                      <FaArrowRightLong size={"1vw"} />
-                    </span>
-                    <span className="text-[1vw]">{item.to}</span>
-                  </div>
-                  <div className="w-full absolute bottom-[1.5vw]">
-                    <span className="text-[0.7vw] text-[#727E78]">
-                      (316 Buses)
-                    </span>
-                  </div>
-                </div>
-                <div className="col-span-2 w-full h-full flex items-center justify-center">
-                  <button className="px-[1vw] py-[0.5vw] border-[0.1vw] rounded-full font-bold bg-white text-[0.8vw] shadow-md border-[#AAAAAA]">
-                    View all buses
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div> */}
-      {/* <div className="mt-[175vw] px-[5vw] md:hidden block">
-        <p className=" text-[5vw] pl-[2vw] text-[${colors.primary}] font-bold">
-          Top Travelled Bus Routes{" "}
-        </p>
-        <div className="relative overflow-x-auto scrollbar-hide mt-[2vw]">
-          <div className="flex">
-            {top_routes.map((item) => (
-              <div className="w-[55vw] mr-[2vw] flex-shrink-0  h-[54vw] bg-gradient-to-t from-[#126DAF] border-t-[0.5vw] rounded-lg border-[#0D99FF]">
-                <div
-                  className=""
-                  style={{
-                    height: "40vw",
-                    width: "55vw",
-                  }}
-                >
-                  <img
-                    src={item.img}
-                    className="h-full w-full px-[2vw] pt-[2vw] rounded-lg"
-                    style={{
-                      borderRadius: "1.5vw",
-                    }}
-                  />
-                </div>
-                <div
-                  className="pt-[1vw]"
-                  style={{
-                    height: "10vw",
-                    width: "100%",
-                  }}
-                >
-                  <div className="gap-[1vw] flex items-center text-white pl-[2.5vw] font-bold w-full ">
-                    <span className="text-[3.5vw]">
-                      {item.from.toUpperCase()}
-                    </span>
-                    <span>
-                      <FaArrowRightLong size={"1vw"} />
-                    </span>
-                    <span className="text-[3.5vw]">
-                      {item.to.toUpperCase()}
-                    </span>
-                  </div>
-                  <p className="text-white pl-[2.5vw] font-bold text-[3.5vw]">{`${item.buses} Buses`}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div> */}
+      </div>
+    </div> */}
       <TopTravelledBusRoutes />
       <Buses />
       <BusOperator />
@@ -1830,17 +1869,17 @@ export default function Home1() {
           </div>
           <div className="">
             {/* <Input
-              prefix={<CiSearch size={"6vw"} color="" />}
-              placeholder="Search for city"
-              // className="text-[4vw] h-[12vw] pl-[3vw] rounded-full outline-none custom-search"
-              className="text-[4vw] h-[12vw] rounded-full outline-none custom-search custom-placeholder"
-              // onChange={(e) =>
-              //   setSearchValue({
-              //     ...searchvalue,
-              //     pickup: e.target.value,
-              //   })
-              // }
-            /> */}
+            prefix={<CiSearch size={"6vw"} color="" />}
+            placeholder="Search for city"
+            // className="text-[4vw] h-[12vw] pl-[3vw] rounded-full outline-none custom-search"
+            className="text-[4vw] h-[12vw] rounded-full outline-none custom-search custom-placeholder"
+            // onChange={(e) =>
+            //   setSearchValue({
+            //     ...searchvalue,
+            //     pickup: e.target.value,
+            //   })
+            // }
+          /> */}
             <div
               className={`relative items-center flex  bg-[${colors.background}] w-full justify-center h-[18vw]`}
               style={{
@@ -1922,19 +1961,19 @@ export default function Home1() {
       </ModalPopup>
       {/* <LocationComponent /> */}
       {/* <Modal
-        isOpen={showDialog}
-        onRequestClose={closeModal}
-        style={{
-          overlay: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-          },
-          content: {
-            width: "auto", // Adjust width as needed
-            height: "auto", // Adjust height as needed
-            // margin: "auto",
-          },
-        }}
-      > */}
+      isOpen={showDialog}
+      onRequestClose={closeModal}
+      style={{
+        overlay: {
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+        },
+        content: {
+          width: "auto", // Adjust width as needed
+          height: "auto", // Adjust height as needed
+          // margin: "auto",
+        },
+      }}
+    > */}
       <ModalPopup
         // show={showDialog}
         onClose={closeModal}
@@ -2060,153 +2099,153 @@ export default function Home1() {
                 </div>
               </Modal>
               {/* <div className="px-[2vw] pt-[3vw] relative">
-                <div className=" w-full border-[0.1vw]  rounded-[0.5vw] h-[3vw] flex border-[${colors.primary}]">
-                  <div className=" w-[88%] rounded-l-[0.5vw]  items-center flex">
-                    <p
-                      className={`px-[1vw] text-[1.1vw] ${
-                        registerdata.occupation != ""
-                          ? "text-black"
-                          : "text-gray-400"
-                      } `}
-                    >
-                      {registerdata.occupation != ""
-                        ? registerdata.occupation
-                        : "SELECT AN OCCUPATION"}
-                    </p>
-                  </div>
-                  <div
-                    className="w-[12%] rounded-r-[0.3vw] bg-[${colors.primary}] flex items-center justify-center cursor-pointer"
-                    onClick={() => setDropDownOpen(!dropdownopen)}
+              <div className=" w-full border-[0.1vw]  rounded-[0.5vw] h-[3vw] flex border-[${colors.primary}]">
+                <div className=" w-[88%] rounded-l-[0.5vw]  items-center flex">
+                  <p
+                    className={`px-[1vw] text-[1.1vw] ${
+                      registerdata.occupation != ""
+                        ? "text-black"
+                        : "text-gray-400"
+                    } `}
                   >
-                    <IoIosArrowDown size={"1.5vw"} color="white" />
-                  </div>
-                  {dropdownopen ? (
-                    <div className="h-[8vw] w-[78%] rounded-[0.5vw] shadow-xl border-[0.1vw] border-gray-300 bg-white absolute top-[6vw] overflow-y-scroll">
-                      {occupation.map((item) => (
-                        <p
-                          key={item.id}
-                          className="text-[1vw]  flex items-center px-[1vw] py-[0.5vw] cursor-pointer hover:bg-gray-200"
-                          onClick={() => handledrop(item)}
-                        >
-                          {item.label}
-                        </p>
-                      ))}
-                    </div>
-                  ) : (
-                    ""
-                  )}
+                    {registerdata.occupation != ""
+                      ? registerdata.occupation
+                      : "SELECT AN OCCUPATION"}
+                  </p>
                 </div>
-                <p className="text-red-500 text-[0.8vw]">{error.occupation}</p>
-              </div>
-              <div className="flex w-full mt-[3vw] px-[2vw]">
-                <input
-                  type="number"
-                  class="border-[0.1vw] border-[${colors.primary}] text-[1.5vw] h-[3vw] w-[60%] rounded-l-[0.5vw] outline-none px-[1vw] no-spinner"
-                  placeholder="PHONE NUMBER"
-                  pattern="[0-9]{10}"
-                  maxLength="10"
-                  onChange={(e) =>
-                    setRegisterData({
-                      ...registerdata,
-                      mobile: e.target.value,
-                    })
-                  }
-                />
-
-                <button
-                  className={`bg-[${colors.primary}] text-white h-[3vw] w-[40%] text-[1.1vw] rounded-r-[0.5vw] ${
-                    registerdata.mobile == "" || undefined
-                      ? ""
-                      : "cursor-pointer"
-                  }`}
-                  // disabled={
-                  //   registerdata.mobile == "" || undefined ? true : false
-                  // }
-                  onClick={() => handleregister()}
+                <div
+                  className="w-[12%] rounded-r-[0.3vw] bg-[${colors.primary}] flex items-center justify-center cursor-pointer"
+                  onClick={() => setDropDownOpen(!dropdownopen)}
                 >
-                  REGISTER
-                </button>
+                  <IoIosArrowDown size={"1.5vw"} color="white" />
+                </div>
+                {dropdownopen ? (
+                  <div className="h-[8vw] w-[78%] rounded-[0.5vw] shadow-xl border-[0.1vw] border-gray-300 bg-white absolute top-[6vw] overflow-y-scroll">
+                    {occupation.map((item) => (
+                      <p
+                        key={item.id}
+                        className="text-[1vw]  flex items-center px-[1vw] py-[0.5vw] cursor-pointer hover:bg-gray-200"
+                        onClick={() => handledrop(item)}
+                      >
+                        {item.label}
+                      </p>
+                    ))}
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
-              <div className="px-[2vw]">
-                <p className="text-red-500 text-[0.8vw]">{error.mobile}</p>
-              </div> */}
+              <p className="text-red-500 text-[0.8vw]">{error.occupation}</p>
+            </div>
+            <div className="flex w-full mt-[3vw] px-[2vw]">
+              <input
+                type="number"
+                class="border-[0.1vw] border-[${colors.primary}] text-[1.5vw] h-[3vw] w-[60%] rounded-l-[0.5vw] outline-none px-[1vw] no-spinner"
+                placeholder="PHONE NUMBER"
+                pattern="[0-9]{10}"
+                maxLength="10"
+                onChange={(e) =>
+                  setRegisterData({
+                    ...registerdata,
+                    mobile: e.target.value,
+                  })
+                }
+              />
+
+              <button
+                className={`bg-[${colors.primary}] text-white h-[3vw] w-[40%] text-[1.1vw] rounded-r-[0.5vw] ${
+                  registerdata.mobile == "" || undefined
+                    ? ""
+                    : "cursor-pointer"
+                }`}
+                // disabled={
+                //   registerdata.mobile == "" || undefined ? true : false
+                // }
+                onClick={() => handleregister()}
+              >
+                REGISTER
+              </button>
+            </div>
+            <div className="px-[2vw]">
+              <p className="text-red-500 text-[0.8vw]">{error.mobile}</p>
+            </div> */}
               {/* 
-              <div className="px-[2vw] py-[1vw]">
-                <Formik
-                  initialValues={{ mobileData: "", option: "" }}
-                  validationSchema={validationSchema}
-                  onSubmit={(values) => {
-                    // Handle form submission
-                    setShowRegister(true);
-                    console.log(values, "valuesvalues");
-                    localStorage.setItem("page1", true);
-                    localStorage.setItem("occupation", values.option);
-                    localStorage.setItem("mobile", values.mobileData);
-                  }}
-                >
-                  {({ isSubmitting }) => (
-                    <Form>
-                      <div>
-                        <Field
-                          type="text"
-                          name="mobileData"
-                          placeholder="Mobile Number"
-                          className="border-[0.1vw] border-[${colors.primary}] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw] "
-                        />
-                        <ErrorMessage
-                          name="mobileData"
-                          component="div"
-                          className="text-red-500 text-[0.8vw]"
-                        />
-                      </div>
+            <div className="px-[2vw] py-[1vw]">
+              <Formik
+                initialValues={{ mobileData: "", option: "" }}
+                validationSchema={validationSchema}
+                onSubmit={(values) => {
+                  // Handle form submission
+                  setShowRegister(true);
+                  console.log(values, "valuesvalues");
+                  localStorage.setItem("page1", true);
+                  localStorage.setItem("occupation", values.option);
+                  localStorage.setItem("mobile", values.mobileData);
+                }}
+              >
+                {({ isSubmitting }) => (
+                  <Form>
+                    <div>
+                      <Field
+                        type="text"
+                        name="mobileData"
+                        placeholder="Mobile Number"
+                        className="border-[0.1vw] border-[${colors.primary}] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw] "
+                      />
+                      <ErrorMessage
+                        name="mobileData"
+                        component="div"
+                        className="text-red-500 text-[0.8vw]"
+                      />
+                    </div>
 
-                      <div className="pt-[2vw]">
-                        <Field
-                          as="select"
-                          name="option"
-                          className="border-[0.1vw] border-[${colors.primary}] text-[1.1vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw] "
-                        >
+                    <div className="pt-[2vw]">
+                      <Field
+                        as="select"
+                        name="option"
+                        className="border-[0.1vw] border-[${colors.primary}] text-[1.1vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw] "
+                      >
+                        <option
+                          value=""
+                          label="Select option"
+                          className="text-gray-400"
+                        />
+                        {occupation.map((item) => (
                           <option
-                            value=""
-                            label="Select option"
-                            className="text-gray-400"
+                            value={item.label}
+                            label={item.label}
+                            className="py-[0.2vw]"
                           />
-                          {occupation.map((item) => (
-                            <option
-                              value={item.label}
-                              label={item.label}
-                              className="py-[0.2vw]"
-                            />
-                          ))}
-                        </Field>
-                        <ErrorMessage
-                          name="option"
-                          component="div"
-                          className="text-red-500 text-[0.8vw]"
-                        />
-                      </div>
+                        ))}
+                      </Field>
+                      <ErrorMessage
+                        name="option"
+                        component="div"
+                        className="text-red-500 text-[0.8vw]"
+                      />
+                    </div>
 
-                      <div className=" justify-between  flex mt-[3vw]">
-                        <button
-                          className="text-white bg-[${colors.primary}] h-[2.5vw] text-[1.1vw]  w-[8vw] rounded-[0.8vw]"
-                          // onClick={handleGrantPermission}
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          className="text-white bg-[${colors.primary}] h-[2.5vw] text-[1.1vw] w-[8vw] rounded-[0.8vw]"
-                          // onClick={handleDenyPermission}
-                          // onClick={() => setNext(true)}
-                          type="submit"
-                          disabled={isSubmitting}
-                        >
-                          Next
-                        </button>
-                      </div>
-                    </Form>
-                  )}
-                </Formik>
-              </div> */}
+                    <div className=" justify-between  flex mt-[3vw]">
+                      <button
+                        className="text-white bg-[${colors.primary}] h-[2.5vw] text-[1.1vw]  w-[8vw] rounded-[0.8vw]"
+                        // onClick={handleGrantPermission}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className="text-white bg-[${colors.primary}] h-[2.5vw] text-[1.1vw] w-[8vw] rounded-[0.8vw]"
+                        // onClick={handleDenyPermission}
+                        // onClick={() => setNext(true)}
+                        type="submit"
+                        disabled={isSubmitting}
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+            </div> */}
               <div className="h-auto w-full px-[1vw]">
                 {/* ----------------------------------------_used_formik_--------------------------------------------------------------------------- */}
               </div>
@@ -2266,22 +2305,22 @@ export default function Home1() {
               </div>
               <div
                 className={`  bg-[#8EA3BD]
-                 w-[1vw] h-[1vw] absolute rounded-full  right-[-0.5vw] bottom-[-0.5vw]`}
+               w-[1vw] h-[1vw] absolute rounded-full  right-[-0.5vw] bottom-[-0.5vw]`}
               ></div>
               <p
                 className={` text-[${colors.primary}]
-                  absolute left-[47.5%] bottom-[-2.3vw] text-[1.3vw] font-bold`}
+                absolute left-[47.5%] bottom-[-2.3vw] text-[1.3vw] font-bold`}
               >
                 To
               </p>
               <div
                 className={`
-                  bg-[${colors.primary}]
-                 w-[1vw] h-[1vw] absolute rounded-full  left-[48%] bottom-[-0.5vw]`}
+                bg-[${colors.primary}]
+               w-[1vw] h-[1vw] absolute rounded-full  left-[48%] bottom-[-0.5vw]`}
               ></div>
               <p
                 className={` text-[#8EA3BD]
-                absolute right-[-2vw] bottom-[-2.3vw] text-[1.3vw] font-bold`}
+              absolute right-[-2vw] bottom-[-2.3vw] text-[1.3vw] font-bold`}
               >
                 TRAVEL
               </p>
@@ -2379,22 +2418,22 @@ export default function Home1() {
               </div>
               <div
                 className={`  bg-[${colors.primary}]
-               w-[1vw] h-[1vw] absolute rounded-full  right-[-0.5vw] bottom-[-0.5vw]`}
+             w-[1vw] h-[1vw] absolute rounded-full  right-[-0.5vw] bottom-[-0.5vw]`}
               ></div>
               <p
                 className={` text-[${colors.primary}]
-                absolute left-[47.5%] bottom-[-2.3vw] text-[1.3vw] font-bold`}
+              absolute left-[47.5%] bottom-[-2.3vw] text-[1.3vw] font-bold`}
               >
                 To
               </p>
               <div
                 className={`
-                bg-[${colors.primary}]
-               w-[1vw] h-[1vw] absolute rounded-full  left-[48%] bottom-[-0.5vw]`}
+              bg-[${colors.primary}]
+             w-[1vw] h-[1vw] absolute rounded-full  left-[48%] bottom-[-0.5vw]`}
               ></div>
               <p
                 className={` text-[${colors.primary}]
-              absolute right-[-2vw] bottom-[-2.3vw] text-[1.3vw] font-bold`}
+            absolute right-[-2vw] bottom-[-2.3vw] text-[1.3vw] font-bold`}
               >
                 TRAVEL
               </p>
@@ -2547,7 +2586,7 @@ export default function Home1() {
 //             <Field
 //               as="select"
 //               name="option"
-//               className="border-[0.1vw] border-py-[0.5vw] border-[${colors.primary}] placeholder-blue to-white border-[${colors.primary}] text-[${colors.primary}] text-[1.1vw] h-[3vw] w-[30%] rounded-l-[0.5vw] outline-none px-[1vw]"
+//               className="border-[0.1vw] border-py-[0.5vw] border-[#1F487C] placeholder-blue to-white border-[#1F487C] text-[#1F487C] text-[1.1vw] h-[3vw] w-[30%] rounded-l-[0.5vw] outline-none px-[1vw]"
 //             >
 //               <option
 //                 value=""
@@ -2560,7 +2599,7 @@ export default function Home1() {
 //               name="mobile"
 //               placeholder="Mobile Number"
 //               maxLength={10}
-//               className="border-y-[0.1vw] border-r-[0.5vw] bg-gradient-to-r placeholder-blue to-white border-[${colors.primary}] text-[${colors.primary}] text-[1.2vw] h-[3vw] w-[70%] rounded-r-[0.5vw] outline-none px-[1vw]"
+//               className="border-y-[0.1vw] border-r-[0.5vw] bg-gradient-to-r placeholder-blue to-white border-[#1F487C] text-[#1F487C] text-[1.2vw] h-[3vw] w-[70%] rounded-r-[0.5vw] outline-none px-[1vw]"
 //             />
 //             <ErrorMessage
 //               name="mobile"
@@ -2573,9 +2612,9 @@ export default function Home1() {
 //               type="button"
 //               className={`${
 //                 userdetails.sex === "male"
-//                   ? "bg-[${colors.primary}] text-white"
-//                   : "bg-gradient-to-r  to-white text-[${colors.primary}]"
-//               } h-[3vw] w-[50%] rounded-l-[0.5vw] border-[0.1vw] border-[${colors.primary}]`}
+//                   ? "bg-[#1F487C] text-white"
+//                   : "bg-gradient-to-r  to-white text-[#1F487C]"
+//               } h-[3vw] w-[50%] rounded-l-[0.5vw] border-[0.1vw] border-[#1F487C]`}
 //               onClick={() =>
 //                 setUserDetails({
 //                   ...userdetails,
@@ -2589,9 +2628,9 @@ export default function Home1() {
 //               type="button"
 //               className={`${
 //                 userdetails.sex === "female"
-//                   ? "bg-[${colors.primary}] text-white"
-//                   : "bg-gradient-to-r  to-white text-[${colors.primary}]"
-//               } h-[3vw] w-[50%] rounded-r-[0.5vw] border-[0.1vw] border-[${colors.primary}]`}
+//                   ? "bg-[#1F487C] text-white"
+//                   : "bg-gradient-to-r  to-white text-[#1F487C]"
+//               } h-[3vw] w-[50%] rounded-r-[0.5vw] border-[0.1vw] border-[#1F487C]`}
 //               onClick={() =>
 //                 setUserDetails({
 //                   ...userdetails,
@@ -2612,7 +2651,7 @@ export default function Home1() {
 //               name="age"
 //               placeholder="Age"
 //               maxLength={2} // Enforce the character limit
-//               className="border-r-[0.5vw] bg-gradient-to-r border-[0.1vw]  placeholder-blue to-white border-[${colors.primary}] text-[${colors.primary}] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw]"
+//               className="border-r-[0.5vw] bg-gradient-to-r border-[0.1vw]  placeholder-blue to-white border-[#1F487C] text-[#1F487C] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw]"
 //             />
 //             <ErrorMessage
 //               name="age"
@@ -2625,7 +2664,7 @@ export default function Home1() {
 //               as="select"
 //               name="occupation"
 //               placeholder="Occupation"
-//               className="border-r-[0.5vw] bg-gradient-to-r border-[0.1vw]  placeholder-blue to-white border-[${colors.primary}] text-[${colors.primary}] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw]"
+//               className="border-r-[0.5vw] bg-gradient-to-r border-[0.1vw]  placeholder-blue to-white border-[#1F487C] text-[#1F487C] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw]"
 //             >
 //               <option
 //                 value=""
@@ -2652,13 +2691,13 @@ export default function Home1() {
 //     </div>
 //     <div className="justify-between flex mt-[3vw]">
 //       <button
-//         className="text-white bg-[${colors.primary}] h-[2.5vw] text-[1.1vw] w-[8vw] rounded-[0.8vw]"
+//         className="text-white bg-[#1F487C] h-[2.5vw] text-[1.1vw] w-[8vw] rounded-[0.8vw]"
 //         type="button"
 //       >
 //         Cancel
 //       </button>
 //       <button
-//         className="text-white bg-[${colors.primary}] h-[2.5vw] text-[1.1vw] w-[8vw] rounded-[0.8vw]"
+//         className="text-white bg-[#1F487C] h-[2.5vw] text-[1.1vw] w-[8vw] rounded-[0.8vw]"
 //         type="submit"
 //         disabled={isSubmitting}
 //       >

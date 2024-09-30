@@ -1044,6 +1044,7 @@ export default function BusSeatsLayout({
   logo,
   seatplatform,
   busboarding,
+  setDropDown
 }) {
   const getseats = useSelector((state) => state.seat_layout);
   console.log(getseats, "getseatsgetseats777777");
@@ -1448,7 +1449,6 @@ export default function BusSeatsLayout({
     }
   };
   console.log(`grid-cols-${lowerdeckcol}`, "upperdeckcol741852963");
-
   return (
     <div className="px-[0.5vw]">
       <div
@@ -1467,7 +1467,7 @@ export default function BusSeatsLayout({
                     type="button"
                     className={`${
                       currentrate === 1 ? " " : "  "
-                    } h-[2.5vw] w-[6vw] rounded-l-[0.5vw] font-bold  border-y-[0.1vw] border-l-[0.1vw]`}
+                    } h-[2.5vw] w-[6vw] rounded-l-[0.5vw] font-bold  border-y-[0.1vw] border-l-[0.1vw] border-r-[0.1vw]`}
                     onClick={() => SetCurrentRate(1)}
                     style={{
                       background:
@@ -1495,12 +1495,14 @@ export default function BusSeatsLayout({
                     All
                   </button>
                   {uniqueprice.length > 0 &&
-                    uniqueprice?.map((item) => (
+                    uniqueprice?.map((item,index) => (
                       <button
                         type="button"
                         className={`${
-                          currentrate === Number(item) ? " " : "   "
-                        } h-[2.5vw] w-[6vw]   font-bold  border-y-[0.1vw] border-r-[0.1vw]`}
+                          currentrate === Number(item) ? "" : ""
+                        } h-[2.5vw] w-[6vw] font-bold border-y-[0.1vw] border-r-[0.1vw] ${
+                          index === uniqueprice.length - 1 ? "rounded-r-[0.5vw]" : ""
+                        }`}
                         onClick={() => SetCurrentRate(item)}
                         style={{
                           background:
@@ -2314,6 +2316,7 @@ export default function BusSeatsLayout({
                         //type={type}
                         discount={totalprice}
                         busprice={totalprice}
+                        setDropDown={setDropDown}
                         // imageurl={logo}
                       />
                     </div>

@@ -1,25 +1,25 @@
 import React, { useEffect } from "react";
-import place1 from "../../assets/Vector (6).png";
-import place2 from "../../assets/Vector (11).png";
-import place4 from "../../assets/Vector (5).png";
-import place5 from "../../assets/Vector (6).png";
-import place6 from "../../assets/Vector (7).png";
-import place7 from "../../assets/Vector (8).png";
-import place8 from "../../assets/Vector (9).png";
-import mumbai from "../../assets/mumbai.png";
-import newdheli from "../../assets/newdheli.jpg";
+// import place1 from "../../assets/Vector (6).png";
+// import place2 from "../../assets/Vector (11).png";
+// import place4 from "../../assets/Vector (5).png";
+// import place5 from "../../assets/Vector (6).png";
+// import place6 from "../../assets/Vector (7).png";
+// import place7 from "../../assets/Vector (8).png";
+// import place8 from "../../assets/Vector (9).png";
+// import mumbai from "../../assets/mumbai.png";
+// import newdheli from "../../assets/newdheli.jpg";
 // import goa from "../../assets/goa.jpg"
-import chennai from "../../assets/chennai.jpg";
-import Buses from "./Buses";
-import BusOperator from "./BusOperator";
-import mumbai1 from "../../assets/mumbai1.png";
-import bengaluru from "../../assets/bengaluru.png";
-import pondy from "../../assets/pondy.png";
+// import chennai from "../../assets/chennai.jpg";
+// import Buses from "./Buses";
+// import BusOperator from "./BusOperator";
+// import mumbai1 from "../../assets/mumbai1.png";
+// import bengaluru from "../../assets/bengaluru.png";
+// import pondy from "../../assets/pondy.png";
 import cbe from "../../assets/cbe.png";
 import bus from "../../assets/502-ai 1.png";
 import { GetPdp } from "../../Api/Home/Home";
 import { useDispatch, useSelector } from "react-redux";
-import ColorCodes from "../Common/ColorCodes";
+// import ColorCodes from "../Common/ColorCodes";
 
 // const busdetails = [
 //   {
@@ -53,11 +53,11 @@ import ColorCodes from "../Common/ColorCodes";
 // ];
 
 export default function DomesticPlace() {
-  const sanitizePath = (path) => {
-    const sanitizedPath = path.replace(/\\\\/g, "file://").replace(/\\/g, "//");
-    console.log(encodeURI(sanitizedPath), "techimage");
-    return encodeURI(sanitizedPath);
-  };
+  // const sanitizePath = (path) => {
+  //   const sanitizedPath = path.replace(/\\\\/g, "file://").replace(/\\/g, "//");
+  //   console.log(encodeURI(sanitizedPath), "techimage");
+  //   return encodeURI(sanitizedPath);
+  // };
 
   const dispatch = useDispatch();
 
@@ -184,21 +184,19 @@ export default function DomesticPlace() {
         </div> */}
         <div className="relative overflow-x-auto scrollbar-hide">
           <div className="flex w-full  py-[1vw]">
-            {popular_domestic_presence?.popular_domestic_presence?.map(
-              (item) => (
-                <div className="w-[20vw] mr-[5vw] flex-shrink-0 ml-[1vw]">
-                  {/* <div className="w-[40vw]"> */}
-                  <img
-                    src={`http://192.168.90.47:4001${item.image}`}
-                    className={`w-[20vw] h-[20vw]  rounded-full shadow-md shadow-[${colors.primary}]`}
-                  />
-                  <p className="text-center py-[0.8vw] mt-[2vw] text-[3vw] font-bold">
-                    {item?.source_name?.toUpperCase()}
-                  </p>
-                  {/* </div> */}
-                </div>
-              )
-            )}
+            {popular_domestic_presence?.map((item) => (
+              <div className="w-[20vw] mr-[5vw] flex-shrink-0 ml-[1vw]">
+                {/* <div className="w-[40vw]"> */}
+                <img
+                  src={`http://192.168.90.47:4001${item.image}`}
+                  className={`w-[20vw] h-[20vw]  rounded-full shadow-md shadow-[${colors.primary}]`}
+                />
+                <p className="text-center py-[0.8vw] mt-[2vw] text-[3vw] font-bold">
+                  {item?.source_name?.toUpperCase()}
+                </p>
+                {/* </div> */}
+              </div>
+            ))}
           </div>
         </div>
         <p
@@ -212,16 +210,17 @@ export default function DomesticPlace() {
           bus booking deals before they're gone!
         </p>
         <div className="pl-[2vw]">
-          <div className="h-[33vw] w-full bg-gradient-to-l relative from-[#82C5F2] border-[0.01vw] border-[#82C5F2]  shadow-lg  mt-[2vw] rounded-xl grid grid-cols-6">
+          <div className="h-[35vw] w-full bg-gradient-to-l relative from-[#82C5F2] border-[0.01vw] border-[#82C5F2]  shadow-lg  mt-[2vw] rounded-xl grid grid-cols-6">
             <img
               src={bus}
-              className="h-[18vw] w-[25vw] absolute left-[2vw] top-[2vw]"
+              className="h-[12vw] w-[22vw] absolute left-[2vw] top-[10vw]"
             />
             <div>
-              <p className=" text-[3.5vw] tracking-wide mt-[2vw] font-semibold absolute left-[30vw] text-[#4A4A4A]">
+              <p className="text-[3.9vw] tracking-wide mt-[2vw] font-extrabold absolute left-[2vw] text-[#4A4A4A]">
                 Unlock Unbeatable Exclusive Deals!{" "}
+                <spn className={`text-[${colors.primary}]`}>20% OFF</spn>{" "}
               </p>
-              <p className="flex  text-[3vw] mt-[0.5vw] absolute left-[30vw] top-[12vw] tracking-wider">
+              <p className="flex text-[3vw] mt-[0.5vw] absolute left-[30vw] top-[10vw] tracking-wider">
                 <span>
                   <span
                     className={`font-bold text-[${colors.primary}] text-[3vw] pr-[1.5vw] `}
@@ -255,13 +254,13 @@ export default function DomesticPlace() {
               </span>
             </div>
             {/* </div> */}
-            <div className="absolute top-[7vw] right-[30vw] ">
-              <p className={`text-[4vw] text-[${colors.primary}] font-bold`}>
-                20% OFF
-              </p>
+            <div className="absolute top-[7vw] right-[1vw] ">
+              <p
+                className={`text-[3vw] text-[${colors.primary}] font-bold`}
+              ></p>
             </div>
             <button
-              className={`absolute bottom-[1vw] item-center flex left-[2vw]  justify-center w-[95%] py-[1.5vw] bg-[${colors.primary}] text-white`}
+              className={`absolute bottom-[1vw] item-center flex left-[2.3vw] rounded-[1.3vw] justify-center w-[95%] py-[1.5vw] bg-[${colors.primary}] text-white`}
             >
               Book now
             </button>

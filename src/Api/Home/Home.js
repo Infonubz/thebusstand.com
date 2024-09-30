@@ -7,6 +7,7 @@ import {
   PDP,
   PROFILE_DATA,
   PROMOTION_LIST,
+  SEND_APP_LINK,
   TOP_ROUTE_LIST,
 } from "../../Store/type";
 
@@ -93,6 +94,34 @@ export const GetTopBusRoutes = async (dispatch, id) => {
     // return null;
   }
 };
+export const sendAppLink = async (dispatch, values) =>{
+
+  const payload ={
+    email_id : values.email,
+    //mobile_number : values?.mobile,
+    android_link : "https://play.google.com/store/apps/details?id=com.whatsapp&hl=en_IN&pli=1",
+    iphone_link : "https://apps.apple.com/us/app/whatsapp-messenger/id310633997"
+  }
+
+  const url = `${apiUrl}/share-link`;
+  const method = "post";
+  console.log(payload, "payload");
+  try{
+   const response = await api({
+    method,
+    url,
+    data: payload,
+    headers: {
+      "Content-Type": "application/json",
+    },
+   })
+   dispatch({ type:SEND_APP_LINK, payload: response.data });
+   console.log("App Link", response);
+   return response.data;
+  }catch(error){
+    handleError(error);
+  }
+}
 const handleError = (error) => {
   console.error("Error details:", error);
   let errorMessage = "An error occurred";

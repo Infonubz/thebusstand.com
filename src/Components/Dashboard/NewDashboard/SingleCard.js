@@ -1209,7 +1209,11 @@ export default function SingleCard() {
                   )}
                   {dropDown === `policy${index}` && (
                     <div className="bg-gray-200 h-auto w-full mt-[1vw] rounded-[0.5vw] mb-[1vw]">
-                      <Policy busType={item.bus_type_status} />
+                      <Policy
+                        policies={item.cancellation_policy}
+                        price={item.lowest_price}
+                        busType={item.bus_type_status}
+                      />
                     </div>
                   )}
                   {dropDown === `seat${index}` && (
@@ -1219,6 +1223,7 @@ export default function SingleCard() {
                         busdroping={item.dropping}
                         busboarding={item.boarding}
                         busdetails={item}
+                        setDropDown={setDropDown}
                       />
                     </div>
                   )}

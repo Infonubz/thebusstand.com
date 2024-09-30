@@ -49,14 +49,14 @@ export default function Rewardsandoffers() {
       if (response && sessionStorage.getItem("passenger_id")) {
         setGetValues(
           response.occupation_id === 1 ? "Business"  :
-          response.occupation_id === 2 ? "General Public"  :
-          response.occupation_id === 3 ? "Physically Challenged" :
-          response.occupation_id === 4 ? "Pilgrim Traveler"  :
-          response.occupation_id === 5 ?"Senior Citizen" :
-          response.occupation_id === 6 ?"Student" :
+          response.occupation_id === 2 ? "GeneralPublic"  :
+          response.occupation_id === 3 ? "PhysicallyChallenged" :
+          response.occupation_id === 4 ? "PilgrimTravelers"  :
+          response.occupation_id === 5 ?"SeniorCitizens" :
+          response.occupation_id === 6 ?"Students" :
           response.occupation_id === 7 ?"Tourist" :
-          response.occupation_id === 8 ? "Corporate Traveler" :
-           "General Public"
+          response.occupation_id === 8 ? "CorporateTravelers" :
+           "GeneralPublic"
         );
         console.log(response, "lszfmjdsfksdhgj");
         GetOffersOccupation(dispatch, response.occupation_id, setSpinning);
@@ -257,7 +257,7 @@ export default function Rewardsandoffers() {
                   >
                     <option value="0">All</option>
                     <option value="2">General Public</option>
-                    <option value="3">Physically Challenged</option>
+                    <option value="3">PhysicallyChallenged</option>
                     <option value="4">Pilgrim Travellers</option>
                     <option value="5">Senior Citizens</option>
                     <option value="6">Students</option>
@@ -308,7 +308,7 @@ export default function Rewardsandoffers() {
                         >
                           <img
                             src={`http://192.168.90.47:4000${items.theme}`}
-                            className="w-[80vw]  md:h-[10vw] h-[40vw]"
+                            className="w-[80vw]  md:h-[13vw] h-[40vw]"
                           />
                         </div>
                       ))

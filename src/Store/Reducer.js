@@ -29,6 +29,7 @@ import {
   BOOKING_DETAILS_STATUS,
   GET_TICKET_TO_CANCEL,
   GET_THEME_COLORS,
+  SEND_APP_LINK,
 } from "./type";
 
 const initial = {
@@ -63,6 +64,7 @@ const initial = {
       background: "#E5FFF1",
     },
   ],
+  send_app_link: [],
 };
 
 export const busreducer = (state = initial, action) => {
@@ -265,6 +267,13 @@ export const busreducer = (state = initial, action) => {
         get_colors: [...state.themecolors, payload],
       };
     }
+    case SEND_APP_LINK: {
+      return {
+        ...state,
+        send_app_link: payload,
+      };
+    }
+
     default: {
       return state;
     }

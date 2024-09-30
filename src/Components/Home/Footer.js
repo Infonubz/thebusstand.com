@@ -12,56 +12,58 @@ import Footer1 from "../Footer/Footer";
 import "../../Components/Home/Footer.css";
 //import { IoIosArrowDropupCircle } from "react-icons/io";
 import { MdKeyboardDoubleArrowUp } from "react-icons/md";
-import ColorCodes from "../Common/ColorCodes";
-import { useSelector } from "react-redux";
+//import ColorCodes from "../Common/ColorCodes";
+import { useDispatch, useSelector } from "react-redux";
+import { GetFooter } from "../../Api/Home/Home";
+
 const Footer = () => {
-  const footerdata = [
-    {
-      label: "Top Bus Routes",
-      list: [
-        "Hyderabad to Mumbai",
-        "Chennai to Coimbatore",
-        "Bangalore to Goa",
-        "Coimbatore to Pondicherry",
-      ],
-    },
-    {
-      label: "Buses from top cities",
-      list: [
-        "Hyderabad to Mumbai",
-        "Chennai to Coimbatore",
-        "Bangalore to Goa",
-        "Coimbatore to Pondicherry",
-      ],
-    },
-    {
-      label: "Top RTC Buses",
-      list: [
-        "Hyderabad to Mumbai",
-        "Chennai to Coimbatore",
-        "Bangalore to Goa",
-        "Coimbatore to Pondicherry",
-      ],
-    },
-    {
-      label: "Top Bus Service",
-      list: [
-        "Hyderabad to Mumbai",
-        "Chennai to Coimbatore",
-        "Bangalore to Goa",
-        "Coimbatore to Pondicherry",
-      ],
-    },
-    {
-      label: "Quick Links",
-      list: [
-        "Hyderabad to Mumbai",
-        "Chennai to Coimbatore",
-        "Bangalore to Goa",
-        "Coimbatore to Pondicherry",
-      ],
-    },
-  ];
+  // const footerdata = [
+  //   {
+  //     label: "Top Bus Routes",
+  //     list: [
+  //       "Hyderabad to Mumbai",
+  //       "Chennai to Coimbatore",
+  //       "Bangalore to Goa",
+  //       "Coimbatore to Pondicherry",
+  //     ],
+  //   },
+  //   {
+  //     label: "Buses from top cities",
+  //     list: [
+  //       "Hyderabad to Mumbai",
+  //       "Chennai to Coimbatore",
+  //       "Bangalore to Goa",
+  //       "Coimbatore to Pondicherry",
+  //     ],
+  //   },
+  //   {
+  //     label: "Top RTC Buses",
+  //     list: [
+  //       "Hyderabad to Mumbai",
+  //       "Chennai to Coimbatore",
+  //       "Bangalore to Goa",
+  //       "Coimbatore to Pondicherry",
+  //     ],
+  //   },
+  //   {
+  //     label: "Top Bus Service",
+  //     list: [
+  //       "Hyderabad to Mumbai",
+  //       "Chennai to Coimbatore",
+  //       "Bangalore to Goa",
+  //       "Coimbatore to Pondicherry",
+  //     ],
+  //   },
+  //   {
+  //     label: "Quick Links",
+  //     list: [
+  //       "Hyderabad to Mumbai",
+  //       "Chennai to Coimbatore",
+  //       "Bangalore to Goa",
+  //       "Coimbatore to Pondicherry",
+  //     ],
+  //   },
+  // ];
   const [top, setShowGoTop] = useState(false);
   const handleVisibleButton = () => {
     setShowGoTop(window.pageYOffset > 50);
@@ -74,8 +76,20 @@ const Footer = () => {
     window.addEventListener("scroll", handleVisibleButton);
   }, []);
   console.log(top, "top");
-// const colors =ColorCodes()
-const colors = useSelector((state) => state.themecolors[0]);
+  // const colors =ColorCodes()
+  //const colors = useSelector((state) => state.themecolors[0]);
+
+  const fetchedFooter = useSelector((state) => state.footer);
+  const top_bus_routeFooter = fetchedFooter[0]?.top_bus_route;
+  const buses_from_top_citiesFooter = fetchedFooter[0]?.buses_from_top_cities;
+  const top_rtc_busesFooter = fetchedFooter[0]?.top_rtc_buses;
+  const top_bus_serviceFooter = fetchedFooter[0]?.top_bus_service;
+  const quick_links = fetchedFooter[0]?.quick_links;
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    GetFooter(dispatch);
+  }, [dispatch]);
 
   return (
     <>
@@ -188,17 +202,83 @@ const colors = useSelector((state) => state.themecolors[0]);
       {/* mobile */}
       <div className="md:hidden block h-auto bg-black w-full py-[1vw]  relative">
         <div className="grid grid-cols-2 row-auto w-full h-full px-[3vw]">
-          {footerdata?.length > 0 &&
-            footerdata?.map((item) => (
-              <div>
-                <p className="text-white  font-bold text-[4vw] w-full items-center py-[2vw]  flex">
-                  {item.label}
-                </p>
-                {item.list.map((data) => (
-                  <p className="text-white text-[2.5vw]">{data}</p>
-                ))}
-              </div>
-            ))}
+          <div>
+            <p className="text-white  font-bold text-[4vw] w-full items-center py-[2vw]  flex">
+              Top Bus Routes
+            </p>
+            {top_bus_routeFooter?.length > 0 &&
+              top_bus_routeFooter?.slice(0,3)?.map((item) => (
+                <a
+                  className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%]"
+                  href=""
+                  target="blank"
+                >
+                  <p>
+                    {item.from} to {item.to}
+                  </p>
+                </a>
+              ))}
+          </div>
+          <div>
+            <p className="text-white  font-bold text-[4vw] w-full items-center py-[2vw]  flex">
+              Buses from top cities
+            </p>
+            {buses_from_top_citiesFooter?.length > 0 &&
+              buses_from_top_citiesFooter?.slice(0,3)?.map((item) => (
+                <a
+                  className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%]"
+                  href=""
+                  target="blank"
+                >
+                  <p>{item.city_name}</p>
+                </a>
+              ))}
+          </div>
+          <div>
+            <p className="text-white  font-bold text-[4vw] w-full items-center py-[2vw]  flex">
+              Top RTC Buses
+            </p>
+            {top_rtc_busesFooter?.length > 0 &&
+              top_rtc_busesFooter?.slice(0,3)?.map((item) => (
+                <a
+                  className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%]"
+                  href=""
+                  target="blank"
+                >
+                  <p>{item.rtc_name}</p>
+                </a>
+              ))}
+          </div>
+          <div>
+            <p className="text-white  font-bold text-[4vw] w-full items-center py-[2vw]  flex">
+              Top Bus Service
+            </p>
+            {top_bus_serviceFooter?.length > 0 &&
+              top_bus_serviceFooter?.slice(0,3)?.map((item) => (
+                <a
+                  className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%]"
+                  href=""
+                  target="blank"
+                >
+                  <p>{item.operator_name}</p>
+                </a>
+              ))}
+          </div>
+          <div>
+            <p className="text-white  font-bold text-[4vw] w-full items-center py-[2vw]  flex">
+              Quick Links
+            </p>
+            {quick_links?.length > 0 &&
+             quick_links?.slice(0,3)?.map((item) => (
+                <a
+                  className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%]"
+                  href=""
+                  target="blank"
+                >
+                  <p>{item.link}</p>
+                </a>
+              ))}
+          </div>
         </div>
 
         <div className=" flex absolute right-[1vw] bottom-0 my-[1vw] gap-[2vw]">

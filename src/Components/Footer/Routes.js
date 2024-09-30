@@ -8,6 +8,7 @@ import { Input } from "antd";
 import { GrLocation } from "react-icons/gr";
 import { CgArrowsExchangeV } from "react-icons/cg";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
+import { useNavigate } from "react-router";
 
 const Routes = () => {
   const data = [
@@ -72,6 +73,8 @@ const Routes = () => {
   const [selectedLetter, setSelectedLetter] = useState("A");
   // const [startIndex, setStartIndex] = useState(0);
 
+  const navigation = useNavigate();
+
   const handleNextClick = () => {
     setSelectedIndex((prevIndex) => {
       const nextIndex = prevIndex !== null ? (prevIndex + 1) % data.length : 0;
@@ -112,9 +115,15 @@ const Routes = () => {
               </span>
             </div>
             <div className="absolute grid grid-cols-12 gap-[7.5vw]">
-              <div className="col-start-1 col-span-4 pt-[2vw] pl-[3vw] text-[1.2vw] text-white font-bold">
-                {`Home > Routes`}
-              </div>
+              <label className="absolute left-[4vw] top-[1.5vw] text-[1.4vw] z-[1] text-white font-bold">
+                <span
+                  className="pr-[0.5vw] underline-offset-2 cursor-pointer "
+                  onClick={() => navigation("/dashboard")}
+                >
+                  Dashboard
+                </span>
+                {`> Routes`}
+              </label>
               <div className="cloudhome"></div>
               <div className="col-start-6 col-end-12 pl-[6vw] text-[2.5vw] pt-[1vw] text-white font-bold">
                 Routes List
@@ -123,18 +132,18 @@ const Routes = () => {
             <div className="absolute top-[5.5vw] px-[2vw] grid grid-cols-8 w-full"></div>
           </div>
 
-          <div className="grid grid-cols-5 gap-[3vw]">
+          <div className="grid grid-cols-6 gap-[18vw]">
             <div className="col-span-1">
-              <div className="absolute top-[7vw] px-[3vw] flex flex-col">
-                <div className="bg-white w-[20vw] flex flex-col h-[17vw] rounded-[1vw]">
-                  <div className="flex pt-[1vw]">
+              <div className="absolute top-[7vw] px-[2vw] flex flex-col">
+                <div className="bg-white w-[20vw] flex flex-col h-auto rounded-[1vw] py-[1vw]">
+                  <div className="flex">
                     <p className="pl-[2.5vw] text-[1.5vw] font-bold text-[#1F487C] text-center justify-center items-center">
                       Search for Bus Routes
                     </p>
                   </div>
 
                   <div className="relative">
-                    <div className="relative pl-[1.5vw]  pt-[1.5vw]">
+                    <div className="relative pl-[1.5vw] pt-[1.5vw]">
                       <Input
                         size="large"
                         className="p-[0.5vw] w-[17vw]"
@@ -181,44 +190,40 @@ const Routes = () => {
                     </button>
                   </div>
                   <div className="flex pl-[3.8vw] pt-[2vw]">
-                    <button className="bg-[#1F4B7F] flex px-[3vw] text-white text-[1.4vw] justify-center h-[5vh] gap-[0.5vw] items-center rounded-[0.5vw]">
+                    <button className="bg-[#1F4B7F] px-[3vw] text-white text-[1.4vw] justify-center h-[5vh] gap-[0.5vw] items-center rounded-[0.5vw]">
                       SEARCH
                     </button>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="col-span-4">
+            <div className="col-span-5">
               <div className="absolute top-[7vw] px-[3vw] flex flex-col">
-                <div className="bg-white border-solid border border-b-[#1F487C] w-[73.4vw] flex flex-row h-[4vw] relative rounded-t-[1vw]">
-                  <div className="flex flex-row gap-[0.4vw] font-bold text-center">
+                <div className="bg-white border-solid border px-[1vw] border-b-[#1F487C] w-[74.3vw] flex flex-row h-[4vw] relative rounded-t-[1vw]">
+                  <div className="flex flex-row gap-[0.2vw] font-bold text-center">
                     {data.map((item, index) => (
-                      <div
-                        key={item.id}
-                        className={`flex
-                    text-[1.2vw] text-[#1F487C] pt-[1vw] h-[2vw] w-[2vw] ml-[0.2vw] cursor-pointer
-                   ${
-                     selectedIndex === index
-                       ? "text-white h-[2vw] w-[2vw] bg-[#1F487C] rounded-md ml-[0.2vw] mt-[1vw] pt-[0vw] pt-0 flex"
-                       : ""
-                   }
-                 `}
-                        onClick={() => {
-                          setSelectedIndex(index);
-                          setSelectedLetter(item.name);
-                        }}
-                      >
-                        <div className="flex h-[2vw] w-[2vw] pl-[0.6vw] text-center items-center justify-center">
-                          {item.name}
-                        </div>
-                        <div className="h-[2vw] ml-[1vw] mr-[1vw] border-solid border border-l-[#1f477c49]"></div>
+                      <div key={item.id} className="flex items-center">
+                        <button
+                          className={`
+          text-[1.2vw] text-[#1F487C] h-[2vw] w-[2vw] mt-[0.1vw] cursor-pointer
+          ${selectedIndex === index ? "text-white bg-[#1F487C] rounded-md" : ""}
+        `}
+                          onClick={() => {
+                            setSelectedIndex(index);
+                            setSelectedLetter(item.name);
+                          }}
+                        >
+                          <div className="text-center">{item.name}</div>
+                        </button>
+                        <div className="h-[2vw] border-solid border border-l-[#1f477c49] ml-[0.2vw]"></div>
                       </div>
                     ))}
                   </div>
-                  <div className="flex-1 text-[1.1vw] pl-[0.4vw] text-[#1F487C] pt-[0.7vw]">
+
+                  <div className="flex-1 text-[1.1vw] text-[#1F487C] pt-[0.7vw]">
                     <button
                       type="button"
-                      className="flex items-center px-[0.7vw] text-[#1F487C] text-[1vw] border-solid border border-[#1f477ca8] justify-center h-[2.5vw] gap-[0.5vw] rounded-lg"
+                      className="flex items-center px-[0.3vw] text-[#1F487C] text-[1vw] border-solid border border-[#1f477ca8] justify-center h-[2.5vw] gap-[0.5vw] rounded-lg"
                       onClick={handleNextClick}
                     >
                       Next
@@ -236,7 +241,7 @@ const Routes = () => {
                 </div>
               </div>
               <div className="absolute top-[10vw] px-[3vw]">
-                <div className="bg-white w-[73.4vw] h-[27vw] relative rounded-[1vw]">
+                <div className="bg-white w-[74.3vw] h-[27vw] relative rounded-[1vw]">
                   <div className="grid grid-flow-col grid-rows-8 px-[2vw] mt-[2vw]">
                     {routesData?.map((item, index) => (
                       <div className="flex items-center" key={index}>

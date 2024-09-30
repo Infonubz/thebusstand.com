@@ -118,6 +118,7 @@ export const SendPassengerName = async (dispatch, values) => {
         : values.occupation === "Tourist"
         ? 7
         : 8,
+
   };
   console.log(payload.email_id, "verificationforotp");
   const user_id = sessionStorage.getItem("user_id");

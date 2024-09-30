@@ -161,7 +161,7 @@ const LoginProfile = ({ closeLoginModal, setLoginIsOpen }) => {
                           label="Select Occupation"
                           disabled
                         />
-                        <option value="GeneralPublic">General Public</option>
+                        {/* <option value="GeneralPublic">General Public</option>
                         <option value="PhysicallyChallenged">
                           Physically Challenged
                         </option>
@@ -173,7 +173,15 @@ const LoginProfile = ({ closeLoginModal, setLoginIsOpen }) => {
                         <option value="Tourist">Tourist</option>
                         <option value="Corporate Travelers">
                           Corporate Travelers
-                        </option>
+                        </option> */}
+                        <option value="Business">Business</option>
+                        <option value="GeneralPublic">General Public</option>
+                        <option value="PhysicallyChallenged">Physically Challenged</option>
+                        <option value="PilgrimTravelers">Pilgrim Traveler</option>
+                        <option value="SeniorCitizens">Senior Citizen</option>
+                        <option value="Students">Student</option>
+                        <option value="Tourist">Tourist</option>
+                        <option value="CorporateTravelers">Corporate Traveler</option>
                       </Field>
                       <ErrorMessage
                         name="occupation"

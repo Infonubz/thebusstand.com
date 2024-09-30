@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import layer from "../../assets/BG Image.png";
 import { FaBriefcase } from "react-icons/fa";
 import NavMobile from "./NavMobile";
+import CommonMainNavbar from "../Common/CommonMainNavbar";
 
 const About = () => {
   const about_us = useSelector((state) => state?.tbs_info || []);
@@ -33,7 +34,7 @@ const About = () => {
   return (
     <>
       <div className="bg-[#d1f8e3] ">
-        <HomeHearder />
+        <CommonMainNavbar />
         <div
           className="relative md:h-[45vw] h-[100%] bg-[#d1f8e3]"
           style={{ zIndex: 1 }}
