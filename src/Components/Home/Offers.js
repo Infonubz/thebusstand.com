@@ -135,7 +135,7 @@ function Offers() {
     setStartIndex(newIndex);
   };
   const nextSlide = () => {
-    const newIndex = Math.min(startIndex + 1, currentoffers.length - 5);
+    const newIndex = Math.min(startIndex + 1, currentoffers?.length - 5);
     setStartIndex(newIndex);
   };
   useEffect(() => {
@@ -255,16 +255,17 @@ console.log(colors,"colorscolorscolorscolorscolors");
                       </div>
                     </div> */}
                       <div className="relative">
-                        <div className="absolute left-[4.5vw] top-0">
+                        <div className="absolute left-[4.6vw] top-0">
                           <div
                             className={`bg-[${colors.background}] w-[1.6vw] h-[0.8vw] rounded-b-full`}
                           ></div>
                         </div>
+                        <div className="absolute border-white border-[.1vw] h-[6.7vw] top-[.9vw] border-dashed left-[5.4vw]"></div>
                         <img
                           src={`http://192.168.90.47:4000${item?.background_image}`}
                           className="w-[80vw] lg:h-[80%] md:h-[12vw] h-[40vw]"
                         />
-                        <div className="absolute left-[4.5vw] bottom-0">
+                        <div className="absolute left-[4.6vw] bottom-0">
                           <div
                             className={`bg-[${colors.background}] w-[1.6vw] h-[0.8vw] rounded-t-full rounded-b-[0.5vw]`}
                           ></div>

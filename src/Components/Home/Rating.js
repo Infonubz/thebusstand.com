@@ -4,7 +4,7 @@ import double from "../../assets/doubl.png";
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { GetFeedbacks } from "../../Api/Home/RatingFeedback";
+import { GetFeedbacks } from "../../Api/MyAccounts/RatingFeedBack.js";
 import { Popover } from "antd";
 import { capitalizeFirstLetter } from "../Common/Captalization";
 import ColorCodes from "../Common/ColorCodes";

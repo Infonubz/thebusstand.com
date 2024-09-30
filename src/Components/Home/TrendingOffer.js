@@ -69,11 +69,12 @@ import ticket from "../../../src/assets/ticket.png";
 import profile from "../../../src/assets/Profile.png";
 import ShareButtons from "../MainComponenet/ShareButton";
 import { Link, NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import homesky from "../../assets/BackgroundSky1.png";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
 import Footer from "./Footer";
 import ColorCodes from "../Common/ColorCodes";
+import { GetPromotion } from "../../Api/Home/Home";
 
 const TrendingOffer = () => {
   const [showDialog, setShowDialog] = useState(false);
@@ -165,6 +166,7 @@ const TrendingOffer = () => {
     const newIndex = Math.min(startIndex + 1, currentoffers.length - 5);
     setStartIndex(newIndex);
   };
+  const dispatch = useDispatch();
   useEffect(() => {
     const occupation = localStorage.getItem("occupation");
     if (occupation == "Corporate Travellers") {
@@ -204,9 +206,13 @@ const TrendingOffer = () => {
     setModalIsOpen(false);
     setShowDialog(false);
   };
-  const promotionlist = useSelector((state) => state?.promo_list);
+  const promotionlist = useSelector((state) => state.promo_list);
   console.log(promotionlist, "promotionlist");
   const colors = ColorCodes();
+
+  useEffect(() => {
+    GetPromotion(dispatch);
+  }, []);
   return (
     <>
       <div
@@ -285,15 +291,15 @@ const TrendingOffer = () => {
               <div className="cloudhome"></div>
             </div>
             <div className="absolute top-[7vw] left-[12.5vw] bg-white w-3/4 h-[35vw] rounded-lg md:block hidden">
-              <div className=" w-full flex px-[4vw] items-center justify-between mt-[1vw] ">
+              <div className=" w-full flex px-[4vw] items-center justify-between my-[1vw] ">
                 <p
                   className={`text-[1.5vw] text-[${colors.primary}] font-bold`}
                 >
                   Trending Offers
                 </p>
               </div>
-              <div className="max-h-[28vw] h-full  overflow-y-auto w-[100%] px-[3vw] place-items-center pb-[1vw] items-center justify-center flex">
-                <div className="grid grid-cols-3 w-full h-full items-center flex-col  gap-x-[1vw] justify-center px-[1vw]">
+              <div className="max-h-[28vw] h-full  overflow-y-auto w-[100%] px-[3vw] place-items-center  items-center justify-center flex">
+                <div className="grid grid-cols-3 w-full h-full items-center flex-col  gap-[1vw] justify-center  px-[1vw]">
                   {promotionlist?.map((item, index) => (
                     // <>
                     //   <div className="relative">
@@ -311,23 +317,38 @@ const TrendingOffer = () => {
                     //     </div>
                     //   </div>
                     // </>
-                    <img
-                      src={`http://192.168.90.47:4000${item?.background_image}`}
-                      className="w-[80vw] lg:h-[80%] md:h-[12vw] h-[40vw]"
-                    />
+                    <div key={index} className="relative">
+                      <img
+                        src={`http://192.168.90.47:4000${item?.background_image}`}
+                        className="w-[84vw]  h-[12vw]"
+                      />
+                      <span className="absolute left-[6.1vw] top-[0vw] z-[2] ">
+                        <div
+                          className={`bg-[white] border-none w-[2vw] h-[1vw] rounded-b-full`}
+                        ></div>
+                      </span>
+
+                      <div className="border-dashed  border-white z-[2] h-[10vw] border-[.2vw] absolute top-[1.1vw] left-[7vw]"></div>
+
+                      <span className="absolute left-[6.1vw] bottom-[0vw] z-[2] ">
+                        <div
+                          className={`bg-[white] border-none  w-[2vw] h-[1vw] rounded-t-full `}
+                        ></div>
+                      </span>
+                    </div>
                   ))}
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
 
       {/* ----------------------------------------MobileView------------------------------------------------ */}
-      <div className="md:hidden block ">
-        <div className={`bg-[${colors.primary}] `}>
-          <div className="grid grid-cols-6 items-center px-[5vw]">
+      <div className={`md:hidden block bg-[${colors.background}] `}>
+        {/* <div className={`bg-[${colors.primary}] z-10 fixed h-[14vw] w-full `}>
+          <div className="grid grid-cols-6 items-center px-[5vw] ">
             <div className="col-span-2 py-5">
               <NavLink to="/">
                 <IoMdArrowBack className="w-[6vw] h-[6vw]" color="white" />
@@ -335,31 +356,56 @@ const TrendingOffer = () => {
             </div>
             <div className="col-span-2 text-white">TrendingOfferzzz</div>
           </div>
-        </div>
-        <div
-          className={` bg-[${colors.background}] min-h-screen max-h-auto overflow-auto absolute w-full `}
-        >
-          <div className=" grid grid-row w-full h-full gap-[1vw] item-center px-[3vw] py-[5vw]">
-            {currentoffers.map((item, index) => (
-              // <div className="col-span-1 w-full h-full items-center  gap-2 flex ">
-              <>
-                <div className="relative">
-                  <img src={item?.img} className="w-full h-full " />
-                  <p className="absolute text-[3vw] left-[3vw] bottom-[12vw] text-white">
-                    {`Valid till ${item?.valid}`}
-                  </p>
-                  <div className="w-auto h-[6vw] border-dashed flex items-center rounded-[0.2vw] border-[0.1vw] bg-opacity-20 bg-white border-white absolute left-[3vw] bottom-[4vw] px-[1.5vw]   text-white">
-                    <p>{item?.coupon}</p>
-                    <img
-                      src={clipboard}
-                      className="absolute bottom-[1.5vw] right-[-5vw] h-[3.5vw] w-[3.5vw] cursor-pointer"
-                      onClick={() => copyCouponCode(item)}
-                    />
-                  </div>
-                </div>
-              </>
-              // </div>
-            ))}
+        </div> */}
+        <CommonMainNavbar />
+        <div className=" w-full h-full">
+          <div
+            className=" h-[24vw] z-0 md:z-0 overflow-x-hidden"
+            style={{
+              backgroundImage: `url(${homesky})`,
+              width: "100%",
+              overflow: "hidden",
+              // backgroundSize: "cover",
+              position: "relative",
+              overflowX: "hidden",
+              width: "100%",
+            }}
+          >
+            <label className="absolute left-[26vw]  top-[2vw]  text-[8vw]   text-white font-bold opacity-20">
+              {`Trending Offers`}
+            </label>
+            <label className="absolute left-[36vw] top-[5vw] text-[5vw]  ] text-white font-bold">
+              {"Trending Offers"}
+            </label>
+            <div className="cloudhome"></div>
+          </div>
+
+          <div className="bg-white mx-[4vw] ">
+            <div className=" rounded-t-[1vw]">
+              <div className=" grid grid-row w-full   gap-x-[1vw] gap-y-[5vw] item-center px-[5vw] py-[5vw]">
+                {promotionlist?.map((item, index) => (
+                  <>
+                    <div key={index} className="relative">
+                      <img
+                        src={`http://192.168.90.47:4000${item?.background_image}`}
+                        className="w-full h-full "
+                      />
+                      <span className="absolute left-[23.3vw] top-[-.2vw] ">
+                        <div
+                          className={`bg-[white] border-none w-[8vw] h-[4vw] rounded-b-full`}
+                        ></div>
+                      </span>
+                      <div className="border-dashed  border-white h-[34vw] border-[.4vw] absolute top-[4.5vw] left-[26.9vw]"></div>
+                      <span className="absolute left-[23.2vw] bottom-[-.2vw] ">
+                        <div
+                          className={`bg-[white] border-none  w-[8vw] h-[4vw] rounded-t-full`}
+                        ></div>
+                      </span>
+                    </div>
+                  </>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

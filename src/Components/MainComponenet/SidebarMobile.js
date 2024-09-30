@@ -650,7 +650,7 @@ const SidebarMobile = ({ sidebarToggle, share, showAll }) => {
         amenities: amenitiescheck.join(","),
         timeDepature: pickuptime,
         timeArrival: droptime,
-        price: arrange_data.price ? arrange_data.price : "FALSE",
+        price: arrange_data?.price ? arrange_data?.price : "FALSE",
         depature: arrange_data.depature ? arrange_data.depature : "FALSE",
         arrival: arrange_data.arrival ? arrange_data.arrival : "FALSE",
         seats: arrange_data.seats ? arrange_data.seats : "FASLE",

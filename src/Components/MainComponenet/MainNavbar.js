@@ -828,7 +828,9 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   return (
     <>
       <div className="fixed w-full z-1" style={{ zIndex: 1 }}>
-        <CommonMainNavbar />
+       <div className="md:block hidden">
+       <CommonMainNavbar />
+       </div>
         <div className="h-[12vw] md:h-[4.7vw] w-full bg-[#1F487C] md:-z-10">
           <div className="md:h-[0.3vw] md:block hidden w-full bg-[#E5FFF1] opacity-90"></div>
           <div className="grid md:hidden block w-full  h-[12vw]">

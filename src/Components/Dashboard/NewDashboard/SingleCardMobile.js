@@ -40,6 +40,7 @@ import { createMemoryRouter } from "react-router";
 import Advertisement from "../../Advertisement/Ads";
 import thread from "../../../assets/thread.png";
 import BusSeatsLayout from "../BusSeatsLayout/BusSeatsLayout";
+import BottomNavbar from "../../MobileView/BottomNavbar";
 
 const SingleCardMobile = ({ isluxury }) => {
   const [dropDown, setDropDown] = useState(null);
@@ -81,6 +82,7 @@ const SingleCardMobile = ({ isluxury }) => {
   }, 2000);
 
   return (
+    <>
     <div className="relative ">
       <div className="absolute top-0 w-full bg-[#E5FFF1] min-h-screen max-h-auto  px-[0.5vw] ">
         {/* <Promotion /> */}
@@ -754,6 +756,8 @@ const SingleCardMobile = ({ isluxury }) => {
         </div>
       </div>
     </div>
+    <BottomNavbar/>
+    </>
   );
 };
 

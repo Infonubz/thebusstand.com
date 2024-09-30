@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 // import { FaBars } from "react-icons/fa"; // Corrected import
 import sbus from "../../assets/sbus.png";
-import { MdKeyboardDoubleArrowDown, MdOutlineKeyboardDoubleArrowUp } from "react-icons/md";
+import {
+  MdKeyboardDoubleArrowDown,
+  MdOutlineKeyboardDoubleArrowUp,
+} from "react-icons/md";
 import menu from "../../assets/menu.png";
 import { REARRANGE_ORDER, SEARCH_BUTTON } from "../../Store/type";
 import { useDispatch, useSelector } from "react-redux";
@@ -174,7 +177,9 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
                   sorting === "seats" ? "text-white" : "text-[#1F487C]"
                 }  text-[0.9vw]  font-bold `}
               >
-                {sorting === "seats" ? "Seats Left - High to Low" : "Seats Left"}
+                {sorting === "seats"
+                  ? "Seats Left - High to Low"
+                  : "Seats Left"}
               </p>
               {sorting === "seats" ? (
                 <span>
@@ -207,7 +212,7 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
                   sorting === "ratings" ? "text-white" : "text-[#1F487C]"
                 }  text-[0.9vw]  font-bold `}
               >
-                { sorting === "ratings"?"Ratings - High to Low":"Ratings"}
+                {sorting === "ratings" ? "Ratings - High to Low" : "Ratings"}
               </p>
               {sorting === "ratings" ? (
                 <span>
@@ -241,7 +246,9 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
                   sorting === "departureSort" ? "text-white" : "text-[#1F487C]"
                 }  text-[0.9vw]  font-bold `}
               >
-              {  sorting === "departureSort" ?" Early Departure":"Departure Time"}  
+                {sorting === "departureSort"
+                  ? " Early Departure"
+                  : "Departure Time"}
               </p>
               {sorting === "departureSort" ? (
                 <span>
@@ -274,7 +281,7 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
                   sorting === "arrivalSort" ? "text-white" : "text-[#1F487C]"
                 }  text-[0.9vw]  font-bold `}
               >
-               { sorting === "arrivalSort"? "Early Arrival":"Arrival Time"}  
+                {sorting === "arrivalSort" ? "Early Arrival" : "Arrival Time"}
               </p>
               {sorting === "arrivalSort" ? (
                 <span>
@@ -289,7 +296,6 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
               )}
             </span>
           </button>
-       
         </div>
 
         <div
@@ -319,9 +325,9 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
       </div>
 
       {/* <----------------------mobileview----------------------> */}
-      <div className="bg-[#E5FFF1] grid grid-cols-12 py-[1vw] h-full w-full relative md:hidden block">
+      {/* <div className="bg-[#E5FFF1] grid grid-cols-12 py-[1vw] h-full w-full relative md:hidden block">
         <div className="col-span-7 pb-[1vw] pt-[1vw] h-full w-full flex gap-[1.5vw] ml-[1vw]">
-        <button
+          <button
             className={`px-[1vw] w-[18.5vw] py-[0.3vw] border-[0.1vw]  rounded-md
             ${
               selectedButton === "filter"
@@ -350,13 +356,7 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
                   Filter
                 </p>
               </span>
-              {
-                selectedButton === "filter"
-                // && (
-                // <span>
-                //   <MdOutlineKeyboardDoubleArrowUp color="white" className="font-bold" />
-                // </span> )
-              }
+              {selectedButton === "filter"}
             </span>
           </button>
           <button
@@ -386,17 +386,10 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
                 </p>
               </span>
             </span>
-            {
-              selectedButton === "sort"
-              // && (
-              //   <span>
-              //     <MdOutlineKeyboardDoubleArrowUp color="white" size={"1vw"} className="font-bold" />
-              //   </span> )
-            }
+            {selectedButton === "sort"}
           </button>
 
-        
-          {/* <button
+          <button
             className={`py-[0.3vw] border-[0.1vw] rounded-md w-[18vw] px-[1vw] ${
               selectedButton === "map"
                 ? "bg-[#1F487C]"
@@ -420,16 +413,9 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
                   Map
                 </p>
               </span>
-              {
-                selectedButton === "map"
-                //   && (
-                //   <span>
-                //     <MdOutlineKeyboardDoubleArrowUp className="font-bold" />
-                //   </span>
-                // )
-              }
+              {selectedButton === "map"}
             </span>
-          </button> */}
+          </button>
         </div>
 
         <div className="col-span-5">
@@ -443,11 +429,10 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
                 {buslist?.length}
               </span>
               <span className="pl-[0.8vw]">Buses </span>
-              {/* {`Showing ${bus_count?.length} Buses On this route`} */}
             </span>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <Drawer
         closable

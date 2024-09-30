@@ -487,5 +487,17 @@
 }
 
 
+/* border dashed */
+
+.custom-dashed-border {
+  @apply border-t-2 border-gray-400; /* Tailwind utilities */
+  border-style: dashed;
+  border-width: 2px;
+  border-color: #9ca3af; /* equivalent to gray-400 in Tailwind */
+  border-spacing: 1px; /* Custom CSS (non-functional for dashed borders) */
+  /* Custom dash and gap using border shorthand */
+  border-image: linear-gradient(to right, #9ca3af 33%, rgba(255, 255, 255, 0) 0%) 1 100%;
+  border-image-slice: 1;
+}
 
 

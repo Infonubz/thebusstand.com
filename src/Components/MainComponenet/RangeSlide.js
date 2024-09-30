@@ -60,12 +60,12 @@ const RangeSlide = ({ value, setValue, boolean, setBoolean, setPriceRange, price
               >
                 CLEAR
               </h3>
-              {boolean.price === true ? (
+              {boolean?.price === true ? (
                 <button
                   onClick={() =>
                     setBoolean({
                       ...boolean,
-                      price: !boolean.price,
+                      price: !boolean?.price,
                     })
                   }
                 >
@@ -78,14 +78,14 @@ const RangeSlide = ({ value, setValue, boolean, setBoolean, setPriceRange, price
                   onClick={() =>
                     setBoolean({
                       ...boolean,
-                      price: !boolean.price,
+                      price: !boolean?.price,
                     })
                   }
                 />
               )}
             </div>
           </div>
-          {boolean.price && (
+          {boolean?.price && (
             <Row gutter={16} align="middle">
               <div className="flex justify-between  w-full">
                 <div className="">
