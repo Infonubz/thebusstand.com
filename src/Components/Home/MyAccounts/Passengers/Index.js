@@ -30,7 +30,7 @@ export default function PassengerIndex() {
     };
 
     return (
-        <div className="bg-white h-auto w-full rounded-[1vw] p-[2vw]">
+        <div className="bg-white h-auto md:w-full w-[90vw] md:mx-[0vw] shadow-lg shadow-gray-400 rounded-[2vw] px-[4vw] md:px-[3vw] md:rounded-[1vw] py-[2vw]">
             {isPassengersList
                 ? <PassengersList
                     nextPage={nextPage}

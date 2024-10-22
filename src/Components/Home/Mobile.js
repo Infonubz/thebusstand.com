@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BgHills from "../../assets/BgHills.png";
 import AppRating from "../../assets/App rating.png";
 import iphone from "../../assets/iPhone 13 Pro.png";
@@ -14,32 +14,43 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { sendAppLink } from "../../Api/Home/Home";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { Rate } from "antd";
+import "../../../src/App.css";
+import { GetAverageRating } from "../../Api/MyAccounts/RatingFeedBack";
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string()
-    .matches(
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      "Invalid email address format"
-    )
-    .required("Email is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  // mobile: Yup.string()
+  //   .matches(/^\+91\d{10}$/, 'Invalid mobile number')
+  //   .required('Mobile number is required'),
 });
 
-
 const MobileApp = () => {
-
   const [modalshow, setModalShow] = useState(false);
-
+  const [averageData, setAverageData] = useState("");
   const dispatch = useDispatch();
 
-  const handleSubmitlink = async(values) => {
-    try{
-    const sendLink = await sendAppLink(dispatch, values);
-    console.log(sendLink, "send app link");
-    toast.success(sendLink.message);
-    }catch(error){
-      console.error(error, "Error")
+
+  const handleSubmitlink = async (values) => {
+    try {
+      const sendLink = await sendAppLink(dispatch, values);
+      console.log(sendLink, "send app link");
+      toast.success(sendLink.message);
+    } catch (error) {
+      console.error(error, "Error");
     }
   };
+
+  
+  useEffect(() => {
+    const AverageRating = async () => {
+      const response = await GetAverageRating();
+      console.log(response, "ratingavvadsd");
+      // console.log(parseFloat(response?.average_rating),"ratingavvadsdp");
+      setAverageData(response);
+    };
+    AverageRating();
+  }, []);
 
   return (
     <>
@@ -103,13 +114,13 @@ const MobileApp = () => {
                     <Formik
                       initialValues={{
                         email: "",
-                        mobile: ""
+                        mobile: "",
                       }}
                       validationSchema={validationSchema}
-                      onSubmit={(values, { resetForm }) => { 
+                      onSubmit={(values, { resetForm }) => {
                         handleSubmitlink(values);
                         console.log(values, "values");
-                        resetForm(); 
+                        resetForm();
                       }}
                       enableReinitialize={false}
                     >
@@ -119,7 +130,11 @@ const MobileApp = () => {
                         handleChange,
                         handleSubmit,
                       }) => (
-                        <Form onSubmit={handleSubmit}>
+                        <Form
+                          onSubmit={handleSubmit}
+                          validateOnChange={false} // Disables validation onChange
+                          validateOnBlur={false} // Disables validation onBlur
+                        >
                           {modalshow ? (
                             <div className="">
                               <div className="font-InterFont text-white text-[1.3vw] py-[1vw]">
@@ -127,24 +142,26 @@ const MobileApp = () => {
                                 link to download the app.
                               </div>
                               <div className="relative">
-                                <button className="absolute top-[0.37vw] right-[6.4vw] w-[8vw] h-[3vw] bg-white rounded-full text-[#1F4B7F] font-bold text-[1.2vw]">
+                                <button
+                                  type="submit"
+                                  className="absolute top-[0.37vw] right-[6.4vw] w-[8vw] h-[3vw] bg-white rounded-full text-[#1F4B7F] font-bold text-[1.2vw]"
+                                >
                                   Submit
                                 </button>
                                 <Field
-                                  type="text" 
+                                  type="text"
                                   name="mobile"
                                   placeholder="+91 Mobile Number"
-                                  // value={values }
-                                  onChange={(e) => {
-                                    handleChange(e);
-                                  }}
-                                  className={`text-[1.2vw] h-[3.8vw] w-[36vw] bg-[#ffffff9a] rounded-[1vw] outline-none px-[1vw]`}
+                                  onChange={(e) => handleChange(e)}
+                                  className="text-[1.2vw] h-[3.8vw] w-[36vw] bg-[#ffffff9a] rounded-[1vw] outline-none px-[1vw]"
                                 />
-                                <ErrorMessage
-                                  name="mobile"
-                                  component="div"
-                                  className="text-red-500 text-[0.8vw] absolute top-[3vw] left-[1vw]"
-                                />
+                                <div>
+                                  <ErrorMessage
+                                    name="mobile"
+                                    component="div"
+                                    className="text-white text-[0.8vw] absolute top-[3vw] left-[1vw]"
+                                  />
+                                </div>
                               </div>
                             </div>
                           ) : (
@@ -154,26 +171,26 @@ const MobileApp = () => {
                                 to download the app.
                               </div>
                               <div className="relative">
-                                <button 
-                                type="submit"
-                                className="absolute top-[0.37vw] right-[1.3vw] w-[8vw] h-[3vw] bg-white rounded-full text-[#1F4B7F] font-bold text-[1.2vw]">
+                                <button
+                                  type="submit"
+                                  className="absolute top-[0.37vw] right-[1.3vw] w-[8vw] h-[3vw] bg-white rounded-full text-[#1F4B7F] font-bold text-[1.2vw]"
+                                >
                                   Submit
                                 </button>
                                 <Field
-                                  type="text" 
+                                  type="text"
                                   name="email"
                                   placeholder="Email"
-                                  //value={values}
-                                  onChange={(e) => {
-                                    handleChange(e);
-                                  }}
-                                  className={`text-[1.2vw] h-[3.8vw] w-[36vw] bg-[#ffffff9a] rounded-[1vw] outline-none px-[1vw]`}
-                                />
-                                <ErrorMessage
-                                  name="email"
-                                  component="div"
-                                  className="text-red-500 text-[0.8vw] absolute top-[4vw] left-[1vw]"
-                                />
+                                  onChange={(e) => handleChange(e)}
+                                  className="text-[1.2vw] h-[3.8vw] w-[36vw] bg-[#ffffff9a] rounded-[1vw] outline-none px-[1vw]"
+                                />{" "}
+                                <div>
+                                  <ErrorMessage
+                                    name="email"
+                                    component="div"
+                                    className="text-white text-[0.8vw] absolute top-[4vw] left-[0.7vw]"
+                                  />
+                                </div>
                               </div>
                             </div>
                           )}
@@ -186,22 +203,37 @@ const MobileApp = () => {
               <div className="row-span-2">
                 <div className="flex gap-[5vw] py-[1vw]">
                   <div className="">
-                    <img
+                    {/* <img
                       src={AppRating}
                       alt="AppRating"
-                      className="w-[15vw] h-[2.5vw]"
+                      className="w-[15vw] h-[2.5vw]"  
+                    /> */}
+                    {/* <Rate disabled allowHalf defaultValue={averageData.average_rating ? averageData.average_rating : 4.5} className="text-[2vw]"  /> */}
+                    <Rate
+                      disabled
+                      allowHalf
+                      defaultValue={3.6}
+                      value={averageData?.average_rating}
+                      className="text-[2.3vw]"
                     />
-                    {/* <Rate disabled defaultValue={4.6}  /> */}
+                    {console.log(
+                      parseFloat(averageData?.average_rating, "avdssiuzdrs")
+                    )}
                     <div className=" text-white font-InterFont text-[1.1vw] ">
-                      4.6/5 based on 210260 reviews
+                      <span className="font-semibold text-[1.2vw]">{`${averageData?.average_rating}/5`}</span>{" "}
+                      based on{" "}
+                      <span className="font-semibold text-[1.2vw]">
+                        {`${averageData?.total_feedbacks}`}{" "}
+                      </span>{" "}
+                      reviews
                     </div>
-                    <div className=" text-white font-InterFont text-[1.1vw]">
+                    {/* <div className=" text-white font-InterFont text-[1.1vw]">
                       Trusted by 5+ Crores Travellers
-                    </div>
+                    </div> */}
                   </div>
-                  <div>
+                  {/* <div>
                     <img src={Award} alt="Award" className="w-[15vw] h-[6vw]" />
-                  </div>
+                  </div> */}
                 </div>
               </div>
 

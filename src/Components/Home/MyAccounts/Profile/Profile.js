@@ -82,7 +82,7 @@ const HomeProfile = () => {
 
   return (
     <>
-      <div className="bg-white rounded-[1vw] px-[2vw] pb-[1vw]">
+      <div className="bg-white shadow-lg shadow-gray-400  md:mx-[0vw] w-[90vw] md:w-full md:rounded-[1vw] rounded-[2vw] md:px-[2vw] px-[4vw] pb-[1vw]">
         {spinning ? (
           <div
             style={{
@@ -135,11 +135,11 @@ const HomeProfile = () => {
               GetUserDetails();
               // Simulating network delay with setTimeout
               // setTimeout(async () => {
-                await UpdateProfile(values,setSpinning);
-                console.log(values, "valuesvalues");
-                toast.success("Updated Successfully");
-                setSpinning(false);
-                setEditEnable(false);
+              await UpdateProfile(values, setSpinning);
+              console.log(values, "valuesvalues");
+              toast.success("Updated Successfully");
+              setSpinning(false);
+              setEditEnable(false);
               // }, 2000); // Adjust timeout duration as needed
             } catch (error) {
               console.error("Error updating profile", error);
@@ -152,43 +152,45 @@ const HomeProfile = () => {
         >
           {({ isSubmitting, handleSubmit, values, handleChange }) => (
             <Form className="py-[1vw]" onSubmit={handleSubmit}>
-              <div className="grid grid-rows-2 gap-[1vw]">
+              <div className="grid md:grid-rows-2 md:gap-[1vw] ">
                 <div>
-                  <div className="grid grid-cols-2">
-                    <div className="text-[#1F487C] text-[1.5vw] font-semibold">
-                      Personal Details
-                    </div>
-                    <div className="pl-[22vw]">
-                      {!editenable && (
-                        <button
-                          type="button"
-                          onClick={handleEdit}
-                          className="bg-[#1F487C] text-white w-[5vw] h-[2vw] ml-[6vw] rounded-[0.5vw] text-[1.2vw]"
-                        >
-                          Edit
-                        </button>
-                      )}
-                      {editenable && (
-                        <div>
+                  <span className="">
+                    <div className="grid grid-cols-2 ">
+                      <div className="text-[#1F487C] text-[4vw] md:mb-[0vw] mb-[5vw] md:text-[1.5vw] font-semibold">
+                        Personal Details
+                      </div>
+                      <div className="pl-[22vw] md:block hidden">
+                        {!editenable && (
                           <button
                             type="button"
-                            onClick={() => setEditEnable(false)} // Use arrow function to pass the callback
-                            className="border border-[#1F487C] text-[#1F487C] w-[5vw] h-[2vw] rounded-[0.5vw] text-[1.2vw]"
+                            onClick={handleEdit}
+                            className="bg-[#1F487C] text-white w-[5vw] h-[2vw] ml-[6vw] rounded-[0.5vw] text-[1.2vw]"
                           >
-                            Cancel
+                            Edit
                           </button>
-                          <button
-                            type="submit"
-                            className="bg-[#1F487C] text-white ml-[1vw] w-[5vw] h-[2vw] rounded-[0.5vw] text-[1.2vw]"
-                          >
-                            Save
-                          </button>
-                        </div>
-                      )}
+                        )}
+                        {editenable && (
+                          <div>
+                            <button
+                              type="button"
+                              onClick={() => setEditEnable(false)} // Use arrow function to pass the callback
+                              className="border border-[#1F487C] text-[#1F487C] w-[5vw] h-[2vw] rounded-[0.5vw] text-[1.2vw]"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              type="submit"
+                              className="bg-[#1F487C] text-white ml-[1vw] w-[5vw] h-[2vw] rounded-[0.5vw] text-[1.2vw]"
+                            >
+                              Save
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  </span>
                   <div className="pt-[1vw]">
-                    <div className="grid grid-cols-2 pt-[1vw] py-[1vw] relative">
+                    <div className="grid md:grid-cols-2  grid-cols-1 gap-y-[6vw]  md:pt-[1vw] md:py-[1vw] relative">
                       <div className="">
                         <Field
                           type="text"
@@ -197,18 +199,30 @@ const HomeProfile = () => {
                           id="user_name"
                           className={`${
                             editenable ? `cursor-pointer` : "cursor-not-allowed"
-                          } block py-[0.5vw] px-2 w-[27vw] h-[3vw] text-[1vw] text-[#1F487C] bg-transparent border border-gray-400 rounded-[0.5vw] 
+                          } block py-[0.5vw] px-2 w-full  md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border border-gray-400 rounded-[1vw] md:rounded-[0.5vw] 
                         focus:outline-none focus:ring-0 focus:border-[#1F487C] peer`}
                           placeholder=" "
                           onChange={handleChange}
                         />
                         <label
                           htmlFor="user_name"
-                          className={`absolute font-bold text-[1.4vw] text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[0.1vw] left-[0.4vw] 
-                          origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 
-                          peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] peer-focus:text-[1vw] peer-focus:scale-75 peer-focus:-translate-y-[0.2vw] ${
-                            values.user_name ? "-translate-y-[0.2vw]" : ""
-                          }`}
+                          // className={`absolute text-[4vw] md:text-[1.4vw] font-bold text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[-2.5vw] md:top-[0vw] left-[3vw] md:left-[0.8vw] origin-0 bg-white px-[0.2vw] md:peer-focus:left-[0.6vw]  peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100  md:peer-placeholder-shown:translate-y-[2vw]
+                          //   peer-placeholder-shown:translate-y-[5vw]
+                          // md:peer-placeholder-shown:text-[1vw]
+                          //    peer-placeholder-shown:text-[3.7vw]
+                          // md:peer-focus:text-[1.1vw]
+                          //   peer-focus:text-[3.7vw]  peer-focus:scale-75 peer-focus:-translate-y-[0.2vw] ${
+                          //   values.user_name ? "-translate-y-[0.2vw]" : ""
+                          // }`}
+                          className={`absolute text-[4vw] md:text-[1.4vw] font-bold text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[-2.5vw] md:top-[0vw] left-[3vw] md:left-[0.8vw] origin-0 bg-white px-[0.2vw] peer-placeholder-shown:scale-100 md:peer-placeholder-shown:translate-y-[2vw]
+                            peer-placeholder-shown:translate-y-[4.5vw]
+                          md:peer-placeholder-shown:text-[1vw] 
+                          peer-placeholder-shown:text-[3.7vw]
+                          md:peer-focus:text-[1.1vw] 
+                          peer-focus:text-[3.7vw] 
+                          md:peer-focus:-translate-y-[.2vw]
+                          peer-focus:-translate-y-[0vw]
+                            ${values.user_name ? "-translate-y-[0.2vw]" : ""}`}
                         >
                           {" "}
                           Name<span className="text-red-500 ml-1">*</span>
@@ -216,7 +230,7 @@ const HomeProfile = () => {
                         <ErrorMessage
                           name="user_name"
                           component="div"
-                          className="text-red-500 text-[0.8vw] absolute top-[4vw]"
+                          className="text-red-500 md:text-[0.8vw] text-[2.1vw] absolute top-[10vw] md:top-[4vw]"
                         />
                       </div>
                       <div className="relative z-0 w-full">
@@ -228,19 +242,20 @@ const HomeProfile = () => {
                           disabled={!editenable}
                           className={`${
                             editenable ? `cursor-pointer` : "cursor-not-allowed"
-                          } block py-[0.5vw] px-2 w-[27vw] h-[3vw] text-[1vw] text-[#1F487C] bg-transparent border border-gray-400 rounded-[0.5vw] 
+                          } block py-[0.5vw] px-2 w-full  md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border border-gray-400 rounded-[1vw] md:rounded-[0.5vw]  
                         focus:outline-none focus:ring-0 focus:border-[#1f477c] peer`}
                           onChange={handleChange}
                         />
                         <label
                           htmlFor="date_of_birth"
-                          className={`absolute font-bold text-[1.4vw] text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[0.8vw] left-[0.4vw] 
+                          className={`absolute font-bold text-[4vw] md:text-[1.4vw] text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[0.8vw] md:left-[0.4vw]  left-[.1vw]
                           origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 
-                          peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] peer-focus:text-[1vw] peer-focus:scale-75 peer-focus:-translate-y-[2vw] 
+                          peer-placeholder-shown:translate-y-[0.4vw] md:peer-placeholder-shown:text-[1vw]
+                          peer-placeholder-shown:text-[3.7vw] md:peer-focus:text-[1vw] peer-focus:text-[3.7vw] peer-focus:scale-75 md:peer-focus:-translate-y-[2vw] peer-focus:-translate-y-[4vw]
                           ${
                             values.date_of_birth
-                              ? "-translate-y-[2vw]"
-                              : "-translate-y-[2vw]"
+                              ? "md:-translate-y-[2vw] -translate-y-[4vw]"
+                              : "md:-translate-y-[2vw] -translate-y-[4vw]"
                           }
                           `}
                         >
@@ -250,26 +265,37 @@ const HomeProfile = () => {
                         <ErrorMessage
                           name="date_of_birth"
                           component="div"
-                          className="text-red-500 text-[0.8vw] absolute top-[4vw]"
+                          className="text-red-500 md:text-[0.8vw] text-[2.1vw] absolute top-[10 vw] md:top-[3vw]"
                         />
                       </div>
                     </div>
 
-                    <div className="py-[1vw]">
-                      <span className="font-bold text-[1.1vw] text-[#1F487C]">
+                    <div className="md:py-[1vw] md:my-[0vw] my-[4vw]">
+                      <span className="font-bold text-[4vw] md:text-[1.1vw]  text-[#1F487C]">
                         Gender
                       </span>
                       <div
                         className={`${
                           editenable ? `cursor-pointer` : "cursor-not-allowed"
-                        } flex gap-x-[2vw]`}
+                        } flex justify-between md:justify-normal mt-[2.5vw] md:mt-[0vw]
+                         md:gap-x-[2vw]`}
                       >
                         <div
-                        // className={`
-                        // border-[0.1vw] border-slate-400 text-[#1F487C] text-[1vw] h-[3vw] w-[12.5vw] outline-none px-[1vw] rounded-[0.5vw] flex items-center justify-between`}
+                          className={`
+                        border-[0.1vw] border-slate-400 text-[#1F487C] md:rounded-[0.5vw] rounded-[1vw] md:text-[1.2vw] font-bold text-[3vw] md:h-[3vw] md:w-[12.5vw] h-[9vw] w-[40vw] outline-none px-[1vw]  flex items-center justify-between`}
                         >
-                          {/* <div className="order-first">Male</div> */}
-                          <button
+                          <label
+                            htmlFor="male"
+                            className={`h-full w-full flex justify-between items-center md:px-[0vw] px-[4vw] ${
+                              editenable
+                                ? `cursor-pointer`
+                                : "cursor-not-allowed"
+                            } `}
+                          >
+                            <div className="order-first font-semibold text-[4vw] md:text-[1.2vw]">
+                              Male
+                            </div>
+                            {/* <button
                             type="button"
                             disabled={!editenable}
                             className={`${
@@ -277,36 +303,36 @@ const HomeProfile = () => {
                                 ? `cursor-pointer`
                                 : "cursor-not-allowed"
                             } ${gender === "male" && "bg-[#1F487C] text-white"}
-                            rounded-[0.5vw] text-[1.2vw] h-[3vw] w-[12.5vw] text-[#1F487C] border-[0.1vw] border-slate-400`}
+                            md:rounded-[0.5vw] rounded-[1vw] md:text-[1.2vw] font-bold text-[3vw] md:h-[3vw] md:w-[12.5vw] h-[9vw] w-[40vw] text-[#1F487C] border-[0.1vw] border-slate-400`}
                             onClick={() => setGender("male")}
                           >
                             Male
-                          </button>
-                          {/* <button 
-                          type="button"
-                          className="">
-                             <Field
-                              disabled={!editenable}
-                              type="radio"
-                              name="gender"
-                              value="male"
-                              className={`${
-                                editenable
-                                  ? `cursor-pointer`
-                                  : "cursor-not-allowed"
-                              } `}
-                              onChange={(e) => {
-                                handleChange(e);
-                                setGender("male");
-                              }}
-                            /> 
-                          </button>  */}
+                          </button> */}
+                            <button type="button" className="">
+                              <Field
+                                id="male"
+                                disabled={!editenable}
+                                type="radio"
+                                name="gender"
+                                value="male"
+                                className={`${
+                                  editenable
+                                    ? `cursor-pointer`
+                                    : "cursor-not-allowed"
+                                } `}
+                                onChange={(e) => {
+                                  handleChange(e);
+                                  setGender("male");
+                                }}
+                              />
+                            </button>
+                          </label>
                         </div>
                         <div
-                        // className={`${gender === "female" && "bg-[#1F487C] text-white"} border-[0.1vw] border-slate-400 text-[#1F487C] text-[1vw] h-[3vw] w-[12.5vw] outline-none px-[1vw]
-                        // rounded-[0.5vw] flex items-center justify-between`}
+                          className={` border-[0.1vw] border-slate-400 text-[#1F487C] md:rounded-[0.5vw] rounded-[1vw] md:text-[1.2vw] font-bold text-[3vw] md:h-[3vw] md:w-[12.5vw] h-[9vw] w-[40vw] outline-none px-[1vw]
+                         flex items-center justify-between`}
                         >
-                          <button
+                          {/* <button
                             type="button"
                             disabled={!editenable}
                             className={`${
@@ -316,29 +342,41 @@ const HomeProfile = () => {
                             } ${
                               gender === "female" && "bg-[#1F487C] text-white"
                             }
-                             rounded-[0.5vw] text-[1.2vw] h-[3vw] w-[12.5vw] text-[#1F487C] border-[0.1vw] border-slate-400`}
+                             md:rounded-[0.5vw] rounded-[1vw] md:text-[1.2vw] font-bold text-[3vw] md:h-[3vw] md:w-[12.5vw] h-[9vw] w-[40vw] text-[#1F487C] border-[0.1vw] border-slate-400`}
                             onClick={() => setGender("female")}
                           >
                             Female
-                          </button>
-                          {/* <div className="order-first">Female</div> */}
-                          {/* <div className="order-last flex items-center">
-                            <Field
-                              disabled={!editenable}
-                              type="radio"
-                              name="gender"
-                              value="female"
-                              className={`${
-                                editenable
-                                  ? `cursor-pointer`
-                                  : "cursor-not-allowed"
-                              } h-[1vw] w-[1vw]`}
-                              onChange={(e) => {
-                                handleChange(e);
-                                setGender("female");
-                              }}
-                            />
-                          </div> */}
+                          </button> */}
+                          <label
+                            htmlFor="female"
+                            className={`h-full w-full flex justify-between items-center md:px-[0vw] px-[4vw] ${
+                              editenable
+                                ? `cursor-pointer`
+                                : "cursor-not-allowed"
+                            } `}
+                          >
+                            <div className="order-first font-semibold text-[4vw] md:text-[1.2vw]">
+                              Female
+                            </div>
+                            <button type="button" className="">
+                              <Field
+                                id="female"
+                                disabled={!editenable}
+                                type="radio"
+                                name="gender"
+                                value="female"
+                                className={`${
+                                  editenable
+                                    ? `cursor-pointer`
+                                    : "cursor-not-allowed"
+                                } `}
+                                onChange={(e) => {
+                                  handleChange(e);
+                                  setGender("female");
+                                }}
+                              />
+                            </button>
+                          </label>
                         </div>
                       </div>
                       <ErrorMessage
@@ -349,11 +387,11 @@ const HomeProfile = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative">
-                  <div className="text-[#1F487C] text-[1.5vw] pb-[1.5vw] font-semibold">
+                <div className="relative  ">
+                  <div className="text-[#1F487C] text-[4vw] md:text-[1.5vw] pb-[5vw] md:pb-[1.5vw] font-semibold">
                     Contact Details
                   </div>
-                  <div className="grid grid-cols-2 py-[1vw] gap-y-[2.5vw]">
+                  <div className="grid md:grid-cols-2 md:py-[1vw] md:gap-y-[2.5vw] mb-[2vw] md:mb-[0vw] grid-cols-1 gap-y-[6vw]">
                     <div className="relative z-0 w-full">
                       <Field
                         as="select"
@@ -362,8 +400,8 @@ const HomeProfile = () => {
                         id="state"
                         className={`${
                           editenable ? `cursor-pointer` : "cursor-not-allowed"
-                        } block py-[0.5vw] px-2 w-[27vw] h-[3vw] text-[1vw] text-[#1F487C] bg-transparent border 
-                        border-gray-400 rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer`}
+                        } block py-[0.5vw] px-2 w-full  md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border 
+                        border-gray-400 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer`}
                         onChange={handleChange}
                       >
                         <option
@@ -379,16 +417,16 @@ const HomeProfile = () => {
                       </Field>
                       <label
                         htmlFor="residence"
-                        className={`absolute text-[1.4vw] font-bold text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[0.8vw] left-[0vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] peer-focus:text-[1vw] peer-focus:scale-75 peer-focus:-translate-y-[2vw] ${
+                        className={`absolute text-[4vw] md:text-[1.4vw] font-bold text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 md:top-[0.8vw] top-[-.1vw] md:left-[0vw] left-[-.4vw]  origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[-3vw] md:peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[1vw] md:peer-focus:text-[1vw] peer-focus:text-[3.7vw] peer-focus:scale-75 peer-focus:-translate-y-[2vw] ${
                           values.state
-                            ? "-translate-y-[2vw]"
-                            : "-translate-y-[2vw]"
+                            ? "md:-translate-y-[2vw] -translate-y-[4vw] "
+                            : "md:-translate-y-[2vw] -translate-y-[2.5vw]"
                         }`}
                       >
                         State of Residence
                         <span className="text-red-500 ml-1">*</span>
                       </label>
-                      <div className="absolute top-[3vw] left-[1.5vw] text-[0.8vw] text-[#1F487C] opacity-60">
+                      <div className="absolute top-[10vw] md:top-[3vw] md:left-[1.5vw] md:text-[0.8vw] text-[2.5vw] text-[#1F487C] opacity-60">
                         Required for GST Tax Invoicing
                       </div>
                     </div>
@@ -399,7 +437,7 @@ const HomeProfile = () => {
                         id="email_id"
                         className={`${
                           editenable ? `cursor-pointer` : "cursor-not-allowed"
-                        } block py-[0.5vw] px-2 w-[27vw] h-[3vw] text-[1vw] text-[#1F487C] bg-transparent border border-gray-400 rounded-[0.5vw]
+                        } block py-[0.5vw] px-2 w-full  md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border border-gray-400 rounded-[1vw] md:rounded-[0.5vw]
                          focus:outline-none focus:ring-0 focus:border-[#1F487C] peer`}
                         autocomplete="off"
                         onChange={handleChange}
@@ -407,8 +445,10 @@ const HomeProfile = () => {
                       />
                       <label
                         htmlFor="email_id"
-                        className={`absolute text-[1.4vw] font-bold text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[0.8vw] left-[0.4vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[1vw] peer-focus:text-[1vw] peer-focus:scale-75 peer-focus:-translate-y-[2vw] ${
-                          values.email_id ? "-translate-y-[2vw]" : ""
+                        className={`absolute text-[4vw] md:text-[1.4vw] font-bold text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 md:top-[1vw] top-[2vw] left-[2.5vw] md:left-[0.6vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[2.5vw]  md:peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[1vw] md:peer-focus:text-[1vw] peer-focus:text-[3.7vw] peer-focus:scale-75 md:peer-focus:-translate-y-[2vw] peer-focus:-translate-y-[5vw] ${
+                          values.email_id
+                            ? "md:-translate-y-[2vw] -translate-y-[5vw] "
+                            : ""
                         }`}
                       >
                         Email<span className="text-red-500 ml-1">*</span>
@@ -416,18 +456,18 @@ const HomeProfile = () => {
                       <ErrorMessage
                         name="email_id"
                         component="div"
-                        className="text-red-500 text-[0.8vw] absolute top-[2.8vw]"
+                        className="text-red-500 md:text-[0.8vw] text-[2.1vw] absolute top-[10vw] md:top-[2.8vw]"
                       />
                     </div>
-                    <div className="relative z-0 w-full pt-[1.5vw]">
+                    <div className="relative z-0 w-full md:pt-[1.5vw] ">
                       <Field
                         type="text"
                         name="mobile_number"
                         id="mobile_number"
                         className={`${
                           editenable ? `cursor-pointer` : "cursor-not-allowed"
-                        } block py-[0.5vw] px-2 w-[27vw] h-[3vw] text-[1vw] text-[#1F487C] bg-transparent border border-gray-400 
-                        rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer`}
+                        } block py-[0.5vw] px-2 w-full  md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border border-gray-400 
+                       rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer`}
                         autocomplete="off"
                         onChange={handleChange}
                         disabled={!editenable}
@@ -435,8 +475,10 @@ const HomeProfile = () => {
                       />
                       <label
                         htmlFor="mobile_number"
-                        className={`absolute text-[1.4vw] font-bold text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[2.3vw] left-[0vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[1vw] peer-focus:text-[1vw] peer-focus:scale-75 peer-focus:-translate-y-[2vw] ${
-                          values.mobile_number ? "-translate-y-[2vw]" : ""
+                        className={`absolute text-[4vw] md:text-[1.4vw] font-bold text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 md:top-[2.3vw] top-[2vw] md:left-[0vw] left-[-.4vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] md:peer-focus:top-[2.5vw] peer-focus:top-[0vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[1vw] md:peer-focus:text-[1vw]  peer-focus:text-[3.7vw] peer-focus:scale-75 md:peer-focus:-translate-y-[2vw] peer-focus:-translate-y-[4vw] ${
+                          values.mobile_number
+                            ? "md:-translate-y-[2vw] -translate-y-[5vw] "
+                            : ""
                         }`}
                       >
                         Mobile Number
@@ -445,15 +487,15 @@ const HomeProfile = () => {
                       <ErrorMessage
                         name="mobile_number"
                         component="div"
-                        className="text-red-500 text-[0.8vw] absolute top-[2.8vw]"
+                        className="text-red-500 md:text-[0.8vw] text-[2.1vw] absolute top-[10vw]   md:top-[5vw]"
                       />
                     </div>
-                    <div className="relative z-0 w-full pt-[1.5vw]">
-                    <Field
+                    <div className="relative z-0 w-full md:pt-[1.5vw] pt-[0vw]">
+                      <Field
                         as="select"
                         name="occupation"
                         id="occupation"
-                        className="block py-[0.5vw] px-2 w-[27vw] h-[3vw] text-[1vw] text-[#1F487C] bg-transparent border border-gray-300 rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
+                        className="block py-[0.5vw] px-2 w-full  md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border border-gray-400 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
                         autocomplete="off"
                         onChange={handleChange}
                         disabled={!editenable}
@@ -461,12 +503,18 @@ const HomeProfile = () => {
                       >
                         <option value="Business">Business</option>
                         <option value="GeneralPublic">General Public</option>
-                        <option value="PhysicallyChallenged">Physically Challenged</option>
-                        <option value="PilgrimTravelers">Pilgrim Traveler</option>
+                        <option value="PhysicallyChallenged">
+                          Physically Challenged
+                        </option>
+                        <option value="PilgrimTravelers">
+                          Pilgrim Traveler
+                        </option>
                         <option value="SeniorCitizens">Senior Citizen</option>
                         <option value="Students">Student</option>
                         <option value="Tourist">Tourist</option>
-                        <option value="CorporateTravelers">Corporate Traveler</option>
+                        <option value="CorporateTravelers">
+                          Corporate Traveler
+                        </option>
                         {/* <option
                           value=""
                           label="Occupation"
@@ -502,13 +550,11 @@ const HomeProfile = () => {
                           label="Tourist"
                           className="text-gray-400 text-[1.1vw]"
                         /> */}
-                        </Field>
+                      </Field>
                       <label
                         htmlFor="occupation"
-                        className={`absolute text-[1.2vw] text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[1vw] left-[0vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] peer-focus:text-[1vw] peer-focus:scale-75 peer-focus:-translate-y-[2vw] ${
-                          values.occupation
-                            ? "-translate-y-[2vw]"
-                            : "-translate-y-[2vw]"
+                        className={`absolute text-[4vw] md:text-[1.4vw] font-semibold text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 md:top-[2.5vw] top-[-.5vw] md:left-[0vw] left-[1.5vw] origin-0 bg-white px-[0.2vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[2vw] peer-placeholder-shown:text-[vw]  md:peer-focus:text-[1vw] peer-focus:text-[3.7vw] peer-focus:scale-75 md:peer-focus:-translate-y-[2vw] peer-focus:-translate-y-[2vw] ${
+                          values.occupation ? "-translate-y-[2vw]" : ""
                         }`}
                       >
                         Occupation
@@ -517,9 +563,39 @@ const HomeProfile = () => {
                       <ErrorMessage
                         name="occupation"
                         component="div"
-                        className="text-red-500 text-[0.8vw] absolute top-[2.8vw]"
+                        className="text-red-500 md:text-[0.8vw] text-[2.1vw] absolute top-[10vw] md:top-[2.8vw]"
                       />
                     </div>
+                  </div>
+                  <div className=" md:hidden block mt-[8vw] mb-[4vw]">
+                    {!editenable && (
+                      <div className="flex justify-center">
+                        <button
+                          type="button"
+                          onClick={handleEdit}
+                          className="bg-[#1F487C] items-center text-center mt-[2vw] text-white w-[40vw] h-[9vw]  md:w-[5vw] md:h-[2vw]  rounded-[1vw]  md:rounded-[0.5vw] text-[4vw] font-bold md:text-[1.2vw]"
+                        >
+                          Edit
+                        </button>
+                      </div>
+                    )}
+                    {editenable && (
+                      <div className="md:mt-[1vw] mt-[3vw] flex justify-between">
+                        <button
+                          type="button"
+                          onClick={() => setEditEnable(false)} // Use arrow function to pass the callback
+                          className="border border-[#1F487C] text-[#1F487C]  w-[40vw] h-[9vw] md:w-[5vw] md:h-[2vw] rounded-[1vw] md:rounded-[0.5vw] text-[4vw] font-bold md:text-[1.2vw]"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          className="bg-[#1F487C] text-white md:ml-[1vw] ml-[3vw] w-[40vw] h-[9vw] md:w-[5vw] md:h-[2vw] rounded-[1vw] md:rounded-[0.5vw] text-[4vw] font-bold md:text-[1.2vw]"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

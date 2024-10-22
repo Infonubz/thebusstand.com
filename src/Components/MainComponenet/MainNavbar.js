@@ -824,16 +824,16 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
     setLoginIsOpen(false);
   };
   console.log(LoginUser_Name === "null", "gggggggg");
-
+  const totalbuses = useSelector((state) => state.card_detail);
   return (
     <>
       <div className="fixed w-full z-1" style={{ zIndex: 1 }}>
-       <div className="md:block hidden">
-       <CommonMainNavbar />
-       </div>
-        <div className="h-[12vw] md:h-[4.7vw] w-full bg-[#1F487C] md:-z-10">
+        <div className="md:block hidden">
+          <CommonMainNavbar />
+        </div>
+        <div className="h-[12vw] md:h-[5vw] w-full bg-[#1F487C] md:-z-10">
           <div className="md:h-[0.3vw] md:block hidden w-full bg-[#E5FFF1] opacity-90"></div>
-          <div className="grid md:hidden block w-full  h-[12vw]">
+          {/* <div className="grid md:hidden block w-full  h-[12vw]">
             <div className="items-center flex justify-around text-white">
               <div
                 onClick={() => {
@@ -852,7 +852,6 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
 
                 <div className="">{toValue}</div>
               </div>
-              {/* <div className="pr-[2vw]"><input type="date"/></div> */}
               <div className="pr-[2vw]">
                 <button
                   onClick={showDrawer}
@@ -870,23 +869,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                 </button>
               </div>
             </div>
-            {/* <Drawer
-             placement={"bottom"}
-             closable={false}
-             onClose={onClosedate}
-             open={openDate}
-             key={"right"}
-             width={"100%"}
-             className="custom-drawer">
-                <div style={{ padding: 16 }}>
-          <DatePicker
-            style={{ width: '100%' }}
-            onChange={handleDateChange}
-            value={selectedDate ? moment(selectedDate, 'YYYY-MM-DD') : null}
-          />
-        </div>
-            
-          </Drawer> */}
+      
 
             <Drawer
               title="Select Date"
@@ -910,8 +893,64 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                 />
               </div>
             </Drawer>
+          </div> */}
+          <div className="flex px-[2vw] items-center justify-between h-full md:hidden block">
+            <div className="flex flex-col ">
+              <div className="flex gap-x-[2vw] items-center">
+                <div className="text-[4.5vw] text-white font-semibold">
+                  {fromValue}
+                </div>
+                <div className="text-white">
+                  <FaArrowRight />
+                </div>
+                <div className="text-[5vw] text-white font-semibold">
+                  {toValue}
+                </div>
+              </div>
+              <div className="mt-[-2vw]">
+                <label className="text-gray-300 text-[3vw]">{`Showing ${totalbuses?.length} Buses on this route`}</label>
+              </div>
+            </div>
+            <div>
+              <button
+                onClick={showDrawer}
+                className="px-[4vw] h-[7vw] flex items-center justify-center bg-white text-[#1F487C] rounded-full shadow-lg"
+              >
+                <div className="text-center text-[3.5vw] flex font-extrabold">
+                  {/* <span className="text-[4.5vw]">
+                    <MdKeyboardArrowLeft />
+                  </span>{" "} */}
+                  <span>{mobileformattedDate}</span>{" "}
+                  {/* <span className="text-[4.5vw]">
+                    <MdKeyboardArrowRight />
+                  </span> */}
+                </div>
+              </button>
+              <Drawer
+                title="Select Date"
+                placement="bottom"
+                closable={false}
+                onClose={onClosee}
+                open={openDatee}
+                height="50%" // Adjust height as needed
+                bodyStyle={{ padding: 0 }} // Removes extra padding
+                className="flex justify-center md:hidden"
+              >
+                <div className="flex items-center justify-center">
+                  <Calendar
+                    onChange={(date) => {
+                      setSelectedDatee(date);
+                      setFromDate(date);
+                      onClosee(); // Close drawer on date select
+                    }}
+                    value={selectedDatee}
+                    minDate={new Date()}
+                    style={{ width: "100%" }}
+                  />
+                </div>
+              </Drawer>
+            </div>
           </div>
-
           <img
             src={newbus1}
             className="absolute md:block hidden top-[1.7vw] h-[8.1vw] w-[21.75vw]   left-[-3vw]"

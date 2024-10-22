@@ -1,29 +1,28 @@
 import React, { useEffect } from "react";
-import Footer from "../Home/Footer";
+import Footer from "./Footer";
 import TermsIndex from "../Terms&Conditions/Index";
 import { useDispatch, useSelector } from "react-redux";
 import { GetFooterTabs } from "../../Api/FooterTabs/FooterTabs";
 //import { IoIosArrowRoundBack } from "react-icons/io";
 //import { useNavigate } from "react-router";
-import BG_IMAGE from '../../assets/BG Image.png'
+import BG_IMAGE from "../../assets/BG Image.png";
 import HomeHearder from "../MainComponenet/HomeHearder";
 import homesky from "../../assets/BackgroundSky1.png";
 
-
 const UserAgreement = () => {
-
+  
   const dispatch = useDispatch();
-  const agreement = useSelector((state) => state?.tbs_info || [])
-  console.log(agreement.user_agreement, 'consoleconsole');
+  const agreement = useSelector((state) => state?.tbs_info || []);
+  const user_agreement = agreement?.user_agreement;
 
   useEffect(() => {
     GetFooterTabs(dispatch);
   }, [dispatch]);
+
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-  const user_agreement = agreement?.user_agreement
-  console.log(user_agreement, 'user_agreement');
+    window.scrollTo(0, 0);
+  }, []);
+
 
   return (
     <>
@@ -45,28 +44,33 @@ const UserAgreement = () => {
           className="relative h-[30vw] w-[100%]"
           style={{ backgroundImage: `url(${homesky})`, zIndex: 0 }}
         >
-          <label className="text-white text-[8vw] font-bold absolute top-[13vw] left-[21vw] opacity-15">User Agreement</label>
-          <label className="text-white text-[5vw] font-bold absolute top-[16vw] left-[32vw]">User Agreement</label>
+          <label className="text-white text-[8vw] font-bold absolute top-[13vw] left-[21vw] opacity-15">
+            User Agreement
+          </label>
+          <label className="text-white text-[5vw] font-bold absolute top-[16vw] left-[32vw]">
+            User Agreement
+          </label>
           <div className="cloudhome"></div>
-
         </div>
         <div className="relative min-h-screen bg-[#E5FFF1] z-10">
           <img src={BG_IMAGE} className="w-full h-auto" alt="Background" />
 
           <div className="absolute top-[1vw] pr-[3vw]">
-            <p className="text-[#1F487C] text-[5vw] font-bold px-[2vw]">User Agreement</p>
+            <p className="text-[#1F487C] text-[5vw] font-bold px-[2vw]">
+              User Agreement
+            </p>
             <div className=" Legal-Information-Mobile overflow-y-auto max-h-[75vh] px-[3vw] pt-[5vw]">
               {user_agreement?.split("\r\n")?.map((line, index) => (
-                <p key={index} className="text-[#1F487C] text-[3vw] pb-[0.75vw]">
+                <p
+                  key={index}
+                  className="text-[#1F487C] text-[3vw] pb-[0.75vw]"
+                >
                   {line}
                 </p>
               ))}
             </div>
           </div>
         </div>
-
-
-
       </div>
     </>
   );

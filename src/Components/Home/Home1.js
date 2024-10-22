@@ -106,6 +106,7 @@ import { RiLogoutCircleLine } from "react-icons/ri";
 // import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
 import ColorCodes from "../Common/ColorCodes";
+import LocationPermission from "./LocationPermission";
 
 const validationSchema = Yup.object().shape({
   occupation: Yup.string()
@@ -1045,6 +1046,7 @@ export default function Home1() {
       </div> */}
       <CommonMainNavbar />
       {/* </div> */}
+      <LocationPermission/>
       <div className="hero relative md:block hidden">
         <p className="absolute top-[3vw] left-[12vw] text-[1.7vw] tracking-wide font-bold">
           <span className="text-white">
@@ -1548,7 +1550,7 @@ export default function Home1() {
       {/* --------------------------------------------------------MOBILE---------------------------------------------------------------------------- */}
       {/* mobile view */}
       <div className="flex justify-center">
-        <div className="block md:hidden absolute h-[100vw] border-[0.1vw] border-t-gray-400  shadow-lg shadow-gray-400 top-[20vw] rounded-[2vw]   w-[90%]">
+        <div className="block md:hidden absolute h-[100vw]  border-[0.1vw] border-t-gray-400  shadow-lg shadow-gray-400 top-[15vw] rounded-[2vw]   w-[90%]">
           <div className="grid grid-rows-5 w-full h-full p-[5vw] ">
             <div className="row-span-1 relative">
               <div

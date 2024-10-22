@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import shape from "../../assets/shape.png";
+//import shape from "../../assets/shape.png";
 import double from "../../assets/doubl.png";
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -7,9 +7,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetFeedbacks } from "../../Api/MyAccounts/RatingFeedBack.js";
 import { Popover } from "antd";
 import { capitalizeFirstLetter } from "../Common/Captalization";
-import ColorCodes from "../Common/ColorCodes";
+//import ColorCodes from "../Common/ColorCodes";
+import { useNavigate } from "react-router";
 
 export default function Rating() {
+
+
+  const [startIndex, setStartIndex] = useState(0);
+  const navigation = useNavigate();
+  const dispatch = useDispatch();
+  const ratingdata = useSelector((state) => state.feed_back);
+  const colors = useSelector((state) => state.themecolors[0]);
+  // const colors=ColorCodes()
+
   // const ratingdata = [
   //   {
   //     rating: "4.5",
@@ -50,37 +60,42 @@ export default function Rating() {
 
   // ];
 
-  const [startIndex, setStartIndex] = useState(0);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    GetFeedbacks(dispatch);
-  }, [dispatch]);
-
-  const ratingdata = useSelector((state) => state.feed_back);
-
   const prevSlide = () => {
     const newIndex = Math.max(0, startIndex - 1);
     setStartIndex(newIndex);
   };
 
   const nextSlide = () => {
-    const newIndex = Math.min(startIndex + 1, ratingdata.length - 4);
+    const newIndex = Math.min(startIndex + 1, ratingdata?.length - 4);
     setStartIndex(newIndex);
   };
-  console.log(startIndex, "startIndex");
-  // const colors=ColorCodes()
 
-  const colors = useSelector((state) => state.themecolors[0]);
+
+  useEffect(() => {
+    GetFeedbacks(dispatch);
+  }, [dispatch]);
+
+
+  console.log(startIndex, "startIndex");
+
 
   return (
     <div className="px-[5vw] py-[1vw] ">
-      <p
-        className={`text-[3.2vw] my-[2vw] md:my-0  md:text-[1.6vw]  text-[${colors.primary}] font-bold pt-[1vw] px-[2vw] pb-[1vw]`}
-      >
-        Here’s what a few of our customers have to say about us
-      </p>
+      <div className="flex justify-between items-center">
+        <p
+          className={`text-[3.2vw] my-[2vw] md:my-0  md:text-[1.6vw]  text-[${colors.primary}] font-bold pt-[1vw] px-[2vw] pb-[1vw]`}
+        >
+          Here’s what a few of our customers have to say about us
+        </p>
+        <div>
+          <button
+            className="text-[2.5vw] text-[#1F487C] md:border-[0.1vw] md:border-[#AAAAAA] md:px-[1.5vw] md:py-[0.2vw] md:rounded-full md:text-[1vw] md:bg-white md:shadow-lg"
+            onClick={() => navigation("/CustomerRatings")}
+          >
+            View all
+          </button>
+        </div>
+      </div>
       {/* DesktopView */}
       <div className="pl-[2vw]  py-[1vw] md:block hidden ">
         <div className="grid grid-cols-4 w-full gap-[1vw]  h-[10%] relative ">
@@ -157,22 +172,26 @@ export default function Rating() {
               </div>
             </div>
           ))}
-          <div className="absolute left-[-4vw] top-[50%]">
-            <button
-              className="cursor-pointer  p-2 rounded-full "
-              onClick={prevSlide}
-              style={{ zIndex: -10 }}
-            >
-              <IoIosArrowBack size={"2vw"} />
-            </button>
+         <div className="absolute left-[-4vw] top-[50%]">
+            {startIndex > 0 && ratingdata?.length > 3 && (
+              <button
+                className="cursor-pointer  p-2 rounded-full "
+                onClick={prevSlide}
+                style={{ zIndex: -10 }}
+              >
+                <IoIosArrowBack size={"2vw"} />
+              </button>
+            )}
           </div>
           <div className="absolute right-[-4vw] top-[50%]">
-            <button
-              className="cursor-pointer  p-2 rounded-full "
-              onClick={nextSlide}
-            >
-              <IoIosArrowForward size={"2vw"} color={`${colors.primary}`} />
-            </button>
+            {ratingdata?.length > 4 && startIndex < ratingdata?.length - 5 && (
+              <button
+                className="cursor-pointer  p-2 rounded-full "
+                onClick={nextSlide}
+              >
+                <IoIosArrowForward size={"2vw"} color={`${colors.primary}`} />
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -187,19 +206,20 @@ export default function Rating() {
                 <div className=" rounded-[.5vw] h-[25vw] w-full bg-[#f5f6f7] shadow-lg  ">
                   {/* <img src={shape} className="w-[60vw] " /> */}
                   <img
+                  alt="double"
                     src={double}
                     className="absolute left-[2vw] top-[2vw] w-[5vw] h-[5vw]"
                   />
                   <div className="absolute right-[3vw] top-[2vw]">
                     <div
                       className={`w-[10vw] h-[2.5vh] ${
-                        item.rating == "5"
+                        item.rating === "5"
                           ? "bg-[#61B00F]"
-                          : item.rating == "4"
+                          : item.rating === "4"
                           ? "bg-[#61B00F]"
-                          : item.rating == "3"
+                          : item.rating === "3"
                           ? "bg-[#FF910E]"
-                          : item.rating == "2"
+                          : item.rating === "2"
                           ? "bg-[#FF910E]"
                           : "bg-[#EA222F]"
                       } flex space-x-[0.1vw] justify-center items-center rounded-[0.2vw]`}

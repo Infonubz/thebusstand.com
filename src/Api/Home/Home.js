@@ -4,6 +4,7 @@ import {
   ADS_LIST,
   FAQS,
   FOOTER,
+  MOB_ADS_LIST,
   PDP,
   PROFILE_DATA,
   PROMOTION_LIST,
@@ -55,7 +56,7 @@ export const GetFooter = async (dispatch, id) => {
 export const GetAds = async (dispatch, id) => {
   try {
     const response = await axios.get(
-      `${"http://192.168.90.47:4000/api"}/Active-ads`
+      `http://192.168.90.47:4000/api/Active-ads`
     );
     dispatch({ type: ADS_LIST, payload: response.data });
     console.log(response.data, "footerresponse");
@@ -68,7 +69,7 @@ export const GetAds = async (dispatch, id) => {
 export const GetPromotion = async (dispatch, id) => {
   try {
     const response = await axios.get(
-      `${"http://192.168.90.47:4000/api"}/promo-status/2`
+      `http://192.168.90.47:4000/api/getLivePromotions`
     );
     dispatch({ type: PROMOTION_LIST, payload: response.data });
     console.log(response.data, "footerresponse");
@@ -94,34 +95,46 @@ export const GetTopBusRoutes = async (dispatch, id) => {
     // return null;
   }
 };
-export const sendAppLink = async (dispatch, values) =>{
-
-  const payload ={
-    email_id : values.email,
+export const sendAppLink = async (dispatch, values) => {
+  const payload = {
+    email_id: values.email,
     //mobile_number : values?.mobile,
-    android_link : "https://play.google.com/store/apps/details?id=com.whatsapp&hl=en_IN&pli=1",
-    iphone_link : "https://apps.apple.com/us/app/whatsapp-messenger/id310633997"
-  }
+    android_link:
+      "https://play.google.com/store/apps/details?id=com.whatsapp&hl=en_IN&pli=1",
+    iphone_link: "https://apps.apple.com/us/app/whatsapp-messenger/id310633997",
+  };
 
   const url = `${apiUrl}/share-link`;
   const method = "post";
   console.log(payload, "payload");
-  try{
-   const response = await api({
-    method,
-    url,
-    data: payload,
-    headers: {
-      "Content-Type": "application/json",
-    },
-   })
-   dispatch({ type:SEND_APP_LINK, payload: response.data });
-   console.log("App Link", response);
-   return response.data;
-  }catch(error){
+  try {
+    const response = await api({
+      method,
+      url,
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    dispatch({ type: SEND_APP_LINK, payload: response.data });
+    console.log("App Link", response);
+    return response.data;
+  } catch (error) {
     handleError(error);
   }
-}
+};
+export const GetMobAds = async (dispatch, id) => {
+  try {
+    const response = await axios.get(
+      `http://192.168.90.47:4000/api/mobads-all`
+    );
+    dispatch({ type: MOB_ADS_LIST, payload: response.data });
+    console.log(response.data, "footerresponse");
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
 const handleError = (error) => {
   console.error("Error details:", error);
   let errorMessage = "An error occurred";

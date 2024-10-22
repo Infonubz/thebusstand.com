@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import { SEND_OTP, VERIFY_OTP } from "../../Store/type";
-import { useNavigation } from "react-router";
+import { useNavigate, useNavigation } from "react-router";
 
 const api = axios.create({
   headers: {
@@ -96,16 +96,16 @@ export const SendOTPassword = async (dispatch, values, Email_Id) => {
   }
 };
 
-export const SendPassengerName = async (dispatch, values) => {
+export const SendPassengerName = async (dispatch, values, setLoginIsOpen) => {
   const payload = {
     user_name: values.name,
     // email_id: sessionStorage.getItem("email_id"),
     mobile_number: values.mobile,
     occupation: values.occupation,
     occupation_id:
-    values.occupation === "Business"?
-    1 :
-      values.occupation === "GeneralPublic"
+      values.occupation === "Business"
+        ? 1
+        : values.occupation === "GeneralPublic"
         ? 2
         : values.occupation === "PhysicallyChallenged"
         ? 3
@@ -118,7 +118,6 @@ export const SendPassengerName = async (dispatch, values) => {
         : values.occupation === "Tourist"
         ? 7
         : 8,
-
   };
   console.log(payload.email_id, "verificationforotp");
   const user_id = sessionStorage.getItem("user_id");
@@ -133,14 +132,16 @@ export const SendPassengerName = async (dispatch, values) => {
         "Content-Type": "application/json",
       },
     });
-    toast.success(response?.data?.message);
-    // window.location.reload();
     GetUserDetails();
+    setLoginIsOpen(false);
+    toast.success(response?.data?.message);
     console.log(response, "OTP_VERIFICATION");
     return response.data;
   } catch (error) {
     handleError(error);
-    return null;
+    toast.error(error.response.data.message);
+    console.log(error.response.data.message);
+    return error.response.data.message;
   }
 };
 

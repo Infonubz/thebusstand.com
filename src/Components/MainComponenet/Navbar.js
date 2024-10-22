@@ -110,7 +110,7 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
   return (
     <>
       <div
-        className="bg-[#E5FFF1] justify-between   py-[0.3vw] h-full  flex"
+        className="bg-[#E5FFF1] justify-between  mt-[0.2vw] py-[0.3vw] h-full  flex "
         // style={{
         //   zIndex: 1,
         // }}

@@ -7,22 +7,21 @@ import { IoTicketOutline } from "react-icons/io5";
 import { MdOutlineLight } from "react-icons/md";
 import { GiWaterBottle } from "react-icons/gi";
 import { MdMyLocation } from "react-icons/md";
+import { capitalizeFirstLetter } from "../Common/Captalization";
 //import { useSelector } from "react-redux";
 
-const capitalizeFirstLetter = (string) => {
-  return string
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-};
-
 const LiveTracking = ({
-  trackingCount,
-  setTrackingCount,
+  //trackingCount,
+  //setTrackingCount,
   amenities,
   busType,
-  bus_type_status,
+  //bus_type_status,
 }) => {
+
+  const hasLiveBusTracking = amenities.includes("Live Bus Tracking");
+  const filteredAmenities = amenities.filter((amenity) => amenity !== "Live Bus Tracking");
+  const sortedAmenities = hasLiveBusTracking ? ["Live Bus Tracking", ...filteredAmenities] : filteredAmenities;
+
   const amenityIcons = {
     Blankets: (
       <BiSolidBlanket
@@ -114,18 +113,21 @@ const LiveTracking = ({
     Blankets: (
       <BiSolidBlanket
         color={busType === "luxury" ? "#393939" : "#1F487C"}
-        size="2vw"
+        size="4.2vw"
       />
     ),
     "Charging Point": (
-      <BsPlug color={busType === "luxury" ? "#393939" : "#1F487C"} size="2vw" />
+      <BsPlug
+        color={busType === "luxury" ? "#393939" : "#1F487C"}
+        size="4.2vw"
+      />
     ),
     "Emergency exit": (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={busType === "luxury" ? "#393939" : "#1F487C"}
-        width="2.5vw"
-        height="2.5vw"
+        width="4.2vw"
+        height="4.2vw"
         viewBox="0 0 24 24"
       >
         <path
@@ -137,48 +139,51 @@ const LiveTracking = ({
     "Live Bus Tracking": (
       <MdMyLocation
         color={busType === "luxury" ? "#393939" : "#1F487C"}
-        size="2vw"
+        size="4.2vw"
       />
     ),
     Pillow: (
       <BiSolidBlanket
         color={busType === "luxury" ? "#393939" : "#1F487C"}
-        size="2vw"
+        size="4.2vw"
       />
     ),
     "Reading Light": (
       <MdOutlineLight
         color={busType === "luxury" ? "#393939" : "#1F487C"}
-        size="2vw"
+        size="4.2vw"
       />
     ),
     "Water Bottle": (
       <GiWaterBottle
         color={busType === "luxury" ? "#393939" : "#1F487C"}
-        size="2vw"
+        size="4.2vw"
       />
     ),
     "CC Camera": (
-      <BiCctv color={busType === "luxury" ? "#393939" : "#1F487C"} size="2vw" />
+      <BiCctv
+        color={busType === "luxury" ? "#393939" : "#1F487C"}
+        size="4.2vw"
+      />
     ),
     "First Aid Box": (
       <FaFirstAid
         color={busType === "luxury" ? "#393939" : "#1F487C"}
-        size="2vw"
+        size="4.2vw"
       />
     ),
     "M Ticket": (
       <IoTicketOutline
         color={busType === "luxury" ? "#393939" : "#1F487C"}
-        size="2vw"
+        size="4.2vw"
       />
     ),
     BedSheet: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         color={busType === "luxury" ? "#393939" : "#1F487C"}
-        width="2.5vw"
-        height="2.5vw"
+        width="4.2vw"
+        height="4.2vw"
         viewBox="0 0 24 24"
       >
         <path
@@ -188,23 +193,18 @@ const LiveTracking = ({
       </svg>
     ),
     "Mobile Charging Point": (
-      <BsPlug color={busType === "luxury" ? "#393939" : "#1F487C"} size="2vw" />
+      <BsPlug
+        color={busType === "luxury" ? "#393939" : "#1F487C"}
+        size="4.2vw"
+      />
     ),
     Wifi: (
       <PiWifiMedium
         color={busType === "luxury" ? "#393939" : "#1F487C"}
-        size="2vw"
+        size="4.2vw"
       />
     ),
   };
-
-  const hasLiveBusTracking = amenities.includes("Live Bus Tracking");
-  const filteredAmenities = amenities.filter(
-    (amenity) => amenity !== "Live Bus Tracking"
-  );
-  const sortedAmenities = hasLiveBusTracking
-    ? ["Live Bus Tracking", ...filteredAmenities]
-    : filteredAmenities;
 
   // useEffect(() => {
   //     const numberOfTrackingItems = sortedAmenities.length;
@@ -216,7 +216,7 @@ const LiveTracking = ({
       <div
         className={`${
           busType === "luxury" ? "bg-[#FFEEC9]" : "bg-[#EEEDED]"
-        } w-full px-[1vw] md:block hidde`}
+        } w-full px-[1vw] md:block hidden`}
       >
         <div className="w-full grid grid-flow-col grid-rows-3 gap-x-[2vw] gap-y-[1vw] py-[1.5vw] overflow-x-auto overflow-y-hidden">
           {sortedAmenities.map((amenity, idx) => (
@@ -238,15 +238,19 @@ const LiveTracking = ({
           ))}
         </div>
       </div>
-      <div className="bg-[#F6F6F6] w-full px-[1vw] md:hidden block">
-        <div className="w-full grid grid-flow-col grid-rows-3 gap-[2vw] py-[1.5vw] overflow-x-auto overflow-y-hidden">
+      <div
+        className={`${
+          busType === "luxury" ? "bg-[#FFEEC9]" : "bg-[#EEEDED]"
+        }  w-full px-[1vw] md:hidden block`}
+      >
+        <div className="w-full grid grid-flow-col grid-rows-5 gap-[2vw] py-[1.5vw] overflow-x-auto overflow-y-hidden">
           {sortedAmenities.map((amenity, idx) => (
             <div key={idx} className="flex items-center gap-[2vw]">
               {amenityIconsMobile[amenity] || <span>Icon not found</span>}
               <p
                 className={`${
                   busType === "luxury" ? "text-[#393939]" : "text-[#1F487C]"
-                } text-[2vw]`}
+                } text-[3.2vw]`}
               >
                 {capitalizeFirstLetter(amenity)}
               </p>

@@ -26,6 +26,7 @@ import CommonMainNavbar from "../Common/CommonMainNavbar";
 import Footer from "./Footer";
 import ColorCodes from "../Common/ColorCodes";
 import { useSelector } from "react-redux";
+import Footer1 from "../Footer/Footer";
 
 const BusPartners = () => {
   const busdetails = [
@@ -82,16 +83,16 @@ const BusPartners = () => {
   return (
     <>
       <div
-        className={`bg-[${colors.background}] bg-[${colors.background}] min-h-screen max-h-auto w-full  md:block hidden`}
+        className={`bg-[${colors.background}] bg-[${colors.background}] min-h-screen  max-h-auto w-full `}
       >
         <CommonMainNavbar />
 
         <div
-          className="relative md:h-[45vw] h-[100%] bg-[#d1f8e3]"
+          className="relative md:h-[45vw] h-[100%] bg-[#e5fff1]"
           style={{ zIndex: 1 }}
         >
           <div
-            className="md:h-[10vw] h-[14vw] z-[1] md:z-0 overflow-x-hidden"
+            className="md:h-[10vw] h-[20vw] z-0 overflow-x-hidden"
             style={{
               backgroundImage: `url(${homesky})`,
               width: "100%",
@@ -102,38 +103,40 @@ const BusPartners = () => {
               width: "100%",
             }}
           >
-            <label className="absolute left-[39vw] md:left-[43vw] top-[2vw] md:top-[0.1vw] text-[6vw]  md:text-[4vw] text-white font-bold opacity-20">
+            <label className="absolute left-[41vw] md:left-[43vw] top-[1vw] md:top-[0.1vw] text-[8vw]  md:text-[4vw] text-white font-bold opacity-20">
               {`RTCs`}
             </label>
-            <label className="absolute left-[45vw] top-[5vw] md:top-[2vw] text-[3vw]  md:text-[2vw] text-white font-bold">
+            <label className="absolute left-[45vw] top-[5vw] md:top-[2vw] text-[4vw]  md:text-[2vw] text-white font-bold">
               {"RTCs"}
             </label>
             <div className="cloudhome"></div>
           </div>
 
-          <div className="absolute top-[7vw] left-[12.5vw] bg-white w-3/4 h-[35vw] rounded-lg md:block hidden">
+          <div className="absolute top-[12vw] md:top-[7vw] md:left-[12.5vw] left-[3vw] bg-white w-[94%] md:w-3/4 h-[160vw] md:h-[35vw] rounded-lg shadow-lg shadow-gray-400">
             <div className="">
-              <div className="px-[5vw] py-[1.5vw] ">
+              <div className="md:px-[5vw] px-[0vw] py-[1.5vw] ">
                 {/* <p className=" text-[1.5vw] pl-[2vw] text-[${colors.primary}] font-bold pt-[3vw] pb-[1vw]">
                 We’ve partnered with the world’s best bus companies
               </p> */}
-                <div className=" w-full flex px-[2vw] items-center justify-between py-[1vw] ">
+                <div className=" w-full flex px-[2vw] items-center justify-center md:justify-between py-[2vw] md:py-[1vw] ">
                   <p
-                    className={`text-[1.5vw] text-[${colors.primary}] font-bold`}
+                    className={`md:text-[1.5vw] text-[6vw] text-[${colors.primary}] font-bold`}
                   >
                     26 RTCs
                   </p>
                 </div>
-                <div className="max-h-[28vw]  overflow-y-auto">
-                  <div className="grid grid-cols-5 w-full py-[1vw]">
+                <div className="md:max-h-[28vw] max-h-[140vw]    overflow-y-auto">
+                  <div className="grid grid-cols-2 md:grid-cols-5 w-full py-[1vw]">
                     {busdetails?.length > 0 &&
                       busdetails?.map((item) => (
-                        <div className="col-span-1 w-full items-center justify-center py-[.5vw]  flex-col">
-                          <img
-                            src={item.logo}
-                            className="w-[8vw] h-[8vw] ml-[1vw] rounded-full"
-                          />
-                          <p className="text-center py-[0.5vw] text-[1vw] pr-[3vw]">
+                        <div className="col-span-1 w-full items-center justify-center md:py-[.5vw] py-[2vw]  flex-col">
+                          <div className="flex justify-center ">
+                            <img
+                              src={item.logo}
+                              className="md:w-[8vw] md:h-[8vw] w-[22vw] h-[22vw] ml-[1vw] rounded-full"
+                            />
+                          </div>
+                          <p className="text-center py-[0.5vw] md:text-[1vw] text-[4vw] ">
                             {item.label}
                           </p>
                         </div>
@@ -154,10 +157,13 @@ const BusPartners = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      <span className="md:block hidden">
+        <Footer1 />
+      </span>
+      {/* <Footer /> */}
       {/* ------------------------MObileView----------------------------------- */}
 
-      <div className=" md:hidden block">
+      {/* <div className=" md:hidden block">
         <div className={`bg-[${colors.primary}] `}>
           <div className="grid grid-cols-6 items-center px-[5vw]">
             <div className="col-span-2 py-5">
@@ -184,7 +190,7 @@ const BusPartners = () => {
               {busdetails?.length > 0 &&
                 busdetails?.map((item) => (
                   <div className=" w-[25vw] flex-shrink-0">
-                    {/* <div className="w-[40vw]"> */}
+                    
                     <img
                       src={item.logo}
                       className="w-[25vw] h-[25vw]  rounded-full"
@@ -192,13 +198,13 @@ const BusPartners = () => {
                     <p className="text-center py-[0.5vw] text-[3vw]">
                       {item.label}
                     </p>
-                    {/* </div> */}
+                    
                   </div>
                 ))}
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* ------------------------MObileView----------------------------------- */}
     </>

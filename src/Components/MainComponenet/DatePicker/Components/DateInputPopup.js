@@ -7,7 +7,7 @@ function DateInputPopup(props) {
     <div>
       <div className="md:block hidden">
         <div
-          className={`date-popup mr-[2vw] ${location.pathname == "/" ? "md:ml-[-13.5vw]" : "md:mr-[0vw]"
+          className={`date-popup mr-[2vw] ${location.pathname == "/" ? "md:ml-[-14vw]" : "md:mr-[0vw]"
             }`}
         >
           <DateInputControl
@@ -16,7 +16,7 @@ function DateInputPopup(props) {
             navigateToNextMonth={() => props.navigateMonth(1)}
             navigateToPrevMonth={() => props.navigateMonth(-1)}
           />
-          <div className="date-popup__grid">
+          <div className="date-popup__grid p-[0.6vw]">
             <span className="week-code">SUN</span>
             <span className="week-code">MON</span>
             <span className="week-code">TUE</span>

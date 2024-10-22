@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './SearchableDropDown.css';
 
 export const SearchableDropdown = ({ options, value, onChange, placeholder }) => {
+    
     const [searchTerm, setSearchTerm] = useState(value || '');
     const [isDropdownVisible, setDropdownVisible] = useState(false);
     const dropdownRef = useRef(null);
@@ -12,10 +13,6 @@ export const SearchableDropdown = ({ options, value, onChange, placeholder }) =>
         option.label.toLowerCase().includes(searchTerm.toLowerCase())
     ) : [];
 
-    // Update searchTerm when value changes
-    useEffect(() => {
-        setSearchTerm(value || '');
-    }, [value]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -40,6 +37,11 @@ export const SearchableDropdown = ({ options, value, onChange, placeholder }) =>
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
+    // Update searchTerm when value changes
+    useEffect(() => {
+        setSearchTerm(value || '');
+    }, [value]);
 
     return (
         <>

@@ -52,6 +52,10 @@ import LoginMobile from "./Components/Login/LoginMobile";
 import Help from "./Components/Home/MyAccounts/Help/Help";
 //import ScrollToTop from "../src/Components/Common/ScrollTop";
 import { Navigate } from "react-router-dom";
+import Settings from "./Components/MobileView/Settings";
+import RatingViewAll from "./Components/Home/RatingViewAll";
+import SeatIndex from "./Components/MobileView/SeatIndex";
+import DrawerDetails from "./Components/Dashboard/Drawer";
 
 function MainRoute({ element: Component }) {
   const userId = sessionStorage.getItem("user_id");
@@ -134,7 +138,11 @@ function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/faq" element={<Faq />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
-
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/CustomerRatings" element={<RatingViewAll/>}/>
+          <Route path="/seats" element={<SeatIndex/>}/>
+          <Route path="/bookingDetails" element={<DrawerDetails/>}/>
+          
           {/* // <Route path="/map" element={<MapIndex />} />s */}
         </Routes>
       </Router>

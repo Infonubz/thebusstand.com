@@ -1,30 +1,31 @@
 import React, { useEffect, useState } from "react";
 import HomeHearder from "../MainComponenet/HomeHearder";
-import Footer from "../Home/Footer";
+//import Footer from "../Home/Footer";
 import homesky from "../../assets/homesky.png";
 import { PrivacyPolicy } from "./PrivacyPolicy";
 import { TermsConditions } from "./TermsConditions";
 import { UserAgreement } from "./UserAgreement";
 import { useLocation } from "react-router";
-import { GetFooter } from "../../Api/Home/Home";
+//import { GetFooter } from "../../Api/Home/Home";
 import { useDispatch } from "react-redux";
 import { GetFooterTabs } from "../../Api/FooterTabs/FooterTabs";
 
 export default function TermsIndex() {
-    const [currenttab, setCurrentTab] = useState(1);
 
+    const [currenttab, setCurrentTab] = useState(1);
+    const dispatch = useDispatch();
     const location = useLocation()
+
     useEffect(() => {
         // Set currenttab based on the passed state or default to 1
         const toggleTabs = location.state?.toggleTabs;
         setCurrentTab(toggleTabs);
     }, [location.state]);
 
-    const dispatch = useDispatch();
-
     useEffect(() => {
         GetFooterTabs(dispatch);
     }, [dispatch]);
+
 
     return (
         <div>

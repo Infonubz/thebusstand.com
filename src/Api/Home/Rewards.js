@@ -9,6 +9,7 @@ const api = axios.create({
 });
 
 const apiUrl = process.env.REACT_APP_API_URL;
+const apicrm = process.env.REACT_CRM_API_URL
 export const GetOffersOccupation = async (dispatch, id) => {
   try {
     const response = await axios.get(

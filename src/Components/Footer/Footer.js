@@ -4,13 +4,12 @@ import InstaGram from "../../assets/Insta.png";
 import twitter from "../../assets/Twitter1.png";
 import Youtube from "../../assets/Utube.png";
 import { useNavigate } from "react-router";
-
 const Footer1 = () => {
   const navigation = useNavigate();
 
   return (
     <>
-      <div className="md:block hidden bg-[#1F487C] h-[3vw] flex items-center justify-center">
+      <div className="md:block hidden bg-[#1F487C] h-[3vw] flex items-center justify-center z-[2]">
         <div className="flex items-center justify-center pt-[0.5vw] flex-row gap-[5.5vw]">
           <div
             className="flex-2 cursor-pointer"
@@ -85,7 +84,7 @@ const Footer1 = () => {
         </div>
       </div>
       <div className="md:block hidden bg-[#ffffff] h-[3vw] flex items-center">
-        <div className="flex justify-between pt-[1vw]">
+        <div className="flex justify-between pt-[0.8vw]">
           <div className="flex gap-[1vw] pl-[1vw]">
             <a href="https://www.facebook.com/">
               <img

@@ -30,6 +30,7 @@ import {
   GET_TICKET_TO_CANCEL,
   GET_THEME_COLORS,
   SEND_APP_LINK,
+  MOB_ADS_LIST,
 } from "./type";
 
 const initial = {
@@ -65,6 +66,7 @@ const initial = {
     },
   ],
   send_app_link: [],
+  mob_ads_list:[]
 };
 
 export const busreducer = (state = initial, action) => {
@@ -273,7 +275,12 @@ export const busreducer = (state = initial, action) => {
         send_app_link: payload,
       };
     }
-
+    case MOB_ADS_LIST: {
+      return {
+        ...state,
+        mob_ads_list: payload,
+      };
+    }
     default: {
       return state;
     }

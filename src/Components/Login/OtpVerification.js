@@ -11,7 +11,21 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 
-const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
+const OtpVerification = ({
+  setCurrentPage,
+  setLoginIsOpen,
+  setLoginMobileIsOpen,
+}) => {
+
+  //const [showPopup, setShowPopup] = useState(false);
+  // const [popupMessage, setPopupMessage] = useState("");
+  const dispatch = useDispatch();
+  //const Email_Id = useSelector((state) => state.send_otp);
+  const navigation = useNavigate();
+  const passenger_mail = sessionStorage.getItem("email_id");
+  const [timeLeft, setTimeLeft] = useState(120); // 2 minutes = 120 seconds
+  const email = {email: sessionStorage.getItem("email_id"),};
+
   const validationSchema = Yup.object().shape({
     otp: Yup.string()
       .matches(/^\d+$/, "OTP must contain only numeric digits")
@@ -19,13 +33,12 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
       .required("OTP is required"),
   });
 
-  //const [showPopup, setShowPopup] = useState(false);
- // const [popupMessage, setPopupMessage] = useState("");
-  const dispatch = useDispatch();
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
 
-  //const Email_Id = useSelector((state) => state.send_otp);
-  const navigation = useNavigate();
-  
 
   const handleMobileOtpSubmit = async (values, { setErrors }) => {
     console.log("response85858");
@@ -38,15 +51,16 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
       );
       sessionStorage.setItem("passenger_id", response.user.tbs_passenger_id);
       sessionStorage.setItem("user_id", response.user.tbs_passenger_id);
-      toast.success(response.message);
-      navigation('/');
+      // setCurrentPage(2);
       if (response.user.status === 2) {
-        setLoginIsOpen(false);
+        setLoginMobileIsOpen(false);
         GetUserDetails(navigation);
       } else {
         setCurrentPage(2);
+        GetUserDetails(navigation);
       }
-      console.log(response.tbs_passenger_id, "passengers_idd");
+      toast.success(response.message);
+      console.log(response, "passengers_idd");
     } catch (error) {
       console.error("An error occurred:", error);
       setErrors({ otp: "Invalid OTP" });
@@ -81,6 +95,7 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
         GetUserDetails(navigation);
       } else {
         setCurrentPage(2);
+        GetUserDetails(navigation);
       }
       console.log(response.tbs_passenger_id, "passengers_idd");
     } catch (error) {
@@ -89,8 +104,14 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
     }
   };
 
-  const passenger_mail = sessionStorage.getItem("email_id");
-  const [timeLeft, setTimeLeft] = useState(120); // 2 minutes = 120 seconds
+  const handleresend = async () => {
+    try {
+      const response = await SendVerificationOTP(dispatch, email);
+      console.log(response, "response");
+      setTimeLeft(120);
+    } catch {}
+  };
+
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -102,22 +123,6 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
     }
   }, [timeLeft]);
 
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
-  };
-  console.log(timeLeft, "hhhh");
-  const email = {
-    email: sessionStorage.getItem("email_id"),
-  };
-  const handleresend = async () => {
-    try {
-      const response = await SendVerificationOTP(dispatch, email);
-      console.log(response, "response")
-      setTimeLeft(120);
-    } catch {}
-  };
 
   return (
     <>
@@ -213,7 +218,9 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
                       onClick={() => handleresend()}
                       disabled={timeLeft === 0 ? false : true}
                       className={`text-[#1F487C] ${
-                        timeLeft === 0 ? "cursor-pointer" : " cursor-not-allowed"
+                        timeLeft === 0
+                          ? "cursor-pointer"
+                          : " cursor-not-allowed"
                       } w-[13vw] font-bold h-[2.5vw] border-[0.1vw] rounded-[0.5vw] border-[#1F487C]  text-[1.2vw] bg-white`}
                     >
                       {timeLeft === 0 ? "Resend OTP" : formatTime(timeLeft)}
@@ -279,10 +286,12 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
                   <span className="text-[4vw] font-bold order-first">
                     {passenger_mail}
                   </span>
-                  <span className="cursor-pointer text-[4.5vw] order-last text-[#1F487C] font-semibold"
-                   onClick={() => {
-                    setCurrentPage(0);
-                  }}>
+                  <span
+                    className="cursor-pointer text-[4.5vw] order-last text-[#1F487C] font-semibold"
+                    onClick={() => {
+                      setCurrentPage(0);
+                    }}
+                  >
                     CHANGE
                   </span>
                 </div>
@@ -296,10 +305,12 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
                   <span className="text-[4.5vw] font-bold order-first">
                     +91 96885 53316
                   </span>
-                  <span className="cursor-pointer text-[4.5vw] order-last border-[0.1vw] text-[#1F487C] font-bold"
-                   onClick={() => {
-                    setCurrentPage(0);
-                  }}>
+                  <span
+                    className="cursor-pointer text-[4.5vw] order-last border-[0.1vw] text-[#1F487C] font-bold"
+                    onClick={() => {
+                      setCurrentPage(0);
+                    }}
+                  >
                     CHANGE
                   </span>
                 </div>
@@ -347,7 +358,9 @@ const OtpVerification = ({ setCurrentPage, setLoginIsOpen }) => {
                       onClick={() => handleresend()}
                       disabled={timeLeft === 0 ? false : true}
                       className={`text-[#1F487C] ${
-                        timeLeft === 0 ? "cursor-pointer" : " cursor-not-allowed"
+                        timeLeft === 0
+                          ? "cursor-pointer"
+                          : " cursor-not-allowed"
                       } w-[45vw] font-bold h-[11vw] border-[0.1vw] rounded-[1.2vw] border-[#1F487C] text-[4vw] bg-white`}
                     >
                       {timeLeft === 0 ? "Resend OTP" : formatTime(timeLeft)}

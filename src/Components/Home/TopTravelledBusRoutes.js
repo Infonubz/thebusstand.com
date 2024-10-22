@@ -1,35 +1,68 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { GetTopBusRoutes } from "../../Api/Home/Home";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { capitalizeFirstLetter } from "../Common/Captalization";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { Tooltip } from "antd";
+import moment from "moment";
+import { SendTravelDetails } from "../../Api/Dashboard/Dashboard";
 
 export default function TopTravelledBusRoutes() {
+  
   const dispatch = useDispatch();
   const navigation = useNavigate();
+  const getselecteddate = useSelector((state) => state.selected_date);
+  const getroutes = useSelector((state) => state.top_route_list);
+  const [seatFilter, SetSeatFilter] = useState("");
+  const [luxury, setLuxury] = useState(false);
+  const [busdatas, setBusDatas] = useState({
+    ac: "false",
+    from: "",
+    to: "",
+    date: "",
+    seater: "",
+    sleeper: "",
+    semi_sleeper: "",
+    luxury_data: false,
+  });
+
+
+  const handleRoutes = async (item) => {
+    localStorage.setItem("departure", capitalizeFirstLetter(item.from));
+    localStorage.setItem("arrival", capitalizeFirstLetter(item.to));
+    try {
+      const data = await SendTravelDetails(dispatch, busdatas, luxury);
+      console.log(busdatas.from, busdatas.to, data, "datadata");
+    } catch (error) {
+      console.error("Error fetching additional user data", error);
+    }
+    navigation("/dashboard");
+  };
+
+  useEffect(() => {
+    setBusDatas((prevBusDatas) => ({
+      ...prevBusDatas,
+      seater: seatFilter === "seater" ? "true" : "false",
+      sleeper: seatFilter === "sleeper" ? "true" : "false",
+      semi_sleeper: seatFilter === "semi_sleeper" ? "true" : "false",
+      date: moment(getselecteddate).format("YYYY-MM-DD"),
+      luxury_data: luxury,
+    }));
+  }, [seatFilter, getselecteddate, luxury]);
 
   useEffect(() => {
     GetTopBusRoutes(dispatch);
   }, [dispatch]);
 
-  const getroutes = useSelector((state) => state.top_route_list);
-
-  const handleRoutes = (item) => {
-    localStorage.setItem("departure", capitalizeFirstLetter(item.from));
-    localStorage.setItem("arrival", capitalizeFirstLetter(item.to));
-    localStorage.setItem("departure_date", new Date());
-    navigation("/dashboard");
-  };
 
   console.log(getroutes, "getroutesgetroutes");
-
   // const sanitizePath = (path) => {
   //   const sanitizedPath = path.replace(/\\\\/g, "file://").replace(/\\/g, "//");
   //   console.log(encodeURI(sanitizedPath), "techimage");
   //   return encodeURI(sanitizedPath);
   // };
+
 
   return (
     <>
@@ -110,7 +143,6 @@ export default function TopTravelledBusRoutes() {
               </div>
             ))}
         </div>
-        ;
       </div>
       <div className="mt-[175vw] px-[5vw] md:hidden block">
         <p className=" text-[5vw] pl-[2vw] text-[#1F487C] font-bold">

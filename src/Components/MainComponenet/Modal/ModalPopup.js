@@ -15,13 +15,13 @@ const ModalPopup = ({ show, onClose, children, height, width, padding }) => {
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay rounded-b-[2vw] md:rounded-b-[0vw]" onClick={onClose}>
       <div
         className="modal-content"
         style={modalStyle}
         onClick={(e) => e.stopPropagation()}
       >
-        <RxCross2 className="modal-close" onClick={onClose} />
+        <RxCross2 className="modal-close md:h-[1.5vw] md:w-[1.5vw] h-[4vw] w-[4vw]" onClick={onClose} />
         {children}
       </div>
     </div>

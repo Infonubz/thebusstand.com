@@ -12,9 +12,10 @@ import Footer1 from "../Footer/Footer";
 import "../../Components/Home/Footer.css";
 //import { IoIosArrowDropupCircle } from "react-icons/io";
 import { MdKeyboardDoubleArrowUp } from "react-icons/md";
-//import ColorCodes from "../Common/ColorCodes";
+import ColorCodes from "../Common/ColorCodes";
 import { useDispatch, useSelector } from "react-redux";
 import { GetFooter } from "../../Api/Home/Home";
+import { useLocation } from "react-router";
 
 const Footer = () => {
   // const footerdata = [
@@ -64,10 +65,25 @@ const Footer = () => {
   //     ],
   //   },
   // ];
+
   const [top, setShowGoTop] = useState(false);
+  const fetchedFooter = useSelector((state) => state.footer);
+  //const colors = useSelector((state) => state.themecolors[0]);
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const path = location.pathname;
+
+  const top_bus_routeFooter = fetchedFooter[0]?.top_bus_route;
+  const buses_from_top_citiesFooter = fetchedFooter[0]?.buses_from_top_cities;
+  const top_rtc_busesFooter = fetchedFooter[0]?.top_rtc_buses;
+  const top_bus_serviceFooter = fetchedFooter[0]?.top_bus_service;
+  const quick_links = fetchedFooter[0]?.quick_links;
+  const colors =ColorCodes()
+
   const handleVisibleButton = () => {
     setShowGoTop(window.pageYOffset > 50);
   };
+
   const handleScrollUp = () => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   };
@@ -75,21 +91,13 @@ const Footer = () => {
   useEffect(() => {
     window.addEventListener("scroll", handleVisibleButton);
   }, []);
-  console.log(top, "top");
-  // const colors =ColorCodes()
-  //const colors = useSelector((state) => state.themecolors[0]);
 
-  const fetchedFooter = useSelector((state) => state.footer);
-  const top_bus_routeFooter = fetchedFooter[0]?.top_bus_route;
-  const buses_from_top_citiesFooter = fetchedFooter[0]?.buses_from_top_cities;
-  const top_rtc_busesFooter = fetchedFooter[0]?.top_rtc_buses;
-  const top_bus_serviceFooter = fetchedFooter[0]?.top_bus_service;
-  const quick_links = fetchedFooter[0]?.quick_links;
-
-  const dispatch = useDispatch();
   useEffect(() => {
     GetFooter(dispatch);
   }, [dispatch]);
+
+  console.log(top, "top");
+  console.log(path !== "/", "pathpathpathpathpathpath");
 
   return (
     <>
@@ -127,7 +135,11 @@ const Footer = () => {
         </div>
       </div> */}
 
-      <div className="md:block hidden relative">
+      <div
+        className={`md:block ${
+          path === "/" ? "" : "hidden"
+        } hidden relative z-[2]`}
+      >
         <div className="absolute top-0 right-0">
           <button
             className="text-white text-[1.2vw] font-bold p-[1vw] bg-blue-950"
@@ -191,7 +203,7 @@ const Footer = () => {
           </div> */}
           <div className="absolute bottom-[3vw] right-[2vw]">
             <button
-              className="bg-[${colors.primary}] text-white text-[1vw] p-[1vw] rounded-full shadow-lg shadow-white"
+              className={`bg-[${colors.primary}] text-white text-[1vw] p-[1vw] rounded-full shadow-lg shadow-white`}
               onClick={handleScrollUp}
             >
               <MdKeyboardDoubleArrowUp size={"2vw"} />
@@ -207,16 +219,16 @@ const Footer = () => {
               Top Bus Routes
             </p>
             {top_bus_routeFooter?.length > 0 &&
-              top_bus_routeFooter?.slice(0,3)?.map((item) => (
-                <a
+              top_bus_routeFooter?.slice(0, 3)?.map((item) => (
+                <button
                   className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%]"
-                  href=""
+                  //href="#"
                   target="blank"
                 >
                   <p>
                     {item.from} to {item.to}
                   </p>
-                </a>
+                </button>
               ))}
           </div>
           <div>
@@ -224,14 +236,14 @@ const Footer = () => {
               Buses from top cities
             </p>
             {buses_from_top_citiesFooter?.length > 0 &&
-              buses_from_top_citiesFooter?.slice(0,3)?.map((item) => (
-                <a
+              buses_from_top_citiesFooter?.slice(0, 3)?.map((item) => (
+                <button
                   className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%]"
-                  href=""
+                  //href="#"
                   target="blank"
                 >
                   <p>{item.city_name}</p>
-                </a>
+                </button>
               ))}
           </div>
           <div>
@@ -239,14 +251,14 @@ const Footer = () => {
               Top RTC Buses
             </p>
             {top_rtc_busesFooter?.length > 0 &&
-              top_rtc_busesFooter?.slice(0,3)?.map((item) => (
-                <a
+              top_rtc_busesFooter?.slice(0, 3)?.map((item) => (
+                <button
                   className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%]"
-                  href=""
+                  //href="#"
                   target="blank"
                 >
                   <p>{item.rtc_name}</p>
-                </a>
+                </button>
               ))}
           </div>
           <div>
@@ -254,14 +266,14 @@ const Footer = () => {
               Top Bus Service
             </p>
             {top_bus_serviceFooter?.length > 0 &&
-              top_bus_serviceFooter?.slice(0,3)?.map((item) => (
-                <a
+              top_bus_serviceFooter?.slice(0, 3)?.map((item) => (
+                <button
                   className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%]"
-                  href=""
+                 // href="#"
                   target="blank"
                 >
                   <p>{item.operator_name}</p>
-                </a>
+                </button>
               ))}
           </div>
           <div>
@@ -269,14 +281,14 @@ const Footer = () => {
               Quick Links
             </p>
             {quick_links?.length > 0 &&
-             quick_links?.slice(0,3)?.map((item) => (
-                <a
+              quick_links?.slice(0, 3)?.map((item) => (
+                <button
                   className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%]"
-                  href=""
+                  href="#"
                   target="blank"
                 >
                   <p>{item.link}</p>
-                </a>
+                </button>
               ))}
           </div>
         </div>

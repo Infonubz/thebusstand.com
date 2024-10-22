@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
-import Footer from "../Home/Footer";
-// import homesky from "../../assets/homesky.png";
-import HomeHearder from "../MainComponenet/HomeHearder";
+import Footer from "./Footer"; // import homesky from "../../assets/homesky.png";
+//import HomeHearder from "../MainComponenet/HomeHearder";
 import { useDispatch, useSelector } from "react-redux";
 import { GetFooterTabs } from "../../Api/FooterTabs/FooterTabs";
 // import AboutMobile from "./FooterMobile.js/AboutMobile";
@@ -18,19 +17,22 @@ import CommonMainNavbar from "../Common/CommonMainNavbar";
 
 const About = () => {
   const about_us = useSelector((state) => state?.tbs_info || []);
-  console.log(about_us, "about_us");
-
   const abt_us = about_us.about_us;
-
   const dispatch = useDispatch();
+  const navigation = useNavigate();
+
+
   useEffect(() => {
     GetFooterTabs(dispatch);
   }, [dispatch]);
 
-  const navigation = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+
+  console.log(about_us, "about_us");
+
   return (
     <>
       <div className="bg-[#d1f8e3] ">
@@ -53,7 +55,7 @@ const About = () => {
             <label className="absolute left-[39vw] md:left-[42vw] top-[2vw] md:top-[0.1vw] text-[6vw]  md:text-[4vw] text-white font-bold opacity-20">
               {`About Us`}
             </label>
-            <label className="absolute left-[45vw] top-[5vw] md:top-[2vw] text-[3vw]  md:text-[2vw] text-white font-bold">
+            <label className="absolute left-[46vw] top-[5vw] md:top-[2vw] text-[4vw]  md:text-[2vw] text-white font-bold">
               {"About Us"}
             </label>
             <div className="absolute left-[3vw] top-[4vw] z-[2] text-[7vw] text-white font-bold md:hidden sm:block ">
@@ -62,7 +64,7 @@ const About = () => {
             <div className="cloudhome"></div>
           </div>
           <>
-            <div className="absolute top-[7vw] left-[12.5vw] bg-white w-3/4 h-3/4 rounded-lg md:block hidden">
+            <div className="absolute top-[7vw] left-[12.5vw] bg-white w-3/4 h-3/4 rounded-lg md:block hidden shadow-lg shadow-gray-300">
               <div>
                 <div className="px-[5vw] py-[3vw]">
                   <p className="text-[1.25vw] font-semibold text-[#1F487C]">

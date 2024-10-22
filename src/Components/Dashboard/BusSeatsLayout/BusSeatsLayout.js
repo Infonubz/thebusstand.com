@@ -1014,7 +1014,7 @@ import { RiSteering2Fill } from "react-icons/ri";
 // import unisex_se from "../../../assets/unisex_se.png";
 // import unisex_sel from "../../../assets/s_sleeper.png";
 import unisex_se from "../../../assets/unisex_se.png";
-import { Popover, Spin, Tooltip } from "antd";
+import { Drawer, Popover, Spin, Tooltip } from "antd";
 import { HiCheckCircle } from "react-icons/hi";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
@@ -1044,7 +1044,7 @@ export default function BusSeatsLayout({
   logo,
   seatplatform,
   busboarding,
-  setDropDown
+  setDropDown,
 }) {
   const getseats = useSelector((state) => state.seat_layout);
   console.log(getseats, "getseatsgetseats777777");
@@ -1052,7 +1052,9 @@ export default function BusSeatsLayout({
   const [layoutloading, setLayoutLoading] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
+    // setInterval(() => {
     GetSeatLayout(busid, dispatch, setLayoutLoading);
+    // }, 1000);
   }, [busid, dispatch]);
 
   const lowerdeck = getseats?.seats_id_layout?.filter((item) => {
@@ -1448,7 +1450,44 @@ export default function BusSeatsLayout({
         return "green";
     }
   };
+  const [bookingId1, setBookingId1] = useState();
+
+  const onClose = () => {
+    setShowModal(false);
+    if (bookingId1) {
+      setDropDown(null);
+    }
+  };
+  const [drawerWidth, setDrawerWidth] = useState("60%");
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 480) {
+        setDrawerWidth("95%");
+      } else if (window.innerWidth <= 768) {
+        setDrawerWidth("95%");
+      } else {
+        setDrawerWidth("60%");
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Call it once to set initial width
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   console.log(`grid-cols-${lowerdeckcol}`, "upperdeckcol741852963");
+  const buslowerheight =
+    lowerdeckrow?.length > 0 && Math.max(...lowerdeckrow) * 4.8;
+
+  const busupperheight =
+    upperdeckrow?.length > 0 && Math.max(...upperdeckrow) * 4.8;
+
+  console.log(buslowerheight, "upperdeckcol741852963");
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, []);
   return (
     <div className="px-[0.5vw]">
       <div
@@ -1495,13 +1534,15 @@ export default function BusSeatsLayout({
                     All
                   </button>
                   {uniqueprice.length > 0 &&
-                    uniqueprice?.map((item,index) => (
+                    uniqueprice?.map((item, index) => (
                       <button
                         type="button"
                         className={`${
                           currentrate === Number(item) ? "" : ""
                         } h-[2.5vw] w-[6vw] font-bold border-y-[0.1vw] border-r-[0.1vw] ${
-                          index === uniqueprice.length - 1 ? "rounded-r-[0.5vw]" : ""
+                          index === uniqueprice.length - 1
+                            ? "rounded-r-[0.5vw]"
+                            : ""
                         }`}
                         onClick={() => SetCurrentRate(item)}
                         style={{
@@ -1800,7 +1841,7 @@ export default function BusSeatsLayout({
                   </div>
                 </div>
               </div>
-              <div className="col-span-3 h-full w-full">
+              <div className={`md:col-span-3 col-span-6 h-full w-full`}>
                 <div className="grid grid-cols-2 h-full w-full px-[2vw] gap-[1.5vw]">
                   <div className={`col-span-1 h-full w-full py-[1vw]`}>
                     <div
@@ -2097,7 +2138,7 @@ export default function BusSeatsLayout({
                   </div>
                 </div>
               </div>
-              <div className="col-span-3 h-[55vw] w-full ">
+              <div className="col-span-3 h-[55vw] w-full md:block hidden">
                 <div className="grid grid-cols-2 w-full h-[43vw] px-[2vw] py-[1vw] gap-[1.5vw]">
                   <div className="col-span-1 border-[0.1vw] border-gray-400 w-full h-[43vw] rounded-[0.5vw] bg-white">
                     <p
@@ -2111,13 +2152,19 @@ export default function BusSeatsLayout({
                     >
                       PICKUP POINT
                     </p>
-                    <div className="max-h-[39vw] overflow-y-auto new-scrollbar">
+                    <div
+                      className={`max-h-[39vw] overflow-y-auto rounded-b-[1.5vw] ${
+                        busdetails.bus_type_status === "luxury"
+                          ? "scrollbar-luxury"
+                          : "scrollbar-regular"
+                      }`}
+                    >
                       {" "}
                       {busboarding.map((item, index) => (
                         <div
                           key={index}
                           className={`${
-                            selectedRoutes?.dep_route === item.anme
+                            selectedRoutes?.dep_route === item.name
                               ? "bg-[#E5FFF1]"
                               : "bg-white hover:bg-gray-200"
                           } flex flex-col py-[0.5vw] px-[1vw]  cursor-pointer relative`}
@@ -2180,7 +2227,13 @@ export default function BusSeatsLayout({
                     >
                       DROP POINT
                     </p>
-                    <div className="max-h-[39vw] overflow-y-auto new-scrollbar">
+                    <div
+                      className={`max-h-[39vw] overflow-y-auto rounded-b-[1.5vw] ${
+                        busdetails.bus_type_status === "luxury"
+                          ? "scrollbar-luxury"
+                          : "scrollbar-regular"
+                      }`}
+                    >
                       {" "}
                       {busdroping?.map((item, index) => (
                         <div
@@ -2305,20 +2358,39 @@ export default function BusSeatsLayout({
                           Continue
                         </button>
                       </div>
-                      <DrawerDetails
-                        modalshow={modalshow}
-                        setShowModal={setShowModal}
-                        selectedSeats={selectedSeats}
-                        selectedRoutes={selectedRoutes}
-                        busdetails={busdetails}
-                        seatDetails={seatDetails}
-                        // seatplatform={seatplatform}
-                        //type={type}
-                        discount={totalprice}
-                        busprice={totalprice}
-                        setDropDown={setDropDown}
-                        // imageurl={logo}
-                      />
+                      <Drawer
+                        placement={"right"}
+                        closable={false}
+                        onClose={onClose}
+                        open={modalshow}
+                        key={"right"}
+                        // width={"60%"}
+                        width={drawerWidth}
+                        // className="drawer"
+                        // style={{
+                        //   backgroundImage: busdetails.bus_type_status === "luxury"
+                        //   ? `url(${backgroundImg}),linear-gradient(to right, #F8C550, #FFEB76, #FFE173)`
+                        //   : "#ffffff",
+                        //   zIndex: 2,
+                        // }}
+                      >
+                        <DrawerDetails
+                          modalshow={modalshow}
+                          setShowModal={setShowModal}
+                          selectedSeats={selectedSeats}
+                          selectedRoutes={selectedRoutes}
+                          busdetails={busdetails}
+                          seatDetails={seatDetails}
+                          // seatplatform={seatplatform}
+                          //type={type}
+                          discount={totalprice}
+                          busprice={totalprice}
+                          setDropDown={setDropDown}
+                          bookingId1={bookingId1}
+                          setBookingId1={setBookingId1}
+                          // imageurl={logo}
+                        />
+                      </Drawer>
                     </div>
                   </div>
                 </div>

@@ -129,6 +129,24 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
   //   return date < today.setHours(0, 0, 0, 0);
   // }
 
+  // function isDateDisabled(date) {
+  //   if (!(date instanceof Date)) {
+  //     date = new Date(date);
+  //   }
+
+  //   const today = new Date();
+  //   today.setHours(0, 0, 0, 0);
+
+  //   const endDate = new Date(today);
+  //   endDate.setDate(today.getDate() + 3);
+
+  //   console.log("Today:", today);
+  //   console.log("End Date:", endDate);
+  //   console.log("Date being checked:", date);
+
+  //   return date < endDate;
+  // }
+
   function isDateDisabled(date) {
     if (!(date instanceof Date)) {
       date = new Date(date);
@@ -137,14 +155,10 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const endDate = new Date(today);
-    endDate.setDate(today.getDate() + 4);
+    const maxDate = new Date(today);
+    maxDate.setDate(today.getDate() + 60); // Set the maximum date to 60 days from today
 
-    console.log("Today:", today);
-    console.log("End Date:", endDate);
-    console.log("Date being checked:", date);
-
-    return date < endDate;
+    return date < today || date > maxDate;
   }
 
   const location = useLocation();
@@ -441,7 +455,7 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
                                 /> */}
                 {selectedDate ? (
                   <div
-                    className={`flex-col absolute top-[-1vw] left-[-1%] md:top-[47%] md:left-[52%] transform md:translate-y-[-50%] md:translate-x-[-50%] z-10`}
+                    className={`flex-col absolute top-[-1vw] left-[-1%] md:top-[47%] md:left-[52%] transform md:translate-y-[-50%] md:translate-x-[-50%] `}
                     onClick={() => {
                       setShowPopup(!showPopup);
                     }}
@@ -453,7 +467,8 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
                         dateSelectionColor === true
                           ? "bg-[#1F487C] text-white"
                           : "bg-[#E5FFF1] text-black"
-                      } cursor-pointer w-[14vw] h-[14vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[2vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[1vw] border-r-[1vw] md:border-t-[0.4vw] md:border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] `}
+                      } cursor-pointer w-[14vw] h-[14vw] md:w-[4.5vw] md:h-[4.5vw] rounded-[2vw] md:rounded-[0.7vw] border-l-[0.15vw] border-t-[1vw] border-r-[1vw] 
+                      md:border-t-[0.4vw] md:border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C]`}
                       onClick={() => setSelectedDate(dateSelection)}
                     >
                       {dateSelectionColor === true ? (
@@ -473,12 +488,12 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
                           onClick={() => {
                             setShowPopup(!showPopup);
                           }}
-                          className="flex flex-col items-center justify-center mt-[1.2vw]  md:mt-[.7vw]"
+                          className="flex flex-col items-center justify-center mt-[1.2vw] md:mt-[.7vw]"
                         >
-                          <p className="text-center  font-semibold md:text-[1.2vw]">
-                            <MdOutlineCalendarMonth className="md:text-xl text-3xl" />
+                          <p className="text-center font-semibold md:text-[1.2vw]">
+                            <MdOutlineCalendarMonth className="md:text-2xl text-3xl" />
                           </p>
-                          <p className="text-center font-semibold text-[2.5vw] md:text-[0.8vw]">
+                          <p className="text-center font-semibold text-[2.5vw] md:text-[0.90vw]">
                             Date
                           </p>
                         </div>
@@ -552,7 +567,7 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
                                         </div>
                                     </div> */}
                 {/* )} */}
-                <div className="md:block hidden">
+                <div className="md:block hidden md:mt-[3.5vw] md:ml-[4vw]">
                   {showPopup && (
                     <DateInputPopup
                       currentMonth={currentMonth}
@@ -570,7 +585,10 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
                             selected={selectedDate == formatDate(dateObj)}
                             currentMonth={dateInfo.currentMonth}
                             isDisabled={dateObj && isDateDisabled(dateObj)}
-                            onClick={() => selectDateHandler(dateInfo)}
+                            onClick={() =>
+                              !isDateDisabled(dateObj) &&
+                              selectDateHandler(dateInfo)
+                            }
                           />
                         );
                       })}
@@ -584,7 +602,7 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
                       currentYear={currentYear}
                       navigateMonth={navigateMonthHandler}
                     >
-                      {dateArray.map((dateInfo, index) => {
+                    {dateArray.map((dateInfo, index) => {
                         const dateObj = dateInfo.date
                           ? new Date(dateInfo.date)
                           : null;
@@ -595,7 +613,10 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
                             selected={selectedDate == formatDate(dateObj)}
                             currentMonth={dateInfo.currentMonth}
                             isDisabled={dateObj && isDateDisabled(dateObj)}
-                            onClick={() => selectDateHandler(dateInfo)}
+                            onClick={() =>
+                              !isDateDisabled(dateObj) &&
+                              selectDateHandler(dateInfo)
+                            }
                           />
                         );
                       })}

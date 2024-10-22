@@ -2,12 +2,15 @@ import React, { useEffect } from "react";
 //import Footer from "../Home/Footer";
 import HomeHearder from "../MainComponenet/HomeHearder";
 import homesky from "../../assets/homesky.png";
-import Footer1 from "./Footer";
+//import Footer1 from "./Footer";
+import Footer from "../Home/Footer";
 
 const Offers = () => {
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+  
   return (
     <>
       <div className="">
@@ -40,7 +43,7 @@ const Offers = () => {
 
         </div>
         <div className="">
-          <Footer1 />
+          <Footer />
         </div>
       </div>
     </>

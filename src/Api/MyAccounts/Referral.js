@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 const apiUrl = process.env.REACT_APP_API_URL;
 export const GetRefferalContent = async (setSpinning) => {
   try {
-    const response = await axios.get(`${apiUrl}/referEarnContent`);
+    const response = await axios.get(`http://192.168.90.47:4000/api/referEarnContent`);
     console.log(response.data,"apiressponce");
     return response?.data[0];
   } catch (err) {
@@ -17,7 +17,7 @@ export const GetRefferalContent = async (setSpinning) => {
 
 export const GetRefferalCode = async () =>{
     try{
-        const response = await axios.get(`${apiUrl}/ReferralCode/${sessionStorage.getItem("user_id")}`)
+        const response = await axios.get(`http://192.168.90.47:4001/api/ReferralCode/${sessionStorage.getItem("user_id")}`)
         return response.data
     }
     catch(err){

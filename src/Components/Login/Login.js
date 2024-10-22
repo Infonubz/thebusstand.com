@@ -6,6 +6,7 @@ import OtpVerification from "./OtpVerification";
 import LoginProfile from "./LoginProfile";
 
 const Login = ({ closeLoginModal, setLoginIsOpen }) => {
+  
   const [CurrentPage, setCurrentPage] = useState(0);
 
   //   const nextPage = () => {
@@ -84,7 +85,7 @@ const Login = ({ closeLoginModal, setLoginIsOpen }) => {
                 // closeLoginModal={closeLoginModal}
                 setLoginIsOpen={setLoginIsOpen}
                 setCurrentPage={setCurrentPage}
-              />
+              />  
             ) : (
               <MobileNumberLog
                 // nextPage={nextPage}

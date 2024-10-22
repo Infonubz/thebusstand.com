@@ -79,7 +79,11 @@ export default function CommonMainNavbar() {
           className="text-[#1F487C] text-[3.5vw] md:text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
           onClick={handleProPage}
         >
-          <PiUserCircleDuotone color="#1F487C" className="h-[5vw] w-[5vw] md:h-[1.5vw] md:w-[1.5vw]" /> My Account
+          <PiUserCircleDuotone
+            color="#1F487C"
+            className="h-[5vw] w-[5vw] md:h-[1.5vw] md:w-[1.5vw]"
+          />{" "}
+          My Account
         </div>
       ),
     },
@@ -90,7 +94,11 @@ export default function CommonMainNavbar() {
           className="text-[#1F487C] text-[3.5vw] md:text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
           onClick={handleBookingPage}
         >
-          <FaTicketAlt color="#1F487C" className="h-[5vw] w-[5vw] md:h-[1.5vw] md:w-[1.5vw]" /> Bookings
+          <FaTicketAlt
+            color="#1F487C"
+            className="h-[5vw] w-[5vw] md:h-[1.5vw] md:w-[1.5vw]"
+          />{" "}
+          Bookings
         </div>
       ),
     },
@@ -101,7 +109,11 @@ export default function CommonMainNavbar() {
           className="text-[#1F487C] text-[3.5vw] md:text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
           onClick={openLogModal}
         >
-          <RiLogoutCircleLine color="#1F487C" className="h-[5vw] w-[5vw] md:h-[1.5vw] md:w-[1.5vw]" /> Logout
+          <RiLogoutCircleLine
+            color="#1F487C"
+            className="h-[5vw] w-[5vw] md:h-[1.5vw] md:w-[1.5vw]"
+          />{" "}
+          Logout
         </div>
       ),
     },
@@ -143,13 +155,14 @@ export default function CommonMainNavbar() {
         </div>
         {location.pathname !== "/dashboard" ? (
           <a
-            className="w-[20%] h-full  items-center flex justify-center cursor-pointer"
-            href="http://192.168.90.43:8082/"
+            className="w-[20%] h-full  items-center flex justify-center"
+            // href="http://192.168.90.43:8082/"
             target="_blank"
             rel="noreferrer"
           >
             {/* <img src={Partner} className="w-auto hidden md:block h-[3.3vw]" /> */}
           </a>
+          // <></>
         ) : (
           <div className="w-[60%] md:w-[70%] flex items-center justify-center ">
             <MdStarRate
@@ -241,7 +254,11 @@ export default function CommonMainNavbar() {
                   className="block md:hidden flex items-center gap-[0.5vw] cursor-pointer"
                 >
                   <button
-                    onClick={(e) => e.preventDefault()}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigation("/settings");
+                      sessionStorage.setItem("tab", 4);
+                    }}
                     className="bg-[#1F487C] mr-[1vw] w-[7.5vw] h-[7.5vw] rounded-full flex items-center justify-center"
                   >
                     <p className="text-[4vw] text-white font-extrabold">
@@ -268,7 +285,7 @@ export default function CommonMainNavbar() {
 
                 <div
                   className="block md:hidden flex items-center justify-center gap-[0.5vw] cursor-pointer"
-                   onClick={() => navigation('/Login')}
+                  onClick={() => setLoginMobileIsOpen(true)}
                 >
                   <img
                     className="w-[7vw] h-[7vw] mr-[1vw]"
@@ -358,7 +375,7 @@ export default function CommonMainNavbar() {
               <>
                 <div
                   className="block md:hidden flex items-center justify-center gap-[0.5vw] cursor-pointer"
-                  onClick={() => navigation('/Login')}
+                  onClick={() => navigation("/Login")}
                 >
                   <img
                     className="w-[10vw] h-[7vw]"

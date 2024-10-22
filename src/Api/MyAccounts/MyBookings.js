@@ -1,6 +1,10 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import { BOOKING_DETAILS_STATUS, GET_BOOKING_DETAILS, GET_TICKET_TO_CANCEL } from "../../Store/type";
+import {
+  BOOKING_DETAILS_STATUS,
+  GET_BOOKING_DETAILS,
+  GET_TICKET_TO_CANCEL,
+} from "../../Store/type";
 import { string } from "yup";
 
 const api = axios.create({
@@ -76,7 +80,11 @@ export const SendBookingDetails = async (
   }
 };
 
-export const TicketViewDetails = async (busBookingId, mobileNum,setSpinning) => {
+export const TicketViewDetails = async (
+  busBookingId,
+  mobileNum,
+  setSpinning
+) => {
   console.log(busBookingId, "busBookingId");
 
   const payload = {
@@ -99,14 +107,13 @@ export const TicketViewDetails = async (busBookingId, mobileNum,setSpinning) => 
     });
     console.log(response, "locationdata TicketView");
     console.log(response.data, "Submit TicketView");
-    
+
     return response.data[0];
   } catch (error) {
     handleError(error);
     return null;
-  }
-  finally{
-  setSpinning &&  setSpinning(false)
+  } finally {
+    setSpinning && setSpinning(false);
   }
 };
 
@@ -167,27 +174,34 @@ export const sendBookingPrice = async (
     handleError(error);
   }
 };
-export const GetBookingStatusDetails =async (statusid,Number,dispatch,setSpinning) =>{
-  
-  try{
-    const response = await axios.post(`${apiUrl}/${statusid}`,{
-      mobile_number:Number
-    })
-    dispatch({type:BOOKING_DETAILS_STATUS,payload:response.data})
-    console.log(response.data,'upcomingdata');
-    return response.data
-  }
-  catch(err){
-console.log(err);
-  }
-  finally{
-  setSpinning &&  setSpinning(false)
-  }
-}
-
-export const GetCancelTicket = async (dispatch, busBookingId, mobileNum,setSpinning) => {
+export const GetBookingStatusDetails = async (
+  statusid,
+  Number,
+  dispatch,
+  setSpinning
+) => {
   try {
-    const response = await axios.post(`${apiUrl}/ticket-views`, {
+    const response = await axios.post(`${apiUrl}/${statusid}`, {
+      mobile_number: Number,
+    });
+    dispatch({ type: BOOKING_DETAILS_STATUS, payload: response.data });
+    console.log(response.data, "upcomingdata");
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  } finally {
+    setSpinning && setSpinning(false);
+  }
+};
+
+export const GetCancelTicket = async (
+  dispatch,
+  busBookingId,
+  mobileNum,
+  setSpinning
+) => {
+  try {
+    const response = await axios.post(`${apiUrl}/cancel-ticket-view`, {
       mobile_number: mobileNum,
       Booking_Id: busBookingId,
     });
@@ -195,23 +209,25 @@ export const GetCancelTicket = async (dispatch, busBookingId, mobileNum,setSpinn
     console.log(response.data, "canceldetails");
   } catch (err) {
     handleError(err);
-  }
-  finally{
-  setSpinning &&  setSpinning(false)
+  } finally {
+    setSpinning && setSpinning(false);
   }
 };
- 
-export const CancelTicket = async (dispatch,cancelvalues,setSpinning) => {
+
+export const CancelTicket = async (dispatch, cancelvalues, setSpinning) => {
   console.log("ima calling 2", cancelvalues);
   try {
     const response = await axios.post(`${apiUrl}/cancel-ticket`, cancelvalues);
-    toast.success(response.data.message)
-    GetCancelTicket(dispatch,cancelvalues.Booking_Id,cancelvalues.mobile_number);
+    toast.success(response.data.message);
+    GetCancelTicket(
+      dispatch,
+      cancelvalues.Booking_Id,
+      cancelvalues.mobile_number
+    );
   } catch (err) {
     handleError(err);
-  }
-  finally{
-   setSpinning && setSpinning(false)
+  } finally {
+    setSpinning && setSpinning(false);
   }
 };
 const handleError = (error) => {

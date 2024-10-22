@@ -9,16 +9,24 @@ const api = axios.create({
 });
 const apiUrl = process.env.REACT_APP_API_URL;
 export const PostFeedBack = async (rating, nameValue, feedback, occValue) => {
-      const occId =
-      occValue === "Business" ? 1 :
-      occValue === "General Public" ? 2 :
-      occValue === "Physically Challenged" ? 3 :
-      occValue === "Pilgrim Traveler" ? 4 :
-      occValue === "Senior Citizen" ? 5 :
-      occValue === "Student" ? 6 :
-      occValue === "Tourist" ? 7 :
-      occValue === "Corporate Traveler" ? 8 :
-     2
+  const occId =
+    occValue === "Business"
+      ? 1
+      : occValue === "General Public"
+      ? 2
+      : occValue === "Physically Challenged"
+      ? 3
+      : occValue === "Pilgrim Traveler"
+      ? 4
+      : occValue === "Senior Citizen"
+      ? 5
+      : occValue === "Student"
+      ? 6
+      : occValue === "Tourist"
+      ? 7
+      : occValue === "Corporate Traveler"
+      ? 8
+      : 2;
   try {
     const response = await axios.post(`${apiUrl}/feedback`, {
       tbs_passenger_id: sessionStorage.getItem("passenger_id"),
@@ -26,7 +34,7 @@ export const PostFeedBack = async (rating, nameValue, feedback, occValue) => {
       rating: rating,
       description: feedback,
       occupation: occValue,
-      occupation_id:occId,
+      occupation_id: occId,
     });
     toast.success(response.data);
   } catch (err) {
@@ -34,23 +42,22 @@ export const PostFeedBack = async (rating, nameValue, feedback, occValue) => {
   }
 };
 
-export const GetFeedbackById = async () =>{
-  const id = sessionStorage.getItem("passenger_id")
-  try{
-    const response = await axios.get(`${apiUrl}/passenger-details/${id}`)
-   console.log(response.data,"ddddjjjjjjdjdjhfh")
-    return response.data
+export const GetFeedbackById = async () => {
+  const id = sessionStorage.getItem("passenger_id");
+  try {
+    const response = await axios.get(`${apiUrl}/passenger-details/${id}`);
+    console.log(response.data, "ddddjjjjjjdjdjhfh");
+    return response.data;
+  } catch (err) {
+    handleError(err);
   }
-  catch(err){
-    handleError(err)
-  }
-}
+};
 
-
-export const GetFeedbacks = async (dispatch, id) => {
+export const GetFeedbacks = async (dispatch, id, setSpinner) => {
   try {
     const response = await axios.post(`${apiUrl}/feedback-By-Rating`, {
-      ratingFrom: 3,
+      ratingFrom: id || 4,
+      // ratingTo: id === 1 ? 2 : 5
       ratingTo: 5,
     });
     dispatch({ type: FEED_BACK, payload: response.data });
@@ -59,6 +66,18 @@ export const GetFeedbacks = async (dispatch, id) => {
   } catch (error) {
     handleError(error);
     // return null;
+  } finally {
+    setSpinner && setSpinner(false);
+  }
+};
+
+export const GetAverageRating = async () => {
+  try {
+    const response = await axios.get(`${apiUrl}/feedbackCount`);
+    console.log(response.data);
+    return response.data;
+  } catch (err) {
+    handleError(err);
   }
 };
 

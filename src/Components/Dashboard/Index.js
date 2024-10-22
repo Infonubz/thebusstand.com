@@ -22,7 +22,7 @@ const MainPage = () => {
           <Sidebar sidebarToggle={sidebarToggle} />
           <div className="flex flex-col flex-1">
             <div
-              className={` ${sidebarToggle ? "" : "md:pl-[18vw] ml-0"} fixed w-full mt-[0.5vw]`}
+              className={` ${sidebarToggle ? "" : "md:pl-[18vw] ml-0"} fixed w-full mt-[0.5vw] md:block hidden`}
               // style={{
               //   zIndex: 1,
               // }}

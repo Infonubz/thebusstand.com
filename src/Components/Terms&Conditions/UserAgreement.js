@@ -16,7 +16,7 @@ export const UserAgreement = () => {
 
     return (
         <>
-            <div className='bg-[white] w-full h-full rounded-xl px-[2vw]'>
+            <div className='bg-[white] w-full h-full rounded-xl px-[2vw] shadow-lg shadow-gray-300'>
                 <div className=' text-[1.5vw] text-center text-[#1F487C] font-bold pt-[1vw] pb-[0.5vw] ' >User Agreement</div>
                 <div className='Legal-Information overflow-y-scroll w-full h-[85%] px-[2vw] py-[1vw]'>
                     {/* <div>{user_agreement}</div> */}

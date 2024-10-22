@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { GetUserDetails, SendPassengerName } from "../../Api/Login/Login";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { useNavigate, useNavigation } from "react-router";
-import { Select } from "antd";
-const { Option } = Select; // Destructure Option from Select
+import { useNavigate } from "react-router";
+//import { Select } from "antd";
+//const { Option } = Select; // Destructure Option from Select
 
-const LoginProfile = ({ closeLoginModal, setLoginIsOpen }) => {
+const LoginProfile = ({ setLoginIsOpen, setLoginMobileIsOpen }) => {
+  //const [occValue, setOccValue] = useState(false);
+  const dispatch = useDispatch();
+  const navigation = useNavigate();
+  const user_id = sessionStorage.getItem("user_id");
+
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .min(2, "Name must be at least 2 characters long")
@@ -23,23 +28,29 @@ const LoginProfile = ({ closeLoginModal, setLoginIsOpen }) => {
     occupation: Yup.string().required("Occupation is required"),
   });
 
-  const [occValue, setOccValue] = useState(false);
-
-  const dispatch = useDispatch();
-  const navigation = useNavigate();
-  const user_id = sessionStorage.getItem("user_id");
-
   const handleSubmit = async (values) => {
     console.log(values, "vaaaaaaaaaaaaaaaaaaaaafddddddddddd");
-    const response = await SendPassengerName(dispatch, values, "register");
-    setLoginIsOpen(false);
+    const response = await SendPassengerName(dispatch, values, setLoginIsOpen);
     console.log(response, "responsemail");
-
-    toast.success(response.response);
     if (user_id) {
-      GetUserDetails();
+      GetUserDetails(navigation);
     }
     // closeLoginModal();
+    toast.success(response.response);
+  };
+
+  const handleMobileSubmit = async (values) => {
+    console.log(values, "i have a values");
+    const response = await SendPassengerName(
+      dispatch,
+      values,
+      setLoginMobileIsOpen
+    );
+    console.log(response);
+    toast.success(response.response);
+    if (user_id) {
+      GetUserDetails(navigation);
+    }
   };
 
   return (
@@ -176,12 +187,18 @@ const LoginProfile = ({ closeLoginModal, setLoginIsOpen }) => {
                         </option> */}
                         <option value="Business">Business</option>
                         <option value="GeneralPublic">General Public</option>
-                        <option value="PhysicallyChallenged">Physically Challenged</option>
-                        <option value="PilgrimTravelers">Pilgrim Traveler</option>
+                        <option value="PhysicallyChallenged">
+                          Physically Challenged
+                        </option>
+                        <option value="PilgrimTravelers">
+                          Pilgrim Traveler
+                        </option>
                         <option value="SeniorCitizens">Senior Citizen</option>
                         <option value="Students">Student</option>
                         <option value="Tourist">Tourist</option>
-                        <option value="CorporateTravelers">Corporate Traveler</option>
+                        <option value="CorporateTravelers">
+                          Corporate Traveler
+                        </option>
                       </Field>
                       <ErrorMessage
                         name="occupation"
@@ -216,10 +233,13 @@ const LoginProfile = ({ closeLoginModal, setLoginIsOpen }) => {
           <Formik
             initialValues={{
               name: "",
-              email: "",
+              // email: "",
+              mobile: "",
+              occupation: "",
             }}
             validationSchema={validationSchema}
             onSubmit={(values) => {
+              handleMobileSubmit(values);
               // localStorage.setItem("name", values.name);
               // localStorage.setItem("name", values.name);
             }}
@@ -253,7 +273,7 @@ const LoginProfile = ({ closeLoginModal, setLoginIsOpen }) => {
                           // });
                           localStorage.setItem("name", e.target.value);
                         }}
-                        className="customize-placeholder border-[0.1vw] border-slate-500 text-[#1F487C] text-[4vw] h-[13vw] w-full  outline-none px-[1vw]"
+                        className="customize-placeholder pl-[3vw] rounded-[1vw] border-[0.1vw] border-slate-500 text-[#1F487C] text-[4vw] h-[13vw] w-full  outline-none px-[1vw]"
                       />
                       <ErrorMessage
                         name="name"
@@ -271,21 +291,69 @@ const LoginProfile = ({ closeLoginModal, setLoginIsOpen }) => {
                     <div>
                       <Field
                         type="text"
-                        name="email"
-                        placeholder="Enter Your Mail"
-                        value={values.email}
+                        name="mobile"
+                        placeholder="Enter Your Mobile no"
+                        value={values.mobile}
                         onChange={(e) => {
                           handleChange(e);
                           // handleFormChange({
                           //   ...values,
                           //   mobile: e.target.value,
                           // });
-                          localStorage.setItem("email", e.target.value);
+                          // localStorage.setItem("email", e.target.value);
                         }}
-                        className="customize-placeholder border-[0.1vw] border-slate-500 text-[#1F487C] text-[4vw] h-[13vw] w-full  outline-none px-[1vw]"
+                        className="customize-placeholder pl-[3vw] rounded-[1vw] border-[0.1vw] border-slate-500 text-[#1F487C] text-[4vw] h-[13vw] w-full  outline-none px-[1vw]"
                       />
                       <ErrorMessage
-                        name="email"
+                        name="mobile"
+                        component="div"
+                        className="text-red-500 text-[2.8vw] absolute "
+                      />
+                    </div>
+                  </div>
+                  <div className="relative">
+                    <label className="text-[4.5vw] flex items-center font-bold opacity-50">
+                      <span className="pr-[0.5vw] font-bold">Occupation</span>
+                      <span className="text-red-600">*</span>
+                    </label>
+                    <div>
+                      <Field
+                        as="select"
+                        name="occupation"
+                        value={values.occupation}
+                        // onChange={(e) => {
+                        //   handleChange(e);
+                        //   // handleFormChange({
+                        //   //   ...values,
+                        //   //   mobile: e.target.value,
+                        //   // });
+                        //   // localStorage.setItem("email", e.target.value);
+                        // }}
+                        className="customize-placeholder pl-[2vw] rounded-[1vw] border-[0.1vw] border-slate-500 text-[#1F487C] text-[4vw] h-[13vw]  w-full outline-none px-[1vw]"
+                      >
+                        <option
+                          value=""
+                          className="text-gray-400"
+                          label="Select Occupation"
+                          disabled
+                        />
+                        <option value="Business">Business</option>
+                        <option value="GeneralPublic">General Public</option>
+                        <option value="PhysicallyChallenged">
+                          Physically Challenged
+                        </option>
+                        <option value="PilgrimTravelers">
+                          Pilgrim Traveler
+                        </option>
+                        <option value="SeniorCitizens">Senior Citizen</option>
+                        <option value="Students">Student</option>
+                        <option value="Tourist">Tourist</option>
+                        <option value="CorporateTravelers">
+                          Corporate Traveler
+                        </option>
+                      </Field>
+                      <ErrorMessage
+                        name="occupation"
                         component="div"
                         className="text-red-500 text-[2.8vw] absolute "
                       />

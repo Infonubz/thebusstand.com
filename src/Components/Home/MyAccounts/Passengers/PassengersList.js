@@ -1,107 +1,137 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Spin } from 'antd';
+import { Table, Button, Spin, Drawer } from "antd";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
-import './PassengersTable.css'
+import "./PassengersTable.css";
 import AddPassengers from "./AddPassengers";
 import { PASSENGER_DATA } from "../../../../Store/type";
 import { useDispatch, useSelector } from "react-redux";
-import { GetPassengById, GetPassengerData } from "../../../../Api/MyAccounts/Passenger";
+import {
+  GetPassengById,
+  GetPassengerData,
+} from "../../../../Api/MyAccounts/Passenger";
 import ModalPopup from "../../../MainComponenet/Modal/ModalPopup";
 import Delete from "./Delete";
 import { LoadingOutlined } from "@ant-design/icons";
+import { FaUser } from "react-icons/fa";
+import { TfiArrowCircleRight } from "react-icons/tfi";
+import { LuUserPlus2 } from "react-icons/lu";
 
-export default function PassengersList({ nextPage, passengerdata, setPassData, passData, updateData, setUpdateData ,setIsEdit,spinning}) {
-
- 
+export default function PassengersList({
+  nextPage,
+  passengerdata,
+  setPassData,
+  passData,
+  updateData,
+  setUpdateData,
+  setIsEdit,
+  spinning,
+}) {
   const getDataById = (id) => {
-    GetPassengById(id)
-  }
+    GetPassengById(id);
+  };
+
+  const [passName, setPassName] = useState();
 
   const [presentPage, setPresentPage] = useState(true);
 
   const handleOnTogglePage = () => {
-    setPresentPage(!presentPage)
-  }
+    setPresentPage(!presentPage);
+  };
 
   const handleNextPage = () => {
-    setUpdateData(null)
-    nextPage()
-    setIsEdit(false)
-  }
+    setUpdateData(null);
+    nextPage();
+    setIsEdit(false);
+  };
 
   const [deletemodalIsOpen, setDeleteModalIsOpen] = useState(false);
   const closeDeleteModal = () => {
     setDeleteModalIsOpen(false);
   };
 
-  const [deleteId, SetDeleteId]=useState(null)
+  const [mobileDelete, setMobileDelete] = useState(false);
+  const closeMobileDelete = () => {
+    setMobileDelete(false);
+  };
+
+  const [deleteId, SetDeleteId] = useState(null);
   const columns = [
     {
-      title: <div className=''>Name</div>,
+      title: <div className="">Name</div>,
       // dataIndex: 'name',
       // specify the condition of filtering result
       // here is that finding the name started with `value`
       // onFilter: (value, record) => record.name.indexOf(value) === 0,
       sorter: (a, b) => a.user_name.length - b.user_name.length,
-      sortDirections: ['descend'],
+      sortDirections: ["descend"],
       render: (row) => {
         return (
           <div className="flex justify-center">
             <h1 className="text-[1vw]">{row.user_name}</h1>
           </div>
-        )
-      }
+        );
+      },
     },
     {
-      title: <div className=''>Age</div>,
+      title: <div className="">Age</div>,
       // dataIndex: 'age',
-      defaultSortOrder: 'descend',
+      defaultSortOrder: "descend",
       sorter: (a, b) => a.age - b.age,
       render: (row) => {
         return (
           <div className="flex justify-center">
             <h1 className="text-[1vw]">{row.age}</h1>
           </div>
-        )
-      }
+        );
+      },
     },
     {
-      title: <div className=''>Gender</div>,
+      title: <div className="">Gender</div>,
       // dataIndex: 'gender',
       render: (row, index) => {
         return (
           <div className="flex justify-center">
             <h1 className="text-[1vw]">{row.gender}</h1>
           </div>
-        )
-      }
+        );
+      },
     },
     {
-      title: <div className=''>Action</div>,
-      key: 'actions',
+      title: <div className="">Action</div>,
+      key: "actions",
       render: (row, record) => {
         return (
           <div className="flex justify-center gap-[1vw] ">
-            <div className="flex items-center cursor-pointer px-[0.5vw] border-[0.1vw] border-[#1f4b7f] rounded-[0.2vw] w-[5.5vw] h-[2vw] gap-[0.5vw]"
+            <div
+              className="flex items-center cursor-pointer px-[0.5vw] border-[0.1vw] border-[#1f4b7f] rounded-[0.2vw] w-[5.5vw] h-[2vw] gap-[0.5vw]"
               onClick={() => {
                 setUpdateData(row.tbs_add_pax_id);
                 nextPage();
-                setIsEdit(true)
-              }}>
-              <div><MdOutlineModeEdit size='1.1vw' /></div>
+                setIsEdit(true);
+              }}
+            >
+              <div>
+                <MdOutlineModeEdit size="1.1vw" />
+              </div>
               <div className="text-[1vw]">Edit</div>
             </div>
-            <div className="flex items-center cursor-pointer px-[0.5vw] border-[0.1vw] border-[#1f4b7f] rounded-[0.2vw] w-[5.5vw] h-[2vw] gap-[0.5vw]" onClick={() => {
-              setDeleteModalIsOpen(true);
-              SetDeleteId(row.tbs_add_pax_id);
-            }}>
-              <div><RiDeleteBin6Line size='1.1vw' /></div>
+            <div
+              className="flex items-center cursor-pointer px-[0.5vw] border-[0.1vw] border-[#1f4b7f] rounded-[0.2vw] w-[5.5vw] h-[2vw] gap-[0.5vw]"
+              onClick={() => {
+                setDeleteModalIsOpen(true);
+                SetDeleteId(row.tbs_add_pax_id);
+                setPassName(row.user_name);
+              }}
+            >
+              <div>
+                <RiDeleteBin6Line size="1.1vw" />
+              </div>
               <div className="text-[1vw]">Delete</div>
             </div>
           </div>
-        )
+        );
       },
     },
   ];
@@ -131,63 +161,157 @@ export default function PassengersList({ nextPage, passengerdata, setPassData, p
   //     gender: 'Female',
   //   },
   // ];
-
-
-
-
+  // const getRandomColor = () => {
+  //   const letters = '0A1B4C2G3H7B9F5D';
+  //   let color = '#';
+  //   for (let i = 0; i < 6; i++) {
+  //     color += letters[Math.floor(Math.random() * 16)];
+  //   }
+  //   return color;
+  // };
+  const [bgColor, setBgColor] = useState([]);
+  const getRandomColor = () => {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r}, ${g}, ${b})`;
+  };
+  useEffect(() => {
+    const colors = Array.from(
+      { length: passengerdata?.length },
+      getRandomColor
+    );
+    setBgColor(colors);
+    //   for(let i=0;i<passengerdata?.length ;i++){
+    //     setBgColor(getRandomColor())
+    //   }
+  }, [passengerdata]);
   return (
     <>
-       <div className="flex justify-between">
-        <div className=" order-first text-[#1F487C] font-semibold font-size: 1.2vw;">Saved Passenger</div>
-        <div className="order-last text-[#1F487C] font-semibold cursor-pointer font-size-[1.2vw] flex items-center gap-[0.5vw]" onClick={handleNextPage}><IoMdAdd size='1.5vw' /> Add New Passenger</div>
-      </div>
-      <div>
-        <div className="text-[#1F487C] text-[1vw] py-[0.5vw]">You have {passengerdata?.length} Traveller(s)</div>
-      </div>
-      <div>
-      {spinning ? (
-          <div
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              // background: "rgba(0, 0, 0, 0.2)",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 1000,
-            }}
+      <div className="md:hidden block ">
+        <span className="flex justify-center mt-[2vw] mb-[4vw]  items-center">
+          <button
+            className="order-last bg-[#1F487C] text-white font-semibold font-size-[1.2vw] flex px-[4vw] items-center justify-center gap-[3.5vw] rounded-full h-[10vw]"
+            onClick={handleNextPage}
           >
-            <Spin
-              className="pl-[20vw]"
+            <LuUserPlus2 size="7vw" color="white" />
+            <p>Add New Passenger</p>
+          </button>
+        </span>
+        {/* <div className="flex items-center justify-between border-b-2 border-t-2 border-gray-300 py-2">
+      <span className="text-lg font-semibold">name</span>
+      <FaUser className="text-gray-600 text-2xl" />
+    </div> */}
+        {console.log(passengerdata, "passdataesdgfkdj,gdn")}
+        {passengerdata?.length > 0 &&
+          passengerdata.map((value, index) => {
+            // const userIconColor = getRandomColor();
+            return (
+              <div
+                className=" border-t-[.1vw] border-b-[.1vw] flex justify-between items-center px-[2vw] border-gray-300 py-[2vw] my-[2vw]"
+                key={index}
+              >
+                <div className="flex items-center gap-x-[3vw]">
+                  <FaUser
+                    className="text-white rounded-full p-[3vw] text-2xl h-[12vw] w-[12vw]"
+                    //  style={{ backgroundColor: userIconColor }}
+                    style={{ backgroundColor: bgColor[index] }}
+                  />
+                  <div className="text-[#1F487C] text-[3.8vw]">
+                    <div className="font-semibold">{value.user_name}</div>
+                    <span className="flex">
+                      <div className="mr-[1vw]">{value.gender},</div>
+                      <div>{value.age} years</div>
+                    </span>
+                  </div>
+                  {console.log(value.user_name, "dhkjdshfkjd")}
+                </div>
+                <div className="flex gap-x-[4vw] text-[#1F487C] ">
+                  <div
+                    onClick={() => {
+                      setUpdateData(value.tbs_add_pax_id);
+                      nextPage();
+                      setIsEdit(true);
+                    }}
+                  >
+                    <MdOutlineModeEdit size="5vw" />
+                  </div>
+                  <div
+                    onClick={() => {
+                      // setDeleteModalIsOpen(true);
+                      setMobileDelete(true);
+                      SetDeleteId(value.tbs_add_pax_id);
+                      setPassName(value.user_name);
+                    }}
+                  >
+                    <RiDeleteBin6Line size="5vw" />
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+      </div>
+      <div className="md:block hidden">
+        <div className="flex justify-between ">
+          <div className=" order-first text-[#1F487C] font-semibold font-size: 1.2vw;">
+            Saved Passenger
+          </div>
+          <div
+            className="order-last text-[#1F487C] font-semibold cursor-pointer font-size-[1.2vw] flex items-center gap-[0.5vw]"
+            onClick={handleNextPage}
+          >
+            <IoMdAdd size="1.5vw" /> Add New Passenger
+          </div>
+        </div>
+        <div>
+          <div className="text-[#1F487C] text-[1vw] py-[0.5vw]">
+            You have {passengerdata?.length} Traveller(s)
+          </div>
+        </div>
+        <div>
+          {spinning ? (
+            <div
               style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
                 width: "100%",
                 height: "100%",
+                // background: "rgba(0, 0, 0, 0.2)",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                zIndex: 1000,
               }}
-              spinning={spinning}
-              indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />}
+            >
+              <Spin
+                className="pl-[20vw]"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                spinning={spinning}
+                indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />}
+              />
+            </div>
+          ) : (
+            <Table
+              className="Passenger-class"
+              columns={columns}
+              // dataSource={data}
+              dataSource={passengerdata}
+              pagination={false}
+              // onChange={onChange}
+              showSorterTooltip={{
+                target: "sorter-icon",
+              }}
             />
-          </div>
-        ) : (
-        <Table
-          className="Passenger-class"
-          columns={columns}
-          // dataSource={data}
-          dataSource={passengerdata}
-          pagination={false}
-          // onChange={onChange}
-          showSorterTooltip={{
-            target: 'sorter-icon',
-          }}
-        />
-        )}
+          )}
+        </div>
       </div>
-
       <ModalPopup
         show={deletemodalIsOpen}
         onClose={closeDeleteModal}
@@ -196,14 +320,28 @@ export default function PassengersList({ nextPage, passengerdata, setPassData, p
         closeicon={false}
       >
         <Delete
-          setDeleteModalIsOpen={setDeleteModalIsOpen}
-          title={"Want to delete Passenger"}
           api={`http://192.168.90.47:4001/api/add-passenger-details/${deleteId}`}
+          title={"Want to delete Passenger"}
+          setDeleteModalIsOpen={setDeleteModalIsOpen}
+          passName={passName}
         />
       </ModalPopup>
-       
+      <Drawer
+        placement={"bottom"}
+        closable={false}
+        onClose={closeMobileDelete}
+        open={mobileDelete}
+        key={"bottom"}
+        height={"75vw"}
+        className="md:hidden block"
+      >
+        <Delete
+          api={`http://192.168.90.47:4001/api/add-passenger-details/${deleteId}`}
+          title={"Want to delete Passenger"}
+          setDeleteModalIsOpen={setMobileDelete}
+          passName={passName}
+        />
+      </Drawer>
     </>
-        
   );
 }
-

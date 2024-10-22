@@ -13,7 +13,7 @@ const apicrm = process.env.REACT_CRM_API_URL;
 
 export const GetFooterTabs = async (dispatch, id) => {
     try {
-        const response = await axios.get(`${apiUrl}/tbsInfo`);
+        const response = await axios.get(`http://192.168.90.47:4000/api/tbsInfo`);
         dispatch({ type: TBS_INFO, payload: response.data });
         console.log(response.data, "Get_Footer_Tabs");
         return response.data;

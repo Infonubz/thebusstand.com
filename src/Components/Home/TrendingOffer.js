@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import React, { useEffect, useState, useMemo } from "react";
+//import { toast } from "react-toastify";
 import ModalPopup from "../MainComponenet/Modal/ModalPopup";
-import { IoMdArrowBack } from "react-icons/io";
+// import { IoMdArrowBack } from "react-icons/io";
 
 // Corporate Travellers
 import CT1 from "../../assets/Promotion/Deals/Corporate Travellers/Frame 1.png";
@@ -59,29 +59,33 @@ import T4 from "../../assets/Promotion/Deals/Tourist/TOURIST-FRAME4.png";
 import T5 from "../../assets/Promotion/Deals/Tourist/TOURIST-FRAME5.png";
 import T6 from "../../assets/Promotion/Deals/Tourist/TOURIST-FRAME6.png";
 import T7 from "../../assets/Promotion/Deals/Tourist/TOURIST-FRAME7.png";
-import clipboard from "../../assets/clipboard.png";
-import join from "../../assets/join.png";
-import buslogo from "../../../src/assets/502-ai 1.png";
-import busstand from "../../../src/assets/busstand.png";
-import bus from "../../../src/assets/bus 1.png";
-import share from "../../../src/assets//Share.png";
-import ticket from "../../../src/assets/ticket.png";
-import profile from "../../../src/assets/Profile.png";
+// import clipboard from "../../assets/clipboard.png";
+// import join from "../../assets/join.png";
+// import buslogo from "../../../src/assets/502-ai 1.png";
+// import busstand from "../../../src/assets/busstand.png";
+// import bus from "../../../src/assets/bus 1.png";
+// import share from "../../../src/assets//Share.png";
+// import ticket from "../../../src/assets/ticket.png";
+// import profile from "../../../src/assets/Profile.png";
 import ShareButtons from "../MainComponenet/ShareButton";
-import { Link, NavLink } from "react-router-dom";
+// import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import homesky from "../../assets/BackgroundSky1.png";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
-import Footer from "./Footer";
+import Footer from "../Footer/Footer";
 import ColorCodes from "../Common/ColorCodes";
 import { GetPromotion } from "../../Api/Home/Home";
 
 const TrendingOffer = () => {
   const [showDialog, setShowDialog] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [startIndex, setStartIndex] = useState(0);
+  //const [startIndex, setStartIndex] = useState(0);
   const [currentoffers, setCurrentOffer] = useState([]);
-  const CorporateTravellers = [
+  const dispatch = useDispatch();
+  const promotionlist = useSelector((state) => state.promo_list);
+  const colors = ColorCodes();
+
+  const CorporateTravellers = useMemo(() => [
     { img: CT1, valid: "30 May", coupon: "BUCKS14" },
     { img: CT2, valid: "15 JUN", coupon: "AVIS100" },
     { img: CT3, valid: "20 JUN", coupon: "20HILTON" },
@@ -89,8 +93,9 @@ const TrendingOffer = () => {
     { img: CT5, valid: "10 JUN", coupon: "AMAZON70" },
     { img: CT6, valid: "25 May", coupon: "FEDEX15" },
     { img: CT7, valid: "18 JUN", coupon: "10UBER" },
-  ];
-  const GeneralPeople = [
+], []);
+
+const GeneralPeople = useMemo(() => [
     { img: GP1, valid: "23 JUN", coupon: "NOISE80" },
     { img: GP2, valid: "15 JUN", coupon: "SUMMERSALE10" },
     { img: GP3, valid: "21 JUN", coupon: "ICICI400" },
@@ -98,22 +103,9 @@ const TrendingOffer = () => {
     { img: GP5, valid: "18 JUN", coupon: "GPAY25" },
     { img: GP6, valid: "27 May", coupon: "NEXT149" },
     { img: GP7, valid: "19 JUN", coupon: "DISCOUNT999" },
-    { img: GP1, valid: "23 JUN", coupon: "NOISE80" },
-    { img: GP2, valid: "15 JUN", coupon: "SUMMERSALE10" },
-    { img: GP3, valid: "21 JUN", coupon: "ICICI400" },
-    { img: GP4, valid: "07 MAY", coupon: "JOS18" },
-    { img: GP5, valid: "18 JUN", coupon: "GPAY25" },
-    { img: GP6, valid: "27 May", coupon: "NEXT149" },
-    { img: GP7, valid: "19 JUN", coupon: "DISCOUNT999" },
-    { img: GP1, valid: "23 JUN", coupon: "NOISE80" },
-    { img: GP2, valid: "15 JUN", coupon: "SUMMERSALE10" },
-    { img: GP3, valid: "21 JUN", coupon: "ICICI400" },
-    { img: GP4, valid: "07 MAY", coupon: "JOS18" },
-    { img: GP5, valid: "18 JUN", coupon: "GPAY25" },
-    { img: GP6, valid: "27 May", coupon: "NEXT149" },
-    // { img: GP7, valid: "19 JUN", coupon: "DISCOUNT999" },
-  ];
-  const PhysicallyChallengedTravellers = [
+], []);
+
+const PhysicallyChallengedTravellers = useMemo(() => [
     { img: PCT1, valid: "14 JUN", coupon: "ACCESS20" },
     { img: PCT2, valid: "18 JUN", coupon: "EAR30EASE" },
     { img: PCT3, valid: "01 MAY", coupon: "THERAPY25" },
@@ -121,8 +113,9 @@ const TrendingOffer = () => {
     { img: PCT5, valid: "14 May", coupon: "ROOM20" },
     { img: PCT6, valid: "13 JUN", coupon: "25PHARM" },
     { img: PCT7, valid: "06 May", coupon: "LENS100" },
-  ];
-  const PiligrimsTravellers = [
+], []);
+
+const PiligrimsTravellers = useMemo(() => [
     { img: PT1, valid: "08 May", coupon: "SPOTI100" },
     { img: PT2, valid: "19 JUN", coupon: "JEWEL15" },
     { img: PT3, valid: "04 JUN", coupon: "10YOGOO" },
@@ -130,8 +123,9 @@ const TrendingOffer = () => {
     { img: PT5, valid: "14 JUN", coupon: "KINDLE100" },
     { img: PT6, valid: "15 May", coupon: "BREETHE20" },
     { img: PT7, valid: "19 JUN", coupon: "100BUSTAND" },
-  ];
-  const SeniorCitizens = [
+], []);
+
+const SeniorCitizens = useMemo(() => [
     { img: SC1, valid: "14 May", coupon: "DINE10" },
     { img: SC2, valid: "05 JUN", coupon: "TICKET299" },
     { img: SC3, valid: "19 JUN", coupon: "299FIT" },
@@ -139,8 +133,9 @@ const TrendingOffer = () => {
     { img: SC5, valid: "03 JUN", coupon: "MELODIA49" },
     { img: SC6, valid: "08 May", coupon: "WANDER15" },
     { img: SC7, valid: "01 JUN", coupon: "50SWIGGY" },
-  ];
-  const Student = [
+], []);
+
+const Student = useMemo(() => [
     { img: S1, valid: "15 May", coupon: "CLASS10" },
     { img: S2, valid: "07 JUN", coupon: "90UDEMY" },
     { img: S3, valid: "30 JUN", coupon: "10SWIGG50" },
@@ -148,8 +143,9 @@ const TrendingOffer = () => {
     { img: S5, valid: "17 JUN", coupon: "SKULL70" },
     { img: S6, valid: "28 May", coupon: "AMAZON65" },
     { img: S7, valid: "28 JUN", coupon: "SKYWING35" },
-  ];
-  const Tourist = [
+], []);
+
+const Tourist = useMemo(() => [
     { img: T1, valid: "15 May", coupon: "HOTELFREE" },
     { img: T2, valid: "25 JUN", coupon: "EXCURSION50" },
     { img: T3, valid: "04 JUN", coupon: "BAZAAR100" },
@@ -157,62 +153,66 @@ const TrendingOffer = () => {
     { img: T5, valid: "31 JUN", coupon: "BUSSTAND20" },
     { img: T6, valid: "01 May", coupon: "TOWN15" },
     { img: T7, valid: "23 JUN", coupon: "TOURS25" },
-  ];
-  const prevSlide = () => {
-    const newIndex = Math.max(0, startIndex - 1);
-    setStartIndex(newIndex);
-  };
-  const nextSlide = () => {
-    const newIndex = Math.min(startIndex + 1, currentoffers.length - 5);
-    setStartIndex(newIndex);
-  };
-  const dispatch = useDispatch();
-  useEffect(() => {
-    const occupation = localStorage.getItem("occupation");
-    if (occupation == "Corporate Travellers") {
-      setCurrentOffer(CorporateTravellers);
-    } else if (occupation == "General People") {
-      setCurrentOffer(GeneralPeople);
-    } else if (occupation == "Physically Challenged Travellers") {
-      setCurrentOffer(PhysicallyChallengedTravellers);
-    } else if (occupation == "Piligrims Travellers") {
-      setCurrentOffer(PiligrimsTravellers);
-    } else if (occupation == "Senior Citizens") {
-      setCurrentOffer(SeniorCitizens);
-    } else if (occupation == "Student") {
-      setCurrentOffer(Student);
-    } else if (occupation == "Tourist") {
-      setCurrentOffer(Tourist);
-    } else {
-      setCurrentOffer(GeneralPeople);
-    }
-  }, [localStorage.getItem("occupation")]);
-  const copyCouponCode = (item) => {
-    const couponCode = item?.coupon;
-    if (couponCode) {
-      navigator.clipboard
-        .writeText(couponCode)
-        .then(() => {
-          // alert('Coupon code copied to clipboard!');
-          toast.success("Coupon code copied to clipboard: ");
-        })
-        .catch((err) => {
-          // console.error('Failed to copy coupon code: ', err);
-          toast.error("Failed to copy coupon code:", err);
-        });
-    }
-  };
+], []);
+
+  // const prevSlide = () => {
+  //   const newIndex = Math.max(0, startIndex - 1);
+  //   setStartIndex(newIndex);
+  // };
+
+  // const nextSlide = () => {
+  //   const newIndex = Math.min(startIndex + 1, currentoffers.length - 5);
+  //   setStartIndex(newIndex);
+  // };
+
+  // const copyCouponCode = (item) => {
+  //   const couponCode = item?.coupon;
+  //   if (couponCode) {
+  //     navigator.clipboard
+  //       .writeText(couponCode)
+  //       .then(() => {
+  //         // alert('Coupon code copied to clipboard!');
+  //         toast.success("Coupon code copied to clipboard: ");
+  //       })
+  //       .catch((err) => {
+  //         // console.error('Failed to copy coupon code: ', err);
+  //         toast.error("Failed to copy coupon code:", err);
+  //       });
+  //   }
+  // };
+
   const closeModal = () => {
     setModalIsOpen(false);
     setShowDialog(false);
   };
-  const promotionlist = useSelector((state) => state.promo_list);
-  console.log(promotionlist, "promotionlist");
-  const colors = ColorCodes();
+
+  useEffect(() => {
+    const occupation = localStorage.getItem("occupation");
+    if (occupation === "Corporate Travellers") {
+      setCurrentOffer(CorporateTravellers);
+    } else if (occupation === "General People") {
+      setCurrentOffer(GeneralPeople);
+    } else if (occupation === "Physically Challenged Travellers") {
+      setCurrentOffer(PhysicallyChallengedTravellers);
+    } else if (occupation === "Piligrims Travellers") {
+      setCurrentOffer(PiligrimsTravellers);
+    } else if (occupation === "Senior Citizens") {
+      setCurrentOffer(SeniorCitizens);
+    } else if (occupation === "Student") {
+      setCurrentOffer(Student);
+    } else if (occupation === "Tourist") {
+      setCurrentOffer(Tourist);
+    } else {
+      setCurrentOffer(GeneralPeople);
+    }
+}, [CorporateTravellers, GeneralPeople, PhysicallyChallengedTravellers, PiligrimsTravellers, SeniorCitizens, Student, Tourist]);
 
   useEffect(() => {
     GetPromotion(dispatch);
-  }, []);
+  }, [dispatch]);
+
+  console.log(promotionlist, "promotionlist");
+
   return (
     <>
       <div
@@ -279,18 +279,17 @@ const TrendingOffer = () => {
                 // backgroundSize: "cover",
                 position: "relative",
                 overflowX: "hidden",
-                width: "100%",
               }}
             >
               <label className="absolute left-[39vw] md:left-[36vw] top-[2vw] md:top-[0.1vw] text-[6vw]  md:text-[4vw] text-white font-bold opacity-20">
                 {`Trending Offers`}
               </label>
-              <label className="absolute left-[43vw] top-[5vw] md:top-[2vw] text-[3vw]  md:text-[2vw] text-white font-bold">
+              <label className="absolute left-[43vw] top-[5vw] md:top-[2vw] text-[3vw] md:text-[2vw] text-white font-bold">
                 {"Trending Offers"}
               </label>
               <div className="cloudhome"></div>
             </div>
-            <div className="absolute top-[7vw] left-[12.5vw] bg-white w-3/4 h-[35vw] rounded-lg md:block hidden">
+            <div className="absolute top-[7vw] left-[12.5vw] bg-white w-3/4 h-[35vw] rounded-lg md:block hidden shadow-lg shadow-gray-400">
               <div className=" w-full flex px-[4vw] items-center justify-between my-[1vw] ">
                 <p
                   className={`text-[1.5vw] text-[${colors.primary}] font-bold`}
@@ -298,8 +297,8 @@ const TrendingOffer = () => {
                   Trending Offers
                 </p>
               </div>
-              <div className="max-h-[28vw] h-full  overflow-y-auto w-[100%] px-[3vw] place-items-center  items-center justify-center flex">
-                <div className="grid grid-cols-3 w-full h-full items-center flex-col  gap-[1vw] justify-center  px-[1vw]">
+              <div className="max-h-[28vw] h-full overflow-y-auto w-[100%] px-[3vw] place-items-center pt-[1vw] items-center justify-center flex">
+                <div className="grid grid-cols-3 w-full h-full items-center flex-col gap-[2.7vw] justify-center px-[1vw]">
                   {promotionlist?.map((item, index) => (
                     // <>
                     //   <div className="relative">
@@ -319,18 +318,19 @@ const TrendingOffer = () => {
                     // </>
                     <div key={index} className="relative">
                       <img
+                      alt="background_image"
                         src={`http://192.168.90.47:4000${item?.background_image}`}
                         className="w-[84vw]  h-[12vw]"
                       />
-                      <span className="absolute left-[6.1vw] top-[0vw] z-[2] ">
+                      <span className="absolute left-[5.8vw] top-[0vw] z-[2] ">
                         <div
                           className={`bg-[white] border-none w-[2vw] h-[1vw] rounded-b-full`}
                         ></div>
                       </span>
 
-                      <div className="border-dashed  border-white z-[2] h-[10vw] border-[.2vw] absolute top-[1.1vw] left-[7vw]"></div>
+                      <div className="border-dashed border-white z-[2] h-[10vw] border-[0.10vw] absolute top-[1.1vw] left-[6.7vw]"></div>
 
-                      <span className="absolute left-[6.1vw] bottom-[0vw] z-[2] ">
+                      <span className="absolute left-[5.8vw] bottom-[0vw] z-[2] ">
                         <div
                           className={`bg-[white] border-none  w-[2vw] h-[1vw] rounded-t-full `}
                         ></div>
@@ -368,7 +368,6 @@ const TrendingOffer = () => {
               // backgroundSize: "cover",
               position: "relative",
               overflowX: "hidden",
-              width: "100%",
             }}
           >
             <label className="absolute left-[26vw]  top-[2vw]  text-[8vw]   text-white font-bold opacity-20">
@@ -387,6 +386,7 @@ const TrendingOffer = () => {
                   <>
                     <div key={index} className="relative">
                       <img
+                      alt="background_image"
                         src={`http://192.168.90.47:4000${item?.background_image}`}
                         className="w-full h-full "
                       />

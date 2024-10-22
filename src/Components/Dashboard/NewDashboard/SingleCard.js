@@ -34,25 +34,29 @@ import { AiOutlineExclamationCircle } from "react-icons/ai";
 import thread from "../../../assets/thread.png";
 import sliver from "../../../assets/Silver_surfer.png";
 import SINGLECARD_BG from "../../../assets/SINGLECARD_BG.png";
-import SingleCardMobile from "./SingleCardMobile";
+//import SingleCardMobile from "./SingleCardMobile";
 import { GetUserDetails } from "../../../Api/Login/Login";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin, Space, Empty } from "antd";
 import { useNavigate } from "react-router";
 import ColorCodes from "../../Common/ColorCodes";
+import SingleBookingCardList from "../../MobileView/SingleBookingCardList";
+//import MobileFilterNavbar from "./MobileFilterNavbar";
 // import orange_travel_logo from "../../../assets/orange.png"
+
+
 export default function SingleCard() {
+
   // const [dropDown, setDropDown] = useState(0)
   const [dropDown, setDropDown] = useState(null);
-  const toggleDropDown = (index) => {
-    setDropDown(dropDown === index ? null : index);
-  };
-
+  const [spinner, setSpinner] = useState(sessionStorage.getItem("loading"));
+  const isluxury = sessionStorage.getItem("isLuxury");
   const [trackingCount, setTrackingCount] = useState();
-  console.log(trackingCount, "trackingCounttrackingCount");
-
   const buslist = useSelector((state) => state?.card_detail);
-  console.log(dropDown, "dropDowndropDowndropDown");
+  const navigation = useNavigate();
+  const user_id = sessionStorage.getItem("user_id");
+  const colors = ColorCodes();
+  //const dispatch = useDispatch();
 
   // const buslist = [
   //   {
@@ -116,28 +120,6 @@ export default function SingleCard() {
   //     rated_users: "1.7K",
   //   },
   // ];
-  const navigation = useNavigate();
-  const user_id = sessionStorage.getItem("user_id");
-  useEffect(() => {
-    if (user_id) {
-      GetUserDetails(navigation);
-    }
-  }, [user_id, navigation]);
-  //const dispatch = useDispatch();
-  // useEffect(() => {
-  //   SendTravelDetails(
-  //     dispatch,
-  //     localStorage.getItem("departure"),
-  //     localStorage.getItem("arrival")
-  //   );
-  // }, []);
-  const [spinner, setSpinner] = useState(sessionStorage.getItem("loading"));
-  useEffect(() => {
-    setSpinner(sessionStorage.getItem("loading"));
-    // setSpinner(true)
-  }, []);
-
-  console.log(sessionStorage.getItem("loading"), spinner, "spinnerrrrrrrrrrr");
 
   // setTimeout(()=>{
   //   setSpinner("true")
@@ -151,11 +133,35 @@ export default function SingleCard() {
   //   console.log("cleartiemout", 2);
   // }, 1000);
 
+  // useEffect(() => {
+  //   SendTravelDetails(
+  //     dispatch,
+  //     localStorage.getItem("departure"),
+  //     localStorage.getItem("arrival")
+  //   );
+  // }, []);
+
+  const toggleDropDown = (index) => {
+    setDropDown(dropDown === index ? null : index);
+  };
+
+  useEffect(() => {
+    setSpinner(sessionStorage.getItem("loading"));
+    // setSpinner(true)
+  }, []);
+
+  useEffect(() => {
+    if (user_id) {
+      GetUserDetails(navigation);
+    }
+  }, [user_id, navigation]);
+
   console.log(trackingCount, "logloglog");
-  const isluxury = sessionStorage.getItem("isLuxury");
   console.log(isluxury, "isluxuryisluxury");
-  const colors = ColorCodes();
   console.log(colors.background, "colorscolors");
+  console.log(sessionStorage.getItem("loading"), spinner, "spinnerrrrrrrrrrr");
+  console.log(trackingCount, "trackingCounttrackingCount");
+  console.log(dropDown, "dropDowndropDowndropDown");
 
   return (
     // <div>
@@ -562,272 +568,275 @@ export default function SingleCard() {
           <>
             {buslist?.length > 0 ? (
               buslist?.map((item, index) => (
-                <div
-                  className={`${
-                    // isluxury == "true" || isluxury == true ||
-                    item.bus_type_status === "luxury"
-                      ? "custom-gradient-luxury"
-                      : "bg-white"
-                  }  ${
-                    dropDown === `liveTracking${index}` ||
-                    dropDown === `policy${index}`
-                      ? "h-auto"
-                      : "h-[13vw]" || dropDown === `droppick${index}`
-                      ? "h-auto"
-                      : "h-[13vw]"
-                  } w-full mt-[0.5vw] flex-col rounded-[1vw] border-[0.15vw] border-[#C9C9C9]`}
-                  key={index}
-                  style={{
-                    backgroundImage: `linear-gradient(to right, #F8C550, #FFEB76, #FFE173), url(${SINGLECARD_BG})`,
-                    backgroundBlendMode: "overlay", // Add this line to blend the color and image
-                    zIndex: 2,
-                  }}
-                >
-                  <div className="grid grid-cols-2 ">
-                    <div>
-                      <div className="grid grid-rows-7  h-full w-full">
-                        <div className="row-span-3 relative  h-full w-full ">
-                          <img
-                            src={
-                              // isluxury == "true" || isluxury == true
-                              item.bus_type_status === "luxury"
-                                ? sliver
-                                : backdrop
-                            }
-                            className="h-[3.5vw] w-full"
-                            alt="theme"
-                          />
-                          <div className="absolute top-0 right-[2vw] rounded-full">
-                            {item.logos != null && (
-                              <img
-                                src={`http://192.168.90.47:4001${item.logos}`}
-                                // src={orange_travel_logo}
-                                alt="logos"
-                                className={`w-[3.5vw] h-[3.5vw] rounded-full bg-white  ${
-                                  item.bus_type_status === "luxury"
-                                    ? "shadow-lg shadow-[rgba(255, 238, 201, 0.9)]"
-                                    : "shadow-lg shadow-[rgba(238, 237, 237, 0.7)]"
-                                }`}
-                              />
-                            )}
-                          </div>
-                          <label
-                            className={`${
-                              // isluxury == "true" || isluxury == true
-                              item.bus_type_status === "luxury"
-                                ? "text-black"
-                                : " text-white"
-                            } text-[0.9vw] absolute left-[0.5vw] top-[0.1vw] underline underline-offset-2 underline-white`}
-                          >
-                            Bus Operator
-                          </label>
-                          <label
-                            className={`${
-                              // isluxury == "true" || isluxury == true
-                              item.bus_type_status === "luxury"
-                                ? "text-black"
-                                : " text-white"
-                            }  text-[1.4vw] tracking-wider font-semibold absolute left-[0.5vw] top-[1.4vw]`}
-                          >
-                            {item?.operator_name}
-                          </label>
-                        </div>
-                        <div className="row-span-4">
-                          <div className="grid grid-cols-5 h-full w-full flex-col items-center">
-                            <div className="col-span-1 flex-col flex items-center justify-center pt-[0.5vw]">
-                              <label
-                                className={`text-[1.2vw] ${
-                                  // isluxury == "true" || isluxury == true
-                                  item.bus_type_status === "luxury"
-                                    ? "text-black"
-                                    : "text-[#1F487C]"
-                                } font-semibold opacity-60`}
-                              >
-                                {dayjs(item?.departure_date_time).format(
-                                  "DD MMM"
-                                )}
-                              </label>
-                              <label
-                                className={`text-[1.7vw] ${
-                                  // isluxury == "true" || isluxury == true
-                                  item.bus_type_status === "luxury"
-                                    ? "text-black"
-                                    : "text-[#1F487C]"
-                                } font-bold`}
-                              >
-                                {dayjs(item?.departure_date_time).format(
-                                  "HH:mm"
-                                )}
-                              </label>
+                <>
+                  <div
+                    className={`${
+                      // isluxury == "true" || isluxury == true ||
+                      item.bus_type_status === "luxury"
+                        ? "custom-gradient-luxury"
+                        : "bg-white"
+                    }  ${
+                      dropDown === `liveTracking${index}` ||
+                      dropDown === `policy${index}`
+                        ? "h-auto"
+                        : "h-[13vw]" || dropDown === `droppick${index}`
+                        ? "h-auto"
+                        : "h-[13vw]"
+                    } w-full mt-[0.5vw] flex-col rounded-[1vw] border-[0.15vw] border-[#C9C9C9]`}
+                    key={index}
+                    style={{
+                      backgroundImage: `linear-gradient(to right, #F8C550, #FFEB76, #FFE173), url(${SINGLECARD_BG})`,
+                      backgroundBlendMode: "overlay", // Add this line to blend the color and image
+                      zIndex: 2,
+                    }}
+                  >
+                    <div className="grid grid-cols-2 ">
+                      <div>
+                        <div className="grid grid-rows-7  h-full w-full">
+                          <div className="row-span-3 relative  h-full w-full ">
+                            <img
+                              src={
+                                // isluxury == "true" || isluxury == true
+                                item.bus_type_status === "luxury"
+                                  ? sliver
+                                  : backdrop
+                              }
+                              className="h-[3.5vw] w-full"
+                              alt="theme"
+                            />
+                            <div className="absolute top-0 right-[2vw] rounded-full">
+                              {item.logos != null && (
+                                <img
+                                  src={`http://192.168.90.47:4001${item.logos}`}
+                                  // src={orange_travel_logo}
+                                  alt="logos"
+                                  className={`w-[3.5vw] h-[3.5vw] rounded-full bg-white  ${
+                                    item.bus_type_status === "luxury"
+                                      ? "shadow-lg shadow-[rgba(255, 238, 201, 0.9)]"
+                                      : "shadow-lg shadow-[rgba(238, 237, 237, 0.7)]"
+                                  }`}
+                                />
+                              )}
                             </div>
-                            <div className=" col-span-3 h-full relative w-full flex items-center justify-center">
-                              <div
-                                className={`${
-                                  // isluxury == "true" || isluxury == true
-                                  item.bus_type_status === "luxury"
-                                    ? "bg-black"
-                                    : "bg-[#1F487C]"
-                                } absolute left-0 h-[1vw] w-[1vw] rounded-full`}
-                              ></div>
-                              <div
-                                className={`${
-                                  // isluxury == "true" || isluxury == true
-                                  item.bus_type_status === "luxury"
-                                    ? "border-black"
-                                    : "border-[#1F487C]"
-                                } border-[0.15vw] absolute left-0 top-[2.3vw] border-dashed w-[23vw]`}
-                              ></div>
-                              <div
-                                className={`${
-                                  // isluxury == "true" || isluxury == true
-                                  item.bus_type_status === "luxury"
-                                    ? "bg-black"
-                                    : "bg-[#1F487C]"
-                                }  relative h-[2.8vw] flex w-[7.5vw] rounded-tl-[1vw] rounded-tr-[1vw] rounded-bl-[0.5vw] rounded-br-[0.5vw] text-white text-[1.2vw] font-bold justify-center items-center`}
-                                // style={{
-                                //   zIndex: 2,
-                                // }}
-                              >
-                                {item.time_duration}
+                            <label
+                              className={`${
+                                // isluxury == "true" || isluxury == true
+                                item.bus_type_status === "luxury"
+                                  ? "text-black"
+                                  : " text-white"
+                              } text-[0.9vw] absolute left-[0.5vw] top-[0.1vw] underline underline-offset-2 underline-white`}
+                            >
+                              Bus Operator
+                            </label>
+                            <label
+                              className={`${
+                                // isluxury == "true" || isluxury == true
+                                item.bus_type_status === "luxury"
+                                  ? "text-black"
+                                  : " text-white"
+                              }  text-[1.4vw] tracking-wider font-semibold absolute left-[0.5vw] top-[1.4vw]`}
+                            >
+                              {item?.operator_name}
+                            </label>
+                          </div>
+                          <div className="row-span-4">
+                            <div className="grid grid-cols-5 h-full w-full flex-col items-center">
+                              <div className="col-span-1 flex-col flex items-center justify-center pt-[0.5vw]">
+                                <label
+                                  className={`text-[1.2vw] ${
+                                    // isluxury == "true" || isluxury == true
+                                    item.bus_type_status === "luxury"
+                                      ? "text-black"
+                                      : "text-[#1F487C]"
+                                  } font-semibold opacity-60`}
+                                >
+                                  {dayjs(item?.departure_date_time).format(
+                                    "DD MMM"
+                                  )}
+                                </label>
+                                <label
+                                  className={`text-[1.7vw] ${
+                                    // isluxury == "true" || isluxury == true
+                                    item.bus_type_status === "luxury"
+                                      ? "text-black"
+                                      : "text-[#1F487C]"
+                                  } font-bold`}
+                                >
+                                  {dayjs(item?.departure_date_time).format(
+                                    "HH:mm"
+                                  )}
+                                </label>
+                              </div>
+                              <div className=" col-span-3 h-full relative w-full flex items-center justify-center">
                                 <div
                                   className={`${
                                     // isluxury == "true" || isluxury == true
                                     item.bus_type_status === "luxury"
                                       ? "bg-black"
                                       : "bg-[#1F487C]"
-                                  } absolute bottom-[-1vw] left-[0.8vw] h-[2vw] w-[2vw] rounded-full flex items-center justify-center `}
+                                  } absolute left-0 h-[1vw] w-[1vw] rounded-full`}
+                                ></div>
+                                <div
+                                  className={`${
+                                    // isluxury == "true" || isluxury == true
+                                    item.bus_type_status === "luxury"
+                                      ? "border-black"
+                                      : "border-[#1F487C]"
+                                  } border-[0.15vw] absolute left-0 top-[2.3vw] border-dashed w-[23vw]`}
+                                ></div>
+                                <div
+                                  className={`${
+                                    // isluxury == "true" || isluxury == true
+                                    item.bus_type_status === "luxury"
+                                      ? "bg-black"
+                                      : "bg-[#1F487C]"
+                                  }  relative h-[2.8vw] flex w-[7.5vw] rounded-tl-[1vw] rounded-tr-[1vw] rounded-bl-[0.5vw] rounded-br-[0.5vw] text-white text-[1.2vw] font-bold justify-center items-center`}
                                   // style={{
-                                  //   zIndex: 1,
+                                  //   zIndex: 2,
                                   // }}
                                 >
-                                  <div className="bg-white  h-[1vw] w-[1vw] rounded-full"></div>
+                                  {item.time_duration}
+                                  <div
+                                    className={`${
+                                      // isluxury == "true" || isluxury == true
+                                      item.bus_type_status === "luxury"
+                                        ? "bg-black"
+                                        : "bg-[#1F487C]"
+                                    } absolute bottom-[-1vw] left-[0.8vw] h-[2vw] w-[2vw] rounded-full flex items-center justify-center `}
+                                    // style={{
+                                    //   zIndex: 1,
+                                    // }}
+                                  >
+                                    <div className="bg-white  h-[1vw] w-[1vw] rounded-full"></div>
+                                  </div>
+                                  <div
+                                    className={`${
+                                      // isluxury == "true" || isluxury == true
+                                      item.bus_type_status === "luxury"
+                                        ? "bg-black"
+                                        : "bg-[#1F487C]"
+                                    } absolute bottom-[-1vw] right-[0.8vw] h-[2vw] w-[2vw] rounded-full flex items-center justify-center `}
+                                  >
+                                    <div className="bg-white  h-[1vw] w-[1vw] rounded-full"></div>
+                                  </div>
                                 </div>
-                                <div
-                                  className={`${
+                                <FaAngleRight
+                                  color={`${
                                     // isluxury == "true" || isluxury == true
                                     item.bus_type_status === "luxury"
-                                      ? "bg-black"
-                                      : "bg-[#1F487C]"
-                                  } absolute bottom-[-1vw] right-[0.8vw] h-[2vw] w-[2vw] rounded-full flex items-center justify-center `}
-                                >
-                                  <div className="bg-white  h-[1vw] w-[1vw] rounded-full"></div>
-                                </div>
+                                      ? "black"
+                                      : "#1F487C"
+                                  }`}
+                                  size={"1.5vw"}
+                                  className="absolute right-0"
+                                />
                               </div>
-                              <FaAngleRight
-                                color={`${
-                                  // isluxury == "true" || isluxury == true
-                                  item.bus_type_status === "luxury"
-                                    ? "black"
-                                    : "#1F487C"
-                                }`}
-                                size={"1.5vw"}
-                                className="absolute right-0"
-                              />
-                            </div>
-                            <div className="col-span-1 flex-col flex items-center justify-center pt-[0.5vw]">
-                              <label
-                                className={`text-[1.2vw] ${
-                                  // isluxury == "true" || isluxury == true
-                                  item.bus_type_status === "luxury"
-                                    ? "text-black"
-                                    : "text-[#1F487C]"
-                                } font-semibold opacity-60`}
-                              >
-                                {dayjs(item?.arrival_date_time).format(
-                                  "DD MMM"
-                                )}
-                              </label>
-                              <label
-                                className={`text-[1.7vw] ${
-                                  // isluxury == "true" || isluxury == true
-                                  item.bus_type_status === "luxury"
-                                    ? "text-black"
-                                    : "text-[#1F487C]"
-                                } font-bold`}
-                              >
-                                {dayjs(item?.arrival_date_time).format("HH:mm")}
-                              </label>
+                              <div className="col-span-1 flex-col flex items-center justify-center pt-[0.5vw]">
+                                <label
+                                  className={`text-[1.2vw] ${
+                                    // isluxury == "true" || isluxury == true
+                                    item.bus_type_status === "luxury"
+                                      ? "text-black"
+                                      : "text-[#1F487C]"
+                                  } font-semibold opacity-60`}
+                                >
+                                  {dayjs(item?.arrival_date_time).format(
+                                    "DD MMM"
+                                  )}
+                                </label>
+                                <label
+                                  className={`text-[1.7vw] ${
+                                    // isluxury == "true" || isluxury == true
+                                    item.bus_type_status === "luxury"
+                                      ? "text-black"
+                                      : "text-[#1F487C]"
+                                  } font-bold`}
+                                >
+                                  {dayjs(item?.arrival_date_time).format(
+                                    "HH:mm"
+                                  )}
+                                </label>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="">
-                      <div className="grid grid-rows-4">
-                        <div className="row-span-1">
-                          <div
-                            className={`${
-                              // isluxury == "true" || isluxury == true
-                              item.bus_type_status === "luxury"
-                                ? "text-black"
-                                : "text-[#1F487C]"
-                            } font-semibold text-[1.2vw] px-[1vw]`}
-                          >
-                            {item.bus_type}
+                      <div className="">
+                        <div className="grid grid-rows-4">
+                          <div className="row-span-1">
+                            <div
+                              className={`${
+                                // isluxury == "true" || isluxury == true
+                                item.bus_type_status === "luxury"
+                                  ? "text-black"
+                                  : "text-[#1F487C]"
+                              } font-semibold text-[1.2vw] px-[1vw]`}
+                            >
+                              {item.bus_type}
+                            </div>
                           </div>
-                        </div>
-                        <div className="row-span-3  flex flex-col">
-                          <div className="border-r-[0.2vw] border-l-[0.2vw] w-[15.5vw] h-auto border-slate-400 border-dashed relative top-[1vw]">
-                            <div className="flex flex-col items-center  border-dashed px-[1vw] gap-[1vw]">
-                              {item.seat_availability.avlFemale ? (
-                                <div className="flex gap-[0.5vw] ">
-                                  <div
-                                    className={`${
-                                      // isluxury == "true" || isluxury == true
-                                      item.bus_type_status === "luxury"
-                                        ? "text-black"
-                                        : "text-[#1F487C]"
-                                    } text-[1.1vw] `}
-                                  >
-                                    {item.seat_availability.avlFemale}
+                          <div className="row-span-3  flex flex-col">
+                            <div className="border-r-[0.2vw] border-l-[0.2vw] w-[15.5vw] h-auto border-slate-400 border-dashed relative top-[1vw]">
+                              <div className="flex flex-col items-center  border-dashed px-[1vw] gap-[1vw]">
+                                {item.seat_availability.avlFemale ? (
+                                  <div className="flex gap-[0.5vw] ">
+                                    <div
+                                      className={`${
+                                        // isluxury == "true" || isluxury == true
+                                        item.bus_type_status === "luxury"
+                                          ? "text-black"
+                                          : "text-[#1F487C]"
+                                      } text-[1.1vw] `}
+                                    >
+                                      {item.seat_availability.avlFemale}
+                                    </div>
+                                    <div
+                                      className={`${
+                                        // isluxury == "true" || isluxury == true
+                                        item.bus_type_status === "luxury"
+                                          ? "text-black"
+                                          : "text-[#1F487C]"
+                                      } text-[1.1vw] w-full`}
+                                    >
+                                      Female Seat Left
+                                    </div>
                                   </div>
-                                  <div
-                                    className={`${
-                                      // isluxury == "true" || isluxury == true
-                                      item.bus_type_status === "luxury"
-                                        ? "text-black"
-                                        : "text-[#1F487C]"
-                                    } text-[1.1vw] w-full`}
-                                  >
-                                    Female Seat Left
+                                ) : (
+                                  <div className="flex gap-[0.5vw] items-center ">
+                                    <div className="">
+                                      <AiOutlineExclamationCircle
+                                        size={"1.1vw"}
+                                        color="red"
+                                      />
+                                    </div>
+                                    <div className="text-[#FF0000] text-[1.1vw] w-full">
+                                      Female Seats Sold out
+                                    </div>
                                   </div>
-                                </div>
-                              ) : (
-                                <div className="flex gap-[0.5vw] items-center ">
-                                  <div className="">
-                                    <AiOutlineExclamationCircle
-                                      size={"1.1vw"}
-                                      color="red"
-                                    />
+                                )}
+                                <div className="flex justify-center items-center bg-[#FFC1C180] w-[13vw] rounded-full h-[3vw] gap-[1vw]">
+                                  <div>
+                                    <MdEventSeat color="#C62B2B" size="2vw" />
                                   </div>
-                                  <div className="text-[#FF0000] text-[1.1vw] w-full">
-                                    Female Seats Sold out
+                                  <div className="text-[1.2vw] text-[#C62B2B] font-bold">
+                                    {item.seat_availability.total} Seats Left
                                   </div>
-                                </div>
-                              )}
-                              <div className="flex justify-center items-center bg-[#FFC1C180] w-[13vw] rounded-full h-[3vw] gap-[1vw]">
-                                <div>
-                                  <MdEventSeat color="#C62B2B" size="2vw" />
-                                </div>
-                                <div className="text-[1.2vw] text-[#C62B2B] font-bold">
-                                  {item.seat_availability.total} Seats Left
                                 </div>
                               </div>
                             </div>
-                          </div>
-                          <div className=" w-[20vw] px-[4vw] flex items-end py-[1vw] absolute right-0">
-                            <div className="absolute top-[0.5vw] left-[3vw]">
-                              <p
-                                className={`absolute left-[3vw] top-[-1.5vw] w-[8vw]  text-[1.5vw] ${
-                                  // isluxury == "true" || isluxury == true
-                                  item.bus_type_status === "luxury"
-                                    ? "text-black"
-                                    : "text-[#1F487C]"
-                                }`}
-                              >
-                                Starting @
-                              </p>
-                              {/* <div className="relative flex items-center ">
+                            <div className=" w-[20vw] px-[4vw] flex items-end py-[1vw] absolute right-0">
+                              <div className="absolute top-[0.5vw] left-[3vw]">
+                                <p
+                                  className={`absolute left-[3vw] top-[-1.5vw] w-[8vw]  text-[1.5vw] ${
+                                    // isluxury == "true" || isluxury == true
+                                    item.bus_type_status === "luxury"
+                                      ? "text-black"
+                                      : "text-[#1F487C]"
+                                  }`}
+                                >
+                                  Starting @
+                                </p>
+                                {/* <div className="relative flex items-center ">
                             <div className="w-[10vw] h-[3vw] bg-[#1F487C] absolute top-[2vw]">
                               <p className="absolute left-[4.5vw] top-[0.5vw] font-bold text-[1.4vw] text-white">
                                 ₹ {Math.round(item.low_price[2])}
@@ -840,110 +849,110 @@ export default function SingleCard() {
                               className="w-[8vw] h-[8vw] absolute top-[-1vw] left-[0.5vw]"
                             />
                             {/* <div className="w-[9vw] h-[9vw] bg-white rounded-full flex items-center justify-center absolute top-0 right-[-21vw]"></div> */}
-                              {/* </div> */}
-                              <div className="relative flex items-center">
-                                <div
-                                  className={`absolute top-[1.2vw] left-0 w-[13vw] h-[4vw] ${
-                                    // isluxury == true || isluxury == "true"
-                                    item.bus_type_status === "luxury"
-                                      ? "bg-custom-gradient"
-                                      : "clip-trapezoid"
-                                  } `}
-                                >
-                                  <p
-                                    className={` absolute top-[0.2vw] left-[3vw] font-bold text-[2.5vw] ${
+                                {/* </div> */}
+                                <div className="relative flex items-center">
+                                  <div
+                                    className={`absolute top-[1.2vw] left-0 w-[13vw] h-[4vw] ${
                                       // isluxury == true || isluxury == "true"
                                       item.bus_type_status === "luxury"
-                                        ? "text-black"
-                                        : "text-white"
+                                        ? "bg-custom-gradient"
+                                        : "clip-trapezoid"
                                     } `}
                                   >
-                                    ₹ {Math.round(item.lowest_price.price)}
-                                  </p>
-                                  <div
-                                    className={` absolute right-0 top-[-1vw] -rotate-90 w-0 h-0 border-l-[1vw] border-l-transparent border-r-[1vw] border-r-transparent border-b-[2vw] ${
-                                      // isluxury == "true" || isluxury == true
-                                      item.bus_type_status === "luxury"
-                                        ? "border-b-[#FFEB76]"
-                                        : "border-b-white"
-                                    } `}
-                                  ></div>
-                                  <div
-                                    className={` absolute right-0 bottom-[-1vw] -rotate-90 w-0 h-0 border-l-[1vw] border-l-transparent border-r-[1vw] border-r-transparent border-b-[2vw] ${
-                                      // isluxury == "true" || isluxury == true
-                                      item.bus_type_status === "luxury"
-                                        ? "border-b-[#FFEB76]"
-                                        : "border-b-white"
-                                    } `}
-                                  ></div>
-                                  <div className="bg-[#61B00F] absolute top-1/2 right-0 transform -translate-y-1/2 w-[2vw] h-[1.5vw] flex items-center justify-center">
-                                    <div className="bg-[#2D5C05] w-[1vw] h-[1vw] rounded-full flex items-center justify-center">
-                                      <div
-                                        className={` ${
-                                          // isluxury == "true" || isluxury == true
-                                          item.bus_type_status === "luxury"
-                                            ? "bg-[#FFEB76]"
-                                            : "bg-white"
-                                        } w-[0.6vw] h-[0.6vw] rounded-full`}
-                                      ></div>
+                                    <p
+                                      className={` absolute top-[0.2vw] left-[3vw] font-bold text-[2.5vw] ${
+                                        // isluxury == true || isluxury == "true"
+                                        item.bus_type_status === "luxury"
+                                          ? "text-black"
+                                          : "text-white"
+                                      } `}
+                                    >
+                                      ₹ {Math.round(item.lowest_price.price)}
+                                    </p>
+                                    <div
+                                      className={` absolute right-0 top-[-1vw] -rotate-90 w-0 h-0 border-l-[1vw] border-l-transparent border-r-[1vw] border-r-transparent border-b-[2vw] ${
+                                        // isluxury == "true" || isluxury == true
+                                        item.bus_type_status === "luxury"
+                                          ? "border-b-[#FFEB76]"
+                                          : "border-b-white"
+                                      } `}
+                                    ></div>
+                                    <div
+                                      className={` absolute right-0 bottom-[-1vw] -rotate-90 w-0 h-0 border-l-[1vw] border-l-transparent border-r-[1vw] border-r-transparent border-b-[2vw] ${
+                                        // isluxury == "true" || isluxury == true
+                                        item.bus_type_status === "luxury"
+                                          ? "border-b-[#FFEB76]"
+                                          : "border-b-white"
+                                      } `}
+                                    ></div>
+                                    <div className="bg-[#61B00F] absolute top-1/2 right-0 transform -translate-y-1/2 w-[2vw] h-[1.5vw] flex items-center justify-center">
+                                      <div className="bg-[#2D5C05] w-[1vw] h-[1vw] rounded-full flex items-center justify-center">
+                                        <div
+                                          className={` ${
+                                            // isluxury == "true" || isluxury == true
+                                            item.bus_type_status === "luxury"
+                                              ? "bg-[#FFEB76]"
+                                              : "bg-white"
+                                          } w-[0.6vw] h-[0.6vw] rounded-full`}
+                                        ></div>
+                                      </div>
                                     </div>
+                                    <img
+                                      src={thread}
+                                      alt="thread"
+                                      className="w-[6vw] h-[7vw] absolute top-[-3.4vw] right-[-2vw] "
+                                    />
                                   </div>
-                                  <img
-                                    src={thread}
-                                    alt="thread"
-                                    className="w-[6vw] h-[7vw] absolute top-[-3.4vw] right-[-2vw] "
-                                  />
-                                </div>
-                                {/* <div class="relative w-96 h-36 bg-blue-600 clip-trapezoid"></div> */}
+                                  {/* <div class="relative w-96 h-36 bg-blue-600 clip-trapezoid"></div> */}
 
-                                <div
-                                  className={`absolute top-[-1vw] left-[-3vw] w-[4vw]  h-[8vw] ${
-                                    // isluxury == "true" || isluxury == true
-                                    item.bus_type_status === "luxury"
-                                      ? "bg-[#FFEB76]"
-                                      : "bg-white"
-                                  } rounded-r-full `}
-                                ></div>
-                                {/* <div className="absolute top-[-1vw] right-[-16vw] w-[4vw] h-[8vw] bg-white rounded-l-full flex items-center justify-center "></div> */}
-                                <div className=" absolute top-[-2vw] left-[-7.5vw] w-[9vw] h-[9vw]">
-                                  <img
-                                    src={OurLowPrice}
-                                    alt="lowPrice"
-                                    className=" "
-                                  />
+                                  <div
+                                    className={`absolute top-[-1vw] left-[-3vw] w-[4vw]  h-[8vw] ${
+                                      // isluxury == "true" || isluxury == true
+                                      item.bus_type_status === "luxury"
+                                        ? "bg-[#FFEB76]"
+                                        : "bg-white"
+                                    } rounded-r-full `}
+                                  ></div>
+                                  {/* <div className="absolute top-[-1vw] right-[-16vw] w-[4vw] h-[8vw] bg-white rounded-l-full flex items-center justify-center "></div> */}
+                                  <div className=" absolute top-[-2vw] left-[-7.5vw] w-[9vw] h-[9vw]">
+                                    <img
+                                      src={OurLowPrice}
+                                      alt="lowPrice"
+                                      className=" "
+                                    />
+                                  </div>
                                 </div>
+                                <button
+                                  className="absolute top-[6vw] left-[2vw] w-[9vw] h-[2.2vw]  bg-[#61B00F] text-white text-[1.1vw] font-semibold rounded-[0.3vw]"
+                                  onClick={() => toggleDropDown(`seat${index}`)}
+                                >
+                                  {`${
+                                    dropDown === `seat${index}`
+                                      ? "Hide Seats"
+                                      : "Show Seats"
+                                  }`}
+                                </button>
                               </div>
-                              <button
-                                className="absolute top-[6vw] left-[2vw] w-[9vw] h-[2.2vw]  bg-[#61B00F] text-white text-[1.1vw] font-semibold rounded-[0.3vw]"
-                                onClick={() => toggleDropDown(`seat${index}`)}
-                              >
-                                {`${
-                                  dropDown === `seat${index}`
-                                    ? "Hide Seats"
-                                    : "Show Seats"
-                                }`}
-                              </button>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="h-[3.5vw] w-full  pt-[0.5vw]">
-                    <div className="px-[1vw] ">
-                      <div className="flex items-center gap-[0.5vw] py-[0.5vw]">
-                        <div
-                          className={`${
-                            item.rating >= 4
-                              ? "border-[#61B00F]"
-                              : item.rating >= 2
-                              ? "border-orange-400"
-                              : "border-[#61B00F]"
-                          } border-[0.1vw] rounded-[0.4vw] flex`}
-                        >
-                          <div className="h-[1.5vw] rounded-[0.4vw]">
-                            <div
-                              className={`
+                    <div className="h-[3.5vw] w-full  pt-[0.5vw]">
+                      <div className="px-[1vw] ">
+                        <div className="flex items-center gap-[0.5vw] py-[0.5vw]">
+                          <div
+                            className={`${
+                              item.rating >= 4
+                                ? "border-[#61B00F]"
+                                : item.rating >= 2
+                                ? "border-orange-400"
+                                : "border-[#61B00F]"
+                            } border-[0.1vw] rounded-[0.4vw] flex`}
+                          >
+                            <div className="h-[1.5vw] rounded-[0.4vw]">
+                              <div
+                                className={`
                             ${
                               item.rating >= 4
                                 ? "bg-[#61B00F]"
@@ -952,212 +961,212 @@ export default function SingleCard() {
                                 : "bg-[#61B00F]"
                             }
                             flex h-[2vw] items-center  rounded-l-[0.4vw] rounded-r-none justify-center`}
-                            >
-                              <MdStarRate
-                                size={"1.2vw"}
-                                style={{
-                                  color: "white",
-                                  marginLeft: "0.5vw",
-                                }}
-                              />
-                              <p className="text-[1.1vw] font-bold text-white px-[1vw]">
-                                {/* {item.rating} */}4
-                              </p>
-                            </div>
-                          </div>
-                          <div className="h-[2vw] ">
-                            <div className="flex items-center justify-center h-full bg-white rounded-r-[0.5vw]">
-                              <IoPersonSharp
-                                size={"1vw"}
-                                className={`${
-                                  item.rating >= 4
-                                    ? "text-[#61B00F]"
-                                    : item.rating >= 2
-                                    ? "text-orange-400"
-                                    : "text-[#61B00F]"
-                                } ml-[0.5vw]`}
-                              />
-                              <p
-                                className={`text-[1.1vw] font-bold px-[1vw] ${
-                                  item.rating >= 4
-                                    ? "text-[#61B00F]"
-                                    : item.rating >= 2
-                                    ? "text-orange-400"
-                                    : "text-[#61B00F]"
-                                }`}
                               >
-                                {/* {`${item.rated_users}`} */}
-                                1.7K
-                              </p>
+                                <MdStarRate
+                                  size={"1.2vw"}
+                                  style={{
+                                    color: "white",
+                                    marginLeft: "0.5vw",
+                                  }}
+                                />
+                                <p className="text-[1.1vw] font-bold text-white px-[1vw]">
+                                  {/* {item.rating} */}4
+                                </p>
+                              </div>
+                            </div>
+                            <div className="h-[2vw] ">
+                              <div className="flex items-center justify-center h-full bg-white rounded-r-[0.5vw]">
+                                <IoPersonSharp
+                                  size={"1vw"}
+                                  className={`${
+                                    item.rating >= 4
+                                      ? "text-[#61B00F]"
+                                      : item.rating >= 2
+                                      ? "text-orange-400"
+                                      : "text-[#61B00F]"
+                                  } ml-[0.5vw]`}
+                                />
+                                <p
+                                  className={`text-[1.1vw] font-bold px-[1vw] ${
+                                    item.rating >= 4
+                                      ? "text-[#61B00F]"
+                                      : item.rating >= 2
+                                      ? "text-orange-400"
+                                      : "text-[#61B00F]"
+                                  }`}
+                                >
+                                  {/* {`${item.rated_users}`} */}
+                                  1.7K
+                                </p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="flex items-center gap-[0.5vw]">
-                          <div
-                            className="flex items-center cursor-pointer gap-[0.5vw]"
-                            onClick={() =>
-                              toggleDropDown(`liveTracking${index}`)
-                            }
-                          >
-                            <div>
-                              <MdMyLocation
-                                size="1.1vw"
-                                color={`${
-                                  // isluxury == "true" || isluxury == true
-                                  item.bus_type_status === "luxury"
-                                    ? "black"
-                                    : "#1F487C"
-                                }`}
-                              />
-                            </div>
+                          <div className="flex items-center gap-[0.5vw]">
                             <div
-                              className={`text-[1.1vw]  ${
-                                // isluxury == "true" || isluxury == true
-                                item.bus_type_status === "luxury"
-                                  ? "text-black"
-                                  : "text-[#1F487C]"
-                              }`}
+                              className="flex items-center cursor-pointer gap-[0.5vw]"
+                              onClick={() =>
+                                toggleDropDown(`liveTracking${index}`)
+                              }
                             >
-                              Live Tracking
-                            </div>
-                            <div>
-                              <BiPlug
-                                color={`${
-                                  // isluxury == "true" || isluxury == true
-                                  item.bus_type_status === "luxury"
-                                    ? "black"
-                                    : "#1F487C"
-                                }`}
-                              />
-                            </div>
-                            <div>
-                              <BiSolidBlanket
-                                color={`${
-                                  // isluxury == "true" || isluxury == true
-                                  item.bus_type_status === "luxury"
-                                    ? "black"
-                                    : "#1F487C"
-                                }`}
-                              />
-                            </div>
-                            <div>
-                              <p
-                                className={`text-[1.2vw] ${
+                              <div>
+                                <MdMyLocation
+                                  size="1.1vw"
+                                  color={`${
+                                    // isluxury == "true" || isluxury == true
+                                    item.bus_type_status === "luxury"
+                                      ? "black"
+                                      : "#1F487C"
+                                  }`}
+                                />
+                              </div>
+                              <div
+                                className={`text-[1.1vw]  ${
                                   // isluxury == "true" || isluxury == true
                                   item.bus_type_status === "luxury"
                                     ? "text-black"
                                     : "text-[#1F487C]"
                                 }`}
                               >
-                                +{item.amenities.length - 3}
-                              </p>
-                            </div>
-                            <div>
-                              {dropDown === `liveTracking${index}` ? (
-                                <IoIosArrowUp
+                                Live Tracking
+                              </div>
+                              <div>
+                                <BiPlug
                                   color={`${
                                     // isluxury == "true" || isluxury == true
                                     item.bus_type_status === "luxury"
                                       ? "black"
                                       : "#1F487C"
                                   }`}
-                                  size="1.2vw"
                                 />
-                              ) : (
-                                <IoIosArrowDown
+                              </div>
+                              <div>
+                                <BiSolidBlanket
                                   color={`${
                                     // isluxury == "true" || isluxury == true
                                     item.bus_type_status === "luxury"
                                       ? "black"
                                       : "#1F487C"
                                   }`}
-                                  size="1.2vw"
                                 />
-                              )}
+                              </div>
+                              <div>
+                                <p
+                                  className={`text-[1.2vw] ${
+                                    // isluxury == "true" || isluxury == true
+                                    item.bus_type_status === "luxury"
+                                      ? "text-black"
+                                      : "text-[#1F487C]"
+                                  }`}
+                                >
+                                  +{item.amenities.length - 3}
+                                </p>
+                              </div>
+                              <div>
+                                {dropDown === `liveTracking${index}` ? (
+                                  <IoIosArrowUp
+                                    color={`${
+                                      // isluxury == "true" || isluxury == true
+                                      item.bus_type_status === "luxury"
+                                        ? "black"
+                                        : "#1F487C"
+                                    }`}
+                                    size="1.2vw"
+                                  />
+                                ) : (
+                                  <IoIosArrowDown
+                                    color={`${
+                                      // isluxury == "true" || isluxury == true
+                                      item.bus_type_status === "luxury"
+                                        ? "black"
+                                        : "#1F487C"
+                                    }`}
+                                    size="1.2vw"
+                                  />
+                                )}
+                              </div>
                             </div>
-                          </div>
-                          <div className="h-[1vw] w-[0.1vw] bg-[#1F487C] gap-[1vw]"></div>
-                          <div
-                            className="flex items-center cursor-pointer gap-[0.5vw]"
-                            onClick={() => toggleDropDown(`droppick${index}`)}
-                          >
+                            <div className="h-[1vw] w-[0.1vw] bg-[#1F487C] gap-[1vw]"></div>
                             <div
-                              className={`${
-                                // isluxury == "true" || isluxury == true
-                                item.bus_type_status === "luxury"
-                                  ? "text-black"
-                                  : "text-[#1F487C]"
-                              }  text-[1.1vw] `}
+                              className="flex items-center cursor-pointer gap-[0.5vw]"
+                              onClick={() => toggleDropDown(`droppick${index}`)}
                             >
-                              Boarding & Dropping Points
+                              <div
+                                className={`${
+                                  // isluxury == "true" || isluxury == true
+                                  item.bus_type_status === "luxury"
+                                    ? "text-black"
+                                    : "text-[#1F487C]"
+                                }  text-[1.1vw] `}
+                              >
+                                Boarding & Dropping Points
+                              </div>
+                              <div>
+                                {dropDown === `droppick${index}` ? (
+                                  <IoIosArrowUp
+                                    color={`${
+                                      // isluxury == "true" || isluxury == true
+                                      item.bus_type_status === "luxury"
+                                        ? "black"
+                                        : "#1F487C"
+                                    }`}
+                                    size="1.2vw"
+                                  />
+                                ) : (
+                                  <IoIosArrowDown
+                                    color={`${
+                                      // isluxury == "true" || isluxury == true
+                                      item.bus_type_status === "luxury"
+                                        ? "black"
+                                        : "#1F487C"
+                                    }`}
+                                    size="1.2vw"
+                                  />
+                                )}
+                              </div>
                             </div>
-                            <div>
-                              {dropDown === `droppick${index}` ? (
-                                <IoIosArrowUp
-                                  color={`${
-                                    // isluxury == "true" || isluxury == true
-                                    item.bus_type_status === "luxury"
-                                      ? "black"
-                                      : "#1F487C"
-                                  }`}
-                                  size="1.2vw"
-                                />
-                              ) : (
-                                <IoIosArrowDown
-                                  color={`${
-                                    // isluxury == "true" || isluxury == true
-                                    item.bus_type_status === "luxury"
-                                      ? "black"
-                                      : "#1F487C"
-                                  }`}
-                                  size="1.2vw"
-                                />
-                              )}
-                            </div>
-                          </div>
-                          <div className="h-[1vw] w-[0.1vw] bg-[#1F487C] gap-[1vw]"></div>
-                          <div
-                            className="flex items-center cursor-pointer gap-[0.5vw]"
-                            onClick={() => toggleDropDown(`policy${index}`)}
-                          >
+                            <div className="h-[1vw] w-[0.1vw] bg-[#1F487C] gap-[1vw]"></div>
                             <div
-                              className={`${
-                                // isluxury == "true" || isluxury == true
-                                item.bus_type_status === "luxury"
-                                  ? "text-black"
-                                  : "text-[#1F487C]"
-                              } text-[1.1vw]`}
+                              className="flex items-center cursor-pointer gap-[0.5vw]"
+                              onClick={() => toggleDropDown(`policy${index}`)}
                             >
-                              Booking Policies
-                            </div>
-                            <div>
-                              {dropDown === `policy${index}` ? (
-                                <IoIosArrowUp
-                                  color={`${
-                                    // isluxury == "true" || isluxury == true
-                                    item.bus_type_status === "luxury"
-                                      ? "black"
-                                      : "#1F487C"
-                                  }`}
-                                  size="1.2vw"
-                                />
-                              ) : (
-                                <IoIosArrowDown
-                                  color={`${
-                                    // isluxury == "true" || isluxury == true
-                                    item.bus_type_status === "luxury"
-                                      ? "black"
-                                      : "#1F487C"
-                                  }`}
-                                  size="1.2vw"
-                                />
-                              )}
+                              <div
+                                className={`${
+                                  // isluxury == "true" || isluxury == true
+                                  item.bus_type_status === "luxury"
+                                    ? "text-black"
+                                    : "text-[#1F487C]"
+                                } text-[1.1vw]`}
+                              >
+                                Booking Policies
+                              </div>
+                              <div>
+                                {dropDown === `policy${index}` ? (
+                                  <IoIosArrowUp
+                                    color={`${
+                                      // isluxury == "true" || isluxury == true
+                                      item.bus_type_status === "luxury"
+                                        ? "black"
+                                        : "#1F487C"
+                                    }`}
+                                    size="1.2vw"
+                                  />
+                                ) : (
+                                  <IoIosArrowDown
+                                    color={`${
+                                      // isluxury == "true" || isluxury == true
+                                      item.bus_type_status === "luxury"
+                                        ? "black"
+                                        : "#1F487C"
+                                    }`}
+                                    size="1.2vw"
+                                  />
+                                )}
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    {/* {spinner == "true" ? (
+                      {/* {spinner == "true" ? (
                   <div
                     style={{
                       position: "fixed",
@@ -1181,53 +1190,60 @@ export default function SingleCard() {
                 ) : (
                   ""
                 )} */}
-                  </div>
-                  {/* {openLiveTracking === index && (
+                    </div>
+                    {/* {openLiveTracking === index && (
                 <div className="bg-gray-200 h-[10vw] w-full mt-[1vw] rounded-[0.5vw]">
                   <LiveTracking />
                 </div>
               )} */}
-                  {dropDown === `liveTracking${index}` && (
-                    <div className="bg-gray-200 h-auto w-full mt-[1vw] rounded-[0.5vw] mb-[1vw]">
-                      <LiveTracking
-                        trackingCount={trackingCount}
-                        setTrackingCount={setTrackingCount}
-                        amenities={item.amenities}
-                        busType={item.bus_type_status}
-                      />
-                    </div>
-                  )}
-                  {dropDown === `droppick${index}` && (
-                    <div className="bg-gray-200 h-auto w-full mt-[1vw] rounded-[0.5vw] mb-[1vw]">
-                      <DropPick
-                        index={index}
-                        boarding={item.boarding}
-                        dropping={item.dropping}
-                        busType={item.bus_type_status}
-                      />
-                    </div>
-                  )}
-                  {dropDown === `policy${index}` && (
-                    <div className="bg-gray-200 h-auto w-full mt-[1vw] rounded-[0.5vw] mb-[1vw]">
-                      <Policy
-                        policies={item.cancellation_policy}
-                        price={item.lowest_price}
-                        busType={item.bus_type_status}
-                      />
-                    </div>
-                  )}
-                  {dropDown === `seat${index}` && (
-                    <div className="">
-                      <BusSeatsLayout
-                        busid={item.bus_id}
-                        busdroping={item.dropping}
-                        busboarding={item.boarding}
-                        busdetails={item}
-                        setDropDown={setDropDown}
-                      />
-                    </div>
-                  )}
-                </div>
+                    {dropDown === `liveTracking${index}` && (
+                      <div className="bg-gray-200 h-auto w-full mt-[1vw] rounded-[0.5vw] mb-[1vw]">
+                        <LiveTracking
+                          trackingCount={trackingCount}
+                          setTrackingCount={setTrackingCount}
+                          amenities={item.amenities}
+                          busType={item.bus_type_status}
+                        />
+                      </div>
+                    )}
+                    {dropDown === `droppick${index}` && (
+                      <div className="bg-gray-200 h-auto w-full mt-[1vw] rounded-[0.5vw] mb-[1vw]">
+                        <DropPick
+                          index={index}
+                          boarding={item.boarding}
+                          dropping={item.dropping}
+                          busType={item.bus_type_status}
+                        />
+                      </div>
+                    )}
+                    {dropDown === `policy${index}` && (
+                      <div className="bg-gray-200 h-auto w-full mt-[1vw] rounded-[0.5vw] mb-[1vw]">
+                        <Policy
+                          policies={item.cancellation_policy}
+                          price={item.lowest_price}
+                          busType={item.bus_type_status}
+                        />
+                      </div>
+                    )}
+                    {dropDown === `seat${index}` && (
+                      <div className="">
+                        <BusSeatsLayout
+                          busid={item.bus_id}
+                          busdroping={item.dropping}
+                          busboarding={item.boarding}
+                          busdetails={item}
+                          setDropDown={setDropDown}
+                        />
+                      </div>
+                    )}
+                  </div>
+                  {/* <div className="md:hidden block ">
+                    <SingleBookingCardList
+                      busboarding={item.boarding}
+                      busdroping={item.dropping}
+                    />
+                  </div> */}
+                </>
               ))
             ) : (
               <div className="flex items-center justify-center mt-[5vw]">
@@ -1244,9 +1260,14 @@ export default function SingleCard() {
           </>
         )}
       </div>
-
-      <div className="md:hidden block">
-        <SingleCardMobile />
+      <div className="md:hidden block ">
+        {/* <SingleCardMobile /> */}
+        {/* <Advertisement /> */}
+        {/* <MobileFilterNavbar /> */}
+        <SingleBookingCardList
+        // busboarding={item.boarding}
+        // busdroping={item.dropping}
+        />
       </div>
     </div>
   );

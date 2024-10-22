@@ -9,6 +9,8 @@ const api = axios.create({
 });
 
 const apiUrl = process.env.REACT_APP_API_URL;
+const crmUrl = process.env.REACT_CRM_API_URL;
+
 export const GetOffersOccupation = async (dispatch, id, setSpinning) => {
   console.log(id, "iddddddddddddddddd");
 

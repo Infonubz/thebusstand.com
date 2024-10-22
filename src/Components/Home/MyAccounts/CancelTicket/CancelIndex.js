@@ -31,7 +31,7 @@ const CancelIndex = () => {
   
  
   return (
-    <div className="w-full h-auto bg-white rounded-[.9vw] border-b-[0.1vw] ">
+    <div className="w-full md:h-[35vw] h-[60vw] bg-white rounded-[2vw] md:rounded-[.9vw] border-b-[0.1vw] ">
       <Formik
         initialValues={{
           ticketNumber: "",
@@ -43,16 +43,17 @@ const CancelIndex = () => {
         {() => (
           <Form>
             <div >
-              <div className="text-center text-[#1F487C] p-[1vw] font-bold text-[1.5vw]">
+              <div className="text-center text-[#1F487C] p-[1vw] font-bold text-[4.2vw] md:text-[1.5vw] pt-[2vw]">
                 Cancel Your Ticket
               </div>
-              <div className="flex justify-evenly mt-[2vw]">
-                <div className="relative">
+              <div className={`grid grid-rows-3 gap-y-[6vw] md:gap-y-[0vw] justify-center md:flex md:justify-evenly mt-[5vw] md:mt-[2vw]`}>
+              <div className={`relative`}>
                   <Field
                     name="ticketNumber"
                     placeholder="Ticket Number *"
                     type="text"
-                    className="border-[.1vw] rounded-[.5vw] w-[23vw] text-[#1F487C] text-[1.2vw] h-[3vw] border-gray-400 pl-[1vw] placeholder-[#1F487C]"
+                     className={`placeholder:text-[3.6vw] md:placeholder:text-[1.2vw] border-[.1vw] rounded-[1.5vw] md:rounded-[.5vw] w-[70vw] h-[10vw] 
+                      md:w-[23vw] md:h-[3vw] border-gray-400 pl-[1vw] text-[#1F487C] placeholder-[#1F487C]`}
                   />
                   <ErrorMessage
                     name="ticketNumber"
@@ -60,12 +61,13 @@ const CancelIndex = () => {
                     className="text-red-600 text-[.9vw] absolute top-full left-0 mt-1"
                   />
                 </div>
-                <div className="relative">
+                <div className={`relative`}>
                   <Field
                     name="phoneNumber"
                     placeholder="Phone Number *"
                     type="text"
-                    className="border-[.1vw] rounded-[.5vw] w-[23vw] text-[#1F487C] text-[1.2vw] h-[3vw] border-gray-400 pl-[1vw] placeholder-[#1F487C]"
+                    className={`placeholder:text-[3.6vw] md:placeholder:text-[1.2vw] border-[.1vw] rounded-[1.5vw] md:rounded-[.5vw] w-[70vw] h-[10vw] 
+                      md:w-[23vw] md:h-[3vw] border-gray-400 pl-[1vw] text-[#1F487C] placeholder-[#1F487C]`}
                   />
                   <ErrorMessage
                     name="phoneNumber"
@@ -73,13 +75,15 @@ const CancelIndex = () => {
                     className="text-red-600 text-[.9vw] absolute top-full left-0 mt-1"
                   />
                 </div>
+                <div className={`relative flex justify-center`}>
                 <button
                   type="submit"
-               
-                  className="bg-[#1F487C] text-[1.3vw] text-white rounded-[1.5vw] w-[11vw] h-[3vw]"
+                  className={`bg-[#1F487C] text-white rounded-[5vw] w-[25vw] h-[10vw] md:w-[11vw] md:h-[3vw]`}
                 >
                   submit
                 </button>
+                </div>
+                
               </div>
               {/* <div className="flex justify-center gap-x-[5vw] mt-[3vw]">
               <button

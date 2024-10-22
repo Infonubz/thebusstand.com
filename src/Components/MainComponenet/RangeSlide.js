@@ -3,9 +3,14 @@ import { Slider, InputNumber, Row, Col, ConfigProvider } from "antd";
 import { GoDash } from "react-icons/go";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
-const RangeSlide = ({ value, setValue, boolean, setBoolean, setPriceRange, priceRange }) => {
-  
-
+const RangeSlide = ({
+  value,
+  setValue,
+  boolean,
+  setBoolean,
+  setPriceRange,
+  priceRange,
+}) => {
   const onSliderChange = (value) => {
     setValue(value);
     const [min, max] = value;
@@ -51,11 +56,13 @@ const RangeSlide = ({ value, setValue, boolean, setBoolean, setPriceRange, price
         <div className="px-[0.6vw]">
           <div className="grid grid-cols-4 justify-between items-center">
             <div className="col-span-3">
-              <h1 className="text-[1.1vw] font-bold pt-[0.3vw]">Price Range</h1>
+              <h1 className="text-[4.5vw] md:text-[1.1vw] font-bold md:pt-[0.3vw]">
+                Price Range
+              </h1>
             </div>
             <div className="flex items-center">
               <h3
-                className="text-[0.8vw] pr-[0.4vw] pl-[0.3vw] float-end text-gray-500 cursor-pointer"
+                className="text-[3.5vw] md:text-[0.8vw] pr-[0.4vw] pl-[0.3vw] float-end text-gray-500 cursor-pointer"
                 onClick={priceclear}
               >
                 CLEAR
@@ -69,19 +76,38 @@ const RangeSlide = ({ value, setValue, boolean, setBoolean, setPriceRange, price
                     })
                   }
                 >
-                  <IoIosArrowUp size={"1vw"} className="cursor-pointer" />
+                  <IoIosArrowUp
+                    size={"1vw"}
+                    className="cursor-pointer md:block hidden"
+                  />
+                  <IoIosArrowUp
+                    size={"4vw"}
+                    className="cursor-pointer block md:hidden"
+                  />
                 </button>
               ) : (
-                <IoIosArrowDown
-                  size={"1vw"}
-                  className="cursor-pointer"
-                  onClick={() =>
-                    setBoolean({
-                      ...boolean,
-                      price: !boolean?.price,
-                    })
-                  }
-                />
+                <span className="">
+                  <IoIosArrowDown
+                    size={"1vw"}
+                    className="cursor-pointer md:block hidden"
+                    onClick={() =>
+                      setBoolean({
+                        ...boolean,
+                        price: !boolean?.price,
+                      })
+                    }
+                  />
+                  <IoIosArrowDown
+                    size={"5vw"}
+                    className="cursor-pointer block md:hidden"
+                    onClick={() =>
+                      setBoolean({
+                        ...boolean,
+                        price: !boolean?.price,
+                      })
+                    }
+                  />
+                </span>
               )}
             </div>
           </div>
@@ -91,7 +117,8 @@ const RangeSlide = ({ value, setValue, boolean, setBoolean, setPriceRange, price
                 <div className="">
                   <Col
                     span={12}
-                    style={{ marginTop: "1vw", fontSize: "1.2vw" }}
+                    className="md:text-[1.2vw] text-[4vw] pt-[4vw] md:pt-[0vw]"
+                    style={{ marginTop: "1vw" }}
                   >
                     {`₹${value[0]}`}
                   </Col>
@@ -99,18 +126,20 @@ const RangeSlide = ({ value, setValue, boolean, setBoolean, setPriceRange, price
                 <div>
                   <Col
                     span={12}
-                    style={{ marginTop: "1vw", fontSize: "1.2vw" }}
+                    className="md:text-[1.2vw] text-[4vw] pt-[4vw] md:pt-[0vw]"
+                    style={{ marginTop: "1vw" }}
                   >
                     {`₹${value[1]}`}
                   </Col>
                 </div>
               </div>
-              <Col span={24} style={{ fontSize: "1.2vw" }}>
+              <Col span={24} className="md:text-[1.2vw] text-[3vw]">
                 <Slider
                   range
                   min={0}
                   max={3000}
                   value={value}
+                  className="ml-[4vw] mr-[4vw] md:ml-[1vw] md:mr-[1vw]"
                   onChange={onSliderChange}
                   tooltip={{
                     formatter: formatValue,
@@ -130,40 +159,51 @@ const RangeSlide = ({ value, setValue, boolean, setBoolean, setPriceRange, price
                   // }}
                 />
               </Col>
-              <div className="flex w-full items-center justify-center">
+              <div className="flex w-full items-center justify-evenly md:justify-center mb-[3vw] md:mb-[0.1vw]">
                 <div>
                   <Col>
-                    <p className="text-[1.1vw] text-[#444444]">Min. Price</p>
+                    <p className="text-[3.5vw] md:text-[1.1vw] text-[#444444]">
+                      Min. Price
+                    </p>
                     <InputNumber
                       min={0}
                       max={3000}
                       value={value[0]}
                       onChange={(val) => onInputChange(0, val)}
                       formatter={(value) => `₹${value}`}
+                      className="h-[8.5vw] w-[20vw] md:h-[2.6vw] md:w-[7vw] text-[4vw] md:text-[1.2vw]"
                       style={{
-                        width: "100%",
                         color: "#FF0000",
-                        fontSize: "1.2vw",
                       }}
                     />
                   </Col>
                 </div>
-                <div className="mt-[1.5vw]">
-                  <GoDash size="1.2vw" color="#9B9B9B" />
+                <div className="mt-[4vw] md:mt-[1.5vw]">
+                  <GoDash
+                    className="md:block hidden"
+                    size="1.2vw"
+                    color="#9B9B9B"
+                  />
+                  <GoDash
+                    className="block md:hidden"
+                    size="5vw"
+                    color="#9B9B9B"
+                  />
                 </div>
                 <div>
                   <Col>
-                    <p className="text-[1.1vw]  text-[#444444]">Max. Price</p>
+                    <p className="text-[3.5vw] md:text-[1.1vw] text-[#444444]">
+                      Max. Price
+                    </p>
                     <InputNumber
                       min={0}
                       max={3000}
                       value={value[1]}
+                      className="h-[8.5vw] w-[20vw] md:h-[2.6vw] md:w-[7vw] text-[4vw] md:text-[1.2vw]"
                       onChange={(val) => onInputChange(1, val)}
                       formatter={(value) => `₹${value}`}
                       style={{
-                        width: "100%",
                         color: "#9B9B9B",
-                        fontSize: "1.2vw",
                       }}
                     />
                   </Col>

@@ -9,8 +9,19 @@ import { GrLocation } from "react-icons/gr";
 import { CgArrowsExchangeV } from "react-icons/cg";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
 import { useNavigate } from "react-router";
+import { Pagination } from "antd";
 
 const Routes = () => {
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedLetter, setSelectedLetter] = useState("A");
+  // const [startIndex, setStartIndex] = useState(0);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentData, setCurrentData] = useState([]);
+  const ITEMS_PER_PAGE = 12;
+  const navigation = useNavigate();
+
   const data = [
     { id: 1, name: "A" },
     { id: 2, name: "B" },
@@ -69,11 +80,30 @@ const Routes = () => {
     { id: 26, name: "Kanyakumari" },
   ];
 
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [selectedLetter, setSelectedLetter] = useState("A");
-  // const [startIndex, setStartIndex] = useState(0);
+  const styles = {
+    inputContainer: {
+      display: "flex",
+      alignItems: "center",
+      width: "75vw",
+      border: "1px solid #ccc",
+      borderRadius: "4px",
+      padding: "5px",
+    },
+    icon: {
+      marginRight: "8px",
+      color: "#1F487C",
+      height: "6vw",
+      width: "6vw",
+    },
+    input: {
+      border: "none",
+      outline: "none",
+      flex: 1,
+      width: "100%",
+      fontSize: "1rem",
+    },
+  };
 
-  const navigation = useNavigate();
 
   const handleNextClick = () => {
     setSelectedIndex((prevIndex) => {
@@ -81,25 +111,40 @@ const Routes = () => {
       return nextIndex;
     });
   };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    setCurrentData(routesData?.slice(startIndex, endIndex));
+  }, [currentPage]);
+
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+
   console.log(selectedLetter, "selectedLetter");
+
   return (
     <>
-      <div className="">
+      <div className="h-screen bg-[#E5FFF1]">
         <div className="">
           <CommonMainNavbar />
         </div>
         <div
-          className="relative h-[42vw] bg-[#E5FFF1]"
+          className="relative h-auto md:h-[42vw]"
           style={{
             zIndex: 1,
           }}
         >
           {/* <img src={homesky} className="w-full h-[10vw] bg-[#2B8EE4]" /> */}
           <div
-            className=" h-[10vw] overflow-x-hidden"
+            className="md:h-[10vw] h-[20vw] overflow-x-hidden"
             style={{
               backgroundImage: `url(${homesky})`,
               overflow: "hidden",
@@ -109,13 +154,13 @@ const Routes = () => {
               width: "100%",
             }}
           >
-            <div className="absolute inset-0 flex justify-center opacity-20">
+            <div className="md:block hidden pl-[40vw] absolute inset-0 flex justify-center opacity-20">
               <span className="text-[4vw] text-white font-bold">
                 Routes List
               </span>
             </div>
             <div className="absolute grid grid-cols-12 gap-[7.5vw]">
-              <label className="absolute left-[4vw] top-[1.5vw] text-[1.4vw] z-[1] text-white font-bold">
+              {/* <label className="md-block hidden absolute left-[4vw] top-[1.5vw] text-[1.4vw] z-[1] text-white font-bold">
                 <span
                   className="pr-[0.5vw] underline-offset-2 cursor-pointer "
                   onClick={() => navigation("/dashboard")}
@@ -123,9 +168,9 @@ const Routes = () => {
                   Dashboard
                 </span>
                 {`> Routes`}
-              </label>
+              </label> */}
               <div className="cloudhome"></div>
-              <div className="col-start-6 col-end-12 pl-[6vw] text-[2.5vw] pt-[1vw] text-white font-bold">
+              <div className="col-start-6 col-end-12 md:pl-[6vw] text-[5vw] md:text-[2.5vw] pt-[2vw] md:pt-[1vw] text-white font-bold">
                 Routes List
               </div>
             </div>
@@ -133,17 +178,17 @@ const Routes = () => {
           </div>
 
           <div className="grid grid-cols-6 gap-[18vw]">
-            <div className="col-span-1">
+            <div className="md:block hidden col-span-1">
               <div className="absolute top-[7vw] px-[2vw] flex flex-col">
-                <div className="bg-white w-[20vw] flex flex-col h-auto rounded-[1vw] py-[1vw]">
+                <div className="bg-white w-[19vw] flex flex-col h-auto rounded-[1vw] py-[1vw] shadow-lg shadow-gray-300">
                   <div className="flex">
-                    <p className="pl-[2.5vw] text-[1.5vw] font-bold text-[#1F487C] text-center justify-center items-center">
+                    <p className="pl-[2vw] text-[1.5vw] font-bold text-[#1F487C] text-center justify-center items-center">
                       Search for Bus Routes
                     </p>
                   </div>
 
                   <div className="relative">
-                    <div className="relative pl-[1.5vw] pt-[1.5vw]">
+                    <div className="relative pl-[1vw] pt-[1.5vw]">
                       <Input
                         size="large"
                         className="p-[0.5vw] w-[17vw]"
@@ -160,7 +205,7 @@ const Routes = () => {
                         }
                       />
                     </div>
-                    <div className="relative pl-[1.5vw] pt-[0.5vw]">
+                    <div className="relative pl-[1vw] pt-[0.5vw]">
                       <Input
                         size="large"
                         className="p-[0.5vw] w-[17vw]"
@@ -178,7 +223,7 @@ const Routes = () => {
                       />
                     </div>
                   </div>
-                  <div className="absolute left-[18.5vw] text-right items-end pt-[7vw] z-10">
+                  <div className="absolute left-[18vw] text-right items-end pt-[6vw] z-10">
                     <button className="bg-[#1F487C] px-[0.2vw] text-white text-[1.4vw] justify-end h-[4.3vh] gap-[0.5vw] items-end rounded-[0.5vw]">
                       <CgArrowsExchangeV
                         style={{
@@ -198,8 +243,11 @@ const Routes = () => {
               </div>
             </div>
             <div className="col-span-5">
-              <div className="absolute top-[7vw] px-[3vw] flex flex-col">
-                <div className="bg-white border-solid border px-[1vw] border-b-[#1F487C] w-[74.3vw] flex flex-row h-[4vw] relative rounded-t-[1vw]">
+              <div className="md:block hidden absolute top-[7vw] px-[3vw] flex flex-col">
+                <div
+                  className="bg-white border-solid border px-[1vw] border-b-[#1F487C] w-[74.3vw] 
+                flex flex-row h-[4vw] relative rounded-t-[1vw]"
+                >
                   <div className="flex flex-row gap-[0.2vw] font-bold text-center">
                     {data.map((item, index) => (
                       <div key={item.id} className="flex items-center">
@@ -220,7 +268,7 @@ const Routes = () => {
                     ))}
                   </div>
 
-                  <div className="flex-1 text-[1.1vw] text-[#1F487C] pt-[0.7vw]">
+                  <div className="flex-1 text-[1.1vw] text-[#1F487C] pt-[0.7vw] pl-[1vw]">
                     <button
                       type="button"
                       className="flex items-center px-[0.3vw] text-[#1F487C] text-[1vw] border-solid border border-[#1f477ca8] justify-center h-[2.5vw] gap-[0.5vw] rounded-lg"
@@ -240,13 +288,106 @@ const Routes = () => {
                   </div>
                 </div>
               </div>
-              <div className="absolute top-[10vw] px-[3vw]">
-                <div className="bg-white w-[74.3vw] h-[27vw] relative rounded-[1vw]">
-                  <div className="grid grid-flow-col grid-rows-8 px-[2vw] mt-[2vw]">
-                    {routesData?.map((item, index) => (
+              <div className={`absolute top-[10vw] px-[3vw]`}>
+                <div
+                  className={`bg-white md:w-[74.3vw] w-[94vw] h-[87vh] md:h-[27vw] relative rounded-[3vw] md:rounded-[1vw] shadow-lg shadow-gray-300`}
+                >
+                  <div
+                    className={`block md:hidden flex flex-row overflow-y-auto gap-[2vw] font-bold text-center px-[2vw] pt-[2vw] scrollbar-hide`}
+                  >
+                    {data.map((item, index) => (
+                      <div key={item.id} className="flex items-center">
+                        <button
+                          className={`
+          text-[4.5vw] text-[#1F487C] h-[7vw] w-[7vw] cursor-pointer text-center justify-center
+          ${
+            selectedIndex === index
+              ? "text-white bg-[#1F487C] text-center justify-center]"
+              : ""
+          }
+        `}
+                          onClick={() => {
+                            setSelectedIndex(index);
+                            setSelectedLetter(item.name);
+                          }}
+                        >
+                          <div className="">{item.name}</div>
+                        </button>
+                        <div className="h-[5vw] border-solid border ml-[1.5vw] border-l-[#1f477c49]"></div>
+                      </div>
+                    ))}
+                  </div>
+                  <div
+                    className={`block md:hidden border border-1 border-[#1F487C] w-[88vw] flex flex-col h-auto rounded-[2vw] mt-[6vw] ml-[3vw] py-[2vw]`}
+                  >
+                    <div className="flex">
+                      <p className="pl-[21vw] text-[4.2vw] font-bold text-[#1F487C] text-center justify-center items-center">
+                        Search for Bus Routes
+                      </p>
+                    </div>
+
+                    <div className="relative p-[3vw]">
+                      <div className="relative pl-[3vw] pt-[3vw]">
+                        <div style={styles.inputContainer}>
+                          <LuSend style={styles.icon} />
+                          <input
+                            type="text"
+                            placeholder="Leaving from"
+                            className="placeholder:text-[4vw] placeholder:text-[#1F487C]"
+                            style={styles.input}
+                          />
+                        </div>
+                      </div>
+                      <div className="relative pl-[3vw] pt-[3vw]">
+                        <div style={styles.inputContainer}>
+                          <GrLocation style={styles.icon} />
+                          <input
+                            type="text"
+                            placeholder="Going to"
+                            className="placeholder:text-[4vw] placeholder:text-[#1F487C]"
+                            style={styles.input}
+                          />
+                        </div>
+                        {/* <Input
+                          className="p-[1vw] w-[75vw] h-[9vw]"
+                          placeholder="Going to"
+                          prefix={
+                            <GrLocation
+                              style={{
+                                color: "#1F487C",
+                                height: "6vw",
+                                width: "6vw",
+                                paddingRight: "2vw",
+                              }}
+                            />
+                          }
+                        /> */}
+                      </div>
+                    </div>
+                    <div className="absolute left-[73vw] text-right items-end top-[35vw] z-10">
+                      <button className="bg-[#1F487C] px-[0.2vw] text-white text-[4vw] justify-end w-[9vw] h-[4vh] gap-[0.5vw] items-end rounded-[2vw]">
+                        <CgArrowsExchangeV
+                          style={{
+                            color: "#f9fafc",
+                            height: "7vw",
+                            width: "8.5vw",
+                          }}
+                        />
+                      </button>
+                    </div>
+                    <div className="flex pl-[22vw] pt-[2vw]">
+                      <button className="bg-[#1F4B7F] px-[3vw] text-white text-[4vw] justify-center w-[40vw] h-[5vh] gap-[0.5vw] items-center rounded-[2vw]">
+                        SEARCH
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    className={`grid grid-flow-row grid-cols-2 md:grid-flow-col md:grid-rows-8 px-[2vw] mt-[7vw] md:mt-[2vw]`}
+                  >
+                    {currentData?.map((item, index) => (
                       <div className="flex items-center" key={index}>
                         <div
-                          className="text-[#1F487C] font-bold text-[1.1vw] p-[0.7vw]"
+                          className="text-[#1F487C] font-bold text-[3.5vw] ml-[6vw] p-[3vw] md:text-[1.1vw] md:p-[0.7vw]"
                           key={index}
                         >
                           {item?.name}
@@ -254,12 +395,22 @@ const Routes = () => {
                       </div>
                     ))}
                   </div>
+                  <div className="block md:hidden flex ml-[20vw] bottom-[8vw] fixed">
+                    <Pagination
+                      current={currentPage}
+                      total={routesData.length}
+                      pageSize={ITEMS_PER_PAGE}
+                      onChange={handlePageChange}
+                      showSizeChanger
+                      showQuickJumper
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="">
+        <div className="md:block hidden">
           <Footer1 />
         </div>
       </div>
