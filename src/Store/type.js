@@ -28,7 +28,7 @@ export const FEED_BACK = "FEED_BACK";
 export const SEND_OTP = "SEND_OTP";
 export const BOOKING_DETAILS_STATUS = "BOOKING_DETAILS_STATUS";
 export const GET_TICKET_TO_CANCEL = "GET_TICKET_TO_CANCEL";
-export const GET_THEME_COLORS ="GET_THEME_COLORS"
-export const SEND_APP_LINK ="SEND_APP_LINK"
-export const MOB_ADS_LIST = "MOB_ADS_LIST"
- 
+export const GET_THEME_COLORS = "GET_THEME_COLORS";
+export const SEND_APP_LINK = "SEND_APP_LINK";
+export const MOB_ADS_LIST = "MOB_ADS_LIST";
+export const FAQ_LIST = "FAQ_LIST";

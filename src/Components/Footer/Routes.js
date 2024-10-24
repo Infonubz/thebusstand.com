@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import homesky from "../../assets/homesky.png";
+import homesky from "../../assets/BackgroundSky1.png";
 import Footer1 from "./Footer";
 import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 import "../../App.css";
+import "../Home/test.css";
 import { LuSend } from "react-icons/lu";
 import { Input } from "antd";
 import { GrLocation } from "react-icons/gr";
@@ -12,7 +13,6 @@ import { useNavigate } from "react-router";
 import { Pagination } from "antd";
 
 const Routes = () => {
-
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedLetter, setSelectedLetter] = useState("A");
   // const [startIndex, setStartIndex] = useState(0);
@@ -104,7 +104,6 @@ const Routes = () => {
     },
   };
 
-
   const handleNextClick = () => {
     setSelectedIndex((prevIndex) => {
       const nextIndex = prevIndex !== null ? (prevIndex + 1) % data.length : 0;
@@ -122,11 +121,9 @@ const Routes = () => {
     setCurrentData(routesData?.slice(startIndex, endIndex));
   }, [currentPage]);
 
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
 
   console.log(selectedLetter, "selectedLetter");
 
@@ -154,27 +151,10 @@ const Routes = () => {
               width: "100%",
             }}
           >
-            <div className="md:block hidden pl-[40vw] absolute inset-0 flex justify-center opacity-20">
-              <span className="text-[4vw] text-white font-bold">
-                Routes List
-              </span>
-            </div>
-            <div className="absolute grid grid-cols-12 gap-[7.5vw]">
-              {/* <label className="md-block hidden absolute left-[4vw] top-[1.5vw] text-[1.4vw] z-[1] text-white font-bold">
-                <span
-                  className="pr-[0.5vw] underline-offset-2 cursor-pointer "
-                  onClick={() => navigation("/dashboard")}
-                >
-                  Dashboard
-                </span>
-                {`> Routes`}
-              </label> */}
-              <div className="cloudhome"></div>
-              <div className="col-start-6 col-end-12 md:pl-[6vw] text-[5vw] md:text-[2.5vw] pt-[2vw] md:pt-[1vw] text-white font-bold">
-                Routes List
-              </div>
-            </div>
-            <div className="absolute top-[5.5vw] px-[2vw] grid grid-cols-8 w-full"></div>
+            <label className="absolute right-[40vw] md:right-[44.5vw] top-[2.5vw] md:top-[1.7vw] text-[4vw] md:text-[2.2vw] text-white font-bold">{`Routes List`}</label>
+            <label className="absolute md:block hidden right-[34vw] md:right-[40vw] top-[.2vw] text-[7vw] md:text-[4vw] opacity-25 text-white font-bold">{`Routes List`}</label>
+            <div className="cloudhome"></div>
+            <div className="absolute top-[5.5vw] px-[2vw] grid grid-cols-8 gap-[1vw] w-full"></div>
           </div>
 
           <div className="grid grid-cols-6 gap-[18vw]">

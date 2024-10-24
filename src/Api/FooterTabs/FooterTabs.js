@@ -1,6 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import { TBS_INFO } from "../../Store/type";
+import { FAQ_LIST, TBS_INFO } from "../../Store/type";
 
 const api = axios.create({
     headers: {
@@ -22,7 +22,16 @@ export const GetFooterTabs = async (dispatch, id) => {
         // return null;
     }
 };
-
+export const GetFAQById = async (dispatch, id) => {
+  try{ 
+    const response = await axios.get(`http://192.168.90.47:4000/api/faqs/${id}`);
+    dispatch({ type:FAQ_LIST, payload:response.data });
+    console.log(response.data, "Get_Footer_Tabs");
+    return response.data;
+  }catch (error) {
+    handleError(error);
+  }
+}
 const handleError = (error) => {
     console.error("Error details:", error);
     let errorMessage = "An error occurred";

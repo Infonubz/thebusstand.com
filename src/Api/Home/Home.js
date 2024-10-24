@@ -32,7 +32,7 @@ export const GetPdp = async (dispatch, id) => {
 };
 export const GetFAQS = async (dispatch, id) => {
   try {
-    const response = await axios.get(`${apiUrl}/faqs`);
+    const response = await axios.get(`http://192.168.90.47:4000/api/faqs`);
     dispatch({ type: FAQS, payload: response.data });
     console.log(response, "faqsresponse");
     return response.data;

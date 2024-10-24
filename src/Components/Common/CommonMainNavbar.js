@@ -3,7 +3,7 @@ import buslogo from "../../assets/502-ai 1.png";
 import busstand from "../../assets/busstand.png";
 //import bus from "../../assets/bus 1.png";
 import share from "../../assets/Share.png";
-//import Partner from "../../assets/Partner.png";
+import Partner from "../../assets/Partner.png";
 import { useLocation, useNavigate } from "react-router";
 import ticket from "../../assets/ticket.png";
 import { Drawer, Dropdown, Modal, Space, Tooltip } from "antd";
@@ -19,7 +19,8 @@ import { PiUserCircleDuotone } from "react-icons/pi";
 import { toast } from "react-toastify";
 import { capitalizeFirstLetter } from "./Captalization";
 import { MdStarRate } from "react-icons/md";
-
+import totalbus from "../../assets/totalbus.png";
+import busname from "../../assets/busname.png"
 export default function CommonMainNavbar() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [loginIsOpen, setLoginIsOpen] = useState(false);
@@ -148,22 +149,26 @@ export default function CommonMainNavbar() {
             alt="busLogo"
           />
           <img
-            src={busstand}
+            src={busname}
             alt="busStandLogo"
-            className="md:h-[2.8vw] h-[10vw] md:w-[13.5vw] w-[40vw] py-[0.1vw] absolute md:top-[0.3vw] left-[15.5vw] md:left-[5vw]"
+            className="md:h-[2.8vw] h-[10vw] md:w-[12vw] w-[40vw] py-[0.1vw] absolute md:top-[0.3vw] left-[15.5vw] md:left-[5vw]"
           />
+          {/* <img
+            src={totalbus}
+            className="md:h-[2.8vw] h-[10vw] md:w-[13.5vw] w-[40vw] py-[0.1vw] absolute md:top-[0.3vw] left-[15.5vw] md:left-[0.2vw]"
+          /> */}
         </div>
         {location.pathname !== "/dashboard" ? (
           <a
-            className="w-[20%] h-full  items-center flex justify-center"
+            className="ml-[25vw] h-full   items-center flex justify-center"
             // href="http://192.168.90.43:8082/"
             target="_blank"
             rel="noreferrer"
           >
-            {/* <img src={Partner} className="w-auto hidden md:block h-[3.3vw]" /> */}
+            <img src={Partner} className="w-[30vw] hidden md:block h-[3.3vw]" />
           </a>
-          // <></>
         ) : (
+          // <></>
           <div className="w-[60%] md:w-[70%] flex items-center justify-center ">
             <MdStarRate
               size={"2.5vw"}

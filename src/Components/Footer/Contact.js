@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 //import Footer from "../Home/Footer";
 //import HomeHearder from "../MainComponenet/HomeHearder";
-import homesky from "../../assets/homesky.png";
+import homesky from "../../assets/BackgroundSky1.png";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
 import Footer1 from "./Footer";
 
 const Contact = () => {
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

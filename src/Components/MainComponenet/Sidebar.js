@@ -1138,7 +1138,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                             <RiBusFill className="w-[2vw] h-[1.2vw]" />
                           </span>
                           <span className="font-semibold text-[1vw]">
-                            Normal
+                            Regular
                           </span>
                         </div>
                       </div>

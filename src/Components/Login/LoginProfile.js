@@ -37,6 +37,7 @@ const LoginProfile = ({ setLoginIsOpen, setLoginMobileIsOpen }) => {
     }
     // closeLoginModal();
     toast.success(response.response);
+    window.location.reload();
   };
 
   const handleMobileSubmit = async (values) => {

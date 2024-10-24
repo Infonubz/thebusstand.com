@@ -1048,13 +1048,13 @@ export default function Home1() {
       {/* </div> */}
       <LocationPermission/>
       <div className="hero relative md:block hidden">
-        <p className="absolute top-[3vw] left-[12vw] text-[1.7vw] tracking-wide font-bold">
+        <p className="absolute top-[3vw] left-[11vw] text-[1.65vw] tracking-widest font-bold">
           <span className="text-white">
             {"India's exclusive".toUpperCase()}
             <span className="text-[#00152F] px-[1vw] font-extrabold">
               {"bus price comparison & Booking platform".toUpperCase()}
             </span>{" "}
-            {"for the cheapest".toUpperCase()}
+            {"for the Best".toUpperCase()}
           </span>
         </p>{" "}
         <div className="bg_build1"></div>

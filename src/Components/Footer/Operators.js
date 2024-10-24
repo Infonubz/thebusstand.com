@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import homesky from "../../assets/homesky.png";
+import homesky from "../../assets/BackgroundSky1.png";
 import Footer1 from "./Footer";
 import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 import { GetOperators, OperatorFilters } from "../../Api/Dashboard/Dashboard";
 import { useDispatch } from "react-redux";
 import { BiSolidSearch } from "react-icons/bi";
 import "../../App.css";
+import "../Home/test.css";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
 import { useNavigate } from "react-router";
 import { Empty } from "antd";
@@ -13,7 +14,6 @@ import { Pagination } from "antd";
 import { Popover } from "antd";
 
 const Operators = () => {
-
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedLetter, setSelectedLetter] = useState("A");
   const [operatorData, setOperatorData] = useState();
@@ -75,7 +75,6 @@ const Operators = () => {
     setOperatorData(data);
   };
 
-
   useEffect(() => {
     const FilterOperator = async () => {
       console.log(selectedLetter, "getoperator");
@@ -94,7 +93,6 @@ const Operators = () => {
     }
   }, [selectedLetter, currentPage]);
 
-
   useEffect(() => {
     GetOperators(dispatch);
   }, [dispatch]);
@@ -102,8 +100,6 @@ const Operators = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  
 
   return (
     <>
@@ -117,38 +113,20 @@ const Operators = () => {
             zIndex: 1,
           }}
         >
-          {/* <img src={homesky} className="w-full h-[10vw] bg-[#2B8EE4]" /> */}
           <div
             className={`md:h-[10vw] h-[20vw] overflow-x-hidden`}
             style={{
               backgroundImage: `url(${homesky})`,
               overflow: "hidden",
-              backgroundSize: "cover",
               position: "relative",
               overflowX: "hidden",
               width: "100%",
             }}
           >
-            <div
-              className={`md:block hidden absolute inset-0 flex justify-center items-center opacity-20`}
-            >
-              <span className={`text-[4vw] text-center text-white font-bold md:pl-[22.5vw]`}>
-                Operator Associated With Us
-              </span>
-            </div>
-
-            <div className={`absolute grid grid-cols-12 gap-[7.5vw]`}>
-              <div className={`cloudhome`}></div>
-              <div
-                className={`col-start-5 col-end-12 md:col-start-5 md:pl-[1vw] md:col-end-12 text-[5vw] md:text-[2.5vw] pt-[1vw] text-white font-bold`}
-              >
-                Operator Associated With Us
-              </div>
-            </div>
-
-            <div
-              className={`absolute top-[5.5vw] px-[2vw] grid grid-cols-8 w-full`}
-            ></div>
+            <label className="absolute right-[25vw] md:right-[35vw] top-[2.5vw] md:top-[1.7vw] text-[4vw] md:text-[2.2vw] text-white font-bold">{`Operator Associated With Us`}</label>
+            <label className="absolute md:block hidden right-[34vw] md:right-[25vw] top-[.2vw] text-[7vw] md:text-[4vw] opacity-25 text-white font-bold">{`Operator Associated With Us`}</label>
+            <div className="cloudhome"></div>
+            <div className="absolute top-[5.5vw] px-[2vw] grid grid-cols-8 gap-[1vw] w-full"></div>
           </div>
           <div
             className={`md:block hidden absolute top-[7vw] px-[3vw] flex flex-col`}
@@ -181,7 +159,9 @@ const Operators = () => {
                 ))}
               </div>
 
-              <div className={`flex-1 text-[1.1vw] text-[#1F487C] pt-[0.7vw] pl-[1.4vw]`}>
+              <div
+                className={`flex-1 text-[1.1vw] text-[#1F487C] pt-[0.7vw] pl-[1.4vw]`}
+              >
                 <button
                   type="button"
                   className={`flex items-center px-[0.5vw] text-[#1F487C] text-[1vw] border-solid border border-[#1f477ca8] justify-center h-[2.5vw] gap-[0.5vw] rounded-lg`}

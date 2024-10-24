@@ -1,18 +1,38 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 //import HomeHearder from "../MainComponenet/HomeHearder";
-import homesky from "../../assets/homesky.png";
+import homesky from "../../assets/BackgroundSky1.png";
 import Footer1 from "./Footer";
-import { Collapse,
-  // Divider 
-  } from "antd";
+import {
+  Collapse,
+  // Divider
+} from "antd";
 import { RiArrowUpSFill } from "react-icons/ri";
 import { RiArrowDownSFill } from "react-icons/ri";
 import { Input } from "antd";
 import FaQgif from "../../assets/faq.gif";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
+import { GetFAQById } from "../../Api/FooterTabs/FooterTabs";
 import "../../App.css";
+import { useDispatch } from "react-redux";
 
 const Faq = () => {
+  const [faq, setFAQ] = useState();
+  const dispatch = useDispatch();
+  const [activeKey, setActiveKey] = useState(null);
+
+  const handleCollapseChange = (key) => {
+    setActiveKey(activeKey === key ? null : key);
+  };
+
+  const handleClick = async (value) => {
+    try {
+      const response = await GetFAQById(dispatch, value);
+      setFAQ(response);
+      console.log("response of FAQ", response);
+    } catch (error) {
+      console.error("Error", error);
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -41,28 +61,19 @@ const Faq = () => {
               width: "100%",
             }}
           >
-            <div className="absolute inset-0 flex justify-center opacity-20">
-              <span className="md:text-[4vw] text-white font-bold">
-                Frequently Ask Question
-              </span>
-            </div>
-
-            <div className="absolute grid grid-cols-12 gap-[7.5vw]">
-              {/* <div className="col-start-1 col-span-4 pt-[2vw] pl-[3vw] text-[1.1vw] text-white font-bold">
-              {`Home > FAQs`}
-              </div> */}
-              <div className="cloudhome"></div>
-              <div className="col-start-4 col-end-12 md:col-start-6 md:col-end-12 text-[4vw] md:text-[2.5vw] pt-[1vw] text-white font-bold">
-                Frequently Ask Question
-              </div>
-            </div>
-            <div className="absolute top-[5.5vw] px-[2vw] grid grid-cols-8 w-full"></div>
+            <label className="absolute right-[25vw] md:right-[35vw] top-[2.5vw] md:top-[1.7vw] text-[4vw] md:text-[2.2vw] text-white font-bold">{`Frequently Ask Question`}</label>
+            <label className="absolute md:block hidden right-[34vw] md:right-[25vw] top-[.2vw] text-[7vw] md:text-[4vw] opacity-25 text-white font-bold">{`Frequently Ask Question`}</label>
+            <div className="cloudhome"></div>
+            <div className="absolute top-[5.5vw] px-[2vw] grid grid-cols-8 gap-[1vw] w-full"></div>
           </div>
           <div className="absolute md:top-[6vw] top-[12vw] px-[3vw] flex flex-col">
-            <div className="bg-white h-[87vh] w-[94vw] md:h-[34vw] relative rounded-[2.5vw] md:rounded-[1vw] shadow-lg shadow-gray-300">
+            <div className="bg-white h-[87vh] w-[94vw] md:h-[34vw] relative rounded-[2.5vw] md:rounded-[1vw]">
               <div className="grid grid-rows md:grid-cols-7">
-                <div className="md:col-start-1 md:col-span-4 m-[1vw] md:mt-[3vw] md:pr-[1.5vw] md:pl-[2.5vw] h-[37vh] md:h-[24vw] Legal-Information overflow-y-scroll">
+                <div className="md:col-start-1 md:col-span-4 m-[1vw] md:m-[3vw] h-[37vh] md:h-[24vw] Legal-Information  overflow-y-auto">
                   <Collapse
+                    accordion
+                    activeKey={activeKey ? [activeKey] : []} // Ensure only one can be opened
+                    onChange={handleCollapseChange}
                     size={`large`}
                     className="relative shadow-lg bg-white md:m-[1vw] m-[3vw] border-none"
                     style={{
@@ -81,7 +92,7 @@ const Faq = () => {
                             }}
                           />
                           <RiArrowUpSFill
-                            className="block md:hidden mt-[0.5vw]"
+                            className="block md:hidden mt-[5vw]"
                             style={{
                               color: "#1F487C",
                               height: "7vw",
@@ -92,6 +103,11 @@ const Faq = () => {
                       ) : (
                         <>
                           <RiArrowDownSFill
+                            onClick={() => {
+                              const value = 1;
+                              handleCollapseChange("1");
+                              handleClick(value);
+                            }}
                             className="md:block hidden mt-[0.5vw]"
                             style={{
                               color: "#1F487C",
@@ -100,7 +116,12 @@ const Faq = () => {
                             }}
                           />
                           <RiArrowDownSFill
-                            className="block md:hidden mt-[0.5vw]"
+                            onClick={() => {
+                              const value = 1;
+                              handleCollapseChange("1");
+                              handleClick(value);
+                            }}
+                            className="block md:hidden mt-[6.5vw]"
                             style={{
                               color: "#1F487C",
                               height: "7vw",
@@ -115,7 +136,14 @@ const Faq = () => {
                       {
                         key: "1",
                         label: (
-                          <div className="flex items-center h-[3.5vw] md:h-[5vh]">
+                          <div
+                            className="flex items-center md:flex-none h-[13vw] md:h-[5vh]"
+                            onClick={() => {
+                              const value = 1;
+                              handleCollapseChange("1");
+                              handleClick(value);
+                            }}
+                          >
                             <div className="col-span-2 pl-[1vw]">
                               <span className="text-[#1F487C] font-medium  text-[4.5vw] md:text-[1.5vw]">
                                 GENERAL
@@ -123,27 +151,31 @@ const Faq = () => {
                             </div>
                           </div>
                         ),
-                        children: (
-                          <div>
-                            <p className="font-bold text-[#1F487C]">
-                              {" "}
-                              What are the advantages of purchasing a bus ticket
-                              with TBS?{" "}
-                            </p>
+                        children:
+                          faq?.general?.length > 0 ? (
+                            faq?.general?.map((item, index) => (
+                              <div key={index}>
+                                <p className="font-bold text-[#1F487C] pb-[1.5vw] md:pb-[0.5vw]">
+                                  {item?.question}
+                                </p>
+                                <p className="text-[#1F487C] md:text-[1vw] text-[3.2vw] pb-[2vw] md:pb-[1.5vw]">
+                                  {item?.answer}
+                                </p>
+                              </div>
+                            ))
+                          ) : (
                             <p className="text-[#1F487C] md:text-[1vw] text-[3.2vw]">
-                              - You can choose your seat - You can book your bus
-                              tickets online, by phone, or in person - You can
-                              choose from over 1500+ bus operators - You can
-                              choose from buses based on boarding points, timing
-                              and bus type
+                              No FAQs available.
                             </p>
-                          </div>
-                        ),
+                          ),
                       },
                     ]}
                   />
                   <Collapse
-                    size="large"
+                    accordion
+                    activeKey={activeKey ? [activeKey] : []} // Ensure only one can be opened
+                    onChange={handleCollapseChange}
+                    size={`large`}
                     className="relative shadow-lg bg-white md:m-[1vw] m-[3vw] border-none"
                     style={{
                       boxShadow:
@@ -161,7 +193,7 @@ const Faq = () => {
                             }}
                           />
                           <RiArrowUpSFill
-                            className="block md:hidden mt-[0.5vw]"
+                            className="block md:hidden mt-[5vw]"
                             style={{
                               color: "#1F487C",
                               height: "7vw",
@@ -172,6 +204,11 @@ const Faq = () => {
                       ) : (
                         <>
                           <RiArrowDownSFill
+                            onClick={() => {
+                              const value = 2;
+                              handleCollapseChange("2");
+                              handleClick(value);
+                            }}
                             className="md:block hidden mt-[0.5vw]"
                             style={{
                               color: "#1F487C",
@@ -180,7 +217,12 @@ const Faq = () => {
                             }}
                           />
                           <RiArrowDownSFill
-                            className="block md:hidden mt-[0.5vw]"
+                            onClick={() => {
+                              const value = 2;
+                              handleCollapseChange("2");
+                              handleClick(value);
+                            }}
+                            className="block md:hidden mt-[6.5vw]"
                             style={{
                               color: "#1F487C",
                               height: "7vw",
@@ -193,37 +235,48 @@ const Faq = () => {
                     expandIconPosition="end"
                     items={[
                       {
-                        key: "1",
+                        key: "2",
                         label: (
-                          <div className="flex items-center h-[3.5vw] md:h-[5vh]">
-                            <div className="col-span-2 pl-[1vw] pt-[2vw] md:pt-[0vw]">
-                              <span className="text-[#1F487C] font-medium  text-[4.5vw] md:text-[1.5vw]">
+                          <div
+                            className="flex items-center md:flex-none h-[13vw] md:h-[5vh]"
+                            onClick={() => {
+                              const value = 2;
+                              handleCollapseChange("2");
+                              handleClick(value);
+                            }}
+                          >
+                            <div className="col-span-2 pl-[1vw]">
+                              <span className="text-[#1F487C] font-medium text-[4.5vw] md:text-[1.5vw]">
                                 TICKET - RELATED
                               </span>
                             </div>
                           </div>
                         ),
-                        children: (
-                          <div>
-                            <p className="font-bold text-[#1F487C]">
-                              {" "}
-                              What are the advantages of purchasing a bus ticket
-                              with TBS?{" "}
-                            </p>
+                        children:
+                          faq?.ticket_related?.length > 0 ? (
+                            faq?.ticket_related?.map((item, index) => (
+                              <div key={index}>
+                                <p className="font-bold text-[#1F487C] pb-[1.5vw] md:pb-[0.5vw]">
+                                  {item?.question}
+                                </p>
+                                <p className="text-[#1F487C] md:text-[1vw] text-[3.2vw] pb-[2vw] md:pb-[1.5vw]">
+                                  {item?.answer}
+                                </p>
+                              </div>
+                            ))
+                          ) : (
                             <p className="text-[#1F487C] md:text-[1vw] text-[3.2vw]">
-                              - You can choose your seat - You can book your bus
-                              tickets online, by phone, or in person - You can
-                              choose from over 1500+ bus operators - You can
-                              choose from buses based on boarding points, timing
-                              and bus type
+                              No FAQs available.
                             </p>
-                          </div>
-                        ),
+                          ),
                       },
                     ]}
                   />
                   <Collapse
-                    size="large"
+                    size={`large`}
+                    accordion
+                    activeKey={activeKey ? [activeKey] : []} // Ensure only one can be opened
+                    onChange={handleCollapseChange}
                     className="relative shadow-lg bg-white md:m-[1vw] m-[3vw] border-none"
                     style={{
                       boxShadow:
@@ -241,7 +294,7 @@ const Faq = () => {
                             }}
                           />
                           <RiArrowUpSFill
-                            className="block md:hidden mt-[0.5vw]"
+                            className="block md:hidden mt-[5vw]"
                             style={{
                               color: "#1F487C",
                               height: "7vw",
@@ -252,6 +305,11 @@ const Faq = () => {
                       ) : (
                         <>
                           <RiArrowDownSFill
+                            onClick={() => {
+                              const value = 3;
+                              handleCollapseChange("3");
+                              handleClick(value);
+                            }}
                             className="md:block hidden mt-[0.5vw]"
                             style={{
                               color: "#1F487C",
@@ -260,7 +318,12 @@ const Faq = () => {
                             }}
                           />
                           <RiArrowDownSFill
-                            className="block md:hidden mt-[0.5vw]"
+                            onClick={() => {
+                              const value = 3;
+                              handleCollapseChange("3");
+                              handleClick(value);
+                            }}
+                            className="block md:hidden mt-[6.5vw]"
                             style={{
                               color: "#1F487C",
                               height: "7vw",
@@ -273,37 +336,48 @@ const Faq = () => {
                     expandIconPosition="end"
                     items={[
                       {
-                        key: "1",
+                        key: "3",
                         label: (
-                          <div className="flex items-center h-[3.5vw] md:h-[5vh]">
-                            <div className="col-span-2 pl-[1vw] pt-[2vw] md:pt-[0vw]">
+                          <div
+                            className="flex items-center md:flex-none h-[13vw] md:h-[5vh]"
+                            onClick={() => {
+                              const value = 3;
+                              handleCollapseChange("3");
+                              handleClick(value);
+                            }}
+                          >
+                            <div className="col-span-2 pl-[1vw]">
                               <span className="text-[#1F487C] font-medium text-[4.5vw] md:text-[1.5vw]">
                                 PAYMENT - RELATED
                               </span>
                             </div>
                           </div>
                         ),
-                        children: (
-                          <div>
-                            <p className="font-bold text-[#1F487C]">
-                              {" "}
-                              What are the advantages of purchasing a bus ticket
-                              with TBS?{" "}
-                            </p>
+                        children:
+                          faq?.payment?.length > 0 ? (
+                            faq?.payment?.map((item, index) => (
+                              <div key={index}>
+                                <p className="font-bold text-[#1F487C] pb-[1.5vw] md:pb-[0.5vw]">
+                                  {item?.question}
+                                </p>
+                                <p className="text-[#1F487C] md:text-[1vw] text-[3.2vw] pb-[2vw] md:pb-[1.5vw]">
+                                  {item?.answer}
+                                </p>
+                              </div>
+                            ))
+                          ) : (
                             <p className="text-[#1F487C] md:text-[1vw] text-[3.2vw]">
-                              - You can choose your seat - You can book your bus
-                              tickets online, by phone, or in person - You can
-                              choose from over 1500+ bus operators - You can
-                              choose from buses based on boarding points, timing
-                              and bus type
+                              No FAQs available.
                             </p>
-                          </div>
-                        ),
+                          ),
                       },
                     ]}
                   />
                   <Collapse
-                    size="large"
+                    size={`large`}
+                    accordion
+                    activeKey={activeKey ? [activeKey] : []} // Ensure only one can be opened
+                    onChange={handleCollapseChange}
                     className="relative shadow-lg bg-white md:m-[1vw] m-[3vw] border-none"
                     style={{
                       boxShadow:
@@ -321,7 +395,7 @@ const Faq = () => {
                             }}
                           />
                           <RiArrowUpSFill
-                            className="block md:hidden mt-[0.5vw]"
+                            className="block md:hidden mt-[5vw]"
                             style={{
                               color: "#1F487C",
                               height: "7vw",
@@ -332,6 +406,11 @@ const Faq = () => {
                       ) : (
                         <>
                           <RiArrowDownSFill
+                            onClick={() => {
+                              const value = 4;
+                              handleCollapseChange("4");
+                              handleClick(value);
+                            }}
                             className="md:block hidden mt-[0.5vw]"
                             style={{
                               color: "#1F487C",
@@ -340,7 +419,12 @@ const Faq = () => {
                             }}
                           />
                           <RiArrowDownSFill
-                            className="block md:hidden mt-[0.5vw]"
+                            onClick={() => {
+                              const value = 4;
+                              handleCollapseChange("4");
+                              handleClick(value);
+                            }}
+                            className="block md:hidden mt-[6.5vw]"
                             style={{
                               color: "#1F487C",
                               height: "7vw",
@@ -353,37 +437,48 @@ const Faq = () => {
                     expandIconPosition="end"
                     items={[
                       {
-                        key: "1",
+                        key: "4",
                         label: (
-                          <div className="flex items-center h-[3.5vw] md:h-[5vh]">
-                            <div className="col-span-2 pl-[1vw] pt-[2vw] md:pt-[0vw]">
+                          <div
+                            className="flex items-center md:flex-none h-[13vw] md:h-[5vh]"
+                            onClick={() => {
+                              const value = 4;
+                              handleCollapseChange("4");
+                              handleClick(value);
+                            }}
+                          >
+                            <div className="col-span-2 pl-[1vw]">
                               <span className="text-[#1F487C] font-medium text-[4.5vw] md:text-[1.5vw]">
                                 CANCELLATION - RELATED
                               </span>
                             </div>
                           </div>
                         ),
-                        children: (
-                          <div>
-                            <p className="font-bold text-[#1F487C]">
-                              {" "}
-                              What are the advantages of purchasing a bus ticket
-                              with TBS?{" "}
-                            </p>
+                        children:
+                          faq?.cancelation_refund?.length > 0 ? (
+                            faq?.cancelation_refund?.map((item, index) => (
+                              <div key={index}>
+                                <p className="font-bold text-[#1F487C] pb-[1.5vw] md:pb-[0.5vw]">
+                                  {item?.question}
+                                </p>
+                                <p className="text-[#1F487C] md:text-[1vw] text-[3.2vw] pb-[2vw] md:pb-[1.5vw]">
+                                  {item?.answer}
+                                </p>
+                              </div>
+                            ))
+                          ) : (
                             <p className="text-[#1F487C] md:text-[1vw] text-[3.2vw]">
-                              - You can choose your seat - You can book your bus
-                              tickets online, by phone, or in person - You can
-                              choose from over 1500+ bus operators - You can
-                              choose from buses based on boarding points, timing
-                              and bus type
+                              No FAQs available.
                             </p>
-                          </div>
-                        ),
+                          ),
                       },
                     ]}
                   />
                   <Collapse
-                    size="large"
+                    size={`large`}
+                    accordion
+                    activeKey={activeKey ? [activeKey] : []} // Ensure only one can be opened
+                    onChange={handleCollapseChange}
                     className="relative shadow-lg bg-white md:m-[1vw] m-[3vw] border-none"
                     style={{
                       boxShadow:
@@ -401,7 +496,7 @@ const Faq = () => {
                             }}
                           />
                           <RiArrowUpSFill
-                            className="block md:hidden mt-[0.5vw]"
+                            className="block md:hidden mt-[5vw]"
                             style={{
                               color: "#1F487C",
                               height: "7vw",
@@ -412,6 +507,11 @@ const Faq = () => {
                       ) : (
                         <>
                           <RiArrowDownSFill
+                            onClick={() => {
+                              const value = 5;
+                              handleCollapseChange("5");
+                              handleClick(value);
+                            }}
                             className="md:block hidden mt-[0.5vw]"
                             style={{
                               color: "#1F487C",
@@ -420,7 +520,12 @@ const Faq = () => {
                             }}
                           />
                           <RiArrowDownSFill
-                            className="block md:hidden mt-[0.5vw]"
+                            onClick={() => {
+                              const value = 5;
+                              handleCollapseChange("5");
+                              handleClick(value);
+                            }}
+                            className="block md:hidden mt-[6.5vw]"
                             style={{
                               color: "#1F487C",
                               height: "7vw",
@@ -433,32 +538,41 @@ const Faq = () => {
                     expandIconPosition="end"
                     items={[
                       {
-                        key: "1",
+                        key: "5",
                         label: (
-                          <div className="flex items-center h-[3.5vw] md:h-[5vh]">
-                            <div className="col-span-2 pl-[1vw] pt-[2vw] md:pt-[0vw]">
+                          <div
+                            className="flex items-center md:flex-none h-[13vw] md:h-[5vh]"
+                            onClick={() => {
+                              const value = 5;
+                              handleCollapseChange("5");
+                              handleClick(value);
+                            }}
+                          >
+                            <div className="col-span-2 pl-[1vw]">
                               <span className="text-[#1F487C] font-medium text-[4.5vw] md:text-[1.5vw]">
+                                {" "}
                                 REFUND - RELATED
                               </span>
                             </div>
                           </div>
                         ),
-                        children: (
-                          <div>
-                            <p className="font-bold text-[#1F487C]">
-                              {" "}
-                              What are the advantages of purchasing a bus ticket
-                              with TBS?{" "}
-                            </p>
+                        children:
+                          faq?.insurance?.length > 0 ? (
+                            faq?.insurance?.map((item, index) => (
+                              <div key={index}>
+                                <p className="font-bold text-[#1F487C] pb-[1.5vw] md:pb-[0.5vw]">
+                                  {item?.question}
+                                </p>
+                                <p className="text-[#1F487C] md:text-[1vw] text-[3.2vw] pb-[2vw] md:pb-[1.5vw]">
+                                  {item?.answer}
+                                </p>
+                              </div>
+                            ))
+                          ) : (
                             <p className="text-[#1F487C] md:text-[1vw] text-[3.2vw]">
-                              - You can choose your seat - You can book your bus
-                              tickets online, by phone, or in person - You can
-                              choose from over 1500+ bus operators - You can
-                              choose from buses based on boarding points, timing
-                              and bus type
+                              No FAQs available.
                             </p>
-                          </div>
-                        ),
+                          ),
                       },
                     ]}
                   />

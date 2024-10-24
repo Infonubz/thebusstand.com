@@ -116,7 +116,7 @@ const Footer1 = () => {
             </a>
           </div>
           <div className="flex">
-            <p className="text-[#1F487C] pr-[0.8vw] font-bold">
+            <p className="text-[#1F487C] pr-[0.8vw] font-bold text-[1vw]">
               Copyright @ thebusstand.com All Rights Reserved.
             </p>
           </div>

@@ -31,6 +31,7 @@ import {
   GET_THEME_COLORS,
   SEND_APP_LINK,
   MOB_ADS_LIST,
+  FAQ_LIST,
 } from "./type";
 
 const initial = {
@@ -66,7 +67,8 @@ const initial = {
     },
   ],
   send_app_link: [],
-  mob_ads_list:[]
+  mob_ads_list:[],
+  faq_list:[]
 };
 
 export const busreducer = (state = initial, action) => {
@@ -279,6 +281,12 @@ export const busreducer = (state = initial, action) => {
       return {
         ...state,
         mob_ads_list: payload,
+      };
+    }
+    case FAQ_LIST: {
+      return {
+        ...state,
+        faq_list: payload,
       };
     }
     default: {
