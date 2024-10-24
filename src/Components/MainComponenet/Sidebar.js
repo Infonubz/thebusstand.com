@@ -432,8 +432,11 @@ const Sidebar = ({ sidebarToggle, share }) => {
   }, [localSrgAc, localSrgSeat]);
 
   const handleAllFilters = useCallback(async () => {
-    sessionStorage.setItem("loading", true);
+    console.log("Setting loading to true...");
+    sessionStorage.setItem("spinner", "true"); 
+  
     try {
+      // Your existing filter logic...
       const pickupcheck = Object.keys(pickupchecked).filter(
         (key) => pickupchecked[key]
       );
@@ -447,20 +450,16 @@ const Sidebar = ({ sidebarToggle, share }) => {
         (key) => amenitiesvalue[key]
       );
       let dateTimeString = localStorage.getItem("selectdate");
-
+  
       if (dateTimeString) {
-        // Parse the string into a Date object
         let dateObj = new Date(dateTimeString);
-
-        // Format the date to "YYYY-MM-DD"
         const formattedDate =
           dateObj.getFullYear() +
           "-" +
           ("0" + (dateObj.getMonth() + 1)).slice(-2) +
           "-" +
           ("0" + dateObj.getDate()).slice(-2);
-
-        // Store the formatted date back in localStorage
+  
         localStorage.setItem("departure_date", formattedDate);
       }
 
@@ -482,17 +481,17 @@ const Sidebar = ({ sidebarToggle, share }) => {
         NormalBus,
         dispatch
       );
-      // setBusData(allFilters);
-      console.log(allFilters, "allFilters");
-      console.log(pickuptime, "pickuptime");
+      setTimeout(() => {
+        sessionStorage.setItem("spinner", "false"); 
+      }, 1000);
+      console.log("allFilters", allFilters);
     } catch (error) {
       console.error("Error", error);
+      setTimeout(() => {
+        sessionStorage.setItem("spinner", "false"); 
+      }, 1000);
     }
-  },[
-    // locSrgDep,
-    // locSrgarr,
-    // locSrgDepDte,
-    // sesSrgLux,
+  }, [
     busType,
     acfilter,
     seattypefilter,
@@ -503,10 +502,12 @@ const Sidebar = ({ sidebarToggle, share }) => {
     amenitiesvalue,
     operatorchecked,
     priceRange,
-    // locSrgSort,
     NormalBus,
     dispatch,
   ]);
+  
+
+  
   const locSrgDep = localStorage.getItem("departure");
   const locSrgarr = localStorage.getItem("arrival");
   const locSrgDepDte = localStorage.getItem("departure_date");
@@ -1138,7 +1139,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                             <RiBusFill className="w-[2vw] h-[1.2vw]" />
                           </span>
                           <span className="font-semibold text-[1vw]">
-                            Regular
+                            Normal
                           </span>
                         </div>
                       </div>
@@ -1584,7 +1585,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                       <LuSunrise className="" size={"1vw"} />
                     </span>
                     <span className="font-semibold text-center text-[0.8vw]">
-                      6 AM to 11 AM
+                      6:00 to 11:00
                     </span>
                   </button>
                   <button
@@ -1615,7 +1616,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                       <IoSunnyOutline size={"1vw"} />
                     </span>
                     <span className="font-semibold text-center text-[0.8vw]">
-                      11 AM to 6 PM
+                      11:00 to 18:00
                     </span>
                   </button>
                 </div>
@@ -1648,7 +1649,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                       <LuSunset className="" size={"1vw"} />
                     </span>
                     <span className="font-semibold text-center text-[0.8vw]">
-                      6 PM to 11 PM
+                      18:00 to 23:00
                     </span>
                   </button>
                   <button
@@ -1679,7 +1680,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                       <PiMoonLight size={"1vw"} />
                     </span>
                     <span className="font-semibold text-center text-[0.8vw]">
-                      11 PM to 6 AM
+                      23:00 to 6:00
                     </span>
                   </button>
                 </div>
@@ -2114,7 +2115,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                       <LuSunrise className="" size={"1vw"} />
                     </span>
                     <span className="font-semibold text-center text-[0.8vw]">
-                      6 AM to 11 AM
+                      6:00 to 11:00
                     </span>
                   </button>
                   <button
@@ -2145,7 +2146,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                       <IoSunnyOutline size={"1vw"} />
                     </span>
                     <span className="font-semibold text-center text-[0.8vw]">
-                      11 AM to 6 PM
+                      11:00 to 18:00
                     </span>
                   </button>
                 </div>
@@ -2178,7 +2179,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                       <LuSunset className="" size={"1vw"} />
                     </span>
                     <span className="font-semibold text-center text-[0.8vw]">
-                      6 PM to 11 PM
+                      18:00 to 23:00
                     </span>
                   </button>
                   <button
@@ -2209,7 +2210,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                       <PiMoonLight size={"1vw"} />
                     </span>
                     <span className="font-semibold text-center text-[0.8vw]">
-                      11 PM to 6 AM
+                      23:00 to 6:00
                     </span>
                   </button>
                 </div>

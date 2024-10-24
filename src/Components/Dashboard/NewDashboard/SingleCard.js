@@ -49,7 +49,7 @@ export default function SingleCard() {
 
   // const [dropDown, setDropDown] = useState(0)
   const [dropDown, setDropDown] = useState(null);
-  const [spinner, setSpinner] = useState(sessionStorage.getItem("loading"));
+  const [spinner, setSpinner] = useState(sessionStorage.getItem("spinner"));
   const isluxury = sessionStorage.getItem("isLuxury");
   const [trackingCount, setTrackingCount] = useState();
   const buslist = useSelector((state) => state?.card_detail);
@@ -145,10 +145,16 @@ export default function SingleCard() {
     setDropDown(dropDown === index ? null : index);
   };
 
+  setTimeout(() => {
+    setSpinner("false");
+    console.log("cleartiemout", 2);
+  }, 1000);
+
+
   useEffect(() => {
-    setSpinner(sessionStorage.getItem("loading"));
-    // setSpinner(true)
-  }, []);
+  const loader = sessionStorage.getItem("spinner"); 
+    setSpinner(loader);
+  }, [sessionStorage.getItem("spinner")]);
 
   useEffect(() => {
     if (user_id) {
@@ -156,12 +162,10 @@ export default function SingleCard() {
     }
   }, [user_id, navigation]);
 
-  console.log(trackingCount, "logloglog");
-  console.log(isluxury, "isluxuryisluxury");
-  console.log(colors.background, "colorscolors");
+
+
+
   console.log(sessionStorage.getItem("loading"), spinner, "spinnerrrrrrrrrrr");
-  console.log(trackingCount, "trackingCounttrackingCount");
-  console.log(dropDown, "dropDowndropDowndropDown");
 
   return (
     // <div>
@@ -541,31 +545,27 @@ export default function SingleCard() {
         className={`bg-[#E5FFF1] md:block hidden px-[0.5vw] min-h-screen max-h-auto pb-[1vw] relative`}
       >
         <Advertisement />
-        {spinner === true ? (
-          <div
-            className=""
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              background: "rgba(0, 0, 0, 0.2)",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              opacity: "50px",
-              zIndex: 1000,
-            }}
-          >
-            <Space align="center" size="middle">
-              <Spin
-                indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />}
-              />
-            </Space>
-          </div>
-        ) : (
-          <>
+        {spinner === "true" ? (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: "55vw",
+            width: "100%",
+            height: "100%",
+            //background: "rgba(0, 0, 0, 0.2)",
+            display: "flex",
+            opacity: "50px",
+            zIndex: 1000,
+          }}
+        >
+          <Space align="center" size="middle">
+            <Spin
+              indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />}
+            />
+          </Space>
+        </div>
+      ) : null}
             {buslist?.length > 0 ? (
               buslist?.map((item, index) => (
                 <>
@@ -914,7 +914,7 @@ export default function SingleCard() {
                                     } rounded-r-full `}
                                   ></div>
                                   {/* <div className="absolute top-[-1vw] right-[-16vw] w-[4vw] h-[8vw] bg-white rounded-l-full flex items-center justify-center "></div> */}
-                                  <div className=" absolute top-[-2vw] left-[-7.5vw] w-[9vw] h-[9vw]">
+                                  <div className=" absolute top-[-1.4vw] left-[-7.5vw] w-[9vw] h-[9vw]">
                                     <img
                                       src={OurLowPrice}
                                       alt="lowPrice"
@@ -1257,8 +1257,6 @@ export default function SingleCard() {
                 />
               </div>
             )}
-          </>
-        )}
       </div>
       <div className="md:hidden block ">
         {/* <SingleCardMobile /> */}

@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.ab6ff35f.css",
-    "main.js": "/static/js/main.1488758d.js",
+    "main.css": "/static/css/main.c5d621c5.css",
+    "main.js": "/static/js/main.0bf9ab86.js",
     "static/js/32.62135ec3.chunk.js": "/static/js/32.62135ec3.chunk.js",
     "static/js/357.55ccad3b.chunk.js": "/static/js/357.55ccad3b.chunk.js",
     "static/js/542.02a7bc4a.chunk.js": "/static/js/542.02a7bc4a.chunk.js",
@@ -55,7 +55,7 @@
     "static/media/Ellipse 1 (8).png": "/static/media/Ellipse 1 (8).0b96d99dd1e68c9f2723.png",
     "static/media/vehicle1.png": "/static/media/vehicle1.01cea4c379e1b42d4808.png",
     "static/media/bg_build1.png": "/static/media/bg_build1.2b9d27922e8fffbc3d33.png",
-    "static/media/OurLowPrice.png": "/static/media/OurLowPrice.239db013f710950bda0e.png",
+    "static/media/OurLowPrice.png": "/static/media/OurLowPrice.1d262b081ffaaff76954.png",
     "static/media/busstand.png": "/static/media/busstand.1e4040cc596b16ee2033.png",
     "static/media/bike.png": "/static/media/bike.2dcfc1a0a06af06e5f49.png",
     "static/media/orange.png": "/static/media/orange.f8bf4093fd3fac2403e6.png",
@@ -193,6 +193,7 @@
     "static/media/15.png": "/static/media/15.c483fb16e5a721d4183d.png",
     "static/media/TBS Logo.png": "/static/media/TBS Logo.173234f47cb2cc19945e.png",
     "static/media/App rating.png": "/static/media/App rating.e950f95a5f0a90c14843.png",
+    "static/media/totalbus.png": "/static/media/totalbus.eaf6c5f4cc009f5b8da5.png",
     "static/media/5.png": "/static/media/5.2f829f29e305e34bf245.png",
     "static/media/59.png": "/static/media/59.2f829f29e305e34bf245.png",
     "static/media/51.png": "/static/media/51.10f6a6d0d34553bf42d6.png",
@@ -215,7 +216,6 @@
     "static/media/download.png": "/static/media/download.cdea72d211581e7dffc6.png",
     "static/media/47.png": "/static/media/47.fb708ac39a4358cad140.png",
     "static/media/60.png": "/static/media/60.fb708ac39a4358cad140.png",
-    "static/media/shape.png": "/static/media/shape.31d67dec80bbf94c5913.png",
     "static/media/28.png": "/static/media/28.2ac458d55dc411a3400a.png",
     "static/media/empty.png": "/static/media/empty.b2e0fe9315c1a24379b7.png",
     "static/media/6.png": "/static/media/6.e94bd53a9a4d551608d8.png",
@@ -264,7 +264,7 @@
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.ab6ff35f.css",
-    "static/js/main.1488758d.js"
+    "static/css/main.c5d621c5.css",
+    "static/js/main.0bf9ab86.js"
   ]
 }

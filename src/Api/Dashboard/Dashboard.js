@@ -42,6 +42,7 @@ export const SendTravelDetails = async (dispatch, values, luxury) => {
     Seater: values?.seater,
     Sleeper: values?.sleeper,
     luxury_bus: JSON.parse(sessionStorage.getItem("isLuxury")),
+    regular_bus:JSON.parse(sessionStorage.getItem("isNoramlBus")),
   };
   console.log(payload, "payloadpayload");
 
@@ -200,6 +201,7 @@ export const Filters = async (
     source_name: departure,
     destination_name: arrival,
     luxury_bus: busType || JSON.parse(sessionStorage.getItem("isLuxury")),
+    regular_bus:busType || JSON.parse(sessionStorage.getItem("isNoramlBus")),
     AC: acfilter === "ac" ? "true" : "false",
     NonAc: acfilter === "non_ac" ? "true" : "false",
     Seater: seattypefilter === "seater" ? "true" : "false",
@@ -222,7 +224,7 @@ export const Filters = async (
         arrival_time: sort === "arrivalSort" ? true : false,
       },
     ],
-    regular_bus: NormalBus,
+    // regular_bus: NormalBus,
   };
 
   console.log(payload, "sort112");
