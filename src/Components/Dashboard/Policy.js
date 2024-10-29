@@ -12,28 +12,28 @@ import { IoPawOutline } from "react-icons/io5";
 const Policy = ({ policies, price, busType }) => {
   const [isToggleSwitch, setIsToggleSwitch] = useState("CDCP");
 
-  const cancellation = [
-    {
-      time: "Before 20 - Feb 18:00",
-    },
-    {
-      time: "Between 20 Feb & 21 Feb 10:00",
-    },
-    {
-      time: "After 21 Feb - 10:00",
-    },
-  ];
-  const refund = [
-    {
-      amount: "Rs 1190/- @ 85% refund",
-    },
-    {
-      amount: "Rs 980/- @ 70% refund",
-    },
-    {
-      amount: "Rs 0/- @ 0% refund",
-    },
-  ];
+  // const cancellation = [
+  //   {
+  //     time: "Before 20 - Feb 18:00",
+  //   },
+  //   {
+  //     time: "Between 20 Feb & 21 Feb 10:00",
+  //   },
+  //   {
+  //     time: "After 21 Feb - 10:00",
+  //   },
+  // ];
+  // const refund = [
+  //   {
+  //     amount: "Rs 1190/- @ 85% refund",
+  //   },
+  //   {
+  //     amount: "Rs 980/- @ 70% refund",
+  //   },
+  //   {
+  //     amount: "Rs 0/- @ 0% refund",
+  //   },
+  // ];
   const Travel = [
     {
       travel_img: (
@@ -258,7 +258,6 @@ const Policy = ({ policies, price, busType }) => {
     },
   ];
 
-  console.log(busType, "bus_type_status");
   const DiscountedPrice = (price, item) => {
     const originalPrice = parseInt(price?.price || 0);
     const discountRate = parseInt(item?.rate?.replace("%", "") || 0);
@@ -275,12 +274,12 @@ const Policy = ({ policies, price, busType }) => {
         <div
           className={`${
             busType === "luxury" ? "bg-[#FFEEC9]" : "bg-[#EEEDED]"
-          } h-auto px-[1vw] pt-[1vw]`}
+          } h-auto md:rounded-[0.5vw] px-[1vw] pt-[1vw]`}
         >
           <div
             className={`${
               busType === "luxury" ? "border-[#393939]" : "border-[#1F4B7F]"
-            } flex justify-center mt-[1vw] mx-auto border-[0.15vw] w-[60vw] rounded-[0.2vw]`}
+            } flex justify-center mt-[1vw] border-[0.15vw] w-[60vw] rounded-[0.2vw]`}
           >
             <button
               className={`w-[30vw] h-[2.5vw] flex px-[1vw] justify-center gap-[0.5vw] items-center ${
@@ -340,7 +339,17 @@ const Policy = ({ policies, price, busType }) => {
           {isToggleSwitch === "CDCP" ? (
             <div className="py-[2vw] px-[.5vw]">
               <div className="flex justify-between">
-                <div className="bg-[#D0E5FF80] rounded-[0.5vw]">
+                <div
+                  className="flex rounded-[0.5vw]"
+                  style={{
+                    backgroundImage:
+                      busType === "luxury"
+                        ? "linear-gradient(to right, #F8C550, #FFEB76, #FFE173)"
+                        : "",
+                    backgroundColor:
+                      busType === "luxury" ? "" : "#D0E5FF80",
+                  }}
+                >
                   <div className="py-[1vw] px-[0.5vw] flex flex-col gap-[1vw]">
                     <p
                       className={`${
@@ -399,6 +408,27 @@ const Policy = ({ policies, price, busType }) => {
                     Cancellation Time
                   </p>
                   {policies?.length > 0 &&
+                    policies?.map((item) => {
+                      const [start, end] = item?.span?.split("-").map(Number); // Split and convert to numbers
+                      const displaySpan =
+                        start >= 24
+                          ? `${Math.floor(start / 24)}${
+                              end ? " to " + Math.floor(end / 24) : ""
+                            }`
+                          : `${start}${end ? " to " + end : ""}`;
+
+                      const timeUnit = start >= 24 ? "Days" : "Hours";
+
+                      return (
+                        <p className="text-[1.1vw] text-[#1F4B7F]">
+                          <span className="px-[.2vw]">Before </span>
+                          <span>{displaySpan}</span>
+                          <span className="px-[.2vw]">{timeUnit}</span>
+                        </p>
+                      );
+                    })}
+
+                  {/* {policies?.length > 0 &&
                     policies?.map((item) => (
                       <p className="text-[1.1vw] text-[#1F4B7F] ">
                         <span className="px-[.2vw]">Before </span>
@@ -407,7 +437,7 @@ const Policy = ({ policies, price, busType }) => {
                         </span>
                         <span className="px-[.2vw]">Hours</span>
                       </p>
-                    ))}
+                    ))} */}
                 </div>
                 <div className="flex flex-col gap-[1vw]">
                   <p className="text-[1.1vw] text-[#1F4B7F] font-semibold">

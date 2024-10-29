@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 // import reffer from "../../../../assets/cashback1.gif";
 import referralnew from "../../../../assets/referralnew.gif";
 import referralMble from "../../../../assets/CashBack_Mble.gif.gif";
+import { Tooltip } from "antd";
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -33,42 +34,19 @@ export default function ReferralsIndex() {
   const [shareModal, setShareModal] = useState(false);
   const [spinning, setSpinning] = useState(false);
   const [visible, setVisible] = useState(false);
-
-  const navigate = useNavigate();
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const navigation = useNavigate();
+  //const navigate = useNavigate();
+  const termsConditions = getContent?.['referernt&c'];
 
   const closeModal = () => {
     setShareModal(false);
   };
 
-  console.log(getContent, "1responcecontent");
+  const closeOpenModal = () => {
+    setModalIsOpen(false);
+  };
 
-  useEffect(() => {
-    setSpinning(true);
-    const getContent = async () => {
-      const response = await GetRefferalContent(setSpinning);
-      setGetContent(response);
-      console.log(response, "responcecontent");
-    };
-    getContent();
-  }, []);
-
-  useEffect(() => {
-    const getcode = async () => {
-      const response = await GetRefferalCode();
-      setGetCode(response);
-      console.log(response, "isuxdfoidsf");
-    };
-    getcode();
-  }, []);
-
-  const procedureSteps = getContent?.procedure?.split(/\n\n+/);
-  // console.log(procedureSteps[0],"sjdhfkjdfklefd");
-  // const contentMapping = {
-  //   shareCode: procedureSteps[0],
-  //   installApp: procedureSteps[1],
-  //   receiveVoucher: procedureSteps[2],
-  //   completeTravel: procedureSteps[3],
-  // };
   const copyToClipboard = () => {
     const code = getCode?.referral_code;
     console.log(code, "codecodecodecodecode");
@@ -86,8 +64,36 @@ export default function ReferralsIndex() {
         });
     }
   };
-  console.log(procedureSteps, "procedureStepsprocedureSteps");
-  const navigation = useNavigate();
+
+  useEffect(() => {
+    setSpinning(true);
+    const getContent = async () => {
+      const response = await GetRefferalContent(setSpinning);
+      setGetContent(response);
+      console.log(response, "responce content");
+    };
+    getContent();
+  }, []);
+
+  useEffect(() => {
+    const getcode = async () => {
+      const response = await GetRefferalCode();
+      setGetCode(response);
+      console.log(response, "isuxdfoidsf");
+    };
+    getcode();
+  }, []);
+
+  // const procedureSteps = getContent?.procedure?.split(/\n\n+/);
+  // console.log(procedureSteps[0],"sjdhfkjdfklefd");
+  // const contentMapping = {
+  //   shareCode: procedureSteps[0],
+  //   installApp: procedureSteps[1],
+  //   receiveVoucher: procedureSteps[2],
+  //   completeTravel: procedureSteps[3],
+  // };
+ 
+
   return (
     <>
       {spinning ? (
@@ -262,10 +268,10 @@ export default function ReferralsIndex() {
           {currenttab === 1 ? (
             <>
               {/* {getContent?.procedure?.length > 0 &&
-        getContent?.procedure?.split(/\r\n\r\n/)?.map((value,index)=>(
-          // index[0]
+             getContent.map((value,index)=>(
+           index[0]
           <div>
-
+          {value[0]}
           </div>
         
         ))} */}
@@ -275,67 +281,108 @@ export default function ReferralsIndex() {
                 </label>
               </div>
               <div className="grid md:grid-cols-2 px-[3vw] md:justify-between md:gap-y-[0vw] gap-y-[5vw] md:gap-x-[12vw] py-[1vw] md:mb-0 mb-[4vw]">
-                <div className="col-span-1 flex gap-x-[5vw] md:gap-x-[1vw] items-center pt-[2vw] md:pt-[0vw]">
-                  <span className="border-[0.1vw] border-[#1F487C] bg-[white] rounded-[2vw] md:rounded-[0.5vw] p-[0.5vw]">
-                    <IoShareSocialSharp
-                      color="#1F487C"
-                      className="md:h-[3vw] md:w-[3vw] h-[13vw] w-[13vw]"
-                    />
-                  </span>
-                  <label className="md:text-[0.9vw] text-[3.4vw] text-[#1F487C]">
+                <>
+                  <div className="col-span-1 flex gap-x-[5vw] md:gap-x-[1vw] items-center pt-[2vw] md:pt-[0vw]">
+                    <span className="border-[0.1vw] border-[#1F487C] bg-[white] rounded-[2vw] md:rounded-[0.5vw] p-[0.5vw]">
+                      <IoShareSocialSharp
+                        color="#1F487C"
+                        className="md:h-[3vw] md:w-[3vw] h-[13vw] w-[13vw]"
+                      />
+                    </span>
+
                     {/* Share your unique referral code with your friends and family to
                 earn referral benefits. The more you share, the more benefits
                 you get! */}
-                    {procedureSteps?.length > 0 && procedureSteps[0]}
-                  </label>
-                </div>
-                <div className="col-span-1 flex gap-x-[5vw] md:gap-x-[1vw] items-center">
-                  <span className="border-[0.1vw] border-[#1F487C] rounded-[2vw] md:rounded-[0.5vw] p-[0.8vw] md:p-[0.5vw]">
-                    <FaMobileScreen
-                      color="#1F487C"
-                      className="md:h-[3vw] bg-[white] md:w-[3vw] h-[13vw] w-[13vw]"
-                    />
-                  </span>
-                  <label className="md:text-[0.9vw] text-[3.4vw] text-[#1F487C]">
-                    {/* Your friend must install the Tbs app and enter your unique code
-                while signing up. */}
-                    {procedureSteps?.length > 0 && procedureSteps[1]}
-                  </label>
-                </div>
-                <div className="col-span-1 pt-[2vw] flex gap-x-[5vw] md:gap-x-[1vw] items-center">
-                  <span className="border-[0.1vw] border-[#1F487C] rounded-[2vw] md:rounded-[0.5vw] p-[0.5vw]">
-                    <GiReceiveMoney
-                      color="#1F487C"
-                      className="md:h-[3vw] bg-[white] md:w-[3vw] h-[13vw] w-[13vw]"
-                    />
-                  </span>
-                  <label className="text-[3.4vw] md:text-[0.9vw] text-[#1F487C]">
-                    {/* Once they successfully sign up, they will receive a voucher of
-                ₹250 instant discount + ₹250 cashback that can be availed on
-                their first ever booking. */}
-                    {procedureSteps?.length > 0 && procedureSteps[2]}
-                  </label>
-                </div>
-                <div className="col-span-1 pt-[2vw] flex gap-x-[5vw] md:gap-x-[1vw] items-center">
-                  <span className="border-[0.1vw] border-[#1F487C] rounded-[2vw] md:rounded-[0.5vw] p-[0.5vw]">
-                    <BiSolidOffer
-                      color="#1F487C"
-                      className="md:h-[3vw] bg-[white] md:w-[3vw] h-[13vw] w-[13vw]"
-                    />
-                  </span>
-                  <label className="text-[3.4vw] md:text-[0.9vw] text-[#1F487C]">
-                    {/* After the completion of their first travel you will receive a
-                discount voucher worth ₹150. */}
-                    {procedureSteps?.length > 0 && procedureSteps[3]}
-                  </label>
-                </div>
+                      <label className="md:text-[0.9vw] text-[3.4vw] text-[#1F487C]">
+                      {getContent && getContent?.procedure[0]?.text.length > 150 ? (
+                        <Tooltip
+                          placement="top"
+                          title={getContent && getContent?.procedure[0]?.text }
+                          className="cursor-pointer"
+                          color="#1F487C"
+                        >
+                          {`${getContent && getContent?.procedure[0]?.text?.slice(0, 150)}...`}
+                        </Tooltip>
+                      ) : (
+                        `${getContent && getContent?.procedure[0]?.text?.slice(0, 150)}`
+                      )}
+                      </label>
+                  </div>
+                  <div className="col-span-1 flex gap-x-[5vw] md:gap-x-[1vw] items-center">
+                    <span className="border-[0.1vw] border-[#1F487C] rounded-[2vw] md:rounded-[0.5vw] p-[0.8vw] md:p-[0.5vw]">
+                      <FaMobileScreen
+                        color="#1F487C"
+                        className="md:h-[3vw] bg-[white] md:w-[3vw] h-[13vw] w-[13vw]"
+                      />
+                    </span>
+                      <label className="md:text-[0.9vw] text-[3.4vw] text-[#1F487C]">
+                      {getContent && getContent?.procedure[1]?.text.length > 150 ? (
+                        <Tooltip
+                          placement="top"
+                          title={getContent && getContent?.procedure[1]?.text }
+                          className="cursor-pointer"
+                          color="#1F487C"
+                        >
+                          {`${getContent && getContent?.procedure[1]?.text?.slice(0, 150)}...`}
+                        </Tooltip>
+                      ) : (
+                        `${getContent && getContent?.procedure[1]?.text?.slice(0, 150)}`
+                      )}
+                      </label>
+                  </div>
+                  <div className="col-span-1 pt-[2vw] flex gap-x-[5vw] md:gap-x-[1vw] items-center">
+                    <span className="border-[0.1vw] border-[#1F487C] rounded-[2vw] md:rounded-[0.5vw] p-[0.5vw]">
+                      <GiReceiveMoney
+                        color="#1F487C"
+                        className="md:h-[3vw] bg-[white] md:w-[3vw] h-[13vw] w-[13vw]"
+                      />
+                    </span>
+                      <label className="md:text-[0.9vw] text-[3.4vw] text-[#1F487C]">
+                        {/* {getContent?.procedure[2]?.text}{" "} */}
+                        {getContent && getContent?.procedure[2]?.text.length > 150 ? (
+                        <Tooltip
+                          placement="top"
+                          title={getContent && getContent?.procedure[2]?.text }
+                          className="cursor-pointer"
+                          color="#1F487C"
+                        >
+                          {`${getContent && getContent?.procedure[2]?.text?.slice(0, 150)}...`}
+                        </Tooltip>
+                      ) : (
+                        `${getContent && getContent?.procedure[2]?.text?.slice(0, 150)}`
+                      )}
+                      </label>
+                  </div>
+                  <div className="col-span-1 pt-[2vw] flex gap-x-[5vw] md:gap-x-[1vw] items-center">
+                    <span className="border-[0.1vw] border-[#1F487C] rounded-[2vw] md:rounded-[0.5vw] p-[0.5vw]">
+                      <BiSolidOffer
+                        color="#1F487C"
+                        className="md:h-[3vw] bg-[white] md:w-[3vw] h-[13vw] w-[13vw]"
+                      />
+                    </span>
+                      <label className="md:text-[0.9vw] text-[3.4vw] text-[#1F487C]">
+                      {getContent && getContent?.procedure[3]?.text.length > 150 ? (
+                        <Tooltip
+                          placement="top"
+                          title={getContent && getContent?.procedure[3]?.text }
+                          className="cursor-pointer"
+                          color="#1F487C"
+                        >
+                          {`${getContent && getContent?.procedure[3]?.text?.slice(0, 150)}...`}
+                        </Tooltip>
+                      ) : (
+                        `${getContent && getContent?.procedure[3]?.text?.slice(0, 150)}`
+                      )}
+                      </label>
+                  </div>
+                </>
               </div>
               {/* <div className="grid grid-cols-2 px-[3vw] justify-between gap-x-[12vw] py-[1vw]">
            
           </div> */}
               <div className="flex items-center justify-center pt-[6vw] md:pt-[0vw] w-full">
                 <label
-                  onClick={() => navigate("/terms")}
+                 onClick={() => setModalIsOpen(true)}
                   className="text-[#1F487C] text-[4.5vw] md:text-[1.3vw] font-semibold py-[1vw] cursor-pointer"
                 >
                   Terms & Conditions
@@ -363,7 +410,7 @@ export default function ReferralsIndex() {
                  bottom-3 md:static">
                   Terms & Conditions
                 </label> */}
-                <label className="text-[#1F487C] text-[4.5vw] md:text-[1.2vw] md:pt-[0vw] pt-[10vw] text-center font-semibold md:pb-[2vw]">
+                <label className={`text-[#1F487C] text-[4.5vw] md:text-[1.2vw] md:pt-[0vw] pt-[10vw] text-center font-semibold md:pb-[2vw]`}>
                   Terms & Conditions
                 </label>
               </div>
@@ -379,6 +426,30 @@ export default function ReferralsIndex() {
           </ModalPopup>
         </div>
       )}
+
+     <ModalPopup
+        show={modalIsOpen}
+        onClose={closeOpenModal}
+        height="35vw"
+        width="48vw"
+      >
+        <div>
+        <div className="flex h-[3vw] justify-center text-center">
+         <label className="text-[1.4vw] text-[#1F487C] font-bold">Terms & Conditions</label> 
+        </div>
+        <div className='Legal-Information overflow-y-scroll w-full h-[29vw] px-[0.5vw] py-[1vw]'>
+         {/* <label>{termsConditions}</label> */}
+         <div><p className='text-[1vw] text-[#1F487C]'>
+                        {termsConditions?.split("\r\n")?.map((line, index) => (
+                            <p key={index} className="pb-[0.1vw]">
+                                {line}
+                                <br />
+                            </p>
+                        ))}
+                    </p></div>
+        </div>
+        </div>
+      </ModalPopup>
     </>
   );
 }

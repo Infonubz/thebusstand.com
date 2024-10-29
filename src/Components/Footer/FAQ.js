@@ -67,7 +67,7 @@ const Faq = () => {
             <div className="absolute top-[5.5vw] px-[2vw] grid grid-cols-8 gap-[1vw] w-full"></div>
           </div>
           <div className="absolute md:top-[6vw] top-[12vw] px-[3vw] flex flex-col">
-            <div className="bg-white h-[87vh] w-[94vw] md:h-[34vw] relative rounded-[2.5vw] md:rounded-[1vw]">
+            <div className="bg-white h-[87vh] w-[94vw] md:h-[34vw] relative rounded-[2.5vw] md:rounded-[1vw] shadow-lg shadow-gray-300">
               <div className="grid grid-rows md:grid-cols-7">
                 <div className="md:col-start-1 md:col-span-4 m-[1vw] md:m-[3vw] h-[37vh] md:h-[24vw] Legal-Information  overflow-y-auto">
                   <Collapse

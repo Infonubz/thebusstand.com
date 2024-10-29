@@ -1347,33 +1347,45 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                     options={options}
                   />
                 ) : (
-                  <div className="relative custnav">
-                    <img
-                      src={split}
-                      className=" md:w-[13vw] md:h-[3vw]"
-                      alt=""
+                  <div className="relative custnav flex justify-center">
+                  <svg
+                    width="25vw"  
+                    height="3vw"
+                    viewBox="0 0 176 54" 
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    preserveAspectRatio="none"
+                  >
+                    <path
+                      d="M144.006 0.980469H32.0263C14.3565 0.980469 0.0322266 5.44593 0.0322266 10.9544V43.3695C0.0322266 48.8779 14.3565 53.3434 32.0263 53.3434H144.006C161.676 53.3434 176 48.8779 176 43.3695V10.9544C176 5.44593 161.676 0.980469 144.006 0.980469Z"
+                      fill="white"
+                      fillOpacity="0.2"
                     />
-                    <div className=" absolute md:bottom-[.6vw] md:left-[3vw] md:text-[1.3vw] text-white  bottom-[1.9vw] text-[2.5vw] left-[3.5vw]">
-                      {fromValue}
-                    </div>
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center text-white text-[2.5vw] md:text-[1.3vw]">
+                    {fromValue}
                   </div>
+                </div>
                 )}
               </div>
               <div className="md:col-span-1 content-center md:block hidden ">
                 <div className=" relative flex items-center justify-center cursor-pointer ">
                   <div
                     // onClick={handleSwap}
-                    className=" cursor-not-allowed"
+                    className="cursor-not-allowed"
                   >
-                    <img
+                    {/* <img
                       src={split}
                       className="md:h-[2.5vw] md:w-[2.5vw]"
                       alt="split"
-                    />
+                    /> */}
+                    <svg width="52" height="47" viewBox="0 0 52 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M41.9353 0.308594H9.94123C4.89269 0.308594 0.800049 4.20635 0.800049 9.01448V37.3086C0.800049 42.1167 4.89269 46.0145 9.94123 46.0145H41.9353C46.9839 46.0145 51.0765 42.1167 51.0765 37.3086V9.01448C51.0765 4.20635 46.9839 0.308594 41.9353 0.308594Z" fill="white" fill-opacity="0.2"/>
+</svg>
                     <FaArrowRightArrowLeft
                       color="white"
                       size={"1.2vw"}
-                      className="absolute size-[4vw] md:size-[1.2vw] left-[1.3vw] top-[1.8vw] md:top-[0.7vw] md:left-[2.7vw] transform translate[-50%,-50%]"
+                      className="absolute size-[4vw] md:size-[1.2vw] left-[1.3vw] top-[1.8vw] md:top-[0.57vw] md:left-[2.78vw] transform translate[-50%,-50%]"
                     />
                   </div>
                 </div>
@@ -1430,16 +1442,25 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                     options={toBus}
                   />
                 ) : (
-                  <div className="relative">
-                    <img
-                      src={split}
-                      className=" md:w-[13vw] md:h-[3vw] flex justify-center"
-                      alt="split"
+                  <div className="relative custnav flex justify-center">
+                  <svg
+                    width="25vw"  
+                    height="3vw"
+                    viewBox="0 0 176 54" 
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    preserveAspectRatio="none"
+                  >
+                    <path
+                      d="M144.006 0.980469H32.0263C14.3565 0.980469 0.0322266 5.44593 0.0322266 10.9544V43.3695C0.0322266 48.8779 14.3565 53.3434 32.0263 53.3434H144.006C161.676 53.3434 176 48.8779 176 43.3695V10.9544C176 5.44593 161.676 0.980469 144.006 0.980469Z"
+                      fill="white"
+                      fillOpacity="0.2"
                     />
-                    <div className=" absolute md:bottom-[.6vw] md:left-[3vw] md:text-[1.3vw] text-white  bottom-[1.9vw] text-[2.5vw] left-[3.5vw]">
-                      {toValue}
-                    </div>
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center text-white text-[2.5vw] md:text-[1.3vw]">
+                    {toValue}
                   </div>
+                </div>
                 )}
               </div>
 
@@ -1467,16 +1488,25 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                       />
                     </div>
                   ) : (
-                    <div className="relative">
-                      <img
-                        src={split}
-                        className="w-[13vw] h-[3vw] felx justify-center"
-                        alt="split"
+                    <div className="relative custnav flex justify-center">
+                    <svg
+                      width="25vw"  
+                      height="3vw"
+                      viewBox="0 0 176 54" 
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      preserveAspectRatio="none"
+                    >
+                      <path
+                        d="M144.006 0.980469H32.0263C14.3565 0.980469 0.0322266 5.44593 0.0322266 10.9544V43.3695C0.0322266 48.8779 14.3565 53.3434 32.0263 53.3434H144.006C161.676 53.3434 176 48.8779 176 43.3695V10.9544C176 5.44593 161.676 0.980469 144.006 0.980469Z"
+                        fill="white"
+                        fillOpacity="0.2"
                       />
-                      <div className="absolute bottom-[.6vw] left-[3vw] text-[1.3vw] text-white">
-                        {formattedDate}
-                      </div>
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center text-white text-[2.5vw] md:text-[1.3vw]">
+                    {formattedDate}
                     </div>
+                  </div>
                   )}
                 </div>
                 {modifyBtn === true ? (

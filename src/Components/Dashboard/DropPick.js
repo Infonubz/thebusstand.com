@@ -12,7 +12,7 @@ const DropPick = ({ boarding, dropping, bus_type_status, busType }) => {
         <div
           className={`${
             busType === "luxury" ? "bg-[#FFEEC9]" : "bg-[#EEEDED]"
-          } h-auto w-full px-[1vw]`}
+          } h-auto md:rounded-[0.5vw] px-[1vw]`}
         >
           <div className="grid grid-cols-2 ">
             <div className="flex flex-col  justify-start px-[1vw]">

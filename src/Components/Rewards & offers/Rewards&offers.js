@@ -334,8 +334,8 @@ export default function Rewardsandoffers() {
                             src={`http://192.168.90.47:4000${items.theme}`}
                             className="w-[80vw]  md:h-[13vw] h-[40vw] z-[1]"
                           />
-                          <div className="absolute  left-[25vw] md:left-[6.1vw] top-[-.3vw] md:top-[0vw] rounded-b-full h-[5vw] md:h-[1.5vw] w-[6vw] md:w-[2vw]  bg-white z-[2]"></div>
-                          <div className="absolute left-[25vw] md:left-[6.1vw] bottom-[-.2vw] md:bottom-[0vw] rounded-t-full h-[5vw] md:h-[1.5vw] w-[6vw] md:w-[2vw] bg-white z-[2]"></div>
+                          <div className="absolute  left-[25vw] md:left-[6.1vw] top-[-.3vw] md:top-[0vw] rounded-b-full h-[5vw] md:h-[1vw] w-[6vw] md:w-[2vw]  bg-white z-[2]"></div>
+                          <div className="absolute left-[25vw] md:left-[6.1vw] bottom-[-.2vw] md:bottom-[0vw] rounded-t-full h-[5vw] md:h-[1vw] w-[6vw] md:w-[2vw] bg-white z-[2]"></div>
                         </div>
                       ))
                     ) : (

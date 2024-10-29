@@ -92,7 +92,7 @@ const Faqs = () => {
 
   return (
     <>
-      <div className="px-[5vw] md:mt-[2vw] mb-[5vw]">
+      <div className="px-[5vw] md:mt-[1vw] mb-[5vw]">
         <p className={`text-[4vw] pl-[2vw] text-[${colors.primary}] font-bold pt-[0.5vw] md:text-[1.5vw] md:pl-[2vw] md:font-bold md:pt-[1vw] md:pb-[1vw]`}>
           FAQs Related to bus tickets Booking{" "}
         </p>

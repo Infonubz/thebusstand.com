@@ -4,7 +4,7 @@ import { TbMailFilled } from "react-icons/tb";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import helpss from "../../../../assets/Help.gif";
-import { message } from "antd";
+//import { message } from "antd";
 import { help } from "../../../../Api/MyAccounts/Help";
 
 export default function Help() {
@@ -26,7 +26,7 @@ export default function Help() {
   };
 
   return (
-    <div className="bg-white md:h-[39vw] h-auto mx-[1vw] md:mx-[0vw]   mb-[2vw] w-full rounded-[1vw]">
+    <div className="bg-white md:h-[35vw] h-auto mx-[1vw] md:mx-[0vw] shadow-lg shadow-gray-300  mb-[2vw] w-full rounded-[1vw]">
       <Formik
         initialValues={{
           name: "",
@@ -43,13 +43,13 @@ export default function Help() {
       >
         {({ isSubmitting, isValid, handleSubmit, values, handleChange }) => (
           <Form className="" onSubmit={handleSubmit}>
-            <div className="flex h-[130vw] w-[95vw] md:w-full  md:h-[34vw]">
+            <div className="flex h-[130vw] w-[95vw] md:w-full  md:h-[31vw]">
               <span className="md:block hidden">
                 <div className="flex flex-col justify-items-center px-[5vw] gap-[1vw]">
                   <div className="flex justify-center">
-                    <img src={helpss} alt="" className="h-[18vw] w-[18vw]" />
+                    <img src={helpss} alt="" className="h-[15vw] w-[15vw]" />
                   </div>
-                  <div className="w-[23vw] text-center text-[#1F487C] font-bold text-[1.4vw] mb-[1vw]">
+                  <div className="w-[23vw] text-center text-[#1F487C] font-bold text-[1.1vw] mb-[1vw]">
                     If you have any Inquiries get in touch with us. We'll be
                     happy to help you.
                   </div>
@@ -66,11 +66,11 @@ export default function Help() {
                 </div>
               </span>
 
-              <div className="w-[0.01vw] h-[31vw] border-r-[0.2vw] md:block hidden mt-[2vw] border-dashed content-center"></div>
+              <div className="w-[0.01vw] h-[27vw] border-r-[0.2vw] md:block hidden mt-[2vw] border-dashed content-center"></div>
 
               <div className="h-[25vw] w-full">
                 <div className="px-[3vw] md:pt-[1vw] pt-[2vw] pb-[1vw] flex flex-col gap-x-[1.5vw] md:gap-y-[1vw] gap-y-[2.5vw]">
-                  <div className="font-bold text-[#1F487C] text-[5.5vw] text-center md:text-start md:text-[1.5vw]">
+                  <div className="font-bold text-[#1F487C] text-[5.5vw] text-center md:text-start md:text-[1.3vw]">
                     Get in Touch
                   </div>
                   <span className="md:hidden block">
@@ -91,13 +91,13 @@ export default function Help() {
                       </div>
                     </div>
                   </span>
-                  <div className="font-semibold text-[#1F487C] text-[3.5vw] md:text-[1.1vw]">
+                  <div className="font-semibold text-[#1F487C] text-[3.5vw] md:text-[1vw]">
                     Feel free to ask your query : {")"}
                   </div>
                 </div>
                 <div className="px-[1.5vw] w-full h-auto ">
                   {/* <div className="flex flex-col gap-y-[2.5vw] md:gap-y-[1vw]  py-[1vw] w-full md:w-[35vw] h-auto md:h-[26.4vw] relative md:border-[0.1vw] md:border-[#1F487C] px-[1.5vw] sm:border-none rounded-[1vw]"> */}
-                  <div className="flex flex-col gap-y-[2.5vw] md:gap-y-[1vw] py-[1vw] w-full md:w-[35vw] h-auto md:h-[26.4vw] relative md:border-[0.1vw] md:border-[#1F487C] border-[0vw] border-white px-[1.5vw]   rounded-[1vw]">
+                  <div className="flex flex-col gap-y-[2.5vw] md:gap-y-[0.5vw] py-[0.5vw] w-full md:w-[35vw] h-auto md:h-[23vw] relative md:border-[0.1vw] md:border-[#1F487C] border-[0vw] border-white px-[1.5vw]   rounded-[1vw]">
                     <div className="flex flex-col gap-y-[1vw] relative">
                       <label className="md:text-[1vw] text-[4vw] text-[#1F487C]">
                         Name*
@@ -183,10 +183,10 @@ export default function Help() {
                 </div>
               </div>
             </div>
-            <span className="flex md:px-[25vw] justify-center md:justify-normal py-[4vw]  items-center md:py-[1vw] ">
+            <span className="flex md:px-[27vw] justify-center md:justify-normal py-[4vw] items-center md:py-[0vw] md:top-[-25vw]">
               <button
                 type="submit"
-                className="bg-[#1F487C] text-[white] md:w-[18vw] md:h-[3vw] h-[8vw] w-[38vw] rounded-full text-[4vw] md:text-[1.25vw] "
+                className="bg-[#1F487C] text-[white] md:w-[13vw] md:h-[3vw] h-[8vw] w-[38vw] rounded-full text-[4vw] md:text-[1.25vw] "
               >
                 Submit
               </button>

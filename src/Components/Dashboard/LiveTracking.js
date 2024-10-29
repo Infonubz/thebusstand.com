@@ -216,7 +216,7 @@ const LiveTracking = ({
       <div
         className={`${
           busType === "luxury" ? "bg-[#FFEEC9]" : "bg-[#EEEDED]"
-        } w-full px-[1vw] md:block hidden`}
+        } md:rounded-[0.5vw] px-[0.7vw] md:block hidden`}
       >
         <div className="w-full grid grid-flow-col grid-rows-3 gap-x-[2vw] gap-y-[1vw] py-[1.5vw] overflow-x-auto overflow-y-hidden">
           {sortedAmenities.map((amenity, idx) => (

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 //import Promotion from "../../MainComponenet/Promotion";
-import backdrop from "../../../assets/backdrop.png";
-import { FaAngleRight } from "react-icons/fa6";
-import { MdEventSeat } from "react-icons/md";
+// import backdrop from "../../../assets/backdrop.png";
+// import { FaAngleRight } from "react-icons/fa6";
+// import { MdEventSeat } from "react-icons/md";
 //import lowprice from "../../../assets/lowprice.png";
 import dayjs from "dayjs";
 //import { Tooltip } from "antd";
@@ -19,6 +19,7 @@ import LiveTracking from "../LiveTracking";
 import Policy from "../Policy";
 import DropPick from "../DropPick";
 import { useSelector } from "react-redux";
+import { Skeleton } from "antd";
 // import { useDispatch } from "react-redux";
 // import {
 //   GetCardDetails,
@@ -32,30 +33,28 @@ import OurLowPrice from "../../../assets/OurLowPrice.png";
 import BusSeatsLayout from "../BusSeatsLayout/BusSeatsLayout";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import thread from "../../../assets/thread.png";
-import sliver from "../../../assets/Silver_surfer.png";
+//import sliver from "../../../assets/Silver_surfer.png";
 import SINGLECARD_BG from "../../../assets/SINGLECARD_BG.png";
 //import SingleCardMobile from "./SingleCardMobile";
 import { GetUserDetails } from "../../../Api/Login/Login";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin, Space, Empty } from "antd";
 import { useNavigate } from "react-router";
-import ColorCodes from "../../Common/ColorCodes";
+//import ColorCodes from "../../Common/ColorCodes";
 import SingleBookingCardList from "../../MobileView/SingleBookingCardList";
 //import MobileFilterNavbar from "./MobileFilterNavbar";
 // import orange_travel_logo from "../../../assets/orange.png"
 
-
 export default function SingleCard() {
-
   // const [dropDown, setDropDown] = useState(0)
   const [dropDown, setDropDown] = useState(null);
   const [spinner, setSpinner] = useState(sessionStorage.getItem("spinner"));
-  const isluxury = sessionStorage.getItem("isLuxury");
+  //const isluxury = sessionStorage.getItem("isLuxury");
   const [trackingCount, setTrackingCount] = useState();
   const buslist = useSelector((state) => state?.card_detail);
   const navigation = useNavigate();
   const user_id = sessionStorage.getItem("user_id");
-  const colors = ColorCodes();
+  //const colors = ColorCodes();
   //const dispatch = useDispatch();
 
   // const buslist = [
@@ -147,14 +146,12 @@ export default function SingleCard() {
 
   setTimeout(() => {
     setSpinner("false");
-    console.log("cleartiemout", 2);
   }, 1000);
 
-
   useEffect(() => {
-  const loader = sessionStorage.getItem("spinner"); 
+    const loader = sessionStorage.getItem("spinner");
     setSpinner(loader);
-  }, [sessionStorage.getItem("spinner")]);
+  }, []);
 
   useEffect(() => {
     if (user_id) {
@@ -162,10 +159,7 @@ export default function SingleCard() {
     }
   }, [user_id, navigation]);
 
-
-
-
-  console.log(sessionStorage.getItem("loading"), spinner, "spinnerrrrrrrrrrr");
+  console.log(spinner, "spinnerrrrrrrrrrr");
 
   return (
     // <div>
@@ -545,66 +539,200 @@ export default function SingleCard() {
         className={`bg-[#E5FFF1] md:block hidden px-[0.5vw] min-h-screen max-h-auto pb-[1vw] relative`}
       >
         <Advertisement />
-        {spinner === "true" ? (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: "55vw",
-            width: "100%",
-            height: "100%",
-            //background: "rgba(0, 0, 0, 0.2)",
-            display: "flex",
-            opacity: "50px",
-            zIndex: 1000,
-          }}
-        >
-          <Space align="center" size="middle">
-            <Spin
-              indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />}
-            />
-          </Space>
-        </div>
-      ) : null}
-            {buslist?.length > 0 ? (
-              buslist?.map((item, index) => (
-                <>
-                  <div
-                    className={`${
-                      // isluxury == "true" || isluxury == true ||
-                      item.bus_type_status === "luxury"
-                        ? "custom-gradient-luxury"
-                        : "bg-white"
-                    }  ${
-                      dropDown === `liveTracking${index}` ||
-                      dropDown === `policy${index}`
-                        ? "h-auto"
-                        : "h-[13vw]" || dropDown === `droppick${index}`
-                        ? "h-auto"
-                        : "h-[13vw]"
-                    } w-full mt-[0.5vw] flex-col rounded-[1vw] border-[0.15vw] border-[#C9C9C9]`}
-                    key={index}
-                    style={{
-                      backgroundImage: `linear-gradient(to right, #F8C550, #FFEB76, #FFE173), url(${SINGLECARD_BG})`,
-                      backgroundBlendMode: "overlay", // Add this line to blend the color and image
-                      zIndex: 2,
-                    }}
-                  >
+
+        {buslist?.length > 0 ? (
+          buslist?.map((item, index) => (
+            <>
+              <div
+                className={`${
+                  // isluxury == "true" || isluxury == true ||
+                  item.bus_type_status === "luxury"
+                    ? "custom-gradient-luxury"
+                    : "bg-white"
+                }  ${
+                  dropDown === `liveTracking${index}` ||
+                  dropDown === `policy${index}`
+                    ? "h-auto"
+                    : "h-[1vw]" || dropDown === `droppick${index}`
+                    ? "h-auto"
+                    : "h-[1vw]"
+                } w-full mt-[0.5vw] flex-col rounded-[1vw] border-[0.15vw] border-[#C9C9C9]`}
+                key={index}
+                style={{
+                  backgroundImage: `linear-gradient(to right, #F8C550, #FFEB76, #FFE173), url(${SINGLECARD_BG})`,
+                  backgroundBlendMode: "overlay", // Add this line to blend the color and image
+                  zIndex: 2,
+                }}
+              >
+                {spinner === "true" ? (
+                  <div>
+                    <Skeleton
+                      loading={spinner}
+                      active
+                      style={{ margin: "0.5vw", padding: "0.5vw" }}
+                      paragraph={{ rows: 4 }}
+                      avatar
+                    ></Skeleton>
+                  </div>
+                ) : (
+                  <>
                     <div className="grid grid-cols-2 ">
                       <div>
-                        <div className="grid grid-rows-7  h-full w-full">
-                          <div className="row-span-3 relative  h-full w-full ">
-                            <img
-                              src={
-                                // isluxury == "true" || isluxury == true
-                                item.bus_type_status === "luxury"
-                                  ? sliver
-                                  : backdrop
-                              }
-                              className="h-[3.5vw] w-full"
-                              alt="theme"
-                            />
-                            <div className="absolute top-0 right-[2vw] rounded-full">
+                        <div className="grid grid-rows-7 h-full w-full">
+                          <div className="row-span-3 relative  md:left-[-0.1vw]">
+                            {item.bus_type_status !== "luxury" ? (
+                              <div
+                                style={{
+                                  width: "47vw",
+                                  height: "3.99vw",
+                                  overflow: "hidden",
+                                  borderTopLeftRadius: "0.5vw",
+                                }}
+                              >
+                                <svg
+                                  width="100%"
+                                  height="100%"
+                                  viewBox="0 20 890 72"
+                                  fill="none"
+                                >
+                                  <path
+                                    d="M19.5326 0.0410156L787.192 0.504427C787.192 0.504427 747.324 60.2735 587.004 74.6164C426.684 88.9593 0.831245 83.2804 0.831245 83.2804V10.0627C0.831245 10.0627 0.163636 4.70378 7.06975 1.59887C9.66618 0.0410203 19.5326 0.0410156 19.5326 0.0410156Z"
+                                    fill="url(#paint0_linear_4645_2726)"
+                                  />
+                                  <defs>
+                                    <linearGradient
+                                      id="paint0_linear_4645_2726"
+                                      x1="775.267"
+                                      y1="1.05479"
+                                      x2="37.0093"
+                                      y2="205.377"
+                                      gradientUnits="userSpaceOnUse"
+                                    >
+                                      <stop stopColor="#03C8F0" />
+                                      <stop offset="1" stopColor="#1F487C" />
+                                    </linearGradient>
+                                  </defs>
+                                </svg>
+                              </div>
+                            ) : (
+                              <div
+                                style={{
+                                  width: "47vw",
+                                  height: "4vw",
+                                  overflow: "hidden",
+                                  borderTopColor: "black",
+                                  borderTopLeftRadius: "0.6vw",
+                                }}
+                              >
+                                <svg
+                                  width="100%"
+                                  height="100%"
+                                  viewBox="0 20 890 74"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <g filter="url(#filter0_i_4583_1956)">
+                                    <path
+                                      d="M0.869629 18.916C0.869629 12.975 0.869629 10.0045 2.06162 7.7499C3.02358 5.93043 4.50954 4.44159 6.32714 3.4761C8.57938 2.27973 11.5499 2.27396 17.4909 2.26242L791.396 0.759766C791.396 0.759766 765.528 30.2504 707.678 53.2564C651.684 75.5241 543.157 82.3145 536.25 82.7274C536.131 82.7345 536.072 82.738 536 82.7413C535.944 82.7439 535.878 82.7463 535.822 82.7479C535.75 82.75 535.683 82.7509 535.549 82.7528L270.116 86.5289H0.869629V18.916Z"
+                                      fill="url(#paint0_linear_4583_1956)"
+                                    />
+                                  </g>
+                                  <path
+                                    d="M1.38363 18.916C1.38363 15.9367 1.38405 13.7342 1.53081 11.9937C1.67703 10.2596 1.96577 9.0309 2.51602 7.99014C3.42988 6.26164 4.84154 4.84725 6.56826 3.93003C7.60794 3.37776 8.83604 3.08664 10.5699 2.93705C12.3101 2.78691 14.5126 2.78221 17.4919 2.77642L790.221 1.27605C790.096 1.40801 789.956 1.55457 789.802 1.71522C788.987 2.56055 787.757 3.79633 786.099 5.35234C782.783 8.46436 777.756 12.8572 770.923 17.9692C757.257 28.1932 736.367 41.294 707.488 52.7788C679.556 63.8868 638.482 71.1454 603.49 75.6777C568.513 80.2083 539.667 82.0082 536.219 82.2143C536.1 82.2215 536.044 82.2248 535.976 82.2279C535.924 82.2303 535.86 82.2326 535.808 82.2341C535.74 82.2361 535.677 82.237 535.541 82.2389L270.116 86.0149H1.38363V18.916Z"
+                                    stroke="#393939"
+                                    strokeWidth="0.9"
+                                  />
+                                  <defs>
+                                    <filter
+                                      id="filter0_i_4583_1956"
+                                      x="0.869629"
+                                      y="0.759766"
+                                      width="790.527"
+                                      height="89.8815"
+                                      filterUnits="userSpaceOnUse"
+                                      colorInterpolationFilters="sRGB"
+                                    >
+                                      <feFlood
+                                        floodOpacity="0"
+                                        result="BackgroundImageFix"
+                                      />
+                                      <feBlend
+                                        mode="normal"
+                                        in="SourceGraphic"
+                                        in2="BackgroundImageFix"
+                                        result="shape"
+                                      />
+                                      <feColorMatrix
+                                        in="SourceAlpha"
+                                        type="matrix"
+                                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                        result="hardAlpha"
+                                      />
+                                      <feOffset dy="4.112" />
+                                      <feGaussianBlur stdDeviation="3.084" />
+                                      <feComposite
+                                        in2="hardAlpha"
+                                        operator="arithmetic"
+                                        k2="-1"
+                                        k3="1"
+                                      />
+                                      <feColorMatrix
+                                        type="matrix"
+                                        values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0"
+                                      />
+                                      <feBlend
+                                        mode="normal"
+                                        in2="shape"
+                                        result="effect1_innerShadow_4583_1956"
+                                      />
+                                    </filter>
+                                    <linearGradient
+                                      id="paint0_linear_4583_1956"
+                                      x1="20.5023"
+                                      y1="4.04911"
+                                      x2="35.452"
+                                      y2="158.559"
+                                      gradientUnits="userSpaceOnUse"
+                                    >
+                                      <stop stopColor="#E3E3E3" />
+                                      <stop offset="0.18" stopColor="#EAEFF3" />
+                                      <stop
+                                        offset="0.315"
+                                        stopColor="#E3E3E3"
+                                      />
+                                      <stop
+                                        offset="0.491919"
+                                        stopColor="white"
+                                      />
+                                      <stop
+                                        offset="0.615"
+                                        stopColor="#DEDEDE"
+                                      />
+                                      <stop
+                                        offset="0.785"
+                                        stopColor="#E3E3E3"
+                                      />
+                                      <stop
+                                        offset="0.955"
+                                        stopColor="#E3E3E3"
+                                      />
+                                    </linearGradient>
+                                  </defs>
+                                </svg>
+                              </div>
+                            )}
+
+                            {/* <img
+                          src={
+                            // isluxury == "true" || isluxury == true
+                            item.bus_type_status === "luxury"
+                              ? sliver
+                              : backdrop
+                          }
+                          className="h-[3.5vw] w-full"
+                          alt="theme"
+                        /> */}
+                            <div className="absolute top-[0.1vw] right-[8.5vw] rounded-full">
                               {item.logos != null && (
                                 <img
                                   src={`http://192.168.90.47:4001${item.logos}`}
@@ -639,9 +767,9 @@ export default function SingleCard() {
                               {item?.operator_name}
                             </label>
                           </div>
-                          <div className="row-span-4">
-                            <div className="grid grid-cols-5 h-full w-full flex-col items-center">
-                              <div className="col-span-1 flex-col flex items-center justify-center pt-[0.5vw]">
+                          <div className="row-span-4 md:ml-[-0.50vw] md:mt-[0.2vw]">
+                            <div className="grid grid-cols-5 flex-col items-center">
+                              <div className="col-span-1 flex-col flex items-center justify-center">
                                 <label
                                   className={`text-[1.2vw] ${
                                     // isluxury == "true" || isluxury == true
@@ -667,60 +795,120 @@ export default function SingleCard() {
                                   )}
                                 </label>
                               </div>
-                              <div className=" col-span-3 h-full relative w-full flex items-center justify-center">
-                                <div
-                                  className={`${
-                                    // isluxury == "true" || isluxury == true
-                                    item.bus_type_status === "luxury"
-                                      ? "bg-black"
-                                      : "bg-[#1F487C]"
-                                  } absolute left-0 h-[1vw] w-[1vw] rounded-full`}
-                                ></div>
-                                <div
-                                  className={`${
-                                    // isluxury == "true" || isluxury == true
-                                    item.bus_type_status === "luxury"
-                                      ? "border-black"
-                                      : "border-[#1F487C]"
-                                  } border-[0.15vw] absolute left-0 top-[2.3vw] border-dashed w-[23vw]`}
-                                ></div>
-                                <div
-                                  className={`${
-                                    // isluxury == "true" || isluxury == true
-                                    item.bus_type_status === "luxury"
-                                      ? "bg-black"
-                                      : "bg-[#1F487C]"
-                                  }  relative h-[2.8vw] flex w-[7.5vw] rounded-tl-[1vw] rounded-tr-[1vw] rounded-bl-[0.5vw] rounded-br-[0.5vw] text-white text-[1.2vw] font-bold justify-center items-center`}
-                                  // style={{
-                                  //   zIndex: 2,
-                                  // }}
+                              <div className="col-span-3 md:ml-[-4vw] md:mt-[0.5vw] relative flex items-center justify-center">
+                                <svg
+                                  className="absolute"
+                                  width="26.5vw"
+                                  height="4vw"
+                                  viewBox="0 0 470 62"
+                                  fill="none"
                                 >
-                                  {item.time_duration}
+                                  <line
+                                    x1="256.674"
+                                    y1="21.2265"
+                                    x2="415.354"
+                                    y2="21.2265"
+                                    stroke={
+                                      item.bus_type_status === "luxury"
+                                        ? "#393939"
+                                        : "#1F4B7F"
+                                    }
+                                    stroke-width="2.60367"
+                                    stroke-dasharray="5.21 5.21"
+                                  />
+                                  <line
+                                    x1="15.9639"
+                                    y1="21.2275"
+                                    x2="166.575"
+                                    y2="21.2274"
+                                    stroke={
+                                      item.bus_type_status === "luxury"
+                                        ? "#393939"
+                                        : "#1F4B7F"
+                                    }
+                                    stroke-width="2.60367"
+                                    stroke-dasharray="5.21 5.21"
+                                  />
+                                  <circle
+                                    cx="9.07097"
+                                    cy="20.7636"
+                                    r="8.21282"
+                                    fill={
+                                      item.bus_type_status === "luxury"
+                                        ? "#393939"
+                                        : "#1F4B7F"
+                                    }
+                                  />
+                                  <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M416.866 9.28204C417.571 8.61432 418.713 8.61432 419.418 9.28204L430.244 19.5409C430.949 20.2086 430.949 21.2912 430.244 
+21.9589L419.418 32.2177C418.713 32.8854 417.571 32.8854 416.866 32.2177C416.161 31.55 416.161 30.4674 416.866 29.7997L426.416 20.7499L416.866 11.7001C416.161 11.0323 416.161 
+9.94976 416.866 9.28204Z"
+                                    fill={
+                                      item.bus_type_status === "luxury"
+                                        ? "#393939"
+                                        : "#1F4B7F"
+                                    }
+                                    stroke="#1F487C"
+                                    stroke-width="0.260367"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                </svg>
+                                <div
+                                  className={`relative md:ml-[-0.4vw] flex text-center justify-center`}
+                                >
                                   <div
+                                    className={` absolute md:pt-[0.5vw] font-bold text-[1.2vw] text-white`}
+                                  >
+                                    {item.time_duration}
+                                  </div>
+                                  <svg
+                                    className="w-[30vw] md:w-[7.2vw] h-[1vw] md:h-[3.90vw]"
+                                    viewBox="0 0 106 54"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M9.62178 0.374512C4.61028 0.374512 0.592041 4.3313 0.592041 9.26618V35.1452C0.592041 38.0402 2.93887 40.387 5.83382 40.387H11.5805C11.5805 
+                                  43.9243 13.0076 47.3168 15.5477 49.818C18.0878 52.3193 21.5329 53.7245 25.1251 53.7245C28.7174 53.7245 32.1625 52.3193 34.7026 49.818C37.2427 
+                                  47.3168 38.6698 43.9243 38.6698 40.387H69.6765C69.6765 43.9243 71.1035 47.3168 73.6436 49.818C76.1837 52.3193 79.6288 53.7245 83.2211 
+                                  53.7245C86.8133 53.7245 90.2585 52.3193 92.7986 49.818C95.3387 47.3168 96.7657 43.9243 96.7657 40.387H100.554C103.449 40.387 105.795 38.0402 
+                                  105.795 35.1452V9.26618C105.795 4.3313 101.777 0.374512 96.7657 0.374512H9.62178ZM25.1251 33.7182C26.9213 33.7182 28.6438 34.4208 29.9139 
+                                  35.6715C31.1839 36.9221 31.8975 38.6183 31.8975 40.387C31.8975 42.1557 31.1839 43.8519 29.9139 45.1025C28.6438 46.3531 26.9213 47.0557 25.1251 
+                                  47.0557C23.329 47.0557 21.6065 46.3531 20.3364 45.1025C19.0663 43.8519 18.3528 42.1557 18.3528 40.387C18.3528 38.6183 19.0663 36.9221 20.3364 
+                                  35.6715C21.6065 34.4208 23.329 33.7182 25.1251 33.7182ZM83.2211 33.7182C85.0172 33.7182 86.7398 34.4208 88.0098 35.6715C89.2799 36.9221 
+                                  89.9934 38.6183 89.9934 40.387C89.9934 42.1557 89.2799 43.8519 88.0098 45.1025C86.7398 46.3531 85.0172 47.0557 83.2211 47.0557C81.425 47.0557 
+                                  79.7024 46.3531 78.4324 45.1025C77.1623 43.8519 76.4488 42.1557 76.4488 40.387C76.4488 38.6183 77.1623 36.9221 78.4324 35.6715C79.7024 34.4208 
+                                  81.425 33.7182 83.2211 33.7182Z"
+                                      fill={
+                                        item.bus_type_status === "luxury"
+                                          ? "#393939"
+                                          : "#1F4B7F"
+                                      }
+                                    />
+                                  </svg>
+                                  {/* <div
                                     className={`${
-                                      // isluxury == "true" || isluxury == true
                                       item.bus_type_status === "luxury"
                                         ? "bg-black"
                                         : "bg-[#1F487C]"
                                     } absolute bottom-[-1vw] left-[0.8vw] h-[2vw] w-[2vw] rounded-full flex items-center justify-center `}
-                                    // style={{
-                                    //   zIndex: 1,
-                                    // }}
                                   >
                                     <div className="bg-white  h-[1vw] w-[1vw] rounded-full"></div>
                                   </div>
                                   <div
                                     className={`${
-                                      // isluxury == "true" || isluxury == true
                                       item.bus_type_status === "luxury"
                                         ? "bg-black"
                                         : "bg-[#1F487C]"
                                     } absolute bottom-[-1vw] right-[0.8vw] h-[2vw] w-[2vw] rounded-full flex items-center justify-center `}
                                   >
                                     <div className="bg-white  h-[1vw] w-[1vw] rounded-full"></div>
-                                  </div>
+                                  </div> */}
                                 </div>
-                                <FaAngleRight
+                                {/* <FaAngleRight
                                   color={`${
                                     // isluxury == "true" || isluxury == true
                                     item.bus_type_status === "luxury"
@@ -729,9 +917,9 @@ export default function SingleCard() {
                                   }`}
                                   size={"1.5vw"}
                                   className="absolute right-0"
-                                />
+                                /> */}
                               </div>
-                              <div className="col-span-1 flex-col flex items-center justify-center pt-[0.5vw]">
+                              <div className="col-span-1 md:ml-[-11vw] flex-col flex items-center justify-center">
                                 <label
                                   className={`text-[1.2vw] ${
                                     // isluxury == "true" || isluxury == true
@@ -816,7 +1004,21 @@ export default function SingleCard() {
                                 )}
                                 <div className="flex justify-center items-center bg-[#FFC1C180] w-[13vw] rounded-full h-[3vw] gap-[1vw]">
                                   <div>
-                                    <MdEventSeat color="#C62B2B" size="2vw" />
+                                    {/* <MdEventSeat color="#C62B2B" size="2vw" /> */}
+                                    <svg
+                                      width="2vw"
+                                      height="2vw"
+                                      viewBox="0 0 33 33"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M31.9668 31.3057C31.9668 31.4571 31.8917 31.6023 31.7579 31.7094C31.6242 31.8164 31.4429 31.8766 31.2538 31.8766H12.7164C12.5273 31.8766 12.3459 31.8164 12.2122 31.7094C12.0785 31.6023 12.0034 31.4571 12.0034 31.3057C12.0034 31.1543 12.0785 31.0091 12.2122 30.902C12.3459 30.7949 12.5273 30.7348 12.7164 30.7348H31.2538C31.4429 30.7348 31.6242 30.7949 31.7579 30.902C31.8917 31.0091 31.9668 31.1543 31.9668 31.3057ZM31.9668 21.0298V25.5968C31.9668 26.0511 31.7414 26.4867 31.3403 26.8079C30.9392 27.129 30.3951 27.3095 29.8278 27.3095H13.0925C12.6949 27.3107 12.3048 27.2227 11.9664 27.0555C11.628 26.8882 11.355 26.6484 11.1781 26.3632L0.820357 9.80761C0.672595 9.56945 0.595703 9.30713 0.595703 9.0412C0.595703 8.77527 0.672595 8.51295 0.820357 8.27479L4.76312 1.99506C5.01515 1.59115 5.45619 1.28326 5.99028 1.1384C6.52437 0.993529 7.10831 1.0234 7.61503 1.22151L13.6361 3.25814L13.6771 3.27384C13.9284 3.37438 14.1525 3.51357 14.3366 3.68346C14.5207 3.85336 14.6612 4.05062 14.7501 4.264C14.839 4.47738 14.8745 4.70268 14.8546 4.92705C14.8348 5.15142 14.7599 5.37045 14.6343 5.57165L14.6236 5.58592L12.0747 9.36375C12.0266 9.44213 12.0015 9.52831 12.0015 9.61565C12.0015 9.70299 12.0266 9.78917 12.0747 9.86755L17.7393 19.0017C17.7987 19.0961 17.8896 19.1754 18.002 19.2308C18.1143 19.2862 18.2437 19.3156 18.3756 19.3157H29.8278C30.1089 19.3157 30.3872 19.36 30.6468 19.4462C30.9064 19.5323 31.1423 19.6586 31.3409 19.8178C31.5396 19.977 31.6971 20.166 31.8045 20.3739C31.9119 20.5819 31.967 20.8047 31.9668 21.0298ZM30.5408 21.0298C30.5408 20.8784 30.4657 20.7331 30.332 20.6261C30.1983 20.519 30.0169 20.4589 29.8278 20.4589H18.3792C17.9807 20.4609 17.5894 20.3733 17.25 20.206C16.9107 20.0387 16.6368 19.7985 16.4595 19.5126L10.7949 10.3785C10.6468 10.1409 10.5697 9.87904 10.5697 9.61351C10.5697 9.34798 10.6468 9.08609 10.7949 8.84853L10.8056 8.83283L13.3492 5.055C13.4294 4.92237 13.4425 4.77002 13.3857 4.62983C13.3289 4.48965 13.2066 4.37248 13.0444 4.30286L7.03574 2.26623L6.99296 2.25053C6.89463 2.2107 6.78588 2.19015 6.67568 2.19059C6.54323 2.19051 6.41336 2.21998 6.30065 2.2757C6.18794 2.33141 6.09684 2.41116 6.03757 2.506L2.0948 8.78573C2.04553 8.86485 2.01988 8.95207 2.01988 9.04049C2.01988 9.1289 2.04553 9.21611 2.0948 9.29524L12.4526 25.8509C12.5119 25.9457 12.603 26.0255 12.7157 26.0812C12.8284 26.1369 12.9582 26.1664 13.0907 26.1663H29.8278C30.0169 26.1663 30.1983 26.1061 30.332 25.9991C30.4657 25.892 30.5408 25.7468 30.5408 25.5954V21.0298Z"
+                                        fill="#C62B2B"
+                                        stroke="#C62B2B"
+                                        stroke-width="1.0132"
+                                      />
+                                    </svg>
                                   </div>
                                   <div className="text-[1.2vw] text-[#C62B2B] font-bold">
                                     {item.seat_availability.total} Seats Left
@@ -938,9 +1140,9 @@ export default function SingleCard() {
                         </div>
                       </div>
                     </div>
-                    <div className="h-[3.5vw] w-full  pt-[0.5vw]">
+                    <div className="h-[2.6 vw] w-full">
                       <div className="px-[1vw] ">
-                        <div className="flex items-center gap-[0.5vw] py-[0.5vw]">
+                        <div className="flex items-center gap-[0.5vw] py-[0.1vw]">
                           <div
                             className={`${
                               item.rating >= 4
@@ -1197,7 +1399,7 @@ export default function SingleCard() {
                 </div>
               )} */}
                     {dropDown === `liveTracking${index}` && (
-                      <div className="bg-gray-200 h-auto w-full mt-[1vw] rounded-[0.5vw] mb-[1vw]">
+                      <div className="bg-gray-200 h-auto m-[0.5vw] rounded-[0.5vw]">
                         <LiveTracking
                           trackingCount={trackingCount}
                           setTrackingCount={setTrackingCount}
@@ -1207,7 +1409,7 @@ export default function SingleCard() {
                       </div>
                     )}
                     {dropDown === `droppick${index}` && (
-                      <div className="bg-gray-200 h-auto w-full mt-[1vw] rounded-[0.5vw] mb-[1vw]">
+                      <div className="bg-gray-200 h-auto m-[0.5vw] rounded-[0.5vw]">
                         <DropPick
                           index={index}
                           boarding={item.boarding}
@@ -1217,7 +1419,7 @@ export default function SingleCard() {
                       </div>
                     )}
                     {dropDown === `policy${index}` && (
-                      <div className="bg-gray-200 h-auto w-full mt-[1vw] rounded-[0.5vw] mb-[1vw]">
+                      <div className="bg-gray-200 h-auto m-[0.5vw] rounded-[0.5vw]">
                         <Policy
                           policies={item.cancellation_policy}
                           price={item.lowest_price}
@@ -1236,27 +1438,29 @@ export default function SingleCard() {
                         />
                       </div>
                     )}
-                  </div>
-                  {/* <div className="md:hidden block ">
+                  </>
+                )}
+              </div>
+              {/* <div className="md:hidden block ">
                     <SingleBookingCardList
                       busboarding={item.boarding}
                       busdroping={item.dropping}
                     />
                   </div> */}
-                </>
-              ))
-            ) : (
-              <div className="flex items-center justify-center mt-[5vw]">
-                <Empty
-                  description="No Buses Found"
-                  className=" rounded-full p-[1vw]"
-                  // style={{
-                  //   backgroundColor: "white",
-                  //   color:"black"
-                  // }}
-                />
-              </div>
-            )}
+            </>
+          ))
+        ) : (
+          <div className="flex items-center justify-center mt-[5vw]">
+            <Empty
+              description="No Buses Found"
+              className=" rounded-full p-[1vw]"
+              // style={{
+              //   backgroundColor: "white",
+              //   color:"black"
+              // }}
+            />
+          </div>
+        )}
       </div>
       <div className="md:hidden block ">
         {/* <SingleCardMobile /> */}
