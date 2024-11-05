@@ -34,6 +34,7 @@ export default function Advertisement() {
     sessionStorage.setItem("CurrentIndex", newIndex);
     setCurrentIndex(newIndex);
   };
+  
 
   useEffect(() => {
     const interval = setInterval(() => {
