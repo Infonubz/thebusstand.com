@@ -60,6 +60,7 @@ export default function PassengersList({
   const columns = [
     {
       title: <div className="">Name</div>,
+      width: "40%",
       // dataIndex: 'name',
       // specify the condition of filtering result
       // here is that finding the name started with `value`
@@ -77,6 +78,7 @@ export default function PassengersList({
     {
       title: <div className="">Age</div>,
       // dataIndex: 'age',
+      width: "20%",
       defaultSortOrder: "descend",
       sorter: (a, b) => a.age - b.age,
       render: (row) => {
@@ -90,6 +92,7 @@ export default function PassengersList({
     {
       title: <div className="">Gender</div>,
       // dataIndex: 'gender',
+      width: "20%",
       render: (row, index) => {
         return (
           <div className="flex justify-center">
@@ -101,11 +104,12 @@ export default function PassengersList({
     {
       title: <div className="">Action</div>,
       key: "actions",
+      width: "30%",
       render: (row, record) => {
         return (
           <div className="flex justify-center gap-[1vw] ">
             <div
-              className="flex items-center cursor-pointer px-[0.5vw] border-[0.1vw] border-[#1f4b7f] rounded-[0.2vw] w-[5.5vw] h-[2vw] gap-[0.5vw]"
+              className="flex items-center justify-center cursor-pointer px-[0.5vw] border-[0.1vw] border-[#1f4b7f] rounded-[0.2vw] w-[5vw] h-[2vw] gap-[0.5vw]"
               onClick={() => {
                 setUpdateData(row.tbs_add_pax_id);
                 nextPage();

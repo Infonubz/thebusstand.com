@@ -78,7 +78,7 @@ const TicketIndex = () => {
         >
           {({ handleSubmit, setFieldValue, handleChange }) => (
             <Form onSubmit={handleSubmit}>
-              <div className="w-full shadow-lg shadow-gray-300 h-[75vw] md:h-[15vw] bg-white rounded-[2vw] md:rounded-[.9vw] border-b-[0.1vw]">
+              <div className="w-full shadow-lg shadow-gray-400 h-[75vw] md:h-[15vw] bg-white rounded-[2vw] md:rounded-[.9vw] border-b-[0.1vw]">
                 <div className="text-center py-[3vw] md:py-[1vw] text-[#1F487C] p-[1vw] font-bold text-[5vw] md:text-[1.5vw]">
                   View Ticket
                 </div>

@@ -151,7 +151,7 @@ const HomeProfile = () => {
           enableReinitialize
         >
           {({ isSubmitting, handleSubmit, values, handleChange }) => (
-            <Form className="py-[1vw]" onSubmit={handleSubmit}>
+            <Form className="py-[0.70vw]" onSubmit={handleSubmit}>
               <div className="grid md:grid-rows-2 md:gap-[1vw] ">
                 <div>
                   <span className="">
@@ -199,7 +199,7 @@ const HomeProfile = () => {
                           id="user_name"
                           className={`${
                             editenable ? `cursor-pointer` : "cursor-not-allowed"
-                          } block py-[0.5vw] px-2 w-full  md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border border-gray-400 rounded-[1vw] md:rounded-[0.5vw] 
+                          } block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border border-gray-400 rounded-[1vw] md:rounded-[0.5vw] 
                         focus:outline-none focus:ring-0 focus:border-[#1F487C] peer`}
                           placeholder=" "
                           onChange={handleChange}
@@ -270,7 +270,7 @@ const HomeProfile = () => {
                       </div>
                     </div>
 
-                    <div className="md:py-[1vw] md:my-[0vw] my-[4vw]">
+                    <div className="md:py-[0.4vw] md:my-[0vw] my-[4vw]">
                       <span className="font-bold text-[4vw] md:text-[1.1vw]  text-[#1F487C]">
                         Gender
                       </span>
@@ -387,7 +387,7 @@ const HomeProfile = () => {
                     </div>
                   </div>
                 </div>
-                <div className="relative  ">
+                <div className="relative ">
                   <div className="text-[#1F487C] text-[4vw] md:text-[1.5vw] pb-[5vw] md:pb-[1.5vw] font-semibold">
                     Contact Details
                   </div>
@@ -466,7 +466,7 @@ const HomeProfile = () => {
                         id="mobile_number"
                         className={`${
                           editenable ? `cursor-pointer` : "cursor-not-allowed"
-                        } block py-[0.5vw] px-2 w-full  md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border border-gray-400 
+                        } block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border border-gray-400 
                        rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer`}
                         autocomplete="off"
                         onChange={handleChange}
@@ -495,7 +495,10 @@ const HomeProfile = () => {
                         as="select"
                         name="occupation"
                         id="occupation"
-                        className="block py-[0.5vw] px-2 w-full  md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border border-gray-400 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
+                        className={`${
+                          editenable ? `cursor-pointer` : "cursor-not-allowed"
+                        } block py-[0.5vw] px-2 w-full  md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border
+                           border-gray-400 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer`}
                         autocomplete="off"
                         onChange={handleChange}
                         disabled={!editenable}

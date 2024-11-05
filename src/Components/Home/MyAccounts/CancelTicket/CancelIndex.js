@@ -31,7 +31,7 @@ const CancelIndex = () => {
   
  
   return (
-    <div className="w-full md:h-[35vw] h-[60vw] bg-white rounded-[2vw] md:rounded-[.9vw] border-b-[0.1vw] ">
+    <div className="w-full md:h-[35vw] h-[60vw] bg-white shadow-lg shadow-gray-400 rounded-[2vw] md:rounded-[.9vw] border-b-[0.1vw] ">
       <Formik
         initialValues={{
           ticketNumber: "",

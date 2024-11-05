@@ -376,13 +376,35 @@ const AddPassengers = ({
           enableReinitialize
         >
           {({ isSubmitting, isValid, handleSubmit, values, handleChange }) => (
-            <Form className="py-[1vw]" onSubmit={handleSubmit}>
+            <Form className="" onSubmit={handleSubmit}>
               <div className="grid grid-rows-1 md:grid-rows-2 gap-[1vw]">
                 <div>
-                  <div className="text-[#1F487C] text-[4vw] md:text-[1.5vw] font-semibold ">
-                    {isEdit === true
-                      ? "Edit Passenger Details"
-                      : "Add Passenger Details"}
+                  <div className="pb-[1vw]">
+                    <span className="">
+                      <div className="grid grid-cols-2">
+                        <div className="text-[#1F487C] text-[4vw] md:text-[1.5vw] font-semibold">
+                          {isEdit === true
+                            ? "Edit Passenger Details"
+                            : "Add Passenger Details"}
+                        </div>
+                        <div className="pl-[15vw] md:block hidden">
+                          <button
+                            className="border border-[#1F487C] text-[#1F487C] w-[5vw] h-[2.2vw] rounded-[0.5vw] text-[1.2vw]"
+                            onClick={prevStep}
+                          >
+                            Back
+                          </button>
+                          <button
+                            type="submit"
+                            className="bg-[#1F487C] text-white w-[10vw] h-[2.2vw] ml-[1vw] rounded-[0.5vw] text-[1.2vw]"
+                          >
+                            {isEdit === true
+                              ? "Save Passenger"
+                              : "Add Passenger"}
+                          </button>
+                        </div>
+                      </div>
+                    </span>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 my-[2vw] md:my-[0vw] py-[1vw] md:gap-y-[0vw] gap-y-[6vw] relative ">
                     <div className="">
@@ -390,7 +412,7 @@ const AddPassengers = ({
                         type="text"
                         name="name"
                         id="name"
-                        className="block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border border-gray-300 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
+                        className="block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border-[0.1vw] border-slate-400 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
                         placeholder=" "
                         value={values.name}
                         onChange={(e) => {
@@ -405,13 +427,14 @@ const AddPassengers = ({
                       />
                       <label
                         htmlFor="name"
-                        className={`absolute text-[4vw] md:text-[1vw] text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[3vw] md:top-[1.3vw] left-[2vw] md:left-[0.4vw] origin-0 bg-white px-[0.2vw] md:peer-focus:left-[0.6vw] peer-focus:left-[2vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 md:peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] md:peer-focus:text-[1vw] peer-focus:text-[3.7vw] peer-focus:scale-75 md:peer-focus:-translate-y-[1vw] peer-focus:-translate-y-[5vw] ${
+                        className={`absolute text-[4vw] placeholder:font-medium md:text-[1vw] text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[3vw] md:top-[1.3vw] left-[2vw] md:left-[0.4vw] origin-0 bg-white px-[0.2vw] md:peer-focus:left-[0.6vw] peer-focus:left-[2vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 md:peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] md:peer-focus:text-[1vw] peer-focus:text-[3.7vw] peer-focus:scale-75 md:peer-focus:-translate-y-[1vw] peer-focus:-translate-y-[5vw] ${
                           values.name
                             ? "md:-translate-y-[1vw] -translate-y-[5vw] "
                             : ""
                         }`}
                       >
-                        Name<span className="text-red-500 ml-1">*</span>
+                        Name
+                        <span className="text-red-500 ml-1">*</span>
                       </label>
                       <ErrorMessage
                         name="name"
@@ -433,7 +456,7 @@ const AddPassengers = ({
                           // });
                           localStorage.setItem("date_of_birth", e.target.value);
                         }}
-                        className="block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border border-gray-300 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
+                        className="block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border-[0.1vw] border-slate-400 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
                       />
                       <label
                         htmlFor="date_of_birth"
@@ -451,12 +474,12 @@ const AddPassengers = ({
                     </div>
                   </div>
 
-                  <div className="py-[0.5vw] mb-[2vw] md:mb-[0vw] grid md:grid-rows-2 relative">
-                    <div className="md:opacity-60 md:font-semibold text-[#1F487C]  text-[4vw] md:text-[1.5vw] ">
+                  <div className="mb-[2vw] md:mb-[0vw] grid md:grid-rows-2 relative">
+                    <span className="font-bold text-[4vw] md:text-[1.1vw]  text-[#1F487C]">
                       Gender
-                    </div>
+                    </span>
                     <div className="flex gap-x-[2vw]">
-                      <div className="border-[0.1vw] border-slate-500 text-[#1F487C] text-[4vw] md:text-[1.2vw] h-[10vw] w-full md:h-[3vw] md:w-[12.5vw] outline-none px-[4vw] md:px-[1vw] font-semibold rounded-[1vw] md:rounded-[0.5vw] flex items-center justify-between">
+                      <div className=" border-[0.1vw] border-slate-400 text-[#1F487C] text-[4vw] md:text-[1.2vw] h-[10vw] w-full md:h-[3vw] md:w-[12.5vw] outline-none px-[4vw] md:px-[1vw] font-semibold rounded-[1vw] md:rounded-[0.5vw] flex items-center justify-between">
                         <label
                           htmlFor="male"
                           className="flex h-full cursor-pointer w-full justify-between items-center"
@@ -472,7 +495,7 @@ const AddPassengers = ({
                           </div>
                         </label>
                       </div>
-                      <div className="border-[0.1vw] border-slate-500 text-[#1F487C] font-semibold text-[4vw] md:text-[1.2vw] h-[10vw] w-full md:h-[3vw] md:w-[12.5vw] outline-none px-[4vw] md:px-[1vw] rounded-[1vw] md:rounded-[0.5vw] flex items-center justify-between cursor-pointer">
+                      <div className="border-[0.1vw] border-slate-400 text-[#1F487C] font-semibold text-[4vw] md:text-[1.2vw] h-[10vw] w-full md:h-[3vw] md:w-[12.5vw] outline-none px-[4vw] md:px-[1vw] rounded-[1vw] md:rounded-[0.5vw] flex items-center justify-between cursor-pointer">
                         <label
                           className="flex w-full h-full items-center cursor-pointer justify-between"
                           htmlFor="female"
@@ -496,8 +519,8 @@ const AddPassengers = ({
                     />
                   </div>
                 </div>
-                <div className="relative">
-                  <div className="text-[#1F487C] text-[4vw] md:text-[1.5vw] font-semibold ">
+                <div className="relative md:pb-[0.5vw]">
+                  <div className="text-[#1F487C] md:pt-[1.5vw] md:pb-[1vw] text-[4vw] md:text-[1.5vw] font-semibold ">
                     Contact Details
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 py-[1vw] my-[2vw] md:my-[0vw] gap-y-[6vw] md:gap-y-[2.5vw]">
@@ -506,7 +529,7 @@ const AddPassengers = ({
                         as="select"
                         name="state"
                         id="state"
-                        className={`block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border border-gray-300 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer`}
+                        className={`block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border-[0.1vw] border-slate-400 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer`}
                         value={values.state}
                         onChange={(e) => {
                           handleChange(e); // Formik's handleChange
@@ -549,7 +572,7 @@ const AddPassengers = ({
                         type="email"
                         name="email"
                         id="email"
-                        className="block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border border-gray-300 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
+                        className="block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border-[0.1vw] border-slate-400 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
                         value={values.email}
                         onChange={(e) => {
                           handleChange(e); // Formik's handleChange
@@ -583,7 +606,7 @@ const AddPassengers = ({
                         type="text"
                         name="phone"
                         id="phone"
-                        className="block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border border-gray-300 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
+                        className="block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border-[0.1vw] border-slate-400 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
                         placeholder=" "
                         value={values.phone}
                         onChange={(e) => {
@@ -616,7 +639,7 @@ const AddPassengers = ({
                   </div>
                 </div>
               </div>
-              <div className=" flex justify-center gap-x-[2vw] md:my-[0vw] my-[2vw]">
+              {/* <div className=" flex justify-center gap-x-[2vw] md:my-[0vw] my-[2vw]">
                 <button
                   className="bg-[#1F487C] text-[white] md:w-[18vw] w-full h-[9vw] md:h-[3vw] rounded-full text-[4vw] md:text-[1.25vw]"
                   onClick={prevStep}
@@ -629,7 +652,7 @@ const AddPassengers = ({
                 >
                   {isEdit === true ? "Save Passenger" : "Add Passenger"}
                 </button>
-              </div>
+              </div> */}
             </Form>
           )}
         </Formik>

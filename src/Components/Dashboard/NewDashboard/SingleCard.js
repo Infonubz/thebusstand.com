@@ -767,7 +767,7 @@ export default function SingleCard() {
                               {item?.operator_name}
                             </label>
                           </div>
-                          <div className="row-span-4 md:ml-[-0.50vw] md:mt-[0.2vw]">
+                          <div className="row-span-4 md:ml-[-1.5vw] md:mt-[0.2vw]">
                             <div className="grid grid-cols-5 flex-col items-center">
                               <div className="col-span-1 flex-col flex items-center justify-center">
                                 <label
@@ -1140,7 +1140,7 @@ export default function SingleCard() {
                         </div>
                       </div>
                     </div>
-                    <div className="h-[2.6 vw] w-full">
+                    <div className="h-[2.7vw] w-full">
                       <div className="px-[1vw] ">
                         <div className="flex items-center gap-[0.5vw] py-[0.1vw]">
                           <div
@@ -1171,7 +1171,7 @@ export default function SingleCard() {
                                     marginLeft: "0.5vw",
                                   }}
                                 />
-                                <p className="text-[1.1vw] font-bold text-white px-[1vw]">
+                                <p className="text-[1.1vw] font-bold text-white px-[0.8vw]">
                                   {/* {item.rating} */}4
                                 </p>
                               </div>
@@ -1189,7 +1189,7 @@ export default function SingleCard() {
                                   } ml-[0.5vw]`}
                                 />
                                 <p
-                                  className={`text-[1.1vw] font-bold px-[1vw] ${
+                                  className={`text-[1.1vw] font-bold px-[0.8vw] ${
                                     item.rating >= 4
                                       ? "text-[#61B00F]"
                                       : item.rating >= 2

@@ -37,7 +37,7 @@ export default function ReferralsIndex() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigation = useNavigate();
   //const navigate = useNavigate();
-  const termsConditions = getContent?.['referernt&c'];
+  const termsConditions = getContent?.["referernt&c"];
 
   const closeModal = () => {
     setShareModal(false);
@@ -92,7 +92,6 @@ export default function ReferralsIndex() {
   //   receiveVoucher: procedureSteps[2],
   //   completeTravel: procedureSteps[3],
   // };
- 
 
   return (
     <>
@@ -125,7 +124,7 @@ export default function ReferralsIndex() {
           />
         </div>
       ) : (
-        <div className="md:bg-white md:shadow-lg md:shadow-gray-300 w-full rounded-[1vw]">
+        <div className="md:bg-white md:shadow-lg md:shadow-gray-400 w-full rounded-[1vw]">
           <span className="relative">
             <img
               src={referralMble}
@@ -293,20 +292,27 @@ export default function ReferralsIndex() {
                     {/* Share your unique referral code with your friends and family to
                 earn referral benefits. The more you share, the more benefits
                 you get! */}
-                      <label className="md:text-[0.9vw] text-[3.4vw] text-[#1F487C]">
-                      {getContent && getContent?.procedure[0]?.text.length > 150 ? (
+                    <label className="md:text-[0.9vw] text-[3.4vw] text-[#1F487C]">
+                      {getContent &&
+                      getContent?.procedure[0]?.text.length > 150 ? (
                         <Tooltip
                           placement="top"
-                          title={getContent && getContent?.procedure[0]?.text }
+                          title={getContent && getContent?.procedure[0]?.text}
                           className="cursor-pointer"
                           color="#1F487C"
                         >
-                          {`${getContent && getContent?.procedure[0]?.text?.slice(0, 150)}...`}
+                          {`${
+                            getContent &&
+                            getContent?.procedure[0]?.text?.slice(0, 150)
+                          }...`}
                         </Tooltip>
                       ) : (
-                        `${getContent && getContent?.procedure[0]?.text?.slice(0, 150)}`
+                        `${
+                          getContent &&
+                          getContent?.procedure[0]?.text?.slice(0, 150)
+                        }`
                       )}
-                      </label>
+                    </label>
                   </div>
                   <div className="col-span-1 flex gap-x-[5vw] md:gap-x-[1vw] items-center">
                     <span className="border-[0.1vw] border-[#1F487C] rounded-[2vw] md:rounded-[0.5vw] p-[0.8vw] md:p-[0.5vw]">
@@ -315,20 +321,27 @@ export default function ReferralsIndex() {
                         className="md:h-[3vw] bg-[white] md:w-[3vw] h-[13vw] w-[13vw]"
                       />
                     </span>
-                      <label className="md:text-[0.9vw] text-[3.4vw] text-[#1F487C]">
-                      {getContent && getContent?.procedure[1]?.text.length > 150 ? (
+                    <label className="md:text-[0.9vw] text-[3.4vw] text-[#1F487C]">
+                      {getContent &&
+                      getContent?.procedure[1]?.text.length > 150 ? (
                         <Tooltip
                           placement="top"
-                          title={getContent && getContent?.procedure[1]?.text }
+                          title={getContent && getContent?.procedure[1]?.text}
                           className="cursor-pointer"
                           color="#1F487C"
                         >
-                          {`${getContent && getContent?.procedure[1]?.text?.slice(0, 150)}...`}
+                          {`${
+                            getContent &&
+                            getContent?.procedure[1]?.text?.slice(0, 150)
+                          }...`}
                         </Tooltip>
                       ) : (
-                        `${getContent && getContent?.procedure[1]?.text?.slice(0, 150)}`
+                        `${
+                          getContent &&
+                          getContent?.procedure[1]?.text?.slice(0, 150)
+                        }`
                       )}
-                      </label>
+                    </label>
                   </div>
                   <div className="col-span-1 pt-[2vw] flex gap-x-[5vw] md:gap-x-[1vw] items-center">
                     <span className="border-[0.1vw] border-[#1F487C] rounded-[2vw] md:rounded-[0.5vw] p-[0.5vw]">
@@ -337,21 +350,28 @@ export default function ReferralsIndex() {
                         className="md:h-[3vw] bg-[white] md:w-[3vw] h-[13vw] w-[13vw]"
                       />
                     </span>
-                      <label className="md:text-[0.9vw] text-[3.4vw] text-[#1F487C]">
-                        {/* {getContent?.procedure[2]?.text}{" "} */}
-                        {getContent && getContent?.procedure[2]?.text.length > 150 ? (
+                    <label className="md:text-[0.9vw] text-[3.4vw] text-[#1F487C]">
+                      {/* {getContent?.procedure[2]?.text}{" "} */}
+                      {getContent &&
+                      getContent?.procedure[2]?.text.length > 150 ? (
                         <Tooltip
                           placement="top"
-                          title={getContent && getContent?.procedure[2]?.text }
+                          title={getContent && getContent?.procedure[2]?.text}
                           className="cursor-pointer"
                           color="#1F487C"
                         >
-                          {`${getContent && getContent?.procedure[2]?.text?.slice(0, 150)}...`}
+                          {`${
+                            getContent &&
+                            getContent?.procedure[2]?.text?.slice(0, 150)
+                          }...`}
                         </Tooltip>
                       ) : (
-                        `${getContent && getContent?.procedure[2]?.text?.slice(0, 150)}`
+                        `${
+                          getContent &&
+                          getContent?.procedure[2]?.text?.slice(0, 150)
+                        }`
                       )}
-                      </label>
+                    </label>
                   </div>
                   <div className="col-span-1 pt-[2vw] flex gap-x-[5vw] md:gap-x-[1vw] items-center">
                     <span className="border-[0.1vw] border-[#1F487C] rounded-[2vw] md:rounded-[0.5vw] p-[0.5vw]">
@@ -360,20 +380,27 @@ export default function ReferralsIndex() {
                         className="md:h-[3vw] bg-[white] md:w-[3vw] h-[13vw] w-[13vw]"
                       />
                     </span>
-                      <label className="md:text-[0.9vw] text-[3.4vw] text-[#1F487C]">
-                      {getContent && getContent?.procedure[3]?.text.length > 150 ? (
+                    <label className="md:text-[0.9vw] text-[3.4vw] text-[#1F487C]">
+                      {getContent &&
+                      getContent?.procedure[3]?.text.length > 150 ? (
                         <Tooltip
                           placement="top"
-                          title={getContent && getContent?.procedure[3]?.text }
+                          title={getContent && getContent?.procedure[3]?.text}
                           className="cursor-pointer"
                           color="#1F487C"
                         >
-                          {`${getContent && getContent?.procedure[3]?.text?.slice(0, 150)}...`}
+                          {`${
+                            getContent &&
+                            getContent?.procedure[3]?.text?.slice(0, 150)
+                          }...`}
                         </Tooltip>
                       ) : (
-                        `${getContent && getContent?.procedure[3]?.text?.slice(0, 150)}`
+                        `${
+                          getContent &&
+                          getContent?.procedure[3]?.text?.slice(0, 150)
+                        }`
                       )}
-                      </label>
+                    </label>
                   </div>
                 </>
               </div>
@@ -382,7 +409,7 @@ export default function ReferralsIndex() {
           </div> */}
               <div className="flex items-center justify-center pt-[6vw] md:pt-[0vw] w-full">
                 <label
-                 onClick={() => setModalIsOpen(true)}
+                  onClick={() => setModalIsOpen(true)}
                   className="text-[#1F487C] text-[4.5vw] md:text-[1.3vw] font-semibold py-[1vw] cursor-pointer"
                 >
                   Terms & Conditions
@@ -410,7 +437,9 @@ export default function ReferralsIndex() {
                  bottom-3 md:static">
                   Terms & Conditions
                 </label> */}
-                <label className={`text-[#1F487C] text-[4.5vw] md:text-[1.2vw] md:pt-[0vw] pt-[10vw] text-center font-semibold md:pb-[2vw]`}>
+                <label
+                  className={`text-[#1F487C] text-[4.5vw] md:text-[1.2vw] md:pt-[0vw] pt-[10vw] text-center font-semibold md:pb-[2vw]`}
+                >
                   Terms & Conditions
                 </label>
               </div>
@@ -427,27 +456,31 @@ export default function ReferralsIndex() {
         </div>
       )}
 
-     <ModalPopup
+      <ModalPopup
         show={modalIsOpen}
         onClose={closeOpenModal}
         height="35vw"
         width="48vw"
       >
         <div>
-        <div className="flex h-[3vw] justify-center text-center">
-         <label className="text-[1.4vw] text-[#1F487C] font-bold">Terms & Conditions</label> 
-        </div>
-        <div className='Legal-Information overflow-y-scroll w-full h-[29vw] px-[0.5vw] py-[1vw]'>
-         {/* <label>{termsConditions}</label> */}
-         <div><p className='text-[1vw] text-[#1F487C]'>
-                        {termsConditions?.split("\r\n")?.map((line, index) => (
-                            <p key={index} className="pb-[0.1vw]">
-                                {line}
-                                <br />
-                            </p>
-                        ))}
-                    </p></div>
-        </div>
+          <div className="flex h-[3vw] justify-center text-center">
+            <label className="text-[1.4vw] text-[#1F487C] font-bold">
+              Terms & Conditions
+            </label>
+          </div>
+          <div className="Legal-Information overflow-y-scroll w-full h-[29vw] px-[0.5vw] py-[1vw]">
+            {/* <label>{termsConditions}</label> */}
+            <div>
+              <p className="text-[1vw] text-[#1F487C]">
+                {termsConditions?.split("\r\n")?.map((line, index) => (
+                  <p key={index} className="pb-[0.1vw]">
+                    {line}
+                    <br />
+                  </p>
+                ))}
+              </p>
+            </div>
+          </div>
         </div>
       </ModalPopup>
     </>

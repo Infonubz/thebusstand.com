@@ -26,7 +26,7 @@ export default function Help() {
   };
 
   return (
-    <div className="bg-white md:h-[35vw] h-auto mx-[1vw] md:mx-[0vw] shadow-lg shadow-gray-300  mb-[2vw] w-full rounded-[1vw]">
+    <div className="bg-white md:h-[35vw] h-auto mx-[1vw] md:mx-[0vw] shadow-lg shadow-gray-400  mb-[2vw] w-full rounded-[1vw]">
       <Formik
         initialValues={{
           name: "",
