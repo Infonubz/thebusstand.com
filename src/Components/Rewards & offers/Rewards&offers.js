@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import Footer from "../Home/Footer";
-import HomeHearder from "../MainComponenet/HomeHearder";
+// import Footer from "../Home/Footer";
+// import HomeHearder from "../MainComponenet/HomeHearder";
 import homesky from "../../assets/BackgroundSky1.png";
-import Rewards from "../../assets/Rewards.png";
-import Rewards1 from "../../assets/Rewards1.png";
-import Rewards2 from "../../assets/Rewards2.png";
-import Rewards3 from "../../assets/Rewards3.png";
+// import Rewards from "../../assets/Rewards.png";
+// import Rewards1 from "../../assets/Rewards1.png";
+// import Rewards2 from "../../assets/Rewards2.png";
+// import Rewards3 from "../../assets/Rewards3.png";
 import { useDispatch, useSelector } from "react-redux";
 import { GetOffersOccupation } from "../../Api/Rewards/Rewards";
-import { Empty, Pagination, Spin } from "antd";
+import { Empty, Spin } from "antd";
 import "./Pagination.css";
 import { useNavigate } from "react-router";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
@@ -20,14 +20,14 @@ export default function Rewardsandoffers() {
   const [getValues, setGetValues] = useState("General Public");
   const [spinning, setSpinning] = useState(false);
 
-  const Reward = [
-    {
-      img1: <img src={Rewards} />,
-      img2: <img src={Rewards1} />,
-      img3: <img src={Rewards2} />,
-      img4: <img src={Rewards3} />,
-    },
-  ];
+  // const Reward = [
+  //   {
+  //     img1: <img src={Rewards} />,
+  //     img2: <img src={Rewards1} />,
+  //     img3: <img src={Rewards2} />,
+  //     img4: <img src={Rewards3} />,
+  //   },
+  // ];
   const OccupationDeals = useSelector((state) => state.offers_occupation);
 
   // const [currentPage, setCurrentPage] = useState(1);
@@ -49,21 +49,21 @@ export default function Rewardsandoffers() {
       const response = await GetFeedbackById();
       if (response && sessionStorage.getItem("passenger_id")) {
         setGetValues(
-          response.occupation_id === 1
+          response.occupation_id ===1
             ? "Business"
-            : response.occupation_id === 2
+            : response.occupation_id ===2
             ? "GeneralPublic"
-            : response.occupation_id === 3
+            : response.occupation_id ===3
             ? "PhysicallyChallenged"
-            : response.occupation_id === 4
+            : response.occupation_id ===4
             ? "PilgrimTravelers"
-            : response.occupation_id === 5
+            : response.occupation_id ===5
             ? "SeniorCitizens"
-            : response.occupation_id === 6
+            : response.occupation_id ===6
             ? "Students"
-            : response.occupation_id === 7
+            : response.occupation_id ===7
             ? "Tourist"
-            : response.occupation_id === 8
+            : response.occupation_id ===8
             ? "CorporateTravelers"
             : "GeneralPublic"
         );
@@ -83,7 +83,7 @@ export default function Rewardsandoffers() {
   const navigation = useNavigate();
   return (
     <>
-      <div className="bg-[#E5FFF1] md:h-auto h-screen  w-full overflow-auto relative  ">
+      <div className="bg-[#d1f8e3] min-h-screen max-h-auto w-full overflow-auto relative  ">
         <div className="">
           {/* <HomeHearder /> */}
           <CommonMainNavbar />
@@ -101,8 +101,7 @@ export default function Rewardsandoffers() {
                 overflow: "hidden",
                 // backgroundSize: "cover",
                 position: "relative",
-                overflowX: "hidden",
-                width: "100%",
+                overflowX: "hidden"
               }}
             >
               <label className="absolute left-[28vw] md:left-[36vw] top-[2vw] md:top-[0.1vw] text-[6vw]  md:text-[4vw] text-white font-bold opacity-20">
@@ -117,7 +116,7 @@ export default function Rewardsandoffers() {
             <div className="absolute top-[5.5vw] px-[3vw] grid grid-cols-8 gap-[1vw] w-full">
               <button
                 className={`${
-                  currenttab == 0
+                  currenttab ===0
                     ? "bg-[#1F487C] text-white font-semibold"
                     : "bg-white text-[#1F487C]"
                 } w-full h-[3vw] text-[1vw] px-[0.5vw] rounded-[0.5vw]`}
@@ -127,7 +126,7 @@ export default function Rewardsandoffers() {
               </button>
               <button
                 className={`${
-                  currenttab == 2
+                  currenttab ===2
                     ? "bg-[#1F487C] text-white font-semibold"
                     : "bg-white text-[#1F487C]"
                 } w-full h-[3vw] text-[1vw] px-[0.5vw] rounded-[0.5vw]`}
@@ -137,7 +136,7 @@ export default function Rewardsandoffers() {
               </button>
               <button
                 className={`${
-                  currenttab == 3
+                  currenttab ===3
                     ? "bg-[#1F487C] text-white font-semibold"
                     : "bg-white text-[#1F487C]"
                 } w-full h-[3vw] text-[1vw] px-[0.5vw] rounded-[0.5vw]`}
@@ -147,7 +146,7 @@ export default function Rewardsandoffers() {
               </button>
               <button
                 className={`${
-                  currenttab == 4
+                  currenttab ===4
                     ? "bg-[#1F487C] text-white font-semibold"
                     : "bg-white text-[#1F487C]"
                 } w-full h-[3vw] text-[1vw] px-[0.5vw] rounded-[0.5vw]`}
@@ -157,7 +156,7 @@ export default function Rewardsandoffers() {
               </button>
               <button
                 className={`${
-                  currenttab == 5
+                  currenttab ===5
                     ? "bg-[#1F487C] text-white font-semibold"
                     : "bg-white text-[#1F487C]"
                 } w-full h-[3vw] text-[1vw] px-[0.5vw] rounded-[0.5vw]`}
@@ -167,7 +166,7 @@ export default function Rewardsandoffers() {
               </button>
               <button
                 className={`${
-                  currenttab == 6
+                  currenttab ===6
                     ? "bg-[#1F487C] text-white font-semibold"
                     : "bg-white text-[#1F487C]"
                 } w-full h-[3vw] text-[1vw] px-[0.5vw] rounded-[0.5vw]`}
@@ -177,7 +176,7 @@ export default function Rewardsandoffers() {
               </button>
               <button
                 className={`${
-                  currenttab == 7
+                  currenttab ===7
                     ? "bg-[#1F487C] text-white font-semibold"
                     : "bg-white text-[#1F487C]"
                 } w-full h-[3vw] text-[1vw] px-[0.5vw] rounded-[0.5vw]`}
@@ -187,7 +186,7 @@ export default function Rewardsandoffers() {
               </button>
               <button
                 className={`${
-                  currenttab == 8
+                  currenttab ===8
                     ? "bg-[#1F487C] text-white font-semibold"
                     : "bg-white text-[#1F487C]"
                 } w-full h-[3vw] text-[1vw] px-[0.5vw] rounded-[0.5vw]`}
@@ -323,19 +322,20 @@ export default function Rewardsandoffers() {
                     />
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-3 w-full h-full pb-[4vw] md:pb-[0vw]  flex-col  gap-x-[1vw] gap-y-[4vw] md:gap-y-[2vw] justify-center px-[1vw]">
+                  <div className="grid grid-cols-1 md:grid-cols-3 w-full h-full pb-[4vw] md:pb-[0vw] flex-col gap-x-[1vw] md:gap-x-[2vw] gap-y-[4vw] md:gap-y-[2vw] justify-center px-[1vw]">
                     {OccupationDeals?.length > 0 ? (
                       OccupationDeals?.map((items, index) => (
                         <div
                           key={index}
-                          className="w-full  md:h-[13vw] h-[40vw] flex justify-center relative"
+                          className="w-full md:h-[11vw] h-[40vw] flex justify-center relative"
                         >
                           <img
                             src={`http://192.168.90.47:4000${items.theme}`}
-                            className="w-[80vw]  md:h-[13vw] h-[40vw] z-[1]"
+                            alt="Occupation"
+                            className="w-[80vw] md:h-[11vw] h-[40vw] z-[1]"
                           />
-                          <div className="absolute  left-[25vw] md:left-[6.1vw] top-[-.3vw] md:top-[0vw] rounded-b-full h-[5vw] md:h-[1vw] w-[6vw] md:w-[2vw]  bg-white z-[2]"></div>
-                          <div className="absolute left-[25vw] md:left-[6.1vw] bottom-[-.2vw] md:bottom-[0vw] rounded-t-full h-[5vw] md:h-[1vw] w-[6vw] md:w-[2vw] bg-white z-[2]"></div>
+                          <div className="absolute  left-[25vw] md:left-[5.9vw] top-[-.3vw] md:top-[0vw] rounded-b-full h-[5vw] md:h-[1vw] w-[6vw] md:w-[2vw] bg-white z-[2]"></div>
+                          <div className="absolute left-[25vw] md:left-[5.9vw] bottom-[-.2vw] md:bottom-[0vw] rounded-t-full h-[5vw] md:h-[1vw] w-[6vw] md:w-[2vw] bg-white z-[2]"></div>
                         </div>
                       ))
                     ) : (
@@ -350,10 +350,9 @@ export default function Rewardsandoffers() {
           </div>
         </div>
       </div>
-      <div className="md:block hidden">
-        {/* <Footer /> */}
-        <Footer1 />
-      </div>
+      <span className="md:block hidden">
+          <Footer1 />
+        </span>
 
       {/* ------------------------------------------------------------------Mobile-------------------------------------------------------- */}
 
@@ -374,7 +373,7 @@ export default function Rewardsandoffers() {
             <div className=" gap-[1vw] w-full md:my-0 my-[2vw] grid grid-cols-4">
               <button
                 className={`${
-                  currenttab == 1
+                  currenttab ===1
                     ? "bg-[#1F487C] text-white font-semibold"
                     : "bg-white text-[#1F487C]"
                 } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
@@ -384,7 +383,7 @@ export default function Rewardsandoffers() {
               </button>
               <button
                 className={`${
-                  currenttab == 2
+                  currenttab ===2
                     ? "bg-[#1F487C] text-white font-semibold"
                     : "bg-white text-[#1F487C]"
                 } w-full h-[10vw] text-[3vw]  px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
@@ -394,7 +393,7 @@ export default function Rewardsandoffers() {
               </button>
               <button
                 className={`${
-                  currenttab == 3
+                  currenttab ===3
                     ? "bg-[#1F487C] text-white font-semibold"
                     : "bg-white text-[#1F487C]"
                 } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
@@ -404,7 +403,7 @@ export default function Rewardsandoffers() {
               </button>
               <button
                 className={`${
-                  currenttab == 4
+                  currenttab ===4
                     ? "bg-[#1F487C] text-white font-semibold"
                     : "bg-white text-[#1F487C]"
                 } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
@@ -414,7 +413,7 @@ export default function Rewardsandoffers() {
               </button>
               <button
                 className={`${
-                  currenttab == 5
+                  currenttab ===5
                     ? "bg-[#1F487C] text-white font-semibold"
                     : "bg-white text-[#1F487C]"
                 } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
@@ -424,7 +423,7 @@ export default function Rewardsandoffers() {
               </button>
               <button
                 className={`${
-                  currenttab == 6
+                  currenttab ===6
                     ? "bg-[#1F487C] text-white font-semibold"
                     : "bg-white text-[#1F487C]"
                 } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
@@ -434,7 +433,7 @@ export default function Rewardsandoffers() {
               </button>
               <button
                 className={`${
-                  currenttab == 7
+                  currenttab ===7
                     ? "bg-[#1F487C] text-white font-semibold"
                     : "bg-white text-[#1F487C]"
                 } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
@@ -444,7 +443,7 @@ export default function Rewardsandoffers() {
               </button>
               <button
                 className={`${
-                  currenttab == 8
+                  currenttab ===8
                     ? "bg-[#1F487C] text-white font-semibold"
                     : "bg-white text-[#1F487C]"
                 } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
@@ -465,7 +464,7 @@ export default function Rewardsandoffers() {
               <div className="overflow-y-scroll w-full h-[72.5vh] py-[1vw]">
                 <div className=" flex flex-col gap-[3vw] px-[3vw]">
                   {OccupationDeals.map((items) => (
-                    <img src={`http://192.168.90.47:4000${items.theme}`} />
+                    <img src={`http://192.168.90.47:4000${items.theme}`} alt="Occupation" />
                   ))}
                 </div>
               </div>

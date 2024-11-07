@@ -379,33 +379,31 @@ const AddPassengers = ({
             <Form className="" onSubmit={handleSubmit}>
               <div className="grid grid-rows-1 md:grid-rows-2 gap-[1vw]">
                 <div>
-                  <div className="pb-[1vw]">
-                    <span className="">
-                      <div className="grid grid-cols-2">
-                        <div className="text-[#1F487C] text-[4vw] md:text-[1.5vw] font-semibold">
-                          {isEdit === true
-                            ? "Edit Passenger Details"
-                            : "Add Passenger Details"}
-                        </div>
-                        <div className="pl-[15vw] md:block hidden">
-                          <button
-                            className="border border-[#1F487C] text-[#1F487C] w-[5vw] h-[2.2vw] rounded-[0.5vw] text-[1.2vw]"
-                            onClick={prevStep}
-                          >
-                            Back
-                          </button>
-                          <button
-                            type="submit"
-                            className="bg-[#1F487C] text-white w-[10vw] h-[2.2vw] ml-[1vw] rounded-[0.5vw] text-[1.2vw]"
-                          >
-                            {isEdit === true
-                              ? "Save Passenger"
-                              : "Add Passenger"}
-                          </button>
-                        </div>
+                <div className="pb-[1vw]">
+                  <span className="">
+                    <div className="grid grid-cols-2">
+                      <div className="text-[#1F487C] text-[4vw] md:text-[1.5vw] font-semibold">
+                      {isEdit === true
+                      ? "Edit Passenger Details"
+                      : "Add Passenger Details"}
                       </div>
-                    </span>
-                  </div>
+                      <div className="pl-[15vw] md:block hidden">
+                      <button
+                  className="border border-[#1F487C] text-[#1F487C] w-[5vw] h-[2.2vw] rounded-[0.5vw] text-[1.2vw]"
+                  onClick={prevStep}
+                >
+                  Back
+                </button>
+                <button
+                  type="submit"
+                  className="bg-[#1F487C] text-white w-[10vw] h-[2.2vw] ml-[1vw] rounded-[0.5vw] text-[1.2vw]"
+                >
+                  {isEdit === true ? "Save Passenger" : "Add Passenger"}
+                </button>
+                      </div>
+                    </div>
+                  </span>
+                </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 my-[2vw] md:my-[0vw] py-[1vw] md:gap-y-[0vw] gap-y-[6vw] relative ">
                     <div className="">
                       <Field
@@ -475,9 +473,9 @@ const AddPassengers = ({
                   </div>
 
                   <div className="mb-[2vw] md:mb-[0vw] grid md:grid-rows-2 relative">
-                    <span className="font-bold text-[4vw] md:text-[1.1vw]  text-[#1F487C]">
-                      Gender
-                    </span>
+                  <span className="font-bold text-[4vw] md:text-[1.1vw]  text-[#1F487C]">
+                        Gender
+                      </span>
                     <div className="flex gap-x-[2vw]">
                       <div className=" border-[0.1vw] border-slate-400 text-[#1F487C] text-[4vw] md:text-[1.2vw] h-[10vw] w-full md:h-[3vw] md:w-[12.5vw] outline-none px-[4vw] md:px-[1vw] font-semibold rounded-[1vw] md:rounded-[0.5vw] flex items-center justify-between">
                         <label

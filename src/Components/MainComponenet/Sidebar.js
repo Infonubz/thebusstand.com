@@ -106,13 +106,12 @@ const Sidebar = ({ sidebarToggle, share }) => {
   });
 
   const handleClear = () => {
-    setFitervalue({
-      ...filtervalue,
-      ac: false,
-      non_ac: false,
-      sleeper: false,
-      seater: false,
-    });
+    console.log("Clear All Filters");
+
+    setAcFilter("");
+    setNoramlBus(false);
+    setBusType(false);
+    setSeatTypeFilter("");
     setDropChecked({});
     setOperatorChecked({});
     setPickupChecked({});
@@ -135,6 +134,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
       // time_6:00 PM to 11:00 PM: false,
       // time_11:00 PM to 6:00 AM: false,
     });
+    
     setDropTime("");
     setPickUpTime("");
     setAcFilter("");
@@ -203,8 +203,9 @@ const Sidebar = ({ sidebarToggle, share }) => {
   const amenitiesClear = () => {
     setAmenitiesValue({});
   };
-  console.log(amenitiesvalue, "amenitiesvalue");
+
   const vehicleclear = () => {
+    console.log("Clear All Filters");
     // setVehicleClear([]);
     // setFitervalue({
     //   ac: false,
@@ -216,9 +217,11 @@ const Sidebar = ({ sidebarToggle, share }) => {
     // });
     setAcFilter("");
     setNoramlBus(false);
+    sessionStorage.setItem("isLuxury", false);
     setBusType(false);
     setSeatTypeFilter("");
   };
+
   const openModal = (name) => {
     setModalname(name);
     setModalIsOpen(true);
@@ -1020,31 +1023,26 @@ const Sidebar = ({ sidebarToggle, share }) => {
       <div
         className={`${
           sidebarToggle ? "hidden" : "block"
-        } w-[18vw] bg-[#E5FFF1] h-full fixed  pt-[1vw]  z-1 md:block hidden`}
+        } w-[18vw] bg-[#E5FFF1] h-full fixed pt-[1vw] md:block hidden`}
         style={{
           zIndex: modalIsOpen || sharing === true ? 1 : 0,
           // fontFamily:"Lato"
         }}
       >
-        <div className="border-[0.1vw] border-[#c9c9c9] h-full  pb-[8vw] overflow-y-scroll scrollbar-hide  rounded-[0.5vw]">
+        <div className="border-[0.1vw] border-[#c9c9c9] h-full pb-[8vw] overflow-y-scroll scrollbar-hide rounded-[0.5vw]">
           <div>
-            <div className="py-[0.5vw] pb-[0.2vw]">
+            <div className="py-[1.2vw] pb-[0.5vw]">
               <div className="grid grid-cols-2 justify-between items-center">
                 <div className="">
                   <h1
-                    className="text-[1.2vw] text-black font-extrabold px-[0.6vw] font-[Lato]"
-                    style={{
-                      fontFamily: "Lato",
-                    }}
-                  >
+                    className="text-[1.2vw] text-black font-extrabold px-[0.6vw]" >
                     Filter
                   </h1>
                 </div>
                 <div>
                   <h3
                     className="text-[0.8vw] float-end px-[0.6vw] cursor-pointer underline underline-offset-[0.15vw]"
-                    onClick={handleClear}
-                  >
+                    onClick={handleClear}>
                     CLEAR ALL
                   </h3>
                   {/* <img src={"file://akritnas/nubiznez/Operator_logos/ss.png"} /> */}
@@ -1323,10 +1321,10 @@ const Sidebar = ({ sidebarToggle, share }) => {
             ) : (
               ""
             )}
-            <p className="my-[0.5vw] border-b-[0.01vw] border-gray-300"></p>
+            <p className="my-[0.2vw] border-b-[0.01vw] border-gray-300"></p>
           </div>
           <div>
-            <div className="pb-[0.6vw]">
+            <div className="pb-[0.2vw]">
               <RangeSlide
                 boolean={boolean}
                 setBoolean={setBoolean}

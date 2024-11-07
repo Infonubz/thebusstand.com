@@ -34,9 +34,6 @@ const TermsConditions = () => {
           {/* <p className="text-[1.1vw] font-semibold pl-[1vw]">PrivacyPolicy</p> */}
           <TermsIndex />
         </div>
-        <div className="">
-          <Footer />
-        </div>
       </div>
       <div className="md:hidden block fixed top-0">
         <div className="fixed top-0 left-0 right-0 bg-[#E5FFF1] z-10">
@@ -74,6 +71,9 @@ const TermsConditions = () => {
           </div>
         </div>
       </div>
+      <span className="md:block hidden">
+          <Footer />
+        </span>
     </>
   );
 };

@@ -1,16 +1,16 @@
 import { Drawer, Tooltip } from "antd";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Barcode from "react-barcode";
-import { FaMapMarkerAlt } from "react-icons/fa";
-import { FaBus } from "react-icons/fa6";
+// import { FaMapMarkerAlt } from "react-icons/fa";
+// import { FaBus } from "react-icons/fa6";
 import { FiDownload } from "react-icons/fi";
-import operatorlogo from "../../../../assets/Operator_logos/161.png";
-import bus_comp from "../../../../assets/bus_comp.png";
+// import operatorlogo from "../../../../assets/Operator_logos/161.png";
+// import bus_comp from "../../../../assets/bus_comp.png";
 import moment from "moment";
-import ticketview from "../../../../assets/ticket_view.png";
-import buslocation from "../../../../assets/buslocation.png";
-import busicon from "../../../../assets/busicon.png";
-import dayjs from "dayjs";
+// import ticketview from "../../../../assets/ticket_view.png";
+// import buslocation from "../../../../assets/buslocation.png";
+// import busicon from "../../../../assets/busicon.png";
+// import dayjs from "dayjs";
 // import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 // import { toPng } from 'html-to-image';
@@ -19,6 +19,10 @@ import jsPDF from "jspdf";
 import { savePDF } from "@progress/kendo-react-pdf";
 
 const TicketView = ({ showModal, setShowModal, ticketDetails }) => {
+
+  const [loader, setLoader] = useState(false);
+
+
   const colorcode = {
     theme: "#1F487C",
   };
@@ -60,6 +64,51 @@ const TicketView = ({ showModal, setShowModal, ticketDetails }) => {
       });
     }
   };
+
+  const downloadPDF = () => {
+    setLoader(true);
+    setTimeout(() => {
+      const capture = document.querySelector('componentRef.current');
+      if (capture) {
+        html2canvas(capture).then((canvas) => {
+          const imgData = canvas.toDataURL('image/png');
+          const doc = new jsPDF('p', 'mm', 'a4');
+          const componentWidth = doc.internal.pageSize.getWidth();
+          const componentHeight = doc.internal.pageSize.getHeight();
+          doc.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight);
+          setLoader(false);
+          doc.save('receipt.pdf');
+        });
+      } else {
+        console.error("Element .actual-receipt not found");
+        setLoader(false);
+      }
+    }, 1000); 
+  };
+
+  const handleDownloadClick = () => {
+    const capture = document.querySelector('componentRef.current');
+    if (capture) {
+      downloadPDF();
+    } else {
+      console.error("Element .actual-receipt not found on button click.");
+    }
+  };
+  
+
+  
+  useEffect(() => {
+    setTimeout(() => {
+      const capture = document.querySelector('componentRef.current');
+      if (capture) {
+        downloadPDF();
+      } else {
+        console.error("Element .actual-receipt not found on mount.");
+      }
+    }, 1000); 
+  }, []);
+  
+  
 
   // const generatePDF = () => {
   //   toPng(componentRef.current)
@@ -954,14 +1003,14 @@ const TicketView = ({ showModal, setShowModal, ticketDetails }) => {
                   }}
                 ></div>
                 <div
+                 onClick={handleDownloadClick}
                   className="relative h-[5vw] w-[5vw] left-[.5vw] top-[.7vw]  rounded-[50%] flex justify-center items-center "
                   style={{
                     backgroundColor:
                       ticketDetails.bus_type_status === "luxury"
                         ? "#393939"
                         : colorcode.theme,
-                  }}
-                >
+                  }}>
                   <span>
                     <FiDownload size={35} color="white" />
                   </span>

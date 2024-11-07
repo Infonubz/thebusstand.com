@@ -35,7 +35,7 @@ const About = () => {
 
   return (
     <>
-      <div className="bg-[#d1f8e3] ">
+      <div className="bg-[#d1f8e3] min-h-screen max-h-auto w-full">
         <CommonMainNavbar />
         <div
           className="relative md:h-[45vw] h-[100%] bg-[#d1f8e3]"
@@ -172,13 +172,10 @@ const About = () => {
             </div>
           </div>
         </div>
-        <span className="md:block hidden">
+      </div>
+      <span className="md:block hidden">
           <Footer />
         </span>
-      </div>
-      {/* <div className="md:hidden block">
-        <AboutMobile />
-      </div> */}
     </>
   );
 };

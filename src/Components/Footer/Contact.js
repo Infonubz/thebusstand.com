@@ -12,7 +12,7 @@ const Contact = () => {
 
   return (
     <>
-      <div className="bg-[#E5FFF1] md:h-auto h-screen ">
+      <div className="bg-[#E5FFF1] min-h-screen max-h-auto w-full ">
         <div className="">
           <CommonMainNavbar />
         </div>
@@ -93,11 +93,13 @@ https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3720.740038490879!2d77.337
           </div>
         </div>
 
-        <div className="md:block hidden">
-          {/* <Footer /> */}
+        {/* <div className="md:block hidden">
           <Footer1 />
-        </div>
+        </div> */}
       </div>
+      <span className="md:block hidden">
+        <Footer1 />
+      </span>
     </>
   );
 };

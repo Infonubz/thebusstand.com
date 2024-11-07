@@ -28,7 +28,6 @@ const CancelIndex = () => {
    setShowtable(true)
   };
 
-  
  
   return (
     <div className="w-full md:h-[35vw] h-[60vw] bg-white shadow-lg shadow-gray-400 rounded-[2vw] md:rounded-[.9vw] border-b-[0.1vw] ">
@@ -78,9 +77,9 @@ const CancelIndex = () => {
                 <div className={`relative flex justify-center`}>
                 <button
                   type="submit"
-                  className={`bg-[#1F487C] text-white rounded-[5vw] w-[25vw] h-[10vw] md:w-[11vw] md:h-[3vw]`}
+                  className={`bg-[#1F487C] text-[1.1vw] text-white rounded-[5vw] w-[25vw] h-[10vw] md:w-[11vw] md:h-[3vw]`}
                 >
-                  submit
+                  Submit
                 </button>
                 </div>
                 

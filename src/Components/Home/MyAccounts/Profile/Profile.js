@@ -31,6 +31,12 @@ const HomeProfile = () => {
 
   // const [isModalOpen, setIsModalOpen] = useState(false);
   const [spinning, setSpinning] = React.useState(false);
+  const dispatch = useDispatch();
+  const hasFetched = useRef(false);
+  const profiledata = useSelector((state) => state.profile_data);
+  // const [isDisabled, setIsDisabled] = useState(false);
+  const [editenable, setEditEnable] = useState(false);
+  const [gender, setGender] = useState("male");
 
   // const showModal = () => {
   //   setIsModalOpen(true);
@@ -46,13 +52,6 @@ const HomeProfile = () => {
   //     console.error("Error fetching additional user data", error);
   //   }
   // };
-
-  const dispatch = useDispatch();
-  const hasFetched = useRef(false);
-
-  // const [isDisabled, setIsDisabled] = useState(false);
-  const [editenable, setEditEnable] = useState(false);
-  const [gender, setGender] = useState("male");
 
   const handleEdit = () => {
     setEditEnable(true);
@@ -77,8 +76,6 @@ const HomeProfile = () => {
       hasFetched.current = true;
     }
   }, [dispatch]);
-  const profiledata = useSelector((state) => state.profile_data);
-  console.log(profiledata, "profiledataprofiledata");
 
   return (
     <>
@@ -137,6 +134,8 @@ const HomeProfile = () => {
               // setTimeout(async () => {
               await UpdateProfile(values, setSpinning);
               console.log(values, "valuesvalues");
+              sessionStorage.setItem("user_name", profiledata.user_name);
+              window.location.reload();
               toast.success("Updated Successfully");
               setSpinning(false);
               setEditEnable(false);

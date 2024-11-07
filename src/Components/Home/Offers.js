@@ -152,7 +152,7 @@ const Tourist = useMemo(() => [
   const nextSlide = () => {
     const newIndex = Math.min(startIndex + 1, currentoffers?.length - 5);
     setStartIndex(newIndex);
-    console.log(newIndex, "newIndex");
+    console.log(startIndex, newIndex, "nextIndex");
   };
 
   const updateStartIndex = () => {
@@ -301,7 +301,7 @@ const Tourist = useMemo(() => [
                   ))}
             </div>
           </div>
-          {startIndex > 0 && promotionlist?.length > 4 && (
+          {startIndex > 0 && promotionlist?.length > 5 && (
             <div className={`absolute left-[-3vw] top-[50%]`}>
               <button
                 className={`cursor-pointer  p-2 rounded-full`}
@@ -313,8 +313,8 @@ const Tourist = useMemo(() => [
             </div>
           )}
           <div className={`absolute right-[-3vw] top-[50%]`}>
-            {promotionlist?.length > 4 &&
-              startIndex < currentoffers?.length - 5 && (
+            {promotionlist?.length > 5 &&
+              startIndex < promotionlist?.length - 5 && (
                 <button
                   className={`cursor-pointer  p-2 rounded-full`}
                   onClick={nextSlide}

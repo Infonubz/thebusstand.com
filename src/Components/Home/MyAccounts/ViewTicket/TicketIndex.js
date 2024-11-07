@@ -123,7 +123,7 @@ const TicketIndex = () => {
                   </div>
                   <div className="relative flex justify-center">
                     <button
-                      className={`bg-[#1F487C] text-white rounded-[5vw] w-[25vw] h-[10vw] md:w-[11vw] md:h-[3vw]`}
+                      className={`bg-[#1F487C] text-[1.1vw] text-white rounded-[5vw] w-[25vw] h-[10vw] md:w-[11vw] md:h-[3vw]`}
                       type="submit"
                     >
                       Submit

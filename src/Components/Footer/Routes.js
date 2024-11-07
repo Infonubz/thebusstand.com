@@ -129,7 +129,7 @@ const Routes = () => {
 
   return (
     <>
-      <div className="h-screen bg-[#E5FFF1]">
+      <div className=" min-h-screen max-h-auto w-full bg-[#E5FFF1]">
         <div className="">
           <CommonMainNavbar />
         </div>
@@ -390,10 +390,10 @@ const Routes = () => {
             </div>
           </div>
         </div>
-        <div className="md:block hidden">
-          <Footer1 />
-        </div>
       </div>
+      <span className="md:block hidden">
+          <Footer1 />
+        </span>
     </>
   );
 };

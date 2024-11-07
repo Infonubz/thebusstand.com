@@ -1,29 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Spin, Drawer } from "antd";
+import { Table, Spin, Drawer } from "antd";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import "./PassengersTable.css";
-import AddPassengers from "./AddPassengers";
-import { PASSENGER_DATA } from "../../../../Store/type";
-import { useDispatch, useSelector } from "react-redux";
+import { capitalizeFirstLetter } from "../../../Common/Captalization";
+// import AddPassengers from "./AddPassengers";
+// import { PASSENGER_DATA } from "../../../../Store/type";
+// import { useDispatch, useSelector } from "react-redux";
 import {
   GetPassengById,
-  GetPassengerData,
+  // GetPassengerData,
 } from "../../../../Api/MyAccounts/Passenger";
 import ModalPopup from "../../../MainComponenet/Modal/ModalPopup";
 import Delete from "./Delete";
 import { LoadingOutlined } from "@ant-design/icons";
 import { FaUser } from "react-icons/fa";
-import { TfiArrowCircleRight } from "react-icons/tfi";
+// import { TfiArrowCircleRight } from "react-icons/tfi";
 import { LuUserPlus2 } from "react-icons/lu";
 
 export default function PassengersList({
   nextPage,
   passengerdata,
-  setPassData,
-  passData,
-  updateData,
+  // setPassData,
+  // passData,
+  // updateData,
   setUpdateData,
   setIsEdit,
   spinning,
@@ -33,30 +34,20 @@ export default function PassengersList({
   };
 
   const [passName, setPassName] = useState();
-
-  const [presentPage, setPresentPage] = useState(true);
-
-  const handleOnTogglePage = () => {
-    setPresentPage(!presentPage);
-  };
-
-  const handleNextPage = () => {
-    setUpdateData(null);
-    nextPage();
-    setIsEdit(false);
-  };
-
   const [deletemodalIsOpen, setDeleteModalIsOpen] = useState(false);
-  const closeDeleteModal = () => {
-    setDeleteModalIsOpen(false);
-  };
-
+  const [presentPage, setPresentPage] = useState(true);
   const [mobileDelete, setMobileDelete] = useState(false);
-  const closeMobileDelete = () => {
-    setMobileDelete(false);
+  const [deleteId, SetDeleteId] = useState(null);
+  const [bgColor, setBgColor] = useState([]);
+
+
+  const getRandomColor = () => {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r}, ${g}, ${b})`;
   };
 
-  const [deleteId, SetDeleteId] = useState(null);
   const columns = [
     {
       title: <div className="">Name</div>,
@@ -79,7 +70,7 @@ export default function PassengersList({
       title: <div className="">Age</div>,
       // dataIndex: 'age',
       width: "20%",
-      defaultSortOrder: "descend",
+      defaultSortOrder: ["descend"],
       sorter: (a, b) => a.age - b.age,
       render: (row) => {
         return (
@@ -96,7 +87,7 @@ export default function PassengersList({
       render: (row, index) => {
         return (
           <div className="flex justify-center">
-            <h1 className="text-[1vw]">{row.gender}</h1>
+            <h1 className="text-[1vw]">{capitalizeFirstLetter(row.gender)}</h1>
           </div>
         );
       },
@@ -109,7 +100,7 @@ export default function PassengersList({
         return (
           <div className="flex justify-center gap-[1vw] ">
             <div
-              className="flex items-center justify-center cursor-pointer px-[0.5vw] border-[0.1vw] border-[#1f4b7f] rounded-[0.2vw] w-[5vw] h-[2vw] gap-[0.5vw]"
+              className="flex items-center justify-center cursor-pointer px-[0.5vw] border-[0.1vw] border-[#1f4b7f] rounded-[0.2vw] w-[4.5vw] h-[2vw] gap-[0.5vw]"
               onClick={() => {
                 setUpdateData(row.tbs_add_pax_id);
                 nextPage();
@@ -173,13 +164,29 @@ export default function PassengersList({
   //   }
   //   return color;
   // };
-  const [bgColor, setBgColor] = useState([]);
-  const getRandomColor = () => {
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
-    return `rgb(${r}, ${g}, ${b})`;
+
+
+  // const handleOnTogglePage = () => {
+  //   setPresentPage(!presentPage);
+  // };
+
+  const handleNextPage = () => {
+    setUpdateData(null);
+    nextPage();
+    setIsEdit(false);
   };
+
+  const closeDeleteModal = () => {
+    setDeleteModalIsOpen(false);
+  };
+
+
+  const closeMobileDelete = () => {
+    setMobileDelete(false);
+  };
+
+
+
   useEffect(() => {
     const colors = Array.from(
       { length: passengerdata?.length },
@@ -190,6 +197,7 @@ export default function PassengersList({
     //     setBgColor(getRandomColor())
     //   }
   }, [passengerdata]);
+
   return (
     <>
       <div className="md:hidden block ">

@@ -39,7 +39,7 @@ export default function MyAccountsDetails() {
   const navigation = useNavigate();
   return (
     <>
-      <div className="bg-[#E5FFF1] md:h-full h-screen">
+      <div className="bg-[#E5FFF1] md:min-h-screen md:max-h-auto w-full h-screen">
         <div>
           {/* <HomeHearder /> */}
           <CommonMainNavbar />
@@ -78,9 +78,9 @@ export default function MyAccountsDetails() {
                   : currenttab === 4
                   ? "Referrals"
                   : currenttab === 5
-                  ? "View Tickets"
+                  ? "View Ticket"
                   : currenttab === 6
-                  ? "Cancel Tickets"
+                  ? "Cancel Ticket"
                   : "Help"
               }`}
             </label>
@@ -102,7 +102,7 @@ export default function MyAccountsDetails() {
                 <label
                   className={`${
                     currenttab === 1 ? "text-white" : "text-[#1F487C]"
-                  } text-[#1F487C] font-bold text-[1.3vw]`}
+                  } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
                 >
                   Profile
                 </label>
@@ -124,7 +124,7 @@ export default function MyAccountsDetails() {
                 <label
                   className={`${
                     currenttab === 2 ? "text-white" : "text-[#1F487C]"
-                  } text-[#1F487C] font-bold text-[1.3vw]`}
+                  } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
                 >
                   Passengers
                 </label>
@@ -146,7 +146,7 @@ export default function MyAccountsDetails() {
                 <label
                   className={`${
                     currenttab === 3 ? "text-white" : "text-[#1F487C]"
-                  } text-[#1F487C] font-bold text-[1.3vw]`}
+                  } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
                 >
                   My Bookings
                 </label>
@@ -168,7 +168,7 @@ export default function MyAccountsDetails() {
                 <label
                   className={`${
                     currenttab === 4 ? "text-white" : "text-[#1F487C]"
-                  } text-[#1F487C] font-bold text-[1.3vw]`}
+                  } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
                 >
                   Referrals
                 </label>
@@ -190,7 +190,7 @@ export default function MyAccountsDetails() {
                 <label
                   className={`${
                     currenttab === 5 ? "text-white" : "text-[#1F487C]"
-                  } text-[#1F487C] font-bold text-[1.3vw]`}
+                  } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
                 >
                   View Ticket
                 </label>
@@ -212,7 +212,7 @@ export default function MyAccountsDetails() {
                 <label
                   className={`${
                     currenttab === 6 ? "text-white" : "text-[#1F487C]"
-                  } text-[#1F487C] font-bold text-[1.3vw]`}
+                  } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
                 >
                   Cancel Ticket
                 </label>
@@ -234,7 +234,7 @@ export default function MyAccountsDetails() {
                 <label
                   className={`${
                     currenttab === 7 ? "text-white" : "text-[#1F487C]"
-                  } text-[#1F487C] font-bold text-[1.3vw]`}
+                  } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
                 >
                   Help
                 </label>
@@ -259,12 +259,12 @@ export default function MyAccountsDetails() {
           </div>
         </div>
       </div>
-      <div className="md:block hidden z-[2]">
-        <Footer1 />
-      </div>
       <div className="md:hidden block">
         <BottomNavbar />
       </div>
+      <span className="md:block hidden">
+          <Footer1 />
+        </span>
     </>
   );
 }

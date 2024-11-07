@@ -40,7 +40,7 @@ const Faq = () => {
 
   return (
     <>
-      <div className="h-screen bg-[#E5FFF1]">
+      <div className="bg-[#E5FFF1] min-h-screen max-h-auto w-full ">
         <div className="">
           <CommonMainNavbar />
         </div>
@@ -69,12 +69,18 @@ const Faq = () => {
           <div className="absolute md:top-[6vw] top-[12vw] px-[3vw] flex flex-col">
             <div className="bg-white h-[87vh] w-[94vw] md:h-[34vw] relative rounded-[2.5vw] md:rounded-[1vw] shadow-lg shadow-gray-300">
               <div className="grid grid-rows md:grid-cols-7">
-                <div className="md:col-start-1 md:col-span-4 m-[1vw] md:m-[3vw] h-[37vh] md:h-[24vw] Legal-Information  overflow-y-auto">
+                <div className="md:col-start-1 md:col-span-4 m-[1vw] md:m-[3vw] h-[37vh] md:h-[25vw] Legal-Information  overflow-y-auto">
                   <Collapse
                     accordion
-                    activeKey={activeKey ? [activeKey] : []} // Ensure only one can be opened
-                    onChange={handleCollapseChange}
-                    size={`large`}
+                    activeKey={activeKey ? [activeKey] : []}
+                    onChange={(key) => {
+                      handleCollapseChange(key);
+                      // Check if the active key matches the key you want to trigger
+                      const value = 1;
+                      handleCollapseChange("1");
+                      handleClick(value);
+                    }}
+                    size="large"
                     className="relative shadow-lg bg-white md:m-[1vw] m-[3vw] border-none"
                     style={{
                       boxShadow:
@@ -84,7 +90,7 @@ const Faq = () => {
                       isActive ? (
                         <>
                           <RiArrowUpSFill
-                            className="md:block hidden mt-[0.5vw]"
+                            className="md:block hidden mt-[1.2vw]"
                             style={{
                               color: "#1F487C",
                               height: "2.5vw",
@@ -103,12 +109,7 @@ const Faq = () => {
                       ) : (
                         <>
                           <RiArrowDownSFill
-                            onClick={() => {
-                              const value = 1;
-                              handleCollapseChange("1");
-                              handleClick(value);
-                            }}
-                            className="md:block hidden mt-[0.5vw]"
+                            className="md:block hidden mt-[1.2vw]"
                             style={{
                               color: "#1F487C",
                               height: "2.5vw",
@@ -116,11 +117,6 @@ const Faq = () => {
                             }}
                           />
                           <RiArrowDownSFill
-                            onClick={() => {
-                              const value = 1;
-                              handleCollapseChange("1");
-                              handleClick(value);
-                            }}
                             className="block md:hidden mt-[6.5vw]"
                             style={{
                               color: "#1F487C",
@@ -138,14 +134,14 @@ const Faq = () => {
                         label: (
                           <div
                             className="flex items-center md:flex-none h-[13vw] md:h-[5vh]"
-                            onClick={() => {
-                              const value = 1;
-                              handleCollapseChange("1");
-                              handleClick(value);
-                            }}
+                            // onClick={() => {
+                            //   const value = 1;
+                            //   handleCollapseChange("1");
+                            //   handleClick(value);
+                            // }}
                           >
                             <div className="col-span-2 pl-[1vw]">
-                              <span className="text-[#1F487C] font-medium  text-[4.5vw] md:text-[1.5vw]">
+                              <span className="text-[#1F487C] font-medium text-[4.5vw] md:text-[1.5vw]">
                                 GENERAL
                               </span>
                             </div>
@@ -174,7 +170,13 @@ const Faq = () => {
                   <Collapse
                     accordion
                     activeKey={activeKey ? [activeKey] : []} // Ensure only one can be opened
-                    onChange={handleCollapseChange}
+                    onChange={(key) => {
+                      handleCollapseChange(key);
+                      // Check if the active key matches the key you want to trigger
+                      const value = 2;
+                      handleCollapseChange("2");
+                      handleClick(value);
+                    }}
                     size={`large`}
                     className="relative shadow-lg bg-white md:m-[1vw] m-[3vw] border-none"
                     style={{
@@ -185,7 +187,7 @@ const Faq = () => {
                       isActive ? (
                         <>
                           <RiArrowUpSFill
-                            className="md:block hidden mt-[0.5vw]"
+                            className="md:block hidden mt-[1.2vw]"
                             style={{
                               color: "#1F487C",
                               height: "2.5vw",
@@ -204,12 +206,7 @@ const Faq = () => {
                       ) : (
                         <>
                           <RiArrowDownSFill
-                            onClick={() => {
-                              const value = 2;
-                              handleCollapseChange("2");
-                              handleClick(value);
-                            }}
-                            className="md:block hidden mt-[0.5vw]"
+                            className="md:block hidden mt-[1.2vw]"
                             style={{
                               color: "#1F487C",
                               height: "2.5vw",
@@ -217,11 +214,6 @@ const Faq = () => {
                             }}
                           />
                           <RiArrowDownSFill
-                            onClick={() => {
-                              const value = 2;
-                              handleCollapseChange("2");
-                              handleClick(value);
-                            }}
                             className="block md:hidden mt-[6.5vw]"
                             style={{
                               color: "#1F487C",
@@ -276,7 +268,12 @@ const Faq = () => {
                     size={`large`}
                     accordion
                     activeKey={activeKey ? [activeKey] : []} // Ensure only one can be opened
-                    onChange={handleCollapseChange}
+                    onChange={(key) => {
+                      handleCollapseChange(key);
+                      const value = 3;
+                      handleCollapseChange("3");
+                      handleClick(value);
+                    }}
                     className="relative shadow-lg bg-white md:m-[1vw] m-[3vw] border-none"
                     style={{
                       boxShadow:
@@ -286,7 +283,7 @@ const Faq = () => {
                       isActive ? (
                         <>
                           <RiArrowUpSFill
-                            className="md:block hidden mt-[0.5vw]"
+                            className="md:block hidden mt-[1.2vw]"
                             style={{
                               color: "#1F487C",
                               height: "2.5vw",
@@ -305,12 +302,7 @@ const Faq = () => {
                       ) : (
                         <>
                           <RiArrowDownSFill
-                            onClick={() => {
-                              const value = 3;
-                              handleCollapseChange("3");
-                              handleClick(value);
-                            }}
-                            className="md:block hidden mt-[0.5vw]"
+                            className="md:block hidden mt-[1.2vw]"
                             style={{
                               color: "#1F487C",
                               height: "2.5vw",
@@ -318,11 +310,6 @@ const Faq = () => {
                             }}
                           />
                           <RiArrowDownSFill
-                            onClick={() => {
-                              const value = 3;
-                              handleCollapseChange("3");
-                              handleClick(value);
-                            }}
                             className="block md:hidden mt-[6.5vw]"
                             style={{
                               color: "#1F487C",
@@ -377,7 +364,12 @@ const Faq = () => {
                     size={`large`}
                     accordion
                     activeKey={activeKey ? [activeKey] : []} // Ensure only one can be opened
-                    onChange={handleCollapseChange}
+                    onChange={(key) => {
+                      handleCollapseChange(key);
+                      const value = 4;
+                      handleCollapseChange("4");
+                      handleClick(value);
+                    }}
                     className="relative shadow-lg bg-white md:m-[1vw] m-[3vw] border-none"
                     style={{
                       boxShadow:
@@ -387,7 +379,7 @@ const Faq = () => {
                       isActive ? (
                         <>
                           <RiArrowUpSFill
-                            className="md:block hidden mt-[0.5vw]"
+                            className="md:block hidden mt-[1.2vw]"
                             style={{
                               color: "#1F487C",
                               height: "2.5vw",
@@ -406,12 +398,7 @@ const Faq = () => {
                       ) : (
                         <>
                           <RiArrowDownSFill
-                            onClick={() => {
-                              const value = 4;
-                              handleCollapseChange("4");
-                              handleClick(value);
-                            }}
-                            className="md:block hidden mt-[0.5vw]"
+                            className="md:block hidden mt-[1.2vw]"
                             style={{
                               color: "#1F487C",
                               height: "2.5vw",
@@ -419,11 +406,6 @@ const Faq = () => {
                             }}
                           />
                           <RiArrowDownSFill
-                            onClick={() => {
-                              const value = 4;
-                              handleCollapseChange("4");
-                              handleClick(value);
-                            }}
                             className="block md:hidden mt-[6.5vw]"
                             style={{
                               color: "#1F487C",
@@ -441,11 +423,11 @@ const Faq = () => {
                         label: (
                           <div
                             className="flex items-center md:flex-none h-[13vw] md:h-[5vh]"
-                            onClick={() => {
-                              const value = 4;
-                              handleCollapseChange("4");
-                              handleClick(value);
-                            }}
+                            // onClick={() => {
+                            //   const value = 4;
+                            //   handleCollapseChange("4");
+                            //   handleClick(value);
+                            // }}
                           >
                             <div className="col-span-2 pl-[1vw]">
                               <span className="text-[#1F487C] font-medium text-[4.5vw] md:text-[1.5vw]">
@@ -478,7 +460,12 @@ const Faq = () => {
                     size={`large`}
                     accordion
                     activeKey={activeKey ? [activeKey] : []} // Ensure only one can be opened
-                    onChange={handleCollapseChange}
+                    onChange={(key) => {
+                      handleCollapseChange(key);
+                      const value = 5;
+                      handleCollapseChange("5");
+                      handleClick(value);
+                    }}
                     className="relative shadow-lg bg-white md:m-[1vw] m-[3vw] border-none"
                     style={{
                       boxShadow:
@@ -488,7 +475,7 @@ const Faq = () => {
                       isActive ? (
                         <>
                           <RiArrowUpSFill
-                            className="md:block hidden mt-[0.5vw]"
+                            className="md:block hidden mt-[1.2vw]"
                             style={{
                               color: "#1F487C",
                               height: "2.5vw",
@@ -507,12 +494,7 @@ const Faq = () => {
                       ) : (
                         <>
                           <RiArrowDownSFill
-                            onClick={() => {
-                              const value = 5;
-                              handleCollapseChange("5");
-                              handleClick(value);
-                            }}
-                            className="md:block hidden mt-[0.5vw]"
+                            className="md:block hidden mt-[1.2vw]"
                             style={{
                               color: "#1F487C",
                               height: "2.5vw",
@@ -520,11 +502,6 @@ const Faq = () => {
                             }}
                           />
                           <RiArrowDownSFill
-                            onClick={() => {
-                              const value = 5;
-                              handleCollapseChange("5");
-                              handleClick(value);
-                            }}
                             className="block md:hidden mt-[6.5vw]"
                             style={{
                               color: "#1F487C",
@@ -542,11 +519,11 @@ const Faq = () => {
                         label: (
                           <div
                             className="flex items-center md:flex-none h-[13vw] md:h-[5vh]"
-                            onClick={() => {
-                              const value = 5;
-                              handleCollapseChange("5");
-                              handleClick(value);
-                            }}
+                            // onClick={() => {
+                            //   const value = 5;
+                            //   handleCollapseChange("5");
+                            //   handleClick(value);
+                            // }}
                           >
                             <div className="col-span-2 pl-[1vw]">
                               <span className="text-[#1F487C] font-medium text-[4.5vw] md:text-[1.5vw]">
@@ -621,10 +598,10 @@ const Faq = () => {
             </div>
           </div>
         </div>
-        <div className="md:block hidden">
-          <Footer1 />
-        </div>
       </div>
+      <span className="md:block hidden">
+        <Footer1 />
+      </span>
     </>
   );
 };
