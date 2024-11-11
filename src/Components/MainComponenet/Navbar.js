@@ -42,9 +42,13 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
   };
 
   const handleSortingClick = (value) => {
+    sessionStorage.setItem("spinner", "true"); 
     setSorting(value);
     localStorage.setItem("sort", value);
     console.log(value, "tooovalue");
+    setTimeout(() => {
+      sessionStorage.setItem("spinner", "false");
+    }, 1000);
   };
 
   // const handleSortingClick = (value) => {

@@ -271,6 +271,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   //   console.log("search:", value);
   // };
   const handleSearch = () => {
+    sessionStorage.setItem("spinner", "true"); 
     localStorage.setItem("arrival", toValue);
     localStorage.setItem("selectdate", fromDate);
     localStorage.setItem("departure", fromValue);
@@ -284,6 +285,9 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
     });
     // handlefilter();
     localStorage.setItem("search", false);
+    setTimeout(() => {
+      sessionStorage.setItem("spinner", "false");
+    }, 1000);
   };
   // const onChange = (date, dateString) => {
   //   console.log(date, dateString);
@@ -707,10 +711,10 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
 
   const navigation = useNavigate();
   // const currentUrl = window.location.href;
-  const [fromDate, setFromDate] = useState(new Date());
+  const [fromDate, setFromDate] = useState(localStorage.getItem("selectdate"));
   // const [toDate, setToDate] = useState(null);
   console.log(fromDate, "fromDate");
-
+  const dateSelected = sessionStorage.getItem("departure_date")
   // const handleProPage = () => {
   //   navigation("/main", { state: { tabIndex: 1 } });
   // };
@@ -1224,7 +1228,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                   /> */}
                     <div className="md:col-span-1 mr-[1vw] md:block hidden mt-[0.2vw]">
                       <div className="bg-white w-full  h-[2.3vw]  rounded-[0.5vw] text-[1.1vw]">
-                        <DateInput value={fromDate} onChange={setFromDate} />
+                        <DateInput value={dateSelected} onChange={setFromDate} />
                       </div>
                     </div>
                     {/* <CalendarComponent value={dateValue} /> */}

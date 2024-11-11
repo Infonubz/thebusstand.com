@@ -120,6 +120,7 @@ export const SendPassengerName = async (dispatch, values, setLoginIsOpen) => {
         : 8,
   };
   console.log(payload.email_id, "verificationforotp");
+  sessionStorage.setItem("user_name",values.name );
   const user_id = sessionStorage.getItem("user_id");
   const url = `${apiUrl}/passenger-details/${user_id}`;
   const method = "put";

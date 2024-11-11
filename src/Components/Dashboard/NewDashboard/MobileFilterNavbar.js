@@ -15,7 +15,7 @@ export default function MobileFilterNavbar() {
   const [selectedButton, setSelectedButton] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [busType, setBusType] = useState(JSON.parse(sessionStorage.getItem("isLuxury")));
-  const [NormalBus, setNoramlBus] = useState(JSON.parse(sessionStorage.getItem("isNoramlBus")));
+  const [NormalBus, setNoramlBus] = useState(JSON.parse(sessionStorage.getItem("isMbleNoramlBus")));
   const [acfilter, setAcFilter] = useState("");
   const [seattypefilter, setSeatTypeFilter] = useState("");
   const [value, setValue] = useState([0, 3000]);
@@ -33,7 +33,7 @@ export default function MobileFilterNavbar() {
   const departure_date_local = localStorage.getItem("departure_date");
   const isLuxury_local = sessionStorage.getItem("isLuxury");
   const sort_local = localStorage.getItem("sort");
-  //const regularbus = sessionStorage.getItem("isNoramlBus");
+  //const regularbus = sessionStorage.getItem("isMbleNoramlBus");
   const dispatch = useDispatch();
 
 
@@ -104,7 +104,7 @@ export default function MobileFilterNavbar() {
         operatorcheck,
         priceRange,
         localStorage.getItem("sort"),
-        sessionStorage.getItem("isNoramlBus"),
+        NormalBus,
         dispatch
       );
       console.log(allFilters, "allFilters");
@@ -123,7 +123,7 @@ export default function MobileFilterNavbar() {
     amenitiesvalue,
     operatorchecked,
     priceRange,
-    sessionStorage.getItem("isNoramlBus"),
+    sessionStorage.getItem("isMbleNoramlBus"),
     localStorage.getItem("sort"),
     departure_local,
     arrival_local,
@@ -234,17 +234,21 @@ export default function MobileFilterNavbar() {
             if (selectedButton === 4 || NormalBus) {
               setSelectedButton(null);
               setNoramlBus(false);
-              sessionStorage.setItem("isNoramlBus", false);
+              sessionStorage.setItem("isMbleNoramlBus", false);
             } else {
               setSelectedButton(4);
               setNoramlBus(true);
-              sessionStorage.setItem("isNoramlBus", true);
+              sessionStorage.setItem("isMbleNoramlBus", true);
             }
           }}
         >
           <span>
             <RiBusFill
               color={`${
+
+
+
+
                 selectedButton === 4 || NormalBus ? "white" : "#1F487C"
               }`}
               size={"4vw"}
@@ -256,7 +260,7 @@ export default function MobileFilterNavbar() {
                 ? "text-white"
                 : "text-[#1F487C]"
             }  text-[4vw] font-semibold whitespace-nowrap`}
-            onClick={() => sessionStorage.setItem("isNoramlBus", true)}
+            onClick={() => sessionStorage.setItem("isMbleNoramlBus", true)}
           >
             Normal Coach
           </span>

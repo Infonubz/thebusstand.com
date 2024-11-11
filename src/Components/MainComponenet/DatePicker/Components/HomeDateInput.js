@@ -167,6 +167,9 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
   console.log(selectedDate, "selectedDateselectedDate");
   const dispatch = useDispatch();
   useEffect(() => {
+    const formattedDate = selectedDate ? dayjs(selectedDate).format('YYYY-MM-DD') : null;
+    localStorage.setItem("departure_date", formattedDate);
+    localStorage.setItem("selectdate", selectedDate)
     if (location.pathname == "/") {
       dispatch({
         type: HOME_SELECTED_DATE,

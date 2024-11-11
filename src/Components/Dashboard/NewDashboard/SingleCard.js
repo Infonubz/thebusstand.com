@@ -144,14 +144,14 @@ export default function SingleCard() {
     setDropDown(dropDown === index ? null : index);
   };
 
+  useEffect(() => {
+    sessionStorage.getItem("spinner");
+    setSpinner(sessionStorage.getItem("spinner"));
+  }, [sessionStorage.getItem("spinner")]);
+
   setTimeout(() => {
     setSpinner("false");
   }, 1000);
-
-  useEffect(() => {
-    const loader = sessionStorage.getItem("spinner");
-    setSpinner(loader);
-  }, []);
 
   useEffect(() => {
     if (user_id) {

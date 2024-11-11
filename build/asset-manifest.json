@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.c3ed7678.css",
-    "main.js": "/static/js/main.70a5767c.js",
+    "main.css": "/static/css/main.d5b5327e.css",
+    "main.js": "/static/js/main.973f9043.js",
     "static/js/32.62135ec3.chunk.js": "/static/js/32.62135ec3.chunk.js",
     "static/js/357.55ccad3b.chunk.js": "/static/js/357.55ccad3b.chunk.js",
     "static/js/542.02a7bc4a.chunk.js": "/static/js/542.02a7bc4a.chunk.js",
@@ -62,11 +62,7 @@
     "static/media/BG Image.png": "/static/media/BG Image.35c474a0966afcd77904.png",
     "static/media/mobile pattern.png": "/static/media/mobile pattern.35c474a0966afcd77904.png",
     "static/media/car1.png": "/static/media/car1.d9575393e9818071e43e.png",
-    "static/media/Rewards1.png": "/static/media/Rewards1.4837e6899654c86348d4.png",
-    "static/media/Rewards2.png": "/static/media/Rewards2.c483d05de285d75ac2dd.png",
     "static/media/Frame 7.png": "/static/media/Frame 7.33d65b0838c91ee4c8c3.png",
-    "static/media/Rewards.png": "/static/media/Rewards.ecaec30f5013567724a4.png",
-    "static/media/Rewards3.png": "/static/media/Rewards3.5f317dcc808694193677.png",
     "static/media/thread.png": "/static/media/thread.c01931b00c7bd11d54f4.png",
     "static/media/Frame 1.png": "/static/media/Frame 1.0787808c9cf755e5d3ac.png",
     "static/media/scooter.png": "/static/media/scooter.de0abdc2a561682aae5f.png",
@@ -263,7 +259,7 @@
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.c3ed7678.css",
-    "static/js/main.70a5767c.js"
+    "static/css/main.d5b5327e.css",
+    "static/js/main.973f9043.js"
   ]
 }

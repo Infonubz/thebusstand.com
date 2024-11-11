@@ -605,10 +605,10 @@ const SidebarMobile = ({
                     onClick={() => {
                       if (NormalBus) {
                         setNoramlBus(false);
-                        sessionStorage.setItem("isNoramlBus", false);
+                        sessionStorage.setItem("isMbleNoramlBus", false);
                       } else {
                         setNoramlBus(true);
-                        sessionStorage.setItem("isNoramlBus", true);
+                        sessionStorage.setItem("isMbleNoramlBus", true);
                       }
                     }}
                   >

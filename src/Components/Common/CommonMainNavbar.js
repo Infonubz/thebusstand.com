@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import buslogo from "../../assets/502-ai 1.png";
 import busstand from "../../assets/busstand.png";
 //import bus from "../../assets/bus 1.png";
@@ -28,7 +28,7 @@ export default function CommonMainNavbar() {
   const [logModalIsOpen, setLogModalIsOpen] = useState(false);
   const [accDrawer, setAccDrawer] = useState(false);
   const [logMobileIsOpen, setLogMobileIsOpen] = useState(false);
-  //const [LoginUser_Name, setLoginUser_Name] = useState(sessionStorage.getItem("user_name"));
+  const [LoginUser_Name, setLoginUser_Name] = useState(sessionStorage.getItem("user_name"));
   const closeLoginModal = () => {
     setLoginIsOpen(false);
     setLoginMobileIsOpen(false);
@@ -119,13 +119,14 @@ export default function CommonMainNavbar() {
       ),
     },
   ];
-  const LoginUser_Name = sessionStorage.getItem("user_name");
+  //const LoginUser_Name = sessionStorage.getItem("user_name");
 
-  // useEffect(() => {
-  //   const LoginUser_Name = sessionStorage.getItem("user_name");
-  //   setLoginUser_Name(LoginUser_Name);
-  //   console.log(LoginUser_Name,"User Name");
-  // }, []);
+  useEffect(() => {
+   sessionStorage.getItem("user_name");
+    setLoginUser_Name(sessionStorage.getItem("user_name"));
+    console.log(LoginUser_Name,"User Name");
+  }, [sessionStorage.getItem("user_name")]);
+  
 
   const location = useLocation();
   console.log(

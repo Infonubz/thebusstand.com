@@ -3,7 +3,7 @@ import React from "react";
 export default function SortBar({ sorting, setSorting }) {
   const handleSortingClick = (value) => {
     setSorting(value);
-    //localStorage.setItem("sort", value);
+     localStorage.setItem("sort", value);
     console.log(value, "tooovalue");
   };
   return (

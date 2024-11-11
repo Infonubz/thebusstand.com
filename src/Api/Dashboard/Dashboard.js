@@ -201,7 +201,7 @@ export const Filters = async (
     source_name: departure,
     destination_name: arrival,
     luxury_bus: busType || JSON.parse(sessionStorage.getItem("isLuxury")),
-    regular_bus:busType || JSON.parse(sessionStorage.getItem("isNoramlBus")),
+    regular_bus:NormalBus || JSON.parse(sessionStorage.getItem("isNoramlBus")),
     AC: acfilter === "ac" ? "true" : "false",
     NonAc: acfilter === "non_ac" ? "true" : "false",
     Seater: seattypefilter === "seater" ? "true" : "false",

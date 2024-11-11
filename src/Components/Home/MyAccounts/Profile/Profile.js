@@ -75,7 +75,10 @@ const HomeProfile = () => {
       console.log("hitesting");
       hasFetched.current = true;
     }
+    console.log("userName", sessionStorage.getItem("user_name"))
   }, [dispatch]);
+
+
 
   return (
     <>
@@ -135,7 +138,7 @@ const HomeProfile = () => {
               await UpdateProfile(values, setSpinning);
               console.log(values, "valuesvalues");
               sessionStorage.setItem("user_name", profiledata.user_name);
-              window.location.reload();
+              //window.location.reload();
               toast.success("Updated Successfully");
               setSpinning(false);
               setEditEnable(false);

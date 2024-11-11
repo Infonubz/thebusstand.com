@@ -199,7 +199,8 @@ export default function ReferralsIndex() {
                     </span>
                   </div>
                 ) : (
-                  <button
+                  <div className=""> 
+                   <button
                     className="text-[1vw] text-white font-bold bg-[#04B9EF] px-[1vw] py-[0.25vw] rounded-[0.5vw]"
                     onClick={() =>
                       navigation("/main", { state: { tabIndex: 1 } })
@@ -207,6 +208,8 @@ export default function ReferralsIndex() {
                   >
                     Update Your Profile
                   </button>
+                  </div>
+                
                 )}
                 <label className="block pt-[2vw] md:hidden md:text-[1.2vw] text-[3vw] text-[#1F487C] font-semibold">
                   Your referral code
@@ -400,7 +403,7 @@ export default function ReferralsIndex() {
                     Total Rewards
                   </label>
                 </div>
-                <label className="text-[#1F487C] text-[5vw] md:text-[1.2vw] font-bold text-center pt-[6vw] md:pt-[2vw]">
+                <label className="text-[#1F487C] text-[5vw] md:text-[1.2vw] font-bold text-center pt-[6vw] md:pt-[2.5vw]">
                   No referrals yet!
                 </label>
                 <label className="text-[#1F487C] text-[4vw] md:text-[1vw] text-center py-[1vw]">
@@ -410,7 +413,7 @@ export default function ReferralsIndex() {
                  bottom-3 md:static">
                   Terms & Conditions
                 </label> */}
-                <label className={`text-[#1F487C] cursor-pointer text-[4.5vw] md:text-[1.2vw] md:pt-[0vw] pt-[10vw] text-center font-semibold md:pb-[2vw]`} onClick={() => setModalIsOpen(true)}>
+                <label className={`text-[#1F487C] cursor-pointer text-[4.5vw] md:text-[1.2vw] md:pt-[1.5vw] pt-[10vw] text-center font-semibold md:pb-[1.2vw]`} onClick={() => setModalIsOpen(true)}>
                   Terms & Conditions
                 </label>
               </div>
