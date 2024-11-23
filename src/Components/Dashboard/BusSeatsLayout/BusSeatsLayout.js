@@ -1019,7 +1019,7 @@ import { HiCheckCircle } from "react-icons/hi";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
 import DrawerDetails from "../Drawer";
-import { IoIosInformationCircleOutline } from "react-icons/io";
+//import { IoIosInformationCircleOutline } from "react-icons/io";
 // import men_sl from "../../../assets/men_sl.png";
 import men_se from "../../../assets/men_se.png";
 // import men_sl_sel from "../../../assets/men_sl_sel.png";
@@ -1039,23 +1039,17 @@ import unisex_se_sel from "../../../assets/unisex_se_sel.png";
 export default function BusSeatsLayout({
   busid,
   busdetails,
-  busprice,
+  //busprice,
   busdroping,
-  logo,
-  seatplatform,
+  //logo,
+  //seatplatform,
   busboarding,
   setDropDown,
 }) {
   const getseats = useSelector((state) => state.seat_layout);
-  console.log(getseats, "getseatsgetseats777777");
-  console.log(busdroping, "busidbusid");
   const [layoutloading, setLayoutLoading] = useState(false);
+
   const dispatch = useDispatch();
-  useEffect(() => {
-    // setInterval(() => {
-    GetSeatLayout(busid, dispatch, setLayoutLoading);
-    // }, 1000);
-  }, [busid, dispatch]);
 
   const lowerdeck = getseats?.seats_id_layout?.filter((item) => {
     // return item.desc == "Lower seater";
@@ -1071,27 +1065,23 @@ export default function BusSeatsLayout({
   // const lowerdeckrow = lowerdeck[findlowerdeckrow].x;
   // const findupperdeckrow = upperdeck.length - 1;
   // const upperdeckrow = upperdeck[findupperdeckrow].x;
-  console.log(lowerdeck, upperdeck, "lowerdecklowerdeck");
   // const lowerdeckrow = Math.max(...lowerdeck?.map((item) => item.x));
   // const lowerdeckcol = Math.max(...lowerdeck?.map((item) => item.y));
   // const upperdeckrow = Math.max(...upperdeck?.map((item) => item.x));
   // const upperdeckcol = Math.max(...upperdeck?.map((item) => item.y));
-  const lowerdeckc = lowerdeck?.map((item) => {
+  //const lowerdeckc = lowerdeck?.map((item) => {
     // return item.desc == "Lower seater";
-    return item.y;
-  });
-  const upperdeckc = upperdeck?.map((item) => {
+    //return item.y;
+  //});
+  //const upperdeckc = upperdeck?.map((item) => {
     // return item.desc == "Lower seater";
-    return item.y;
-  });
-  console.log(lowerdeckc, "lowerdeckclowerdeckc");
+    //return item.y;
+  //});
 
-  const lowerdeckrow = Math.max(lowerdeck?.map((item) => item.x));
-  const lowerdeckcol = lowerdeckc?.length > 0 ? Math.max(...lowerdeckc) : [];
-  const upperdeckrow = Math.max(upperdeck?.map((item) => item.x));
-  const upperdeckcol = upperdeckc?.length > 0 ? Math.max(...upperdeckc) : [];
-  console.log(lowerdeckrow, upperdeckrow, "lowerdeckrowlowerdeckrow");
-  console.log(lowerdeckcol, "lowerdeckcol", upperdeckcol, "upperdeckcol");
+  // const lowerdeckrow = Math.max(lowerdeck?.map((item) => item.x));
+  // const lowerdeckcol = lowerdeckc?.length > 0 ? Math.max(...lowerdeckc) : [];
+  // const upperdeckrow = Math.max(upperdeck?.map((item) => item.x));
+  // const upperdeckcol = upperdeckc?.length > 0 ? Math.max(...upperdeckc) : [];
 
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [modalshow, setShowModal] = useState(false);
@@ -1103,6 +1093,16 @@ export default function BusSeatsLayout({
   });
   const [selectedseatprice, setSelectedSeatsPrice] = useState([]);
   const [totalprice, setTotalPrice] = useState(null);
+  const [seatDetails, setSeatDetails] = useState(
+    selectedSeats.reduce((acc, seat, index) => {
+      acc[index] = { Seat: "", Status: "" };
+      return acc;
+    }, {})
+  );
+  const [currentrate, SetCurrentRate] = useState(1);
+  const [bookingId1, setBookingId1] = useState();
+
+  const [drawerWidth, setDrawerWidth] = useState("60%");
   const allprice = getseats?.seats_id_layout
     ?.map((item) => {
       console.log(item?.fare?.totalNetFare, "itemitemitemitemitemitemitemitem");
@@ -1110,22 +1110,7 @@ export default function BusSeatsLayout({
     })
     .sort((a, b) => a - b);
 
-  console.log(allprice, "sorted allprice");
-
   const uniqueprice = [...new Set(allprice)];
-
-  console.log(uniqueprice, "allprice");
-
-  useEffect(() => {
-    if (selectedseatprice.length > 0) {
-      const price = selectedseatprice.reduce((a, b) => {
-        return a + b;
-      });
-      setTotalPrice(Math.round(price));
-      console.log(price, "pricepricepriceprice");
-    }
-  }, [selectedseatprice]);
-  console.log(selectedseatprice, selectedSeats, "selectedseatprice");
 
   // const handleSeatClick = (seat) => {
   //   if (
@@ -1166,19 +1151,13 @@ export default function BusSeatsLayout({
   //     }
   //   });
   // };
-  const [seatDetails, setSeatDetails] = useState(
-    selectedSeats.reduce((acc, seat, index) => {
-      acc[index] = { Seat: "", Status: "" };
-      return acc;
-    }, {})
-  );
 
   const handleSeatClick = (seat) => {
     if (
       seat.status === "BFF" ||
       seat.status === "BFA" ||
       seat.status === "BFM" ||
-      seat.status == "on_booking"
+      seat.status === "on_booking"
     )
       return;
 
@@ -1224,7 +1203,6 @@ export default function BusSeatsLayout({
     });
   };
 
-  console.log(selectedSeats, lowerdeck?.[0], "selectedSeatsselectedSeats");
   // const totalFare = selectedSeats.length * busprice.discount;
 
   // const content = (
@@ -1352,8 +1330,7 @@ export default function BusSeatsLayout({
       </div> */}
     </div>
   );
-  const [currentrate, SetCurrentRate] = useState(1);
-  console.log(currentrate, "currentratecurrentrate");
+
   const getShadowClass = (seat) => {
     const roundedFare = Math.round(seat?.fare?.totalNetFare);
     if (currentrate === roundedFare) {
@@ -1450,7 +1427,12 @@ export default function BusSeatsLayout({
         return "green";
     }
   };
-  const [bookingId1, setBookingId1] = useState();
+
+  // const buslowerheight =
+  // lowerdeckrow?.length > 0 && Math.max(...lowerdeckrow) * 4.8;
+
+  // const busupperheight =
+  //   upperdeckrow?.length > 0 && Math.max(...upperdeckrow) * 4.8;
 
   const onClose = () => {
     setShowModal(false);
@@ -1458,7 +1440,23 @@ export default function BusSeatsLayout({
       setDropDown(null);
     }
   };
-  const [drawerWidth, setDrawerWidth] = useState("60%");
+
+  useEffect(() => {
+    if (selectedseatprice.length > 0) {
+      const price = selectedseatprice.reduce((a, b) => {
+        return a + b;
+      });
+      setTotalPrice(Math.round(price));
+      console.log(price, "pricepricepriceprice");
+    }
+  }, [selectedseatprice]);
+
+  useEffect(() => {
+    // setInterval(() => {
+    GetSeatLayout(busid, dispatch, setLayoutLoading);
+    // }, 1000);
+  }, [busid, dispatch]);
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 480) {
@@ -1477,19 +1475,13 @@ export default function BusSeatsLayout({
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  console.log(`grid-cols-${lowerdeckcol}`, "upperdeckcol741852963");
-  const buslowerheight =
-    lowerdeckrow?.length > 0 && Math.max(...lowerdeckrow) * 4.8;
 
-  const busupperheight =
-    upperdeckrow?.length > 0 && Math.max(...upperdeckrow) * 4.8;
-
-  console.log(buslowerheight, "upperdeckcol741852963");
   // useEffect(() => {
   //   window.scrollTo(0, 0);
   // }, []);
+
   return (
-    <div className="px-[0.5vw]">
+    <div className="px-[0.5vw] mb-[0.5vw]">
       <div
         className={`${
           busdetails.bus_type_status === "luxury"
@@ -1497,9 +1489,9 @@ export default function BusSeatsLayout({
             : "bg-[#EEEDED]"
         }  border-x-[0.1vw] border-b-[0.1vw] rounded-b-[0.5vw]`}
       >
-        {layoutloading == false ? (
+        {layoutloading === false ? (
           <>
-            <div className="h-[4vw] w-full   ">
+            <div className="h-[4vw] w-full">
               <div className="grid grid-cols-4 w-full h-full pt-[1vw] px-[1vw]  items-center">
                 <div className="col-span-3 pl-[4vw]">
                   <button
@@ -1608,7 +1600,7 @@ export default function BusSeatsLayout({
                 busdetails.bus_type_status === "luxury"
                   ? "bg-[#FFEEC9]"
                   : "bg-[#EEEDED]"
-              }  grid grid-cols-7 h-[55vw] pt-[1vw] w-full rounded-b-[0.5vw]`}
+              }  grid grid-cols-7 h-[56vw] pt-[1vw] w-full rounded-b-[0.5vw]`}
             >
               <div className="col-span-1 h-[30vw] w-full ml-[1vw] rounded-[1vw] mt-[1vw]  flex items-center py-[1vw] flex-col justify-between">
                 <div className="flex flex-col gap-y-[1vw]">

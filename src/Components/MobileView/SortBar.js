@@ -3,7 +3,7 @@ import React from "react";
 export default function SortBar({ sorting, setSorting }) {
   const handleSortingClick = (value) => {
     setSorting(value);
-     localStorage.setItem("sort", value);
+    sessionStorage.setItem("mbleSort", value);
     console.log(value, "tooovalue");
   };
   return (
@@ -25,18 +25,18 @@ export default function SortBar({ sorting, setSorting }) {
             <input
               type="radio"
               onClick={() => {
-                const newValue = sorting === "price" ? "" : "price";
+                const newValue = sorting === "mblePrice" ? "" : "mblePrice";
                 setSorting(newValue);
                 handleSortingClick(newValue);
               }}
-              value="price"
-              checked={sorting === "price"}
+              value="mblePrice"
+              checked={sorting === "mblePrice"}
               className="w-[5vw] h-[5vw]"
             />
           </div>
           <p
             className={`
-      ${sorting === "price" ? "text-[#1F487C] font-bold" : "text-black "}  
+      ${sorting === "mblePrice" ? "text-[#1F487C] font-bold" : "text-black "}  
       text-[5vw] 
     `}
           >
@@ -48,18 +48,18 @@ export default function SortBar({ sorting, setSorting }) {
             <input
               type="radio"
               onClick={() => {
-                const newValue = sorting === "seats" ? "" : "seats";
+                const newValue = sorting === "mbleSeats" ? "" : "mbleSeats";
                 setSorting(newValue);
                 handleSortingClick(newValue);
               }}
-              value="seats"
-              checked={sorting === "seats"}
+              value="mbleSeats"
+              checked={sorting === "mbleSeats"}
               className="w-[5vw] h-[5vw]"
             />
           </div>
           <p
             className={`
-      ${sorting === "seats" ? "text-[#1F487C] font-bold" : "text-black "}  
+      ${sorting === "mbleSeats" ? "text-[#1F487C] font-bold" : "text-black "}  
       text-[5vw] 
     `}
           >
@@ -71,18 +71,18 @@ export default function SortBar({ sorting, setSorting }) {
             <input
               type="radio"
               onClick={() => {
-                const newValue = sorting === "ratings" ? "" : "ratings";
+                const newValue = sorting === "mbleRatings" ? "" : "mbleRatings";
                 setSorting(newValue);
                 handleSortingClick(newValue);
               }}
-              value="ratings"
-              checked={sorting === "ratings"}
+              value="mbleRatings"
+              checked={sorting === "mbleRatings"}
               className="w-[5vw] h-[5vw]"
             />
           </div>
           <p
             className={`
-      ${sorting === "ratings" ? "text-[#1F487C] font-bold" : "text-black "}  
+      ${sorting === "mbleRatings" ? "text-[#1F487C] font-bold" : "text-black "}  
       text-[5vw] 
     `}
           >
@@ -94,19 +94,19 @@ export default function SortBar({ sorting, setSorting }) {
             <input
               type="radio"
               onClick={() => {
-                const newValue = sorting === "arrivalSort" ? "" : "arrivalSort";
+                const newValue = sorting === "mbleArrivalSort" ? "" : "mbleArrivalSort";
                 setSorting(newValue);
                 handleSortingClick(newValue);
               }}
-              value="arrivalSort"
-              checked={sorting === "arrivalSort"}
+              value="mbleArrivalSort"
+              checked={sorting === "mbleArrivalSort"}
               className="w-[5vw] h-[5vw]"
             />
           </div>
           <p
             className={`
       ${
-        sorting === "arrivalSort" ? "text-[#1F487C] font-bold" : "text-black "
+        sorting === "mbleArrivalSort" ? "text-[#1F487C] font-bold" : "text-black "
       }  
       text-[5vw] 
     `}
@@ -120,20 +120,20 @@ export default function SortBar({ sorting, setSorting }) {
               type="radio"
               onClick={() => {
                 const newValue =
-                  sorting === "departureSort" ? "" : "departureSort";
+                  sorting === "mbleDepartureSort" ? "" : "mbleDepartureSort";
                 console.log(newValue, "new_value");
                 setSorting(newValue);
                 handleSortingClick(newValue);
               }}
-              value="departureSort"
-              checked={sorting === "departureSort"}
+              value="mbleDepartureSort"
+              checked={sorting === "mbleDepartureSort"}
               className="w-[5vw] h-[5vw]"
             />
           </div>
           <p
             className={`
       ${
-        sorting === "departureSort" ? "text-[#1F487C] font-bold" : "text-black "
+        sorting === "mbleDepartureSort" ? "text-[#1F487C] font-bold" : "text-black "
       }  
       text-[5vw] 
     `}

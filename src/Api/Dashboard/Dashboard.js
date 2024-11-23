@@ -6,15 +6,19 @@ import {
   GET_OPERATOR_LIST,
   SEAT_LAYOUT,
 } from "../../Store/type";
-import { object } from "yup";
+//import { object } from "yup";
 
 const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
 });
+const apiUrlimage = process.env.REACT_APP_API_URL_IMAGE;
 
-const apiUrl = `http://192.168.90.47:4001/api`;
+const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
+// const apiUrl = `${apiUrlimage }/api`;
+const apiUrl = process.env.REACT_APP_API_URL;
+const apicrm = process.env.REACT_APP_CRM_API_URL;
 // export const GetCardDetails = async (dispatch, id) => {
 //     try {
 //         const response = await axios.get(`${apiUrl}/bus-details`);
@@ -42,7 +46,7 @@ export const SendTravelDetails = async (dispatch, values, luxury) => {
     Seater: values?.seater,
     Sleeper: values?.sleeper,
     luxury_bus: JSON.parse(sessionStorage.getItem("isLuxury")),
-    regular_bus:JSON.parse(sessionStorage.getItem("isNoramlBus")),
+    regular_bus: JSON.parse(sessionStorage.getItem("isNoramlBus")),
   };
   console.log(payload, "payloadpayload");
 
@@ -118,14 +122,14 @@ export const TicketBooking = async (busdetails, seat, travelerDetails) => {
     return null;
   }
 };
-export const GetSeatLayout = async (busid, dispatch,setLayoutLoading) => {
+export const GetSeatLayout = async (busid, dispatch, setLayoutLoading) => {
   const payload = {
     bus_id: busid,
   };
 
   const url = `${apiUrl}/seatLayout-ById`;
   const method = "post";
-  setLayoutLoading(true)
+  setLayoutLoading(true);
   try {
     const response = await api({
       method,
@@ -140,7 +144,7 @@ export const GetSeatLayout = async (busid, dispatch,setLayoutLoading) => {
     // setTimeout(() => {
     //   setLayoutLoading(false)
     // }, 2000);
-    setLayoutLoading(false)
+    setLayoutLoading(false);
     console.log(response.data, "submitlocationdata");
     return response.data;
   } catch (error) {
@@ -195,15 +199,18 @@ export const Filters = async (
 ) => {
   console.log(sort, "sort11");
 
+  const sortMble = sessionStorage.getItem("mbleSort");
+
   const payload = {
     // source_name:  "Pondicherry",
     // destination_name: "Coimbatore",
     source_name: departure,
     destination_name: arrival,
     luxury_bus: busType || JSON.parse(sessionStorage.getItem("isLuxury")),
-    regular_bus:NormalBus || JSON.parse(sessionStorage.getItem("isNoramlBus")),
-    AC: acfilter === "ac" ? "true" : "false",
-    NonAc: acfilter === "non_ac" ? "true" : "false",
+    regular_bus: NormalBus || JSON.parse(sessionStorage.getItem("isNoramlBus")),
+    AC: acfilter === "ac" || acfilter === "mbleAc" ? "true" : "false",
+    NonAc:
+      acfilter === "non_ac" || acfilter === "mbleNon_Ac" ? "true" : "false",
     Seater: seattypefilter === "seater" ? "true" : "false",
     Sleeper: seattypefilter === "sleeper" ? "true" : "false",
     departure_time_range: pickuptime,
@@ -217,11 +224,18 @@ export const Filters = async (
     //"rating": 4
     sort: [
       {
-        price: sort === "price" ? true : false,
-        seats: sort === "seats" ? true : false,
-        ratings: sort === "ratings" ? true : false,
-        departure_time: sort === "departureSort" ? true : false,
-        arrival_time: sort === "arrivalSort" ? true : false,
+        price: sort === "price" || sortMble === "mblePrice" ? true : false,
+        seats: sort === "seats" || sortMble === "mbleSeats" ? true : false,
+        ratings:
+          sort === "ratings" || sortMble === "mbleRatings" ? true : false,
+        departure_time:
+          sort === "departureSort" || sortMble === "mbleDepartureSort"
+            ? true
+            : false,
+        arrival_time:
+          sort === "arrivalSort" || sortMble === "mbleArrivalSort"
+            ? true
+            : false,
       },
     ],
     // regular_bus: NormalBus,
@@ -344,9 +358,8 @@ export const sendBookingPrice = async (
   }
 };
 
-export const handleSearch = async (dispatch ,e ,searchField) => {
-
-  console.log(searchField,"log11111searchhh222222");
+export const handleSearch = async (dispatch, e, searchField) => {
+  console.log(searchField, "log11111searchhh222222");
 
   // try{
   //   const response = await axios.post(`${apiUrl}/search-board-drop`,{
@@ -354,7 +367,7 @@ export const handleSearch = async (dispatch ,e ,searchField) => {
   //   destination_name: localStorage.getItem("arrival"),
   //   departure_date_time:  localStorage.getItem("selectdate")  ,
   //   type:searchField,
-  //   search_term: e.target.value 
+  //   search_term: e.target.value
   //   })
   //   dispatch({ type: DROP_POINT_LIST, payload: response });
   //   return response;
@@ -367,9 +380,9 @@ export const handleSearch = async (dispatch ,e ,searchField) => {
   const payload = {
     source_name: localStorage.getItem("departure"),
     destination_name: localStorage.getItem("arrival"),
-    departure_date_time:  localStorage.getItem("selectdate")  ,
-    type:searchField,
-    searchTerm: e.target.value
+    departure_date_time: localStorage.getItem("selectdate"),
+    type: searchField,
+    searchTerm: e.target.value,
   };
 
   console.log(payload, "payload payload");
@@ -388,7 +401,7 @@ export const handleSearch = async (dispatch ,e ,searchField) => {
     });
     dispatch({ type: DROP_POINT_LIST, payload: response });
     return response;
-   } catch (error) {
+  } catch (error) {
     handleError(error);
     return null;
   }

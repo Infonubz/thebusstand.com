@@ -8,12 +8,13 @@ const api = axios.create({
     },
 });
 const apiUrl = process.env.REACT_APP_API_URL;
-const apicrm = process.env.REACT_CRM_API_URL;
-
+const apicrm = process.env.REACT_APP_CRM_API_URL;
+ 
+console.log(apicrm,"apicemgg"); 
 
 export const GetFooterTabs = async (dispatch, id) => {
     try {
-        const response = await axios.get(`http://192.168.90.47:4000/api/tbsInfo`);
+        const response = await axios.get(`${apicrm}/tbsInfo`);
         dispatch({ type: TBS_INFO, payload: response.data });
         console.log(response.data, "Get_Footer_Tabs");
         return response.data;
@@ -24,7 +25,7 @@ export const GetFooterTabs = async (dispatch, id) => {
 };
 export const GetFAQById = async (dispatch, id) => {
   try{ 
-    const response = await axios.get(`http://192.168.90.47:4000/api/faqs/${id}`);
+    const response = await axios.get(`${apicrm}/faqs/${id}`);
     dispatch({ type:FAQ_LIST, payload:response.data });
     console.log(response.data, "Get_Footer_Tabs");
     return response.data;

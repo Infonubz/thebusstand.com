@@ -9,7 +9,9 @@ import moment from "moment";
 import { SendTravelDetails } from "../../Api/Dashboard/Dashboard";
 
 export default function TopTravelledBusRoutes() {
-  
+  const apiUrlimage = process.env.REACT_APP_API_URL_IMAGE;
+
+  const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
   const dispatch = useDispatch();
   const navigation = useNavigate();
   const getselecteddate = useSelector((state) => state.selected_date);
@@ -26,7 +28,6 @@ export default function TopTravelledBusRoutes() {
     semi_sleeper: "",
     luxury_data: false,
   });
-
 
   const handleRoutes = async (item) => {
     localStorage.setItem("departure", capitalizeFirstLetter(item.from));
@@ -55,14 +56,12 @@ export default function TopTravelledBusRoutes() {
     GetTopBusRoutes(dispatch);
   }, [dispatch]);
 
-
   console.log(getroutes, "getroutesgetroutes");
   // const sanitizePath = (path) => {
   //   const sanitizedPath = path.replace(/\\\\/g, "file://").replace(/\\/g, "//");
   //   console.log(encodeURI(sanitizedPath), "techimage");
   //   return encodeURI(sanitizedPath);
   // };
-
 
   return (
     <>
@@ -87,7 +86,7 @@ export default function TopTravelledBusRoutes() {
                   }}
                 >
                   <img
-                    src={`http://192.168.90.47:4001${item.image}`}
+                    src={`${apiUrlimage}/${item.image}`}
                     className="h-full w-full p-[0.7vw] rounded-lg"
                     style={{
                       borderRadius: "1.5vw",
@@ -166,7 +165,7 @@ export default function TopTravelledBusRoutes() {
                     }}
                   >
                     <img
-                      src={`http://192.168.90.47:4001${item.image}`}
+                      src={`${apiUrlimage}/${item.image}`}
                       className="h-full w-full px-[2vw] pt-[2vw] rounded-lg"
                       alt={item.from}
                       style={{

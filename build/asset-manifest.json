@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.d5b5327e.css",
-    "main.js": "/static/js/main.973f9043.js",
+    "main.css": "/static/css/main.95db7f83.css",
+    "main.js": "/static/js/main.1dc49792.js",
     "static/js/32.62135ec3.chunk.js": "/static/js/32.62135ec3.chunk.js",
     "static/js/357.55ccad3b.chunk.js": "/static/js/357.55ccad3b.chunk.js",
     "static/js/542.02a7bc4a.chunk.js": "/static/js/542.02a7bc4a.chunk.js",
@@ -10,6 +10,7 @@
     "static/media/gif2.gif": "/static/media/gif2.06ff6e987fb3e44a1089.gif",
     "static/media/Password.gif": "/static/media/Password.312d7028a13151f70077.gif",
     "static/media/faq.gif": "/static/media/faq.334999c8db4e23e9a090.gif",
+    "static/media/Grouplogos.png": "/static/media/Grouplogos.6bd7cbfdf9164847dafd.png",
     "static/media/gif.gif": "/static/media/gif.d9864a5fd5e36999b80a.gif",
     "static/media/iPhone 13 Pro.png": "/static/media/iPhone 13 Pro.c36ecf1474eeede87121.png",
     "static/media/bgimage.png": "/static/media/bgimage.cdd90ac47b4fb5b1bbf7.png",
@@ -17,6 +18,7 @@
     "static/media/Help.gif": "/static/media/Help.81857b8b372c6403e99b.gif",
     "static/media/googlemap.png": "/static/media/googlemap.3556eeefa031f015aa75.png",
     "static/media/ratings_gif.gif": "/static/media/ratings_gif.d8db12c72d82322d2855.gif",
+    "static/media/lens.png": "/static/media/lens.19591f4894c122cfa7f0.png",
     "static/media/image (2).png": "/static/media/image (2).b9d08526e23cd0f1860c.png",
     "static/media/Secondary loop 5.png": "/static/media/Secondary loop 5.0a395f9570701fc53076.png",
     "static/media/CashBack_Mble.gif.gif": "/static/media/CashBack_Mble.gif.2a07e4ae705fd8df9bd4.gif",
@@ -35,6 +37,7 @@
     "static/media/BgHills.png": "/static/media/BgHills.5e616b1571a1e8345dc9.png",
     "static/media/backdrop.png": "/static/media/backdrop.b632f054bba398908989.png",
     "static/media/Ellipse 1 (4).png": "/static/media/Ellipse 1 (4).33990472b7bf18d31506.png",
+    "static/media/LENSss.png": "/static/media/LENSss.78d88763c25d6968f3a2.png",
     "static/media/sharma.png": "/static/media/sharma.965ecbca21b0f9171058.png",
     "static/media/image (3).png": "/static/media/image (3).512d28b7408904d7e985.png",
     "static/media/BackgroundSky1.png": "/static/media/BackgroundSky1.3d61d1fa41baa63d99c0.png",
@@ -43,6 +46,7 @@
     "static/media/Ellipse 1 (7).png": "/static/media/Ellipse 1 (7).305fde5c66b753b8e7f3.png",
     "static/media/doubleducker.png": "/static/media/doubleducker.40307aaddf2b306823a0.png",
     "static/media/Ellipse 1 (3).png": "/static/media/Ellipse 1 (3).c28b3665e942ffbaea19.png",
+    "static/media/parveen.png": "/static/media/parveen.b462d1da8e1601c48d23.png",
     "static/media/bus1.png": "/static/media/bus1.2998a365acc7c956c804.png",
     "static/media/ice.png": "/static/media/ice.012196a3e4bfc739acec.png",
     "static/media/Ellipse 1 (5).png": "/static/media/Ellipse 1 (5).655a517b8176e0bbc134.png",
@@ -63,6 +67,7 @@
     "static/media/mobile pattern.png": "/static/media/mobile pattern.35c474a0966afcd77904.png",
     "static/media/car1.png": "/static/media/car1.d9575393e9818071e43e.png",
     "static/media/Frame 7.png": "/static/media/Frame 7.33d65b0838c91ee4c8c3.png",
+    "static/media/ixigologo.png": "/static/media/ixigologo.d89a29df4dc374172b41.png",
     "static/media/thread.png": "/static/media/thread.c01931b00c7bd11d54f4.png",
     "static/media/Frame 1.png": "/static/media/Frame 1.0787808c9cf755e5d3ac.png",
     "static/media/scooter.png": "/static/media/scooter.de0abdc2a561682aae5f.png",
@@ -84,6 +89,7 @@
     "static/media/61.png": "/static/media/61.32207d4c2854f1550987.png",
     "static/media/66.png": "/static/media/66.32207d4c2854f1550987.png",
     "static/media/67.png": "/static/media/67.32207d4c2854f1550987.png",
+    "static/media/redlogo.png": "/static/media/redlogo.308528428e518231ca33.png",
     "static/media/4.png": "/static/media/4.990aff5eecd4ccdd5a93.png",
     "static/media/52.png": "/static/media/52.990aff5eecd4ccdd5a93.png",
     "static/media/55.png": "/static/media/55.990aff5eecd4ccdd5a93.png",
@@ -107,6 +113,7 @@
     "static/media/64.png": "/static/media/64.ceb043bd978dbf271386.png",
     "static/media/vkv.png": "/static/media/vkv.14d03ccc3f885d68c730.png",
     "static/media/12.png": "/static/media/12.bba9123af659a70a153e.png",
+    "static/media/yatralogo.png": "/static/media/yatralogo.209243b7ff7be89381e4.png",
     "static/media/stand_man.png": "/static/media/stand_man.52bfd58aa76e5b1e01e0.png",
     "static/media/37.png": "/static/media/37.b1b6a4cea6b99d2f0d55.png",
     "static/media/cloud2.png": "/static/media/cloud2.48b34a0afcdeb1426c0e.png",
@@ -259,7 +266,7 @@
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.d5b5327e.css",
-    "static/js/main.973f9043.js"
+    "static/css/main.95db7f83.css",
+    "static/js/main.1dc49792.js"
   ]
 }

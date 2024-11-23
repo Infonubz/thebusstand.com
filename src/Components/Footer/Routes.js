@@ -9,7 +9,7 @@ import { Input } from "antd";
 import { GrLocation } from "react-icons/gr";
 import { CgArrowsExchangeV } from "react-icons/cg";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
-import { useNavigate } from "react-router";
+//import { useNavigate } from "react-router";
 import { Pagination } from "antd";
 
 const Routes = () => {
@@ -20,7 +20,7 @@ const Routes = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentData, setCurrentData] = useState([]);
   const ITEMS_PER_PAGE = 12;
-  const navigation = useNavigate();
+  //const navigation = useNavigate();
 
   const data = [
     { id: 1, name: "A" },
@@ -119,13 +119,12 @@ const Routes = () => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
     setCurrentData(routesData?.slice(startIndex, endIndex));
-  }, [currentPage]);
+  }, [currentPage, routesData]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  console.log(selectedLetter, "selectedLetter");
 
   return (
     <>
@@ -270,7 +269,7 @@ const Routes = () => {
               </div>
               <div className={`absolute top-[10vw] px-[3vw]`}>
                 <div
-                  className={`bg-white md:w-[74.3vw] w-[94vw] h-[87vh] md:h-[27vw] relative rounded-[3vw] md:rounded-[1vw] shadow-lg shadow-gray-300`}
+                  className={`bg-white md:w-[74.3vw] w-[94vw] h-[87vh] md:h-[29vw] relative rounded-[3vw] md:rounded-[1vw] shadow-lg shadow-gray-300`}
                 >
                   <div
                     className={`block md:hidden flex flex-row overflow-y-auto gap-[2vw] font-bold text-center px-[2vw] pt-[2vw] scrollbar-hide`}

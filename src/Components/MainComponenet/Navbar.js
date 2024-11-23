@@ -5,41 +5,44 @@ import {
   MdKeyboardDoubleArrowDown,
   MdOutlineKeyboardDoubleArrowUp,
 } from "react-icons/md";
-import menu from "../../assets/menu.png";
-import { REARRANGE_ORDER, SEARCH_BUTTON } from "../../Store/type";
+//import menu from "../../assets/menu.png";
+import { REARRANGE_ORDER, 
+  // SEARCH_BUTTON 
+} from "../../Store/type";
 import { useDispatch, useSelector } from "react-redux";
-import { MdSort } from "react-icons/md";
-import { TfiMapAlt } from "react-icons/tfi";
+//import { MdSort } from "react-icons/md";
+//import { TfiMapAlt } from "react-icons/tfi";
 // import filterImg from "../../assets/filter.png";
 import { Drawer } from "antd";
 // import {  Drawer } from "antd";
 
 import SidebarMobile from "./SidebarMobile";
-import { LuSettings2 } from "react-icons/lu";
+//import { LuSettings2 } from "react-icons/lu";
 // import { Googlemap } from "./../Home/GoogleMap";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
   // const bus_count = useSelector((state) => state.bus_list);
   const buslist = useSelector((state) => state?.card_detail);
-
+  const [selectedButton, setSelectedButton] = useState(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [drawerHeight, setDrawerHeight] = useState("100%");
+  //const navigateMap = useNavigate();
   const [sorting, setSorting] = useState("");
   // const [isSortedByPrice, setIsSortedByPrice] = useState(false);
 
-  console.log(sorting, "sortingsorting");
-
   const dispatch = useDispatch();
 
-  const menuhandle = () => {
-    setSidebarToggle(!sidebarToggle);
+  // const menuhandle = () => {
+  //   setSidebarToggle(!sidebarToggle);
 
-    dispatch({
-      type: SEARCH_BUTTON,
-      payload: false,
-    });
+  //   dispatch({
+  //     type: SEARCH_BUTTON,
+  //     payload: false,
+  //   });
 
-    localStorage.setItem("search", false);
-  };
+  //   localStorage.setItem("search", false);
+  // };
 
   const handleSortingClick = (value) => {
     sessionStorage.setItem("spinner", "true"); 
@@ -83,27 +86,22 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
     });
   }, [sorting, dispatch]);
 
-  const [selectedButton, setSelectedButton] = useState(null);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [drawerHeight, setDrawerHeight] = useState("100%");
-  const navigateMap = useNavigate();
-
-  const handleButtonClick = (button) => {
-    if (button === "map") {
-      setSelectedButton(button);
-      navigateMap("/map");
-    } else if (button === "filter") {
-      setDrawerHeight("50%");
-      setSelectedButton(button);
-      setIsDrawerOpen(true);
-      navigateMap("/dashboard");
-    } else {
-      setDrawerHeight("100%");
-      setSelectedButton(button);
-      setIsDrawerOpen(true);
-      navigateMap("/dashboard");
-    }
-  };
+  // const handleButtonClick = (button) => {
+  //   if (button === "map") {
+  //     setSelectedButton(button);
+  //     navigateMap("/map");
+  //   } else if (button === "filter") {
+  //     setDrawerHeight("50%");
+  //     setSelectedButton(button);
+  //     setIsDrawerOpen(true);
+  //     navigateMap("/dashboard");
+  //   } else {
+  //     setDrawerHeight("100%");
+  //     setSelectedButton(button);
+  //     setIsDrawerOpen(true);
+  //     navigateMap("/dashboard");
+  //   }
+  // };
 
   const handleDrawerClose = (button) => {
     setIsDrawerOpen(false);

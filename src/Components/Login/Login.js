@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Password from "../../assets/Password.gif";
 import TBSLOGO from "../../assets/TBS Logo.png";
 import MobileNumberLog from "./MobileNumberLog";
@@ -8,6 +8,7 @@ import LoginProfile from "./LoginProfile";
 const Login = ({ closeLoginModal, setLoginIsOpen }) => {
   
   const [CurrentPage, setCurrentPage] = useState(0);
+  const [userName, setUserName] = useState(sessionStorage.getItem("user_name") || "");
 
   //   const nextPage = () => {
   //     setCurrentPage((prevStep) => prevStep + 1);
@@ -47,7 +48,14 @@ const Login = ({ closeLoginModal, setLoginIsOpen }) => {
   //         return <MobileNumberLog nextPage={nextPage} />;
   //     }
   //   };
-  console.log(CurrentPage, "CurrentPageCurrentPage555");
+
+  useEffect(() => {
+    const storedName = sessionStorage.getItem("user_name");
+    if (storedName !== userName) {
+      setUserName(storedName); 
+    }
+    console.log(storedName, "userName")
+  }, [userName, setUserName])
 
   return (
     <>
@@ -78,6 +86,7 @@ const Login = ({ closeLoginModal, setLoginIsOpen }) => {
                 // prevStep={prevStep}
                 setCurrentPage={setCurrentPage}
                 setLoginIsOpen={setLoginIsOpen}
+                userName ={userName} setUserName={setUserName}
               />
             ) : CurrentPage === 2 ? (
               <LoginProfile
@@ -85,6 +94,7 @@ const Login = ({ closeLoginModal, setLoginIsOpen }) => {
                 // closeLoginModal={closeLoginModal}
                 setLoginIsOpen={setLoginIsOpen}
                 setCurrentPage={setCurrentPage}
+                 userName ={userName} setUserName={setUserName}
               />  
             ) : (
               <MobileNumberLog

@@ -18,7 +18,9 @@ const api = axios.create({
   },
 });
 const apiUrl = process.env.REACT_APP_API_URL;
-const apicrm = process.env.REACT_CRM_API_URL;
+const apicrm = process.env.REACT_APP_CRM_API_URL;
+console.log(apicrm,"apicrm852");
+
 export const GetPdp = async (dispatch, id) => {
   try {
     const response = await axios.get(`${apiUrl}/popular-domestic-presence`);
@@ -32,7 +34,7 @@ export const GetPdp = async (dispatch, id) => {
 };
 export const GetFAQS = async (dispatch, id) => {
   try {
-    const response = await axios.get(`http://192.168.90.47:4000/api/faqs`);
+    const response = await axios.get(`${apicrm}/faqs`);
     dispatch({ type: FAQS, payload: response.data });
     console.log(response, "faqsresponse");
     return response.data;
@@ -56,7 +58,7 @@ export const GetFooter = async (dispatch, id) => {
 export const GetAds = async (dispatch, id) => {
   try {
     const response = await axios.get(
-      `http://192.168.90.47:4000/api/Active-ads`
+      `${apicrm}/Active-ads`
     );
     dispatch({ type: ADS_LIST, payload: response.data });
     console.log(response.data, "footerresponse");
@@ -69,7 +71,7 @@ export const GetAds = async (dispatch, id) => {
 export const GetPromotion = async (dispatch, id) => {
   try {
     const response = await axios.get(
-      `http://192.168.90.47:4000/api/getLivePromotions`
+      `${apicrm}/getLivePromotions`
     );
     dispatch({ type: PROMOTION_LIST, payload: response.data });
     console.log(response.data, "footerresponse");
@@ -82,7 +84,7 @@ export const GetPromotion = async (dispatch, id) => {
 export const GetTopBusRoutes = async (dispatch, id) => {
   try {
     const response = await axios.get(
-      `${"http://192.168.90.47:4001/api"}/top-bus-routes`
+      `${apiUrl}/top-bus-routes`
     );
     dispatch({
       type: TOP_ROUTE_LIST,
@@ -126,7 +128,7 @@ export const sendAppLink = async (dispatch, values) => {
 export const GetMobAds = async (dispatch, id) => {
   try {
     const response = await axios.get(
-      `http://192.168.90.47:4000/api/mobads-all`
+      `${apicrm}/mobads-all`
     );
     dispatch({ type: MOB_ADS_LIST, payload: response.data });
     console.log(response.data, "footerresponse");

@@ -27,6 +27,7 @@ import Footer1 from "../../Footer/Footer";
 export default function MyAccountsDetails() {
   const [currenttab, setCurrentTab] = useState(1);
   const location = useLocation();
+  const [userName, setUserName] = useState(sessionStorage.getItem("user_name") || "");
 
   useEffect(() => {
     // Set currenttab based on the passed state or default to 1
@@ -37,12 +38,21 @@ export default function MyAccountsDetails() {
     window.scrollTo(0, 0);
   }, []);
   const navigation = useNavigate();
+
+  useEffect(() => {
+    const storedName = sessionStorage.getItem("user_name");
+    if (storedName !== userName) {
+      setUserName(storedName); 
+    }
+    console.log(storedName, "userName")
+  }, [userName])
+
   return (
     <>
       <div className="bg-[#E5FFF1] md:min-h-screen md:max-h-auto w-full h-screen">
         <div>
           {/* <HomeHearder /> */}
-          <CommonMainNavbar />
+          <CommonMainNavbar userName ={userName} setUserName={setUserName} />
         </div>
         <div className="relative md:h-[45vw] h-auto z-[2] mb-[0vw]  bg-[#E5FFF1]">
           <div
@@ -243,7 +253,7 @@ export default function MyAccountsDetails() {
           </div>
           <div className="absolute left-[5vw] md:left-[25vw] top-[12vw] md:top-[5vw]">
             <div className="md:h-[35vw] md:w-[71vw] h-full w-[90vw]">
-              {currenttab === 1 && <HomeProfile />}
+              {currenttab === 1 && <HomeProfile userName ={userName} setUserName={setUserName}  />}
               {currenttab === 2 && <PassengerIndex />}
               {currenttab === 3 && <MyBookingIndex />}
               <div className="md:block hidden">

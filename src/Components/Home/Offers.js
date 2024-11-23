@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo  } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 // Corporate Travellers
 import CT1 from "../../assets/Promotion/Deals/Corporate Travellers/Frame 1.png";
@@ -71,77 +71,100 @@ function Offers() {
   const promotionlist = useSelector((state) => state?.promo_list);
   const colors = useSelector((state) => state.themecolors[0]);
   const dispatch = useDispatch();
-   // const colors=ColorCodes()
+  // const colors=ColorCodes()
+  const apiUrlimage = process.env.REACT_APP_API_URL_IMAGE;
 
-const CorporateTravellers = useMemo(() => [
-    { img: CT1, valid: "30 May", coupon: "BUCKS14" },
-    { img: CT2, valid: "15 JUN", coupon: "AVIS100" },
-    { img: CT3, valid: "20 JUN", coupon: "20HILTON" },
-    { img: CT4, valid: "30 MAY", coupon: "DROP50" },
-    { img: CT5, valid: "10 JUN", coupon: "AMAZON70" },
-    { img: CT6, valid: "25 May", coupon: "FEDEX15" },
-    { img: CT7, valid: "18 JUN", coupon: "10UBER" },
-], []);
+  const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
+  const CorporateTravellers = useMemo(
+    () => [
+      { img: CT1, valid: "30 May", coupon: "BUCKS14" },
+      { img: CT2, valid: "15 JUN", coupon: "AVIS100" },
+      { img: CT3, valid: "20 JUN", coupon: "20HILTON" },
+      { img: CT4, valid: "30 MAY", coupon: "DROP50" },
+      { img: CT5, valid: "10 JUN", coupon: "AMAZON70" },
+      { img: CT6, valid: "25 May", coupon: "FEDEX15" },
+      { img: CT7, valid: "18 JUN", coupon: "10UBER" },
+    ],
+    []
+  );
 
-const GeneralPeople = useMemo(() => [
-    { img: GP1, valid: "23 JUN", coupon: "NOISE80" },
-    { img: GP2, valid: "15 JUN", coupon: "SUMMERSALE10" },
-    { img: GP3, valid: "21 JUN", coupon: "ICICI400" },
-    { img: GP4, valid: "07 MAY", coupon: "JOS18" },
-    { img: GP5, valid: "18 JUN", coupon: "GPAY25" },
-    { img: GP6, valid: "27 May", coupon: "NEXT149" },
-    { img: GP7, valid: "19 JUN", coupon: "DISCOUNT999" },
-], []);
+  const GeneralPeople = useMemo(
+    () => [
+      { img: GP1, valid: "23 JUN", coupon: "NOISE80" },
+      { img: GP2, valid: "15 JUN", coupon: "SUMMERSALE10" },
+      { img: GP3, valid: "21 JUN", coupon: "ICICI400" },
+      { img: GP4, valid: "07 MAY", coupon: "JOS18" },
+      { img: GP5, valid: "18 JUN", coupon: "GPAY25" },
+      { img: GP6, valid: "27 May", coupon: "NEXT149" },
+      { img: GP7, valid: "19 JUN", coupon: "DISCOUNT999" },
+    ],
+    []
+  );
 
-const PhysicallyChallengedTravellers = useMemo(() => [
-    { img: PCT1, valid: "14 JUN", coupon: "ACCESS20" },
-    { img: PCT2, valid: "18 JUN", coupon: "EAR30EASE" },
-    { img: PCT3, valid: "01 MAY", coupon: "THERAPY25" },
-    { img: PCT4, valid: "28 JUN", coupon: "WHEEL10" },
-    { img: PCT5, valid: "14 May", coupon: "ROOM20" },
-    { img: PCT6, valid: "13 JUN", coupon: "25PHARM" },
-    { img: PCT7, valid: "06 May", coupon: "LENS100" },
-], []);
+  const PhysicallyChallengedTravellers = useMemo(
+    () => [
+      { img: PCT1, valid: "14 JUN", coupon: "ACCESS20" },
+      { img: PCT2, valid: "18 JUN", coupon: "EAR30EASE" },
+      { img: PCT3, valid: "01 MAY", coupon: "THERAPY25" },
+      { img: PCT4, valid: "28 JUN", coupon: "WHEEL10" },
+      { img: PCT5, valid: "14 May", coupon: "ROOM20" },
+      { img: PCT6, valid: "13 JUN", coupon: "25PHARM" },
+      { img: PCT7, valid: "06 May", coupon: "LENS100" },
+    ],
+    []
+  );
 
-const PiligrimsTravellers = useMemo(() => [
-    { img: PT1, valid: "08 May", coupon: "SPOTI100" },
-    { img: PT2, valid: "19 JUN", coupon: "JEWEL15" },
-    { img: PT3, valid: "04 JUN", coupon: "10YOGOO" },
-    { img: PT4, valid: "20 MAY", coupon: "1SOULGUID" },
-    { img: PT5, valid: "14 JUN", coupon: "KINDLE100" },
-    { img: PT6, valid: "15 May", coupon: "BREETHE20" },
-    { img: PT7, valid: "19 JUN", coupon: "100BUSTAND" },
-], []);
+  const PiligrimsTravellers = useMemo(
+    () => [
+      { img: PT1, valid: "08 May", coupon: "SPOTI100" },
+      { img: PT2, valid: "19 JUN", coupon: "JEWEL15" },
+      { img: PT3, valid: "04 JUN", coupon: "10YOGOO" },
+      { img: PT4, valid: "20 MAY", coupon: "1SOULGUID" },
+      { img: PT5, valid: "14 JUN", coupon: "KINDLE100" },
+      { img: PT6, valid: "15 May", coupon: "BREETHE20" },
+      { img: PT7, valid: "19 JUN", coupon: "100BUSTAND" },
+    ],
+    []
+  );
 
-const SeniorCitizens = useMemo(() => [
-    { img: SC1, valid: "14 May", coupon: "DINE10" },
-    { img: SC2, valid: "05 JUN", coupon: "TICKET299" },
-    { img: SC3, valid: "19 JUN", coupon: "299FIT" },
-    { img: SC4, valid: "22 MAY", coupon: "SHOPPER75" },
-    { img: SC5, valid: "03 JUN", coupon: "MELODIA49" },
-    { img: SC6, valid: "08 May", coupon: "WANDER15" },
-    { img: SC7, valid: "01 JUN", coupon: "50SWIGGY" },
-], []);
+  const SeniorCitizens = useMemo(
+    () => [
+      { img: SC1, valid: "14 May", coupon: "DINE10" },
+      { img: SC2, valid: "05 JUN", coupon: "TICKET299" },
+      { img: SC3, valid: "19 JUN", coupon: "299FIT" },
+      { img: SC4, valid: "22 MAY", coupon: "SHOPPER75" },
+      { img: SC5, valid: "03 JUN", coupon: "MELODIA49" },
+      { img: SC6, valid: "08 May", coupon: "WANDER15" },
+      { img: SC7, valid: "01 JUN", coupon: "50SWIGGY" },
+    ],
+    []
+  );
 
-const Student = useMemo(() => [
-    { img: S1, valid: "15 May", coupon: "CLASS10" },
-    { img: S2, valid: "07 JUN", coupon: "90UDEMY" },
-    { img: S3, valid: "30 JUN", coupon: "10SWIGG50" },
-    { img: S4, valid: "25 MAY", coupon: "GLOBAL15" },
-    { img: S5, valid: "17 JUN", coupon: "SKULL70" },
-    { img: S6, valid: "28 May", coupon: "AMAZON65" },
-    { img: S7, valid: "28 JUN", coupon: "SKYWING35" },
-], []);
+  const Student = useMemo(
+    () => [
+      { img: S1, valid: "15 May", coupon: "CLASS10" },
+      { img: S2, valid: "07 JUN", coupon: "90UDEMY" },
+      { img: S3, valid: "30 JUN", coupon: "10SWIGG50" },
+      { img: S4, valid: "25 MAY", coupon: "GLOBAL15" },
+      { img: S5, valid: "17 JUN", coupon: "SKULL70" },
+      { img: S6, valid: "28 May", coupon: "AMAZON65" },
+      { img: S7, valid: "28 JUN", coupon: "SKYWING35" },
+    ],
+    []
+  );
 
-const Tourist = useMemo(() => [
-    { img: T1, valid: "15 May", coupon: "HOTELFREE" },
-    { img: T2, valid: "25 JUN", coupon: "EXCURSION50" },
-    { img: T3, valid: "04 JUN", coupon: "BAZAAR100" },
-    { img: T4, valid: "11 MAY", coupon: "179SKYLINE" },
-    { img: T5, valid: "31 JUN", coupon: "BUSSTAND20" },
-    { img: T6, valid: "01 May", coupon: "TOWN15" },
-    { img: T7, valid: "23 JUN", coupon: "TOURS25" },
-], []);
+  const Tourist = useMemo(
+    () => [
+      { img: T1, valid: "15 May", coupon: "HOTELFREE" },
+      { img: T2, valid: "25 JUN", coupon: "EXCURSION50" },
+      { img: T3, valid: "04 JUN", coupon: "BAZAAR100" },
+      { img: T4, valid: "11 MAY", coupon: "179SKYLINE" },
+      { img: T5, valid: "31 JUN", coupon: "BUSSTAND20" },
+      { img: T6, valid: "01 May", coupon: "TOWN15" },
+      { img: T7, valid: "23 JUN", coupon: "TOURS25" },
+    ],
+    []
+  );
 
   const prevSlide = () => {
     const newIndex = Math.max(0, startIndex - 1);
@@ -184,7 +207,7 @@ const Tourist = useMemo(() => [
   //       });
   //   }
   // };
-  
+
   useEffect(() => {
     const occupation = localStorage.getItem("occupation");
     if (occupation === "Corporate Travellers") {
@@ -204,8 +227,15 @@ const Tourist = useMemo(() => [
     } else {
       setCurrentOffer(GeneralPeople);
     }
-}, [CorporateTravellers, GeneralPeople, PhysicallyChallengedTravellers, PiligrimsTravellers, SeniorCitizens, Student, Tourist]);
-
+  }, [
+    CorporateTravellers,
+    GeneralPeople,
+    PhysicallyChallengedTravellers,
+    PiligrimsTravellers,
+    SeniorCitizens,
+    Student,
+    Tourist,
+  ]);
 
   useEffect(() => {
     updateStartIndex(); // Set initial startIndex based on screen size
@@ -215,11 +245,10 @@ const Tourist = useMemo(() => [
       window.removeEventListener("resize", updateStartIndex); // Cleanup event listener on component unmount
     };
   }, []);
-  
+
   useEffect(() => {
     GetPromotion(dispatch);
   }, [dispatch]);
-
 
   console.log(promotionlist, "promotionlist");
   console.log(colors, "colorscolorscolorscolorscolors");
@@ -287,8 +316,8 @@ const Tourist = useMemo(() => [
                           className={`absolute border-white border-[.1vw] h-[8vw] top-[.9vw] border-dashed left-[5.4vw]`}
                         ></div>
                         <img
-                        alt="background_Image"
-                          src={`http://192.168.90.47:4000${item?.background_image}`}
+                          alt="background_Image"
+                          src={`${apicrmimage}/${item?.background_image}`}
                           className="w-[80vw] lg:h-[9.5vw] md:h-[8vw] h-[40vw]"
                         />
                         <div className={`absolute left-[4.6vw] bottom-0`}>
@@ -353,8 +382,8 @@ const Tourist = useMemo(() => [
             promotionlist.map((item, index) => (
               <div key={index} className={`relative flex-shrink-0 mr-[2vw]`}>
                 <img
-                alt="background_image"
-                  src={`http://192.168.90.47:4000${item?.background_image}`}
+                  alt="background_image"
+                  src={`${apicrmimage}/${item?.background_image}`}
                   className="w-[80vw] lg:h-[80%] md:h-[12vw] h-[45vw] relative z-10" // Ensure z-index is higher
                 />
                 <div

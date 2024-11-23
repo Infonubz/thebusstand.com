@@ -19,7 +19,9 @@ export default function Rewardsandoffers() {
   const [currenttab, setCurrenttab] = useState(2);
   const [getValues, setGetValues] = useState("General Public");
   const [spinning, setSpinning] = useState(false);
+  const apiUrlimage = process.env.REACT_APP_API_URL_IMAGE;
 
+  const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
   // const Reward = [
   //   {
   //     img1: <img src={Rewards} />,
@@ -221,7 +223,7 @@ export default function Rewardsandoffers() {
                       className="w-full h-auto flex justify-center"
                     >
                       <img
-                        src={`http://192.168.90.47:4000${items.theme}`}
+                        src={`${apicrmimage}/${items.theme}`}
                         className="w-[17vw] h-[8.5vw] "
                       />
                     </div>
@@ -239,7 +241,7 @@ export default function Rewardsandoffers() {
             </div>
           </div> */}
 
-            <div className="absolute z-[2] top-[12vw] md:top-[7vw] left-[4vw] md:left-[12.5vw] bg-white md:w-3/4 w-[92%] h-auto md:h-[35vw] rounded-lg shadow-lg shadow-gray-300">
+            <div className="absolute z-[2] top-[12vw] md:top-[7vw] left-[4vw] md:left-[12.5vw] bg-white md:w-3/4 w-[92%] h-auto md:h-[35vw] md:rounded-[1vw] rounded-lg shadow-lg shadow-gray-300">
               <div className="flex justify-between py-[2vw] px-[4vw]">
                 {/* <div className="flex flex-col">
                   <p className="text-start text-[1.5vw] text-[#1F487C] mt-[.5vw] font-bold">
@@ -330,7 +332,7 @@ export default function Rewardsandoffers() {
                           className="w-full md:h-[11vw] h-[40vw] flex justify-center relative"
                         >
                           <img
-                            src={`http://192.168.90.47:4000${items.theme}`}
+                            src={`${apicrmimage}/${items.theme}`}
                             alt="Occupation"
                             className="w-[80vw] md:h-[11vw] h-[40vw] z-[1]"
                           />
@@ -464,7 +466,7 @@ export default function Rewardsandoffers() {
               <div className="overflow-y-scroll w-full h-[72.5vh] py-[1vw]">
                 <div className=" flex flex-col gap-[3vw] px-[3vw]">
                   {OccupationDeals.map((items) => (
-                    <img src={`http://192.168.90.47:4000${items.theme}`} alt="Occupation" />
+                    <img src={`${apicrmimage}/${items.theme}`} alt="Occupation" />
                   ))}
                 </div>
               </div>

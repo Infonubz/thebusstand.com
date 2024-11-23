@@ -16,13 +16,11 @@ import html2canvas from "html2canvas";
 // import { toPng } from 'html-to-image';
 import jsPDF from "jspdf";
 
-import { savePDF } from "@progress/kendo-react-pdf";
+//import { savePDF } from "@progress/kendo-react-pdf";
 
 const TicketView = ({ showModal, setShowModal, ticketDetails }) => {
-
   const [loader, setLoader] = useState(false);
-
-
+  const componentRef = useRef();
   const colorcode = {
     theme: "#1F487C",
   };
@@ -36,79 +34,32 @@ const TicketView = ({ showModal, setShowModal, ticketDetails }) => {
     // return prefix + randomNumbers;
     return prefix + ticketDetails?.Booking_Id;
   }
-  const seatplatform = "tbstravells";
-  console.log(ticketDetails, "upwkjfdszkfdskjf");
+
+  //const seatplatform = "tbstravells";
   // const [UpcomingDetailss] = ticketdetails
 
-  const componentRef = useRef();
+  // const generatePDF = () => {
+  //   // html2canvas(componentRef.current, {
+  //   //   scrollX: 0,
+  //   //   scrollY: -window.scrollY,
+  //   // }).then((canvas) => {
+  //   //   const imgData = canvas.toDataURL("image/png");
+  //   //   const pdf = new jsPDF("p", "mm", "a4");
+  //   //   const imgWidth = pdf.internal.pageSize.getWidth();
+  //   //   const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  //   //   pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+  //   //   // pdf.save(`${registerfulldetails.name}.pdf`);
+  //   //   pdf.save(`MyTicker.pdf`);
+  //   // });
 
-  const generatePDF = () => {
-    // html2canvas(componentRef.current, {
-    //   scrollX: 0,
-    //   scrollY: -window.scrollY,
-    // }).then((canvas) => {
-    //   const imgData = canvas.toDataURL("image/png");
-    //   const pdf = new jsPDF("p", "mm", "a4");
-    //   const imgWidth = pdf.internal.pageSize.getWidth();
-    //   const imgHeight = (canvas.height * imgWidth) / canvas.width;
-    //   pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-    //   // pdf.save(`${registerfulldetails.name}.pdf`);
-    //   pdf.save(`MyTicker.pdf`);
-    // });
-
-    if (componentRef.current) {
-      savePDF(componentRef.current, {
-        paperSize: "A4", // Paper size
-        margin: 1, // Margin in mm
-        fileName: "MyTicket.pdf", // File name for the downloaded PDF
-      });
-    }
-  };
-
-  const downloadPDF = () => {
-    setLoader(true);
-    setTimeout(() => {
-      const capture = document.querySelector('componentRef.current');
-      if (capture) {
-        html2canvas(capture).then((canvas) => {
-          const imgData = canvas.toDataURL('image/png');
-          const doc = new jsPDF('p', 'mm', 'a4');
-          const componentWidth = doc.internal.pageSize.getWidth();
-          const componentHeight = doc.internal.pageSize.getHeight();
-          doc.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight);
-          setLoader(false);
-          doc.save('receipt.pdf');
-        });
-      } else {
-        console.error("Element .actual-receipt not found");
-        setLoader(false);
-      }
-    }, 1000); 
-  };
-
-  const handleDownloadClick = () => {
-    const capture = document.querySelector('componentRef.current');
-    if (capture) {
-      downloadPDF();
-    } else {
-      console.error("Element .actual-receipt not found on button click.");
-    }
-  };
-  
-
-  
-  useEffect(() => {
-    setTimeout(() => {
-      const capture = document.querySelector('componentRef.current');
-      if (capture) {
-        downloadPDF();
-      } else {
-        console.error("Element .actual-receipt not found on mount.");
-      }
-    }, 1000); 
-  }, []);
-  
-  
+  //   if (componentRef.current) {
+  //     savePDF(componentRef.current, {
+  //       paperSize: "A4", // Paper size
+  //       margin: 1, // Margin in mm
+  //       fileName: "MyTicket.pdf", // File name for the downloaded PDF
+  //     });
+  //   }
+  // };
 
   // const generatePDF = () => {
   //   toPng(componentRef.current)
@@ -175,6 +126,49 @@ const TicketView = ({ showModal, setShowModal, ticketDetails }) => {
   //     });
   // };
 
+  const downloadPDF = () => {
+    setLoader(true);
+    setTimeout(() => {
+      const capture = document.querySelector("componentRef.current");
+      if (capture) {
+        html2canvas(capture).then((canvas) => {
+          const imgData = canvas.toDataURL("image/png");
+          const doc = new jsPDF("p", "mm", "a4");
+          const componentWidth = doc.internal.pageSize.getWidth();
+          const componentHeight = doc.internal.pageSize.getHeight();
+          doc.addImage(imgData, "PNG", 0, 0, componentWidth, componentHeight);
+          setLoader(false);
+          doc.save("receipt.pdf");
+        });
+      } else {
+        console.error("Element .actual-receipt not found");
+        setLoader(false);
+      }
+    }, 1000);
+  };
+
+  const handleDownloadClick = () => {
+    const capture = document.querySelector("componentRef.current");
+    if (capture) {
+      downloadPDF();
+    } else {
+      console.error("Element .actual-receipt not found on button click.");
+    }
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      const capture = document.querySelector("componentRef.current");
+      if (capture) {
+        downloadPDF();
+      } else {
+        console.error("Element .actual-receipt not found on mount.");
+      }
+    }, 1000);
+  }, []);
+  const apiUrlimage = process.env.REACT_APP_API_URL_IMAGE;
+
+  const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
   return (
     <div>
       <Drawer
@@ -417,7 +411,7 @@ const TicketView = ({ showModal, setShowModal, ticketDetails }) => {
                       /> */}
                       {ticketDetails?.logos != null && (
                         <img
-                          src={`http://192.168.90.47:4001${ticketDetails.logos}`}
+                          src={`${apiUrlimage}/${ticketDetails.logos}`}
                           // src={orange_travel_logo}
                           alt="logos"
                           className={`w-[6vw] h-[6vw] rounded-full bg-white  ${
@@ -805,7 +799,20 @@ const TicketView = ({ showModal, setShowModal, ticketDetails }) => {
                       </div>
                     </div> */}
               <div className="grid grid-row-3 w-full h-full gap-[1vw]">
-                <div class="border-dashed border-2 border-[#1F487C]"></div>
+                <div
+                  className={`border-dashed border-[0.11vw] border-[#1F487C] relative`}
+                >
+                  <span className={`absolute left-[-1.1vw] top-[-1.4vw] z-[3]`}>
+                    <div
+                      className={`bg-white border-dashed border-[0.16vw] border-l-[#ffffff] border-[#1F487C] w-[2.3vw] h-[2.7vw] rounded-r-full `}
+                    ></div>
+                  </span>
+                  <span className="absolute right-[-1.1vw] top-[-1.4vw] z-[3]">
+                    <div
+                      className={`bg-white border-dashed border-[0.16vw] border-r-[#ffffff] border-[#1F487C] w-[2.3vw] h-[2.7vw] rounded-l-full `}
+                    ></div>
+                  </span>
+                </div>
                 <div className="row-span-1 py-[1vw]">
                   {/* {Object.keys(travelerDetails).map((key) => ( */}
                   {ticketDetails?.passenger?.length > 0
@@ -974,7 +981,22 @@ const TicketView = ({ showModal, setShowModal, ticketDetails }) => {
                 </div>
                 {/* <div class="border-dashed border-2 border-[#1F487C]"></div> */}
               </div>
-              <div class="border-dashed border-2 border-[#1F487C]"></div>
+              {/* <div class="border-dashed border-2 border-[#1F487C]"></div> */}
+
+              <div
+                className={`border-dashed border-[0.11vw] border-[#1F487C] relative mt-[2vw]`}
+              >
+                <span className={`absolute left-[-1.1vw] top-[-1.4vw] z-[3]`}>
+                  <div
+                    className={`bg-white border-dashed border-[0.16vw] border-l-[#ffffff] border-[#1F487C] w-[2.3vw] h-[2.7vw] rounded-r-full `}
+                  ></div>
+                </span>
+                <span className="absolute right-[-1.1vw] top-[-1.4vw] z-[3]">
+                  <div
+                    className={`bg-white border-dashed border-[0.16vw] border-r-[#ffffff] border-[#1F487C] w-[2.3vw] h-[2.7vw] rounded-l-full`}
+                  ></div>
+                </span>
+              </div>
             </div>
 
             <div className="flex items-center justify-between pl-[1vw] pr-[2vw] pt-[1vw]">
@@ -1003,14 +1025,15 @@ const TicketView = ({ showModal, setShowModal, ticketDetails }) => {
                   }}
                 ></div>
                 <div
-                 onClick={handleDownloadClick}
+                  onClick={handleDownloadClick}
                   className="relative h-[5vw] w-[5vw] left-[.5vw] top-[.7vw]  rounded-[50%] flex justify-center items-center "
                   style={{
                     backgroundColor:
                       ticketDetails.bus_type_status === "luxury"
                         ? "#393939"
                         : colorcode.theme,
-                  }}>
+                  }}
+                >
                   <span>
                     <FiDownload size={35} color="white" />
                   </span>

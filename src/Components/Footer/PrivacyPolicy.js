@@ -23,8 +23,7 @@ const PrivacyPolicy = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  console.log(privacy_policy, "privacy_policy");
+ 
 
   return (
     <>

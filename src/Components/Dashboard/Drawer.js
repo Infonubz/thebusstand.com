@@ -40,7 +40,7 @@ import { GetUserDetails } from "../../Api/Login/Login";
 import { useLocation, useNavigate } from "react-router";
 import MobileTicketView from "../MobileView/MobileTicketView";
 import { getTabIndex } from "@progress/kendo-react-common";
-import { useFormikContext } from "formik";
+//import { useFormikContext } from "formik";
 
 // import { FaAngleRight } from "react-icons/fa6";
 // import { FaBus } from "react-icons/fa6";
@@ -94,6 +94,9 @@ function DrawerDetails({
   //bookingId1,
   setBookingId1,
 }) {
+  const apiUrlimage = process.env.REACT_APP_API_URL_IMAGE;
+
+  const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
   const location = useLocation();
   const {
     selectedSeats2,
@@ -654,7 +657,7 @@ function DrawerDetails({
                                         {" "}
                                         {busdetails1?.logos != null && (
                                           <img
-                                            src={`http://192.168.90.47:4001${busdetails1.logos}`}
+                                            src={`${apiUrlimage}/${busdetails1.logos}`}
                                             alt="logos"
                                             className={`w-[6vw] h-[6vw] rounded-full bg-white  ${
                                               busdetails1?.bus_type_status ===
@@ -3165,7 +3168,7 @@ function DrawerDetails({
                               <div className="h-[60%] flex justify-center items-center">
                                 {busdetails1?.logos != null && (
                                   <img
-                                    src={`http://192.168.90.47:4001${busdetails1.logos}`}
+                                    src={`${apiUrlimage}/${busdetails1.logos}`}
                                     // src={orange_travel_logo}
                                     alt="logos"
                                     className={`w-[6vw] h-[6vw] rounded-full bg-white  ${
@@ -3796,12 +3799,21 @@ function DrawerDetails({
                       <div className="h-auto w-full px-[1vw] pt-[1vw]">
                         <div className="grid grid-row-3 w-full h-full gap-[1vw]">
                           <div
-                            className={`${
-                              busdetails1.bus_type_status === "luxury"
-                                ? "border-[#393939]"
-                                : "border-[#1F487C]"
-                            } border-dashed border-2`}
-                          ></div>
+                            className={`border-dashed border-2 border-[#1F487C] relative`}
+                          >
+                            <span
+                              className={`absolute left-[-1.1vw] top-[-1.4vw] z-[3]`}
+                            >
+                              <div
+                                className={`bg-white border-dashed border-[0.16vw] border-l-[#ffffff] border-[#1F487C] w-[2.3vw] h-[2.7vw] rounded-r-full `}
+                              ></div>
+                            </span>
+                            <span className="absolute right-[-1.1vw] top-[-1.4vw] z-[3]">
+                              <div
+                                className={`bg-white border-dashed border-[0.16vw] border-r-[#ffffff] border-[#1F487C] w-[2.3vw] h-[2.7vw] rounded-l-full`}
+                              ></div>
+                            </span>
+                          </div>
                           <div className="row-span-1 py-[1vw]">
                             {ticketDetail?.passenger?.length > 0 &&
                               ticketDetail?.passenger.map(
@@ -4047,15 +4059,24 @@ function DrawerDetails({
                             </div>
                           </div>
                           <div
-                            className={`${
-                              busdetails1.bus_type_status === "luxury"
-                                ? "border-[#393939]"
-                                : "border-[#1F487C]"
-                            } border-dashed border-2`}
-                          ></div>
+                            className={`border-dashed border-2 border-[#1F487C] relative mt-[2vw]`}
+                          >
+                            <span
+                              className={`absolute left-[-1.1vw] top-[-1.4vw] z-[3]`}
+                            >
+                              <div
+                                className={`bg-white border-dashed border-[0.16vw] border-l-[#ffffff] border-[#1F487C] w-[2.3vw] h-[2.7vw] rounded-r-full `}
+                              ></div>
+                            </span>
+                            <span className="absolute right-[-1.1vw] top-[-1.4vw] z-[3]">
+                              <div
+                                className={`bg-white border-dashed border-[0.16vw] border-r-[#ffffff] border-[#1F487C] w-[2.3vw] h-[2.7vw] rounded-l-full`}
+                              ></div>
+                            </span>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex items-center justify-between pl-[1vw] pr-[2vw] pt-[1vw]">
+                      <div className="flex items-center justify-between pl-[1vw] pr-[2vw] pt-[1.5vw]">
                         <div>
                           <Barcode
                             value={generateRandomId("AXER", 12)}

@@ -8,7 +8,7 @@ import { BiSolidSearch } from "react-icons/bi";
 import "../../App.css";
 import "../Home/test.css";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
-import { useNavigate } from "react-router";
+//import { useNavigate } from "react-router";
 import { Empty } from "antd";
 import { Pagination } from "antd";
 import { Popover } from "antd";
@@ -24,7 +24,7 @@ const Operators = () => {
   const ITEMS_PER_PAGE = 16;
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const navigation = useNavigate();
+  //const navigation = useNavigate();
 
   const data = [
     { id: 1, name: "A" },
@@ -91,7 +91,7 @@ const Operators = () => {
     if (selectedLetter) {
       FilterOperator();
     }
-  }, [selectedLetter, currentPage]);
+  }, [selectedLetter, currentPage, startIndex, endIndex]);
 
   useEffect(() => {
     GetOperators(dispatch);
@@ -205,8 +205,8 @@ const Operators = () => {
             className={`absolute top-[12vw] md:top-[10vw] px-[2vw] md:px-[3vw]`}
           >
             <div
-              className={`bg-white w-[96vw] md:w-[94vw] h-[87vh] md:h-[27vw] relative rounded-[3vw] md:rounded-[1vw] shadow-lg shadow-gray-300`}
-            >
+              className={`bg-white w-[96vw] md:w-[94vw] h-[87vh] md:h-[29vw] relative rounded-[3vw] md:rounded-[1vw] shadow-lg shadow-gray-300`}
+            > 
               <div
                 className={`block md:hidden flex flex-row overflow-y-auto gap-[2vw] font-bold text-center px-[2vw] pt-[2vw] scrollbar-hide`}
               >

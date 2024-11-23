@@ -64,9 +64,9 @@ const About = () => {
             <div className="cloudhome"></div>
           </div>
           <>
-            <div className="absolute top-[7vw] left-[12.5vw] bg-white w-3/4 h-3/4 rounded-lg md:block hidden shadow-lg shadow-gray-300">
+            <div className="absolute top-[7vw] left-[12.5vw] bg-white w-3/4 h-[35vw] md:rounded-[1vw] md:block hidden shadow-lg shadow-gray-300">
               <div>
-                <div className="px-[5vw] py-[3vw]">
+                <div className="px-[5vw] py-[3vw]"> 
                   <p className="text-[1.25vw] font-semibold text-[#1F487C]">
                     {abt_us?.split("\r\n")?.map((line, index) => (
                       <p key={index} className="pb-[0.75vw]">

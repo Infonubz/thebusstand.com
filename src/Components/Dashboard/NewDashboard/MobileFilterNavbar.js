@@ -14,7 +14,7 @@ export default function MobileFilterNavbar() {
 
   const [selectedButton, setSelectedButton] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [busType, setBusType] = useState(JSON.parse(sessionStorage.getItem("isLuxury")));
+  const [busType, setBusType] = useState(JSON.parse(sessionStorage.getItem("isMbleLuxury")));
   const [NormalBus, setNoramlBus] = useState(JSON.parse(sessionStorage.getItem("isMbleNoramlBus")));
   const [acfilter, setAcFilter] = useState("");
   const [seattypefilter, setSeatTypeFilter] = useState("");
@@ -27,12 +27,12 @@ export default function MobileFilterNavbar() {
   const [operatorchecked, setOperatorChecked] = useState({});
   const [amenitiesvalue, setAmenitiesValue] = useState({});
   const [sorting, setSorting] = useState("");
-  const locSrgSorting = localStorage.getItem("sort");
+  const locSrgSorting = sessionStorage.getItem("mbleSort");
   const departure_local = localStorage.getItem("depature");
   const arrival_local = localStorage.getItem("arrival");
   const departure_date_local = localStorage.getItem("departure_date");
-  const isLuxury_local = sessionStorage.getItem("isLuxury");
-  const sort_local = localStorage.getItem("sort");
+  const isLuxury_local = sessionStorage.getItem("isMbleLuxury");
+  const sort_local = sessionStorage.getItem("mbleSort");
   //const regularbus = sessionStorage.getItem("isMbleNoramlBus");
   const dispatch = useDispatch();
 
@@ -74,18 +74,13 @@ export default function MobileFilterNavbar() {
       let dateTimeString = localStorage.getItem("selectdate");
 
       if (dateTimeString) {
-        // Parse the string into a Date object
         let dateObj = new Date(dateTimeString);
-
-        // Format the date to "YYYY-MM-DD"
         const formattedDate =
           dateObj.getFullYear() +
           "-" +
           ("0" + (dateObj.getMonth() + 1)).slice(-2) +
           "-" +
           ("0" + dateObj.getDate()).slice(-2);
-
-        // Store the formatted date back in localStorage
         localStorage.setItem("departure_date", formattedDate);
       }
 
@@ -103,12 +98,13 @@ export default function MobileFilterNavbar() {
         amenitycheck,
         operatorcheck,
         priceRange,
-        localStorage.getItem("sort"),
+        sessionStorage.getItem("mbleSort"),
         NormalBus,
         dispatch
       );
-      console.log(allFilters, "allFilters");
-      console.log(pickuptime, "pickuptime");
+
+      console.error("allFilters", allFilters);
+
     } catch (error) {
       console.error("Error", error);
     }
@@ -123,8 +119,9 @@ export default function MobileFilterNavbar() {
     amenitiesvalue,
     operatorchecked,
     priceRange,
-    sessionStorage.getItem("isMbleNoramlBus"),
-    localStorage.getItem("sort"),
+    // sessionStorage.getItem("isMbleNoramlBus"),
+    // sessionStorage.getItem("mbleSort"),
+    NormalBus,
     departure_local,
     arrival_local,
     departure_date_local,
@@ -142,8 +139,6 @@ export default function MobileFilterNavbar() {
     sort_local,
   ]);
 
-  
-  console.log(pickupchecked, "pickupchecked");
 
   return (
     <>
@@ -203,11 +198,11 @@ export default function MobileFilterNavbar() {
             if (selectedButton === 3 || busType) {
               setSelectedButton(null);
               setBusType(false);
-              sessionStorage.setItem("isLuxury", false);
+              sessionStorage.setItem("isMbleLuxury", false);
             } else {
               setSelectedButton(3);
               setBusType(true);
-              sessionStorage.setItem("isLuxury", true);
+              sessionStorage.setItem("isMbleLuxury", true);
             }
           }}
         >
@@ -221,7 +216,7 @@ export default function MobileFilterNavbar() {
             className={`${
               selectedButton === 3 || busType ? "text-black" : "text-[#1F487C]"
             }  text-[4vw] font-semibold whitespace-nowrap`}
-            onClick={() => sessionStorage.setItem("isLuxury", true)}
+            onClick={() => sessionStorage.setItem("isMbleLuxury", true)}
           >
             Luxury Coach
           </span>

@@ -67,7 +67,7 @@ const Faq = () => {
             <div className="absolute top-[5.5vw] px-[2vw] grid grid-cols-8 gap-[1vw] w-full"></div>
           </div>
           <div className="absolute md:top-[6vw] top-[12vw] px-[3vw] flex flex-col">
-            <div className="bg-white h-[87vh] w-[94vw] md:h-[34vw] relative rounded-[2.5vw] md:rounded-[1vw] shadow-lg shadow-gray-300">
+            <div className="bg-white h-[87vh] w-[94vw] md:h-[35vw] relative rounded-[2.5vw] md:rounded-[1vw] shadow-lg shadow-gray-300">
               <div className="grid grid-rows md:grid-cols-7">
                 <div className="md:col-start-1 md:col-span-4 m-[1vw] md:m-[3vw] h-[37vh] md:h-[25vw] Legal-Information  overflow-y-auto">
                   <Collapse
@@ -230,13 +230,7 @@ const Faq = () => {
                         key: "2",
                         label: (
                           <div
-                            className="flex items-center md:flex-none h-[13vw] md:h-[5vh]"
-                            onClick={() => {
-                              const value = 2;
-                              handleCollapseChange("2");
-                              handleClick(value);
-                            }}
-                          >
+                            className="flex items-center md:flex-none h-[13vw] md:h-[5vh]">
                             <div className="col-span-2 pl-[1vw]">
                               <span className="text-[#1F487C] font-medium text-[4.5vw] md:text-[1.5vw]">
                                 TICKET - RELATED
@@ -326,13 +320,7 @@ const Faq = () => {
                         key: "3",
                         label: (
                           <div
-                            className="flex items-center md:flex-none h-[13vw] md:h-[5vh]"
-                            onClick={() => {
-                              const value = 3;
-                              handleCollapseChange("3");
-                              handleClick(value);
-                            }}
-                          >
+                            className="flex items-center md:flex-none h-[13vw] md:h-[5vh]">
                             <div className="col-span-2 pl-[1vw]">
                               <span className="text-[#1F487C] font-medium text-[4.5vw] md:text-[1.5vw]">
                                 PAYMENT - RELATED

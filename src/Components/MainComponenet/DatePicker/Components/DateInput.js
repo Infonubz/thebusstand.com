@@ -6,12 +6,18 @@ import useClickOutside from "../hooks/UseClickOutside";
 import DateInputPopup from "./DateInputPopup";
 import DateItem from "./DateItem";
 import dayjs from "dayjs";
-import { useLocation, useParams } from "react-router";
+import { useLocation,
+  // useParams 
+} from "react-router";
 import { CiCalendar } from "react-icons/ci";
 import { useDispatch } from "react-redux";
 import { HOME_SELECTED_DATE } from "../../../../Store/type";
 
 function getDateSlots(currentMonth, currentYear) {
+
+
+  const slotSkipCount = new Date(currentYear, currentMonth, 1).getDay();
+
   const currentMonthDays = getDaysInMonth(currentMonth, currentYear).map(
     (date) => ({
       date,
@@ -19,13 +25,11 @@ function getDateSlots(currentMonth, currentYear) {
     })
   );
 
-  const slotSkipCount = new Date(currentYear, currentMonth, 1).getDay();
-
   // Include days from the previous month
   let prevMonthDays = [];
   if (slotSkipCount > 0) {
-    const prevMonth = currentMonth == 0 ? 11 : currentMonth - 1;
-    const prevMonthYear = currentMonth == 0 ? currentYear - 1 : currentYear;
+    const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const prevMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
     prevMonthDays = getDaysInMonth(prevMonth, prevMonthYear)
       .slice(-slotSkipCount)
       .map((date) => ({
@@ -41,8 +45,8 @@ function getDateSlots(currentMonth, currentYear) {
   // Include days from the next month
   let nextMonthDays = [];
   if (nextMonthSlotCount > 0) {
-    const nextMonth = currentMonth == 11 ? 0 : currentMonth + 1;
-    const nextMonthYear = currentMonth == 11 ? currentYear + 1 : currentYear;
+    const nextMonth = currentMonth ===11 ? 0 : currentMonth + 1;
+    const nextMonthYear = currentMonth ===11 ? currentYear + 1 : currentYear;
     nextMonthDays = getDaysInMonth(nextMonth, nextMonthYear)
       .slice(0, nextMonthSlotCount)
       .map((date) => ({
@@ -55,18 +59,89 @@ function getDateSlots(currentMonth, currentYear) {
 }
 
 function DateInput(props, { selecteddate, setSelecteddate, dateSelection }) {
+  
   const popupRef = useRef();
   const [showPopup, setShowPopup] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const location = useLocation();
+  //const path = useParams();
+  const dispatch = useDispatch();
+
   useClickOutside(popupRef, () => {
     setShowPopup(false);
   });
+
   const dateArray = useMemo(
     () => getDateSlots(currentMonth, currentYear),
     [currentMonth, currentYear]
   );
+
+  function togglePopupHandler() {
+    setShowPopup((currentShowPopup) => !currentShowPopup);
+  }
+
+  function navigateMonthHandler(navigateBy = 1) {
+    if (currentMonth + navigateBy ===12) {
+      setCurrentMonth(0);
+      setCurrentYear((currentState) => currentState + 1);
+    } else if (currentMonth + navigateBy ===-1) {
+      setCurrentMonth(11);
+      setCurrentYear((currentState) => currentState - 1);
+    } else {
+      setCurrentMonth((currentState) => currentState + navigateBy);
+    }
+  }
+
+  function selectDateHandler(date) {
+    if (typeof props.onChange ==="function") {
+      props.onChange(new Date(date.date));
+    } else {
+      console.error("props.onChange is not a function");
+    }
+    setSelectedDate(date.date);
+    setShowPopup(false);
+  }
+
+    // function isDateDisabled(date) {
+  //   const today = new Date();
+  //   const threeDay=today.getDate()+3;
+
+  //   return date<threeDay
+  //   // return date < today.setHours(0, 0, 0, 0);
+  // }
+  // function isDateDisabled(date) {
+  //   if (!(date instanceof Date)) {
+  //     date = new Date(date);
+  //   }
+
+  //   const today = new Date();
+  //   today.setHours(0, 0, 0, 0);
+
+  //   const endDate = new Date(today);
+  //   endDate.setDate(today.getDate() + 4);
+
+  //   console.log("Today:", today);
+  //   console.log("End Date:", endDate);
+  //   console.log("Date being checked:", date);
+
+  //   return date < endDate;
+  // }
+
+  function isDateDisabled(date) {
+    if (!(date instanceof Date)) {
+      date = new Date(date);
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const maxDate = new Date(today);
+    maxDate.setDate(today.getDate() + 60); // Set the maximum date to 60 days from today
+
+    return date < today || date > maxDate;
+  }
 
   useEffect(() => {
     if (props.value) {
@@ -77,74 +152,20 @@ function DateInput(props, { selecteddate, setSelecteddate, dateSelection }) {
     }
   }, [props.value]);
 
-  function togglePopupHandler() {
-    setShowPopup((currentShowPopup) => !currentShowPopup);
-  }
 
-  function navigateMonthHandler(navigateBy = 1) {
-    if (currentMonth + navigateBy == 12) {
-      setCurrentMonth(0);
-      setCurrentYear((currentState) => currentState + 1);
-    } else if (currentMonth + navigateBy == -1) {
-      setCurrentMonth(11);
-      setCurrentYear((currentState) => currentState - 1);
-    } else {
-      setCurrentMonth((currentState) => currentState + navigateBy);
-    }
-  }
-
-  function selectDateHandler(date) {
-    if (typeof props.onChange == "function") {
-      props.onChange(new Date(date.date));
-    } else {
-      console.error("props.onChange is not a function");
-    }
-    setSelectedDate(date.date);
-    setShowPopup(false);
-  }
-
-  // function isDateDisabled(date) {
-  //   const today = new Date();
-  //   const threeDay=today.getDate()+3;
-
-  //   return date<threeDay
-  //   // return date < today.setHours(0, 0, 0, 0);
-  // }
-  function isDateDisabled(date) {
-    if (!(date instanceof Date)) {
-      date = new Date(date);
-    }
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const endDate = new Date(today);
-    endDate.setDate(today.getDate() + 4);
-
-    console.log("Today:", today);
-    console.log("End Date:", endDate);
-    console.log("Date being checked:", date);
-
-    return date < endDate;
-  }
-
-  const location = useLocation();
-  const path = useParams();
-  console.log(location.pathname, "locationlocation");
-  console.log(selectedDate, "selectedDateselectedDate");
-  const dispatch = useDispatch();
   useEffect(() => {
-    if (location.pathname == "/") {
+    if (location.pathname ==="/") {
       dispatch({
         type: HOME_SELECTED_DATE,
         payload: selectedDate,
       });
     }
-  }, [location.pathname, selectedDate]);
+  }, [dispatch, location.pathname, selectedDate]);
+
   const currentDate = new Date();
   const nextDate3 = new Date();
   nextDate3.setDate(currentDate.getDate() + 3);
-  console.log(nextDate3, "nextDate3");
+  
   return (
     <span ref={popupRef} className="date-input-wrapper relative">
       <input
@@ -155,23 +176,23 @@ function DateInput(props, { selecteddate, setSelecteddate, dateSelection }) {
         }
         onClick={togglePopupHandler}
         readOnly
-        // className={`cursor-pointer md:block hidden h-[4.5vw] w-[4.5vw] left-[5vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] text-black ${location.pathname == "/"
+        // className={`cursor-pointer md:block hidden h-[4.5vw] w-[4.5vw] left-[5vw] border-l-[0.15vw] border-t-[0.4vw] border-r-[0.4vw] border-b-[0.15vw] border-[#1F487C] text-black ${location.pathname ==="/"
         //   ? `rounded-[0.7vw] outline-none `
         //   : "h-[2.2vw] w-[100%] md:hidden block  text-[1vw] outline-none rounded-[0.5vw] pl-[1vw]"
         //   } `}
-        className={`cursor-pointer text-center  text-black ${location.pathname == "/"
+        className={`cursor-pointer text-center  text-black ${location.pathname === "/"
           ? ` h-[3.95vw] w-[3.95vw] rounded-[0.4vw] outline-none `
           : "h-[2.2vw] w-[95%] md:block hidden text-[1vw] outline-none rounded-[0.5vw] pl-[1vw]"
           } `}
 
-        placeholder={`${location.pathname == "/" ? "" : "Select Date"}`}
+        placeholder={`${location.pathname === "/" ? "" : "Select Date"}`}
       />
       {selectedDate ? (
         ""
       ) : (
         <>
           <div
-            className={`${location.pathname == "/" ? "block" : "hidden"
+            className={`${location.pathname === "/" ? "block" : "hidden"
               } flex-col absolute bottom-[0.5vw] left-[1vw] z-10 cursor-pointer  md:block hidden `}
             onClick={() => setShowPopup(!showPopup)}
           >
@@ -182,7 +203,7 @@ function DateInput(props, { selecteddate, setSelecteddate, dateSelection }) {
           </div>
           {/* ----------------------------------------------------------MOBILE VIEW------------------------------------------------------------------------------------------- */}
           <div
-            className={`${location.pathname == "/" ? "block" : "hidden"
+            className={`${location.pathname ==="/" ? "block" : "hidden"
               } flex-col absolute top-[-3vw] left-[0.5vw] z-10 cursor-pointer  md:hidden block`}
             onClick={() => setShowPopup(!showPopup)}
           >
@@ -197,7 +218,7 @@ function DateInput(props, { selecteddate, setSelecteddate, dateSelection }) {
         </>
 
       )}
-      {selectedDate && location.pathname == "/" && (
+      {selectedDate && location.pathname === "/" && (
         <div
           className={`flex-col absolute top-[50%] left-[50%] transform translate-y-[-50%] translate-x-[-50%] z-10`}
           onClick={() => setShowPopup(!showPopup)}
@@ -238,7 +259,7 @@ function DateInput(props, { selecteddate, setSelecteddate, dateSelection }) {
                 <DateItem
                   key={index}
                   dateObj={dateObj}
-                  selected={selectedDate == formatDate(dateObj)}
+                  selected={selectedDate ===formatDate(dateObj)}
                   currentMonth={dateInfo.currentMonth}
                   isDisabled={dateObj && isDateDisabled(dateObj)}
                   onClick={() => selectDateHandler(dateInfo)}
@@ -263,7 +284,7 @@ function DateInput(props, { selecteddate, setSelecteddate, dateSelection }) {
                 <DateItem
                   key={index}
                   dateObj={dateObj}
-                  selected={selectedDate == formatDate(dateObj)}
+                  selected={selectedDate ===formatDate(dateObj)}
                   currentMonth={dateInfo.currentMonth}
                   isDisabled={dateObj && isDateDisabled(dateObj)}
                   onClick={() => selectDateHandler(dateInfo)}

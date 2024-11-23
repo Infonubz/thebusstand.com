@@ -9,14 +9,14 @@ const api = axios.create({
 });
 
 const apiUrl = process.env.REACT_APP_API_URL;
-const crmUrl = process.env.REACT_CRM_API_URL;
+const apicrm = process.env.REACT_APP_CRM_API_URL;
 
 export const GetOffersOccupation = async (dispatch, id, setSpinning) => {
   console.log(id, "iddddddddddddddddd");
 
   try {
     const response = await axios.get(
-      `http://192.168.90.47:4000/api/offers-deals-occupation/${id}`
+      `${apicrm}/offers-deals-occupation/${id}`
     );
     dispatch({ type: OFFERS_OCCUPATION, payload: response.data });
     console.log(response, "Offers_occupationss");

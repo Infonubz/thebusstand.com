@@ -6,7 +6,7 @@ import "react-calendar/dist/Calendar.css"; // Import the styles
 // import profile from "../../assets/Profile.png";
 // import ticket from "../../assets/ticket.png";
 // import share from "../../assets/Share.png";
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+//import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 // import "../src/Components/TextMoving/TextMoving.css"; // Import the stylesheet
 import "tailwindcss/tailwind.css"; // Make sure you have Tailwind CSS imported in your project
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -15,7 +15,7 @@ import { Drawer, Popover, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import {
   BUS_SEARCH,
-  GET_FILTER_DATA,
+  //GET_FILTER_DATA,
   SEARCH_BUTTON,
   SHARE_BUTTON,
 } from "../../Store/type";
@@ -47,7 +47,7 @@ import "../../Components/MainComponenet/Datepicker.css";
 // import Sidebar from "./Sidebar";
 import "../../Components/MainComponenet/TimePicker.css";
 // import TimePickerComponent from "./TimePicker";
-import axios from "axios";
+//import axios from "axios";
 import { useLocation, useNavigate } from "react-router";
 // import bus2 from "../../assets/doubleducker.png";
 // import { RWebShare } from "react-web-share";
@@ -92,36 +92,14 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
     date: "",
     time: "",
   });
-  console.log(traveldetails.date, "traveldetailstraveldetails");
-  console.log(traveldetails.from.value, "fromoomomomomomo");
-  console.log(traveldetails.to, "tototototototototototototo");
-
-  // const fromValue = traveldetails.from.value
-  // console.log(fromValue, 'fromvaluevalue')
-
   const [toValue, setToValue] = useState("");
   const [fromValue, setFromValue] = useState("");
-
-  useEffect(() => {
-    // Update the state when traveldetails.to.value or traveldetails.from.value changes
-    setToValue(traveldetails.to.value);
-    setFromValue(traveldetails.from.value);
-    console.log(toValue, "traveldetailsto");
-    console.log(fromValue, "traveldetailsfrom");
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [traveldetails.to.value, traveldetails.from.value]);
-
   const busdata = useSelector((state) => state.bus_data);
-  console.log(busdata, "busdadaaadsasdas");
-
-  const handleChangeToValue = (value) => {
-    setToValue(value);
-    // localStorage.setItem("arrival", value);
-    console.log(value, "tooovalue");
-  };
-
   const [toBus, setToBus] = useState("");
+  const [modifyBtn, setModifyBtn] = useState(false);
+  const dispatch = useDispatch();
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
   const all = [
     {
       value: "Coimbatore",
@@ -155,6 +133,30 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
     },
   ];
 
+  const options = useMemo(
+    () => [
+      { value: "Chennai", label: "Chennai" },
+      { value: "Bangalore", label: "Bangalore" },
+      { value: "Pondicherry", label: "Pondicherry" },
+    ],
+    []
+  );
+
+  const tooptions = useMemo(
+    () => [
+      { value: "Coimbatore", label: "Coimbatore" },
+      { value: "Goa", label: "Goa" },
+      { value: "Hyderabad", label: "Hyderabad" },
+    ],
+    []
+  );
+
+  const handleChangeToValue = (value) => {
+    setToValue(value);
+    // localStorage.setItem("arrival", value);
+    console.log(value, "tooovalue");
+  };
+
   const handleChangeFromValue = (value) => {
     setFromValue(value);
 
@@ -168,9 +170,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
     } else {
       setToBus(all);
     }
-
     // localStorage.setItem("departure", value);
-    console.log(value, "fromvalue");
   };
 
   const handleChangeDateValue = (value) => {
@@ -178,6 +178,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
     // localStorage.setItem("selectdate", value);
     console.log(value, "selectdate");
   };
+
   // useEffect(()=>{
   //  localStorage.setItem("arrival", value);
   // localStorage.setItem("selectdate", value);
@@ -185,8 +186,6 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
 
   // },[])
 
-  const [modifyBtn, setModifyBtn] = useState(false);
-  const dispatch = useDispatch();
   useEffect(() => {
     // Retrieve the current date string from localStorage
     let dateTimeString = localStorage.getItem("selectdate");
@@ -248,30 +247,22 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
     }));
   }, [modifyBtn]);
 
-  console.log(localStorage.getItem("departure"), "hhhhhhhhhhhh");
+  useEffect(() => {
+    // Update the state when traveldetails.to.value or traveldetails.from.value changes
+    setToValue(traveldetails.to.value);
+    setFromValue(traveldetails.from.value);
+    console.log(toValue, "traveldetailsto");
+    console.log(fromValue, "traveldetailsfrom");
 
-  const options = useMemo(
-    () => [
-      { value: "Chennai", label: "Chennai" },
-      { value: "Bangalore", label: "Bangalore" },
-      { value: "Pondicherry", label: "Pondicherry" },
-    ],
-    []
-  );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [traveldetails.to.value, traveldetails.from.value]);
 
-  const tooptions = useMemo(
-    () => [
-      { value: "Coimbatore", label: "Coimbatore" },
-      { value: "Goa", label: "Goa" },
-      { value: "Hyderabad", label: "Hyderabad" },
-    ],
-    []
-  );
   // const onSearch = (value) => {
   //   console.log("search:", value);
   // };
+
   const handleSearch = () => {
-    sessionStorage.setItem("spinner", "true"); 
+    sessionStorage.setItem("spinner", "true");
     localStorage.setItem("arrival", toValue);
     localStorage.setItem("selectdate", fromDate);
     localStorage.setItem("departure", fromValue);
@@ -299,7 +290,6 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   //     to: traveldetails.from,
   //   });
   // };
-  console.log(traveldetails, "hhhh");
 
   // const filterOption = (input, option) =>
   //   (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
@@ -309,7 +299,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   // const handleChange = (newTime) => {
   //   setTime(newTime);
   // };
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+
   // const openModal = () => {
   //   console.log("open");
   //   setModalIsOpen(true);
@@ -602,67 +592,67 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   //   setTimePickerlist(timString);
   //   handlefilter(timString);
   // };
-  const handlefilter = async (timString) => {
-    try {
-      const payload = {
-        // source: localStorage.getItem("departure"),
-        De_source: "Chennai",
-        Ar_source: "Coimbatore",
-        AC: "FALSE",
-        NON_AC: "FALSE",
-        Seater: "FALSE",
-        Sleeper: "FALSE",
-        Semi_sleeper: "FALSE",
-        pickupPoints: "",
-        dropPoints: "",
-        selectedOperators: "",
-        amenities: "",
-        timedeparture: "",
-        timeArrival: "",
-        price: "FALSE",
-        departure: "FALSE",
-        arrival: "FALSE",
-        seats: "FASLE",
-        rating: "FALSE",
-        start_time: timString,
-        // timedeparture:"6:00 AM to 11:00 AM"
-      };
-      // const place = localStorage.getItem("departure");
-      // const response = await axios.get(
-      //   place === "Chennai"
-      //     ? "http://192.168.90.47:3000/chennai_src"
-      //     : place === "Bangalore"
-      //     ? "http://192.168.90.47:3000/bangalore_src"
-      //     : "http://192.168.90.47:3000/pondicherry_src",
-      const response = await axios.get(
-        "http://192.168.90.43:8090/bus_Api_Filter",
-        // place === "Chennai"
-        //   ? "http://192.168.90.43:8090/chennai_src"
-        //   : place === "Bangalore"
-        //   ? "http://192.168.90.43:8090/bangalore_src"
-        //   : "http://192.168.90.43:8090/pondicherry_src",
-        {
-          params: payload,
-        }
-      );
-      dispatch({
-        type: GET_FILTER_DATA,
-        payload: response.data,
-      });
-      console.log("Response", response.data);
-    } catch (error) {
-      console.error("Error", error);
-    }
-  };
-  const depature = localStorage.getItem("departure");
+  // const handlefilter = async (timString) => {
+  //   try {
+  //     const payload = {
+  //       // source: localStorage.getItem("departure"),
+  //       De_source: "Chennai",
+  //       Ar_source: "Coimbatore",
+  //       AC: "FALSE",
+  //       NON_AC: "FALSE",
+  //       Seater: "FALSE",
+  //       Sleeper: "FALSE",
+  //       Semi_sleeper: "FALSE",
+  //       pickupPoints: "",
+  //       dropPoints: "",
+  //       selectedOperators: "",
+  //       amenities: "",
+  //       timedeparture: "",
+  //       timeArrival: "",
+  //       price: "FALSE",
+  //       departure: "FALSE",
+  //       arrival: "FALSE",
+  //       seats: "FASLE",
+  //       rating: "FALSE",
+  //       start_time: timString,
+  //       // timedeparture:"6:00 AM to 11:00 AM"
+  //     };
+  //     // const place = localStorage.getItem("departure");
+  //     // const response = await axios.get(
+  //     //   place === "Chennai"
+  //     //     ? "http://192.168.90.47:3000/chennai_src"
+  //     //     : place === "Bangalore"
+  //     //     ? "http://192.168.90.47:3000/bangalore_src"
+  //     //     : "http://192.168.90.47:3000/pondicherry_src",
+  //     const response = await axios.get(
+  //       "http://192.168.90.43:8090/bus_Api_Filter",
+  //       // place === "Chennai"
+  //       //   ? "http://192.168.90.43:8090/chennai_src"
+  //       //   : place === "Bangalore"
+  //       //   ? "http://192.168.90.43:8090/bangalore_src"
+  //       //   : "http://192.168.90.43:8090/pondicherry_src",
+  //       {
+  //         params: payload,
+  //       }
+  //     );
+  //     dispatch({
+  //       type: GET_FILTER_DATA,
+  //       payload: response.data,
+  //     });
+  //     console.log("Response", response.data);
+  //   } catch (error) {
+  //     console.error("Error", error);
+  //   }
+  // };
+  //const depature = localStorage.getItem("departure");
 
   // const handlefilter = useCallback(() => {
   //   // Your filter logic here
   // }, []);
 
-  useEffect(() => {
-    handlefilter();
-  }, [depature]);
+  // useEffect(() => {
+  //   handlefilter();
+  // }, [depature]);
 
   const [modalshow, setModalShow] = useState(false);
   const [selectinput, setSelectInput] = useState("");
@@ -714,7 +704,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   const [fromDate, setFromDate] = useState(localStorage.getItem("selectdate"));
   // const [toDate, setToDate] = useState(null);
   console.log(fromDate, "fromDate");
-  const dateSelected = sessionStorage.getItem("departure_date")
+  const dateSelected = sessionStorage.getItem("departure_date");
   // const handleProPage = () => {
   //   navigation("/main", { state: { tabIndex: 1 } });
   // };
@@ -963,7 +953,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
             //   transform: "rotateY(180deg)",
             // }}
           />
-          <div className="pl-[1vw] md:pl-[19vw] grid grid-cols-12 w-full md:h-[4.5vw] h-[12vw]">
+          <div className="pl-[1vw] md:pl-[19.5vw] md:pt-[0.2vw] grid grid-cols-12 w-full md:h-[4.5vw] h-[12vw]">
             {/* <div className="col-span-2 w-full"> */}
             {/* </div> */}
             <div className="hidden">
@@ -1228,7 +1218,10 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                   /> */}
                     <div className="md:col-span-1 mr-[1vw] md:block hidden mt-[0.2vw]">
                       <div className="bg-white w-full  h-[2.3vw]  rounded-[0.5vw] text-[1.1vw]">
-                        <DateInput value={dateSelected} onChange={setFromDate} />
+                        <DateInput
+                          value={dateSelected}
+                          onChange={setFromDate}
+                        />
                       </div>
                     </div>
                     {/* <CalendarComponent value={dateValue} /> */}
@@ -1310,11 +1303,10 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                     }}
                     style={{
                       width: "100%",
-                      height: "100%",
-                      color: "red  ",
-                      fontSize: "1.2vw",
+                      height: "2.5vw",
+                      color: "red",
+                      fontSize: "1.5vw",
                     }}
-                    className="text-[1vw]"
                     placeholder="Search to Select"
                     optionFilterProp="label"
                     filterSort={(optionA, optionB) =>
@@ -1322,32 +1314,6 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                         .toLowerCase()
                         .localeCompare((optionB?.label ?? "").toLowerCase())
                     }
-                    // options={[
-                    //   {
-                    //     value: toValue,
-                    //     label: toValue,
-                    //   },
-                    //   {
-                    //     value: '2',
-                    //     label: 'Closed',
-                    //   },
-                    //   {
-                    //     value: '3',
-                    //     label: 'Communicated',
-                    //   },
-                    //   {
-                    //     value: '4',
-                    //     label: 'Identified',
-                    //   },
-                    //   {
-                    //     value: '5',
-                    //     label: 'Resolved',
-                    //   },
-                    //   {
-                    //     value: '6',
-                    //     label: 'Cancelled',
-                    //   },
-                    // ]}
                     options={options}
                   />
                 ) : (
@@ -1414,9 +1380,9 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                     }}
                     style={{
                       width: "100%",
-                      height: "100%",
+                      height: "2.5vw",
                       color: "red  ",
-                      fontSize: "1.2vw",
+                      fontSize: "1.5vw",
                     }}
                     className="text-[1vw]"
                     placeholder="Search to Select"
@@ -1495,11 +1461,13 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
               <div className="grid grid-cols-4 gap-[1vw]  px-[0.5vw] ">
                 <div className="col-span-2">
                   {modifyBtn === true ? (
-                    <div className="bg-white w-full  h-[2.3vw] rounded-[0.5vw] text-[1.1vw]">
-                      <DateInput
-                        value={fromDate}
-                        onChange={handleChangeDateValue}
-                      />
+                    <div className="bg-white w-full h-[2.5vw] rounded-[0.5vw] text-[1.1vw]">
+                      <div className="pt-[0.2vw]">
+                        <DateInput
+                          value={fromDate}
+                          onChange={handleChangeDateValue}
+                        />
+                      </div>
                     </div>
                   ) : (
                     <div className="relative custnav flex justify-center">
@@ -1526,7 +1494,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                 {modifyBtn === true ? (
                   <div className="col-span-2">
                     <div
-                      className="bg-white w-full  h-[2.3vw]  rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer"
+                      className="bg-white w-full h-[2.5vw] rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer"
                       onClick={() => {
                         handleSearch();
                         setModifyBtn(false);
@@ -1538,7 +1506,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                 ) : (
                   <div className="col-span-2">
                     <div
-                      className="bg-white w-full  h-[2.3vw] mt-[.4vw]  rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer"
+                      className="bg-white w-full h-[2.5vw] mt-[.3vw] rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer"
                       onClick={() => setModifyBtn(true)}
                     >
                       Modify

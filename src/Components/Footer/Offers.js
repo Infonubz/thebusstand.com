@@ -26,7 +26,7 @@ const Offers = () => {
           {/* <img src={homesky} className="w-full h-[10vw] bg-[#2B8EE4]" /> */}
           <div
             className=" h-[10vw] overflow-x-hidden"
-            style={{
+            style={{ 
               backgroundImage: `url(${homesky})`,
               overflow: "hidden",
               backgroundSize: "cover",

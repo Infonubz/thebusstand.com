@@ -42,6 +42,8 @@ export default function SingleBookingCardList() {
   const closeDrawer = () => {
     setModalOpen(false);
   };
+  const apiUrlimage = process.env.REACT_APP_API_URL_IMAGE;
+  const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
   console.log(dropDown, "dropDown444");
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -218,7 +220,7 @@ export default function SingleBookingCardList() {
                 <div className="absolute right-[30vw] top-[-4vw]">
                   {item.logos != null && (
                     <img
-                      src={`http://192.168.90.47:4001${item.logos}`}
+                      src={`${apiUrlimage}/${item.logos}`}
                       // src={orange_travel_logo}
                       alt="logos"
                       className={`w-[7.5vw] h-[7.5vw] rounded-full bg-white  ${

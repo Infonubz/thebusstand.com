@@ -17,18 +17,18 @@ import LoginMobile from "../Login/LoginMobile";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { PiUserCircleDuotone } from "react-icons/pi";
 import { toast } from "react-toastify";
-import { capitalizeFirstLetter } from "./Captalization";
+import { capitalizeFirstLetter, capitalizeLetter } from "./Captalization";
 import { MdStarRate } from "react-icons/md";
 import totalbus from "../../assets/totalbus.png";
 import busname from "../../assets/busname.png"
-export default function CommonMainNavbar() {
+export default function CommonMainNavbar({userName}) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [loginIsOpen, setLoginIsOpen] = useState(false);
   const [loginMobileIsOpen, setLoginMobileIsOpen] = useState(false);
   const [logModalIsOpen, setLogModalIsOpen] = useState(false);
   const [accDrawer, setAccDrawer] = useState(false);
   const [logMobileIsOpen, setLogMobileIsOpen] = useState(false);
-  const [LoginUser_Name, setLoginUser_Name] = useState(sessionStorage.getItem("user_name"));
+  const [LoginUser_Name, setLoginUser_Name] = useState(sessionStorage.getItem("user_name")) || userName;
   const closeLoginModal = () => {
     setLoginIsOpen(false);
     setLoginMobileIsOpen(false);
@@ -64,6 +64,7 @@ export default function CommonMainNavbar() {
     sessionStorage.clear();
     localStorage.clear();
     toast.success("Logout Successfully");
+    setLoginUser_Name("");
     navigation("/");
     // window.location.reload();
   };
@@ -121,11 +122,24 @@ export default function CommonMainNavbar() {
   ];
   //const LoginUser_Name = sessionStorage.getItem("user_name");
 
+  // useEffect(() => {
+  //  sessionStorage.getItem("user_name");
+  //   setLoginUser_Name(sessionStorage.getItem("user_name"));
+  //   console.log(LoginUser_Name,"User Name");
+  // }, [sessionStorage.getItem("user_name")]);
+
+  // const [userName, setUserName] = useState(sessionStorage.getItem("user_name") || "");
+
   useEffect(() => {
-   sessionStorage.getItem("user_name");
-    setLoginUser_Name(sessionStorage.getItem("user_name"));
-    console.log(LoginUser_Name,"User Name");
-  }, [sessionStorage.getItem("user_name")]);
+    sessionStorage.getItem("user_name");
+    const storedName = sessionStorage.getItem("user_name");
+    if (storedName !== userName) {
+      setLoginUser_Name(storedName); // Update the state with the latest value
+    }
+    else{
+      setLoginUser_Name(sessionStorage.getItem("user_name"));
+    }
+  }, [userName, sessionStorage.getItem("user_name")]);
   
 
   const location = useLocation();
@@ -247,7 +261,7 @@ export default function CommonMainNavbar() {
                           <FaUserCircle size="1.5vw" color="#1F487C" />
                         </div>
                         <p className="text-[1.2vw] font-semibold text-[#1F487C]">
-                          {capitalizeFirstLetter(LoginUser_Name)}
+                          {capitalizeLetter(LoginUser_Name)}
                         </p>
                       </div>
                     </Space>

@@ -84,7 +84,9 @@ const TrendingOffer = () => {
   const dispatch = useDispatch();
   const promotionlist = useSelector((state) => state.promo_list);
   const colors = ColorCodes();
+  const apiUrlimage = process.env.REACT_APP_API_URL_IMAGE;
 
+  const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
   const CorporateTravellers = useMemo(() => [
     { img: CT1, valid: "30 May", coupon: "BUCKS14" },
     { img: CT2, valid: "15 JUN", coupon: "AVIS100" },
@@ -319,7 +321,7 @@ const Tourist = useMemo(() => [
                     <div key={index} className="relative">
                       <img
                       alt="background_image"
-                        src={`http://192.168.90.47:4000${item?.background_image}`}
+                        src={`${apicrmimage}/${item?.background_image}`}
                         className="w-[84vw]  h-[12vw]"
                       />
                       <span className="absolute left-[5.8vw] top-[0vw] z-[2] ">
@@ -387,7 +389,7 @@ const Tourist = useMemo(() => [
                     <div key={index} className="relative">
                       <img
                       alt="background_image"
-                        src={`http://192.168.90.47:4000${item?.background_image}`}
+                        src={`${apicrmimage}/${item?.background_image}`}
                         className="w-full h-full "
                       />
                       <span className="absolute left-[23.3vw] top-[-.2vw] ">

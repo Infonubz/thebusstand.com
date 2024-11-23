@@ -22,8 +22,8 @@ import { FaBus } from "react-icons/fa";
 import bg from "../../assets/mobile pattern.png";
 
 const SidebarMobile = ({
-  sidebarToggle,
-  share,
+  // sidebarToggle,
+  // share,
   operatorchecked,
   setOperatorChecked,
   pickuptime,
@@ -60,27 +60,285 @@ const SidebarMobile = ({
   const [handlesearchPickup, setHandleSearchPickup] = useState("");
   const [handlesearchOperators, setHandleSearchOperators] = useState("");
   const [amenitieslist, setAmenitiesList] = useState([]);
-  console.log(amenitieslist, "amenitieslist_amenitieslist");
+  const [showingdata, setShowingData] = useState([]);
+  const [drawershowdata, setDrawerShowData] = useState([]);
+  const set_ac_local = localStorage.getItem("ac");
+  const seatType_local = localStorage.getItem("seatType");
+  const [pickUp_list, setPickUpList] = useState({});
 
   const [dropfulllist, setDropFullList] = useState([]);
   const [pickupfullist, setPickupFullList] = useState([]);
-  console.log(pickupfullist, "pickingFullList_mobile");
   const [opertorfulllist, setOperatorFullList] = useState([]);
+
+  const selectdate_local = localStorage.getItem("selectdate");
+  const arrange_data = useSelector((state) => state.rearrange);
+  const [searchvalue, setSearchValue] = useState({
+    pickup: "",
+    drop: "",
+    operator: "",
+  });
+  const [filtervalue, setFitervalue] = useState({
+    ac: false,
+    non_ac: false,
+    sleeper: false,
+    seater: false,
+    amenities: [],
+    radius: false,
+  });
+  const [timefiltervalue, setTimeFitervalue] = useState({});
+  const dispatch = useDispatch();
+  const busdata = useSelector((state) => state.bus_data);
+ // const sharing = useSelector((state) => state.share);
+  const [boolean, setBoolean] = useState({
+    pickup: true,
+    drop: true,
+    pickup_time: true,
+    drop_time: true,
+    amenities: true,
+    operators: true,
+    vehicle: true,
+    price: true,
+    radius: true,
+    ratings: true,
+  });
+  const fulllist = useSelector((state) => state.get_data);
+
 
   const toggleDrawer = (name) => {
     setIsDrawerOpen(!isDrawerOpen);
     setIsDrawerName(name);
-    sessionStorage.setItem("isluxury", false);
+    sessionStorage.setItem("isMbleLuxury", false);
   };
-  const [showingdata, setShowingData] = useState([]);
-  const [drawershowdata, setDrawerShowData] = useState([]);
-  console.log(drawershowdata, "line_64_checking");
-  console.log(showingdata, "drawer_show_data");
+
 
   const closeDrawer = () => {
     setDrawerSearch("");
     setIsDrawerOpen(!isDrawerOpen);
   };
+
+  const capitalizeFirstLetter = (string) => {
+    return string
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
+
+  const handleClear = () => {
+    setFitervalue({
+      ...filtervalue,
+      ac: false,
+      non_ac: false,
+      sleeper: false,
+      seater: false,
+      radius: false,
+    });
+    setDropChecked({});
+    setOperatorChecked({});
+    setPickupChecked({});
+    setAmenitiesValue({});
+    setValue([0, 3000]);
+    setFitervalue({
+      ac: false,
+      non_ac: false,
+      sleeper: false,
+      seater: false,
+      amenities: [],
+      radius: false,
+    });
+    setTimeFitervalue({
+      ...timefiltervalue,
+    });
+    setDropTime("");
+    setPickUpTime("");
+    setAcFilter("");
+    setSeatTypeFilter("");
+    setBusType("");
+    setNoramlBus("");
+  };
+
+  const amenitiesClear = () => {
+    setAmenitiesValue({});
+  };
+  console.log(amenitiesvalue, "amenitiesvalue");
+
+  const vehicleclear = () => {
+    setAcFilter("");
+    setSeatTypeFilter("");
+    setBusType("");
+    setNoramlBus("");
+  };
+
+  const handlePickupCheckbox = (event, itemName) => {
+    const { checked } = event.target;
+    setPickupChecked((prevState) => {
+      if (checked) {
+        return { ...prevState, [itemName]: true };
+      } else {
+        const updatedItems = { ...prevState };
+        delete updatedItems[itemName];
+        return updatedItems;
+      }
+    });
+  };
+
+  const handleDropPoint = useCallback(async () => {
+    try {
+      const dropPointFilter = await Drop_Point_List(
+        localStorage.getItem("departure"),
+        localStorage.getItem("arrival"),
+        localStorage.getItem("selectdate"),
+        dispatch
+      );
+      console.log(dropPointFilter, "dropPointFilter");
+      setPickUpList(dropPointFilter);
+    } catch (error) {
+      console.error("Error", error);
+    }
+  }, [dispatch]);
+
+
+  const handleAmenityCheckbox = (event, itemName) => {
+    const { checked } = event?.target;
+
+    setAmenitiesValue((prevState) => {
+      if (checked) {
+        console.log(prevState, "drop checked");
+        return { ...prevState, [itemName]: true };
+      } else {
+        const updatedItems = { ...prevState };
+        delete updatedItems[itemName];
+        return updatedItems;
+      }
+    });
+  };
+
+  const handledropCheckbox = (event, itemName) => {
+    const { checked } = event.target;
+    setDropChecked((prevState) => {
+      if (checked) {
+        return { ...prevState, [itemName]: true };
+      } else {
+        const updatedItems = { ...prevState };
+        delete updatedItems[itemName];
+        return updatedItems;
+      }
+    });
+  };
+  
+  const handleoperatorCheckbox = (event, itemName) => {
+    const { checked } = event.target;
+    setOperatorChecked((prevState) => {
+      if (checked) {
+        return { ...prevState, [itemName]: true };
+      } else {
+        const updatedItems = { ...prevState };
+        delete updatedItems[itemName];
+        return updatedItems;
+      }
+    });
+  };
+  const pickupClear = () => {
+    setPickupChecked({});
+  };
+  const dropClear = () => {
+    setDropChecked({});
+  };
+  const operatorClear = () => {
+    setOperatorChecked({});
+  };
+  const timeClear = () => {
+    setDropTime("");
+  };
+  const pickuptimeClear = () => {
+    setPickUpTime("");
+  };
+
+
+  const handlefilter = useCallback(async () => {
+    // console.log(amenitiesvalue, "searchvaluesearchvalue");
+    console.log(pickupchecked, "pickupchecked");
+    try {
+      const pickupcheck = Object.keys(pickupchecked).filter(
+        (key) => pickupchecked[key]
+      );
+      const dropcheck = Object.keys(dropchecked).filter(
+        (key) => dropchecked[key]
+      );
+      const operatorcheck = Object.keys(operatorchecked).filter(
+        (key) => operatorchecked[key]
+      );
+
+      const transformedData = amenitiesvalue?.reduce((acc, item) => {
+        // Check if item exists and set its value to true
+        acc[item] = true;
+        return acc;
+      }, {});
+      const amenitiescheck = Object.keys(transformedData).filter(
+        (key) => transformedData[key]
+      );
+      console.log(amenitiescheck.join(","), "transformedData");
+      const payload = {
+        // source: localStorage.getItem("depature"),
+        De_source: "Chennai",
+        Ar_source: "Coimbatore",
+        AC: acfilter === "mbleAc" ? "TRUE" : "FALSE",
+        NON_AC: acfilter === "mbleNon_Ac" ? "TRUE" : "FALSE",
+        Seater: seattypefilter === "seater" ? "TRUE" : "FALSE",
+        Sleeper: seattypefilter === "sleeper" ? "TRUE" : "FALSE",
+       // Semi_sleeper: seattypefilter === "is_Luxury" ? "TRUE" : "FALSE",
+        pickupPoints: pickupcheck.join(","),
+        dropPoints: dropcheck.join(","),
+        selectedOperators: operatorcheck.join(","),
+        amenities: amenitiescheck.join(","),
+        timeDepature: pickuptime,
+        timeArrival: droptime,
+        price: arrange_data?.price ? arrange_data?.price : "FALSE",
+        depature: arrange_data.depature ? arrange_data.depature : "FALSE",
+        arrival: arrange_data.arrival ? arrange_data.arrival : "FALSE",
+        seats: arrange_data.seats ? arrange_data.seats : "FASLE",
+        rating: arrange_data.rating ? arrange_data.rating : "FALSE",
+        // timeDepature:"6am-11am"
+      };
+      console.log(payload, "sidebarMobile_payload");
+      console.log(operatorchecked, "dropcheck");
+      const response = await axios.get(
+        "http://192.168.90.43:8090/bus_Api_Filter",
+        {
+          params: payload,
+        }
+      );
+      dispatch({
+        type: GET_FILTER_DATA,
+        payload: response.data,
+      });
+      console.log("Response", response);
+    } catch (error) {
+      console.error("Error", error);
+    }
+  }, [
+    acfilter,
+    seattypefilter,
+    pickupchecked,
+    dropchecked,
+    operatorchecked,
+    amenitiesvalue,
+    pickuptime,
+    arrange_data,
+    droptime,
+    dispatch,
+  ]);
+
+  const sortedList = drawershowdata
+  ?.slice()
+  ?.sort((a, b) =>
+    isDrawerName === "amenities"
+      ? a?.amenity?.localeCompare(b?.amenity)
+      : isDrawerName === "operators"
+      ? a?.operator?.localeCompare(b?.operator)
+      : a?.name?.localeCompare(b?.name)
+  );
+
 
   const Search = async (e, values) => {
     console.log(values, "log11111searchhh");
@@ -168,143 +426,6 @@ const SidebarMobile = ({
     }
   }, [isDrawerName, drawerSearch, showingdata]);
 
-  const capitalizeFirstLetter = (string) => {
-    return string
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
-
-  const arrange_data = useSelector((state) => state.rearrange);
-  const [searchvalue, setSearchValue] = useState({
-    pickup: "",
-    drop: "",
-    operator: "",
-  });
-  const [filtervalue, setFitervalue] = useState({
-    ac: false,
-    non_ac: false,
-    sleeper: false,
-    seater: false,
-    amenities: [],
-    radius: false,
-  });
-  console.log(filtervalue, "filter_valuee");
-  const [timefiltervalue, setTimeFitervalue] = useState({});
-
-  const handleClear = () => {
-    setFitervalue({
-      ...filtervalue,
-      ac: false,
-      non_ac: false,
-      sleeper: false,
-      seater: false,
-      radius: false,
-    });
-    setDropChecked({});
-    setOperatorChecked({});
-    setPickupChecked({});
-    setAmenitiesValue({});
-    setValue([0, 3000]);
-    setFitervalue({
-      ac: false,
-      non_ac: false,
-      sleeper: false,
-      seater: false,
-      amenities: [],
-      radius: false,
-    });
-    setTimeFitervalue({
-      ...timefiltervalue,
-    });
-    setDropTime("");
-    setPickUpTime("");
-    setAcFilter("");
-    setSeatTypeFilter("");
-    setBusType("");
-    setNoramlBus("");
-  };
-  const dispatch = useDispatch();
-
-  const amenitiesClear = () => {
-    setAmenitiesValue({});
-  };
-  console.log(amenitiesvalue, "amenitiesvalue");
-
-  const vehicleclear = () => {
-    setAcFilter("");
-    setSeatTypeFilter("");
-    setBusType("");
-    setNoramlBus("");
-  };
-  const handlePickupCheckbox = (event, itemName) => {
-    const { checked } = event.target;
-    setPickupChecked((prevState) => {
-      if (checked) {
-        return { ...prevState, [itemName]: true };
-      } else {
-        const updatedItems = { ...prevState };
-        delete updatedItems[itemName];
-        return updatedItems;
-      }
-    });
-  };
-
-  const handleAmenityCheckbox = (event, itemName) => {
-    const { checked } = event?.target;
-
-    setAmenitiesValue((prevState) => {
-      if (checked) {
-        console.log(prevState, "drop checked");
-        return { ...prevState, [itemName]: true };
-      } else {
-        const updatedItems = { ...prevState };
-        delete updatedItems[itemName];
-        return updatedItems;
-      }
-    });
-  };
-
-  const handledropCheckbox = (event, itemName) => {
-    const { checked } = event.target;
-    setDropChecked((prevState) => {
-      if (checked) {
-        return { ...prevState, [itemName]: true };
-      } else {
-        const updatedItems = { ...prevState };
-        delete updatedItems[itemName];
-        return updatedItems;
-      }
-    });
-  };
-  const handleoperatorCheckbox = (event, itemName) => {
-    const { checked } = event.target;
-    setOperatorChecked((prevState) => {
-      if (checked) {
-        return { ...prevState, [itemName]: true };
-      } else {
-        const updatedItems = { ...prevState };
-        delete updatedItems[itemName];
-        return updatedItems;
-      }
-    });
-  };
-  const pickupClear = () => {
-    setPickupChecked({});
-  };
-  const dropClear = () => {
-    setDropChecked({});
-  };
-  const operatorClear = () => {
-    setOperatorChecked({});
-  };
-  const timeClear = () => {
-    setDropTime("");
-  };
-  const pickuptimeClear = () => {
-    setPickUpTime("");
-  };
-
   useEffect(() => {
     const filterfun = () => {
       if (filtervalue) {
@@ -316,56 +437,18 @@ const SidebarMobile = ({
     };
     filterfun();
   }, [filtervalue, dispatch]);
-  const busdata = useSelector((state) => state.bus_data);
-  console.log(busdata, "busdata_working_");
 
-  const [boolean, setBoolean] = useState({
-    pickup: true,
-    drop: true,
-    pickup_time: true,
-    drop_time: true,
-    amenities: true,
-    operators: true,
-    vehicle: true,
-    price: true,
-    radius: true,
-    ratings: true,
-  });
-  const [pickUp_list, setPickUpList] = useState({});
-  console.log(pickUp_list.boarding_points, "pick_upcc_mob");
-
-  const set_ac_local = localStorage.getItem("ac");
-  const seatType_local = localStorage.getItem("seatType");
-  console.log(busType, "GOLDEN_TICKET");
-  console.log(acfilter, "filtervalue.radius");
-  console.log(seattypefilter, "seattypefileterer");
 
   useEffect(() => {
     if (localStorage.getItem("ac") === "true") {
-      setAcFilter("ac");
+      setAcFilter("mbleAc");
       console.log(localStorage.getItem("ac"), "joooooooo");
     }
     if (localStorage.getItem("seatType")) {
       setSeatTypeFilter(localStorage.getItem("seatType"));
     }
-  }, [set_ac_local, seatType_local]);
+  }, [set_ac_local, seatType_local, setAcFilter, setSeatTypeFilter]);
 
-  const handleDropPoint = useCallback(async () => {
-    try {
-      const dropPointFilter = await Drop_Point_List(
-        localStorage.getItem("departure"),
-        localStorage.getItem("arrival"),
-        localStorage.getItem("selectdate"),
-        dispatch
-      );
-      console.log(dropPointFilter, "dropPointFilter");
-      setPickUpList(dropPointFilter);
-    } catch (error) {
-      console.error("Error", error);
-    }
-  }, [dispatch]);
-
-  const selectdate_local = localStorage.getItem("selectdate");
 
   useEffect(() => {
     handleDropPoint();
@@ -377,85 +460,9 @@ const SidebarMobile = ({
     dispatch,
   ]);
 
-  const handlefilter = useCallback(async () => {
-    // console.log(amenitiesvalue, "searchvaluesearchvalue");
-    console.log(pickupchecked, "pickupchecked");
-    try {
-      const pickupcheck = Object.keys(pickupchecked).filter(
-        (key) => pickupchecked[key]
-      );
-      const dropcheck = Object.keys(dropchecked).filter(
-        (key) => dropchecked[key]
-      );
-      const operatorcheck = Object.keys(operatorchecked).filter(
-        (key) => operatorchecked[key]
-      );
-
-      const transformedData = amenitiesvalue?.reduce((acc, item) => {
-        // Check if item exists and set its value to true
-        acc[item] = true;
-        return acc;
-      }, {});
-      const amenitiescheck = Object.keys(transformedData).filter(
-        (key) => transformedData[key]
-      );
-      console.log(amenitiescheck.join(","), "transformedData");
-      const payload = {
-        // source: localStorage.getItem("depature"),
-        De_source: "Chennai",
-        Ar_source: "Coimbatore",
-        AC: acfilter === "ac" ? "TRUE" : "FALSE",
-        NON_AC: acfilter === "non_ac" ? "TRUE" : "FALSE",
-        Seater: seattypefilter === "seater" ? "TRUE" : "FALSE",
-        Sleeper: seattypefilter === "sleeper" ? "TRUE" : "FALSE",
-        Semi_sleeper: seattypefilter === "is_Luxury" ? "TRUE" : "FALSE",
-        pickupPoints: pickupcheck.join(","),
-        dropPoints: dropcheck.join(","),
-        selectedOperators: operatorcheck.join(","),
-        amenities: amenitiescheck.join(","),
-        timeDepature: pickuptime,
-        timeArrival: droptime,
-        price: arrange_data?.price ? arrange_data?.price : "FALSE",
-        depature: arrange_data.depature ? arrange_data.depature : "FALSE",
-        arrival: arrange_data.arrival ? arrange_data.arrival : "FALSE",
-        seats: arrange_data.seats ? arrange_data.seats : "FASLE",
-        rating: arrange_data.rating ? arrange_data.rating : "FALSE",
-        // timeDepature:"6am-11am"
-      };
-      console.log(payload, "sidebarMobile_payload");
-      console.log(operatorchecked, "dropcheck");
-      const response = await axios.get(
-        "http://192.168.90.43:8090/bus_Api_Filter",
-        {
-          params: payload,
-        }
-      );
-      dispatch({
-        type: GET_FILTER_DATA,
-        payload: response.data,
-      });
-      console.log("Response", response);
-    } catch (error) {
-      console.error("Error", error);
-    }
-  }, [
-    acfilter,
-    seattypefilter,
-    pickupchecked,
-    dropchecked,
-    operatorchecked,
-    amenitiesvalue,
-    pickuptime,
-    arrange_data,
-    droptime,
-    dispatch,
-  ]);
   useEffect(() => {
     handlefilter();
   }, [searchvalue, departure_local, arrival_local, handlefilter]);
-
-  const fulllist = useSelector((state) => state.get_data);
-  console.log(fulllist, "searchvaluesearchvalue555");
 
   useEffect(() => {
     setAmenitiesList(pickUp_list?.amenities);
@@ -497,24 +504,9 @@ const SidebarMobile = ({
     setOperatorFullList(traveldata);
     setOperatorFullList(pickUp_list?.operators);
   }, [searchvalue, fulllist, pickUp_list]);
-  const sortedList = drawershowdata
-    ?.slice()
-    ?.sort((a, b) =>
-      isDrawerName === "amenities"
-        ? a?.amenity?.localeCompare(b?.amenity)
-        : isDrawerName === "operators"
-        ? a?.operator?.localeCompare(b?.operator)
-        : a?.name?.localeCompare(b?.name)
-    );
-  console.log(sortedList, "dropponitlist");
-  console.log(share, "shareshareshare");
-  const sharing = useSelector((state) => state.share);
-  console.log(sharing, "sharing");
 
-  console.log(sidebarToggle, "sidebarToggle");
-  console.log(drawershowdata, "drawershowdatadrawershowdata");
-  console.log(sessionStorage.getItem("isLuxury"), "luxury_Value");
-  console.log(NormalBus, "NormalBus");
+
+
   return (
     <>
       <div
@@ -635,10 +627,10 @@ const SidebarMobile = ({
                     onClick={() => {
                       if (busType) {
                         setBusType(false);
-                        sessionStorage.setItem("isLuxury", false);
+                        sessionStorage.setItem("isMbleLuxury", false);
                       } else {
                         setBusType(true);
-                        sessionStorage.setItem("isLuxury", true);
+                        sessionStorage.setItem("isMbleLuxury", true);
                       }
                     }}
                   >
@@ -654,17 +646,17 @@ const SidebarMobile = ({
                 <div className="grid grid-cols-2 pt-[2vw] gap-[3.5vw] mx-[2vw]">
                   <button
                     className={`${
-                      acfilter === "ac" ? "bg-[#1F487C]" : "bg-white"
+                      acfilter === "mbleAc" ? "bg-[#1F487C]" : "bg-white"
                     }  ${
-                      acfilter === "ac"
+                      acfilter === "mbleAc"
                         ? "text-white border-[#1F487C]"
                         : "border-gray-300"
                     } w-full border-[0.1vw] rounded-md cursor-pointer `}
                     onClick={() => {
-                      if (acfilter === "ac") {
+                      if (acfilter === "mbleAc") {
                         setAcFilter("");
                       } else {
-                        setAcFilter("ac");
+                        setAcFilter("mbleAc");
                       }
                     }}
                   >
@@ -672,7 +664,7 @@ const SidebarMobile = ({
                       {/* <span>
                     <TbAirConditioning size={15} className="mx-1 " />
                   </span> */}
-                      {acfilter === "ac" ? (
+                      {acfilter === "mbleAc" ? (
                         <img
                           src={s_c_ac}
                           className="w-[4.5vw] h-[4.5vw]"
@@ -694,17 +686,17 @@ const SidebarMobile = ({
                   </button>
                   <button
                     className={`${
-                      acfilter === "non_ac" ? "bg-[#1F487C]" : "bg-white"
+                      acfilter === "mbleNon_Ac" ? "bg-[#1F487C]" : "bg-white"
                     } ${
-                      acfilter === "non_ac"
+                      acfilter === "mbleNon_Ac"
                         ? "text-white border-[#1F487C]"
                         : "border-gray-300"
                     } w-full border-[0.1vw]  rounded-md cursor-pointer `}
                     onClick={() => {
-                      if (acfilter === "non_ac") {
+                      if (acfilter === "mbleNon_Ac") {
                         setAcFilter("");
                       } else {
-                        setAcFilter("non_ac");
+                        setAcFilter("mbleNon_Ac");
                       }
                     }}
                   >
@@ -712,7 +704,7 @@ const SidebarMobile = ({
                       {/* <span>
                     <TbAirConditioningDisabled size={20} className="mx-1" />
                   </span> */}
-                      {acfilter === "non_ac" ? (
+                      {acfilter === "mbleNon_Ac" ? (
                         <img
                           src={s_c_non_ac}
                           className="w-[4.5vw] h-[4.5vw]"

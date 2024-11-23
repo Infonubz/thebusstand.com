@@ -54,6 +54,9 @@ export default function SingleCard() {
   const buslist = useSelector((state) => state?.card_detail);
   const navigation = useNavigate();
   const user_id = sessionStorage.getItem("user_id");
+  const apiUrlimage = process.env.REACT_APP_API_URL_IMAGE;
+
+  const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
   //const colors = ColorCodes();
   //const dispatch = useDispatch();
 
@@ -735,7 +738,7 @@ export default function SingleCard() {
                             <div className="absolute top-[0.1vw] right-[8.5vw] rounded-full">
                               {item.logos != null && (
                                 <img
-                                  src={`http://192.168.90.47:4001${item.logos}`}
+                                  src={`${apiUrlimage}/${item.logos}`}
                                   // src={orange_travel_logo}
                                   alt="logos"
                                   className={`w-[3.5vw] h-[3.5vw] rounded-full bg-white  ${

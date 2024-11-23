@@ -12,7 +12,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import { GetUserDetails } from "../../../../Api/Login/Login";
 
-const HomeProfile = () => {
+const HomeProfile = ({userName, setUserName}) => {
   const validationSchema = Yup.object().shape({
     user_name: Yup.string()
       .min(2, "Name must be at least 2 characters long")
@@ -75,10 +75,15 @@ const HomeProfile = () => {
       console.log("hitesting");
       hasFetched.current = true;
     }
-    console.log("userName", sessionStorage.getItem("user_name"))
   }, [dispatch]);
 
-
+  useEffect(() => {
+    const storedName = sessionStorage.getItem("user_name");
+    if (storedName !== userName) {
+      setUserName(storedName); 
+    }
+    console.log(storedName, "userName")
+  }, [userName, setUserName])
 
   return (
     <>
@@ -136,7 +141,7 @@ const HomeProfile = () => {
               // Simulating network delay with setTimeout
               // setTimeout(async () => {
               await UpdateProfile(values, setSpinning);
-              console.log(values, "valuesvalues");
+              setUserName(values.name);
               sessionStorage.setItem("user_name", profiledata.user_name);
               //window.location.reload();
               toast.success("Updated Successfully");
@@ -558,8 +563,13 @@ const HomeProfile = () => {
                       </Field>
                       <label
                         htmlFor="occupation"
-                        className={`absolute text-[4vw] md:text-[1.4vw] font-semibold text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 md:top-[2.5vw] top-[-.5vw] md:left-[0vw] left-[1.5vw] origin-0 bg-white px-[0.2vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[2vw] peer-placeholder-shown:text-[vw]  md:peer-focus:text-[1vw] peer-focus:text-[3.7vw] peer-focus:scale-75 md:peer-focus:-translate-y-[2vw] peer-focus:-translate-y-[2vw] ${
-                          values.occupation ? "-translate-y-[2vw]" : ""
+                        className={`absolute text-[4vw] md:text-[1.4vw] font-bold text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 md:top-[0.6vw] top-[-3vw] 
+                          md:left-[0vw] left-[-.4vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] md:peer-focus:top-[2.5vw] peer-focus:top-[0.6vw] peer-focus:text-[#1F487C] 
+                          peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[1vw] md:peer-focus:text-[1vw]  peer-focus:text-[3.7vw] 
+                          peer-focus:scale-75 md:peer-focus:-translate-y-[2vw] peer-focus:-translate-y-[4vw] ${
+                          values.occupation
+                            ? "md:-translate-y-[2vw] -translate-y-[5vw] "
+                            : ""
                         }`}
                       >
                         Occupation

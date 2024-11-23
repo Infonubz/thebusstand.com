@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import FaceBook from "../../assets/Fb.png";
 import InstaGram from "../../assets/Insta.png";
 import twitter from "../../assets/Twitter1.png";
@@ -92,7 +92,7 @@ const Footer1 = () => {
                 alt="facebook"
                 className="w-[1.5vw] h-[1.5vw]"
               />
-            </a>
+            </a> 
             <a href="https://www.instagram.com/">
               <img
                 src={InstaGram}

@@ -40,7 +40,9 @@ export default function PassengersList({
   const [deleteId, SetDeleteId] = useState(null);
   const [bgColor, setBgColor] = useState([]);
 
+  const apiUrlimage = process.env.REACT_APP_API_URL_IMAGE;
 
+  const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
   const getRandomColor = () => {
     const r = Math.floor(Math.random() * 256);
     const g = Math.floor(Math.random() * 256);
@@ -165,7 +167,6 @@ export default function PassengersList({
   //   return color;
   // };
 
-
   // const handleOnTogglePage = () => {
   //   setPresentPage(!presentPage);
   // };
@@ -180,12 +181,9 @@ export default function PassengersList({
     setDeleteModalIsOpen(false);
   };
 
-
   const closeMobileDelete = () => {
     setMobileDelete(false);
   };
-
-
 
   useEffect(() => {
     const colors = Array.from(
@@ -332,7 +330,7 @@ export default function PassengersList({
         closeicon={false}
       >
         <Delete
-          api={`http://192.168.90.47:4001/api/add-passenger-details/${deleteId}`}
+          api={`${apiUrlimage}//api/add-passenger-details/${deleteId}`}
           title={"Want to delete Passenger"}
           setDeleteModalIsOpen={setDeleteModalIsOpen}
           passName={passName}
@@ -348,7 +346,7 @@ export default function PassengersList({
         className="md:hidden block"
       >
         <Delete
-          api={`http://192.168.90.47:4001/api/add-passenger-details/${deleteId}`}
+          api={`${apiUrlimage}//api/add-passenger-details/${deleteId}`}
           title={"Want to delete Passenger"}
           setDeleteModalIsOpen={setMobileDelete}
           passName={passName}
