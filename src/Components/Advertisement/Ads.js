@@ -120,7 +120,7 @@ const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
               <div
                 className="h-[11vw] rounded-[0.5vw] slide-wrapper slide"
                 style={{
-                  backgroundImage: `url(${apicrmimage}/${getlist[currentIndex]?.ad_video})`,
+                  backgroundImage: `url(${apicrmimage}${getlist[currentIndex]?.ad_video})`,
                   backgroundSize: "cover",
                   backgroundRepeat: "no-repeat",
                   transition: "background-image 1s ease-in-out",
@@ -142,7 +142,7 @@ const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
                 height={"2vw"}
               >
                 <source
-                  src={`${apicrmimage}/${getlist[currentIndex]?.ad_video}`}
+                  src={`${apicrmimage}${getlist[currentIndex]?.ad_video}`}
                   type="video/mp4"
                 />
               </video>
@@ -177,7 +177,7 @@ const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
               <div
                 className="h-[25vw] md:h-[11vw] rounded-[2vw] slide-wrapper border-[0.2vw] border-black"
                 style={{
-                  backgroundImage: `url(${apicrmimage}/${adList[activeAdIndex]?.mobad_vdo})`,
+                  backgroundImage: `url(${apicrmimage}${adList[activeAdIndex]?.mobad_vdo})`,
                   backgroundSize: "cover",
                   backgroundRepeat: "no-repeat",
                   transition: "background-image 1s ease-in-out",
@@ -197,7 +197,7 @@ const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
                 }}
               >
                 <source
-                  src={`${apicrmimage}/${adList[activeAdIndex]?.mobad_vdo}`}
+                  src={`${apicrmimage}${adList[activeAdIndex]?.mobad_vdo}`}
                   type="video/mp4"
                 />
               </video>

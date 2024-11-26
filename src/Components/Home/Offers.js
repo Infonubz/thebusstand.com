@@ -250,7 +250,7 @@ function Offers() {
     GetPromotion(dispatch);
   }, [dispatch]);
 
-  console.log(promotionlist, "promotionlist");
+  console.log(`${apicrmimage}${promotionlist[0]?.background_image}`, "promotionlist");
   console.log(colors, "colorscolorscolorscolorscolors");
 
   return (
@@ -317,7 +317,7 @@ function Offers() {
                         ></div>
                         <img
                           alt="background_Image"
-                          src={`${apicrmimage}/${item?.background_image}`}
+                          src={`${apicrmimage}${item?.background_image}`}
                           className="w-[80vw] lg:h-[9.5vw] md:h-[8vw] h-[40vw]"
                         />
                         <div className={`absolute left-[4.6vw] bottom-0`}>
@@ -383,7 +383,7 @@ function Offers() {
               <div key={index} className={`relative flex-shrink-0 mr-[2vw]`}>
                 <img
                   alt="background_image"
-                  src={`${apicrmimage}/${item?.background_image}`}
+                  src={`${apicrmimage}${item?.background_image}`}
                   className="w-[80vw] lg:h-[80%] md:h-[12vw] h-[45vw] relative z-10" // Ensure z-index is higher
                 />
                 <div

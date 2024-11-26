@@ -738,7 +738,7 @@ export default function SingleCard() {
                             <div className="absolute top-[0.1vw] right-[8.5vw] rounded-full">
                               {item.logos != null && (
                                 <img
-                                  src={`${apiUrlimage}/${item.logos}`}
+                                  src={`${apiUrlimage}${item.logos}`}
                                   // src={orange_travel_logo}
                                   alt="logos"
                                   className={`w-[3.5vw] h-[3.5vw] rounded-full bg-white  ${

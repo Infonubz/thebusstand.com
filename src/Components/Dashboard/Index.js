@@ -14,7 +14,7 @@ import orange from "../../assets/makemy.png";
 import lens from "../../assets/lens.png";
 import bubble from "../../assets/LENSss.png";
 import { getBoxToBoxArrow } from "curved-arrows";
-import bus from "../../assets/bus.png";
+import Vectorarrow from "../../assets/Vectorarrow.png";
 const MainPage = () => {
   const [sidebarToggle, setSidebarToggle] = useState(false);
   const menulist = useSelector((state) => state.search);
@@ -106,11 +106,7 @@ const MainPage = () => {
                     strokeDasharray="10,5"
                     d="M10,150 A200,140 0 0,1 385,150"
                   />
-                  {/* <polyline
-                    id="arrow"
-                    points="0,-9 18,0 0,9 5,0"
-                    fill="white"
-                  >
+                  <polyline id="arrow" points="0,-9 18,0 0,9 5,0" fill="white">
                     <animateMotion
                       rotate="auto"
                       begin="1s"
@@ -120,29 +116,32 @@ const MainPage = () => {
                     >
                       <mpath xlinkHref="#Path-1" />
                     </animateMotion>
-                  </polyline> */}
+                  </polyline>
                   {/* <g id="bus" fill="white" transform="translate(-10, -10)">
-        <rect x="0" y="0" width="20" height="10" rx="2" />
-        <circle cx="5" cy="12" r="2" />
-        <circle cx="15" cy="12" r="2" />
-      </g>
-      <animateMotion
-        xlinkHref="#bus"
-        rotate="auto"
-        begin="1s"
-        dur="6s"
-        repeatCount="1"
-        fill="freeze"
-      >
-        <mpath xlinkHref="#Path-1" />
-      </animateMotion> */}
-                  <image
+                    <rect x="0" y="0" width="20" height="10" rx="2" />
+                    <circle cx="5" cy="12" r="2" />
+                    <circle cx="15" cy="12" r="2" />
+                  </g>
+                  <animateMotion
+                    xlinkHref="#bus"
+                    rotate="auto"
+                    begin="1s"
+                    dur="6s"
+                    repeatCount="1"
+                    fill="freeze"
+                  >
+                    <mpath xlinkHref="#Path-1" />
+                  </animateMotion> */}
+                  {/* <image
                     id="moving-image"
                     // href="https://example.com/path-to-your-image.png"
-                    href={bus}
-                    width="4vw"
+                    href={Vectorarrow}
+                    width="2vw"
                     height="2vw"
-                    transform="translate(-20, -20)"
+                    transform="translate(-2, -2)"
+                    style={{
+                      transform: "rotate(45deg)",
+                    }}
                     // transform="translate(-20, -20) rotate(45)"
                   >
                     <animateMotion
@@ -154,7 +153,7 @@ const MainPage = () => {
                     >
                       <mpath xlinkHref="#Path-1" />
                     </animateMotion>
-                  </image>
+                  </image> */}
                   <circle cx="10" cy="150" r="5" fill="white" className="" />
                   <circle cx="385" cy="150" r="5" fill="white" />
                 </g>

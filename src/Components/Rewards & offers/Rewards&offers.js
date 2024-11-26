@@ -332,7 +332,7 @@ export default function Rewardsandoffers() {
                           className="w-full md:h-[11vw] h-[40vw] flex justify-center relative"
                         >
                           <img
-                            src={`${apicrmimage}/${items.theme}`}
+                            src={`${apicrmimage}${items.theme}`}
                             alt="Occupation"
                             className="w-[80vw] md:h-[11vw] h-[40vw] z-[1]"
                           />
@@ -466,7 +466,7 @@ export default function Rewardsandoffers() {
               <div className="overflow-y-scroll w-full h-[72.5vh] py-[1vw]">
                 <div className=" flex flex-col gap-[3vw] px-[3vw]">
                   {OccupationDeals.map((items) => (
-                    <img src={`${apicrmimage}/${items.theme}`} alt="Occupation" />
+                    <img src={`${apicrmimage}${items.theme}`} alt="Occupation" />
                   ))}
                 </div>
               </div>

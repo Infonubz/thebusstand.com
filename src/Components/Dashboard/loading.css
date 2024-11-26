@@ -108,7 +108,7 @@
 }
 @keyframes arrow {
   to {
-    opacity: 1;
+    opacity: 100;
   }
 }
 .ifrm {

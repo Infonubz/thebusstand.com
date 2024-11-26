@@ -66,7 +66,7 @@
   },
   "scripts": {
     "start": "cross-env PORT=3000 GENERATE_SOURCEMAP=false react-scripts start",
-    "build": "cross-env CI=false GENERATE_SOURCEMAP=false NODE_OPTIONS=--max-old-space-size=16488 react-scripts build",
+    "build": "cross-env CI=false GENERATE_SOURCEMAP=false NODE_OPTIONS=--max-old-space-size=8192 react-scripts build",
     "test": "react-scripts test --detectOpenHandles --passWithNoTests",
     "eject": "react-scripts eject",
     "dev": "tailwindcss -i ./src/input.css -o ./src/output.css --watch"

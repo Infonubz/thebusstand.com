@@ -657,7 +657,7 @@ function DrawerDetails({
                                         {" "}
                                         {busdetails1?.logos != null && (
                                           <img
-                                            src={`${apiUrlimage}/${busdetails1.logos}`}
+                                            src={`${apiUrlimage}${busdetails1.logos}`}
                                             alt="logos"
                                             className={`w-[6vw] h-[6vw] rounded-full bg-white  ${
                                               busdetails1?.bus_type_status ===
@@ -3168,7 +3168,7 @@ function DrawerDetails({
                               <div className="h-[60%] flex justify-center items-center">
                                 {busdetails1?.logos != null && (
                                   <img
-                                    src={`${apiUrlimage}/${busdetails1.logos}`}
+                                    src={`${apiUrlimage}${busdetails1.logos}`}
                                     // src={orange_travel_logo}
                                     alt="logos"
                                     className={`w-[6vw] h-[6vw] rounded-full bg-white  ${

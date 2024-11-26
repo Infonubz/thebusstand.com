@@ -213,7 +213,7 @@ const Tourist = useMemo(() => [
     GetPromotion(dispatch);
   }, [dispatch]);
 
-  console.log(promotionlist, "promotionlist");
+  console.log(`${apicrmimage}/${promotionlist[0]?.background_image}`, "promotionlist8888");
 
   return (
     <>
@@ -321,7 +321,7 @@ const Tourist = useMemo(() => [
                     <div key={index} className="relative">
                       <img
                       alt="background_image"
-                        src={`${apicrmimage}/${item?.background_image}`}
+                        src={`${apicrmimage}${item?.background_image}`}
                         className="w-[84vw]  h-[12vw]"
                       />
                       <span className="absolute left-[5.8vw] top-[0vw] z-[2] ">
@@ -389,7 +389,7 @@ const Tourist = useMemo(() => [
                     <div key={index} className="relative">
                       <img
                       alt="background_image"
-                        src={`${apicrmimage}/${item?.background_image}`}
+                        src={`${apicrmimage}${item?.background_image}`}
                         className="w-full h-full "
                       />
                       <span className="absolute left-[23.3vw] top-[-.2vw] ">

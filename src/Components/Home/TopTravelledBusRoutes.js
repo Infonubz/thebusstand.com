@@ -86,7 +86,7 @@ export default function TopTravelledBusRoutes() {
                   }}
                 >
                   <img
-                    src={`${apiUrlimage}/${item.image}`}
+                    src={`${apiUrlimage}${item.image}`}
                     className="h-full w-full p-[0.7vw] rounded-lg"
                     style={{
                       borderRadius: "1.5vw",
@@ -165,7 +165,7 @@ export default function TopTravelledBusRoutes() {
                     }}
                   >
                     <img
-                      src={`${apiUrlimage}/${item.image}`}
+                      src={`${apiUrlimage}${item.image}`}
                       className="h-full w-full px-[2vw] pt-[2vw] rounded-lg"
                       alt={item.from}
                       style={{

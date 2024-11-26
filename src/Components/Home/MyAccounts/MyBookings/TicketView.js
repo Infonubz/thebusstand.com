@@ -411,7 +411,7 @@ const TicketView = ({ showModal, setShowModal, ticketDetails }) => {
                       /> */}
                       {ticketDetails?.logos != null && (
                         <img
-                          src={`${apiUrlimage}/${ticketDetails.logos}`}
+                          src={`${apiUrlimage}${ticketDetails.logos}`}
                           // src={orange_travel_logo}
                           alt="logos"
                           className={`w-[6vw] h-[6vw] rounded-full bg-white  ${

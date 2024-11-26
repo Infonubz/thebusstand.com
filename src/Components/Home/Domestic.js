@@ -85,7 +85,7 @@ export default function DomesticPlace() {
           {popular_domestic_presence?.map((item) => (
             <div className="col-span-1 w-full items-center justify-center flex-col">
               <img
-                src={`${apiUrlimage }/${item.image}`}
+                src={`${apiUrlimage }${item.image}`}
                 className={`w-[9vw] h-[9vw] ml-[1.8vw] rounded-full shadow-md shadow-[${colors.primary}]`}
               />
               <p className="text-center py-[0.8vw] text-[1.2vw] font-bold">
@@ -190,7 +190,7 @@ export default function DomesticPlace() {
               <div className="w-[20vw] mr-[5vw] flex-shrink-0 ml-[1vw]">
                 {/* <div className="w-[40vw]"> */}
                 <img
-                  src={`${apiUrlimage }/${item.image}`}
+                  src={`${apiUrlimage }${item.image}`}
                   className={`w-[20vw] h-[20vw]  rounded-full shadow-md shadow-[${colors.primary}]`}
                 />
                 <p className="text-center py-[0.8vw] mt-[2vw] text-[3vw] font-bold">
