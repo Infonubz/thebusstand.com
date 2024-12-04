@@ -1725,12 +1725,12 @@ const Dashboard = () => {
                   extra={<Button type="primary">Back Home</Button>}
                 />
               </div> */}
-              {/* <div class="vehicle-container_nodatabus absolute bottom-[15vw]">
+              <div class="vehicle-container_nodatabus absolute bottom-[15vw]">
                 <div class="nodatabus"></div>
-              </div> */}
-              <div className="flex justify-center items-center mt-[12vw]">
-                <p className="text-[1.5vw] text-red-500">No Buses Found</p>
               </div>
+              {/* <div className="flex justify-center items-center mt-[12vw]">
+                <p className="text-[1.5vw] text-red-500">No Buses Found</p>
+              </div> */}
             </>
             // <div></div>
           )}

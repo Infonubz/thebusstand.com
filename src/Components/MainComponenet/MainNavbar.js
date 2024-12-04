@@ -77,11 +77,13 @@ import Login from "../Login/Login";
 // import { FaUserCircle } from "react-icons/fa";
 // import { toast } from "react-toastify";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
+import "./MainNavbarLoading.css";
+import { SlArrowRight } from "react-icons/sl";
 
 // import bus1 from "../../assets/bus";
 // import bus from "../../assets/bus.png";
 // import styled from "styled-components";
-const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
+const MainNavbar = ({ loading, onTimeChanged, ...inputProps }) => {
   // const [startDate, setStartDate] = useState(new Date());
   const location = useLocation();
   const currentplace = location.state?.currentplace || "";
@@ -670,6 +672,8 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   };
   console.log(traveldetails.date, "TimePickerlist");
   const [departurelist, setdepartureList] = useState([]);
+
+
   useEffect(() => {
     const departure_city = [
       { city: "Chennai", value: "Chennai", state: "Tamilnadu" },
@@ -682,6 +686,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
       { city: "Mumbai", value: "Mumbai", state: "Maharastra" },
       { city: "Kochi", value: "Kochi", state: "Kerala" },
     ];
+
     if (inputsearch.from) {
       if (selectinput === "from") {
         const departuredata = departure_city.filter((item) =>
@@ -819,15 +824,46 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
   };
   console.log(LoginUser_Name === "null", "gggggggg");
   const totalbuses = useSelector((state) => state.card_detail);
+  console.log(loading, "loadingloadingloading");
+
   return (
     <>
       <div className="fixed w-full z-1" style={{ zIndex: 1 }}>
         <div className="md:block hidden">
           <CommonMainNavbar />
         </div>
-        <div className="h-[12vw] md:h-[5vw] w-full bg-[#1F487C] md:-z-10">
-          <div className="md:h-[0.3vw] md:block hidden w-full bg-[#E5FFF1] opacity-90"></div>
-          {/* <div className="grid md:hidden block w-full  h-[12vw]">
+        {loading ? (
+          <>
+            <div className="h-[12vw] md:h-[5vw] w-full bg-[#1F487C] md:-z-10">
+              <div className="navbar-container">
+                <div className="newbus"></div>
+                <h1 className="words">
+                  Our AI has found the best bus price for you!
+                </h1>
+                <div className="thread">
+                  {/* <SlArrowRight color="#d0d2d1" size={"1.75vw"} /> */}
+                  <div className="relative  h-[2vw] w-[5vw] ">
+                    <div
+                      className="border-[0.1vw] border-[#afafaf] w-[4vw] absolute left-0 top-[0.4vw]"
+                      style={{
+                        transform: "rotate(13deg)",
+                      }}
+                    ></div>
+                    <div
+                      className="border-[0.1vw] border-[#afafaf] w-[4vw] absolute left-0 bottom-[0.7vw]"
+                      style={{
+                        transform: "rotate(-12deg)",
+                      }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="h-[12vw] md:h-[5vw] w-full bg-[#1F487C] md:-z-10">
+            <div className="md:h-[0.3vw] md:block hidden w-full bg-[#E5FFF1] opacity-90"></div>
+            {/* <div className="grid md:hidden block w-full  h-[12vw]">
             <div className="items-center flex justify-around text-white">
               <div
                 onClick={() => {
@@ -888,82 +924,82 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
               </div>
             </Drawer>
           </div> */}
-          <div className="flex px-[2vw] items-center justify-between h-full md:hidden block">
-            <div className="flex flex-col ">
-              <div className="flex gap-x-[2vw] items-center">
-                <div className="text-[4.5vw] text-white font-semibold">
-                  {fromValue}
+            <div className="flex px-[2vw] items-center justify-between h-full md:hidden block">
+              <div className="flex flex-col ">
+                <div className="flex gap-x-[2vw] items-center">
+                  <div className="text-[4.5vw] text-white font-semibold">
+                    {fromValue}
+                  </div>
+                  <div className="text-white">
+                    <FaArrowRight />
+                  </div>
+                  <div className="text-[5vw] text-white font-semibold">
+                    {toValue}
+                  </div>
                 </div>
-                <div className="text-white">
-                  <FaArrowRight />
-                </div>
-                <div className="text-[5vw] text-white font-semibold">
-                  {toValue}
+                <div className="mt-[-2vw]">
+                  <label className="text-gray-300 text-[3vw]">{`Showing ${totalbuses?.length} Buses on this route`}</label>
                 </div>
               </div>
-              <div className="mt-[-2vw]">
-                <label className="text-gray-300 text-[3vw]">{`Showing ${totalbuses?.length} Buses on this route`}</label>
-              </div>
-            </div>
-            <div>
-              <button
-                onClick={showDrawer}
-                className="px-[4vw] h-[7vw] flex items-center justify-center bg-white text-[#1F487C] rounded-full shadow-lg"
-              >
-                <div className="text-center text-[3.5vw] flex font-extrabold">
-                  {/* <span className="text-[4.5vw]">
+              <div>
+                <button
+                  onClick={showDrawer}
+                  className="px-[4vw] h-[7vw] flex items-center justify-center bg-white text-[#1F487C] rounded-full shadow-lg"
+                >
+                  <div className="text-center text-[3.5vw] flex font-extrabold">
+                    {/* <span className="text-[4.5vw]">
                     <MdKeyboardArrowLeft />
                   </span>{" "} */}
-                  <span>{mobileformattedDate}</span>{" "}
-                  {/* <span className="text-[4.5vw]">
+                    <span>{mobileformattedDate}</span>{" "}
+                    {/* <span className="text-[4.5vw]">
                     <MdKeyboardArrowRight />
                   </span> */}
-                </div>
-              </button>
-              <Drawer
-                title="Select Date"
-                placement="bottom"
-                closable={false}
-                onClose={onClosee}
-                open={openDatee}
-                height="50%" // Adjust height as needed
-                bodyStyle={{ padding: 0 }} // Removes extra padding
-                className="flex justify-center md:hidden"
-              >
-                <div className="flex items-center justify-center">
-                  <Calendar
-                    onChange={(date) => {
-                      setSelectedDatee(date);
-                      setFromDate(date);
-                      onClosee(); // Close drawer on date select
-                    }}
-                    value={selectedDatee}
-                    minDate={new Date()}
-                    style={{ width: "100%" }}
-                  />
-                </div>
-              </Drawer>
+                  </div>
+                </button>
+                <Drawer
+                  title="Select Date"
+                  placement="bottom"
+                  closable={false}
+                  onClose={onClosee}
+                  open={openDatee}
+                  height="50%" // Adjust height as needed
+                  bodyStyle={{ padding: 0 }} // Removes extra padding
+                  className="flex justify-center md:hidden"
+                >
+                  <div className="flex items-center justify-center">
+                    <Calendar
+                      onChange={(date) => {
+                        setSelectedDatee(date);
+                        setFromDate(date);
+                        onClosee(); // Close drawer on date select
+                      }}
+                      value={selectedDatee}
+                      minDate={new Date()}
+                      style={{ width: "100%" }}
+                    />
+                  </div>
+                </Drawer>
+              </div>
             </div>
-          </div>
-          <img
-            src={newbus1}
-            className="absolute md:block hidden top-[1.7vw] h-[8.1vw] w-[21.75vw]   left-[-3vw]"
-            alt=""
-            // style={{
-            //   transform: "rotateY(180deg)",
-            // }}
-          />
-          <div className="pl-[1vw] md:pl-[19.5vw] md:pt-[0.2vw] grid grid-cols-12 w-full md:h-[4.5vw] h-[12vw]">
-            {/* <div className="col-span-2 w-full"> */}
-            {/* </div> */}
-            <div className="hidden">
-              <div className="col-span-6 md:col-span-4  h-full items-center">
-                <div className="grid grid-cols-7 gap-[1vw] md:gap-0 md:grid-cols-5 items-center h-full">
-                  <div
-                    className="md:block hidden md:col-span-2"
-                    ref={popoverRef}
-                  >
-                    {/* <Select
+            <img
+              src={newbus1}
+              className="absolute md:block hidden top-[1.7vw] h-[8.1vw] w-[21.75vw]   left-[-3vw]"
+              alt=""
+              // style={{
+              //   transform: "rotateY(180deg)",
+              // }}
+            />
+            <div className="pl-[1vw] md:pl-[19.5vw] md:pt-[0.2vw] grid grid-cols-12 w-full md:h-[4.5vw] h-[12vw]">
+              {/* <div className="col-span-2 w-full"> */}
+              {/* </div> */}
+              <div className="hidden">
+                <div className="col-span-6 md:col-span-4  h-full items-center">
+                  <div className="grid grid-cols-7 gap-[1vw] md:gap-0 md:grid-cols-5 items-center h-full">
+                    <div
+                      className="md:block hidden md:col-span-2"
+                      ref={popoverRef}
+                    >
+                      {/* <Select
                     showSearch
                     placeholder="From"
                     optionFilterProp="children"
@@ -978,34 +1014,53 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                     style={{ backgroundColor: "black", color: "white" }}
                   /> */}
 
-                    <Popover
-                      // placement="bottom"
-                      // trigger="click"
-                      // content={
-                      //   <div
-                      //     style={{
-                      //       width: "170px",
-                      //       maxHeight: "250px",
-                      //       overflow: "auto",
-                      //     }}
-                      //   >
-                      //     {content}
-                      //   </div>
-                      // }
-                      // className="scrolbar-hide"
-                      // onOpenChange={handleOpenChange}
-                      placement="bottom"
-                      trigger="click"
-                      // title={text}
-                      content={
-                        <div style={{ maxHeight: "10vw", overflow: "auto" }}>
-                          {content}
+                      <Popover
+                        // placement="bottom"
+                        // trigger="click"
+                        // content={
+                        //   <div
+                        //     style={{
+                        //       width: "170px",
+                        //       maxHeight: "250px",
+                        //       overflow: "auto",
+                        //     }}
+                        //   >
+                        //     {content}
+                        //   </div>
+                        // }
+                        // className="scrolbar-hide"
+                        // onOpenChange={handleOpenChange}
+                        placement="bottom"
+                        trigger="click"
+                        // title={text}
+                        content={
+                          <div style={{ maxHeight: "10vw", overflow: "auto" }}>
+                            {content}
+                          </div>
+                        }
+                        overlayStyle={{ width: "11vw" }}
+                        className="scrolbar-hide"
+                        onOpenChange={handleOpenChange}
+                        open={open}
+                      >
+                        <div className="relative cursor-pointer top-[1.5vw] md:top-0">
+                          <img
+                            src={dropdown}
+                            className="h-[7.5vw] md:h-[2.7vw] md:w-full "
+                            alt=""
+                          />
+                          <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.5vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
+                            {traveldetails?.from?.value?.toUpperCase()}
+                          </p>
                         </div>
-                      }
-                      overlayStyle={{ width: "11vw" }}
-                      className="scrolbar-hide"
-                      onOpenChange={handleOpenChange}
-                      open={open}
+                      </Popover>
+                    </div>
+                    <div
+                      className="col-span-3 md:hidden block"
+                      onClick={() => {
+                        setModalShow(true);
+                        setSelectInput("from");
+                      }}
                     >
                       <div className="relative cursor-pointer top-[1.5vw] md:top-0">
                         <img
@@ -1016,57 +1071,38 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                         <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.5vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
                           {traveldetails?.from?.value?.toUpperCase()}
                         </p>
-                      </div>
-                    </Popover>
-                  </div>
-                  <div
-                    className="col-span-3 md:hidden block"
-                    onClick={() => {
-                      setModalShow(true);
-                      setSelectInput("from");
-                    }}
-                  >
-                    <div className="relative cursor-pointer top-[1.5vw] md:top-0">
-                      <img
-                        src={dropdown}
-                        className="h-[7.5vw] md:h-[2.7vw] md:w-full "
-                        alt=""
-                      />
-                      <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.5vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
-                        {traveldetails?.from?.value?.toUpperCase()}
-                      </p>
-                    </div>{" "}
-                  </div>
-                  <div className="col-span-1">
-                    {/* <div
+                      </div>{" "}
+                    </div>
+                    <div className="col-span-1">
+                      {/* <div
                     className="bg-white py-2 mx-4  rounded-md flex justify-center items-center cursor-pointer"
                     onClick={handleSwap}
                   >
                     <FaArrowRightArrowLeft />
                   </div> */}
-                    <div className="relative flex items-center justify-center cursor-pointer top-[1.5vw] md:top-0">
-                      <div
-                        // onClick={handleSwap}
-                        className=" cursor-not-allowed"
-                      >
-                        <img
-                          src={split}
-                          className="w-[7vw] h-[7.5vw] md:h-[2.5vw] md:w-[2.5vw]"
-                          alt=""
-                        />
-                        <FaArrowRightArrowLeft
-                          color="white"
-                          size={"1.2vw"}
-                          className="absolute size-[4vw] md:size-[1.2vw] left-[1vw] top-[1.5vw] md:top-[0.6vw] md:left-[2.2vw] transform translate[-50%,-50%]"
-                        />
+                      <div className="relative flex items-center justify-center cursor-pointer top-[1.5vw] md:top-0">
+                        <div
+                          // onClick={handleSwap}
+                          className=" cursor-not-allowed"
+                        >
+                          <img
+                            src={split}
+                            className="w-[7vw] h-[7.5vw] md:h-[2.5vw] md:w-[2.5vw]"
+                            alt=""
+                          />
+                          <FaArrowRightArrowLeft
+                            color="white"
+                            size={"1.2vw"}
+                            className="absolute size-[4vw] md:size-[1.2vw] left-[1vw] top-[1.5vw] md:top-[0.6vw] md:left-[2.2vw] transform translate[-50%,-50%]"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    className="md:block hidden md:col-span-2"
-                    ref={topopoverRef}
-                  >
-                    {/* <Select
+                    <div
+                      className="md:block hidden md:col-span-2"
+                      ref={topopoverRef}
+                    >
+                      {/* <Select
                     showSearch
                     placeholder="To"
                     optionFilterProp="children"
@@ -1079,24 +1115,44 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                     value={traveldetails.to}
                     className="w-full"
                   /> */}
-                    <Popover
-                      placement="bottom"
-                      trigger="click"
-                      // title={text}
-                      content={
-                        <div
-                          style={{
-                            maxHeight: "10vw",
-                            overflow: "auto",
-                            padding: "0px",
-                          }}
-                        >
-                          {tocontent}
+                      <Popover
+                        placement="bottom"
+                        trigger="click"
+                        // title={text}
+                        content={
+                          <div
+                            style={{
+                              maxHeight: "10vw",
+                              overflow: "auto",
+                              padding: "0px",
+                            }}
+                          >
+                            {tocontent}
+                          </div>
+                        }
+                        overlayStyle={{ width: "11vw", padding: "0px" }}
+                        onOpenChange={tohandleOpenChange}
+                        open={toopen}
+                      >
+                        <div className="relative cursor-pointer top-[1.5vw] md:top-0">
+                          <img
+                            src={dropdown}
+                            className="h-[7.5vw] md:h-[2.7vw] w-full "
+                            alt=""
+                          />
+                          <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.6vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
+                            {/* {traveldetails?.to?.value?.toUpperCase()} */}
+                            Coimbatore
+                          </p>
                         </div>
-                      }
-                      overlayStyle={{ width: "11vw", padding: "0px" }}
-                      onOpenChange={tohandleOpenChange}
-                      open={toopen}
+                      </Popover>
+                    </div>
+                    <div
+                      className="col-span-3 md:hidden block"
+                      onClick={() => {
+                        setModalShow(true);
+                        setSelectInput("to");
+                      }}
                     >
                       <div className="relative cursor-pointer top-[1.5vw] md:top-0">
                         <img
@@ -1105,37 +1161,17 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                           alt=""
                         />
                         <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.6vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
-                          {/* {traveldetails?.to?.value?.toUpperCase()} */}
-                          Coimbatore
+                          {traveldetails?.to?.value?.toUpperCase()}
                         </p>
                       </div>
-                    </Popover>
-                  </div>
-                  <div
-                    className="col-span-3 md:hidden block"
-                    onClick={() => {
-                      setModalShow(true);
-                      setSelectInput("to");
-                    }}
-                  >
-                    <div className="relative cursor-pointer top-[1.5vw] md:top-0">
-                      <img
-                        src={dropdown}
-                        className="h-[7.5vw] md:h-[2.7vw] w-full "
-                        alt=""
-                      />
-                      <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.6vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
-                        {traveldetails?.to?.value?.toUpperCase()}
-                      </p>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="md:block hidden md:col-span-3"></div>
-              <div className="col-span-6 md:pl-0 md:col-span-5">
-                <div className="grid grid-cols-6 md:grid-cols-3 gap-[1vw] items-center h-full ">
-                  <div className="col-span-3 pl-[5vw] md:hidden block bg-green-400 w-full">
-                    {/* <DatePicker
+                <div className="md:block hidden md:col-span-3"></div>
+                <div className="col-span-6 md:pl-0 md:col-span-5">
+                  <div className="grid grid-cols-6 md:grid-cols-3 gap-[1vw] items-center h-full ">
+                    <div className="col-span-3 pl-[5vw] md:hidden block bg-green-400 w-full">
+                      {/* <DatePicker
                     format={{
                       format: "MMM-DD",
                       type: "mask",
@@ -1143,7 +1179,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                     className="w-[21vw] top-[2vw]"
                     onChange={onChange}
                   /> */}
-                    {/* <DatePicker
+                      {/* <DatePicker
                     // open
                     format={{
                       format: "DD-MM-YYYY",
@@ -1158,22 +1194,22 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                     //   backgroundColor:"blue"
                     // }}
                   /> */}
-                    {/* <DateInput value={fromDate} onChange={setFromDate} /> */}
-                  </div>
+                      {/* <DateInput value={fromDate} onChange={setFromDate} /> */}
+                    </div>
 
-                  <div className="col-span-3  md:hidden block">
-                    {/* <TimePicker
+                    <div className="col-span-3  md:hidden block">
+                      {/* <TimePicker
                     // defaultValue={dayjs('12:08', format)}
                     format={format}
                     placeholder="Select time"
                     className="w-[21vw] top-[2vw]"
                     onChange={Clockonchange}
                   /> */}
-                    {/* <TimePickerComponent onTimeChanged={handleTimeChanged} /> */}
-                  </div>
+                      {/* <TimePickerComponent onTimeChanged={handleTimeChanged} /> */}
+                    </div>
 
-                  <div className="md:block hidden md:col-span-1">
-                    {/* <DatePicker
+                    <div className="md:block hidden md:col-span-1">
+                      {/* <DatePicker
                     onChange={(date, dateString) =>
                       setTraveldetails({
                         ...traveldetails,
@@ -1193,7 +1229,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                       <img src={date} className="w-[1.2vw] h-[2.4vh]" />
                     }
                   /> */}
-                    {/* <Calendar
+                      {/* <Calendar
                     value={traveldetails.date}
                     onChange={handleDateChange}
                     placeholder="Select Date"
@@ -1201,7 +1237,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                     className=" h-[2.3vw]"
                     // className="md:block hidden h-[6.5vw] md:w-[10vw] w-[30.5vw] md:h-[2.5vw] top-[2vw] md:top-0"
                   /> */}
-                    {/* <DatePicker
+                      {/* <DatePicker
                     open
                     format={{
                       format: "DD-MM-YYYY",
@@ -1216,16 +1252,16 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                     //   backgroundColor:"blue"
                     // }}
                   /> */}
-                    <div className="md:col-span-1 mr-[1vw] md:block hidden mt-[0.2vw]">
-                      <div className="bg-white w-full  h-[2.3vw]  rounded-[0.5vw] text-[1.1vw]">
-                        <DateInput
-                          value={dateSelected}
-                          onChange={setFromDate}
-                        />
+                      <div className="md:col-span-1 mr-[1vw] md:block hidden mt-[0.2vw]">
+                        <div className="bg-white w-full  h-[2.3vw]  rounded-[0.5vw] text-[1.1vw]">
+                          <DateInput
+                            value={dateSelected}
+                            onChange={setFromDate}
+                          />
+                        </div>
                       </div>
-                    </div>
-                    {/* <CalendarComponent value={dateValue} /> */}
-                    {/* <input
+                      {/* <CalendarComponent value={dateValue} /> */}
+                      {/* <input
                     type="date"
                     style={{
                       // backgroundColor: "blue",
@@ -1233,9 +1269,9 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                     }}
                     className="px-2 rounded-md py-1 outline-none custom-date-input"
                   /> */}
-                  </div>
-                  {/* <div className="md:col-span-1 md:block hidden relative"> */}
-                  {/* <input
+                    </div>
+                    {/* <div className="md:col-span-1 md:block hidden relative"> */}
+                    {/* <input
                     className="w-full px-2 py-1 rounded-md"
                     type="time"
                     onChange={(e) =>
@@ -1245,7 +1281,7 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                       })
                     }
                   /> */}
-                  {/* <TimePicker
+                    {/* <TimePicker
                     // defaultValue={dayjs("12:08", format)}
                     format={format}
                     style={{
@@ -1258,217 +1294,169 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                     onChange={Clockonchange}
                     className="md:block hidden h-[6.6vw] top-[2vw] md:top-0 text-[1vw] w-[13vw] md:w-full md:text-[1vw] md:h-[2.3vw]"
                   /> */}
-                  {/* <input
+                    {/* <input
                     {...inputProps}
                     ref={inputRef}
                     className="text-white bg-white border-[0.1vw] py-[0.2vw] w-[90%] rounded-lg"
                   /> */}
-                  {/* <TimePickerComponent onTimeChanged={handleTimeChanged} /> */}
-                  {/* <ResponsiveTimePickers /> */}
-                  {/* <TimePicker.RangePicker
+                    {/* <TimePickerComponent onTimeChanged={handleTimeChanged} /> */}
+                    {/* <ResponsiveTimePickers /> */}
+                    {/* <TimePicker.RangePicker
                     format="HH:mm"
                     placeholder={["Start", "End"]}
                     showNow={true}
                   /> */}
-                  {/* <TimePick /> */}
-                  {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    {/* <TimePick /> */}
+                    {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <MobileTimePicker
                       defaultValue={dayjs("2022-04-17T15:30")}
                       className="bg-white h-[30px] rounded-md items-center justify-center text-center"
                     />
                   </LocalizationProvider> */}
-                  {/* </div> */}
-                  <div className="md:col-span-1 mr-[1vw] md:block hidden">
-                    <button
-                      className="bg-white text-black w-full  h-[2.3vw]  rounded-[0.5vw] text-[1.1vw]"
-                      onClick={handleSearch}
-                    >
-                      Search
-                    </button>
+                    {/* </div> */}
+                    <div className="md:col-span-1 mr-[1vw] md:block hidden">
+                      <button
+                        className="bg-white text-black w-full  h-[2.3vw]  rounded-[0.5vw] text-[1.1vw]"
+                        onClick={handleSearch}
+                      >
+                        Search
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="md:col-span-5 grid md:grid-cols-5 flex items-center justify-center">
-              {/* <div className="col-span-1  md:hidden  flex justify-start items-center ">
+              <div className="md:col-span-5 grid md:grid-cols-5 flex items-center justify-center">
+                {/* <div className="col-span-1  md:hidden  flex justify-start items-center ">
                 <TbArrowBackUpDouble className="text-white text-5xl" onClick={()=>navigate("/")} />
               </div> */}
-              <div className="md:col-span-2 md:block hidden">
-                {modifyBtn === true ? (
-                  <Select
-                    showSearch
-                    value={fromValue}
-                    onChange={(value) => {
-                      handleChangeFromValue(value);
-                    }}
-                    style={{
-                      width: "100%",
-                      height: "2.5vw",
-                      color: "red",
-                      fontSize: "1.5vw",
-                    }}
-                    placeholder="Search to Select"
-                    optionFilterProp="label"
-                    filterSort={(optionA, optionB) =>
-                      (optionA?.label ?? "")
-                        .toLowerCase()
-                        .localeCompare((optionB?.label ?? "").toLowerCase())
-                    }
-                    options={options}
-                  />
-                ) : (
-                  <div className="relative flex justify-center">
-                    <svg
-                      width="25vw"
-                      height="3vw"
-                      viewBox="0 0 176 54"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      preserveAspectRatio="none"
-                    >
-                      <path
-                        d="M144.006 0.980469H32.0263C14.3565 0.980469 0.0322266 5.44593 0.0322266 10.9544V43.3695C0.0322266 48.8779 14.3565 53.3434 32.0263 53.3434H144.006C161.676 53.3434 176 48.8779 176 43.3695V10.9544C176 5.44593 161.676 0.980469 144.006 0.980469Z"
-                        fill="white"
-                        fillOpacity="0.2"
-                      />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center text-white text-[2.5vw] md:text-[1.3vw]">
-                      {fromValue}
+                <div className="md:col-span-2 md:block hidden">
+                  {modifyBtn === true ? (
+                    <Select
+                      showSearch
+                      value={fromValue}
+                      onChange={(value) => {
+                        handleChangeFromValue(value);
+                      }}
+                      style={{
+                        width: "100%",
+                        height: "2.5vw",
+                        color: "red",
+                        fontSize: "1.5vw",
+                      }}
+                      placeholder="Search to Select"
+                      optionFilterProp="label"
+                      filterSort={(optionA, optionB) =>
+                        (optionA?.label ?? "")
+                          .toLowerCase()
+                          .localeCompare((optionB?.label ?? "").toLowerCase())
+                      }
+                      options={options}
+                    />
+                  ) : (
+                    <div className="relative flex justify-center">
+                      <svg
+                        width="25vw"
+                        height="3vw"
+                        viewBox="0 0 176 54"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        preserveAspectRatio="none"
+                      >
+                        <path
+                          d="M144.006 0.980469H32.0263C14.3565 0.980469 0.0322266 5.44593 0.0322266 10.9544V43.3695C0.0322266 48.8779 14.3565 53.3434 32.0263 53.3434H144.006C161.676 53.3434 176 48.8779 176 43.3695V10.9544C176 5.44593 161.676 0.980469 144.006 0.980469Z"
+                          fill="white"
+                          fillOpacity="0.2"
+                        />
+                      </svg>
+                      <div className="absolute inset-0 flex items-center justify-center text-white text-[2.5vw] md:text-[1.3vw]">
+                        {fromValue}
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
-              <div className="md:col-span-1 md:block hidden ">
-                <div className=" relative flex justify-center cursor-pointer">
-                  <div
-                    // onClick={handleSwap}
-                    className="cursor-not-allowed"
-                  >
-                    {/* <img
+                  )}
+                </div>
+                <div className="md:col-span-1 md:block hidden ">
+                  <div className=" relative flex justify-center cursor-pointer">
+                    <div
+                      // onClick={handleSwap}
+                      className="cursor-not-allowed"
+                    >
+                      {/* <img
                       src={split}
                       className="md:h-[2.5vw] md:w-[2.5vw]"
                       alt="split"
                     /> */}
-                    <svg
-                      width="3vw"
-                      height="3vw"
-                      viewBox="0 0 52 47"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M41.9353 0.308594H9.94123C4.89269 0.308594 0.800049 4.20635 0.800049 9.01448V37.3086C0.800049 42.1167 4.89269 46.0145 9.94123 46.0145H41.9353C46.9839 46.0145 51.0765 42.1167 51.0765 37.3086V9.01448C51.0765 4.20635 46.9839 0.308594 41.9353 0.308594Z"
-                        fill="white"
-                        fill-opacity="0.2"
+                      <svg
+                        width="3vw"
+                        height="3vw"
+                        viewBox="0 0 52 47"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M41.9353 0.308594H9.94123C4.89269 0.308594 0.800049 4.20635 0.800049 9.01448V37.3086C0.800049 42.1167 4.89269 46.0145 9.94123 46.0145H41.9353C46.9839 46.0145 51.0765 42.1167 51.0765 37.3086V9.01448C51.0765 4.20635 46.9839 0.308594 41.9353 0.308594Z"
+                          fill="white"
+                          fill-opacity="0.2"
+                        />
+                      </svg>
+                      <FaArrowRightArrowLeft
+                        color="white"
+                        size={"1.2vw"}
+                        className="absolute size-[4vw] md:size-[1.2vw] left-[1.3vw] top-[1.8vw] md:top-[0.85vw] md:left-[2.78vw] transform translate[-50%,-50%]"
                       />
-                    </svg>
-                    <FaArrowRightArrowLeft
-                      color="white"
-                      size={"1.2vw"}
-                      className="absolute size-[4vw] md:size-[1.2vw] left-[1.3vw] top-[1.8vw] md:top-[0.85vw] md:left-[2.78vw] transform translate[-50%,-50%]"
-                    />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="md:col-span-2 content-center md:block hidden">
-                {modifyBtn === true ? (
-                  <Select
-                    showSearch
-                    value={toValue}
-                    onChange={(value) => {
-                      handleChangeToValue(value);
-                    }}
-                    style={{
-                      width: "100%",
-                      height: "2.5vw",
-                      color: "red  ",
-                      fontSize: "1.5vw",
-                    }}
-                    className="text-[1vw]"
-                    placeholder="Search to Select"
-                    optionFilterProp="label"
-                    filterSort={(optionA, optionB) =>
-                      (optionA?.label ?? "")
-                        .toLowerCase()
-                        .localeCompare((optionB?.label ?? "").toLowerCase())
-                    }
-                    // options={[
-                    //   {
-                    //     value: toValue,
-                    //     label: toValue,
-                    //   },
-                    //   {
-                    //     value: '2',
-                    //     label: 'Closed',
-                    //   },
-                    //   {
-                    //     value: '3',
-                    //     label: 'Communicated',
-                    //   },
-                    //   {
-                    //     value: '4',
-                    //     label: 'Identified',
-                    //   },
-                    //   {
-                    //     value: '5',
-                    //     label: 'Resolved',
-                    //   },
-                    //   {
-                    //     value: '6',
-                    //     label: 'Cancelled',
-                    //   },
-                    // ]}
-                    // options={tooptions}
-                    options={toBus}
-                  />
-                ) : (
-                  <div className="relative custnav flex justify-center">
-                    <svg
-                      width="25vw"
-                      height="3vw"
-                      viewBox="0 0 176 54"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      preserveAspectRatio="none"
-                    >
-                      <path
-                        d="M144.006 0.980469H32.0263C14.3565 0.980469 0.0322266 5.44593 0.0322266 10.9544V43.3695C0.0322266 48.8779 14.3565 53.3434 32.0263 53.3434H144.006C161.676 53.3434 176 48.8779 176 43.3695V10.9544C176 5.44593 161.676 0.980469 144.006 0.980469Z"
-                        fill="white"
-                        fillOpacity="0.2"
-                      />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center text-white text-[2.5vw] md:text-[1.3vw]">
-                      {toValue}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* <div className=" md:hidden col-span-1"></div> */}
-              {/* <div className="md:hidden block col-span-3 content-center ml-[1vw]">
-            <div className="bg-blue-200 w-full  h-[7vw] rounded-[0.5vw] text-[1.1vw]">
-                      <DateInput
-                        value={fromDate}
-                        onChange={handleChangeDateValue}
-                      />
-                      <input type="date"/>
-                    </div>
-                    </div> */}
-            </div>
-
-            <div className="md:col-span-3"></div>
-            <div className="md:block hidden col-span-4 content-center">
-              <div className="grid grid-cols-4 gap-[1vw]  px-[0.5vw] ">
-                <div className="col-span-2">
+                <div className="md:col-span-2 content-center md:block hidden">
                   {modifyBtn === true ? (
-                    <div className="bg-white w-full h-[2.5vw] rounded-[0.5vw] text-[1.1vw]">
-                      <div className="pt-[0.2vw]">
-                        <DateInput
-                          value={fromDate}
-                          onChange={handleChangeDateValue}
-                        />
-                      </div>
-                    </div>
+                    <Select
+                      showSearch
+                      value={toValue}
+                      onChange={(value) => {
+                        handleChangeToValue(value);
+                      }}
+                      style={{
+                        width: "100%",
+                        height: "2.5vw",
+                        color: "red  ",
+                        fontSize: "1.5vw",
+                      }}
+                      className="text-[1vw]"
+                      placeholder="Search to Select"
+                      optionFilterProp="label"
+                      filterSort={(optionA, optionB) =>
+                        (optionA?.label ?? "")
+                          .toLowerCase()
+                          .localeCompare((optionB?.label ?? "").toLowerCase())
+                      }
+                      // options={[
+                      //   {
+                      //     value: toValue,
+                      //     label: toValue,
+                      //   },
+                      //   {
+                      //     value: '2',
+                      //     label: 'Closed',
+                      //   },
+                      //   {
+                      //     value: '3',
+                      //     label: 'Communicated',
+                      //   },
+                      //   {
+                      //     value: '4',
+                      //     label: 'Identified',
+                      //   },
+                      //   {
+                      //     value: '5',
+                      //     label: 'Resolved',
+                      //   },
+                      //   {
+                      //     value: '6',
+                      //     label: 'Cancelled',
+                      //   },
+                      // ]}
+                      // options={tooptions}
+                      options={toBus}
+                    />
                   ) : (
                     <div className="relative custnav flex justify-center">
                       <svg
@@ -1486,37 +1474,86 @@ const MainNavbar = ({ onTimeChanged, ...inputProps }) => {
                         />
                       </svg>
                       <div className="absolute inset-0 flex items-center justify-center text-white text-[2.5vw] md:text-[1.3vw]">
-                        {formattedDate}
+                        {toValue}
                       </div>
                     </div>
                   )}
                 </div>
-                {modifyBtn === true ? (
-                  <div className="col-span-2">
-                    <div
-                      className="bg-white w-full h-[2.5vw] rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer"
-                      onClick={() => {
-                        handleSearch();
-                        setModifyBtn(false);
-                      }}
-                    >
-                      Search
+
+                {/* <div className=" md:hidden col-span-1"></div> */}
+                {/* <div className="md:hidden block col-span-3 content-center ml-[1vw]">
+            <div className="bg-blue-200 w-full  h-[7vw] rounded-[0.5vw] text-[1.1vw]">
+                      <DateInput
+                        value={fromDate}
+                        onChange={handleChangeDateValue}
+                      />
+                      <input type="date"/>
                     </div>
-                  </div>
-                ) : (
+                    </div> */}
+              </div>
+
+              <div className="md:col-span-3"></div>
+              <div className="md:block hidden col-span-4 content-center">
+                <div className="grid grid-cols-4 gap-[1vw]  px-[0.5vw] ">
                   <div className="col-span-2">
-                    <div
-                      className="bg-white w-full h-[2.5vw] mt-[.3vw] rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer"
-                      onClick={() => setModifyBtn(true)}
-                    >
-                      Modify
-                    </div>
+                    {modifyBtn === true ? (
+                      <div className="bg-white w-full h-[2.5vw] rounded-[0.5vw] text-[1.1vw]">
+                        <div className="pt-[0.2vw]">
+                          <DateInput
+                            value={fromDate}
+                            onChange={handleChangeDateValue}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="relative custnav flex justify-center">
+                        <svg
+                          width="25vw"
+                          height="3vw"
+                          viewBox="0 0 176 54"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          preserveAspectRatio="none"
+                        >
+                          <path
+                            d="M144.006 0.980469H32.0263C14.3565 0.980469 0.0322266 5.44593 0.0322266 10.9544V43.3695C0.0322266 48.8779 14.3565 53.3434 32.0263 53.3434H144.006C161.676 53.3434 176 48.8779 176 43.3695V10.9544C176 5.44593 161.676 0.980469 144.006 0.980469Z"
+                            fill="white"
+                            fillOpacity="0.2"
+                          />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center text-white text-[2.5vw] md:text-[1.3vw]">
+                          {formattedDate}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
+                  {modifyBtn === true ? (
+                    <div className="col-span-2">
+                      <div
+                        className="bg-white w-full h-[2.5vw] rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer"
+                        onClick={() => {
+                          handleSearch();
+                          setModifyBtn(false);
+                        }}
+                      >
+                        Search
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="col-span-2">
+                      <div
+                        className="bg-white w-full h-[2.5vw] mt-[.3vw] rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer"
+                        onClick={() => setModifyBtn(true)}
+                      >
+                        Modify
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       <Modal

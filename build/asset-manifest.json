@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.a0562009.css",
-    "main.js": "/static/js/main.eda2faa1.js",
+    "main.css": "/static/css/main.cb5a9bc0.css",
+    "main.js": "/static/js/main.cbf85150.js",
     "static/js/32.62135ec3.chunk.js": "/static/js/32.62135ec3.chunk.js",
     "static/js/357.55ccad3b.chunk.js": "/static/js/357.55ccad3b.chunk.js",
     "static/js/542.02a7bc4a.chunk.js": "/static/js/542.02a7bc4a.chunk.js",
@@ -10,8 +10,8 @@
     "static/media/gif2.gif": "/static/media/gif2.06ff6e987fb3e44a1089.gif",
     "static/media/Password.gif": "/static/media/Password.312d7028a13151f70077.gif",
     "static/media/faq.gif": "/static/media/faq.334999c8db4e23e9a090.gif",
-    "static/media/Grouplogos.png": "/static/media/Grouplogos.6bd7cbfdf9164847dafd.png",
     "static/media/gif.gif": "/static/media/gif.d9864a5fd5e36999b80a.gif",
+    "static/media/Grouplogos.png": "/static/media/Grouplogos.cf3f41a37ec676766239.png",
     "static/media/iPhone 13 Pro.png": "/static/media/iPhone 13 Pro.c36ecf1474eeede87121.png",
     "static/media/bgimage.png": "/static/media/bgimage.cdd90ac47b4fb5b1bbf7.png",
     "static/media/cash back.gif": "/static/media/cash back.f6af403f025f1edd79b2.gif",
@@ -266,7 +266,7 @@
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.a0562009.css",
-    "static/js/main.eda2faa1.js"
+    "static/css/main.cb5a9bc0.css",
+    "static/js/main.cbf85150.js"
   ]
 }

@@ -15,6 +15,7 @@ import lens from "../../assets/lens.png";
 import bubble from "../../assets/LENSss.png";
 import { getBoxToBoxArrow } from "curved-arrows";
 import Vectorarrow from "../../assets/Vectorarrow.png";
+import bobble from "../../assets/LENSss.png";
 const MainPage = () => {
   const [sidebarToggle, setSidebarToggle] = useState(false);
   const menulist = useSelector((state) => state.search);
@@ -38,44 +39,53 @@ const MainPage = () => {
   };
   useEffect(() => {
     setLoading(true);
+    
     setTimeout(() => {
       setLoading(false);
     }, 7000);
   }, []);
-  const logos = [parveen, redlogo, yatralogo, ixigo, orange];
-
-  const [currentLogo, setCurrentLogo] = useState(parveen);
-  const [index, setIndex] = useState(0);
+  const logos = [parveen, redlogo, yatralogo, ixigo];
+  const [currentLogo, setCurrentLogo] = useState(logos[0]);
 
   useEffect(() => {
+    if (logos.length === 0) return;
+
     const interval = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % logos.length);
+      setCurrentLogo((prevLogo) => {
+        const currentIndex = logos.indexOf(prevLogo);
+        const nextIndex = (currentIndex + 1) % logos.length;
+        return logos[nextIndex];
+      });
     }, 400);
 
-    return () => clearInterval(interval);
-  }, []);
+    // Stop the interval after 7 seconds (7000 ms)
+    const timeout = setTimeout(() => {
+      clearInterval(interval);
+    }, 7000);
 
-  useEffect(() => {
-    setCurrentLogo(logos[index]);
-  }, [index]);
+    return () => {
+      clearInterval(interval); // Cleanup interval
+      clearTimeout(timeout); // Cleanup timeout
+    };
+  }, []);
 
   return (
     <>
-      <MainNavbar />
+      <MainNavbar loading={loading} />
       {/* <div> */}
       {loading ? (
         <div className="flex pt-[8vw] ">
-          <div className="bg-[#e5fff1] w-screen h-[88vh] overflow-hidden relative">
+          <div className="bg-[#e5fff1] w-screen h-[83.7vh] overflow-hidden relative">
             {/* <div className="container"> */}
-            <div className="scrolling-background"></div>
+            <div className="scrolling-background blur-md"></div>
             <div className="scrolling-background duplicate"></div>
             <div class="black-overlay"></div>
 
             <div className="graph__wrapper">
               <svg
-                width="40vw"
-                height="15vw"
-                viewBox="0 0 450 160"
+                width="60vw"
+                height="45vw"
+                viewBox="0 0 600 300"
                 version="1.1"
                 style={{ overflow: "visible" }}
               >
@@ -94,29 +104,30 @@ const MainPage = () => {
                     strokeWidth="5"
                     strokeLinejoin="round"
                     strokeMiterlimit="10"
-                    d="M10,150 A200,140 0 0,1 385,150"
+                    d="M10,150 A250,150 0 0,1 385,150" // increase width 385
                   />
                   <path
                     className="dashed"
                     fill="none"
                     stroke="white"
-                    strokeWidth="5"
+                    strokeWidth="3"
                     strokeLinejoin="round"
                     strokeMiterlimit="10"
                     strokeDasharray="10,5"
-                    d="M10,150 A200,140 0 0,1 385,150"
+                    d="M10,150 A250,150 0 0,1 385,150"
                   />
-                  <polyline id="arrow" points="0,-9 18,0 0,9 5,0" fill="white">
+                  {/* <polyline id="arrow" points="0,-9 18,0 0,9 5,0" fill="white"  transform="scale(1.5)">
                     <animateMotion
                       rotate="auto"
-                      begin="1s"
-                      dur="6s"
+                      begin="0.1s"
+                      dur="7s"
                       repeatCount="1"
                       fill="freeze"
                     >
                       <mpath xlinkHref="#Path-1" />
                     </animateMotion>
-                  </polyline>
+                  </polyline> */}
+
                   {/* <g id="bus" fill="white" transform="translate(-10, -10)">
                     <rect x="0" y="0" width="20" height="10" rx="2" />
                     <circle cx="5" cy="12" r="2" />
@@ -132,36 +143,47 @@ const MainPage = () => {
                   >
                     <mpath xlinkHref="#Path-1" />
                   </animateMotion> */}
-                  {/* <image
+                  <image
                     id="moving-image"
-                    // href="https://example.com/path-to-your-image.png"
                     href={Vectorarrow}
-                    width="2vw"
-                    height="2vw"
-                    transform="translate(-2, -2)"
+                    width="1.8vw"
+                    height="1.8vw"
                     style={{
                       transform: "rotate(45deg)",
                     }}
-                    // transform="translate(-20, -20) rotate(45)"
+                    x="0"
+                    y="-1.7vw" // arrow moving top
                   >
                     <animateMotion
                       rotate="auto"
-                      begin="1s"
-                      dur="6.5s"
+                      begin="0.1s"
+                      dur="7s"
                       repeatCount="1"
                       fill="freeze"
+                      height={"1.8vw"}
+                      width={"1.8vw"}
                     >
                       <mpath xlinkHref="#Path-1" />
                     </animateMotion>
-                  </image> */}
+                    {/* <animate
+                      attributeName="y"
+                      from="0"
+                      to="-20"
+                      dur="2s"
+                      fill="freeze"
+                    /> */}
+                  </image>
+
+                  <circle cx="10" cy="150" r="10" fill="white" className="opacity-50" />
                   <circle cx="10" cy="150" r="5" fill="white" className="" />
+                  <circle cx="385" cy="150" r="10" fill="white" className="opacity-50" />
                   <circle cx="385" cy="150" r="5" fill="white" />
                 </g>
               </svg>
             </div>
 
-            {/* <div className="lens"></div>
-            <div className="bobble"></div> */}
+            {/* <div className="lens"></div> */}
+            {/* <div className="bobble"></div>  */}
             <div
               style={{
                 backgroundImage: `url(${lens})`,
@@ -169,7 +191,7 @@ const MainPage = () => {
                 backgroundRepeat: "no-repeat",
                 zIndex: 2,
               }}
-              className="absolute top-[20vw] left-[61vw] w-[48vw] h-[25vw] z-10 transform -translate-x-1/2 -translate-y-1/2"
+              className="absolute top-[22vw] left-[59vw] w-[40vw] h-[22vw] z-10 transform -translate-x-1/2 -translate-y-1/2"
             ></div>
             {/* <div className="absolute top-[60.1%] left-[70.15%] w-[25vw] h-[40vw] transform -translate-x-1/2 -translate-y-1/2">
               <div
@@ -202,13 +224,21 @@ const MainPage = () => {
                 backgroundRepeat: "no-repeat",
                 zIndex: 2,
               }}
-              className="absolute top-[17vw] left-[49.25vw] w-[15.20vw] h-[12.70vw] z-10 transform -translate-x-1/2 -translate-y-1/2"
+              className="absolute top-[19.50vw] left-[48.80vw] w-[11vw] h-[11vw] z-10 transform -translate-x-1/2 -translate-y-1/2"
             ></div>
-
-            <div className="text-white absolute text-[4vw] font-extrabold left-[28vw] top-[15vw] ">
+            <div
+              style={{
+                backgroundImage: `url(${bobble})`,
+                backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+                zIndex: 2,
+              }}
+              className="absolute top-[19.50vw] left-[48.80vw] w-[11vw] h-[11vw] z-10 transform -translate-x-1/2 -translate-y-1/2"
+            ></div>
+            <div className="text-white absolute text-[5.5vw] font-extrabold left-[24vw] top-[15vw] ">
               {getCityAbbreviation(localStorage.getItem("departure"))}
             </div>
-            <div className="text-white absolute text-[4vw] font-extrabold right-[32vw] top-[15vw] ">
+            <div className="text-white absolute text-[5.5vw] font-extrabold right-[27vw] top-[15vw] ">
               {getCityAbbreviation(localStorage.getItem("arrival"))}
             </div>
           </div>

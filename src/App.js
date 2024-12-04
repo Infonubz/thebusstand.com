@@ -56,7 +56,6 @@ import Settings from "./Components/MobileView/Settings";
 import RatingViewAll from "./Components/Home/RatingViewAll";
 import SeatIndex from "./Components/MobileView/SeatIndex";
 import DrawerDetails from "./Components/Dashboard/Drawer";
-
 function MainRoute({ element: Component }) {
   const userId = sessionStorage.getItem("user_id");
   return userId ? <Component /> : <Navigate to="/" />;
@@ -67,7 +66,7 @@ function DashboardRoute({ element: Component }) {
   const arrival = localStorage.getItem("arrival");
   const selectdate = localStorage.getItem("selectdate");
   const data = departure && arrival && selectdate;
-  return data ? (<Component />) : (<Navigate to="/" />);
+  return data ? <Component /> : <Navigate to="/" />;
 }
 
 function App() {
@@ -139,10 +138,10 @@ function App() {
           <Route path="/faq" element={<Faq />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/settings" element={<Settings />} />
-          <Route path="/CustomerRatings" element={<RatingViewAll/>}/>
-          <Route path="/seats" element={<SeatIndex/>}/>
-          <Route path="/bookingDetails" element={<DrawerDetails/>}/>
-          
+          <Route path="/CustomerRatings" element={<RatingViewAll />} />
+          <Route path="/seats" element={<SeatIndex />} />
+          <Route path="/bookingDetails" element={<DrawerDetails />} />
+
           {/* // <Route path="/map" element={<MapIndex />} />s */}
         </Routes>
       </Router>
@@ -204,4 +203,3 @@ export default App;
 // }
 
 // export default App;
-

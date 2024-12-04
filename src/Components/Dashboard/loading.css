@@ -16,10 +16,13 @@
   background-size: cover; /* Ensure the image covers the entire container */
   /* background-position: center; Center the background image */
   background-repeat: no-repeat; /* Avoid repeating */
-  animation: scroll-loop 10s linear infinite; /* Smooth, infinite scroll */
+  animation: scroll-loop 15s linear infinite; /* Smooth, infinite scroll */
   mix-blend-mode: multiply; /* Blend with background color */
   filter: blur(1px) opacity(0.5); /* Apply blur and 50% opacity */
   background-color: #e5fff1;
+  filter: blur(5px);
+  -webkit-filter: blur(5px); /* For Safari */
+  overflow: hidden; /* Prevent overflowing content */
 }
 
 .lens {
@@ -104,20 +107,17 @@
 }
 #arrow {
   animation: arrow 7s linear forwards;
-  opacity: 0;
+  font-size: 1vw;
+  /* opacity: 0; */
 }
 @keyframes arrow {
   to {
-    opacity: 100;
+    /* opacity: 100; */
   }
 }
-.ifrm {
-  border: none;
-  width: 100%;
-  margin-top: 50px;
-}
+
 .graph__wrapper{
   position: absolute;
-  top: 2vw;
-  left: 31vw;
+  top: -8vw;
+  left: 28.5vw;
 }

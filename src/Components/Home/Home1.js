@@ -930,6 +930,9 @@ export default function Home1() {
   }, []);
   console.log(scrollPercentage.toFixed(2), "teswtinggggg");
   const colors = ColorCodes();
+  useEffect(()=>{
+    handlebussearch()
+  },[])
   return (
     <div
       className={`bg-background min-h-screen max-h-auto w-full overflow-auto relative`}

@@ -44,7 +44,7 @@ import { useNavigate } from "react-router";
 import SingleBookingCardList from "../../MobileView/SingleBookingCardList";
 //import MobileFilterNavbar from "./MobileFilterNavbar";
 // import orange_travel_logo from "../../../assets/orange.png"
-
+import "../../Home/test.css"
 export default function SingleCard() {
   // const [dropDown, setDropDown] = useState(0)
   const [dropDown, setDropDown] = useState(null);
@@ -151,7 +151,6 @@ export default function SingleCard() {
     sessionStorage.getItem("spinner");
     setSpinner(sessionStorage.getItem("spinner"));
   }, [sessionStorage.getItem("spinner")]);
-
   setTimeout(() => {
     setSpinner("false");
   }, 1000);
@@ -562,7 +561,10 @@ export default function SingleCard() {
                 } w-full mt-[0.5vw] flex-col rounded-[1vw] border-[0.15vw] border-[#C9C9C9]`}
                 key={index}
                 style={{
-                  backgroundImage: `linear-gradient(to right, #F8C550, #FFEB76, #FFE173), url(${SINGLECARD_BG})`,
+                  backgroundImage:
+                    item.bus_type_status === "luxury"
+                      ? `linear-gradient(to right, #F8C550, #FFEB76, #FFE173), url(${SINGLECARD_BG})`
+                      : "",
                   backgroundBlendMode: "overlay", // Add this line to blend the color and image
                   zIndex: 2,
                 }}
@@ -1454,14 +1456,17 @@ export default function SingleCard() {
           ))
         ) : (
           <div className="flex items-center justify-center mt-[5vw]">
-            <Empty
+            {/* <Empty
               description="No Buses Found"
               className=" rounded-full p-[1vw]"
               // style={{
               //   backgroundColor: "white",
               //   color:"black"
               // }}
-            />
+            /> */}
+            <div class="vehicle-container_nodatabus absolute bottom-[25vw]">
+              <div class="nodatabus">hi</div>
+            </div>
           </div>
         )}
       </div>
