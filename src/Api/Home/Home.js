@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import {
   ADS_LIST,
+  DISCOUNT_OFFER_LIST,
   FAQS,
   FOOTER,
   MOB_ADS_LIST,
@@ -74,6 +75,19 @@ export const GetPromotion = async (dispatch, id) => {
       `${apicrm}/getLivePromotions`
     );
     dispatch({ type: PROMOTION_LIST, payload: response.data });
+    console.log(response.data, "footerresponse");
+    return response.data;
+  } catch (error) {
+    handleError(error);
+    // return null;
+  }
+};
+export const GetDiscountOffers = async (dispatch, id) => {
+  try {
+    const response = await axios.get(
+      `${apicrm}/getLiveOffersDeals/0`
+    );
+    dispatch({ type: DISCOUNT_OFFER_LIST, payload: response.data });
     console.log(response.data, "footerresponse");
     return response.data;
   } catch (error) {

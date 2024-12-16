@@ -18,21 +18,15 @@
   animation: newbus 9s linear infinite;
 }
 .words {
-  /* height: 7.1vw; */
   width: 100%;
   font-size: 2.5vw;
   color: white;
   font-weight: bold;
-  /* background-image: url("../../assets/newbus1.png"); */
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: bottom;
   position: absolute;
   top: 0.5vw;
   left: -10%;
-  /* z-index: 2; */
-  /* transform: translateX(0); */
-  animation: words 9s linear infinite;
+  animation: words 10s linear infinite;
+  /* animation-fill-mode: forwards;  */
 }
 .thread {
   /* height: 7.1vw; */
@@ -49,7 +43,7 @@
   left: 37.6%;
   /* z-index: 2; */
   /* transform: translateX(0); */
-  animation: thread 9s linear infinite;
+  animation: thread 8.8s linear infinite;
 }
 @keyframes thread {
   0% {
@@ -69,11 +63,13 @@
 }
 @keyframes words {
   0% {
-    transform: translateX(-50%);
+    transform: translateX(-50%); /* Start off-screen left */
   }
-
+  50% {
+    transform: translateX(35%); /* Stop at 60% width */
+  }
   100% {
-    transform: translateX(100%);
+    transform: translateX(35%); /* Remain at 60% */
   }
 }
 

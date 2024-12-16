@@ -8,7 +8,10 @@
   overflow-x: hidden;
   /* background-color: #7ec3f2; */
   /* background-image: url("../../assets/BackgroundSky1.png"); */
-  background-image: url("../../assets/Secondary\ loop\ 5.png");
+  /* background-image: url("../../assets/Secondary\ loop\ 5.png"); */
+  background-image: url("../../assets/Christmas Theme 2.png");
+  /* animation: hero 30s linear infinite; */
+  background-repeat: no-repeat;
   /* background-size: contain; */
   /* padding-top: 6vh; */
 }
@@ -32,9 +35,11 @@
   display: block;
   /* background-image: url("../../assets/bg_build1.png"); */
   /* background-image: url("../../assets/sample1.png"); */
-  /* background-image: url("../../assets/bgimage.png"); */
+  background-image: url("../../assets/bgimage.png");
   /* background-image: url("../../assets/Secondary\ loop\ \(3\)\ 6.png"); */
-  background-image: url("../../assets/image\ \(2\).png");
+  /* background-image: url("../../assets/image\ \(2\).png"); */
+  /* background-image: url("../../assets/Christmas Theme bg.png"); */
+
   position: absolute;
   left: 0;
   /* right: 0; */
@@ -48,14 +53,14 @@
 }
 .bg_build2 {
   /* height: 37%; */
-  height: 80%;
+  height: 65%;
   width: 1000%;
-  display: block; 
+  display: block;
   /* background-image: url("../../assets/bg_build2.png"); */
   /* background-image: url("../../assets/sample1.png"); */
   /* background-image: url("../../assets/full1.png"); */
   /* background-image: url("../../assets/Dussehra\ Full\ Bg\ layer.png"); */
-  background-image: url("../../assets/image\ \(3\).png");
+  background-image: url("../../assets/Christmas Theme 2 (4).png");
   position: absolute;
   left: 0;
   /* right: 0; */
@@ -95,35 +100,39 @@
   animation: car1 10s linear infinite;
 }
 .flight {
-  height: 40%;
+  height: 20%;
   width: 100%;
   /* background-image: url("../../assets/flight1.png"); */
-  background-image: url("../../assets/flight5.png");
+  background-image: url("../../assets/Christmas Theme 1.png");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: bottom;
   position: absolute;
-  top: -1.8vw;
+  top: -1vw;
   left: 0;
   transform: rotate(-90deg);
-  rotate: -3deg;
+  rotate: -2deg;
   /* opacity: 60%; */
   /* z-index: 1; */
-  animation: flight 15s linear infinite;
+  animation: flight 25s linear infinite;
 }
 .cloud1 {
   height: 100%;
   width: 100%;
-  background-image: url("../../assets/passingclouds1.png");
+  /* background-image: url("../../assets/passingclouds1.png"); */
+  background-image: url("../../assets/Christmas 1 Theme.png");
+
   background-repeat: no-repeat;
-  background-size: contain;
-  background-position: bottom;
+  /* background-repeat: repeat-x; */
+  background-size: cover;
+  background-position: top;
   position: absolute;
-  top: -15vw;
+  /* top: -15vw; */
   left: 0;
-  opacity: 60%;
+  opacity: 90%;
+  top: 0vw;
   /* z-index: 1; */
-  animation: cloud1 50s linear infinite;
+  /* animation: cloud1 50s linear infinite; */
 }
 .cloudhome {
   height: 100%;
@@ -485,5 +494,13 @@
   }
   100% {
     transform: translateX(100%);
+  }
+}
+@keyframes hero {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
   }
 }

@@ -118,13 +118,15 @@ const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
             getlist[currentIndex]?.ad_file_type === "image/png" ||
             getlist[currentIndex]?.ad_file_type === "image/gif" ? (
               <div
-                className="h-[11vw] rounded-[0.5vw] slide-wrapper slide"
+                className="h-[11vw] w-full rounded-[0.5vw] slide-wrapper slide"
                 style={{
                   backgroundImage: `url(${apicrmimage}${getlist[currentIndex]?.ad_video})`,
                   backgroundSize: "cover",
                   backgroundRepeat: "no-repeat",
+                  backgroundPosition:"center",
                   transition: "background-image 1s ease-in-out",
                   height: "11vw",
+                  width:"full"
                 }}
               ></div>
             ) : (

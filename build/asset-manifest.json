@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.cb5a9bc0.css",
-    "main.js": "/static/js/main.cbf85150.js",
+    "main.css": "/static/css/main.ed2be446.css",
+    "main.js": "/static/js/main.fb38db99.js",
     "static/js/32.62135ec3.chunk.js": "/static/js/32.62135ec3.chunk.js",
     "static/js/357.55ccad3b.chunk.js": "/static/js/357.55ccad3b.chunk.js",
     "static/js/542.02a7bc4a.chunk.js": "/static/js/542.02a7bc4a.chunk.js",
@@ -14,15 +14,15 @@
     "static/media/Grouplogos.png": "/static/media/Grouplogos.cf3f41a37ec676766239.png",
     "static/media/iPhone 13 Pro.png": "/static/media/iPhone 13 Pro.c36ecf1474eeede87121.png",
     "static/media/bgimage.png": "/static/media/bgimage.cdd90ac47b4fb5b1bbf7.png",
+    "static/media/Christmas Theme 2.png": "/static/media/Christmas Theme 2.0f1c86aa7e154fe912e3.png",
     "static/media/cash back.gif": "/static/media/cash back.f6af403f025f1edd79b2.gif",
     "static/media/Help.gif": "/static/media/Help.81857b8b372c6403e99b.gif",
     "static/media/googlemap.png": "/static/media/googlemap.3556eeefa031f015aa75.png",
     "static/media/ratings_gif.gif": "/static/media/ratings_gif.d8db12c72d82322d2855.gif",
     "static/media/lens.png": "/static/media/lens.19591f4894c122cfa7f0.png",
-    "static/media/image (2).png": "/static/media/image (2).b9d08526e23cd0f1860c.png",
-    "static/media/Secondary loop 5.png": "/static/media/Secondary loop 5.0a395f9570701fc53076.png",
     "static/media/CashBack_Mble.gif.gif": "/static/media/CashBack_Mble.gif.2a07e4ae705fd8df9bd4.gif",
     "static/media/cbe.png": "/static/media/cbe.efe38c65472c15dd9306.png",
+    "static/media/Christmas Theme 2 (1).png": "/static/media/Christmas Theme 2 (1).92804a2e73dbffa44e7f.png",
     "static/media/vehicle3.png": "/static/media/vehicle3.c417e98209b6f1477bae.png",
     "static/media/card1.png": "/static/media/card1.3a89fa2690d4b00ef374.png",
     "static/media/card2.png": "/static/media/card2.ba3be4a605d234b87bf4.png",
@@ -39,7 +39,6 @@
     "static/media/Ellipse 1 (4).png": "/static/media/Ellipse 1 (4).33990472b7bf18d31506.png",
     "static/media/LENSss.png": "/static/media/LENSss.78d88763c25d6968f3a2.png",
     "static/media/sharma.png": "/static/media/sharma.965ecbca21b0f9171058.png",
-    "static/media/image (3).png": "/static/media/image (3).512d28b7408904d7e985.png",
     "static/media/BackgroundSky1.png": "/static/media/BackgroundSky1.3d61d1fa41baa63d99c0.png",
     "static/media/vehicles.png": "/static/media/vehicles.ead85436ca7ddfc64476.png",
     "static/media/refer.png": "/static/media/refer.65c046847f6d9c9e2304.png",
@@ -60,6 +59,7 @@
     "static/media/vehicle1.png": "/static/media/vehicle1.01cea4c379e1b42d4808.png",
     "static/media/bg_build1.png": "/static/media/bg_build1.2b9d27922e8fffbc3d33.png",
     "static/media/OurLowPrice.png": "/static/media/OurLowPrice.1d262b081ffaaff76954.png",
+    "static/media/Christmas Theme 1.png": "/static/media/Christmas Theme 1.6f3d28e93b6e89031959.png",
     "static/media/busstand.png": "/static/media/busstand.1e4040cc596b16ee2033.png",
     "static/media/bike.png": "/static/media/bike.2dcfc1a0a06af06e5f49.png",
     "static/media/orange.png": "/static/media/orange.f8bf4093fd3fac2403e6.png",
@@ -77,7 +77,6 @@
     "static/media/TOURIST-FRAME3.png": "/static/media/TOURIST-FRAME3.5dab98377db20fdcb9f9.png",
     "static/media/Frame 3.png": "/static/media/Frame 3.f51a1a2c1a4ac6f62e31.png",
     "static/media/Frame 5.png": "/static/media/Frame 5.cac4e05f6913f63865c3.png",
-    "static/media/flight5.png": "/static/media/flight5.f3983109c2e59255c9bc.png",
     "static/media/TOURIST-FRAME2.png": "/static/media/TOURIST-FRAME2.0a08a9e69f406d023026.png",
     "static/media/TOURIST-FRAME5.png": "/static/media/TOURIST-FRAME5.fe2fc15a02daf8be8232.png",
     "static/media/thankyou.png": "/static/media/thankyou.513b8d09f7f0762ce141.png",
@@ -116,6 +115,7 @@
     "static/media/yatralogo.png": "/static/media/yatralogo.209243b7ff7be89381e4.png",
     "static/media/stand_man.png": "/static/media/stand_man.52bfd58aa76e5b1e01e0.png",
     "static/media/37.png": "/static/media/37.b1b6a4cea6b99d2f0d55.png",
+    "static/media/Your Comfort Our AI's Priority.png": "/static/media/Your Comfort Our AI's Priority.3781b3c52dc859e6e675.png",
     "static/media/cloud2.png": "/static/media/cloud2.48b34a0afcdeb1426c0e.png",
     "static/media/13.png": "/static/media/13.90f3834c08b3e05e1754.png",
     "static/media/50.png": "/static/media/50.90f3834c08b3e05e1754.png",
@@ -131,6 +131,7 @@
     "static/media/65.png": "/static/media/65.db0a19f4b5806a54b419.png",
     "static/media/7.png": "/static/media/7.db0a19f4b5806a54b419.png",
     "static/media/3.png": "/static/media/3.b131c5d64ce3e1ecdeb5.png",
+    "static/media/Travel Simplified by our AI.png": "/static/media/Travel Simplified by our AI.34db0f0aa82f73c7cf0e.png",
     "static/media/120.png": "/static/media/120.f728b2091ea271a8e3bc.png",
     "static/media/18.png": "/static/media/18.20d676efff7e1a9f2fa2.png",
     "static/media/165.png": "/static/media/165.810969b6f9d4cc29d1fa.png",
@@ -206,6 +207,7 @@
     "static/media/75.png": "/static/media/75.10f6a6d0d34553bf42d6.png",
     "static/media/80.png": "/static/media/80.10f6a6d0d34553bf42d6.png",
     "static/media/21.png": "/static/media/21.0e535e00eeffc06a9db3.png",
+    "static/media/thinkbox3.png": "/static/media/thinkbox3.3d61abd673e2fd812a44.png",
     "static/media/41.png": "/static/media/41.8891273135e6962d1a0c.png",
     "static/media/25.png": "/static/media/25.a9d45257319f1977dbac.png",
     "static/media/128.png": "/static/media/128.f3a137c035f59dbe3b8e.png",
@@ -266,7 +268,7 @@
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.cb5a9bc0.css",
-    "static/js/main.cbf85150.js"
+    "static/css/main.ed2be446.css",
+    "static/js/main.fb38db99.js"
   ]
 }

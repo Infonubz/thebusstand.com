@@ -32,3 +32,4 @@ export const GET_THEME_COLORS = "GET_THEME_COLORS";
 export const SEND_APP_LINK = "SEND_APP_LINK";
 export const MOB_ADS_LIST = "MOB_ADS_LIST";
 export const FAQ_LIST = "FAQ_LIST";
+export const DISCOUNT_OFFER_LIST = "DISCOUNT_OFFER_LIST";

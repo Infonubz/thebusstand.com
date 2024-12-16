@@ -49,6 +49,10 @@
   z-index: 4; /* Ensure it's on top of all other elements */
   transform: translate(-50%, -50%);
 }
+
+
+
+
 /* .parveen {
   position: absolute;
   top: 39.1%;
@@ -95,7 +99,6 @@
   animation-iteration-count: 1;
   animation-delay: 1s;
   /* animation: dash 5s ease-in-out forwards; Animation duration and easing */
-
 }
 @keyframes dash {
   to {
@@ -116,7 +119,7 @@
   }
 }
 
-.graph__wrapper{
+.graph__wrapper {
   position: absolute;
   top: -8vw;
   left: 28.5vw;

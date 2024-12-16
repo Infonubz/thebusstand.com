@@ -61,7 +61,7 @@ import T7 from "../../assets/Promotion/Deals/Tourist/TOURIST-FRAME7.png";
 import { Link } from "react-router-dom";
 //import TrendingOffer from "../Home/TrendingOffer";
 import { useDispatch, useSelector } from "react-redux";
-import { GetPromotion } from "../../Api/Home/Home";
+import { GetDiscountOffers, GetPromotion } from "../../Api/Home/Home";
 //import ColorCodes from "../Common/ColorCodes";
 
 function Offers() {
@@ -69,10 +69,12 @@ function Offers() {
   const [currentoffers, setCurrentOffer] = useState([]);
   const [plusvalues, setPlusvalues] = useState(0);
   const promotionlist = useSelector((state) => state?.promo_list);
+  const offerlist = useSelector((state) => state?.discount_offer_list);
   const colors = useSelector((state) => state.themecolors[0]);
   const dispatch = useDispatch();
   // const colors=ColorCodes()
   const apiUrlimage = process.env.REACT_APP_API_URL_IMAGE;
+  const [totaloffer, setTotalOffer] = useState("");
 
   const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
   const CorporateTravellers = useMemo(
@@ -97,6 +99,8 @@ function Offers() {
       { img: GP5, valid: "18 JUN", coupon: "GPAY25" },
       { img: GP6, valid: "27 May", coupon: "NEXT149" },
       { img: GP7, valid: "19 JUN", coupon: "DISCOUNT999" },
+      { img: GP7, valid: "19 JUN", coupon: "DISCOUNT999" },
+      
     ],
     []
   );
@@ -173,7 +177,7 @@ function Offers() {
   };
 
   const nextSlide = () => {
-    const newIndex = Math.min(startIndex + 1, currentoffers?.length - 5);
+    const newIndex = Math.min(startIndex + 1, totaloffer?.length - 5);
     setStartIndex(newIndex);
     console.log(startIndex, newIndex, "nextIndex");
   };
@@ -248,10 +252,26 @@ function Offers() {
 
   useEffect(() => {
     GetPromotion(dispatch);
+    GetDiscountOffers(dispatch);
   }, [dispatch]);
 
-  console.log(`${apicrmimage}${promotionlist[0]?.background_image}`, "promotionlist");
-  console.log(colors, "colorscolorscolorscolorscolors");
+  console.log(
+    `${apicrmimage}${promotionlist[0]?.background_image}`,
+    "promotionlist"
+  );
+  useEffect(() => {
+    let temp = [];
+    const promo = promotionlist.map((item) => {
+      return temp.push(item.background_image);
+    });
+    const offer = offerlist.map((item) => {
+      return temp.push(item.theme);
+    });
+    setTotalOffer(temp);
+  }, [promotionlist, offerlist]);
+  console.log(totaloffer, "colorscolorscolorscolorscolors");
+  const test = totaloffer.slice(startIndex, startIndex + plusvalues);
+  console.log(test, "testtesttesttesttesttesttest");
 
   return (
     <div>
@@ -284,8 +304,8 @@ function Offers() {
             <div
               className={`grid lg:grid-cols-5 md:grid-cols-4  w-full h-full items-center gap-[1vw] justify-center px-[2vw]`}
             >
-              {promotionlist?.length > 0 &&
-                promotionlist
+              {totaloffer?.length > 0 &&
+                totaloffer
                   .slice(startIndex, startIndex + plusvalues)
                   .map((item, index) => (
                     <>
@@ -317,7 +337,7 @@ function Offers() {
                         ></div>
                         <img
                           alt="background_Image"
-                          src={`${apicrmimage}${item?.background_image}`}
+                          src={`${apicrmimage}${item}`}
                           className="w-[80vw] lg:h-[9.5vw] md:h-[8vw] h-[40vw]"
                         />
                         <div className={`absolute left-[4.6vw] bottom-0`}>
@@ -330,7 +350,7 @@ function Offers() {
                   ))}
             </div>
           </div>
-          {startIndex > 0 && promotionlist?.length > 5 && (
+          {startIndex > 0 && totaloffer?.length > 5 && (
             <div className={`absolute left-[-3vw] top-[50%]`}>
               <button
                 className={`cursor-pointer  p-2 rounded-full`}
@@ -342,18 +362,14 @@ function Offers() {
             </div>
           )}
           <div className={`absolute right-[-3vw] top-[50%]`}>
-            {promotionlist?.length > 5 &&
-              startIndex < promotionlist?.length - 5 && (
-                <button
-                  className={`cursor-pointer  p-2 rounded-full`}
-                  onClick={nextSlide}
-                >
-                  <IoIosArrowForward
-                    size={"2.5vw"}
-                    color={`${colors.primary}`}
-                  />
-                </button>
-              )}
+            {totaloffer?.length > 5 && startIndex < totaloffer?.length - 5 && (
+              <button
+                className={`cursor-pointer  p-2 rounded-full`}
+                onClick={nextSlide}
+              >
+                <IoIosArrowForward size={"2.5vw"} color={`${colors.primary}`} />
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -378,12 +394,12 @@ function Offers() {
         <div className={`flex overflow-x-auto scrollbar-hide mt-[2vw]`}>
           {/* <div className="flex"> */}
 
-          {promotionlist?.length > 0 &&
-            promotionlist.map((item, index) => (
+          {totaloffer?.length > 0 &&
+            totaloffer?.map((item, index) => (
               <div key={index} className={`relative flex-shrink-0 mr-[2vw]`}>
                 <img
                   alt="background_image"
-                  src={`${apicrmimage}${item?.background_image}`}
+                  src={`${apicrmimage}${item}`}
                   className="w-[80vw] lg:h-[80%] md:h-[12vw] h-[45vw] relative z-10" // Ensure z-index is higher
                 />
                 <div

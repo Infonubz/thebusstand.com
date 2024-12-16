@@ -74,7 +74,7 @@ import homesky from "../../assets/BackgroundSky1.png";
 import CommonMainNavbar from "../Common/CommonMainNavbar";
 import Footer from "../Footer/Footer";
 import ColorCodes from "../Common/ColorCodes";
-import { GetPromotion } from "../../Api/Home/Home";
+import { GetDiscountOffers, GetPromotion } from "../../Api/Home/Home";
 
 const TrendingOffer = () => {
   const [showDialog, setShowDialog] = useState(false);
@@ -85,77 +85,99 @@ const TrendingOffer = () => {
   const promotionlist = useSelector((state) => state.promo_list);
   const colors = ColorCodes();
   const apiUrlimage = process.env.REACT_APP_API_URL_IMAGE;
-
+  const offerlist = useSelector((state) => state?.discount_offer_list);
+  const [totaloffer, setTotalOffer] = useState("");
   const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
-  const CorporateTravellers = useMemo(() => [
-    { img: CT1, valid: "30 May", coupon: "BUCKS14" },
-    { img: CT2, valid: "15 JUN", coupon: "AVIS100" },
-    { img: CT3, valid: "20 JUN", coupon: "20HILTON" },
-    { img: CT4, valid: "30 MAY", coupon: "DROP50" },
-    { img: CT5, valid: "10 JUN", coupon: "AMAZON70" },
-    { img: CT6, valid: "25 May", coupon: "FEDEX15" },
-    { img: CT7, valid: "18 JUN", coupon: "10UBER" },
-], []);
+  const CorporateTravellers = useMemo(
+    () => [
+      { img: CT1, valid: "30 May", coupon: "BUCKS14" },
+      { img: CT2, valid: "15 JUN", coupon: "AVIS100" },
+      { img: CT3, valid: "20 JUN", coupon: "20HILTON" },
+      { img: CT4, valid: "30 MAY", coupon: "DROP50" },
+      { img: CT5, valid: "10 JUN", coupon: "AMAZON70" },
+      { img: CT6, valid: "25 May", coupon: "FEDEX15" },
+      { img: CT7, valid: "18 JUN", coupon: "10UBER" },
+    ],
+    []
+  );
 
-const GeneralPeople = useMemo(() => [
-    { img: GP1, valid: "23 JUN", coupon: "NOISE80" },
-    { img: GP2, valid: "15 JUN", coupon: "SUMMERSALE10" },
-    { img: GP3, valid: "21 JUN", coupon: "ICICI400" },
-    { img: GP4, valid: "07 MAY", coupon: "JOS18" },
-    { img: GP5, valid: "18 JUN", coupon: "GPAY25" },
-    { img: GP6, valid: "27 May", coupon: "NEXT149" },
-    { img: GP7, valid: "19 JUN", coupon: "DISCOUNT999" },
-], []);
+  const GeneralPeople = useMemo(
+    () => [
+      { img: GP1, valid: "23 JUN", coupon: "NOISE80" },
+      { img: GP2, valid: "15 JUN", coupon: "SUMMERSALE10" },
+      { img: GP3, valid: "21 JUN", coupon: "ICICI400" },
+      { img: GP4, valid: "07 MAY", coupon: "JOS18" },
+      { img: GP5, valid: "18 JUN", coupon: "GPAY25" },
+      { img: GP6, valid: "27 May", coupon: "NEXT149" },
+      { img: GP7, valid: "19 JUN", coupon: "DISCOUNT999" },
+    ],
+    []
+  );
 
-const PhysicallyChallengedTravellers = useMemo(() => [
-    { img: PCT1, valid: "14 JUN", coupon: "ACCESS20" },
-    { img: PCT2, valid: "18 JUN", coupon: "EAR30EASE" },
-    { img: PCT3, valid: "01 MAY", coupon: "THERAPY25" },
-    { img: PCT4, valid: "28 JUN", coupon: "WHEEL10" },
-    { img: PCT5, valid: "14 May", coupon: "ROOM20" },
-    { img: PCT6, valid: "13 JUN", coupon: "25PHARM" },
-    { img: PCT7, valid: "06 May", coupon: "LENS100" },
-], []);
+  const PhysicallyChallengedTravellers = useMemo(
+    () => [
+      { img: PCT1, valid: "14 JUN", coupon: "ACCESS20" },
+      { img: PCT2, valid: "18 JUN", coupon: "EAR30EASE" },
+      { img: PCT3, valid: "01 MAY", coupon: "THERAPY25" },
+      { img: PCT4, valid: "28 JUN", coupon: "WHEEL10" },
+      { img: PCT5, valid: "14 May", coupon: "ROOM20" },
+      { img: PCT6, valid: "13 JUN", coupon: "25PHARM" },
+      { img: PCT7, valid: "06 May", coupon: "LENS100" },
+    ],
+    []
+  );
 
-const PiligrimsTravellers = useMemo(() => [
-    { img: PT1, valid: "08 May", coupon: "SPOTI100" },
-    { img: PT2, valid: "19 JUN", coupon: "JEWEL15" },
-    { img: PT3, valid: "04 JUN", coupon: "10YOGOO" },
-    { img: PT4, valid: "20 MAY", coupon: "1SOULGUID" },
-    { img: PT5, valid: "14 JUN", coupon: "KINDLE100" },
-    { img: PT6, valid: "15 May", coupon: "BREETHE20" },
-    { img: PT7, valid: "19 JUN", coupon: "100BUSTAND" },
-], []);
+  const PiligrimsTravellers = useMemo(
+    () => [
+      { img: PT1, valid: "08 May", coupon: "SPOTI100" },
+      { img: PT2, valid: "19 JUN", coupon: "JEWEL15" },
+      { img: PT3, valid: "04 JUN", coupon: "10YOGOO" },
+      { img: PT4, valid: "20 MAY", coupon: "1SOULGUID" },
+      { img: PT5, valid: "14 JUN", coupon: "KINDLE100" },
+      { img: PT6, valid: "15 May", coupon: "BREETHE20" },
+      { img: PT7, valid: "19 JUN", coupon: "100BUSTAND" },
+    ],
+    []
+  );
 
-const SeniorCitizens = useMemo(() => [
-    { img: SC1, valid: "14 May", coupon: "DINE10" },
-    { img: SC2, valid: "05 JUN", coupon: "TICKET299" },
-    { img: SC3, valid: "19 JUN", coupon: "299FIT" },
-    { img: SC4, valid: "22 MAY", coupon: "SHOPPER75" },
-    { img: SC5, valid: "03 JUN", coupon: "MELODIA49" },
-    { img: SC6, valid: "08 May", coupon: "WANDER15" },
-    { img: SC7, valid: "01 JUN", coupon: "50SWIGGY" },
-], []);
+  const SeniorCitizens = useMemo(
+    () => [
+      { img: SC1, valid: "14 May", coupon: "DINE10" },
+      { img: SC2, valid: "05 JUN", coupon: "TICKET299" },
+      { img: SC3, valid: "19 JUN", coupon: "299FIT" },
+      { img: SC4, valid: "22 MAY", coupon: "SHOPPER75" },
+      { img: SC5, valid: "03 JUN", coupon: "MELODIA49" },
+      { img: SC6, valid: "08 May", coupon: "WANDER15" },
+      { img: SC7, valid: "01 JUN", coupon: "50SWIGGY" },
+    ],
+    []
+  );
 
-const Student = useMemo(() => [
-    { img: S1, valid: "15 May", coupon: "CLASS10" },
-    { img: S2, valid: "07 JUN", coupon: "90UDEMY" },
-    { img: S3, valid: "30 JUN", coupon: "10SWIGG50" },
-    { img: S4, valid: "25 MAY", coupon: "GLOBAL15" },
-    { img: S5, valid: "17 JUN", coupon: "SKULL70" },
-    { img: S6, valid: "28 May", coupon: "AMAZON65" },
-    { img: S7, valid: "28 JUN", coupon: "SKYWING35" },
-], []);
+  const Student = useMemo(
+    () => [
+      { img: S1, valid: "15 May", coupon: "CLASS10" },
+      { img: S2, valid: "07 JUN", coupon: "90UDEMY" },
+      { img: S3, valid: "30 JUN", coupon: "10SWIGG50" },
+      { img: S4, valid: "25 MAY", coupon: "GLOBAL15" },
+      { img: S5, valid: "17 JUN", coupon: "SKULL70" },
+      { img: S6, valid: "28 May", coupon: "AMAZON65" },
+      { img: S7, valid: "28 JUN", coupon: "SKYWING35" },
+    ],
+    []
+  );
 
-const Tourist = useMemo(() => [
-    { img: T1, valid: "15 May", coupon: "HOTELFREE" },
-    { img: T2, valid: "25 JUN", coupon: "EXCURSION50" },
-    { img: T3, valid: "04 JUN", coupon: "BAZAAR100" },
-    { img: T4, valid: "11 MAY", coupon: "179SKYLINE" },
-    { img: T5, valid: "31 JUN", coupon: "BUSSTAND20" },
-    { img: T6, valid: "01 May", coupon: "TOWN15" },
-    { img: T7, valid: "23 JUN", coupon: "TOURS25" },
-], []);
+  const Tourist = useMemo(
+    () => [
+      { img: T1, valid: "15 May", coupon: "HOTELFREE" },
+      { img: T2, valid: "25 JUN", coupon: "EXCURSION50" },
+      { img: T3, valid: "04 JUN", coupon: "BAZAAR100" },
+      { img: T4, valid: "11 MAY", coupon: "179SKYLINE" },
+      { img: T5, valid: "31 JUN", coupon: "BUSSTAND20" },
+      { img: T6, valid: "01 May", coupon: "TOWN15" },
+      { img: T7, valid: "23 JUN", coupon: "TOURS25" },
+    ],
+    []
+  );
 
   // const prevSlide = () => {
   //   const newIndex = Math.max(0, startIndex - 1);
@@ -207,14 +229,36 @@ const Tourist = useMemo(() => [
     } else {
       setCurrentOffer(GeneralPeople);
     }
-}, [CorporateTravellers, GeneralPeople, PhysicallyChallengedTravellers, PiligrimsTravellers, SeniorCitizens, Student, Tourist]);
+  }, [
+    CorporateTravellers,
+    GeneralPeople,
+    PhysicallyChallengedTravellers,
+    PiligrimsTravellers,
+    SeniorCitizens,
+    Student,
+    Tourist,
+  ]);
 
   useEffect(() => {
     GetPromotion(dispatch);
+    GetDiscountOffers(dispatch);
   }, [dispatch]);
 
-  console.log(`${apicrmimage}/${promotionlist[0]?.background_image}`, "promotionlist8888");
+  console.log(
+    `${apicrmimage}/${promotionlist[0]?.background_image}`,
+    "promotionlist8888"
+  );
 
+  useEffect(() => {
+    let temp = [];
+    const promo = promotionlist.map((item) => {
+      return temp.push(item.background_image);
+    });
+    const offer = offerlist.map((item) => {
+      return temp.push(item.theme);
+    });
+    setTotalOffer(temp);
+  }, [promotionlist, offerlist]);
   return (
     <>
       <div
@@ -301,44 +345,45 @@ const Tourist = useMemo(() => [
               </div>
               <div className="max-h-[28vw] h-full overflow-y-auto w-[100%] px-[3vw] place-items-center pt-[1vw] items-center justify-center flex">
                 <div className="grid grid-cols-3 w-full h-full items-center flex-col gap-[2.7vw] justify-center px-[1vw]">
-                  {promotionlist?.map((item, index) => (
-                    // <>
-                    //   <div className="relative">
-                    //     <img src={item?.img} className="w-[100%] h-[100%] " />
-                    //     <p className="absolute text-[0.8vw] left-[1.2vw] bottom-[2.5vw] text-white">
-                    //       {`Valid till ${item?.valid}`}
-                    //     </p>
-                    //     <div className="w-auto h-[1.7vw] border-dashed flex items-center rounded-[0.2vw] border-[0.1vw] bg-opacity-20 bg-white border-white absolute left-[1.2vw] bottom-[0.6vw] px-[1.5vw]   text-white">
-                    //       <p>{item?.coupon}</p>
-                    //       <img
-                    //         src={clipboard}
-                    //         className="absolute bottom-[0.2vw] right-[-2.2vw] h-[1.5vw] w-[1.5vw] cursor-pointer"
-                    //         onClick={() => copyCouponCode(item)}
-                    //       />
-                    //     </div>
-                    //   </div>
-                    // </>
-                    <div key={index} className="relative">
-                      <img
-                      alt="background_image"
-                        src={`${apicrmimage}${item?.background_image}`}
-                        className="w-[84vw]  h-[12vw]"
-                      />
-                      <span className="absolute left-[5.8vw] top-[0vw] z-[2] ">
-                        <div
-                          className={`bg-[white] border-none w-[2vw] h-[1vw] rounded-b-full`}
-                        ></div>
-                      </span>
+                  {totaloffer.length > 0 &&
+                    totaloffer?.map((item, index) => (
+                      // <>
+                      //   <div className="relative">
+                      //     <img src={item?.img} className="w-[100%] h-[100%] " />
+                      //     <p className="absolute text-[0.8vw] left-[1.2vw] bottom-[2.5vw] text-white">
+                      //       {`Valid till ${item?.valid}`}
+                      //     </p>
+                      //     <div className="w-auto h-[1.7vw] border-dashed flex items-center rounded-[0.2vw] border-[0.1vw] bg-opacity-20 bg-white border-white absolute left-[1.2vw] bottom-[0.6vw] px-[1.5vw]   text-white">
+                      //       <p>{item?.coupon}</p>
+                      //       <img
+                      //         src={clipboard}
+                      //         className="absolute bottom-[0.2vw] right-[-2.2vw] h-[1.5vw] w-[1.5vw] cursor-pointer"
+                      //         onClick={() => copyCouponCode(item)}
+                      //       />
+                      //     </div>
+                      //   </div>
+                      // </>
+                      <div key={index} className="relative">
+                        <img
+                          alt="background_image"
+                          src={`${apicrmimage}${item}`}
+                          className="w-[84vw]  h-[12vw]"
+                        />
+                        <span className="absolute left-[5.8vw] top-[0vw] z-[2] ">
+                          <div
+                            className={`bg-[white] border-none w-[2vw] h-[1vw] rounded-b-full`}
+                          ></div>
+                        </span>
 
-                      <div className="border-dashed border-white z-[2] h-[10vw] border-[0.10vw] absolute top-[1.1vw] left-[6.7vw]"></div>
+                        <div className="border-dashed border-white z-[2] h-[10vw] border-[0.10vw] absolute top-[1.1vw] left-[6.7vw]"></div>
 
-                      <span className="absolute left-[5.8vw] bottom-[0vw] z-[2] ">
-                        <div
-                          className={`bg-[white] border-none  w-[2vw] h-[1vw] rounded-t-full `}
-                        ></div>
-                      </span>
-                    </div>
-                  ))}
+                        <span className="absolute left-[5.8vw] bottom-[0vw] z-[2] ">
+                          <div
+                            className={`bg-[white] border-none  w-[2vw] h-[1vw] rounded-t-full `}
+                          ></div>
+                        </span>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>
@@ -384,28 +429,29 @@ const Tourist = useMemo(() => [
           <div className="bg-white mx-[4vw] ">
             <div className=" rounded-t-[1vw]">
               <div className=" grid grid-row w-full   gap-x-[1vw] gap-y-[5vw] item-center px-[5vw] py-[5vw]">
-                {promotionlist?.map((item, index) => (
-                  <>
-                    <div key={index} className="relative">
-                      <img
-                      alt="background_image"
-                        src={`${apicrmimage}${item?.background_image}`}
-                        className="w-full h-full "
-                      />
-                      <span className="absolute left-[23.3vw] top-[-.2vw] ">
-                        <div
-                          className={`bg-[white] border-none w-[8vw] h-[4vw] rounded-b-full`}
-                        ></div>
-                      </span>
-                      <div className="border-dashed  border-white h-[34vw] border-[.4vw] absolute top-[4.5vw] left-[26.9vw]"></div>
-                      <span className="absolute left-[23.2vw] bottom-[-.2vw] ">
-                        <div
-                          className={`bg-[white] border-none  w-[8vw] h-[4vw] rounded-t-full`}
-                        ></div>
-                      </span>
-                    </div>
-                  </>
-                ))}
+                {totaloffer.length > 0 &&
+                  totaloffer?.map((item, index) => (
+                    <>
+                      <div key={index} className="relative">
+                        <img
+                          alt="background_image"
+                          src={`${apicrmimage}${item}`}
+                          className="w-full h-full "
+                        />
+                        <span className="absolute left-[23.3vw] top-[-.2vw] ">
+                          <div
+                            className={`bg-[white] border-none w-[8vw] h-[4vw] rounded-b-full`}
+                          ></div>
+                        </span>
+                        <div className="border-dashed  border-white h-[34vw] border-[.4vw] absolute top-[4.5vw] left-[26.9vw]"></div>
+                        <span className="absolute left-[23.2vw] bottom-[-.2vw] ">
+                          <div
+                            className={`bg-[white] border-none  w-[8vw] h-[4vw] rounded-t-full`}
+                          ></div>
+                        </span>
+                      </div>
+                    </>
+                  ))}
               </div>
             </div>
           </div>

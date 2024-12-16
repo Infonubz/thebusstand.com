@@ -16,7 +16,7 @@ export const GetOffersOccupation = async (dispatch, id, setSpinning) => {
 
   try {
     const response = await axios.get(
-      `${apicrm}/offers-deals-occupation/${id}`
+      `${apicrm}/getLiveRedeemOffersDeals/${id}`
     );
     dispatch({ type: OFFERS_OCCUPATION, payload: response.data });
     console.log(response, "Offers_occupationss");

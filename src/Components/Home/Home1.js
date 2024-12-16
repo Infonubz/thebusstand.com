@@ -1054,7 +1054,7 @@ export default function Home1() {
         <p className="absolute top-[3vw] left-[11vw] text-[1.65vw] tracking-widest font-bold">
           <span className="text-white">
             {"India's exclusive".toUpperCase()}
-            <span className="text-[#00152F] px-[1vw] font-extrabold">
+            <span className="text-[#f1de4f] px-[1vw] font-extrabold">
               {"bus price comparison & Booking platform".toUpperCase()}
             </span>{" "}
             {"for the Best".toUpperCase()}

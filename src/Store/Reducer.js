@@ -32,6 +32,7 @@ import {
   SEND_APP_LINK,
   MOB_ADS_LIST,
   FAQ_LIST,
+  DISCOUNT_OFFER_LIST,
 } from "./type";
 
 const initial = {
@@ -67,8 +68,9 @@ const initial = {
     },
   ],
   send_app_link: [],
-  mob_ads_list:[],
-  faq_list:[]
+  mob_ads_list: [],
+  faq_list: [],
+  discount_offer_list: [],
 };
 
 export const busreducer = (state = initial, action) => {
@@ -287,6 +289,12 @@ export const busreducer = (state = initial, action) => {
       return {
         ...state,
         faq_list: payload,
+      };
+    }
+    case DISCOUNT_OFFER_LIST: {
+      return {
+        ...state,
+        discount_offer_list: payload,
       };
     }
     default: {

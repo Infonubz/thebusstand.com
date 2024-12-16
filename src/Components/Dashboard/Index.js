@@ -16,6 +16,11 @@ import bubble from "../../assets/LENSss.png";
 import { getBoxToBoxArrow } from "curved-arrows";
 import Vectorarrow from "../../assets/Vectorarrow.png";
 import bobble from "../../assets/LENSss.png";
+import thinkbox3 from "../../assets/thinkbox3.png";
+import scaleimg2 from "../../assets/scale2.png";
+import scaleimg3 from "../../assets/scale3.png";
+import word3 from "../../assets/Your Comfort Our AI's Priority.png";
+import word2 from "../../assets/Travel Simplified by our AI.png";
 const MainPage = () => {
   const [sidebarToggle, setSidebarToggle] = useState(false);
   const menulist = useSelector((state) => state.search);
@@ -39,7 +44,7 @@ const MainPage = () => {
   };
   useEffect(() => {
     setLoading(true);
-    
+
     setTimeout(() => {
       setLoading(false);
     }, 7000);
@@ -58,16 +63,104 @@ const MainPage = () => {
       });
     }, 400);
 
-    // Stop the interval after 7 seconds (7000 ms)
     const timeout = setTimeout(() => {
       clearInterval(interval);
     }, 7000);
 
     return () => {
-      clearInterval(interval); // Cleanup interval
-      clearTimeout(timeout); // Cleanup timeout
+      clearInterval(interval);
+      clearTimeout(timeout);
     };
   }, []);
+  const [scale, setScale] = useState(0);
+  const [scale2, setScale2] = useState(0);
+  const [scale3, setScale3] = useState(0);
+  const [rtscale, setRTScale] = useState(0);
+  const [rtscale2, setRTScale2] = useState(0);
+  const [rtscale3, setRTScale3] = useState(0);
+  useEffect(() => {
+    // left bottom
+    const scaleStages = [
+      { time: 0, scale: 1 },
+      { time: 50, scale: 2 },
+      { time: 100, scale: 3 },
+      { time: 150, scale: 5 },
+      { time: 2700, scale: 3 },
+      { time: 2800, scale: 2 },
+      { time: 2900, scale: 0 },
+    ];
+    const scaleStages2 = [
+      { time: 0, scale: 1 },
+      { time: 15, scale: 2 },
+      { time: 2900, scale: 0 },
+    ];
+    const scaleStages3 = [
+      { time: 0, scale: 0 },
+      { time: 10, scale: 1 },
+      { time: 2950, scale: 0 },
+    ];
+    scaleStages.forEach((stage) => {
+      setTimeout(() => {
+        setScale(stage.scale);
+      }, stage.time);
+    });
+    scaleStages2.forEach((stage) => {
+      setTimeout(() => {
+        setScale2(stage.scale);
+      }, stage.time);
+    });
+    scaleStages3.forEach((stage) => {
+      setTimeout(() => {
+        setScale3(stage.scale);
+      }, stage.time);
+    });
+    // right top
+    const rtscaleStages = [
+      { time: 3050, scale: 1 },
+      { time: 3100, scale: 2 },
+      { time: 3200, scale: 3 },
+      { time: 3300, scale: 5 },
+    ];
+    const rtscaleStages2 = [
+      { time: 3010, scale: 1 },
+      { time: 3025, scale: 2 },
+    ];
+    const rtscaleStages3 = [
+      { time: 3000, scale: 0 },
+      { time: 3005, scale: 1 },
+    ];
+    rtscaleStages.forEach((stage) => {
+      setTimeout(() => {
+        if (count <= 3) {
+          setRTScale(stage.scale);
+        }
+      }, stage.time);
+    });
+    rtscaleStages2.forEach((stage) => {
+      setTimeout(() => {
+        setRTScale2(stage.scale);
+      }, stage.time);
+    });
+    rtscaleStages3.forEach((stage) => {
+      setTimeout(() => {
+        setRTScale3(stage.scale);
+      }, stage.time);
+    });
+  }, []);
+  console.log(scale, "scalescale");
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (count < 7) {
+      const timer = setInterval(() => {
+        setCount((prevCount) => prevCount + 1);
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [count]);
+
+  console.log(count, "countcount");
 
   return (
     <>
@@ -81,6 +174,157 @@ const MainPage = () => {
             <div className="scrolling-background duplicate"></div>
             <div class="black-overlay"></div>
 
+            {/* 1st scale left side */}
+            <div
+              style={{
+                position: "absolute",
+                bottom: "26%",
+                left: "9.5%",
+                width: "2.75vw",
+                height: "2.75vw",
+                backgroundImage: `url(${thinkbox3})`,
+                backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+                // zIndex: 4,
+                transform: `scale(${scale})`,
+                transformOrigin: "center",
+                transition: "transform 1s ease-in-out",
+                // display: count >= 3 ? "none" : "",
+              }}
+            >
+              {/* <label className="text-[0.2vw]">
+                Our AI makes your travel simple and easy{" "}
+              </label> */}
+              <img
+                style={{
+                  position: "absolute",
+                  bottom: "54%",
+                  left: "43%",
+                  width: "0.35vw",
+                  height: "0.35vw",
+                  // backgroundImage: `url(${word3})`,
+                  // backgroundSize: "contain",
+                  // backgroundRepeat: "no-repeat",
+                  // zIndex: 3,
+                  transform: `scale(${scale}) rotate(20deg)`,
+                  transformOrigin: "center",
+                  transition: "transform 1s ease-in-out",
+
+                  // display: count >= 3 ? "none" : "",
+                }}
+                src={word2}
+              />
+            </div>
+
+            <div
+              style={{
+                position: "absolute",
+                bottom: "12%",
+                left: "7%",
+                width: "1.75vw",
+                height: "1.75vw",
+                backgroundImage: `url(${scaleimg2})`,
+                backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+                zIndex: 4,
+                transform: `scale(${scale2})`,
+                transformOrigin: "center",
+                transition: "transform 1s ease-in-out",
+                // display: count >= 3 ? "none" : "",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                bottom: "7%",
+                left: "5%",
+                width: "1.25vw",
+                height: "1.25vw",
+                backgroundImage: `url(${scaleimg3})`,
+                backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+                zIndex: 4,
+                transform: `scale(${scale3})`,
+                transformOrigin: "center",
+                transition: "transform 1s ease-in-out",
+                // display: count >= 3 ? "none" : "",
+              }}
+            />
+            {/* <-------2nd scale right side-------> */}
+            <div
+              style={{
+                position: "absolute",
+                top: "17%",
+                right: "14%",
+                width: "2.75vw",
+                height: "2.75vw",
+                backgroundImage: `url(${thinkbox3})`,
+                backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+                zIndex: 4,
+                transform: `scale(${rtscale})`,
+                transformOrigin: "center",
+                transition: "transform 1s ease-in-out",
+                // display: count <= 3 ? "none" : "",
+              }}
+            >
+              {/* <label className="text-[0.2vw]">
+                Our AI makes your travel simple and easy{" "}
+              </label> */}
+              <img
+                style={{
+                  position: "absolute",
+                  bottom: "57%",
+                  left: "43%",
+                  width: "0.35vw",
+                  height: "0.35vw",
+                  // backgroundImage: `url(${word3})`,
+                  // backgroundSize: "contain",
+                  // backgroundRepeat: "no-repeat",
+                  zIndex: 3,
+                  transform: `scale(${rtscale}) rotate(20deg)`,
+                  transformOrigin: "center",
+                  transition: "transform 1s ease-in-out",
+
+                  // display: count >= 3 ? "none" : "",
+                }}
+                src={word3}
+              />
+            </div>
+            <div
+              style={{
+                position: "absolute",
+                top: "34%",
+                right: "18%",
+                width: "1.75vw",
+                height: "1.75vw",
+                backgroundImage: `url(${scaleimg2})`,
+                backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+                zIndex: 4,
+                transform: `scale(${rtscale2})`,
+                transformOrigin: "center",
+                transition: "transform 1s ease-in-out",
+                // display: count <= 3 ? "none" : "",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                top: "41%",
+                right: "20%",
+                width: "1.25vw",
+                height: "1.25vw",
+                backgroundImage: `url(${scaleimg3})`,
+                backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+                zIndex: 4,
+                transform: `scale(${rtscale3})`,
+                transformOrigin: "center",
+                transition: "transform 1s ease-in-out",
+                // display: count <= 3 ? "none" : "",
+              }}
+            />
             <div className="graph__wrapper">
               <svg
                 width="60vw"
@@ -174,9 +418,21 @@ const MainPage = () => {
                     /> */}
                   </image>
 
-                  <circle cx="10" cy="150" r="10" fill="white" className="opacity-50" />
+                  <circle
+                    cx="10"
+                    cy="150"
+                    r="10"
+                    fill="white"
+                    className="opacity-50"
+                  />
                   <circle cx="10" cy="150" r="5" fill="white" className="" />
-                  <circle cx="385" cy="150" r="10" fill="white" className="opacity-50" />
+                  <circle
+                    cx="385"
+                    cy="150"
+                    r="10"
+                    fill="white"
+                    className="opacity-50"
+                  />
                   <circle cx="385" cy="150" r="5" fill="white" />
                 </g>
               </svg>
