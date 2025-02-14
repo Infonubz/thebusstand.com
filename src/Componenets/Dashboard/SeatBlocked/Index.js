@@ -45,7 +45,6 @@ export default function DrawerIndex({
     console.log("scroling");
     
     sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });  };
-
   return (
     <div>
       <div ref={sectionRef} className="p-[2.5vw] md:p-[1.5vw] flex flex-col gap-y-[3vw] md:gap-y-[1.60vw]">
