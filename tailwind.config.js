@@ -23,6 +23,7 @@ module.exports = {
       colors: {
         primary: dynamicColors.background, // Orange
         background: dynamicColors.background, // Black
+        "moss-gray": "#6B6D71", // Define the custom color
       },
       backgroundImage: {
         // "custom-gradient-luxury":

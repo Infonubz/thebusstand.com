@@ -1,0 +1,473 @@
+/* Background Theme */
+.Background {
+  height: 32vw;
+  width: 100%;
+  /* background-image: url("../../assets/bg.jpg"); */
+  background-size: cover;
+  /* background-position: bottom; */
+  position: relative;
+  overflow-x: hidden;
+  /* background-color: #7ec3f2; */
+  background-image: url("../../../Assets/Theme/Sky/BackgroundSky1.png");
+  /* background-image: url("../../assets/Secondary\ loop\ 5.png"); */
+  /* background-image: url("../../assets/Christmas Theme 2.png"); */
+  /* animation: Background 30s linear infinite; */
+  background-repeat: no-repeat;
+  /* background-size: contain; */
+  /* padding-top: 6vh; */
+}
+
+.Buildings {
+  height: 90%;
+  width: 1000%;
+  display: block;
+  /* background-image: url("../../assets/bg_build1.png"); */
+  /* background-image: url("../../assets/sample1.png"); */
+  background-image: url("../../../Assets/Theme/Buildings/bgimage.png");
+  /* background-image: url("../../assets/Secondary\ loop\ \(3\)\ 6.png"); */
+  /* background-image: url("../../assets/image\ \(2\).png"); */
+  /* background-image: url("../../assets/Christmas Theme bg.png"); */
+
+  position: absolute;
+  left: 0;
+  /* right: 0; */
+  bottom: 3vw;
+  /* z-index: 1; */
+  animation: Buildings 50s linear infinite;
+  background-repeat: repeat-x;
+  /* background-size: fill; */
+  background-size: contain;
+  background-position: bottom;
+}
+.Road {
+  height: 37%;
+  /* height: 42%; */
+  width: 1000%;
+  display: block;
+  /* background-image: url("../../assets/bg_build2.png"); */
+  /* background-image: url("../../assets/sample1.png"); */
+  background-image: url("../../../Assets/Theme/Roads/full1.png");
+  /* background-image: url("../../assets/Dussehra\ Full\ Bg\ layer.png"); */
+  /* background-image: url("../../assets/Pongal.jpg"); */
+  position: absolute;
+  left: 0;
+  /* right: 0; */
+  bottom: 0;
+  /* z-index: 1; */
+  animation: Road 30s linear infinite;
+  background-repeat: repeat-x;
+  /* background-size: fill; */
+  background-size: contain;
+  background-position: bottom;
+}
+
+/* Clouds */
+
+.cloud1 {
+  height: 100%;
+  width: 100%;
+  /* background-image: url("../../assets/passingclouds1.png"); */
+  /* background-image: url("../../assets/Christmas 1 Theme.png"); */
+
+  background-repeat: no-repeat;
+  /* background-repeat: repeat-x; */
+  background-size: cover;
+  background-position: top;
+  position: absolute;
+  /* top: -15vw; */
+  left: 0;
+  opacity: 90%;
+  top: 0vw;
+  /* z-index: 1; */
+  /* animation: cloud1 50s linear infinite; */
+}
+
+.cloud2 {
+  height: 30%;
+  width: 100%;
+  background-image: url("../../../Assets/Theme/Clouds/cloud2.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+  position: absolute;
+  top: 1vw;
+  left: 0;
+  opacity: 50%;
+  /* z-index: 1; */
+  animation: cloud2 30s linear infinite;
+}
+.cloud3 {
+  height: 30%;
+  width: 100%;
+  background-image: url("../../../Assets/Theme/Clouds/cloud3.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+  position: absolute;
+  top: 1vw;
+  left: 0;
+  opacity: 50%;
+  /* z-index: 1; */
+  animation: cloud3 30s linear infinite;
+}
+.cloud4 {
+  height: 30%;
+  width: 100%;
+  background-image: url("../../../Assets/Theme/Clouds/cloud4.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+  position: absolute;
+  top: 1vw;
+  left: 0;
+  opacity: 50%;
+  /* z-index: 1; */
+  animation: cloud4 30s linear infinite;
+}
+
+/* Vehicles */
+
+.vehicle-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.vehicle-container_nodatabus {
+  position: relative;
+  overflow: hidden;
+  width: 99%;
+  height: 100%;
+}
+
+.nodatabus {
+  height: 10vw;
+  width: 100%;
+  background-image: url("../../../Assets/Theme/Vehicles/bus\ 1.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+  position: absolute;
+  bottom: 7vh;
+  left: 0;
+  animation: nodatabus 10s linear infinite; /* Double the animation duration to allow for the pause */
+}
+
+.car1 {
+  height: 35%;
+  width: 200%;
+  background-image: url("../../../Assets/Theme/Vehicles/car1.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+  position: absolute;
+  bottom: -1.5vh;
+  left: 0;
+  /* z-index: 1; */
+  animation: car1 10s linear infinite;
+}
+.flight {
+  height: 40%;
+  width: 100%;
+  background-image: url("../../../Assets/Theme/Vehicles/flight5.png");
+  /* background-image: url("../../assets/Christmas Theme 1.png"); */
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+  position: absolute;
+  top: -1vw;
+  left: 0;
+  transform: rotate(-90deg);
+  rotate: -2deg;
+  /* opacity: 60%; */
+  /* z-index: 1; */
+  animation: flight 25s linear infinite;
+}
+
+.bike {
+  height: 22%;
+  width: 100%;
+  background-image: url("../../../Assets//Theme/Vehicles/bike.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+  position: absolute;
+  bottom: -1vh;
+  left: 0;
+  /* z-index: 1; */
+  animation: car1 20s linear infinite;
+}
+.letter {
+  animation: letter 10s linear infinite;
+  background-repeat: repeat-x;
+  display: flex;
+}
+
+.ambulance {
+  height: 30%;
+  width: 100%;
+  background-image: url("../../../Assets/Theme/Vehicles/ambulance.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  /* z-index: 1; */
+  animation: ambulance 15s linear infinite;
+}
+.ice {
+  height: 35%;
+  width: 100%;
+  background-image: url("../../../Assets/Theme/Vehicles/ice.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  /* z-index: 1; */
+  animation: ice 17s linear infinite;
+}
+.car {
+  height: 25%;
+  width: 100%;
+  background-image: url("../../../Assets/Theme/Vehicles/car.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+  position: absolute;
+  bottom: 2vh;
+  left: 0;
+  /* z-index: 1; */
+  animation: car 30s linear infinite;
+}
+.scooter {
+  height: 22%;
+  width: 80%;
+  background-image: url("../../../Assets/Theme/Vehicles/scooter.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+  position: absolute;
+  bottom: 3vh;
+  left: 0;
+  /* z-index: 1; */
+  animation: scooter 35s linear infinite;
+}
+
+.bus1 {
+  height: 33%;
+  width: 80%;
+  background-image: url("../../../Assets/Theme/Vehicles/bus1.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+  position: absolute;
+  bottom: 2vh;
+  left: 0;
+  /* z-index: 1; */
+  animation: bus1 20s linear infinite;
+}
+.dubleducker {
+  height: 33%;
+  width: 100%;
+  background-image: url("../../../Assets/Theme/Vehicles/doubleducker.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+  position: absolute;
+  bottom: -1vh;
+  left: 0;
+  /* z-index: 1; */
+  animation: dubleducker 11.5s linear infinite;
+  /* margin-top: 20vh; */
+}
+.auto {
+  height: 25%;
+  width: 100%;
+  background-image: url("../../../Assets/Theme/Vehicles/auto.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  /* z-index: 1; */
+  animation: auto 35s linear infinite;
+}
+
+@keyframes nodatabus {
+  0% {
+    transform: translateX(-100%);
+  }
+  45%,
+  55% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes ambulance {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes scooter {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes ice {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes car {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes bus1 {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes dubleducker {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes auto {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes car1 {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes Buildings {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+@keyframes Road {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+@keyframes car1 {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes build_1 {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+@keyframes letter {
+  0% {
+    transform: translateX(-2400px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes cloud1 {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes cloudhome {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes cloud2 {
+  0% {
+    transform: translateX(-60%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes cloud3 {
+  0% {
+    transform: translateX(-40%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes cloud4 {
+  0% {
+    transform: translateX(-20%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes flight {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes Background {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
