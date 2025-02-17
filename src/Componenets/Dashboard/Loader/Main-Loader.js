@@ -1321,6 +1321,7 @@ export default Loader;
     duration: 6,
     repeat: 1,
   }}
+    
 >
   <FaBus />
 </motion.div>
