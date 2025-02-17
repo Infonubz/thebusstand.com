@@ -7,7 +7,7 @@ export const RazorpayGateway = ({ amount }) => {
       return;
     }
     const options = {
-        key: "rzp_live_QxJoviEQj1Vg2R",
+        key: "rzp_test_eyuWUoPChgfzBC",
         amount: amount * 1, 
         currency: "INR",
         name: "THEBUSSTAND.COM",
@@ -17,8 +17,8 @@ export const RazorpayGateway = ({ amount }) => {
         },
         prefill: {
           name: "Velmurugan",
-          email: "mvel1620r@gmail.com",
-          contact: "7904425033",
+          email: "nubiznezakr@gmail.com",
+          contact: "8190098951",
         },
         notes: {
           address: "Razorpay Corporate Office",

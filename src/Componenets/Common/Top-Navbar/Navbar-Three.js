@@ -176,12 +176,7 @@ const Navbar_Three = ({ sidebarToggle, setSidebarToggle }) => {
 
   return (
     <>
-      <div
-        className="bg-[#E5FFF1] justify-between z-1 mt-[0.35vw] py-[0.3vw] h-full  flex "
-        style={{
-          zIndex: 1,
-        }}
-      >
+      <div className="bg-[#E5FFF1] justify-between  mt-[0.32vw] py-[0.3vw] h-full  flex ">
         <div className=" h-full w-[60%] flex gap-[1.5vw] items-center ">
           {/* <FaBars
             className="text-black me-4 cursor-pointer"
@@ -272,11 +267,14 @@ const Navbar_Three = ({ sidebarToggle, setSidebarToggle }) => {
           // } items-center `}
           className="flex w-[22%] "
         >
-          <img
-            src={sbus}
-            className="w-[1.4vw] h-[1.5vw] mr-[0.5vw]"
-            alt="sbus"
-          />
+          <div className=" flex items-center justify-center">
+            <img
+              src={sbus}
+              className="w-[1.4vw] h-[1.5vw] mr-[0.5vw]"
+              alt="sbus"
+            />
+          </div>
+
           <span className="text-[#1F487C] font-bold  text-[1vw]  px-[0.1vw] flex items-center">
             <span className="pr-[0.4vw]">Showing</span>
             <div className="w-[1.7vw] h-[1.7vw] bg-[#1F487C] text-white mr-[0.4vw] items-center flex justify-center rounded-full">

@@ -92,7 +92,7 @@ export const Abhibus_GetStations = async (dispatch) => {
     console.log("SOAP Response:", response.data);
     const result = await processSOAPResponse(response.data, "GetStationsV1");
     console.log(result, "resultresultresultresultresultresult");
-    dispatch({ type: GET_STATIONS, payload: result?.stations });
+    // dispatch({ type: GET_STATIONS, payload: result?.stations });
     return result;
   } catch (error) {
     console.error("Error Response:", error.response?.data || error.message);

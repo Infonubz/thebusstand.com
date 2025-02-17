@@ -7,7 +7,7 @@ export default function RazorPayindex() {
 
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.src = "https://razorpay.me/@ratraveltechprivatelimited";
     script.async = true;
     script.onload = () => console.log("Razorpay Loaded");
     document.body.appendChild(script);

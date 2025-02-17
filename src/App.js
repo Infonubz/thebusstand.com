@@ -28,7 +28,8 @@ import Rewardsandoffers from "./Componenets/Home/Footer/Footer-Two/FooterTabs/Re
 import RazorPayindex from "./Componenets/PaymentGateway";
 import MyAccountIndex from "./Componenets/Dashboard/MyAccount/MyAccountIndex";
 import Settings from "./Componenets/Dashboard/MyAccount/Settings";
-
+import IndexSeatLayout from "./Componenets/Dashboard/MobileSeatLayout/IndexSeatLayout"
+import IndexBlock from "./Componenets/Dashboard/MobileSeatLayout/IndexBlock";
 function App() {
   function DashboardRoute({ element: Component }) {
     const departure = localStorage.getItem("departure");
@@ -66,7 +67,8 @@ function App() {
           <Route path="/operators" element={<Operators />} />
           <Route path="/main" element={<MyAccountIndex />} />
           <Route path="/settings" element={<Settings />} />
-
+          <Route path="/seats" element={<IndexSeatLayout />} />
+          <Route path="/bookingDetails" element={<IndexBlock />}/>
         </Routes>
       </Router>
       {/* </ScrollToTop> */}

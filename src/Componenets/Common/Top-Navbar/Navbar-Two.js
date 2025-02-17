@@ -259,7 +259,8 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
       console.log(data, "datadatadata");
       // if (data?.status === "success") {
       navigation(
-        `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${busdatas.to_sourceID
+        `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${
+          busdatas.to_sourceID
         }/${dayjs(busdatas?.date).format("YYYY-MM-DD")}`
       );
       // }
@@ -856,7 +857,7 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
 
   return (
     <>
-      <div className="fixed w-full z-1" style={{ zIndex: 1 }}>
+      <div className="fixed w-full z-1" style={{ zIndex: 2 }}>
         <div className="md:block hidden">
           <Navbar_One />
         </div>{" "}
@@ -914,7 +915,12 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
             </div>
           </>
         ) : (
-          <div className="h-[12vw] md:h-[5vw] w-full bg-[#1F487C] md:-z-10">
+          <div
+            className="h-[12vw] md:h-[5vw] w-full bg-[#1F487C] "
+            style={{
+              zIndex: 2,
+            }}
+          >
             <div className="md:h-[0.3vw] md:block hidden w-full bg-[#E5FFF1] opacity-90"></div>
             {/* <div className="grid md:hidden block w-full  h-[12vw]">
             <div className="items-center flex justify-around text-white">
@@ -992,7 +998,9 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                     </div>
                   </div>
                   <div className="mt-[-2vw]">
-                    <label className="text-gray-300 text-[3vw]">{`Showing ${totalbuses?.length > 0 ? totalbuses?.length : '0'} Buses on This Route`}</label>
+                    <label className="text-gray-300 text-[3vw]">{`Showing ${
+                      totalbuses?.length > 0 ? totalbuses?.length : "0"
+                    } Buses on This Route`}</label>
                   </div>
                 </div>
                 <div>
@@ -1044,9 +1052,9 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
               src={newbus1}
               className="absolute md:block hidden top-[1.7vw] h-[8.1vw] w-[21.75vw]   left-[-3vw]"
               alt=""
-            // style={{
-            //   transform: "rotateY(180deg)",
-            // }}
+              // style={{
+              //   transform: "rotateY(180deg)",
+              // }}
             />
             <div className="md:block hidden">
               <div className="  pl-[1vw] md:pl-[19.5vw] md:pt-[0.2vw] grid grid-cols-12 w-full md:h-[4.5vw] h-[12vw]">
@@ -1079,7 +1087,9 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                           trigger="click"
                           // title={text}
                           content={
-                            <div style={{ maxHeight: "10vw", overflow: "auto" }}>
+                            <div
+                              style={{ maxHeight: "10vw", overflow: "auto" }}
+                            >
                               {content}
                             </div>
                           }
@@ -1419,8 +1429,13 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                           autoComplete="off"
                         />
                         {isInputFromFocused && (
-                          <div className="absolute top-[8.5vw] w-full">
-                            <div className="w-[16vw] min-h-auto max-h-[16vw] flex-col flex overflow-y-scroll bg-white shadow-md rounded-[0.3vw]">
+                          <div className="absolute top-[8.5vw] w-full ">
+                            <div
+                              className="w-[16vw] min-h-auto max-h-[16vw] flex-col flex  overflow-y-scroll bg-white shadow-md rounded-[0.3vw]"
+                              style={{
+                                zIndex: 2,
+                              }}
+                            >
                               {Get_Stations?.map((item, i) => (
                                 <div
                                   key={i}
@@ -1483,10 +1498,11 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                             console.log("NOT ALLOWED");
                           }
                         }}
-                        className={`${modifyBtn === true
-                          ? "cursor-pointer"
-                          : "cursor-not-allowed"
-                          }`}
+                        className={`${
+                          modifyBtn === true
+                            ? "cursor-pointer"
+                            : "cursor-not-allowed"
+                        }`}
                       >
                         {/* <img
                       src={split}
@@ -1718,7 +1734,6 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                 </div>
               </div>
             </div>
-
           </div>
         )}
       </div>
@@ -1891,7 +1906,7 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                     from: e.target.value,
                   });
                 }}
-              // value={inputsearch.from}
+                // value={inputsearch.from}
               />
             </div>
             <div className="h-[100%]  w-full">

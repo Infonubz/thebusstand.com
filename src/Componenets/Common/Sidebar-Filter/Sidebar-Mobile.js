@@ -723,18 +723,21 @@ const SidebarMobile = ({
     return timeRanges[range] || [0, 0];
   };
 
-
-
+  const home_luxury = sessionStorage.getItem('home_luxury')
+  const home_ac = sessionStorage.getItem('home_ac')
+  const home_seat_type = sessionStorage.getItem('home_seat_type')
   useEffect(() => {
     let filteredList = buslist || [];
     console.log(filteredList, 'filtereedList')
     // Filter for Bus Type (Luxury/Normal)
+
+
     if (BusFilters?.bustype === true) {
       filteredList = filteredList.filter((item) =>
         !(item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
           item?.Bus_Type_Name?.toLowerCase()?.includes("volvo"))
       );
-    } else if (sessionStorage.getItem('home_luxury') === 'true' || BusFilters?.bustype === false) {
+    } else if (home_luxury === 'true' || BusFilters?.bustype === false) {
       filteredList = filteredList.filter((item) =>
         item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
         item?.Bus_Type_Name?.toLowerCase()?.includes("volvo")
@@ -742,7 +745,7 @@ const SidebarMobile = ({
     }
 
     // Filter for AC/Non-AC
-    if (sessionStorage.getItem('home_ac') === "true" || BusFilters?.ac_non_ac === true) {
+    if (home_ac === "true" || BusFilters?.ac_non_ac === true) {
       filteredList = filteredList.filter((item) =>
         !item?.bus_type?.toLowerCase()?.includes("non-ac")
       );
@@ -752,11 +755,11 @@ const SidebarMobile = ({
       );
     }
     // Filter for Seater/Sleeper
-    if (sessionStorage.getItem('home_seat_type') === 'true' || BusFilters?.seat_type === true) {
+    if (home_seat_type === 'true' || BusFilters?.seat_type === true) {
       filteredList = filteredList.filter((item) =>
         item?.bus_type?.toLowerCase()?.includes("seater")
       );
-    } else if (sessionStorage.getItem('home_seat_type') === 'false' || BusFilters?.seat_type === false) {
+    } else if (home_seat_type === 'false' || BusFilters?.seat_type === false) {
       filteredList = filteredList.filter((item) =>
         item?.bus_type?.toLowerCase()?.includes("sleeper")
       );
@@ -842,7 +845,7 @@ const SidebarMobile = ({
 
     console.log(BusFilters, buslist, "BusFilters");
 
-  }, [dispatch, BusFilters, buslist, priceRange, pickupchecked, dropchecked, pickuptime, operatorchecked, droptime]);
+  }, [dispatch, BusFilters, buslist, priceRange, pickupchecked, dropchecked, pickuptime, operatorchecked, droptime, home_luxury, home_ac, home_seat_type]);
 
 
 
@@ -944,8 +947,6 @@ const SidebarMobile = ({
                         ...prev,
                         bustype: prev.bustype === true ? null : true,
                       }));
-
-
                     }}
                   >
                     <div className="flex justify-center items-center">
@@ -959,28 +960,20 @@ const SidebarMobile = ({
                     </div>
                   </button>
                   <button
-                    className={`${sessionStorage.getItem('home_luxury') === 'true' || BusFilters?.bustype === false
+                    className={`${home_luxury === 'true'
                       ? "bg-custom-gradient-luxury bg-image-url"
                       : "bg-white"
-                      } h-full ${sessionStorage.getItem('home_luxury') === 'true' || BusFilters?.bustype === false
+                      } h-full ${home_luxury === 'true'
                         ? "text-black border-custom-gradient-luxury bg-image-url"
                         : "border-gray-300 "
                       } w-full border-[0.1vw] rounded-[1.2vw] cursor-pointer `}
                     onClick={() => {
-                      //   if (busType) {
-                      //     setBusType(false);
-                      //     sessionStorage.setItem("isMbleLuxury", false);
-                      //   } else {
-                      //     setBusType(true);
-                      //     sessionStorage.setItem("isMbleLuxury", true);
-                      //   }
-                      // }}
                       SetBusFilters((prev) => ({
                         ...prev,
                         bustype: prev.bustype === false ? null : false,
                       }));
-                    }
-                    }
+                      sessionStorage.getItem('home_luxury') === 'true' ? sessionStorage.setItem('home_luxury', null) : sessionStorage.setItem('home_luxury', true)
+                    }}
                   >
                     <div className="flex justify-center items-center">
                       <div className="py-[2vw] flex gap-[1vw] items-center justify-center">
@@ -993,8 +986,8 @@ const SidebarMobile = ({
 
                 <div className="grid grid-cols-2 pt-[2vw] gap-[3.5vw] mx-[2vw]">
                   <button
-                    className={`${sessionStorage.getItem('home_ac') === "true" || BusFilters?.ac_non_ac === true ? "bg-[#1F487C]" : "bg-white"
-                      }  ${sessionStorage.getItem('home_ac') === "true" || BusFilters?.ac_non_ac === true
+                    className={`${sessionStorage.getItem('home_ac') === "true" ? "bg-[#1F487C]" : "bg-white"
+                      }  ${sessionStorage.getItem('home_ac') === "true"
                         ? "text-white border-[#1F487C]"
                         : "border-gray-300"
                       } w-full border-[0.1vw] rounded-md cursor-pointer `}
@@ -1008,13 +1001,14 @@ const SidebarMobile = ({
                         ...prev,
                         ac_non_ac: prev.ac_non_ac === true ? null : true,
                       }));
+                      sessionStorage.getItem('home_ac') === 'true' ? sessionStorage.setItem('home_ac', null) : sessionStorage.setItem('home_ac', true)
                     }}
                   >
                     <div className="py-[0.5vw] flex items-center justify-center gap-[2vw]">
                       {/* <span>
                     <TbAirConditioning size={15} className="mx-1 " />
                   </span> */}
-                      {sessionStorage.getItem('home_ac') === "true" || BusFilters?.ac_non_ac === true ? (
+                      {sessionStorage.getItem('home_ac') === "true" ? (
                         <img
                           src={s_c_ac}
                           className="w-[4.5vw] h-[4.5vw]"
@@ -1077,8 +1071,8 @@ const SidebarMobile = ({
 
                 <div className="grid grid-cols-2 pt-[2vw] gap-[3.5vw] mx-[2vw]">
                   <button
-                    className={`${sessionStorage.getItem('home_seat_type') === 'false' || BusFilters?.seat_type === false ? "bg-[#1F487C]" : "bg-white"
-                      } h-full ${sessionStorage.getItem('home_seat_type') === 'false' || BusFilters?.seat_type === false
+                    className={`${sessionStorage.getItem('home_seat_type') === 'false' ? "bg-[#1F487C]" : "bg-white"
+                      } h-full ${sessionStorage.getItem('home_seat_type') === 'false'
                         ? "text-white border-[#1F487C]"
                         : "border-gray-300"
                       } w-full border-[0.1vw] rounded-md cursor-pointer `}
@@ -1092,7 +1086,9 @@ const SidebarMobile = ({
                         ...prev,
                         seat_type: prev.seat_type === false ? null : false,
                       }));
+                      sessionStorage.getItem('home_seat_type') === 'false' ? sessionStorage.setItem('home_seat_type', null) : sessionStorage.setItem('home_seat_type', false)
                     }}
+
                   >
                     <p className="py-[2vw] flex items-center justify-center gap-[2vw]">
                       {/* <span>
@@ -1107,8 +1103,8 @@ const SidebarMobile = ({
                     </p>
                   </button>
                   <button
-                    className={`${sessionStorage.getItem('home_seat_type') === 'true' || BusFilters?.seat_type === true ? "bg-[#1F487C]" : "bg-white"
-                      } h-full ${sessionStorage.getItem('home_seat_type') === 'true' || BusFilters?.seat_type === true
+                    className={`${sessionStorage.getItem('home_seat_type') === 'true' ? "bg-[#1F487C]" : "bg-white"
+                      } h-full ${sessionStorage.getItem('home_seat_type') === 'true'
                         ? "text-white border-[#1F487C]"
                         : "border-gray-300 "
                       } w-full border-[0.1vw] rounded-md cursor-pointer `}
@@ -1117,7 +1113,9 @@ const SidebarMobile = ({
                         ...prev,
                         seat_type: prev.seat_type === true ? null : true,
                       }));
+                      sessionStorage.getItem('home_seat_type') === 'true' ? sessionStorage.setItem('home_seat_type', null) : sessionStorage.setItem('home_seat_type', true)
                     }}
+
                   >
                     <div className="py-[1vw] flex gap-[2vw] items-center justify-center">
                       {/* <span>

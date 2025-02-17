@@ -4,6 +4,12 @@ import PassengerDetails from "./PassengerDetails";
 import BiilingAddress from "./BiilingAddress";
 import { useLocation } from "react-router";
 import ConfirmTicket from "./ConfirmTicket";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import {
+  Abhibus_GetFareInfo,
+  Abhibus_SeatBlocked,
+} from "../../../Api-Abhibus/Dashboard/DashboardPage";
 
 export default function DrawerIndex({
   BusDetails,
@@ -13,18 +19,8 @@ export default function DrawerIndex({
   busprice,
   seatDetails,
   selectedseatprice,
+  setDropDown
 }) {
-  console.log(seatDetails, "trrfyfjygy");
-  const location = useLocation();
-  const {
-    selectedSeats2,
-    selectedRoutes2,
-    busdetails2,
-    seatDetails2,
-    discount2,
-    //busprice,
-  } = location.state || {};
-
   const [loader, setLoader] = useState(false);
   const selectedSeats1 = selectedSeats;
   const [travelerDetails, setTravelerDetails] = useState(
@@ -40,57 +36,274 @@ export default function DrawerIndex({
   const [confirmModal, setConfirmModal] = useState(false);
   const [confirmRefNo, setConfirmRefNo] = useState(null);
   const sectionRef = useRef(null);
+  const [faredetails, setFareDetails] = useState("");
+  const [registerfulldetails, setRegisterFullDetails] = useState({});
+  const [formState, setFormState] = useState({
+    isValid: false,
+    isSubmitting: false,
+  });
+  const [termschecked, setTermsChecked] = useState(false);
+  const [enableInput, setEnableInput] = useState(false);
+
+  const validationSchema = Yup.object().shape({
+    mobile: Yup.string()
+      .matches(/^[0-9]+$/, "Mobile number must be a number")
+      .min(10, "Mobile number must be at least 10 digits")
+      .max(10, "Mobile number maximum 10 digits only")
+      .required("Mobile Number is required"),
+    // age: Yup.number()
+    //   .required("Age is required"),
+    email: Yup.string()
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        "Invalid email address format"
+      )
+      .max(50, "Email Id maximum limit reached")
+      .required("Email is required"),
+    ...Array(selectedSeats?.length)
+      .fill(0)
+      ?.reduce(
+        (acc, _, index) => ({
+          ...acc,
+          [`user_name_${index}`]: Yup.string()
+            .required("Name is required")
+            .min(3, " Name must be atleast 3 Characters long")
+            .matches(/^[A-Za-z\s]+$/, "Name should Contain only Alphabets."),
+        }),
+        {}
+      ),
+    ...Array(selectedSeats?.length)
+      .fill(0)
+      ?.reduce(
+        (acc, _, index) => ({
+          ...acc,
+          [`age_${index}`]: Yup.number()
+            .required("Age is required")
+            .min(1, "Age cannot be 0.")
+            .typeError("Age must be a number."),
+        }),
+        {}
+      ),
+    terms: Yup.boolean().oneOf(
+      [true],
+      "You must accept the terms and conditions"
+    ),
+    address: Yup.string().required("Address is required"),
+    city: Yup.string()
+      .matches(/^[A-Za-z\s]+$/, "InValid Names for City")
+      .required("City is required"),
+    state: Yup.string()
+      .matches(/^[A-Za-z\s]+$/, "InValid Names for State")
+      .required("State is required"),
+    pin_code: Yup.string()
+      .matches(/^\d{6}$/, "Pin code must be 6 digits")
+      .required("Pin code is required")
+      .test(
+        "is-numeric",
+        "Pin code must contain only numbers",
+        (value) => !isNaN(value)
+      ),
+  });
+
+  console.log(Object?.values(travelerDetails), "testinggg");
+  const getPassengerCount = (data) => {
+    let adultCount = 0;
+    let childCount = 0;
+
+    data.forEach((passenger) => {
+      if (parseInt(passenger.age) > 3) {
+        adultCount++;
+      } else {
+        childCount++;
+      }
+    });
+
+    return { adultCount, childCount };
+  };
+  const { adultCount, childCount } = getPassengerCount(
+    Object?.values(travelerDetails)
+  );
+  console.log(adultCount, childCount, "tegvyuhubuhbu");
+
+  const handleSubmit = async (values) => {
+    console.log(selectedSeats1, "valuesxxsssssssxxx");
+
+    try {
+      console.log("Calling API...");
+      const response = await Abhibus_SeatBlocked(
+        BusDetails,
+        seatDetails,
+        travelerDetails,
+        values,
+        selectedRoutes,
+        emailInput,
+        mobileInput,
+        selectedseatprice
+      );
+      if (response?.status === "success") {
+        setConfirmModal(true);
+        setEnableInput(true);
+        setConfirmRefNo(response?.ReferenceNo);
+        handleScroll();
+        try {
+          const data = await Abhibus_GetFareInfo(
+            adultCount,
+            childCount,
+            response?.ReferenceNo
+          );
+          setFareDetails(data?.GetFaresInfo);
+        } catch {
+          console.log("test");
+        }
+      }
+      console.log(response, "API Response");
+      console.log(response);
+    } catch (error) {
+      console.error("API call failed:", error);
+    }
+  };
 
   const handleScroll = () => {
     console.log("scroling");
-    
-    sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });  };
+    sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  };
+
+  const isAllDetailsFilled = Object.values(travelerDetails).every(
+    (traveler) =>
+      traveler.user_name !== "" &&
+      traveler.age !== "" &&
+      traveler.gender !== "" &&
+      traveler.seat !== ""
+  );
+
+  console.log(isAllDetailsFilled, "is_all_details_Filled");
+
   return (
-    <div>
-      <div ref={sectionRef} className="p-[2.5vw] md:p-[1.5vw] flex flex-col gap-y-[3vw] md:gap-y-[1.60vw]">
-        <JourneyDetails
-          BusDetails={BusDetails}
-          layout={layout}
-          selectedSeats={selectedSeats}
-          selectedRoutes={selectedRoutes}
-          busprice={busprice}
-          seatDetails={seatDetails}
-        />
-        <PassengerDetails
-          seatDetails={seatDetails}
-          BusDetails={BusDetails}
-          selectedSeats={selectedSeats}
-          discount={busprice}
-          setTravelerDetails={setTravelerDetails}
-          travelerDetails={travelerDetails}
-          setEmailInput={setEmailInput}
-          emailInput={emailInput}
-          setMobileInput={setMobileInput}
-          mobileInput={mobileInput}
-        />
-        <BiilingAddress
-          BusDetails={BusDetails}
-          selectedSeats1={seatDetails}
-          travelerDetails={travelerDetails}
-          selectedRoutes={selectedRoutes}
-          emailInput={emailInput}
-          mobileInput={mobileInput}
-          selectedseatprice={selectedseatprice}
-          setConfirmModal={setConfirmModal}
-          setConfirmRefNo={setConfirmRefNo}
-          confirmModal={confirmModal}
-          handleScroll={handleScroll}
-        />
-        {confirmModal && (
-          <ConfirmTicket
-            seatDetails={seatDetails}
-            BusDetails={BusDetails}
-            selectedSeats={selectedSeats}
-            discount={busprice}
-            confirmRefNo={confirmRefNo}
-          />
-        )}
-      </div>
-    </div>
+    <Formik
+      initialValues={{
+        email: emailInput || "",
+        mobile:
+          mobileInput && mobileInput !== "undefined" && mobileInput !== "null"
+            ? mobileInput
+            : "",
+        user_name:
+          selectedSeats1?.map(
+            (seat, index) => travelerDetails?.[index]?.user_name
+          ) || "",
+        age:
+          selectedSeats1?.map((seat, index) => travelerDetails?.[index]?.age) ||
+          "",
+        gender: selectedSeats1?.map(
+          (seat, index) => travelerDetails?.[index]?.gender || "male"
+        ),
+        terms: termschecked || false,
+        address: "",
+        pin_code: "",
+        state: "",
+        city: "",
+        name: "",
+      }}
+      validationSchema={validationSchema}
+      onSubmit={(values) => {
+        handleSubmit(values);
+        console.log(values, "values values");
+        setRegisterFullDetails(values);
+        localStorage.setItem("page1", true);
+        localStorage.setItem("occupation", values.option);
+        localStorage.setItem("mobile", values.mobile);
+      }}
+      enableReinitialize={false}
+    >
+      {({
+        isSubmitting,
+        isValid,
+        handleSubmit,
+        values,
+        setFieldValue,
+        handleChange,
+      }) => {
+        // Update the form state when Formik state changes
+        if (
+          formState?.isValid !== isValid ||
+          formState?.isSubmitting !== isSubmitting
+        ) {
+          setFormState({ isValid, isSubmitting });
+        }
+
+        return (
+          // <Form onSubmit={handleSubmit}>
+          <div>
+            <div
+              ref={sectionRef}
+              className="p-[2.5vw] md:p-[1.5vw] flex flex-col gap-y-[3vw] md:gap-y-[1.60vw]"
+            >
+              {/* Wrap the components in a Fragment or div */}
+              <>
+                <JourneyDetails
+                  BusDetails={BusDetails}
+                  layout={layout}
+                  selectedSeats={selectedSeats}
+                  selectedRoutes={selectedRoutes}
+                  busprice={busprice}
+                  seatDetails={seatDetails}
+                />
+                <PassengerDetails
+                  registerfulldetails={registerfulldetails}
+                  setRegisterFullDetails={setRegisterFullDetails}
+                  seatDetails={seatDetails}
+                  BusDetails={BusDetails}
+                  selectedSeats={selectedSeats}
+                  discount={busprice}
+                  setTravelerDetails={setTravelerDetails}
+                  travelerDetails={travelerDetails}
+                  setEmailInput={setEmailInput}
+                  emailInput={emailInput}
+                  setMobileInput={setMobileInput}
+                  mobileInput={mobileInput}
+                  enableInput={enableInput}
+                  setEnableInput={setEnableInput}
+                  isAllDetailsFilled={isAllDetailsFilled}
+                />
+                <BiilingAddress
+                  BusDetails={BusDetails}
+                  selectedSeats1={seatDetails}
+                  travelerDetails={travelerDetails}
+                  selectedRoutes={selectedRoutes}
+                  emailInput={emailInput}
+                  mobileInput={mobileInput}
+                  selectedseatprice={selectedseatprice}
+                  setConfirmModal={setConfirmModal}
+                  setConfirmRefNo={setConfirmRefNo}
+                  confirmRefNo={confirmRefNo}
+                  confirmModal={confirmModal}
+                  handleScroll={handleScroll}
+                  faredetails={faredetails}
+                  setFareDetails={setFareDetails}
+                  enableInput={enableInput}
+                  setEnableInput={setEnableInput}
+                  isAllDetailsFilled={isAllDetailsFilled}
+                  termschecked={termschecked}
+                  setTermsChecked={setTermsChecked}
+                />
+                {confirmModal && (
+                  <ConfirmTicket
+                    seatDetails={seatDetails}
+                    BusDetails={BusDetails}
+                    selectedSeats={selectedSeats}
+                    discount={busprice}
+                    confirmRefNo={confirmRefNo}
+                    faredetails={faredetails}
+                    emailInput={emailInput}
+                    mobileInput={mobileInput}
+                    setDropDown={setDropDown}
+                  />
+                )}
+              </>
+            </div>
+          </div>
+          // </Form>
+        );
+      }}
+    </Formik>
   );
 }

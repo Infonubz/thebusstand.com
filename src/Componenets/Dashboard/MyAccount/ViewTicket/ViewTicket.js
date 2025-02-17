@@ -5,12 +5,13 @@ import { ViewTicketById } from "../../../../Api-Abhibus/MyAccount/ViewTicket";
 import { IoPersonOutline } from "react-icons/io5";
 import { FaArrowRightLong } from "react-icons/fa6";
 import dayjs from "dayjs";
-import { Spin, Tooltip } from "antd";
+import { Drawer, Spin, Tooltip } from "antd";
 import { HiOutlineDownload } from "react-icons/hi";
 import moment from "moment";
 import { LoadingOutlined } from "@ant-design/icons";
 import empty from "../../../../Assets/CommonImages/empty.png";
 import { useNavigate } from "react-router";
+import ViewFullTicket from "./ViewFullTicket";
 
 export default function ViewTicket() {
   const validationSchema = Yup.object({
@@ -21,6 +22,7 @@ export default function ViewTicket() {
   const [ticketDetails, setTicketDetails] = useState([]);
   const [spinning, setSpinning] = useState(false);
   const [showList, setShowList] = useState(false);
+  const [showDrawer, setShowDrawer] = useState(false);
   const [calArrival, setCalArrival] = useState({
     journeyDate: "",
     starTime: "",
@@ -43,6 +45,10 @@ export default function ViewTicket() {
   };
 
   console.log(ticketDetails, "mytickwtsfskdhfdz");
+
+  const onClose = () => {
+    setShowDrawer(false);
+  };
 
   // const calculateArrival = (departureDate, departureTime, duration) => {
   //   try {
@@ -222,7 +228,6 @@ export default function ViewTicket() {
     dateParts.splice(1, 0, `${dayWithSuffix}`);
     const modifiedDate = dateParts.join(" ");
     console.log(date, "modfuhdifhdataadff");
-
     return <div>{modifiedDate}</div>;
   };
 
@@ -241,14 +246,14 @@ export default function ViewTicket() {
       >
         {({ handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
-            <div className="w-full shadow-lg shadow-gray-400 h-[60vw] md:h-auto md:pb-[2vw] bg-white rounded-[2vw] md:rounded-[.9vw] border-b-[0.1vw]">
+            <div className="w-full shadow-lg shadow-gray-400 h-[60vw] md:h-[15vw] bg-white rounded-[2vw] md:rounded-[.9vw] border-b-[0.1vw]">
               <div className="text-center py-[3vw] md:py-[1vw] text-[#1F487C] p-[1vw] font-bold text-[5vw] md:text-[1.5vw]">
                 View Ticket
               </div>
-              {/* <div className="text-center text-[#1F487C] p-[.5vw] font-semibold text-[4vw] md:text-[1.1vw]">
+              <div className="text-center text-[#1F487C] p-[.5vw] font-semibold text-[4vw] md:text-[1.1vw]">
                 Verify your details, and View your Tickets
-              </div> */}
-              <div className="grid grid-rows-3 gap-y-[7vw] justify-center md:gap-y-[0vw] md:flex md:justify-evenly mt-[5vw] md:mt-[1.5vw]">
+              </div>
+              <div className="grid grid-rows-3 gap-y-[7vw] justify-center md:gap-y-[0vw] md:flex md:justify-evenly mt-[5vw] md:mt-[3vw]">
                 <div className="relative flex">
                   <Field
                     name="ticketNumber"
@@ -571,7 +576,14 @@ export default function ViewTicket() {
                           }  text-[3.6vw] md:text-[1.1vw] font-bold rounded-full text-white md:w-[15vw] md:h-[3vw] w-[20vw] h-[7vw] outline-none`}
                         >
                           <span className="md:hidden block">VIEW</span>{" "}
-                          <span className="md:block hidden">VIEW BOOKING</span>
+                          <span
+                            className="md:block hidden"
+                            onClick={() => {
+                              setShowDrawer(true);
+                            }}
+                          >
+                            VIEW BOOKING
+                          </span>
                         </button>
                       </div>
                     </div>
@@ -868,7 +880,7 @@ export default function ViewTicket() {
                   />
                   <div className="flex flex-col gap-y-[0.5vw] items-center pt-[3vw] justify-center">
                     <label className="text-[4.2vw] md:text-[2vw] text-[#1F487C] font-bold text-center">
-                      Invalid Ticket Number or Phone Number
+                      Invalid ticket number or ticket might have been canceled.
                     </label>
                     <label className="flex text-[3.6vw] md:text-[1.1vw] text-[#1F487C] items-center gap-[0.5vw]">
                       Looks like given details are invalid
@@ -886,6 +898,20 @@ export default function ViewTicket() {
           )}
         </>
       )}
+      <Drawer
+        placement={"right"}
+        closable={false}
+        onClose={onClose}
+        open={showDrawer}
+        key={"right"}
+        width={"60%"}
+        // width={drawerWidth}
+      >
+        <ViewFullTicket
+          ticketDetails={ticketDetails}
+          droppingDate={calculatedDate && ConvertDate(calculatedDate)}
+        />
+      </Drawer>
     </div>
   );
 }

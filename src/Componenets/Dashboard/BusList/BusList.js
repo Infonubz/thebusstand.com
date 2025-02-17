@@ -59,6 +59,8 @@ import Advertisement from "../Advertisement/Advertisement";
 export default function BusList() {
   // const [dropDown, setDropDown] = useState(0)
   const [dropDown, setDropDown] = useState(false);
+  console.log(dropDown, "dropDownjjjj");
+
   const SVG = SVG_List();
   const [spinner, setSpinner] = useState(sessionStorage.getItem("spinner"));
   //const isluxury = sessionStorage.getItem("isLuxury");
@@ -167,7 +169,6 @@ export default function BusList() {
       <div>
         <div
           className={`bg-[#E5FFF1] overflow-y-scroll  md:block hidden px-[0.5vw] min-h-screen max-h-auto pb-[1vw] relative`}
-         
         >
           <Advertisement />
 
@@ -574,10 +575,10 @@ export default function BusList() {
                                       >
                                         {/* ₹ { Math.round(item.Fare)} */}
 
-                                        {calculateDiscountedFare(
+                                        {`${calculateDiscountedFare(
                                           item?.BUS_START_DATE,
                                           item.Fare
-                                        )}
+                                        )}`}
                                       </p>
                                       <div
                                         className={` absolute right-0 top-[-1vw] -rotate-90 w-0 h-0 border-l-[1vw] border-l-transparent border-r-[1vw] border-r-transparent border-b-[2vw] ${
@@ -1002,7 +1003,10 @@ export default function BusList() {
                       )}
                       {dropDown === `seat${index}` && (
                         <div className="">
-                          <SeatLayout BusDetails={item} />
+                          <SeatLayout
+                            BusDetails={item}
+                            setDropDown={setDropDown}
+                          />
                         </div>
                       )}
                     </>

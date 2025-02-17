@@ -23,6 +23,7 @@ import {
   PROFILE_DATA,
   MOB_ADS_LIST,
   ADS_LIST,
+  GET_DES_STATION,
 } from "./Type";
 
 const initial = {
@@ -53,6 +54,7 @@ const initial = {
   passenger_data: [],
   ads_list: [],
   mob_ads_list: [],
+  get_des_station: [],
 };
 export const busreducer = (state = initial, action) => {
   const { type, payload } = action;
@@ -216,7 +218,12 @@ export const busreducer = (state = initial, action) => {
         mob_ads_list: payload,
       };
     }
-
+    case GET_DES_STATION: {
+      return {
+        ...state,
+        get_des_station: payload,
+      };
+    }
     default: {
       return state;
     }

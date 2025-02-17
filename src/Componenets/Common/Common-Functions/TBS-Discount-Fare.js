@@ -3,5 +3,5 @@ export const calculateDiscountedFare = (date, baseFare) => {
   const day = new Date(date).getDay();
   const isWeekend = day === 0 || day === 6;
   const discount = isWeekend ? 0.01 : 0.02;
-  return `₹ ${Math.round(baseFare - baseFare * discount)}`;
+  return baseFare - baseFare * discount;
 };

@@ -20,7 +20,8 @@ export default function Rewardsandoffers() {
   const [currenttab, setCurrenttab] = useState(2);
   // const [getValues, setGetValues] = useState("General Public");
   const [spinning, setSpinning] = useState(false);
-
+  const [redeemOffers, setRedeemOffers] = useState()
+  console.log(redeemOffers, 'redeemOffers_redeemOffers')
   const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
   // const Reward = [
   //   {
@@ -70,9 +71,9 @@ export default function Rewardsandoffers() {
         //     : "GeneralPublic"
         // );
         console.log(response, "lszfmjdsfksdhgj");
-        GetOffersOccupation(dispatch, response.occupation_id, setSpinning);
+        GetOffersOccupation(dispatch, response.occupation_id, setSpinning, setRedeemOffers);
       } else {
-        GetOffersOccupation(dispatch, 2, setSpinning);
+        GetOffersOccupation(dispatch, 2, setSpinning, setRedeemOffers);
       }
     };
     feedback();
@@ -327,28 +328,28 @@ export default function Rewardsandoffers() {
                     />
                   </div>
                 ) : ( */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 w-full h-full pb-[4vw] md:pb-[0vw] flex-col gap-x-[1vw] md:gap-x-[2vw] gap-y-[4vw] md:gap-y-[2vw] justify-center px-[1vw]">
-                    {OccupationDeals?.length > 0 ? (
-                      OccupationDeals?.map((items, index) => (
-                        <div
-                          key={index}
-                          className="w-full md:h-[11vw] h-[40vw] flex justify-center relative"
-                        >
-                          <img
-                            src={`${apicrmimage}${items.theme}`}
-                            alt="Occupation"
-                            className="w-[80vw] md:h-[11vw] h-[40vw] z-[1]"
-                          />
-                          <div className="absolute  left-[26vw] md:left-[5.9vw] top-[-.3vw] md:top-[0vw] rounded-b-full h-[5vw] md:h-[1vw] w-[6vw] md:w-[2vw] bg-white z-[1]"></div>
-                          <div className="absolute left-[26vw] md:left-[5.9vw] bottom-[-.2vw] md:bottom-[0vw] rounded-t-full h-[5vw] md:h-[1vw] w-[6vw] md:w-[2vw] bg-white z-[1]"></div>
-                        </div>
-                      ))
-                    ) : (
-                      <span className="flex justify-center items-center col-span-3">
-                        <Empty />
-                      </span>
-                    )}
-                  </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 w-full h-full pb-[4vw] md:pb-[0vw] flex-col gap-x-[1vw] md:gap-x-[2vw] gap-y-[4vw] md:gap-y-[2vw] justify-center px-[1vw]">
+                  {redeemOffers?.length > 0 ? (
+                    redeemOffers?.map((items, index) => (
+                      <div
+                        key={index}
+                        className="w-full md:h-[11vw] h-[40vw] flex justify-center relative"
+                      >
+                        <img
+                          src={`${apicrmimage}${items.theme}`}
+                          alt="Occupation"
+                          className="w-[80vw] md:h-[11vw] h-[40vw] z-[1]"
+                        />
+                        <div className="absolute  left-[26vw] md:left-[5.9vw] top-[-.3vw] md:top-[0vw] rounded-b-full h-[5vw] md:h-[1vw] w-[6vw] md:w-[2vw] bg-white z-[1]"></div>
+                        <div className="absolute left-[26vw] md:left-[5.9vw] bottom-[-.2vw] md:bottom-[0vw] rounded-t-full h-[5vw] md:h-[1vw] w-[6vw] md:w-[2vw] bg-white z-[1]"></div>
+                      </div>
+                    ))
+                  ) : (
+                    <span className="flex justify-center items-center col-span-3">
+                      <Empty />
+                    </span>
+                  )}
+                </div>
                 {/* )} */}
               </div>
             </div>

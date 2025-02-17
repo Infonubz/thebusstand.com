@@ -143,6 +143,10 @@ export const Abhibus_SeatBlocked = async (
     type.toLowerCase().includes("luxury");
 
   const seatpriceList = selectedseatprice?.map((item) => item).join(", ");
+  const seatFareList = Object.values(selectedSeats1)
+    .map((item) => item.price)
+    .filter((price) => price)
+    .join(",");
   const namesList = Object.values(travelerDetails)
     .map((item) => item.user_name)
     .filter((name) => name)
@@ -152,7 +156,7 @@ export const Abhibus_SeatBlocked = async (
     .filter((gender) => gender) // Remove undefined/null values
     .join(",");
 
-  console.log(genderList,"tfvgfgghhhhhhhhhhhhh");
+  console.log(genderList, "tfvgfgghhhhhhhhhhhhh");
 
   const ageList = Object.values(travelerDetails)
     .map((item) => item.age)
@@ -206,7 +210,7 @@ export const Abhibus_SeatBlocked = async (
       <tns:gendersList>${genderList}</tns:gendersList>
       <tns:ageList>${ageList}</tns:ageList>
       <tns:seatNumbersList>${seatList}</tns:seatNumbersList>
-      <tns:seatFareList>${seatpriceList}</tns:seatFareList>
+      <tns:seatFareList>${seatFareList}</tns:seatFareList>
       <tns:seatTypesList>${seatTypeList}</tns:seatTypesList>
       <tns:seatTypeIds>${seatTypeIdList}</tns:seatTypeIds>
       <tns:isAcSeat>${isAcType}</tns:isAcSeat>
@@ -257,7 +261,7 @@ export const Abhibus_SeatBlocked = async (
   }
 };
 
-export const Abhibus_SeatConfirmed = async (BusDetails,refno) => {
+export const Abhibus_SeatConfirmed = async (BusDetails, refno) => {
   const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
@@ -297,7 +301,64 @@ export const Abhibus_SeatConfirmed = async (BusDetails,refno) => {
     });
 
     console.log("SOAP Response:", response.data);
-    const result = await processSOAPResponse(response.data, "ConfirmationSeatBooking");
+    const result = await processSOAPResponse(
+      response.data,
+      "ConfirmationSeatBooking"
+    );
+    console.log(result, "resultresultresultdddresultresultresult");
+    if (result?.status === "fail") {
+      toast.error(`${result?.status} - ${result?.message}`);
+    }
+
+    return result;
+  } catch (error) {
+    console.error("Error Response:", error.response?.data || error.message);
+    toast.error(error);
+    return null;
+  }
+};
+export const Abhibus_GetFareInfo = async (adultCount, childCount,confirmRefNo) => {
+  const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <tns:GetFaresInfo xmlns:tns="https://staging.abhibus.com/">
+       <tns:username>${username}</tns:username>
+      <tns:password>${password}</tns:password>
+      <tns:adultSeatNos>${adultCount}</tns:adultSeatNos>
+      <tns:childSeatNos>${childCount}</tns:childSeatNos>
+      <tns:referenceNo>${confirmRefNo}</tns:referenceNo>
+    </tns:GetFaresInfo>
+  </soap:Body>
+</soap:Envelope>
+`;
+  const url = `https://staging.abhibus.com/abhiWebServer`;
+
+  try {
+    const authHeader = `Basic ${btoa(`${username}:${password}`)}`;
+
+    console.log("Request Headers:", {
+      "Content-Type": "text/xml;charset=UTF-8",
+      Authorization: authHeader,
+      SOAPAction: '"https://staging.abhibus.com/GetFaresInfo"',
+    });
+
+    console.log("SOAP Request Body:", soapRequest);
+    const response = await axios({
+      method: "post",
+      url,
+      data: soapRequest,
+      headers: {
+        "Content-Type": "text/xml;charset=UTF-8",
+        Authorization: authHeader,
+        SOAPAction: '"https://staging.abhibus.com/GetFaresInfo"', // Ensure quotes if required
+      },
+    });
+
+    console.log("SOAP Response:", response.data);
+    const result = await processSOAPResponse(
+      response.data,
+      "GetFaresInfo"
+    );
     console.log(result, "resultresultresultdddresultresultresult");
     if (result?.status === "fail") {
       toast.error(`${result?.status} - ${result?.message}`);

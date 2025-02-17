@@ -277,7 +277,7 @@ const Loader = () => {
                 <div className="scrolling-background blur-md"></div>
                 <div className="scrolling-background duplicate"></div>
                 <div class="black-overlay"></div>
-            
+
                 {/* 1st scale left side */}
                 <div
                   style={{

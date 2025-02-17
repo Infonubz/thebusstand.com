@@ -1311,8 +1311,9 @@ const Sidebar = ({ sidebarToggle, share }) => {
     return target.isBetween(startRange, endRange, null, '[)');
   }
 
-
-
+  const home_luxury = sessionStorage.getItem('home_luxury')
+  const home_ac = sessionStorage.getItem('home_ac')
+  const home_seat_type = sessionStorage.getItem('home_seat_type')
 
 
   useEffect(() => {
@@ -1326,7 +1327,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
         !(item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
           item?.Bus_Type_Name?.toLowerCase()?.includes("volvo"))
       );
-    } else if (sessionStorage.getItem('home_luxury') === 'true' || BusFilters?.bustype === false) {
+    } else if (home_luxury === 'true' || BusFilters?.bustype === false) {
       filteredList = filteredList.filter((item) =>
         item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
         item?.Bus_Type_Name?.toLowerCase()?.includes("volvo")
@@ -1334,7 +1335,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
     }
 
     // Filter for AC/Non-AC
-    if (sessionStorage.getItem('home_ac') === "true" || BusFilters?.ac_non_ac === true) {
+    if (home_ac === "true" || BusFilters?.ac_non_ac === true) {
       filteredList = filteredList.filter((item) =>
         !item?.bus_type?.toLowerCase()?.includes("non-ac")
       );
@@ -1344,11 +1345,11 @@ const Sidebar = ({ sidebarToggle, share }) => {
       );
     }
     // Filter for Seater/Sleeper
-    if (sessionStorage.getItem('home_seat_type') === 'true' || BusFilters?.seat_type === true) {
+    if (home_seat_type === 'true' || BusFilters?.seat_type === true) {
       filteredList = filteredList.filter((item) =>
         item?.bus_type?.toLowerCase()?.includes("seater")
       );
-    } else if (sessionStorage.getItem('home_seat_type') === 'false' || BusFilters?.seat_type === false) {
+    } else if (home_seat_type === 'false' || BusFilters?.seat_type === false) {
       filteredList = filteredList.filter((item) =>
         item?.bus_type?.toLowerCase()?.includes("sleeper")
       );
@@ -1424,7 +1425,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
       payload: filteredList,
     });
     // console.log(BusFilters, buslist, "BusFilters");
-  }, [BusFilters, buslist, priceRange, pickupchecked, dropchecked, operatorchecked, pickuptime, droptime]);
+  }, [BusFilters, buslist, priceRange, pickupchecked, dropchecked, operatorchecked, pickuptime, droptime, home_luxury, home_ac, home_seat_type]);
   // console.log(droptime, "haiiiidfbjkdhfkjdhf");
 
 
@@ -1574,10 +1575,10 @@ const Sidebar = ({ sidebarToggle, share }) => {
                       </div>
                     </button>
                     <button
-                      className={`${sessionStorage.getItem('home_luxury') === 'true' || BusFilters?.bustype === false
+                      className={`${home_luxury === 'true'
                         ? "bg-custom-gradient-luxury bg-image-url"
                         : "bg-white"
-                        } h-full ${sessionStorage.getItem('home_luxury') === 'true' || BusFilters?.bustype === false
+                        } h-full ${home_luxury === 'true'
                           ? "text-black border-custom-gradient-luxury bg-image-url"
                           : "border-gray-300 "
                         } w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
@@ -1608,7 +1609,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                           bustype: prev.bustype === false ? null : false,
                         }));
                         setBusFilterType("bustype")
-
+                        sessionStorage.getItem('home_luxury') === 'true' ? sessionStorage.setItem('home_luxury', null) : sessionStorage.setItem('home_luxury', true)
                       }}
                     >
                       <div className="flex justify-center items-center">
@@ -1624,8 +1625,8 @@ const Sidebar = ({ sidebarToggle, share }) => {
                   </div>
                   <div className="grid grid-cols-2 pt-[0.9vw] gap-[0.8vw] mx-[0.6vw]">
                     <button
-                      className={`${sessionStorage.getItem('home_ac') === "true" || BusFilters?.ac_non_ac === true ? "bg-[#1F487C]" : "bg-white"
-                        }  ${sessionStorage.getItem('home_ac') === "true" || BusFilters?.ac_non_ac === true
+                      className={`${sessionStorage.getItem('home_ac') === "true" ? "bg-[#1F487C]" : "bg-white"
+                        }  ${sessionStorage.getItem('home_ac') === "true"
                           ? "text-white border-[#1F487C]"
                           : "border-gray-300"
                         } w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
@@ -1655,14 +1656,14 @@ const Sidebar = ({ sidebarToggle, share }) => {
                           ac_non_ac: prev.ac_non_ac === true ? null : true,
                         }));
                         setBusFilterType("bustype")
-
+                        sessionStorage.getItem('home_ac') === 'true' ? sessionStorage.setItem('home_ac', null) : sessionStorage.setItem('home_ac', true)
                       }}
                     >
                       <div className="py-[0.5vw] flex items-center justify-center gap-[0.5vw]">
                         {/* <span>
                     <TbAirConditioning size={15} className="mx-1 " />
                   </span> */}
-                        {BusFilters?.ac_non_ac === true ? (
+                        {sessionStorage.getItem('home_ac') === "true" ? (
                           <img
                             src={s_c_ac}
                             alt="AcImg"
@@ -1726,10 +1727,10 @@ const Sidebar = ({ sidebarToggle, share }) => {
 
                   <div className="grid grid-cols-2 pt-[0.9vw]  gap-[0.8vw] mx-[0.6vw]">
                     <button
-                      className={`${sessionStorage.getItem('home_seat_type') === 'false' || BusFilters?.seat_type === false
+                      className={`${sessionStorage.getItem('home_seat_type') === 'false'
                         ? "bg-[#1F487C]"
                         : "bg-white"
-                        } h-full ${sessionStorage.getItem('home_seat_type') === 'false' || BusFilters?.seat_type === false
+                        } h-full ${sessionStorage.getItem('home_seat_type') === 'false'
                           ? "text-white border-[#1F487C]"
                           : "border-gray-300"
                         } w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
@@ -1743,6 +1744,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                           ...prev,
                           seat_type: prev.seat_type === false ? null : false,
                         }));
+                        sessionStorage.getItem('home_seat_type') === 'false' ? sessionStorage.setItem('home_seat_type', null) : sessionStorage.setItem('home_seat_type', false)
                         setBusFilterType("bustype")
                       }}
                     >
@@ -1761,10 +1763,10 @@ const Sidebar = ({ sidebarToggle, share }) => {
                       </p>
                     </button>
                     <button
-                      className={`${sessionStorage.getItem('home_seat_type') === 'true' || BusFilters?.seat_type === true
+                      className={`${sessionStorage.getItem('home_seat_type') === 'true'
                         ? "bg-[#1F487C]"
                         : "bg-white"
-                        } h-full ${sessionStorage.getItem('home_seat_type') === 'true' || BusFilters?.seat_type === true
+                        } h-full ${sessionStorage.getItem('home_seat_type') === 'true' 
                           ? "text-white border-[#1F487C]"
                           : "border-gray-300 "
                         }w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
@@ -1774,6 +1776,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
                           seat_type: prev.seat_type === true ? null : true,
                         }));
                         setBusFilterType("bustype")
+                        sessionStorage.getItem('home_seat_type') === 'true' ? sessionStorage.setItem('home_seat_type', null) : sessionStorage.setItem('home_seat_type', true)
                       }}
                     >
                       <div className="py-[0.5vw] flex gap-[0.5vw] items-center justify-center">

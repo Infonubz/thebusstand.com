@@ -150,3 +150,231 @@
 :where(.css-5wsri9).ant-drawer .ant-drawer-body {
   padding: 0;
 }
+
+/* ---------------------------------------------------------- SelectComponent-------------------------------------------- */
+
+/* Overriding inline styles for selected item */
+.custom-web-select .ant-select-selection-item {
+  font-size: 1.2vw !important;
+}
+
+/* Custom dropdown arrow size and margin */
+
+.custom-web-select .ant-select-arrow {
+  position: absolute;
+  top: 1.5vw;
+  right: 1vw;
+  font-size: 1vw;
+  color: "#A9A9A9";
+}
+
+/* Remove border and box shadow for the selector */
+.custom-web-select .ant-select-selector {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Ensure outer container has no border and box shadow */
+.custom-web-select .ant-select {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove border and box shadow when focused */
+.custom-web-select .ant-select-focused .ant-select-selector {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+:where(.custom-web-select).ant-select-outlined:not(.ant-select-customize-input)
+  .ant-select-selector {
+  border: 1px solid #d9d9d9;
+}
+
+:where(.custom-web-select).ant-select-single .ant-select-selector {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  list-style: none;
+  font-family: inherit;
+  display: flex;
+}
+
+:where(.custom-web-select).ant-select-outlined.ant-select-disabled:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  background: rgba(0, 0, 0, 0) !important;
+  color: rgba(0, 0, 0, 0.25) !important;
+  border-radius: 2vw;
+}
+
+:where(.custom-web-select).ant-select-single.ant-select-show-arrow
+  .ant-select-selection-item,
+:where(
+    .css-dev-only-do-not-override-5wsri9
+  ).ant-select-single.ant-select-show-arrow
+  .ant-select-selection-placeholder {
+  padding-inline-end: 0px !important;
+}
+.custom-web-select .ant-select-selector {
+  background-color: #f0f0f0; /* Change background color if desired */
+  border-radius: 0.2vw 0vw 0vw 0.2vw; /* You can modify the border radius */
+}
+/* ------MobileSelect---- */
+
+
+.custom-mobile-select .ant-select-arrow {
+  position: absolute;
+  top: 5vw;
+  right: 1.5vw;
+  font-size: 3vw;
+  color: "black";
+}
+
+:where(.custom-mobile-select).ant-select-outlined.ant-select-disabled:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  background: rgba(0, 0, 0, 0) !important;
+  color: rgba(0, 0, 0, 0.25) !important;
+  border-radius: 2vw;
+}
+
+/* Remove border and box shadow for the selector */
+.custom-mobile-select .ant-select-selector {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Ensure outer container has no border and box shadow */
+.custom-mobile-select .ant-select {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+:where(.custom-mobile-select).ant-select-outlined:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  border: 1px solid #d9d9d9;
+  background: #ffffff;
+  border-radius: 2vw 0vw 0vw 2vw;
+}
+
+/* Remove border and box shadow when focused */
+.custom-mobile-select .ant-select-focused .ant-select-selector {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+:where(.custom-mobile-select).ant-select-outlined:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  border: 0.1vw solid #d9d9d9;
+}
+
+:where(.custom-mobile-select).ant-select-single .ant-select-selector {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 3vw;
+  /* color: #1f487c; */
+  list-style: none;
+  font-family: inherit;
+  display: flex;
+  background-color: red;
+}
+
+:where(.custom-mobile-select).ant-select-single.ant-select-show-arrow
+  .ant-select-selection-item,
+:where(
+    .css-dev-only-do-not-override-5wsri9
+  ).ant-select-single.ant-select-show-arrow
+  .ant-select-selection-placeholder {
+  padding-inline-end: 0px !important;
+}
+.custom-mobile-select .ant-select-selector {
+  background-color: #f0f0f0; /* Change background color if desired */
+  border-radius: 1.75vw 0vw 0vw 1.75vw; /* You can modify the border radius */
+}
+
+/* Custom dropdown arrow size and margin */
+
+.custom-mobile-select .ant-select-arrow {
+  position: absolute;
+  top: 5vw;
+  right: 1.5vw;
+  font-size: 3vw;
+  color: "black";
+}
+
+:where(.custom-mobile-select).ant-select-outlined.ant-select-disabled:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  background: rgba(0, 0, 0, 0) !important;
+  color: rgba(0, 0, 0, 0.25) !important;
+  border-radius: 2vw;
+}
+
+/* Remove border and box shadow for the selector */
+.custom-mobile-select .ant-select-selector {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Ensure outer container has no border and box shadow */
+.custom-mobile-select .ant-select {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+:where(.custom-mobile-select).ant-select-outlined:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  border: 1px solid #d9d9d9;
+  background: #ffffff;
+  border-radius: 2vw 0vw 0vw 2vw;
+}
+
+/* Remove border and box shadow when focused */
+.custom-mobile-select .ant-select-focused .ant-select-selector {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+:where(.custom-mobile-select).ant-select-outlined:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  border: 0.1vw solid #d9d9d9;
+}
+
+:where(.custom-mobile-select).ant-select-single .ant-select-selector {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 4vw;
+  /* color: #1f487c; */
+  list-style: none;
+  font-family: inherit;
+  display: flex;
+  background-color: red;
+}
+
+:where(.custom-mobile-select).ant-select-single.ant-select-show-arrow
+  .ant-select-selection-item,
+:where(
+    .css-dev-only-do-not-override-5wsri9
+  ).ant-select-single.ant-select-show-arrow
+  .ant-select-selection-placeholder {
+  padding-inline-end: 0px !important;
+}
+.custom-mobile-select .ant-select-selector {
+  background-color: #f0f0f0; /* Change background color if desired */
+  border-radius: 1.75vw 0vw 0vw 1.75vw; /* You can modify the border radius */
+}

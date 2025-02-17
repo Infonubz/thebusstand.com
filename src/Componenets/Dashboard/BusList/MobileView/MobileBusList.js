@@ -29,13 +29,9 @@ import MobileCardBottomBar from "./MobileCardBottomBar";
 import BottomNavbar from "../../../Common/Mobile-NavBar/BottomNavBar";
 import Advertisement from "../../Advertisement/Advertisement";
 export default function MobileBusList() {
-  const formatTime = (timeString) => {
-    return timeString?.slice(0, 5);
-  };
 
   const dispatch = useDispatch();
   const buslist = useSelector((state) => state?.get_buslist_filter);
-  console.log(buslist, "buslist_Moblie");
 
   const [drawername, setDrawerName] = useState("");
   const [dropDown, setDropDown] = useState(null);
@@ -52,7 +48,6 @@ export default function MobileBusList() {
     amenities: "",
   });
   const [bus_type, setBus_type] = useState();
-  console.log(bus_type, "bus_type_bus_type");
   const [busdatas, setBusDatas] = useState({
     ac: "false",
     from: "",
@@ -85,8 +80,6 @@ export default function MobileBusList() {
   //     return () => clearTimeout(timer);
   // }, []);
   const currentpath = useParams();
-  console.log(spin, "spinspinspin");
-
   const BusDetails = {
     from: currentpath?.source_name,
     to: currentpath?.destination_name,
@@ -95,7 +88,35 @@ export default function MobileBusList() {
     date: currentpath?.trip_date,
   };
 
-  const GetBUslist = async () => {
+  const calculateArrival = (departureDate, departureTime, duration) => {
+    try {
+      const departureDateTime = new Date(`${departureDate} ${departureTime}`);
+      if (isNaN(departureDateTime.getTime())) {
+        throw new Error("Invalid departure date or time format.");
+      }
+      const [hours, minutes] = duration.split(":").map(Number);
+      if (isNaN(hours) || isNaN(minutes)) {
+        throw new Error("Invalid duration format.");
+      }
+      departureDateTime.setHours(departureDateTime.getHours() + hours);
+      departureDateTime.setMinutes(departureDateTime.getMinutes() + minutes);
+      const arrivalDate = departureDateTime.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      });
+      const arrivalTime = departureDateTime.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+      return dayjs(arrivalDate).format("DD MMM");
+    } catch (error) {
+      return { arrivalDate: null, arrivalTime: null };
+    }
+  };
+
+  const GetBusList = async () => {
     setSpin(true);
     try {
       const data = await Abhibus_GetBusList(
@@ -119,7 +140,7 @@ export default function MobileBusList() {
   };
 
   useEffect(() => {
-    GetBUslist();
+    GetBusList();
   }, []);
 
   const navigation = useNavigate();
@@ -138,7 +159,6 @@ export default function MobileBusList() {
   // };
   const apiUrlimage = process.env.REACT_APP_API_URL_IMAGE;
   // const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
-  console.log(dropDown, "dropDown444");
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -159,6 +179,21 @@ export default function MobileBusList() {
   const backgroundImage = isDesktop
     ? `linear-gradient(to right, #F8C550, #FFEB76, #FFE173), url(${SINGLECARD_BG})`
     : `linear-gradient(to right, #F8C550, #FFEB76, #FFE173), url(${MOBILE_CARD})`;
+
+  const calculateDiscountedFare = (date, baseFare) => {
+    if (!date || isNaN(new Date(date))) return baseFare;
+    const day = new Date(date).getDay();
+    const isWeekend = day === 0 || day === 6;
+    const discount = isWeekend ? 0.01 : 0.02;
+    return `₹ ${Math.round(baseFare - baseFare * discount)}`;
+  };
+
+  // const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
+  const formatTime = (timeString) => {
+    const [hours, minutes] = timeString.split(":").map(Number);
+    return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+  };
+
 
   return (
     <>
@@ -199,9 +234,9 @@ export default function MobileBusList() {
                       // item?.bus_type_status
                       LuxuryFind(item.Bus_Type_Name) === true
                         ? // === "luxury"
-                          "custom-gradient-luxury border-[#C9C9C9]"
+                        "custom-gradient-luxury border-[#C9C9C9]"
                         : "bg-white border-[#C9C9C9] "
-                    } w-full border-[0.2vw] rounded-[2vw] `}
+                      } w-full border-[0.2vw] rounded-[2vw] `}
                     style={{
                       // backgroundImage: `linear-gradient(to right, #F8C550, #FFEB76, #FFE173), url(${SINGLECARD_BG})`,
                       backgroundImage: backgroundImage,
@@ -359,7 +394,7 @@ export default function MobileBusList() {
                             LuxuryFind(item.Bus_Type_Name) === true
                               ? "text-black"
                               : "text-white"
-                          } underline underline-offset-2`}
+                            } underline underline-offset-2`}
                         >
                           Bus Operator
                         </label>
@@ -369,7 +404,7 @@ export default function MobileBusList() {
                             LuxuryFind(item.Bus_Type_Name) === true
                               ? "text-black"
                               : "text-white"
-                          }`}
+                            }`}
                         >
                           {item?.Traveler_Agent_Name}
                           <Tooltip
@@ -394,7 +429,7 @@ export default function MobileBusList() {
                                 LuxuryFind(item.Bus_Type_Name) === true
                                   ? "shadow-lg shadow-[rgba(255, 238, 201, 0.9)]"
                                   : "shadow-lg shadow-[rgba(238, 237, 237, 0.7)]"
-                              }`}
+                                }`}
                             />
                           )}
                         </div>
@@ -404,7 +439,7 @@ export default function MobileBusList() {
                             LuxuryFind(item.Bus_Type_Name) === true
                               ? ""
                               : "bg-[#1F487C]"
-                          } rounded-tr-[2vw] rounded-br-[0.5vw]  h-[9vw] w-[75vw]`}
+                            } rounded-tr-[2vw] rounded-br-[0.5vw]  h-[9vw] w-[75vw]`}
                           style={{
                             background:
                               // item?.bus_type_status === "luxury"
@@ -424,7 +459,7 @@ export default function MobileBusList() {
                             <path
                               d="M0.00012207 35.0001L12.0444 0.00012207H129.98C133.305 0.00012207 136 2.6952 136 6.01975V35.0001H0.00012207Z"
                               fill="black"
-                              //   fill-opacity="0.5"
+                            //   fill-opacity="0.5"
                             />
                           </svg>
                           <label
@@ -433,17 +468,21 @@ export default function MobileBusList() {
                               LuxuryFind(item.Bus_Type_Name) === true
                                 ? "text-black"
                                 : "text-white"
-                            } text-[4vw] absolute left-[18vw] top-[1.5vw]`}
+                              } text-[4vw] absolute left-[18vw] top-[1.5vw]`}
                           >
                             Starting @
                           </label>
                           <div onClick={() => toggleDropDown(item)}>
                             <label
                               className="text-white text-[6vw] font-extrabold absolute right-[13vw] top-[0.4vw]"
-                              // onClick={() => toggleDropDown(`seat${index}`)}
-                              // onClick={() => toggleDropDown(item)}
+                            // onClick={() => toggleDropDown(`seat${index}`)}
+                            // onClick={() => toggleDropDown(item)}
                             >
-                              ₹ {Math.round(item?.Fare)}
+                              {/* ₹ {Math.round(item?.Fare)} */}
+                              {calculateDiscountedFare(
+                                item?.BUS_START_DATE,
+                                item.Fare
+                              )}
                             </label>
                             <span className="absolute right-[3vw] top-[0.75vw] ">
                               <MdOutlineKeyboardDoubleArrowRight
@@ -461,9 +500,9 @@ export default function MobileBusList() {
                                 // item?.bus_type_status === "luxury"
                                 LuxuryFind(item.Bus_Type_Name) === true
                                   ? // ? "bg-[#ffc918]"
-                                    "bg-gradient-to-r from-[#facf65] to-[#fde480]"
+                                  "bg-gradient-to-r from-[#facf65] to-[#fde480]"
                                   : "bg-white"
-                              }  rounded-full `}
+                                }  rounded-full `}
                             />
                           </div>
                         </div>{" "}
@@ -492,7 +531,7 @@ export default function MobileBusList() {
                             LuxuryFind(item.Bus_Type_Name) === true
                               ? "text-[#393939]"
                               : "text-[#1F487C]"
-                          }`}
+                            }`}
                           style={{
                             top: "18%",
                             left: "35%",
@@ -514,8 +553,8 @@ export default function MobileBusList() {
                         </label>
                         <div className="absolute top-[13vw] left-[20vw]">
                           <svg
-                            width="25vw"
-                            height="10vw"
+                            width="23.5vw"
+                            height="8.5vw"
                             viewBox="0 0 55 29"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
@@ -538,7 +577,7 @@ export default function MobileBusList() {
                                 LuxuryFind(item.Bus_Type_Name) === true
                                   ? "border-[#393939]"
                                   : "border-[#1F487C]"
-                              } border-t-[0.5vw] absolute left-[1.9vw] z-0 top-[5.2vw] border-dashed w-[25vw]`}
+                                } border-t-[0.5vw] absolute left-[1.9vw] z-0 top-[4.25vw] border-dashed w-[25vw]`}
                             ></div>
                           </div>
                           <label
@@ -561,20 +600,20 @@ export default function MobileBusList() {
                                 LuxuryFind(item.Bus_Type_Name) === true
                                   ? "text-[#393939]"
                                   : "text-[#1F487C]"
-                              } font-semibold opacity-60`}
+                                } font-semibold opacity-60`}
                             >
                               {dayjs(item?.BUS_START_DATE).format("DD MMM")}
                             </label>
                             <label
                               // className="text-[3.5vw] text-[#1F487C] font-bold"
-                              className={`text-[4.5vw] ${
+                              className={`text-[4vw] ${
                                 // item?.bus_type_status === "luxury"
                                 LuxuryFind(item.Bus_Type_Name) === true
                                   ? "text-[#393939]"
                                   : "text-[#1F487C]"
-                              } font-bold`}
+                                } font-bold`}
                             >
-                              {item?.Start_time?.split(" ")[0]}
+                              {item?.Start_time}
                             </label>
                           </div>
                         </div>
@@ -587,20 +626,25 @@ export default function MobileBusList() {
                                 LuxuryFind(item.Bus_Type_Name) === true
                                   ? "text-[#393939]"
                                   : "text-[#1F487C]"
-                              } font-semibold opacity-60`}
+                                } font-semibold opacity-60`}
                             >
-                              {dayjs(item?.jdate).format("DD MMM")}
+                              {/* {dayjs(item?.jdate).format("DD MMM")} */}
+                              {calculateArrival(
+                                item?.BUS_START_DATE,
+                                item?.Start_time,
+                                item?.TravelTime
+                              )}
                             </label>
                             <label
                               // className="text-[3.5vw] text-[#1F487C] font-bold"
-                              className={`text-[4.5vw] ${
+                              className={`text-[4vw] ${
                                 // item?.bus_type_status === "luxury"
                                 LuxuryFind(item.Bus_Type_Name) === true
                                   ? "text-[#393939]"
                                   : "text-[#1F487C]"
-                              } font-bold`}
+                                } font-bold`}
                             >
-                              {item?.Arr_Time?.split(" ")[0]}
+                              {item?.Arr_Time}
                             </label>
                           </div>
                         </div>
@@ -612,7 +656,7 @@ export default function MobileBusList() {
                               LuxuryFind(item.Bus_Type_Name) === true
                                 ? "bg-[#393939]"
                                 : "bg-[#1F487C]"
-                            } absolute left-[-1.4vw] h-[2.25vw] w-[2.25vw] top-[3.8vw] rounded-full`}
+                              } absolute left-[-1.4vw] h-[2.25vw] w-[2.25vw] top-[2.8vw] rounded-full`}
                           ></div>
                         </div>
                         <div className="absolute left-[45.5vw] top-[12.2vw]">
@@ -624,8 +668,8 @@ export default function MobileBusList() {
                               LuxuryFind(item.Bus_Type_Name) === true
                                 ? "#393939"
                                 : "#1F487C"
-                            }`}
-                            className="absolute right-[-2.7vw] top-[2.8vw]"
+                              }`}
+                            className="absolute right-[-2.25vw] top-[2vw]"
                           />
                         </div>
                         <div className=" absolute right-[38vw] top-[12vw]">
@@ -636,7 +680,7 @@ export default function MobileBusList() {
                               LuxuryFind(item.Bus_Type_Name) === true
                                 ? "border-[#393939]"
                                 : "border-[#1F487C]"
-                            } border-t-[0.3vw] absolute left-[3vw] top-[5.2vw] border-dashed w-[17vw]`}
+                              } border-t-[0.3vw] absolute left-[3vw] top-[5.2vw] border-dashed w-[17vw]`}
                             style={{
                               transform: "rotate(90deg)",
                             }}

@@ -78,7 +78,7 @@ export default function JourneyDetails({
   const [loader, setLoader] = useState(false);
   const selectedSeats1 = selectedSeats;
   const selectedRoutes1 = selectedRoutes2 || selectedRoutes;
-  console.log(selectedRoutes1, "selectedSeats1");
+  console.log(BusDetails, "selectedSeats1");
 
   return (
     <div>
@@ -592,10 +592,10 @@ export default function JourneyDetails({
                                           : "text-[#1F487C]"
                                       }`}
                               >
-                                {calculateDiscountedFare(
+                                {`₹ ${calculateDiscountedFare(
                                   BusDetails?.BUS_START_DATE,
                                   busprice
-                                )}
+                                )}`}
                               </p>
                             </div>
                           </div>

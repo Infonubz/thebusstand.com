@@ -12,6 +12,8 @@ import {
   TBS_INFO,
   FOOTER,
   OFFERS_OCCUPATION,
+  GET_STATIONS,
+  GET_DES_STATION,
 } from "../../Store/Type";
 
 const api = axios.create({
@@ -227,7 +229,26 @@ export const GetFeedbackById = async () => {
     handleError(err);
   }
 };
+export const GetStations = async (dispatch,val,module) =>{
+  try{
+    const response = val===""? await axios.get(`${apiUrl}/getStation/$`) : await axios.get(`${apiUrl}/getStation/${val}`)
 
+    if(module==="from"){
+      dispatch({type:GET_STATIONS,payload:response.data})
+    }
+    else if(module === "to"){
+      dispatch({type:GET_DES_STATION,payload:response.data})
+    }
+    else{
+      dispatch({type:GET_STATIONS,payload:response.data})
+      dispatch({type:GET_DES_STATION,payload:response.data})
+    }
+    console.log(response.data,"station response");
+  }
+  catch(err){
+    handleError(err)
+  }
+}
 const handleError = (error) => {
   console.error("Error details:", error);
   let errorMessage = "An error occurred";

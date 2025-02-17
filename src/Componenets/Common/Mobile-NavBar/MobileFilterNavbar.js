@@ -173,7 +173,9 @@ export default function MobileFilterNavbar() {
 
     const buslist = useSelector((state) => state?.get_buslist);
 
-
+    const home_luxury = sessionStorage.getItem('home_luxury')
+    const home_ac = sessionStorage.getItem('home_ac')
+    const home_seat_type = sessionStorage.getItem('home_seat_type')
     useEffect(() => {
         let filteredList = buslist || [];
         console.log(filteredList, 'filtereedList')
@@ -183,14 +185,14 @@ export default function MobileFilterNavbar() {
                 !(item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
                     item?.Bus_Type_Name?.toLowerCase()?.includes("volvo"))
             );
-        } else if (sessionStorage.getItem('home_luxury') === 'true' || BusFilters?.bustype === false) {
+        } else if (home_luxury === 'true' || BusFilters?.bustype === false) {
             filteredList = filteredList.filter((item) =>
                 item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
                 item?.Bus_Type_Name?.toLowerCase()?.includes("volvo")
             );
         }
         // Filter for AC/Non-AC
-        if (sessionStorage.getItem('home_ac') === "true" || BusFilters?.ac_non_ac === true) {
+        if (home_ac === "true" || BusFilters?.ac_non_ac === true) {
             filteredList = filteredList.filter((item) =>
                 !item?.bus_type?.toLowerCase()?.includes("non-ac")
             );
@@ -200,11 +202,11 @@ export default function MobileFilterNavbar() {
             );
         }
         // Filter for Seater/Sleeper
-        if (sessionStorage.getItem('home_seat_type') === 'true' || BusFilters?.seat_type === true) {
+        if (home_seat_type === 'true' || BusFilters?.seat_type === true) {
             filteredList = filteredList.filter((item) =>
                 item?.bus_type?.toLowerCase()?.includes("seater")
             );
-        } else if (sessionStorage.getItem('home_seat_type') === 'false' || BusFilters?.seat_type === false) {
+        } else if (home_seat_type === 'false' || BusFilters?.seat_type === false) {
             filteredList = filteredList.filter((item) =>
                 item?.bus_type?.toLowerCase()?.includes("sleeper")
             );
@@ -215,7 +217,7 @@ export default function MobileFilterNavbar() {
         });
 
 
-    }, [dispatch, BusFilters, buslist]);
+    }, [dispatch, BusFilters, buslist, home_luxury, home_ac, home_seat_type]);
 
 
     return (

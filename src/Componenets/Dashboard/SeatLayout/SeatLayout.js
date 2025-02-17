@@ -13,8 +13,9 @@ import { toast } from "react-toastify";
 import PickUpandDrop from "./PickUp&Drop";
 import DrawerIndex from "../SeatBlocked/Index";
 import { calculateDiscountedFare } from "../../Common/Common-Functions/TBS-Discount-Fare";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
-const SeatLayout = ({ BusDetails, busdroping, busboarding }) => {
+const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
   const dispatch = useDispatch();
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [modalshow, setShowModal] = useState(false);
@@ -33,7 +34,14 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding }) => {
   const [totalprice, setTotalPrice] = useState(null);
   const [seatDetails, setSeatDetails] = useState(
     selectedSeats.reduce((acc, seat, index) => {
-      acc[index] = { Seat: "", Status: "", type: "", typeId: "", tax: "" };
+      acc[index] = {
+        Seat: "",
+        Status: "",
+        type: "",
+        typeId: "",
+        tax: "",
+        price: "",
+      };
       return acc;
     }, {})
   );
@@ -243,6 +251,7 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding }) => {
               type: seat.type,
               typeId: seat.seatTypeID,
               tax: seat.tax,
+              price: seat.price,
             }, // Store seat ID and its status
           }));
           return [...prevSelectedSeats, seat.seatNumber];
@@ -376,10 +385,10 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding }) => {
                           }}
                         >
                           {/* {`₹ ${item}`} */}
-                          {calculateDiscountedFare(
+                          {`₹ ${calculateDiscountedFare(
                             BusDetails?.BUS_START_DATE,
                             item
-                          )}
+                          )}`}
                         </button>
                       ))}
                   </div>
@@ -573,29 +582,29 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding }) => {
                                 {lowerDeckSeats?.map((seat, index) =>
                                   seat?.type === "SS" ? (
                                     // <Flex align="center">
-
-                                    <div
-                                      key={index}
-                                      className="relative items-center justify-center flex"
-                                      style={{
-                                        gridRow: seat.row,
-                                        gridColumn: seat.column,
-                                      }}
-                                    >
-                                      {" "}
-                                      <div className="absolute top-[0.8vw] right-[58%]">
-                                        {seatHighlight(seat)}
-                                      </div>
-                                      <Tooltip
+                                    <>
+                                      <div
+                                        key={index}
+                                        className="relative items-center justify-center flex"
+                                        style={{
+                                          gridRow: seat.row,
+                                          gridColumn: seat.column,
+                                        }}
+                                      >
+                                        {" "}
+                                        <div className="absolute top-[0.8vw] right-[58%]">
+                                          {seatHighlight(seat)}
+                                        </div>
+                                        <Tooltip
                                         placement="top"
                                         title={
-                                          <div className="flex items-center gap-x-[1vw] justify-between">
+                                          <div className="flex items-center  gap-x-[1vw] justify-between">
                                             <span className="text-[1.2vw] font-semibold text-white">{`${seat.seatNumber}`}</span>
                                             <span className=" font-bold text-[1.1vw] text-white">
-                                              {calculateDiscountedFare(
+                                              {`₹ ${calculateDiscountedFare(
                                                 BusDetails?.BUS_START_DATE,
                                                 seat?.price
-                                              )}
+                                              )}`}
                                             </span>
                                           </div>
                                         }
@@ -606,24 +615,39 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding }) => {
                                           height="2.6vw"
                                           viewBox="0 0 34 39"
                                           fill={`${getBackgroundClass(seat)}`}
-                                          // fill="#D8D8D8"
                                           onClick={() => handleSeatClick(seat)}
-                                          className={` cursor-pointer`}
-                                          // ${getShadowClass(seat)}
+                                          className="cursor-pointer"
+                                          // data-tooltip-id={`tooltip-${index}`}
+                                          // data-tooltip-content={`${
+                                          //   seat.seatNumber
+                                          // }  -   ₹ ${calculateDiscountedFare(
+                                          //   BusDetails?.BUS_START_DATE,
+                                          //   seat?.price
+                                          // )}`}
                                         >
                                           <path
                                             d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998V11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H3.55687Z"
                                             fill={`${getBackgroundClass(seat)}`}
-                                            // stroke="#D8D8D8"
                                           />
                                           <path
                                             d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998C28.9099 9.12696 28.9099 11.5352 28.9099 11.5352M28.9099 11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H4.6386C5.53474 11.5354 6.2612 12.2619 6.2612 13.158V29.9671C6.2612 31.3113 7.35089 32.401 8.69509 32.401H24.1098C25.454 32.401 26.5437 31.3113 26.5437 29.9671V13.1579C26.5437 12.2618 27.2701 11.5353 28.1661 11.5353L28.9099 11.5352Z"
                                             stroke={`${getBorderClass(seat)}`}
-                                            // stroke="#D8D8D8"
                                           />
                                         </svg>
-                                      </Tooltip>
-                                    </div>
+                                        {/* <ReactTooltip
+                                          id={`tooltip-${index}`}
+                                          place="top"
+                                          style={{
+                                            backgroundColor: getColor(seat),
+                                            color: "white",
+                                            zIndex: 2,
+                                            transform: "rotateY(180deg)",
+                                            fontWeight: "bold",
+                                          }}
+                                        /> */}
+                                        </Tooltip>
+                                      </div>
+                                    </>
                                   ) : (
                                     // </Flex>
 
@@ -648,10 +672,10 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding }) => {
                                             <span className="text-[1.2vw] font-semibold text-white">{`${seat.seatNumber}`}</span>
                                             <span className=" font-bold text-[1.1vw] text-white">
                                               {" "}
-                                              {calculateDiscountedFare(
+                                              {`₹ ${calculateDiscountedFare(
                                                 BusDetails?.BUS_START_DATE,
                                                 seat?.price
-                                              )}
+                                              )}`}
                                             </span>
                                           </div>
                                         }
@@ -735,10 +759,10 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding }) => {
                                             <span className="text-[1.2vw] font-semibold text-white">{`${seat.seatNumber}`}</span>
                                             <span className=" font-bold text-[1.1vw] text-white">
                                               {" "}
-                                              {calculateDiscountedFare(
+                                              {`₹ ${calculateDiscountedFare(
                                                 BusDetails?.BUS_START_DATE,
                                                 seat?.price
-                                              )}
+                                              )}`}
                                             </span>
                                           </div>
                                         }
@@ -789,10 +813,10 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding }) => {
                                             <span className="text-[1.2vw] font-semibold text-white">{`${seat.seatNumber}`}</span>
                                             <span className=" font-bold text-[1.1vw] text-white">
                                               {" "}
-                                              {calculateDiscountedFare(
+                                              {`₹ ${calculateDiscountedFare(
                                                 BusDetails?.BUS_START_DATE,
                                                 seat?.price
-                                              )}
+                                              )}`}
                                             </span>
                                           </div>
                                         }
@@ -872,10 +896,10 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding }) => {
                               <div className="flex flex-col">
                                 <p className="float-end text-[1.3vw] font-bold">
                                   {" "}
-                                  {calculateDiscountedFare(
+                                  {`₹ ${calculateDiscountedFare(
                                     BusDetails?.BUS_START_DATE,
                                     totalprice
-                                  )}
+                                  )}`}
                                 </p>
 
                                 {/* <Popover placement="top" content={content}> */}
@@ -954,6 +978,7 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding }) => {
                             busprice={totalprice}
                             seatDetails={seatDetails}
                             selectedseatprice={selectedseatprice}
+                            setDropDown={setDropDown}
                           />
                         </Drawer>
                       </div>
