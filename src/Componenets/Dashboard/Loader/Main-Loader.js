@@ -1240,7 +1240,7 @@ const Loader = () => {
             <div
               className={` ${
                 sidebarToggle ? "" : "md:pl-[18vw] ml-0"
-              } fixed w-full mt-[0.5vw] md:block hidden`}
+              } fixed w-full mt-[0.5vw] md:block hidden z-10`}
               // style={{
               //   zIndex: 1,
               // }}
@@ -1258,7 +1258,7 @@ const Loader = () => {
             <main
               className={` ${
                 sidebarToggle ? "" : "md:ml-[18vw] ml-0"
-              } md:mt-[3.25vw]  md:pt-0 pt-[1vw] z-1`}
+              } md:mt-[2.8vw]  md:pt-0 pt-[1vw] -z-1`}
             >
               <Outlet />
             </main>

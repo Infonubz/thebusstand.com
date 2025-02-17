@@ -86,8 +86,8 @@ const Navbar_Three = ({ sidebarToggle, setSidebarToggle }) => {
         prevState[type] === null
           ? true
           : prevState[type] === true
-          ? false
-          : null;
+            ? false
+            : null;
 
       return sortingFields.reduce(
         (acc, field) => ({
@@ -176,7 +176,8 @@ const Navbar_Three = ({ sidebarToggle, setSidebarToggle }) => {
 
   return (
     <>
-      <div className="bg-[#E5FFF1] justify-between  mt-[0.32vw] py-[0.3vw] h-full  flex ">
+      <div
+        className="bg-[#E5FFF1] justify-between z-10 mt-[0.32vw] py-[0.3vw] h-full  flex " >
         <div className=" h-full w-[60%] flex gap-[1.5vw] items-center ">
           {/* <FaBars
             className="text-black me-4 cursor-pointer"
@@ -185,18 +186,16 @@ const Navbar_Three = ({ sidebarToggle, setSidebarToggle }) => {
 
           {/* <div className="bg-white px-4 py-[1px] border-2 items-center justify-center border-gray-300 rounded-md"> */}
           <p
-            className={`text-[#1F487C] font-bold text-[0.9vw] text-center ${
-              sidebarToggle ? "" : "ml-[0.8vw]"
-            }`}
+            className={`text-[#1F487C] font-bold text-[0.9vw] text-center ${sidebarToggle ? "" : "ml-[0.8vw]"
+              }`}
           >
             Sort By :
           </p>
           <button
-            className={`${
-              sortList.price !== null
-                ? "bg-[#1F487C] text-white"
-                : "bg-white border-gray-300 text-[#1F487C]"
-            } px-[0.5vw] py-[0.1vw] border-[0.1vw] rounded-[0.4vw]`}
+            className={`${sortList.price !== null
+              ? "bg-[#1F487C] text-white"
+              : "bg-white border-gray-300 text-[#1F487C]"
+              } px-[0.5vw] py-[0.1vw] border-[0.1vw] rounded-[0.4vw]`}
             onClick={() => handleSortingClick("price")}
           >
             <span className="flex items-center justify-center gap-1">
@@ -207,11 +206,10 @@ const Navbar_Three = ({ sidebarToggle, setSidebarToggle }) => {
             </span>
           </button>
           <button
-            className={`${
-              sortList.seats !== null
-                ? "bg-[#1F487C] text-white"
-                : "bg-white border-gray-300 text-[#1F487C]"
-            } px-[0.5vw] py-[0.1vw] border-[0.1vw] rounded-[0.4vw]`}
+            className={`${sortList.seats !== null
+              ? "bg-[#1F487C] text-white"
+              : "bg-white border-gray-300 text-[#1F487C]"
+              } px-[0.5vw] py-[0.1vw] border-[0.1vw] rounded-[0.4vw]`}
             onClick={() => handleSortingClick("seats")}
           >
             <span className="flex items-center justify-center gap-1">
@@ -227,11 +225,10 @@ const Navbar_Three = ({ sidebarToggle, setSidebarToggle }) => {
             </span>
           </button>
           <button
-            className={`${
-              sortList.departure !== null
-                ? "bg-[#1F487C] text-white"
-                : "bg-white border-gray-300 text-[#1F487C]"
-            } px-[0.5vw] py-[0.1vw] border-[0.1vw] rounded-[0.4vw]`}
+            className={`${sortList.departure !== null
+              ? "bg-[#1F487C] text-white"
+              : "bg-white border-gray-300 text-[#1F487C]"
+              } px-[0.5vw] py-[0.1vw] border-[0.1vw] rounded-[0.4vw]`}
             onClick={() => handleSortingClick("departure")}
           >
             <span className="flex items-center justify-center gap-1">
@@ -242,11 +239,10 @@ const Navbar_Three = ({ sidebarToggle, setSidebarToggle }) => {
             </span>
           </button>
           <button
-            className={`${
-              sortList.arrival !== null
-                ? "bg-[#1F487C] text-white"
-                : "bg-white border-gray-300 text-[#1F487C]"
-            } px-[0.5vw] py-[0.1vw] border-[0.1vw] rounded-[0.4vw]`}
+            className={`${sortList.arrival !== null
+              ? "bg-[#1F487C] text-white"
+              : "bg-white border-gray-300 text-[#1F487C]"
+              } px-[0.5vw] py-[0.1vw] border-[0.1vw] rounded-[0.4vw]`}
             onClick={() => handleSortingClick("arrival")}
           >
             <span className="flex items-center justify-center gap-1">

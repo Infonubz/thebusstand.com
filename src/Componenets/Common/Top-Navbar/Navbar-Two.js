@@ -857,7 +857,7 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
 
   return (
     <>
-      <div className="fixed w-full z-1" style={{ zIndex: 2 }}>
+      <div className="fixed w-full " style={{ zIndex: 20 }}>
         <div className="md:block hidden">
           <Navbar_One />
         </div>{" "}
