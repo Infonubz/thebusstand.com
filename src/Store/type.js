@@ -22,5 +22,4 @@ export const PROFILE_DATA = "PROFILE_DATA";
 export const PASSENGER_DATA = "PASSENGER_DATA";
 export const ADS_LIST = "ADS_LIST";
 export const MOB_ADS_LIST = "MOB_ADS_LIST";
-
 export const GET_DES_STATION = "GET_DES_STATION";
