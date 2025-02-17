@@ -188,6 +188,7 @@ export default function Navbar_One({ userName }) {
             target="_blank"
             rel="noreferrer"
           >
+            
             <img src={Partner} className="w-[30vw] hidden md:block h-[3.3vw]" />
           </a>
         ) : (
