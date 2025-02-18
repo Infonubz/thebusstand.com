@@ -7,12 +7,11 @@ import { TiArrowRightOutline } from "react-icons/ti";
 import moment from "moment";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Popover, Drawer } from "antd";
-import { LuUser2 } from "react-icons/lu";
 import ModalPopup from "../../../Common/Modal/Modal";
 import dayjs from "dayjs";
 import { CancelTicket } from "../../../../Api-Abhibus/MyAccount/ViewTicket";
 import { toast } from "react-toastify";
-import { FaArrowRightLong } from "react-icons/fa6";
+import { FaArrowRightLong, FaUser } from "react-icons/fa6";
 // import { capitalizeFirstLetter } from "../../../Common/Captalization";
 
 const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
@@ -684,7 +683,7 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
                   style={{ backgroundColor: userIconColor }}
                   className={`w-11 h-11 flex justify-center items-center rounded-full text-white`}
                 >
-                  <LuUser2 color="white" size={"8vw"} />
+                  <FaUser color="white" size={"8vw"} />
                 </div>
                 <div className="flex-1">
                   <span
