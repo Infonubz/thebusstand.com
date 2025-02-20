@@ -23,6 +23,7 @@ import {
 import { MdStarRate } from "react-icons/md";
 import busname from "../../../Assets/Navbar/TBS-Name.png";
 import "../../../App.css";
+import { decryptData } from "../Common-Functions/Encrypt-Decrypt";
 export default function Navbar_One({ userName }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [loginIsOpen, setLoginIsOpen] = useState(false);
@@ -142,12 +143,13 @@ export default function Navbar_One({ userName }) {
   // const [userName, setUserName] = useState(sessionStorage.getItem("user_name") || "");
 
   useEffect(() => {
-    sessionStorage.getItem("user_name");
-    const storedName = sessionStorage.getItem("user_name");
+    const user_name = sessionStorage.getItem("user_name");
+    const decryptuser_name = user_name && decryptData(user_name);
+    const storedName = decryptuser_name;
     if (storedName !== userName) {
       setLoginUser_Name(storedName); // Update the state with the latest value
     } else {
-      setLoginUser_Name(sessionStorage.getItem("user_name"));
+      setLoginUser_Name(decryptuser_name);
     }
   }, [userName, sessionStorage.getItem("user_name")]);
   console.log(location.pathname, "testing");

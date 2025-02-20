@@ -27,9 +27,11 @@ export const PostFeedBack = async (rating, nameValue, feedback, occValue) => {
       : occValue === "Corporate Traveler"
       ? 8
       : 2;
+  const passenger_id = sessionStorage.getItem("passenger_id");
+  const decryppassenger_id = passenger_id && decryptData(passenger_id);
   try {
     const response = await axios.post(`${apiUrl}/feedback`, {
-      tbs_passenger_id: sessionStorage.getItem("passenger_id"),
+      tbs_passenger_id: decryppassenger_id,
       name: nameValue,
       rating: rating,
       description: feedback,
@@ -43,9 +45,11 @@ export const PostFeedBack = async (rating, nameValue, feedback, occValue) => {
 };
 
 export const GetFeedbackById = async () => {
-  const id = sessionStorage.getItem("passenger_id");
+  const passenger_id = sessionStorage.getItem("passenger_id");
+  const decryppassenger_id = passenger_id && decryptData(passenger_id);
+  // const id = sessionStorage.getItem("passenger_id");
   try {
-    const response = await axios.get(`${apiUrl}/passenger-details/${id}`);
+    const response = await axios.get(`${apiUrl}/passenger-details/${decryppassenger_id}`);
     console.log(response.data, "ddddjjjjjjdjdjhfh");
     return response.data;
   } catch (err) {

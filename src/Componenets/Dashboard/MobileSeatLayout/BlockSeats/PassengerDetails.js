@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import { getTabIndex } from "@progress/kendo-react-common";
 import { FaEdit } from "react-icons/fa";
 import { Abhibus_SeatBlocked } from "../../../../Api-Abhibus/Dashboard/DashboardPage";
+import { decryptData } from "../../../Common/Common-Functions/Encrypt-Decrypt";
 
 export default function PassengerDetails({
   BusDetails,
@@ -40,7 +41,6 @@ export default function PassengerDetails({
   mobileInput,
   setMobileInput,
 }) {
-
   const apiUrlimage = process.env.REACT_APP_API_URL_IMAGE;
   const location = useLocation();
 
@@ -147,7 +147,8 @@ export default function PassengerDetails({
 
   const componentRef = useRef();
 
-  const user_id = sessionStorage.getItem("user_id");
+  const user_id1 = sessionStorage.getItem("user_id");
+  const user_id = user_id && decryptData(user_id1);
   const navigation = useNavigate();
 
   const toggleDropDown = (index) => {
@@ -281,7 +282,6 @@ export default function PassengerDetails({
   // }, []);
 
   const handleSubmit = async (values) => {
-
     try {
       // const response = await SendBookingDetails(
       //   busdetails1,
@@ -314,7 +314,7 @@ export default function PassengerDetails({
     const totalAmount = `${
       Number(discount1) + Number(Math.round(discount1 * 0.03))
     }`;
- 
+
     setTimeout(() => {
       // setShowModal(false);
       setRatingModal(true);
@@ -431,7 +431,6 @@ export default function PassengerDetails({
 
   useEffect(() => {
     const handleTicketDetail = async () => {
-    
       //   try {
       //     const response = await TicketViewDetails(busBookingId, mobileInput);
       //     setTicketDetail(response);
@@ -561,7 +560,7 @@ export default function PassengerDetails({
         isSelected || isEmpty ? (isLuxury ? "#393939" : "#1F4B7F") : "",
     };
   };
- 
+
   const [isEmpty, setIsEmpty] = useState(true);
 
   // useEffect(() => {
@@ -570,7 +569,6 @@ export default function PassengerDetails({
   //   );
   //   setIsEmpty(checkIfAnyEmpty);
   // }, [travelerDetails]);
-
 
   return (
     <div>
@@ -1964,4 +1962,3 @@ export default function PassengerDetails({
     </div>
   );
 }
-

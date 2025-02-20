@@ -1,5 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+import { decryptData } from "../../Componenets/Common/Common-Functions/Encrypt-Decrypt";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const apicrm = process.env.REACT_APP_CRM_API_URL;
@@ -18,8 +19,10 @@ export const GetRefferalContent = async (setSpinning) => {
 };
 
 export const GetRefferalCode = async () =>{
+  const user_id = sessionStorage.getItem("user_id");
+  const decryptuser_id = user_id && decryptData(user_id);
     try{
-        const response = await axios.get(`${apiUrl}/ReferralCode/${sessionStorage.getItem("user_id")}`)
+        const response = await axios.get(decryptuser_id)
         return response.data
     }
     catch(err){

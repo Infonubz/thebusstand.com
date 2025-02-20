@@ -44,7 +44,6 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
   // const [startDate, setStartDate] = useState(new Date());
   const location = useLocation();
   const currentplace = location.state?.currentplace || "";
-  console.log(currentplace, "currentplace");
   const [traveldetails, setTraveldetails] = useState({
     from: { label: "", value: "" },
     to: { label: "", value: "" },
@@ -71,6 +70,8 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
     from_sourceID: currentpath?.source_ID,
     to_sourceID: currentpath?.destionation_ID,
     date: currentpath?.trip_date,
+    from_state: "",
+    to_state: "",
   });
 
   const all = [
@@ -127,14 +128,12 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
   const handleChangeToValue = (value) => {
     setToValue(value);
     // localStorage.setItem("arrival", value);
-    console.log(value, "tooovalue");
   };
 
   const handleChangeFromValue = (value) => {
     setFromValue(value);
 
     if (value === "Pondicherry") {
-      console.log(value, "busdatas");
       setToBus(Coimbatore);
     } else if (value === "Bangalore") {
       setToBus(Hyderabad);
@@ -153,7 +152,6 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
       date: value,
     });
     // localStorage.setItem("selectdate", value);
-    console.log(value, "selectdate");
   };
 
   // useEffect(()=>{
@@ -228,8 +226,6 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
     // Update the state when traveldetails.to.value or traveldetails.from.value changes
     setToValue(traveldetails.to.value);
     setFromValue(traveldetails.from.value);
-    console.log(toValue, "traveldetailsto");
-    console.log(fromValue, "traveldetailsfrom");
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [traveldetails.to.value, traveldetails.from.value]);
@@ -265,7 +261,6 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
         busdatas?.date
         // luxury
       );
-      console.log(data, "datadatadata");
       // if (data?.status === "success") {
       navigation(
         `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${
@@ -311,7 +306,6 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
   // };
 
   const closeModal = () => {
-    console.log("close");
     setModalIsOpen(false);
     // dispatch({
     //   type: SHARE_BUTTON,
@@ -344,9 +338,8 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
   // `;.
   // const format = "HH:mm";
   const handleonclick = (item) => {
-    console.log(item, "itemitem");
     setTraveldetails({ ...traveldetails, from: item });
-    localStorage.setItem("departure", item.label);
+    localStorage.setItem("departure", item?.label);
     if (localStorage.getItem("departure") === "Chennai") {
       localStorage.setItem("arrival", "Hyderabad");
     } else if (localStorage.getItem("departure") === "Bangalore") {
@@ -356,10 +349,17 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
     }
     setOpen(false);
   };
+
+  const handleKeyDown = (event) => {
+    const regex = /^[a-zA-Z ]+$/;
+    if (!regex.test(event.key) && event.key !== "Backspace") {
+      event.preventDefault();
+    }
+  };
+
   const tohandleonclick = (item) => {
-    console.log(item, "itemitem");
     setTraveldetails({ ...traveldetails, to: item });
-    localStorage.setItem("arrival", item.label);
+    localStorage.setItem("arrival", item?.label);
 
     setToOpen(false);
   };
@@ -377,40 +377,38 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
           <div
             className="flex items-center hover:bg-gray-200 cursor-pointer"
             onClick={() => handleonclick(item)}
-            key={item.id} // assuming there's a unique identifier for each item
+            key={item?.id} // assuming there's a unique identifier for each item
           >
             <span>
               <FaMapMarkerAlt className="text-[#1F487C]" />
             </span>
-            <p className="py-1 text-[1vw] my-1 pl-2">{item.label}</p>
+            <p className="py-1 text-[1vw] my-1 pl-2">{item?.label}</p>
           </div>
         ))
       )}
     </div>
   );
   const handleOpenChange = (newOpen) => {
-    console.log(newOpen, "newOpen");
     setOpen(true);
   };
   const tohandleOpenChange = (newOpen) => {
-    console.log(newOpen, "newOpen");
     setToOpen(true);
   };
   const tocontent = (
     <div>
-      {filteretoOptions.length === 0 ? (
+      {filteretoOptions?.length === 0 ? (
         <p>No data found</p>
       ) : (
         filteretoOptions.map((item) => (
           <div
             className="flex items-center hover:bg-gray-200 mx-2 cursor-pointer"
             onClick={() => tohandleonclick(item)}
-            key={item.id} // assuming there's a unique identifier for each item
+            key={item?.id} // assuming there's a unique identifier for each item
           >
             <span>
               <FaMapMarkerAlt className="text-[#1F487C]" />
             </span>
-            <p className="py-1 text-md my-1 pl-2 ">{item.label}</p>
+            <p className="py-1 text-md my-1 pl-2 ">{item?.label}</p>
           </div>
         ))
       )}
@@ -481,7 +479,6 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
   }, [filterText, open, options]);
 
   // const [boolean, setBoolean] = useState(false);
-  console.log(filterText, "traveldetails");
   useEffect(() => {
     if (toopen === false || open === false) {
       setFilterText("");
@@ -567,7 +564,6 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
 
   //   return { hour, minute, amPm };
   // };
-  console.log(busdata, "busdata");
 
   // Get current date
   // const currentDate = new Date();
@@ -669,7 +665,6 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
       to: "",
     });
   };
-  console.log(traveldetails.date, "TimePickerlist");
   const [departurelist, setdepartureList] = useState([]);
 
   useEffect(() => {
@@ -706,7 +701,6 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
   // const currentUrl = window.location.href;
   const [fromDate, setFromDate] = useState(localStorage.getItem("selectdate"));
   // const [toDate, setToDate] = useState(null);
-  console.log(fromDate, "fromDate");
   const dateSelected = sessionStorage.getItem("departure_date");
   // const handleProPage = () => {
   //   navigation("/main", { state: { tabIndex: 1 } });
@@ -733,10 +727,12 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
     // Swap the 'from' and 'to' values in busdatas
     const newBusDatas = {
       ...busdatas,
-      from: busdatas.to,
-      to: busdatas.from,
-      from_sourceID: busdatas.to_sourceID,
-      to_sourceID: busdatas.from_sourceID,
+      from: busdatas?.to,
+      to: busdatas?.from,
+      from_sourceID: busdatas?.to_sourceID,
+      to_sourceID: busdatas?.from_sourceID,
+      to_state: busdatas?.from_state,
+      from_state: busdatas?.to_state,
     };
 
     // Update the busdatas state
@@ -789,7 +785,6 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
 
   const [logMobileIsOpen, setLogMobileIsOpen] = useState(false);
   const openLogMobile = () => {
-    console.log("open5555555555555555555555");
     setAccDrawer(false);
     setLogMobileIsOpen(true);
   };
@@ -833,38 +828,28 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
   const closeLoginModal = () => {
     setLoginIsOpen(false);
   };
-  console.log(LoginUser_Name === "null", "gggggggg");
   const totalbuses = useSelector((state) => state.get_buslist_filter);
-  console.log(totalbuses?.length, "loadingloadingloading");
-  console.log(currentpath, "currentpath");
 
   const handleonClick = (item, input) => {
-    console.log("Station clicked:", item);
-
     // Update local state (if needed)
     if (input === "from") {
-      console.log("frommmmm", item.station_name);
-
       setBusDatas({
         ...busdatas,
         from: item.station_name,
         from_sourceID: item.source_id,
+        from_state: item?.state_name,
       });
-      console.log(busdatas, "busdatafrom");
       setIsInputFromFocused(false);
     } else {
       setBusDatas({
         ...busdatas,
         to: item.station_name,
         to_sourceID: item.source_id,
+        to_state: item?.state_name,
       });
-      console.log(busdatas, "busdatafromto");
       setIsInputToFocused(false);
     }
-
-    console.log("Dropdown closed");
   };
-  console.log(busdatas, "testingsss");
 
   useEffect(() => {
     // Abhibus_GetStations(dispatch);
@@ -873,7 +858,6 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
   }, []);
   const handlesearchFrom = (e, inputbox) => {
     // e.preventDefault();
-    console.log(e.target.value, "fromvallalala");
     const newValue = e.target.value;
     if (inputbox === "from") {
       // setBusDatas({"from":newValue})
@@ -881,7 +865,6 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
         ...prevData,
         from: newValue,
       }));
-      console.log(newValue, "vlaues");
       GetStations(dispatch, newValue, inputbox);
     } else if (inputbox === "to") {
       // setBusDatas("to",newValue)
@@ -892,7 +875,6 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
       GetStations(dispatch, newValue, inputbox);
     }
   };
-  console.log(busdatas, "busssddddaattaaa");
   const GetBusList = async () => {
     const busdatas = {
       from: currentpath?.source_name,
@@ -910,7 +892,7 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
   }, []);
   return (
     <>
-      <div className="fixed w-full z-20" >
+      <div className="fixed w-full z-20">
         <div className="md:block hidden">
           <Navbar_One />
         </div>{" "}
@@ -1533,19 +1515,20 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                             // </ConfigProvider>
                             <div className="relative">
                               <Field
-                                className="h-[3vw] w-full rounded-[0.3vw] pl-[1vw] outline-none text-[1.2vw] placeholder:text-[1.2vw]"
+                                className="h-[2.5vw] w-full rounded-[0.3vw] pl-[1vw] outline-none text-[1.2vw] placeholder:text-[1.2vw]"
                                 placeholder="From"
                                 //onFocus={() => setIsInputFromFocused(true)}
                                 // onBlur={() => setIsInputFromFocused(false)}
                                 onFocus={() => {
-                                  // setBusDatas({
-                                  //   ...busdatas,
-                                  //   from: "",
-                                  //   from_sourceID: "",
-                                  // })
+                                  setBusDatas({
+                                    ...busdatas,
+                                    from: "",
+                                    from_sourceID: "",
+                                  });
                                   setIsInputFromFocused(true);
                                   setIsInputToFocused(false);
                                 }}
+                                onKeyDown={handleKeyDown}
                                 onBlur={(e) => {
                                   if (
                                     e.target.value !== "" &&
@@ -1589,13 +1572,7 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                                         }
                                       >
                                         {SVG.building_dropdown}
-                                        <div
-                                          className="flex flex-col cursor-pointer"
-                                          onClick={() =>
-                                            // handleonClick(item, setFieldValue)
-                                            console.log("ghhggggh")
-                                          }
-                                        >
+                                        <div className="flex flex-col cursor-pointer">
                                           <label className="text-[0.9vw] flex-wrap w-full font-semibold">
                                             {item.station_name}
                                           </label>
@@ -1611,7 +1588,7 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                               <ErrorMessage
                                 name="from"
                                 component="div"
-                                className="text-red-500 text-[0.6vw] absolute top-[3vw] font-semibold z-10 left-[0.25vw]"
+                                className="text-red-400  text-[0.8vw] absolute top-[2.4vw] font-semibold z-10 left-[0.25vw]"
                               />
                             </div>
                           ) : (
@@ -1642,8 +1619,6 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                               onClick={() => {
                                 if (modifyBtn === true) {
                                   handleflip();
-                                } else {
-                                  console.log("NOT ALLOWED");
                                 }
                               }}
                               className={`${
@@ -1743,18 +1718,19 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                             // </ConfigProvider>
                             <div className="relative">
                               <Field
-                                className="h-[3vw] w-full rounded-[0.3vw] pl-[1vw] outline-none text-[1.2vw] placeholder:text-[1.2vw]"
+                                className="h-[2.5vw] w-full rounded-[0.3vw] pl-[1vw] outline-none text-[1.2vw] placeholder:text-[1.2vw]"
                                 placeholder="To"
                                 //onFocus={() => setIsInputToFocused(true)}
                                 onFocus={() => {
-                                  // setBusDatas({
-                                  //   ...busdatas,
-                                  //   to: "",
-                                  //   to_sourceID: "",
-                                  // });
+                                  setBusDatas({
+                                    ...busdatas,
+                                    to: "",
+                                    to_sourceID: "",
+                                  });
                                   setIsInputToFocused(true);
                                   setIsInputFromFocused(false);
                                 }}
+                                onKeyDown={handleKeyDown}
                                 // onBlur={() => setIsInputFromFocused(false)}
                                 onBlur={(e) => {
                                   //setIsInputToFocused(false)
@@ -1784,7 +1760,7 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                                 name="to"
                               />
                               {isInputToFocused && (
-                                <div className="absolute top-[3.5vw] z-[20] w-full">
+                                <div className="absolute top-[2.8vw] z-[20] w-full">
                                   <div
                                     className="w-[16vw] min-h-auto max-h-[16vw] flex-col flex overflow-y-scroll bg-white shadow-md rounded-[0.3vw]"
                                     tabIndex="-1"
@@ -1799,13 +1775,7 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                                         }
                                       >
                                         {SVG.building_dropdown}
-                                        <div
-                                          className="flex flex-col cursor-pointer"
-                                          onClick={() =>
-                                            // handleonClick(item, setFieldValue)
-                                            console.log("ghhggggh")
-                                          }
-                                        >
+                                        <div className="flex flex-col cursor-pointer">
                                           <label className="text-[0.9vw] flex-wrap w-full font-semibold">
                                             {item.station_name}
                                           </label>
@@ -1821,7 +1791,7 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                               <ErrorMessage
                                 name="to"
                                 component="div"
-                                className="text-red-500 text-[0.6vw] absolute top-[3vw] font-semibold z-10 left-[0.25vw]"
+                                className="text-red-400  text-[0.8vw] absolute top-[2.4vw] font-bold z-10 left-[0.25vw]"
                               />
                             </div>
                           ) : (
@@ -1999,8 +1969,6 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
           <button
             className=" bg-[#1F487C] text-[4vw] w-3/4 h-[10vw] text-white rounded-md font-bold"
             onClick={() => {
-              console.log("hiiiiii", "home");
-
               navigation("/");
               sessionStorage.clear();
             }}
@@ -2037,8 +2005,6 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
           <button
             className=" bg-[#1F487C] text-[1.4vw] w-[20vw] h-[3.5vw] text-white rounded-full font-bold "
             onClick={() => {
-              console.log("hiiiiii", "home");
-
               navigation("/");
               sessionStorage.clear();
             }}

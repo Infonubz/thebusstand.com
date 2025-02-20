@@ -47,7 +47,9 @@ export default function DrawerIndex({
   //     return acc;
   //   }, {})
   // );
-  console.log(selectedSeats1, "testtestetttttttttttt");
+
+  const location = useLocation();
+  const from_source = location.state; // Retrieve the passed state
 
   // const [emailInput, setEmailInput] = useState("");
   // const [mobileInput, setMobileInput] = useState("");
@@ -107,24 +109,18 @@ export default function DrawerIndex({
       [true],
       "You must accept the terms and conditions"
     ),
-    address: Yup.string().required("Address is required"),
     city: Yup.string()
       .matches(/^[A-Za-z\s]+$/, "InValid Names for City")
       .required("City is required"),
     state: Yup.string()
       .matches(/^[A-Za-z\s]+$/, "InValid Names for State")
       .required("State is required"),
-    pin_code: Yup.string()
-      .matches(/^\d{6}$/, "Pin code must be 6 digits")
-      .required("Pin code is required")
-      .test(
-        "is-numeric",
-        "Pin code must contain only numbers",
-        (value) => !isNaN(value)
-      ),
+    pincode: Yup.number()
+      .min(100000, 'Pincode must be at least 6 digits')
+      .max(999999, 'Pincode must be a 6-digit number')
+
   });
 
-  console.log(Object?.values(travelerDetails), "testinggg");
   const getPassengerCount = (data) => {
     let adultCount = 0;
     let childCount = 0;
@@ -142,13 +138,10 @@ export default function DrawerIndex({
   const { adultCount, childCount } = getPassengerCount(
     Object?.values(travelerDetails)
   );
-  console.log(adultCount, childCount, "tegvyuhubuhbu");
 
   const handleSubmit = async (values) => {
-    console.log(selectedSeats1, "valuesxxsssssssxxx");
 
     try {
-      console.log("Calling API...");
       const response = await Abhibus_SeatBlocked(
         BusDetails,
         seatDetails,
@@ -172,18 +165,14 @@ export default function DrawerIndex({
           );
           setFareDetails(data?.GetFaresInfo);
         } catch {
-          console.log("test");
         }
       }
-      console.log(response, "API Response");
-      console.log(response);
     } catch (error) {
       console.error("API call failed:", error);
     }
   };
 
   const handleScroll = () => {
-    console.log("scroling");
     sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   };
 
@@ -195,7 +184,6 @@ export default function DrawerIndex({
       traveler.seat !== ""
   );
 
-  console.log(isAllDetailsFilled, "is_all_details_Filled");
   const ticketlist = useSelector((state) => state?.get_ticket_detail);
   const [showModal, setShowModal] = useState(false);
 
@@ -207,8 +195,16 @@ export default function DrawerIndex({
       setShowModal(false);
     }
   }, [sessionStorage.getItem("ticket_view")]);
-  console.log(ticketlist?.status === "success", "ticketlistticketlist");
-  console.log(ticketnumber, ticketloading, "razorpayloadingrazorpayloading");
+
+
+  useEffect(() => {
+    if (confirmModal) {
+      const element = document.getElementById("targetSection");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [confirmModal]);
 
   return (
     <>
@@ -232,8 +228,8 @@ export default function DrawerIndex({
             email: emailInput || "",
             mobile:
               mobileInput &&
-              mobileInput !== "undefined" &&
-              mobileInput !== "null"
+                mobileInput !== "undefined" &&
+                mobileInput !== "null"
                 ? mobileInput
                 : "",
             user_name:
@@ -248,11 +244,10 @@ export default function DrawerIndex({
               (seat, index) => travelerDetails?.[index]?.gender || "male"
             ),
             terms: termschecked || false,
-            address: "",
-            pin_code: "",
-            state: "",
-            city: "",
-            name: "",
+            address: billAddress?.address ? billAddress?.address : "",
+            pin_code: selectedRoutes?.pincode || "",
+            state: from_source?.from_state || "",
+            city: from_source?.from || "",
           }}
           validationSchema={validationSchema}
           onSubmit={(values) => {
@@ -341,20 +336,22 @@ export default function DrawerIndex({
                           setBillAddress={setBillAddress}
                         />
                         {confirmModal && (
-                          <ConfirmTicket
-                            seatDetails={seatDetails}
-                            BusDetails={BusDetails}
-                            selectedSeats={selectedSeats}
-                            discount={busprice}
-                            confirmRefNo={confirmRefNo}
-                            faredetails={faredetails}
-                            emailInput={emailInput}
-                            mobileInput={mobileInput}
-                            setDropDown={setDropDown}
-                            setRazorpayLoading={setRazorpayLoading}
-                            setTicketNumber={setTicketNumber}
-                            setTicketLoading={setTicketLoading}
-                          />
+                          <div id="targetSection">
+                            <ConfirmTicket
+                              seatDetails={seatDetails}
+                              BusDetails={BusDetails}
+                              selectedSeats={selectedSeats}
+                              discount={busprice}
+                              confirmRefNo={confirmRefNo}
+                              faredetails={faredetails}
+                              emailInput={emailInput}
+                              mobileInput={mobileInput}
+                              setDropDown={setDropDown}
+                              setRazorpayLoading={setRazorpayLoading}
+                              setTicketNumber={setTicketNumber}
+                              setTicketLoading={setTicketLoading}
+                            />
+                          </div>
                         )}
                       </>
                     </>
@@ -364,7 +361,7 @@ export default function DrawerIndex({
                     <ViewFullTicket
                       ticketnumber={ticketnumber}
                       ticketDetails={ticketlist}
-                      // droppingDate={calculatedDate && ConvertDate(calculatedDate)}
+                    // droppingDate={calculatedDate && ConvertDate(calculatedDate)}
                     />
                   </div>
                 ) : (

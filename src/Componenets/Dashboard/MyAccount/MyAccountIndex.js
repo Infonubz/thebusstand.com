@@ -24,20 +24,21 @@ import { Drawer } from "antd";
 import LoginMobile from "../../Home/Login/LoginMobile";
 import ViewTicket from "./ViewTicket/ViewTicket";
 import moment from "moment";
-import BottomNavbar from '../../Common/Mobile-NavBar/BottomNavBar'
+import BottomNavbar from "../../Common/Mobile-NavBar/BottomNavBar";
 import FooterTwo from "../../Home/Footer/Footer-Two/FooterTwo";
 import FooterThree from "../../Home/Footer/Footer-Three/FooterThree";
 import CancelIndex from "./CancelTicket/CancelIndex";
+import { decryptData } from "../../Common/Common-Functions/Encrypt-Decrypt";
 
 export default function MyAccountIndex() {
   const [currenttab, setCurrentTab] = useState();
   console.log(currenttab, "current_tab");
   const location = useLocation();
-  const [userName, setUserName] = useState(
-    sessionStorage.getItem("user_name") || ""
-  );
+  const name = sessionStorage.getItem("user_name");
+  const decryptname = name && decryptData(name);
+  const [userName, setUserName] = useState(decryptname || "");
   const [loginMobileIsOpen, setLoginMobileIsOpen] = useState(false);
-  const [togglePage, setTogglePage] = useState(false)
+  const [togglePage, setTogglePage] = useState(false);
   useEffect(() => {
     // Set currenttab based on the passed state or default to 1
     const tabIndex = location.state?.tabIndex;
@@ -50,7 +51,9 @@ export default function MyAccountIndex() {
   const navigation = useNavigate();
 
   useEffect(() => {
-    const storedName = sessionStorage.getItem("user_name");
+    const name = sessionStorage.getItem("user_name");
+    const decryptname = name && decryptData(name);
+    const storedName = decryptname;
     if (storedName !== userName) {
       setUserName(storedName);
     }
@@ -65,13 +68,13 @@ export default function MyAccountIndex() {
 
   useEffect(() => {
     if (fromSourceID || toSourceID) {
-      setTogglePage(true)
+      setTogglePage(true);
     } else {
-      setTogglePage(false)
+      setTogglePage(false);
     }
-  }, [fromSourceID, toSourceID])
-
-
+  }, [fromSourceID, toSourceID]);
+  const id = sessionStorage.getItem("user_id");
+    const decrypid = id && decryptData(id);
   return (
     <>
       <div className="bg-[#E5FFF1] md:min-h-screen md:max-h-screen w-full h-screen overflow-clip">
@@ -102,9 +105,13 @@ export default function MyAccountIndex() {
                 ) : (
                   <span
                     className="pr-[0.5vw] underline underline-offset-2 cursor-pointer "
-                    onClick={() => navigation(
-                      `/buslist/${busFrom}/${fromSourceID}/${busTo}/${toSourceID
-                      }/${moment(jdate).format("YYYY-MM-DD")}`)}
+                    onClick={() =>
+                      navigation(
+                        `/buslist/${busFrom}/${fromSourceID}/${busTo}/${toSourceID}/${moment(
+                          jdate
+                        ).format("YYYY-MM-DD")}`
+                      )
+                    }
                   >
                     Dashboard
                   </span>
@@ -123,16 +130,16 @@ export default function MyAccountIndex() {
                 {currenttab === 1
                   ? "Profile"
                   : currenttab === 2
-                    ? "Passengers"
-                    : currenttab === 3
-                      ? "My Bookings"
-                      : currenttab === 4
-                        ? "Referrals"
-                        : currenttab === 5
-                          ? "View Ticket"
-                          : currenttab === 6
-                            ? "Cancel Ticket"
-                            : "Help"}
+                  ? "Passengers"
+                  : currenttab === 3
+                  ? "My Bookings"
+                  : currenttab === 4
+                  ? "Referrals"
+                  : currenttab === 5
+                  ? "View Ticket"
+                  : currenttab === 6
+                  ? "Cancel Ticket"
+                  : "Help"}
               </label>
               <div className="cloudhome"></div>
             </div>
@@ -140,8 +147,9 @@ export default function MyAccountIndex() {
             <div className="w-auto">
               <div className="absolute md:block hidden top-[5vw] left-[4vw]">
                 <div
-                  className={`${currenttab === 1 ? "bg-[#1F487C]" : "bg-white"
-                    } cursor-pointer w-[18vw] h-[5vw] rounded-tl-[1vw] rounded-tr-[1vw] border-[0.1vw] border-[#1F487C] flex items-center pl-[4vw]`}
+                  className={`${
+                    currenttab === 1 ? "bg-[#1F487C]" : "bg-white"
+                  } cursor-pointer w-[18vw] h-[5vw] rounded-tl-[1vw] rounded-tr-[1vw] border-[0.1vw] border-[#1F487C] flex items-center pl-[4vw]`}
                   onClick={() => setCurrentTab(1)}
                 >
                   <div className="flex items-center gap-x-[1vw]">
@@ -150,8 +158,9 @@ export default function MyAccountIndex() {
                       color={` ${currenttab === 1 ? "white" : "#1F487C"}`}
                     />
                     <label
-                      className={`${currenttab === 1 ? "text-white" : "text-[#1F487C]"
-                        } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
+                      className={`${
+                        currenttab === 1 ? "text-white" : "text-[#1F487C]"
+                      } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
                     >
                       Profile
                     </label>
@@ -160,8 +169,9 @@ export default function MyAccountIndex() {
               </div>
               <div className="absolute md:block hidden top-[10vw] left-[4vw]">
                 <div
-                  className={`${currenttab === 2 ? "bg-[#1F487C]" : "bg-white"
-                    } cursor-pointer w-[18vw] h-[5vw] flex items-center pl-[4vw] border-l-[0.1vw] border-r-[0.1vw] border-b-[0.1vw] border-[#1F487C]`}
+                  className={`${
+                    currenttab === 2 ? "bg-[#1F487C]" : "bg-white"
+                  } cursor-pointer w-[18vw] h-[5vw] flex items-center pl-[4vw] border-l-[0.1vw] border-r-[0.1vw] border-b-[0.1vw] border-[#1F487C]`}
                   onClick={() => setCurrentTab(2)}
                 >
                   <div className="flex items-center gap-x-[1vw]">
@@ -170,8 +180,9 @@ export default function MyAccountIndex() {
                       color={` ${currenttab === 2 ? "white" : "#1F487C"}`}
                     />
                     <label
-                      className={`${currenttab === 2 ? "text-white" : "text-[#1F487C]"
-                        } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
+                      className={`${
+                        currenttab === 2 ? "text-white" : "text-[#1F487C]"
+                      } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
                     >
                       Passengers
                     </label>
@@ -180,8 +191,9 @@ export default function MyAccountIndex() {
               </div>
               <div className="absolute md:block hidden top-[15vw] left-[4vw]">
                 <div
-                  className={`${currenttab === 3 ? "bg-[#1F487C]" : "bg-white"
-                    } cursor-pointer w-[18vw] h-[5vw] flex items-center pl-[4vw] border-l-[0.1vw] border-r-[0.1vw] border-b-[0.1vw] border-[#1F487C]`}
+                  className={`${
+                    currenttab === 3 ? "bg-[#1F487C]" : "bg-white"
+                  } cursor-pointer w-[18vw] h-[5vw] flex items-center pl-[4vw] border-l-[0.1vw] border-r-[0.1vw] border-b-[0.1vw] border-[#1F487C]`}
                   onClick={() => setCurrentTab(3)}
                 >
                   <div className="flex items-center gap-x-[1vw]">
@@ -190,8 +202,9 @@ export default function MyAccountIndex() {
                       className="h-[5vw] w-[5vw] md:h-[1.5vw] md:w-[1.5vw]"
                     />{" "}
                     <label
-                      className={`${currenttab === 3 ? "text-white" : "text-[#1F487C]"
-                        } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
+                      className={`${
+                        currenttab === 3 ? "text-white" : "text-[#1F487C]"
+                      } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
                     >
                       My Bookings
                     </label>
@@ -200,8 +213,9 @@ export default function MyAccountIndex() {
               </div>
               <div className="absolute md:block hidden top-[20vw] left-[4vw]">
                 <div
-                  className={`${currenttab === 4 ? "bg-[#1F487C]" : "bg-white"
-                    } cursor-pointer w-[18vw] h-[5vw] flex items-center pl-[4vw] border-l-[0.1vw] border-r-[0.1vw] border-b-[0.1vw] border-[#1F487C]`}
+                  className={`${
+                    currenttab === 4 ? "bg-[#1F487C]" : "bg-white"
+                  } cursor-pointer w-[18vw] h-[5vw] flex items-center pl-[4vw] border-l-[0.1vw] border-r-[0.1vw] border-b-[0.1vw] border-[#1F487C]`}
                   onClick={() => setCurrentTab(4)}
                 >
                   <div className="flex items-center gap-x-[1vw]">
@@ -210,8 +224,9 @@ export default function MyAccountIndex() {
                       color={` ${currenttab === 4 ? "white" : "#1F487C"}`}
                     />
                     <label
-                      className={`${currenttab === 4 ? "text-white" : "text-[#1F487C]"
-                        } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
+                      className={`${
+                        currenttab === 4 ? "text-white" : "text-[#1F487C]"
+                      } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
                     >
                       Referrals
                     </label>
@@ -220,8 +235,9 @@ export default function MyAccountIndex() {
               </div>
               <div className="absolute md:block hidden top-[25vw] left-[4vw]">
                 <div
-                  className={`${currenttab === 5 ? "bg-[#1F487C]" : "bg-white"
-                    } cursor-pointer w-[18vw] h-[5vw] flex items-center pl-[4vw] border-l-[0.1vw] border-r-[0.1vw] border-b-[0.1vw] border-[#1F487C]`}
+                  className={`${
+                    currenttab === 5 ? "bg-[#1F487C]" : "bg-white"
+                  } cursor-pointer w-[18vw] h-[5vw] flex items-center pl-[4vw] border-l-[0.1vw] border-r-[0.1vw] border-b-[0.1vw] border-[#1F487C]`}
                   onClick={() => setCurrentTab(5)}
                 >
                   <div className="flex items-center gap-x-[1vw]">
@@ -230,8 +246,9 @@ export default function MyAccountIndex() {
                       color={` ${currenttab === 5 ? "white" : "#1F487C"}`}
                     />
                     <label
-                      className={`${currenttab === 5 ? "text-white" : "text-[#1F487C]"
-                        } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
+                      className={`${
+                        currenttab === 5 ? "text-white" : "text-[#1F487C]"
+                      } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
                     >
                       View Ticket
                     </label>
@@ -240,8 +257,9 @@ export default function MyAccountIndex() {
               </div>
               <div className="absolute md:block hidden top-[30vw] left-[4vw]">
                 <div
-                  className={`${currenttab === 6 ? "bg-[#1F487C]" : "bg-white"
-                    } cursor-pointer w-[18vw] h-[5vw] flex items-center pl-[4vw] border-l-[0.1vw] border-r-[0.1vw] border-b-[0.1vw] border-[#1F487C]`}
+                  className={`${
+                    currenttab === 6 ? "bg-[#1F487C]" : "bg-white"
+                  } cursor-pointer w-[18vw] h-[5vw] flex items-center pl-[4vw] border-l-[0.1vw] border-r-[0.1vw] border-b-[0.1vw] border-[#1F487C]`}
                   onClick={() => setCurrentTab(6)}
                 >
                   <div className="flex items-center gap-x-[1vw]">
@@ -250,8 +268,9 @@ export default function MyAccountIndex() {
                       color={` ${currenttab === 6 ? "white" : "#1F487C"}`}
                     />
                     <label
-                      className={`${currenttab === 6 ? "text-white" : "text-[#1F487C]"
-                        } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
+                      className={`${
+                        currenttab === 6 ? "text-white" : "text-[#1F487C]"
+                      } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
                     >
                       Cancel Ticket
                     </label>
@@ -260,8 +279,9 @@ export default function MyAccountIndex() {
               </div>
               <div className="absolute md:block hidden top-[35vw] left-[4vw]">
                 <div
-                  className={`${currenttab === 7 ? "bg-[#1F487C]" : "bg-white"
-                    } cursor-pointer w-[18vw] h-[5vw] rounded-bl-[1vw] rounded-br-[1vw] flex items-center pl-[4vw] border-l-[0.1vw] border-r-[0.1vw] border-b-[0.1vw] border-[#1F487C]`}
+                  className={`${
+                    currenttab === 7 ? "bg-[#1F487C]" : "bg-white"
+                  } cursor-pointer w-[18vw] h-[5vw] rounded-bl-[1vw] rounded-br-[1vw] flex items-center pl-[4vw] border-l-[0.1vw] border-r-[0.1vw] border-b-[0.1vw] border-[#1F487C]`}
                   onClick={() => setCurrentTab(7)}
                 >
                   <div className="flex items-center gap-x-[1vw]">
@@ -270,8 +290,9 @@ export default function MyAccountIndex() {
                       color={` ${currenttab === 7 ? "white" : "#1F487C"}`}
                     />
                     <label
-                      className={`${currenttab === 7 ? "text-white" : "text-[#1F487C]"
-                        } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
+                      className={`${
+                        currenttab === 7 ? "text-white" : "text-[#1F487C]"
+                      } text-[#1F487C] font-bold text-[1.3vw] cursor-pointer`}
                     >
                       Help
                     </label>
@@ -280,7 +301,7 @@ export default function MyAccountIndex() {
               </div>
               <div className="absolute left-[5vw] md:left-[25vw] top-[12vw] md:top-[5vw]">
                 <div className="md:h-[35vw] md:w-[71vw] h-full w-[90vw]">
-                  {!sessionStorage.getItem("user_id") ? (
+                  {!decrypid ? (
                     <div className="md:hidden block">
                       <div className="flex flex-col items-center justify-center bg-white w-[100%] py-[10vw] rounded-[2vw] shadow-2xl gap-[3.5vw]">
                         <span> Need to Log In to Access Your Bookings.</span>
@@ -318,7 +339,9 @@ export default function MyAccountIndex() {
             </div>
           </div>
         </div>
-        <div className="md:hidden block"><BottomNavbar /></div>
+        <div className="md:hidden block">
+          <BottomNavbar />
+        </div>
       </div>
 
       <Drawer

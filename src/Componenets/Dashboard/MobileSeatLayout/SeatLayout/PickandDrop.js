@@ -8,7 +8,9 @@ export default function PickandDrop({
     busData,
     setSelectedRoutes,
     selectedRoutes,
-    layout
+    layout,
+    billAddress,
+    setBillAddress,
 }) {
 
     const LuxuryFind = (type) =>
@@ -31,8 +33,17 @@ export default function PickandDrop({
             arr_time: layout?.dropping_info?.[0]?.placeTime,
             dep_route_id: layout?.boarding_info?.[0]?.placeId,
             arr_route_id: layout?.dropping_info?.[0]?.placeId,
+            dep_landmark: layout?.boarding_info?.[0]?.landMark,
+            dep_pincode: '',
+            arr_landmark: layout?.dropping_info?.[0]?.landMark
+        })
+        setBillAddress({
+            ...billAddress,
+            address: layout?.boarding_info?.[0]?.landMark,
+            pincode: layout?.boarding_info?.[0]?.pincode,
         })
     }, [])
+
     return (
         <div>
             <div
@@ -77,13 +88,21 @@ export default function PickandDrop({
                                         ? "border-gray-400"
                                         : "border-gray-400"
                                     } border-b-[0.1vw]  flex flex-col py-[0.5vw] px-[1vw] cursor-pointer relative `}
-                                onClick={() =>
+                                onClick={() => {
                                     setSelectedRoutes({
                                         ...selectedRoutes,
                                         dep_route: item?.placeName,
                                         dep_time: item?.placeTime,
                                         dep_route_id: item?.placeId,
+                                        dep_landmark: item?.landMark,
+                                        dep_pincode: item?.pincode
                                     })
+                                    setBillAddress({
+                                        ...billAddress,
+                                        address: item?.landMark,
+                                        pincode: item?.pincode,
+                                    })
+                                }
                                 }
                                 style={{
                                     backgroundColor:
@@ -200,7 +219,7 @@ export default function PickandDrop({
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

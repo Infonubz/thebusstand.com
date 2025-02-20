@@ -1,11 +1,18 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { GetUserDetails, SendPassengerName } from "../../../Api-TBS/Login/Login";
+import {
+  GetUserDetails,
+  SendPassengerName,
+} from "../../../Api-TBS/Login/Login";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import { ConfigProvider, Select } from "antd";
+import {
+  decryptData,
+  encryptData,
+} from "../../Common/Common-Functions/Encrypt-Decrypt";
 //import { Select } from "antd";
 //const { Option } = Select; // Destructure Option from Select
 
@@ -13,8 +20,8 @@ const LoginProfile = ({ setLoginIsOpen, setLoginMobileIsOpen }) => {
   //const [occValue, setOccValue] = useState(false);
   const dispatch = useDispatch();
   const navigation = useNavigate();
-  const user_id = sessionStorage.getItem("user_id");
-
+  const user_id1 = sessionStorage.getItem("user_id");
+  const user_id = user_id1 && decryptData(user_id1);
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .min(2, "Name must be at least 2 characters long")
@@ -90,7 +97,8 @@ const LoginProfile = ({ setLoginIsOpen, setLoginMobileIsOpen }) => {
             validationSchema={validationSchema}
             onSubmit={(values) => {
               handleSubmit(values);
-              sessionStorage.setItem("passenger_name", values.name);
+              const name = values.name && encryptData(values.name);
+              sessionStorage.setItem("passenger_name", name);
             }}
             enableReinitialize
           >

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import { PASSENGER_DATA } from "../../Store/Type";
+import { decryptData } from "../../Componenets/Common/Common-Functions/Encrypt-Decrypt";
 
 const api = axios.create({
   headers: {
@@ -12,15 +13,16 @@ const authToken = localStorage.getItem("tokenID");
 
 export const GetPassengerData = async (dispatch, setSpinning) => {
   const user_id = sessionStorage.getItem("user_id");
+  const decryptid = user_id && decryptData(user_id);
+  // const user_id = sessionStorage.getItem("user_id");
   try {
-    const response = await axios.get(`${apiUrl}/all-passengers/${user_id}`);
+    const response = await axios.get(`${apiUrl}/all-passengers/${decryptid}`);
     dispatch({ type: PASSENGER_DATA, payload: response.data });
     return response.data;
   } catch (error) {
     handleError(error);
     // return null;
-  }
-  finally{
+  } finally {
     setSpinning && setSpinning(false);
   }
 };
@@ -28,6 +30,8 @@ export const GetPassengerData = async (dispatch, setSpinning) => {
 // Define the function to submit passenger data
 export const SubmitPassengerData = async (passengerdata, updateData) => {
   // Construct the payload object with passenger data
+  const user_id = sessionStorage.getItem("user_id");
+  const decryptid = user_id && decryptData(user_id);
   const payload = {
     user_name: passengerdata?.name,
     date_of_birth: passengerdata?.date_of_birth,
@@ -37,7 +41,7 @@ export const SubmitPassengerData = async (passengerdata, updateData) => {
     mobile_number: passengerdata?.phone,
     state: passengerdata?.state,
     state_id: "TN",
-    tbs_passenger_id: sessionStorage.getItem("user_id"),
+    tbs_passenger_id: decryptid,
   };
 
   // Log the passenger data for debugging

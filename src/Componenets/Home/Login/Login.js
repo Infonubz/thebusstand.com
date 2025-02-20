@@ -4,11 +4,13 @@ import TBSLOGO from "../../../Assets/Logo/tbs_logo.png";
 import MobileNumberLog from "./MobileNumberLog";
 import OtpVerification from "./OtpVerification";
 import LoginProfile from "./LoginProfile";
+import { decryptData } from "../../Common/Common-Functions/Encrypt-Decrypt";
 
 const Login = ({ closeLoginModal, setLoginIsOpen }) => {
-  
   const [CurrentPage, setCurrentPage] = useState(0);
-  const [userName, setUserName] = useState(sessionStorage.getItem("user_name") || "");
+  const username1 = sessionStorage.getItem("user_name");
+  const deuser_name = username1 && decryptData(username1);
+  const [userName, setUserName] = useState(deuser_name || "");
 
   //   const nextPage = () => {
   //     setCurrentPage((prevStep) => prevStep + 1);
@@ -50,27 +52,24 @@ const Login = ({ closeLoginModal, setLoginIsOpen }) => {
   //   };
 
   useEffect(() => {
-    const storedName = sessionStorage.getItem("user_name");
+    const username1 = sessionStorage.getItem("user_name");
+    const storedName = username1 && decryptData(username1);
+    // const storedName = sessionStorage.getItem("user_name");
     if (storedName !== userName) {
-      setUserName(storedName); 
+      setUserName(storedName);
     }
-    console.log(storedName, "userName")
-  }, [userName, setUserName])
+    console.log(storedName, "userName");
+  }, [userName, setUserName]);
 
   return (
     <>
       <div className="flex">
         <div className="w-[25vw] h-[35vw] bg-[#1F487C] flex items-center justify-center">
-          <img 
-          src={Password} 
-          alt="password"
-          className="w-[20vw] h-[20vw]" />
+          <img src={Password} alt="password" className="w-[20vw] h-[20vw]" />
         </div>
         <div className="">
           <div className="w-[10vw]">
-            <img 
-            alt="tbsLogo"
-            src={TBSLOGO} />
+            <img alt="tbsLogo" src={TBSLOGO} />
           </div>
           <div className="px-[5vw]">
             {/* {renderStepComponent()} */}
@@ -86,7 +85,8 @@ const Login = ({ closeLoginModal, setLoginIsOpen }) => {
                 // prevStep={prevStep}
                 setCurrentPage={setCurrentPage}
                 setLoginIsOpen={setLoginIsOpen}
-                userName ={userName} setUserName={setUserName}
+                userName={userName}
+                setUserName={setUserName}
               />
             ) : CurrentPage === 2 ? (
               <LoginProfile
@@ -94,8 +94,9 @@ const Login = ({ closeLoginModal, setLoginIsOpen }) => {
                 // closeLoginModal={closeLoginModal}
                 setLoginIsOpen={setLoginIsOpen}
                 setCurrentPage={setCurrentPage}
-                 userName ={userName} setUserName={setUserName}
-              />  
+                userName={userName}
+                setUserName={setUserName}
+              />
             ) : (
               <MobileNumberLog
                 // nextPage={nextPage}

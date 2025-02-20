@@ -11,6 +11,10 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import { Tooltip } from "antd";
+import {
+  decryptData,
+  encryptData,
+} from "../../Common/Common-Functions/Encrypt-Decrypt";
 
 const OtpVerification = ({
   setCurrentPage,
@@ -22,9 +26,12 @@ const OtpVerification = ({
   const dispatch = useDispatch();
   //const Email_Id = useSelector((state) => state.send_otp);
   const navigation = useNavigate();
-  const passenger_mail = sessionStorage.getItem("email_id");
+  const decryptedEmailId = sessionStorage.getItem("email_id");
+  const passenger_mail = decryptedEmailId && decryptData(decryptedEmailId);
+
+  // const passenger_mail = sessionStorage.getItem("email_id");
   const [timeLeft, setTimeLeft] = useState(120); // 2 minutes = 120 seconds
-  const email = { email: sessionStorage.getItem("email_id") };
+  const email = { email: passenger_mail };
 
   const validationSchema = Yup.object().shape({
     otp: Yup.string()
@@ -43,18 +50,18 @@ const OtpVerification = ({
     console.log("response85858");
 
     try {
-      const response = await SendOTPassword(
-        dispatch,
-        values,
-        sessionStorage.getItem("email_id")
-      );
+      const response = await SendOTPassword(dispatch, values, passenger_mail);
 
-      sessionStorage.setItem("passenger_id", response.user.tbs_passenger_id);
-      sessionStorage.setItem("user_id", response.user.tbs_passenger_id);
+      // sessionStorage.setItem("passenger_id", response.user.tbs_passenger_id);
+      const encryptedUserId =
+        response && encryptData(response.user.tbs_passenger_id);
+      sessionStorage.setItem("passenger_id", encryptedUserId);
+
+      sessionStorage.setItem("user_id", encryptedUserId);
       // setCurrentPage(2);
       if (response.user.status === 2) {
         setLoginMobileIsOpen(false);
-     
+
         GetUserDetails(navigation);
       } else {
         setCurrentPage(2);
@@ -74,11 +81,7 @@ const OtpVerification = ({
     console.log("response85858");
 
     try {
-      const response = await SendOTPassword(
-        dispatch,
-        values,
-        sessionStorage.getItem("email_id")
-      );
+      const response = await SendOTPassword(dispatch, values, passenger_mail);
       console.log(response, "responseresponse");
       // if (response.message) {
       //   setPopupMessage("VERIFIED SUCCESSFULLY!");
@@ -90,8 +93,13 @@ const OtpVerification = ({
       // } else {
       //   setErrors({ otp: response.error || "Invalid OTP" });
       // }
-      sessionStorage.setItem("passenger_id", response.user.tbs_passenger_id);
-      sessionStorage.setItem("user_id", response.user.tbs_passenger_id);
+      const encryptedUserId =
+        response && encryptData(response.user.tbs_passenger_id);
+
+      sessionStorage.setItem("passenger_id", encryptedUserId);
+      sessionStorage.setItem("user_id", encryptedUserId);
+      // sessionStorage.setItem("passenger_id", response.user.tbs_passenger_id);
+      // sessionStorage.setItem("user_id", response.user.tbs_passenger_id);
       toast.success(response);
       console.log(response, "response_response");
       if (response.user.status === 2) {
@@ -148,7 +156,7 @@ const OtpVerification = ({
       return () => clearInterval(timerId); // Cleanup on component unmount
     }
   }, [timeLeft]);
-
+  console.log(passenger_mail, "passenger_mailpassenger_mail");
   return (
     <>
       <div className="md:block hidden mt-[1vw]">

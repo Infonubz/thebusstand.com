@@ -24,9 +24,9 @@ import { toast } from "react-toastify";
 import { getTabIndex } from "@progress/kendo-react-common";
 import { FaEdit } from "react-icons/fa";
 import { Abhibus_SeatBlocked } from "../../../../Api-Abhibus/Dashboard/DashboardPage";
+import { decryptData } from "../../../Common/Common-Functions/Encrypt-Decrypt";
 
 export default function MobilePassengerDetails({
-
   travelerDetails,
   setTravelerDetails,
   setEmailInput,
@@ -37,13 +37,21 @@ export default function MobilePassengerDetails({
   MobBusDetails,
   MobSeatDetails,
   MobDiscount,
-  enableInput, setEnableInput,
-  registerfulldetails, setRegisterFullDetails
+  enableInput,
+  setEnableInput,
+  registerfulldetails,
+  setRegisterFullDetails,
 }) {
-
   const apiUrlimage = process.env.REACT_APP_API_URL_IMAGE;
   const location = useLocation();
-  const { handleSubmit, isSubmitting, isValid, values, setFieldValue, handleChange } = useFormikContext();
+  const {
+    handleSubmit,
+    isSubmitting,
+    isValid,
+    values,
+    setFieldValue,
+    handleChange,
+  } = useFormikContext();
   const {
     selectedSeats2,
     selectedRoutes2,
@@ -160,7 +168,9 @@ export default function MobilePassengerDetails({
 
   //   console.log(isAllDetailsFilled, "is_all_details_Filled");
   // const [drawerWidth, setDrawerWidth] = useState("60%");
-  const user_id = sessionStorage.getItem("user_id");
+
+  const user_id1 = sessionStorage.getItem("user_id");
+  const user_id = user_id1 && decryptData(user_id1);
   const navigation = useNavigate();
 
   const toggleDropDown = (index) => {
@@ -329,8 +339,9 @@ export default function MobilePassengerDetails({
 
   const handleBookingPrice = async () => {
     setLoading(true);
-    const totalAmount = `${Number(discount1) + Number(Math.round(discount1 * 0.03))
-      }`;
+    const totalAmount = `${
+      Number(discount1) + Number(Math.round(discount1 * 0.03))
+    }`;
     console.log(
       totalAmount,
       bookingId,
@@ -548,7 +559,10 @@ export default function MobilePassengerDetails({
 
   // const borderColor =
   //   busdetails1?.bus_type_status === "luxury" ? "#393939" : colorcode.theme;
-  console.log(MobBusDetails?.Bus_Type_Name === true, "seatDetails1seatDetails1");
+  console.log(
+    MobBusDetails?.Bus_Type_Name === true,
+    "seatDetails1seatDetails1"
+  );
   const getSeatColor = (index, travelerDetails, BusDetails, enableInput) => {
     const isMale =
       travelerDetails?.[index]?.gender === "male" || !travelerDetails?.[index];
@@ -579,10 +593,10 @@ export default function MobilePassengerDetails({
             ? "#393939"
             : "#1F4B7F"
           : isLuxury
-            ? enableInput
-              ? "#FFEFCE"
-              : "#FFFFFF"
-            : "#FFFFFF",
+          ? enableInput
+            ? "#FFEFCE"
+            : "#FFFFFF"
+          : "#FFFFFF",
       color:
         !isSelected && travelerDetails?.[index]
           ? isLuxury
@@ -607,7 +621,6 @@ export default function MobilePassengerDetails({
     );
     setIsEmpty(checkIfAnyEmpty);
   }, [travelerDetails]);
-
 
   return (
     <div>
@@ -643,8 +656,8 @@ export default function MobilePassengerDetails({
                   <div className="col-span-2">
                     <span className="">
                       {mobileInput != "" &&
-                        emailInput != "" &&
-                        isEmpty === false ? (
+                      emailInput != "" &&
+                      isEmpty === false ? (
                         <img
                           src={complete}
                           alt="completeImage"
@@ -725,11 +738,11 @@ export default function MobilePassengerDetails({
                       <div class="flex flex-col md:grid md:grid-cols-6 md:flex-row md:items-center md:gap-[1vw] gap-y-[4vw] md:mb-[1vw] mb-[3vw] md:px-[0vw] px-[2vw] pt-[1vw]">
                         <div className="col-span-1">
                           <p
-                            className={`md:text-[1.1vw] text-[4vw] font-semibold  ${LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                              true
-                              ? "text-[#393939]"
-                              : "text-[#1F487C]"
-                              }`}
+                            className={`md:text-[1.1vw] text-[4vw] font-semibold  ${
+                              LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
+                                ? "text-[#393939]"
+                                : "text-[#1F487C]"
+                            }`}
                           >
                             Contact Details
                           </p>
@@ -751,21 +764,22 @@ export default function MobilePassengerDetails({
                               //   e.target.value
                               // );
                             }}
-                            className={`${!isSubmitting || !enableInput
-                              ? `cursor-pointer`
-                              : "cursor-not-allowed"
-                              } border-r-[1.5vw] md:border-r-[0.5vw] md:placeholder:text-[1.2vw] placeholder:text-[3.5vw] border-[.1vw] 
+                            className={`${
+                              !isSubmitting || !enableInput
+                                ? `cursor-pointer`
+                                : "cursor-not-allowed"
+                            } border-r-[1.5vw] md:border-r-[0.5vw] md:placeholder:text-[1.2vw] placeholder:text-[3.5vw] border-[.1vw] 
                                                 text-[4vw] md:text-[1.2vw] md:h-[3vw] w-full h-[10vw] md:w-full rounded-[1.5vw] md:rounded-[0.3vw] outline-none 
                                                 px-[0.75vw] md:px-[0.5vw]   `}
                             style={{
                               borderColor:
                                 LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                  true
+                                true
                                   ? "#393939"
                                   : "#1F4B7F",
                               color:
                                 LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                  true
+                                true
                                   ? "#393939"
                                   : "#1F4B7F",
                             }}
@@ -787,7 +801,7 @@ export default function MobilePassengerDetails({
                                       : "#FFFFFF",
                                   colorTextBase:
                                     LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                      true
+                                    true
                                       ? "#393939"
                                       : "#1F487C",
                                 },
@@ -795,21 +809,23 @@ export default function MobilePassengerDetails({
                             >
                               <Select
                                 disabled={enableInput}
-                                className={`${!isSubmitting || !enableInput
-                                  ? `cursor-pointer`
-                                  : "cursor-not-allowed"
-                                  } custom-web-select md:w-[5.5vw] md:px-[0.01vw] md:h-[3vw] md:rounded-l-[0.3vw] w-[20vw] border-[0.1vw] outline-none px-[3vw] md:block hidden
-    ${LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
-                                    ? "border-[#393939] text-[#393939]"
-                                    : "border-[#1F487C] text-[#1F487C]"
-                                  }`}
+                                className={`${
+                                  !isSubmitting || !enableInput
+                                    ? `cursor-pointer`
+                                    : "cursor-not-allowed"
+                                } custom-web-select md:w-[5.5vw] md:px-[0.01vw] md:h-[3vw] md:rounded-l-[0.3vw] w-[20vw] border-[0.1vw] outline-none px-[3vw] md:block hidden
+    ${
+      LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
+        ? "border-[#393939] text-[#393939]"
+        : "border-[#1F487C] text-[#1F487C]"
+    }`}
                                 dropdownStyle={{
                                   width: "5vw",
                                 }}
                                 style={{
                                   color:
                                     LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                      true
+                                    true
                                       ? "#393939"
                                       : "#1F487C",
                                 }}
@@ -818,8 +834,9 @@ export default function MobilePassengerDetails({
                                     style={{
                                       fontSize: "1vw",
                                       color:
-                                        LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                          true
+                                        LuxuryFind(
+                                          MobBusDetails?.Bus_Type_Name
+                                        ) === true
                                           ? "#393939"
                                           : "#1F487C",
                                     }}
@@ -849,7 +866,7 @@ export default function MobilePassengerDetails({
                                       : "#FFFFFF",
                                   colorTextBase:
                                     LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                      true
+                                    true
                                       ? "#393939"
                                       : "#1F487C",
                                 },
@@ -858,22 +875,24 @@ export default function MobilePassengerDetails({
                               {" "}
                               <Select
                                 disabled
-                                className={`${!isSubmitting || !enableInput
-                                  ? `cursor-pointer`
-                                  : "cursor-not-allowed"
-                                  } custom-mobile-select w-[20vw] h-[10vw] outline-none  md:hidden block border-[0.1vw] rounded-l-[1.5vw]
-                                              ${MobBusDetails?.bus_type_status ===
-                                    "luxury"
-                                    ? "border-[#393939] text-[#393939]"
-                                    : "border-[#1F487C] text-[#1F487C]"
-                                  }`}
+                                className={`${
+                                  !isSubmitting || !enableInput
+                                    ? `cursor-pointer`
+                                    : "cursor-not-allowed"
+                                } custom-mobile-select w-[20vw] h-[10vw] outline-none  md:hidden block border-[0.1vw] rounded-l-[1.5vw]
+                                              ${
+                                                MobBusDetails?.bus_type_status ===
+                                                "luxury"
+                                                  ? "border-[#393939] text-[#393939]"
+                                                  : "border-[#1F487C] text-[#1F487C]"
+                                              }`}
                                 dropdownStyle={{
                                   width: "20vw",
                                 }}
                                 style={{
                                   color:
                                     LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                      true
+                                    true
                                       ? "#393939"
                                       : "#1F487C",
                                 }}
@@ -882,8 +901,9 @@ export default function MobilePassengerDetails({
                                     style={{
                                       fontSize: "4vw",
                                       color:
-                                        LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                          true
+                                        LuxuryFind(
+                                          MobBusDetails?.Bus_Type_Name
+                                        ) === true
                                           ? "#393939"
                                           : "#1F487C",
                                     }}
@@ -923,20 +943,21 @@ export default function MobilePassengerDetails({
                               setMobileInput(e.target.value);
                               setFieldValue("mobile", e.target.value);
                             }}
-                            className={`${!isSubmitting || !enableInput
-                              ? `cursor-pointer`
-                              : "cursor-not-allowed"
-                              }  border-r-[1.5vw] md:border-r-[0.5vw] md:placeholder:text-[1.2vw] placeholder:text-[3.5vw] border-black border-[0.1vw] 
+                            className={`${
+                              !isSubmitting || !enableInput
+                                ? `cursor-pointer`
+                                : "cursor-not-allowed"
+                            }  border-r-[1.5vw] md:border-r-[0.5vw] md:placeholder:text-[1.2vw] placeholder:text-[3.5vw] border-black border-[0.1vw] 
                                                 text-[4vw] md:text-[1.2vw] h-[10vw] md:h-[3vw] w-full md:w-full rounded-r-[1.5vw] md:rounded-r-[0.3vw] outline-none px-[3vw] md:px-[1vw]`}
                             style={{
                               borderColor:
                                 LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                  true
+                                true
                                   ? "#393939"
                                   : "#1F4B7F",
                               color:
                                 LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                  true
+                                true
                                   ? "#393939"
                                   : "#1F4B7F",
                             }}
@@ -959,8 +980,7 @@ export default function MobilePassengerDetails({
                           className=" md:w-full md:ml-[0vw] md:mr-[0.5vw] ml-[2vw] mr-[4vw] rounded-[2vw] md:rounded-[0.7vw]"
                           style={{
                             borderColor:
-                              LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                true
+                              LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
                                 ? "#393939"
                                 : "#1F4B7F",
                           }}
@@ -1395,12 +1415,13 @@ export default function MobilePassengerDetails({
                                     <div className="grid grid-cols-12 gap-[1vw]">
                                       <div className="col-span-2 flex w-full items-center ">
                                         <p
-                                          className={`text-[1vw] font-semibold ${LuxuryFind(
-                                            MobBusDetails?.Bus_Type_Name
-                                          ) === true
-                                            ? "text-[#393939]"
-                                            : "text-[#1F487C]"
-                                            }`}
+                                          className={`text-[1vw] font-semibold ${
+                                            LuxuryFind(
+                                              MobBusDetails?.Bus_Type_Name
+                                            ) === true
+                                              ? "text-[#393939]"
+                                              : "text-[#1F487C]"
+                                          }`}
                                         >
                                           Seat No: {item?.Seat}
                                         </p>
@@ -1415,9 +1436,7 @@ export default function MobilePassengerDetails({
                                           value={
                                             travelerDetails?.[index]
                                               ?.user_name ||
-                                            values[
-                                            `user_name_${index}`
-                                            ] ||
+                                            values[`user_name_${index}`] ||
                                             ""
                                           }
                                           onChange={(e) => {
@@ -1431,22 +1450,23 @@ export default function MobilePassengerDetails({
                                                 ...prevDetails,
                                                 [index]: {
                                                   ...prevDetails?.[index],
-                                                  user_name:
-                                                    e.target.value,
+                                                  user_name: e.target.value,
                                                   seat: item?.Seat,
                                                 },
                                               })
                                             );
                                           }}
-                                          className={`${!isSubmitting || !enableInput
-                                            ? `cursor-pointer`
-                                            : "cursor-not-allowed"
-                                            } md:placeholder:text-[1.2vw] placeholder:text-[3.5vw] border-r-[0.5vw] border-[.1vw] text-[1.2vw] h-[3vw] w-full rounded-[0.3vw] outline-none px-[0.5vw] ${LuxuryFind(
+                                          className={`${
+                                            !isSubmitting || !enableInput
+                                              ? `cursor-pointer`
+                                              : "cursor-not-allowed"
+                                          } md:placeholder:text-[1.2vw] placeholder:text-[3.5vw] border-r-[0.5vw] border-[.1vw] text-[1.2vw] h-[3vw] w-full rounded-[0.3vw] outline-none px-[0.5vw] ${
+                                            LuxuryFind(
                                               MobBusDetails?.Bus_Type_Name
                                             ) === true
                                               ? "text-[#393939]"
                                               : "text-[#1F478C]"
-                                            }`}
+                                          }`}
                                           style={{
                                             borderColor:
                                               LuxuryFind(
@@ -1473,8 +1493,7 @@ export default function MobilePassengerDetails({
                                               placeholder="Age"
                                               maxLength={2}
                                               value={
-                                                travelerDetails?.[index]
-                                                  ?.age ||
+                                                travelerDetails?.[index]?.age ||
                                                 values[`age_${index}`] ||
                                                 ""
                                               }
@@ -1488,9 +1507,7 @@ export default function MobilePassengerDetails({
                                                   (prevDetails) => ({
                                                     ...prevDetails,
                                                     [index]: {
-                                                      ...prevDetails?.[
-                                                      index
-                                                      ],
+                                                      ...prevDetails?.[index],
                                                       age: e.target.value,
                                                       seat: item?.Seat,
                                                     },
@@ -1498,16 +1515,17 @@ export default function MobilePassengerDetails({
                                                 );
                                               }}
                                               onKeyDown={handleKeyDown}
-                                              className={`${!isSubmitting ||
-                                                !enableInput
-                                                ? `cursor-pointer`
-                                                : "cursor-not-allowed"
-                                                }  md:placeholder:text-[1.2vw] md:text-[1.2vw] placeholder:text-[2vw] border-r-[0.5vw] border-[.1vw] border-black h-[3vw] w-full rounded-[0.3vw] outline-none px-[1vw]  ${LuxuryFind(
+                                              className={`${
+                                                !isSubmitting || !enableInput
+                                                  ? `cursor-pointer`
+                                                  : "cursor-not-allowed"
+                                              }  md:placeholder:text-[1.2vw] md:text-[1.2vw] placeholder:text-[2vw] border-r-[0.5vw] border-[.1vw] border-black h-[3vw] w-full rounded-[0.3vw] outline-none px-[1vw]  ${
+                                                LuxuryFind(
                                                   MobBusDetails?.Bus_Type_Name
                                                 ) === true
                                                   ? "text-[#393939]"
                                                   : "text-[#1F478C]"
-                                                }`}
+                                              }`}
                                               style={{
                                                 borderColor:
                                                   LuxuryFind(
@@ -1535,15 +1553,15 @@ export default function MobilePassengerDetails({
                                                     enableInput ||
                                                     (gender === "male"
                                                       ? seatDetails1?.[
-                                                        selectedSeats1?.[
-                                                        index
-                                                        ]
-                                                      ]?.Status === "M"
+                                                          selectedSeats1?.[
+                                                            index
+                                                          ]
+                                                        ]?.Status === "M"
                                                       : seatDetails1?.[
-                                                        selectedSeats1?.[
-                                                        index
-                                                        ]
-                                                      ]?.Status !== "F")
+                                                          selectedSeats1?.[
+                                                            index
+                                                          ]
+                                                        ]?.Status !== "F")
                                                   }
                                                   type="button"
                                                   name={`gender_${index}`}
@@ -1554,26 +1572,29 @@ export default function MobilePassengerDetails({
                                                     enableInput,
                                                     gender
                                                   )}
-                                                  className={`${!isSubmitting ||
+                                                  className={`${
+                                                    !isSubmitting ||
                                                     !enableInput
-                                                    ? "cursor-pointer"
-                                                    : "cursor-not-allowed"
-                                                    } text-white w-full h-[3vw] ${i === 0
+                                                      ? "cursor-pointer"
+                                                      : "cursor-not-allowed"
+                                                  } text-white w-full h-[3vw] ${
+                                                    i === 0
                                                       ? "rounded-l-[0.3vw]"
                                                       : "rounded-r-[0.3vw]"
-                                                    } border-[0.1vw] text-[1vw] ${LuxuryFind(
+                                                  } border-[0.1vw] text-[1vw] ${
+                                                    LuxuryFind(
                                                       MobBusDetails?.Bus_Type_Name
                                                     )
                                                       ? "border-[#393939]"
                                                       : "border-[#1F487C]"
-                                                    }`}
+                                                  }`}
                                                   onClick={() =>
                                                     setTravelerDetails(
                                                       (prevDetails) => ({
                                                         ...prevDetails,
                                                         [index]: {
                                                           ...prevDetails?.[
-                                                          index
+                                                            index
                                                           ],
                                                           gender,
                                                           seat: item?.Seat,
@@ -1594,17 +1615,13 @@ export default function MobilePassengerDetails({
                                           <span className=" absolute top-[1vw] right-[-0.75vw] ">
                                             {!travelerDetails?.[index]
                                               ?.user_name &&
-                                              passengerdatalist?.length >
-                                              0 &&
-                                              !travelerDetails?.[index]
-                                                ?.age ? (
+                                            passengerdatalist?.length > 0 &&
+                                            !travelerDetails?.[index]?.age ? (
                                               passengerDropDown ===
-                                                `${index}` ? (
+                                              `${index}` ? (
                                                 <IoCaretUpSharp
                                                   onClick={() =>
-                                                    toggleDropDown(
-                                                      `${index}`
-                                                    )
+                                                    toggleDropDown(`${index}`)
                                                   }
                                                   color={
                                                     LuxuryFind(
@@ -1619,9 +1636,7 @@ export default function MobilePassengerDetails({
                                               ) : (
                                                 <IoCaretDownSharp
                                                   onClick={() =>
-                                                    toggleDropDown(
-                                                      `${index}`
-                                                    )
+                                                    toggleDropDown(`${index}`)
                                                   }
                                                   color={
                                                     LuxuryFind(
@@ -1642,11 +1657,8 @@ export default function MobilePassengerDetails({
                                                     (prevDetails) => ({
                                                       ...prevDetails,
                                                       [index]: {
-                                                        ...prevDetails?.[
-                                                        index
-                                                        ],
-                                                        user_name:
-                                                          undefined,
+                                                        ...prevDetails?.[index],
+                                                        user_name: undefined,
                                                         age: undefined,
                                                       },
                                                     })
@@ -1668,11 +1680,11 @@ export default function MobilePassengerDetails({
                                                     : "#1F4B7F"
                                                 }
                                                 disabled={enableInput}
-                                                className={` ${!isSubmitting ||
-                                                  !enableInput
-                                                  ? "cursor-pointer"
-                                                  : "cursor-not-allowed"
-                                                  }`}
+                                                className={` ${
+                                                  !isSubmitting || !enableInput
+                                                    ? "cursor-pointer"
+                                                    : "cursor-not-allowed"
+                                                }`}
                                                 size={"1.5vw"}
                                               />
                                             )}
@@ -1683,7 +1695,7 @@ export default function MobilePassengerDetails({
                                   </div>
                                   <div className="md:block hidden">
                                     {passengerDropDown === `${index}` &&
-                                      passengerdatalist?.length > 0 ? (
+                                    passengerdatalist?.length > 0 ? (
                                       <div
                                         style={{
                                           borderColor:
@@ -1697,20 +1709,15 @@ export default function MobilePassengerDetails({
                                                        border-r-[0.3vw] rounded-[0.7vw]"
                                       >
                                         <div className="min-h-[4vw] max-h-[6.5vw] overflow-y-auto">
-                                          {passengerdatalist?.length >
-                                            0 &&
+                                          {passengerdatalist?.length > 0 &&
                                             passengerdatalist
                                               .filter((passenger) => {
                                                 const seatStatus =
                                                   seatDetails1?.[
-                                                    selectedSeats1?.[
-                                                    index
-                                                    ]
+                                                    selectedSeats1?.[index]
                                                   ]?.Status;
                                                 // Filter based on seat status
-                                                if (
-                                                  seatStatus === "AFF"
-                                                ) {
+                                                if (seatStatus === "AFF") {
                                                   return (
                                                     passenger.gender ===
                                                     "female"
@@ -1719,8 +1726,7 @@ export default function MobilePassengerDetails({
                                                   seatStatus === "AFM"
                                                 ) {
                                                   return (
-                                                    passenger.gender ===
-                                                    "male"
+                                                    passenger.gender === "male"
                                                   );
                                                 } else if (
                                                   seatStatus === "AFA"
@@ -1728,9 +1734,9 @@ export default function MobilePassengerDetails({
                                                   // Allow both male and female for AFA status
                                                   return (
                                                     passenger.gender ===
-                                                    "male" ||
+                                                      "male" ||
                                                     passenger.gender ===
-                                                    "female"
+                                                      "female"
                                                   );
                                                 }
                                                 return true;
@@ -1747,7 +1753,7 @@ export default function MobilePassengerDetails({
                                                         ...prevDetails,
                                                         [index]: {
                                                           ...prevDetails?.[
-                                                          getTabIndex
+                                                            getTabIndex
                                                           ],
                                                           user_name:
                                                             passenger.passengerName,
@@ -1762,41 +1768,45 @@ export default function MobilePassengerDetails({
                                                       setFieldValue
                                                     );
                                                   }}
-                                                  className={`grid grid-cols-3 gap-[8vw] items-center px-[3vw] py-[0.7vw] border-b-[0.1vw] mx-[0.3vw] ${LuxuryFind(
-                                                    MobBusDetails?.Bus_Type_Name
-                                                  ) === true
-                                                    ? "text-[#393939] border-b-[#393939]"
-                                                    : "text-[#1F487C] border-b-[#adadad]"
-                                                    } hover:bg-gray-200 hover:rounded-sm`}
+                                                  className={`grid grid-cols-3 gap-[8vw] items-center px-[3vw] py-[0.7vw] border-b-[0.1vw] mx-[0.3vw] ${
+                                                    LuxuryFind(
+                                                      MobBusDetails?.Bus_Type_Name
+                                                    ) === true
+                                                      ? "text-[#393939] border-b-[#393939]"
+                                                      : "text-[#1F487C] border-b-[#adadad]"
+                                                  } hover:bg-gray-200 hover:rounded-sm`}
                                                   key={idx}
                                                 >
                                                   <div
-                                                    className={`flex font-medium text-center text-[1.2vw] ${LuxuryFind(
-                                                      MobBusDetails?.Bus_Type_Name
-                                                    ) === true
-                                                      ? "text-[#393939]"
-                                                      : "text-[#1F487C]"
-                                                      }`}
+                                                    className={`flex font-medium text-center text-[1.2vw] ${
+                                                      LuxuryFind(
+                                                        MobBusDetails?.Bus_Type_Name
+                                                      ) === true
+                                                        ? "text-[#393939]"
+                                                        : "text-[#1F487C]"
+                                                    }`}
                                                   >
                                                     {passenger.user_name}
                                                   </div>
                                                   <div
-                                                    className={`flex font-medium text-center text-[1.2vw] ${LuxuryFind(
-                                                      MobBusDetails?.Bus_Type_Name
-                                                    ) === true
-                                                      ? "text-[#393939]"
-                                                      : "text-[#1F487C]"
-                                                      }`}
+                                                    className={`flex font-medium text-center text-[1.2vw] ${
+                                                      LuxuryFind(
+                                                        MobBusDetails?.Bus_Type_Name
+                                                      ) === true
+                                                        ? "text-[#393939]"
+                                                        : "text-[#1F487C]"
+                                                    }`}
                                                   >
                                                     {passenger.age}
                                                   </div>
                                                   <div
-                                                    className={`flex font-medium text-center text-[1.2vw] ${LuxuryFind(
-                                                      MobBusDetails?.Bus_Type_Name
-                                                    ) === true
-                                                      ? "text-[#393939]"
-                                                      : "text-[#1F487C]"
-                                                      }`}
+                                                    className={`flex font-medium text-center text-[1.2vw] ${
+                                                      LuxuryFind(
+                                                        MobBusDetails?.Bus_Type_Name
+                                                      ) === true
+                                                        ? "text-[#393939]"
+                                                        : "text-[#1F487C]"
+                                                    }`}
                                                   >
                                                     {passenger.gender}
                                                   </div>
@@ -1810,18 +1820,16 @@ export default function MobilePassengerDetails({
                                   </div>
                                   <span>
                                     <span className="md:hidden block">
-                                      <div
-                                        key={index}
-                                        className="px-[0.3vw]"
-                                      >
+                                      <div key={index} className="px-[0.3vw]">
                                         <div className="">
                                           <p
-                                            className={`text-[4vw] font-semibold mt-[2vw] ${LuxuryFind(
-                                              MobBusDetails?.Bus_Type_Name
-                                            ) === true
-                                              ? "text-[#393939]"
-                                              : "text-[#1F487C]"
-                                              }`}
+                                            className={`text-[4vw] font-semibold mt-[2vw] ${
+                                              LuxuryFind(
+                                                MobBusDetails?.Bus_Type_Name
+                                              ) === true
+                                                ? "text-[#393939]"
+                                                : "text-[#1F487C]"
+                                            }`}
                                           >
                                             Seat No: {item?.Seat}
                                           </p>
@@ -1839,7 +1847,7 @@ export default function MobilePassengerDetails({
                                                   travelerDetails?.[index]
                                                     ?.user_name ||
                                                   values[
-                                                  `user_name_${index}`
+                                                    `user_name_${index}`
                                                   ] ||
                                                   ""
                                                 }
@@ -1853,9 +1861,7 @@ export default function MobilePassengerDetails({
                                                     (prevDetails) => ({
                                                       ...prevDetails,
                                                       [index]: {
-                                                        ...prevDetails?.[
-                                                        index
-                                                        ],
+                                                        ...prevDetails?.[index],
                                                         user_name:
                                                           e.target.value,
                                                         seat: item?.Seat,
@@ -1863,11 +1869,11 @@ export default function MobilePassengerDetails({
                                                     })
                                                   );
                                                 }}
-                                                className={`${!isSubmitting ||
-                                                  !enableInput
-                                                  ? `cursor-pointer`
-                                                  : "cursor-not-allowed"
-                                                  }  border-r-[2vw] border-[.1vw] text-[4vw]  md:text-[1.2vw] md:placeholder:text-[1.2vw] 
+                                                className={`${
+                                                  !isSubmitting || !enableInput
+                                                    ? `cursor-pointer`
+                                                    : "cursor-not-allowed"
+                                                }  border-r-[2vw] border-[.1vw] text-[4vw]  md:text-[1.2vw] md:placeholder:text-[1.2vw] 
                                                                 placeholder:text-[3.5vw] h-[10vw] w-[83vw] rounded-[2vw] outline-none pl-[2vw] md:px-[1vw]`}
                                                 style={{
                                                   color:
@@ -1893,17 +1899,13 @@ export default function MobilePassengerDetails({
                                             <div>
                                               {!travelerDetails?.[index]
                                                 ?.user_name &&
-                                                passengerdatalist?.length >
-                                                0 &&
-                                                !travelerDetails?.[index]
-                                                  ?.age ? (
+                                              passengerdatalist?.length > 0 &&
+                                              !travelerDetails?.[index]?.age ? (
                                                 passengerDropDown ===
-                                                  `${index}` ? (
+                                                `${index}` ? (
                                                   <IoCaretUpSharp
                                                     onClick={() =>
-                                                      toggleDropDown(
-                                                        `${index}`
-                                                      )
+                                                      toggleDropDown(`${index}`)
                                                     }
                                                     color={
                                                       LuxuryFind(
@@ -1918,9 +1920,7 @@ export default function MobilePassengerDetails({
                                                 ) : (
                                                   <IoCaretDownSharp
                                                     onClick={() =>
-                                                      toggleDropDown(
-                                                        `${index}`
-                                                      )
+                                                      toggleDropDown(`${index}`)
                                                     }
                                                     color={
                                                       LuxuryFind(
@@ -1936,17 +1936,15 @@ export default function MobilePassengerDetails({
                                               ) : (
                                                 <IoIosCloseCircle
                                                   onClick={() => {
-                                                    if (enableInput)
-                                                      return;
+                                                    if (enableInput) return;
                                                     setTravelerDetails(
                                                       (prevDetails) => ({
                                                         ...prevDetails,
                                                         [index]: {
                                                           ...prevDetails?.[
-                                                          index
+                                                            index
                                                           ],
-                                                          user_name:
-                                                            undefined,
+                                                          user_name: undefined,
                                                           age: undefined, // or null to remove the value
                                                         },
                                                       })
@@ -1969,20 +1967,19 @@ export default function MobilePassengerDetails({
                                                   }
                                                   disabled={enableInput}
                                                   className={`ml-[1vw] mt-[2vw] cursor-pointer
-                                                                ${!isSubmitting ||
-                                                      !enableInput
-                                                      ? "cursor-pointer"
-                                                      : "cursor-not-allowed"
-                                                    }`}
+                                                                ${
+                                                                  !isSubmitting ||
+                                                                  !enableInput
+                                                                    ? "cursor-pointer"
+                                                                    : "cursor-not-allowed"
+                                                                }`}
                                                   size={"5vw"}
                                                 />
                                               )}
                                             </div>
                                           </div>
-                                          {passengerDropDown ===
-                                            `${index}` &&
-                                            passengerdatalist?.length >
-                                            0 ? (
+                                          {passengerDropDown === `${index}` &&
+                                          passengerdatalist?.length > 0 ? (
                                             <div
                                               style={{
                                                 borderColor:
@@ -2000,111 +1997,92 @@ export default function MobilePassengerDetails({
                                                 {passengerdatalist?.length >
                                                   0 &&
                                                   passengerdatalist
-                                                    .filter(
-                                                      (passenger) => {
-                                                        const seatStatus =
-                                                          seatDetails1?.[
-                                                            selectedSeats1[
-                                                            index
-                                                            ]
-                                                          ]?.Status;
-                                                        if (
-                                                          seatStatus ===
-                                                          "AFF"
-                                                        ) {
-                                                          return (
-                                                            passenger.gender ===
-                                                            "female"
-                                                          );
-                                                        } else if (
-                                                          seatStatus ===
-                                                          "AFM"
-                                                        ) {
-                                                          return (
-                                                            passenger.gender ===
-                                                            "male"
-                                                          );
-                                                        } else if (
-                                                          seatStatus ===
-                                                          "AFA"
-                                                        ) {
-                                                          return (
-                                                            passenger.gender ===
+                                                    .filter((passenger) => {
+                                                      const seatStatus =
+                                                        seatDetails1?.[
+                                                          selectedSeats1[index]
+                                                        ]?.Status;
+                                                      if (
+                                                        seatStatus === "AFF"
+                                                      ) {
+                                                        return (
+                                                          passenger.gender ===
+                                                          "female"
+                                                        );
+                                                      } else if (
+                                                        seatStatus === "AFM"
+                                                      ) {
+                                                        return (
+                                                          passenger.gender ===
+                                                          "male"
+                                                        );
+                                                      } else if (
+                                                        seatStatus === "AFA"
+                                                      ) {
+                                                        return (
+                                                          passenger.gender ===
                                                             "male" ||
-                                                            passenger.gender ===
+                                                          passenger.gender ===
                                                             "female"
-                                                          );
-                                                        }
-                                                        return true;
+                                                        );
                                                       }
-                                                    )
-                                                    ?.map(
-                                                      (
-                                                        passenger,
-                                                        idx
-                                                      ) => (
-                                                        <div
-                                                          onClick={(
-                                                            e
-                                                          ) => {
-                                                            setFieldValue(
-                                                              `passenger_name_${index}`,
-                                                              passenger.passengerName
-                                                            );
-                                                            setTravelerDetails(
-                                                              (
-                                                                prevDetails
-                                                              ) => ({
-                                                                ...prevDetails,
-                                                                [index]: {
-                                                                  ...prevDetails?.[
+                                                      return true;
+                                                    })
+                                                    ?.map((passenger, idx) => (
+                                                      <div
+                                                        onClick={(e) => {
+                                                          setFieldValue(
+                                                            `passenger_name_${index}`,
+                                                            passenger.passengerName
+                                                          );
+                                                          setTravelerDetails(
+                                                            (prevDetails) => ({
+                                                              ...prevDetails,
+                                                              [index]: {
+                                                                ...prevDetails?.[
                                                                   getTabIndex
-                                                                  ],
-                                                                  user_name:
-                                                                    passenger.passengerName,
-                                                                  age: passenger.age,
-                                                                },
-                                                              })
-                                                            );
-                                                            handlePassengerSelect(
-                                                              e,
-                                                              passenger,
-                                                              index,
-                                                              setFieldValue
-                                                            );
-                                                          }}
-                                                          className={`grid grid-cols items-center px-[2vw] py-[1.9vw] border-b-[0.1vw] ${LuxuryFind(
+                                                                ],
+                                                                user_name:
+                                                                  passenger.passengerName,
+                                                                age: passenger.age,
+                                                              },
+                                                            })
+                                                          );
+                                                          handlePassengerSelect(
+                                                            e,
+                                                            passenger,
+                                                            index,
+                                                            setFieldValue
+                                                          );
+                                                        }}
+                                                        className={`grid grid-cols items-center px-[2vw] py-[1.9vw] border-b-[0.1vw] ${
+                                                          LuxuryFind(
                                                             MobBusDetails?.Bus_Type_Name
                                                           ) === true
                                                             ? "text-[#393939] border-b-[#393939]"
                                                             : "text-[#1F487C] border-b-[#adadad]"
-                                                            } hover:bg-gray-200 hover:rounded-sm`}
-                                                          key={idx}
-                                                        >
-                                                          <div
-                                                            className={`flex font-medium text-center ${LuxuryFind(
+                                                        } hover:bg-gray-200 hover:rounded-sm`}
+                                                        key={idx}
+                                                      >
+                                                        <div
+                                                          className={`flex font-medium text-center ${
+                                                            LuxuryFind(
                                                               MobBusDetails?.Bus_Type_Name
                                                             ) === true
                                                               ? "text-[#393939]"
                                                               : "text-[#1F487C]"
-                                                              }`}
-                                                          >
-                                                            {
-                                                              passenger.user_name
-                                                            }{" "}
-                                                            - (Age :{" "}
-                                                            {
-                                                              passenger.age
-                                                            }
-                                                            /
-                                                            {/* {capitalizeFirstLetter(
+                                                          }`}
+                                                        >
+                                                          {passenger.user_name}{" "}
+                                                          - (Age :{" "}
+                                                          {passenger.age}/
+                                                          {/* {capitalizeFirstLetter(
                                                                     passenger.gender
                                                                   )} */}
-                                                            )
-                                                          </div>
+                                                          )
                                                         </div>
-                                                      )
-                                                    )}
+                                                      </div>
+                                                    ))}
                                               </div>
                                             </div>
                                           ) : (
@@ -2323,12 +2301,12 @@ export default function MobilePassengerDetails({
                                                       // }
                                                       disabled={
                                                         enableInput ||
-                                                          Object?.values(
-                                                            seatDetails1
-                                                          )?.[index]?.Status === "M"
+                                                        Object?.values(
+                                                          seatDetails1
+                                                        )?.[index]?.Status ===
+                                                          "M"
                                                           ? false
                                                           : true
-
                                                       }
                                                       type="button"
                                                       name={`gender_${index}`}
@@ -2339,26 +2317,29 @@ export default function MobilePassengerDetails({
                                                         enableInput,
                                                         gender
                                                       )}
-                                                      className={`${!isSubmitting ||
+                                                      className={`${
+                                                        !isSubmitting ||
                                                         !enableInput
-                                                        ? "cursor-pointer"
-                                                        : "cursor-not-allowed"
-                                                        } text-white w-full h-[10vw] ${i === 0
+                                                          ? "cursor-pointer"
+                                                          : "cursor-not-allowed"
+                                                      } text-white w-full h-[10vw] ${
+                                                        i === 0
                                                           ? "rounded-l-[2vw]"
                                                           : "rounded-r-[2vw]"
-                                                        } border-[0.1vw] px-[5vw] text-[3.5vw] ${LuxuryFind(
+                                                      } border-[0.1vw] px-[5vw] text-[3.5vw] ${
+                                                        LuxuryFind(
                                                           MobBusDetails?.Bus_Type_Name
                                                         )
                                                           ? "border-[#393939]"
                                                           : "border-[#1F487C]"
-                                                        }`}
+                                                      }`}
                                                       onClick={() =>
                                                         setTravelerDetails(
                                                           (prevDetails) => ({
                                                             ...prevDetails,
                                                             [index]: {
                                                               ...prevDetails?.[
-                                                              index
+                                                                index
                                                               ],
                                                               gender,
                                                               seat: item?.Seat,
@@ -2387,9 +2368,7 @@ export default function MobilePassengerDetails({
                                                 value={
                                                   travelerDetails?.[index]
                                                     ?.age ||
-                                                  values[
-                                                  `age_${index}`
-                                                  ] ||
+                                                  values[`age_${index}`] ||
                                                   ""
                                                 }
                                                 onChange={(e) => {
@@ -2402,21 +2381,18 @@ export default function MobilePassengerDetails({
                                                     (prevDetails) => ({
                                                       ...prevDetails,
                                                       [index]: {
-                                                        ...prevDetails?.[
-                                                        index
-                                                        ],
-                                                        age: e.target
-                                                          .value,
+                                                        ...prevDetails?.[index],
+                                                        age: e.target.value,
                                                         seat: item?.Seat,
                                                       },
                                                     })
                                                   );
                                                 }}
-                                                className={`${!isSubmitting ||
-                                                  !enableInput
-                                                  ? `cursor-pointer`
-                                                  : "cursor-not-allowed"
-                                                  } border-r-[2vw] border-[.1vw] border-black text-[4vw] md:text-[1.2vw] placeholder:text-[3.5vw] 
+                                                className={`${
+                                                  !isSubmitting || !enableInput
+                                                    ? `cursor-pointer`
+                                                    : "cursor-not-allowed"
+                                                } border-r-[2vw] border-[.1vw] border-black text-[4vw] md:text-[1.2vw] placeholder:text-[3.5vw] 
                                                                 h-[10vw] w-[33vw] rounded-[2vw] outline-none pl-[2vw] ml-[-39vw]`}
                                                 style={{
                                                   color:

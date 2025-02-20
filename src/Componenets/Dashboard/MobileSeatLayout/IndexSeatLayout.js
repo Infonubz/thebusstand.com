@@ -13,16 +13,13 @@ import { calculateDiscountedFare } from "../../Common/Common-Functions/TBS-Disco
 
 export default function IndexSeatLayout() {
   const location = useLocation();
-  const item = location.state || {};
-    const tbs_discount = useSelector((state) => state?.live_per);
-  
-  console.log(item, "itemitemitemitemitem852852");
+  const item = location?.state?.data || {};
+  const tbs_discount = useSelector((state) => state?.live_per);
+  const busdatas = location.state?.busdatas || {}
 
   const [currentrate, SetCurrentRate] = useState(1);
   const getseats = useSelector((state) => state.get_buslist_filter);
   const [layout, setLayout] = useState();
-
-  console.log(layout, "geting_sesats");
 
   // Function to format seat data (for both decks)
   const formatSeatData = (seatList) => {
@@ -68,12 +65,10 @@ export default function IndexSeatLayout() {
   const upperDeckSeats = formatSeatData(
     layout?.TotalSeatList?.upperdeck_seat_nos || []
   );
-  console.log(lowerDeckSeats, "lowerDeckSeats");
 
   const totalseats = lowerDeckSeats.concat(upperDeckSeats);
   const allprice = totalseats
     ?.map((item) => {
-      console.log(item?.fare?.totalNetFare, "itemitemitemitemitemitemitemitem");
       return Math.round(item?.price);
     })
     .sort((a, b) => a - b);
@@ -83,19 +78,16 @@ export default function IndexSeatLayout() {
   const busData = useSelector((state) => state?.get_buslist_filter);
   const dispatch = useDispatch();
 
-  console.log(currentrate, "currentrate");
 
   const uniqueprice = [...new Set(allprice)];
 
   const lowerdeck = getseats?.seats_id_layout?.filter((item) => {
     return item.z === 0;
   });
-  console.log(layoutloading, "layoutloadinglayoutloading");
 
   const upperdeck = getseats?.seats_id_layout?.filter((item) => {
     return item.z === 1;
   });
-  console.log(lowerdeck, upperdeck, "lowerdecklowerdeck");
 
   const lowerdeckc = lowerdeck?.map((item) => {
     return item.y;
@@ -103,20 +95,17 @@ export default function IndexSeatLayout() {
   const upperdeckc = upperdeck?.map((item) => {
     return item.y;
   });
-  console.log(lowerdeckc, "lowerdeckclowerdeckc");
 
   const lowerdeckrow = Math.max(lowerdeck?.map((item) => item.x));
   const lowerdeckcol = lowerdeckc?.length > 0 ? Math.max(...lowerdeckc) : [];
   const upperdeckrow = Math.max(upperdeck?.map((item) => item.x));
   const upperdeckcol = upperdeckc?.length > 0 ? Math.max(...upperdeckc) : [];
-  console.log(lowerdeckrow, upperdeckrow, "lowerdeckrowlowerdeckrow");
-  console.log(lowerdeckcol, "lowerdeckcol", upperdeckcol, "upperdeckcol");
+
 
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [selectedseatprice, setSelectedSeatsPrice] = useState([]);
   const [totalprice, setTotalPrice] = useState(null);
-  console.log(allprice, "sorted allprice");
-  console.log(uniqueprice, "allprice");
+
 
   useEffect(() => {
     if (selectedseatprice.length > 0) {
@@ -124,10 +113,8 @@ export default function IndexSeatLayout() {
         return a + b;
       });
       setTotalPrice(Math.round(price));
-      console.log(price, "pricepricepriceprice4444");
     }
   }, [selectedseatprice]);
-  console.log(selectedseatprice, selectedSeats, "selectedseatprice");
 
   const busType = JSON.parse(sessionStorage.getItem("isLuxury"));
   const [currenttab, setCurrentTab] = useState(1);
@@ -135,17 +122,29 @@ export default function IndexSeatLayout() {
   const closeModal = () => {
     setModalIsOpen(false);
   };
-  console.log(totalprice, "totalpricetotalprice");
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   const navigation = useNavigate();
+
   const [selectedRoutes, setSelectedRoutes] = useState({
-    dep_route: item.boarding?.[0].name,
-    arri_route: item.dropping?.[0].name,
-    dep_time: item.boarding?.[0].time,
-    arr_time: item.dropping?.[0].time,
+    dep_route: layout?.boarding_info?.[0]?.placeName,
+    arri_route: layout?.dropping_info?.[0]?.placeName,
+    dep_time: layout?.boarding_info?.[0]?.placeTime,
+    arr_time: layout?.dropping_info?.[0]?.placeTime,
+    dep_route_id: null,
+    arr_route_id: null,
+    dep_landmark: layout?.boarding_info?.[0]?.landMark,
+    dep_pincode: '',
+    arr_landmark: layout?.dropping_info?.[0]?.landMark
   });
+  const [billAddress, setBillAddress] = useState({
+    address: layout?.boarding_info?.[0]?.landMark,
+    pincode: layout?.boarding_info?.[0]?.pincode,
+    state: "",
+    city: "",
+  });
+
   const [seatDetails, setSeatDetails] = useState(
     selectedSeats.reduce((acc, seat, index) => {
       acc[index] = {
@@ -180,15 +179,13 @@ export default function IndexSeatLayout() {
   return (
     <>
       <div
-        className={`h-[11vw] fixed top-0 w-full z-[2] flex items-center justify-between px-[2vw] ${
-          selectedSeats?.length > 0 && totalprice != null
-            ? "justify-between"
-            : "justify-end"
-        }  px-[2vw] ${
-          LuxuryFind(item?.Bus_Type_Name) === true
+        className={`h-[11vw] fixed top-0 w-full z-[2] flex items-center justify-between px-[2vw] ${selectedSeats?.length > 0 && totalprice != null
+          ? "justify-between"
+          : "justify-end"
+          }  px-[2vw] ${LuxuryFind(item?.Bus_Type_Name) === true
             ? "custom-gradient-luxury"
             : "bg-[#1F487C]"
-        } w-full  border-l-[0.2vw] border-r-[0.2vw] border-b-[0.2vw] border-[#1F487C]  p-[2vw]`}
+          } w-full  border-l-[0.2vw] border-r-[0.2vw] border-b-[0.2vw] border-[#1F487C]  p-[2vw]`}
         style={{
           backgroundImage:
             LuxuryFind(item?.Bus_Type_Name) === true
@@ -200,40 +197,36 @@ export default function IndexSeatLayout() {
       >
         <div className="flex items-center gap-[3vw]">
           <label
-            className={` ${
-              LuxuryFind(item?.Bus_Type_Name) === true
-                ? "text-[#393939]"
-                : "text-white"
-            } font-bold text-[5vw]`}
+            className={` ${LuxuryFind(item?.Bus_Type_Name) === true
+              ? "text-[#393939]"
+              : "text-white"
+              } font-bold text-[5vw]`}
           >
             {localStorage.getItem("departure")}
           </label>
           <label>
             {" "}
             <FaArrowRight
-              color={` ${
-                LuxuryFind(item?.Bus_Type_Name) === true ? "#393939" : "white"
-              }`}
+              color={` ${LuxuryFind(item?.Bus_Type_Name) === true ? "#393939" : "white"
+                }`}
               size={"5vw"}
             />
           </label>
           <label
-            className={` ${
-              LuxuryFind(item?.Bus_Type_Name) === true
-                ? "text-[#393939]"
-                : "text-white"
-            } font-bold text-[5vw]`}
+            className={` ${LuxuryFind(item?.Bus_Type_Name) === true
+              ? "text-[#393939]"
+              : "text-white"
+              } font-bold text-[5vw]`}
           >
             {localStorage.getItem("arrival")}
           </label>
         </div>
         <div>
           <label
-            className={` ${
-              LuxuryFind(item?.Bus_Type_Name) === true
-                ? "text-[#393939]"
-                : "text-white"
-            } font-bold text-[4vw]`}
+            className={` ${LuxuryFind(item?.Bus_Type_Name) === true
+              ? "text-[#393939]"
+              : "text-white"
+              } font-bold text-[4vw]`}
           >
             {`${dayjs(localStorage.getItem("selectdate")).format(
               "DD MMM, YYYY"
@@ -244,11 +237,10 @@ export default function IndexSeatLayout() {
       <div className="min-h-screen max-h-auto px-[2vw] pb-[18vw] pt-[10vw] bg-[#E5FFF1]">
         <SelectedCardDesign busData={item} />
         <div
-          className={`h-auto relative ${
-            LuxuryFind(item?.Bus_Type_Name) === true
-              ? "custom-gradient-luxury"
-              : "bg-white"
-          } w-full  border-l-[0.2vw] border-r-[0.2vw] border-b-[0.2vw] border-[#1F487C] rounded-b-[3vw]  p-[2vw]`}
+          className={`h-auto relative ${LuxuryFind(item?.Bus_Type_Name) === true
+            ? "custom-gradient-luxury"
+            : "bg-white"
+            } w-full  border-l-[0.2vw] border-r-[0.2vw] border-b-[0.2vw] border-[#1F487C] rounded-b-[3vw]  p-[2vw]`}
           style={{
             backgroundImage: `linear-gradient(to right, #F8C550, #FFEB76, #FFE173)`,
             backgroundBlendMode: "overlay", // Add this line to blend the color and image
@@ -256,11 +248,10 @@ export default function IndexSeatLayout() {
           }}
         >
           <div
-            className={`${
-              LuxuryFind(item?.Bus_Type_Name) === true
-                ? "bg-[#FFEEC9]"
-                : "bg-[#EEEDED]"
-            }  border-x-[0.1vw] border-b-[0.1vw] rounded-b-[2.5vw] `}
+            className={`${LuxuryFind(item?.Bus_Type_Name) === true
+              ? "bg-[#FFEEC9]"
+              : "bg-[#EEEDED]"
+              }  border-x-[0.1vw] border-b-[0.1vw] rounded-b-[2.5vw] `}
           >
             <div
               className="flex items-center w-[91.5vw] px-[2vw] py-[1vw] "
@@ -273,19 +264,18 @@ export default function IndexSeatLayout() {
             >
               <button
                 type="button"
-                className={`${
-                  currentrate === 1 ? " " : "  "
-                } h-[8vw] w-[20vw] rounded-l-[1.5vw] font-bold  border-y-[0.1vw] border-l-[0.1vw] border-r-[0.1vw]`}
+                className={`${currentrate === 1 ? " " : "  "
+                  } h-[8vw] w-[20vw] rounded-l-[1.5vw] font-bold  border-y-[0.1vw] border-l-[0.1vw] border-r-[0.1vw]`}
                 onClick={() => SetCurrentRate(1)}
                 style={{
                   background:
                     LuxuryFind(item?.Bus_Type_Name) === true &&
-                    currentrate === 1
+                      currentrate === 1
                       ? "#9B9B9B"
                       : LuxuryFind(item?.Bus_Type_Name) === false &&
                         currentrate === 1
-                      ? "#8EA3BD"
-                      : "white",
+                        ? "#8EA3BD"
+                        : "white",
                   borderColor:
                     LuxuryFind(item?.Bus_Type_Name) === true
                       ? "#393939"
@@ -294,10 +284,10 @@ export default function IndexSeatLayout() {
                     currentrate === 1
                       ? "white"
                       : LuxuryFind(item?.Bus_Type_Name) === true
-                      ? "#393939"
-                      : LuxuryFind(item?.Bus_Type_Name) === false
-                      ? "#1F487C"
-                      : "white",
+                        ? "#393939"
+                        : LuxuryFind(item?.Bus_Type_Name) === false
+                          ? "#1F487C"
+                          : "white",
                 }}
               >
                 All
@@ -306,23 +296,21 @@ export default function IndexSeatLayout() {
                 uniqueprice?.map((items, index) => (
                   <button
                     type="button"
-                    className={`${
-                      currentrate === Number(items) ? "" : ""
-                    } h-[8vw] w-[20vw] font-bold border-y-[0.1vw] border-r-[0.1vw] ${
-                      index === uniqueprice.length - 1
+                    className={`${currentrate === Number(items) ? "" : ""
+                      } h-[8vw] w-[20vw] font-bold border-y-[0.1vw] border-r-[0.1vw] ${index === uniqueprice.length - 1
                         ? "rounded-r-[1.5vw]"
                         : ""
-                    }`}
+                      }`}
                     onClick={() => SetCurrentRate(items)}
                     style={{
                       background:
                         LuxuryFind(item?.Bus_Type_Name) === true &&
-                        currentrate === items
+                          currentrate === items
                           ? "#9B9B9B"
                           : LuxuryFind(item?.Bus_Type_Name) === false &&
                             currentrate === items
-                          ? "#8EA3BD"
-                          : "white",
+                            ? "#8EA3BD"
+                            : "white",
                       borderColor:
                         LuxuryFind(item?.Bus_Type_Name) === true
                           ? "#9B9B9B"
@@ -331,10 +319,10 @@ export default function IndexSeatLayout() {
                         currentrate === items
                           ? "white"
                           : LuxuryFind(item?.Bus_Type_Name) === true
-                          ? "#393939"
-                          : LuxuryFind(item?.Bus_Type_Name) === false
-                          ? "#1F487C"
-                          : "white",
+                            ? "#393939"
+                            : LuxuryFind(item?.Bus_Type_Name) === false
+                              ? "#1F487C"
+                              : "white",
                     }}
                   >
                     {/* {`₹ ${items}`} */}
@@ -357,9 +345,8 @@ export default function IndexSeatLayout() {
                 />
               </div>
               <div
-                className={`col-span-5  flex items-center justify-between px-[4vw] ${
-                  currenttab === 1 ? " underline underline-offset-4" : ""
-                }`}
+                className={`col-span-5  flex items-center justify-between px-[4vw] ${currenttab === 1 ? " underline underline-offset-4" : ""
+                  }`}
                 onClick={() => setCurrentTab(1)}
               >
                 <div>
@@ -386,9 +373,8 @@ export default function IndexSeatLayout() {
                 </div>
               </div>
               <div
-                className={`col-span-5  flex items-center justify-between px-[1vw] ${
-                  currenttab === 2 ? " underline underline-offset-4" : ""
-                }`}
+                className={`col-span-5  flex items-center justify-between px-[1vw] ${currenttab === 2 ? " underline underline-offset-4" : ""
+                  }`}
                 onClick={() => setCurrentTab(2)}
               >
                 <div>
@@ -440,6 +426,8 @@ export default function IndexSeatLayout() {
                 busboarding={item.boarding}
                 setSelectedRoutes={setSelectedRoutes}
                 selectedRoutes={selectedRoutes}
+                billAddress={billAddress}
+                setBillAddress={setBillAddress}
               />
             )}
           </div>
@@ -447,15 +435,13 @@ export default function IndexSeatLayout() {
       </div>
       {selectedSeats?.length > 0 && (
         <footer
-          className={`h-[16vw] fixed bottom-0 w-full z-[1] flex items-center ${
-            selectedSeats?.length > 0 && totalprice != null
-              ? "justify-between"
-              : "justify-end"
-          }  px-[2vw] ${
-            LuxuryFind(item?.Bus_Type_Name) === true
+          className={`h-[16vw] fixed bottom-0 w-full z-[1] flex items-center ${selectedSeats?.length > 0 && totalprice != null
+            ? "justify-between"
+            : "justify-end"
+            }  px-[2vw] ${LuxuryFind(item?.Bus_Type_Name) === true
               ? "custom-gradient-luxury"
               : "bg-[#1F487C]"
-          } w-full  border-l-[0.2vw] border-r-[0.2vw] border-b-[0.2vw] border-[#1F487C]  p-[2vw]`}
+            } w-full  border-l-[0.2vw] border-r-[0.2vw] border-b-[0.2vw] border-[#1F487C]  p-[2vw]`}
           style={{
             backgroundImage:
               LuxuryFind(item?.Bus_Type_Name) === true
@@ -470,21 +456,19 @@ export default function IndexSeatLayout() {
               <div className="flex flex-col ">
                 <label
                   className={`text-[3.5vw]  
-              ${
-                LuxuryFind(item?.Bus_Type_Name) === true
-                  ? "text-[#393939]"
-                  : "text-white"
-              }`}
+              ${LuxuryFind(item?.Bus_Type_Name) === true
+                      ? "text-[#393939]"
+                      : "text-white"
+                    }`}
                 >
                   {`${selectedSeats}`}
                 </label>
                 <label
                   className={`text-[3.5vw]
-            ${
-              LuxuryFind(item?.Bus_Type_Name) === true
-                ? "text-[#393939]"
-                : "text-white"
-            }`}
+            ${LuxuryFind(item?.Bus_Type_Name) === true
+                      ? "text-[#393939]"
+                      : "text-white"
+                    }`}
                 >
                   Selected seats
                 </label>
@@ -494,11 +478,10 @@ export default function IndexSeatLayout() {
               <div className="flex flex-col items-center">
                 <label
                   className={`text-[5vw] font-extrabold
-              ${
-                LuxuryFind(item?.Bus_Type_Name) === true
-                  ? "text-[#393939]"
-                  : "text-white"
-              }`}
+              ${LuxuryFind(item?.Bus_Type_Name) === true
+                      ? "text-[#393939]"
+                      : "text-white"
+                    }`}
                 >
                   {/* {`₹ ${totalprice}`} */}
                   {`₹ ${calculateDiscountedFare(
@@ -509,11 +492,10 @@ export default function IndexSeatLayout() {
                 </label>
                 <label
                   className={`text-[3.5vw]
-            ${
-              LuxuryFind(item?.Bus_Type_Name) === true
-                ? "text-[#393939]"
-                : "text-white"
-            }`}
+            ${LuxuryFind(item?.Bus_Type_Name) === true
+                      ? "text-[#393939]"
+                      : "text-white"
+                    }`}
                 >
                   Price
                 </label>
@@ -521,11 +503,10 @@ export default function IndexSeatLayout() {
             )}
           </div>
           <button
-            className={`text-[4.5vw] font-semibold w-[30vw] h-[10vw] ${
-              LuxuryFind(item?.Bus_Type_Name) === true
-                ? "bg-[#393939] text-white"
-                : "bg-white text-[#1F487C]"
-            }  rounded-full w-[30%]`}
+            className={`text-[4.5vw] font-semibold w-[30vw] h-[10vw] ${LuxuryFind(item?.Bus_Type_Name) === true
+              ? "bg-[#393939] text-white"
+              : "bg-white text-[#1F487C]"
+              }  rounded-full w-[30%]`}
             onClick={() => {
               if (currenttab === 2 && selectedSeats?.length > 0) {
                 navigation("/bookingDetails", {
@@ -537,6 +518,7 @@ export default function IndexSeatLayout() {
                     busprice2: totalprice,
                     selectedseatprice2: selectedseatprice,
                     layout2: layout,
+                    busdatas: busdatas
                   },
                 });
               } else {

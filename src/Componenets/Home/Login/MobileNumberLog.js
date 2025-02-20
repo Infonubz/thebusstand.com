@@ -22,10 +22,17 @@ import {
 import { LoadingOutlined } from "@ant-design/icons";
 //import { Flex } from "antd";
 import { useNavigate } from "react-router";
+import {
+  decryptData,
+  encryptData,
+} from "../../Common/Common-Functions/Encrypt-Decrypt";
 
 const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
-  const clientId = "374324582256-oisc65slv95m53pod51lmg7r5elfobjv.apps.googleusercontent.com";
-
+  const clientId =
+    "374324582256-oisc65slv95m53pod51lmg7r5elfobjv.apps.googleusercontent.com";
+  const email1 = sessionStorage.getItem("email_id");
+  const email = email1 && decryptData(email1);
+  const decryptEmailId = email && decryptData(email);
   const navigation = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -89,6 +96,12 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
   };
 
   const handleSubmit = async (values) => {
+    const email = values.email;
+    console.log(email,"emailemailemailemail");
+    
+    const encryptedUserEmail = email && encryptData(values.email);
+    console.log(encryptedUserEmail, "encryptedUserEmail");
+    sessionStorage.setItem("email_id", encryptedUserEmail);
     setLoading(true);
     try {
       const response = await SendVerificationOTP(dispatch, values);
@@ -100,8 +113,7 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
     } catch {}
   };
 
-  console.log(user,"useruseruseruser");
-
+  console.log(user, "useruseruseruser");
 
   console.log(toggleNum, "toggleNumtoggleNum");
 
@@ -187,12 +199,12 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
             <Formik
               initialValues={{
                 mobile: "",
-                email: sessionStorage.getItem("email_id") || "",
+                email: decryptEmailId || "",
               }}
               validationSchema={validationSchema}
               onSubmit={(values) => {
                 handleSubmit(values);
-                sessionStorage.setItem("email_id", values.email);
+                // sessionStorage.setItem("email_id", values.email);
               }}
               enableReinitialize
             >
@@ -412,12 +424,11 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
           <Formik
             initialValues={{
               mobile: "",
-              email: sessionStorage.getItem("email_id") || "",
+              email: decryptEmailId || "",
             }}
             validationSchema={validationSchema}
             onSubmit={(values) => {
               handleSubmit(values);
-              sessionStorage.setItem("email_id", values.email);
             }}
             enableReinitialize
           >
@@ -556,8 +567,7 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
                     onSuccess={handleSuccess}
                     theme="filled_blue"
                     onError={handleFailure}
-                    width={'152px'}
-                    
+                    width={"152px"}
                   />
                 </div>
               </GoogleOAuthProvider>

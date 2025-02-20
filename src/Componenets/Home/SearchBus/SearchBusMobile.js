@@ -84,6 +84,8 @@ export default function SearchBusMobile() {
     sleeper: "",
     semi_sleeper: "",
     luxury_data: false,
+    from_state: '',
+    to_state: ''
   });
   console.log(busdatas, "bus_data_mobile");
 
@@ -109,6 +111,8 @@ export default function SearchBusMobile() {
       to: busdatas.from,
       from_sourceID: busdatas.to_sourceID,
       to_sourceID: busdatas.from_sourceID,
+      to_state:busdatas?.from_state,
+      from_state:busdatas?.to_state
     };
 
     // Update the busdatas state
@@ -146,9 +150,8 @@ export default function SearchBusMobile() {
 
         console.log(data, "datadatadata");
         navigation(
-          `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${
-            busdatas.to_sourceID
-          }/${dayjs(getselecteddate).format("YYYY-MM-DD")}`
+          `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${busdatas.to_sourceID
+          }/${dayjs(getselecteddate).format("YYYY-MM-DD")}`, { state: busdatas }
         );
       }
     } catch (error) {
@@ -307,11 +310,10 @@ export default function SearchBusMobile() {
               <div className="flex flex-col justify-between w-full gap-y-[2vw] py-[1vw]">
                 <div className="flex justify-between">
                   <button
-                    className={`border-[0.15vw] ${
-                      seatFilter === "seater"
-                        ? "bg-[#1F487C] text-white"
-                        : "text-black border-[#81A3B6]"
-                    }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
+                    className={`border-[0.15vw] ${seatFilter === "seater"
+                      ? "bg-[#1F487C] text-white"
+                      : "text-black border-[#81A3B6]"
+                      }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                     onClick={() => {
                       SetSeatFilter("seater");
                       sessionStorage.setItem("home_seat_type", true);
@@ -320,11 +322,10 @@ export default function SearchBusMobile() {
                     Seater
                   </button>
                   <button
-                    className={`border-[0.15vw] ${
-                      seatFilter === "sleeper"
-                        ? "bg-[#1F487C] text-white"
-                        : "text-black border-[#81A3B6]"
-                    }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
+                    className={`border-[0.15vw] ${seatFilter === "sleeper"
+                      ? "bg-[#1F487C] text-white"
+                      : "text-black border-[#81A3B6]"
+                      }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                     onClick={() => {
                       SetSeatFilter("sleeper");
                       sessionStorage.setItem("home_seat_type", false);
@@ -333,11 +334,10 @@ export default function SearchBusMobile() {
                     Sleeper
                   </button>
                   <button
-                    className={`border-[0.15vw]  ${
-                      luxury === true
-                        ? "bg-custom-gradient-luxury bg-image-url  text-black border-[#e1db84]"
-                        : "text-black border-[#81A3B6]"
-                    }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
+                    className={`border-[0.15vw]  ${luxury === true
+                      ? "bg-custom-gradient-luxury bg-image-url  text-black border-[#e1db84]"
+                      : "text-black border-[#81A3B6]"
+                      }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                     onClick={() => {
                       setLuxury(!luxury);
                       // if (seatFilter == "semi_sleeper") {
@@ -450,7 +450,7 @@ export default function SearchBusMobile() {
                   handleSearch(e);
                 }}
                 value={searchQuery}
-                // value={inputsearch.from}
+              // value={inputsearch.from}
               />
             </div>
             <div className="h-screen  w-full overflow-y-scroll">
@@ -471,15 +471,17 @@ export default function SearchBusMobile() {
                         });
                         selectinput === "from"
                           ? setBusDatas({
-                              ...busdatas,
-                              from: item?.station_name,
-                              from_sourceID: item?.source_id,
-                            })
+                            ...busdatas,
+                            from: item?.station_name,
+                            from_sourceID: item?.source_id,
+                            from_state: item?.state_name
+                          })
                           : setBusDatas({
-                              ...busdatas,
-                              to: item?.station_name,
-                              to_sourceID: item?.source_id,
-                            });
+                            ...busdatas,
+                            to: item?.station_name,
+                            to_sourceID: item?.source_id,
+                            to_state: item?.state_name
+                          });
                         setError("");
                         setSearchQuery("");
                       }}

@@ -22,21 +22,32 @@ import SearchBusMobile from "./SearchBus/SearchBusMobile";
 import { CurrentDiscount } from "../../Api-TBS/Home/Home";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
+import About from "./TBS/About/About";
+import { decryptData } from "../Common/Common-Functions/Encrypt-Decrypt";
 export default function HomeIndex() {
   const currentpath = useParams();
   const dispatch = useDispatch();
-  console.log(currentpath,"currentpath");
-  
+  console.log(currentpath, "currentpath");
+
   useEffect(() => {
     if (currentpath?.trip_date) {
-      console.log(currentpath?.trip_date,"currentpathggggg");
-      
+      console.log(currentpath?.trip_date, "currentpathggggg");
+
       const date = new Date(currentpath?.trip_date);
       date.setUTCHours(5, 30, 53, 897);
       const jdate = date?.toISOString();
       CurrentDiscount(dispatch, jdate);
     }
   }, [currentpath]);
+  const encryptedUserId = sessionStorage.getItem("user_id");
+
+  if (encryptedUserId) {
+    const decryptedUserId = decryptData(encryptedUserId);
+    console.log("Decrypted User ID:", decryptedUserId);
+  } else {
+    console.log("No user ID found in session storage.");
+  }
+
   return (
     <div
       className={`bg-[#E5FFF1]  min-h-screen max-h-auto w-full overflow-auto relative`}
@@ -55,6 +66,7 @@ export default function HomeIndex() {
       <TopTravelledRoutes />
       <Government_Operators />
       <Private_Operators />
+      <About />
       <PopularDomestic />
       <Deals />
       <FeedBacks />

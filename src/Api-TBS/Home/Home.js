@@ -18,6 +18,7 @@ import {
 } from "../../Store/Type";
 import { useParams } from "react-router";
 import { useDispatch } from "react-redux";
+import { decryptData } from "../../Componenets/Common/Common-Functions/Encrypt-Decrypt";
 let lastToastTime = 0;
 const TOAST_DELAY = 3000;
 const api = axios.create({
@@ -235,7 +236,8 @@ export const GetOffersOccupation = async (dispatch, id) => {
 };
 
 export const GetFeedbackById = async () => {
-  const id = sessionStorage.getItem("passenger_id");
+  const passenger_id = sessionStorage.getItem("passenger_id");
+  const id = passenger_id && decryptData(passenger_id);
   try {
     const response = await axios.get(`${apiUrl}/passenger-details/${id}`);
     console.log(response.data, "ddddjjjjjjdjdjhfh");

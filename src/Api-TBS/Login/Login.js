@@ -2,6 +2,10 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { SEND_OTP, VERIFY_OTP } from "../../Store/Type";
 import { useNavigate, useNavigation } from "react-router";
+import {
+  decryptData,
+  encryptData,
+} from "../../Componenets/Common/Common-Functions/Encrypt-Decrypt";
 
 const api = axios.create({
   headers: {
@@ -38,16 +42,23 @@ export const SendVerificationOTP = async (dispatch, values) => {
 };
 
 export const GetUserDetails = async (navigation) => {
+  const user_id = sessionStorage.getItem("user_id");
+  const decryptid = user_id && decryptData(user_id);
   try {
     const response = await axios.get(
-      `${apiUrl}/passenger-details/${sessionStorage.getItem("user_id")}`
+      `${apiUrl}/passenger-details/${decryptid}`
     );
     //   dispatch({ type: GET_BOOKING_DETAILS, payload: response.data });
-    sessionStorage.setItem("user_email_id", response?.data?.email_id);
-    sessionStorage.setItem("user_mobile", response?.data?.mobile_number);
-    sessionStorage.setItem("user_id", response?.data?.tbs_passenger_id);
-    sessionStorage.setItem("user_name", response?.data?.user_name);
-    sessionStorage.setItem("passenger_name", response?.data?.user_name);
+    const encryptedUserId = encryptData(response?.data?.tbs_passenger_id);
+    const encryptedUserMobile = encryptData(response?.data?.mobile_number);
+    const encryptedUserEmail = encryptData(response?.data?.email_id);
+    const encryptedUserName = encryptData(response?.data?.user_name);
+
+    sessionStorage.setItem("user_email_id", encryptedUserEmail);
+    sessionStorage.setItem("user_mobile", encryptedUserMobile);
+    sessionStorage.setItem("user_id", encryptedUserId);
+    sessionStorage.setItem("user_name", encryptedUserName);
+    sessionStorage.setItem("passenger_name", encryptedUserName);
     console.log(response, "response for bookingDetails");
     // navigation("/dashboard");
     return response.data;
@@ -57,8 +68,10 @@ export const GetUserDetails = async (navigation) => {
 };
 export const SendOTPassword = async (dispatch, values, Email_Id) => {
   console.log(Email_Id.email_id, "email_id__email_id");
+  const email = sessionStorage.getItem("email_id");
+  const encryptemailid = decryptData(email);
   const payload = {
-    email_id: sessionStorage.getItem("email_id"),
+    email_id: encryptemailid,
     otp: values.otp,
   };
   console.log(payload.email_id, "verificationforotp");
@@ -76,11 +89,21 @@ export const SendOTPassword = async (dispatch, values, Email_Id) => {
     });
     // dispatch({ type: VERIFY_OTP, payload: response.data });
     // if (response?.data?.user) {
-    sessionStorage.setItem("user_email_id", response?.data?.user?.email_id);
-    sessionStorage.setItem("user_mobile", response?.data?.user?.mobile_number);
-    sessionStorage.setItem("user_id", response?.data?.user?.tbs_passenger_id);
-    sessionStorage.setItem("user_name", response?.data?.user?.user_name);
-    sessionStorage.setItem("passenger_name", response?.data?.user?.user_name);
+
+    // sessionStorage.setItem("passenger_name", response?.data?.user?.user_name);
+    const encryptedUserId = encryptData(response?.data?.user?.tbs_passenger_id);
+    const encryptedUserMobile = encryptData(
+      response?.data?.user?.mobile_number
+    );
+    const encryptedUserEmail = encryptData(response?.data?.user?.email_id);
+    const encryptedUserName = encryptData(response?.data?.user?.user_name);
+
+    sessionStorage.setItem("user_email_id", encryptedUserEmail);
+    sessionStorage.setItem("user_mobile", encryptedUserMobile);
+    sessionStorage.setItem("user_id", encryptedUserId);
+    sessionStorage.setItem("user_name", encryptedUserName);
+    sessionStorage.setItem("passenger_name", encryptedUserName);
+
     GetUserDetails();
     // } else {
     //   sessionStorage.setItem("user_id", response?.data?.tbs_passenger_id);
@@ -89,7 +112,7 @@ export const SendOTPassword = async (dispatch, values, Email_Id) => {
     //   window.location.reload();
     // }
     console.log(response.data, "OTP_VERIFICATION");
-    localStorage.setItem('tokenID', response?.data?.token)
+    localStorage.setItem("tokenID", response?.data?.token);
     return response.data;
   } catch (error) {
     console.log(error, "error_message_otp");
@@ -109,23 +132,25 @@ export const SendPassengerName = async (dispatch, values, setLoginIsOpen) => {
       values.occupation === "Business"
         ? 1
         : values.occupation === "GeneralPublic"
-          ? 2
-          : values.occupation === "PhysicallyChallenged"
-            ? 3
-            : values.occupation === "PilgrimTravelers"
-              ? 4
-              : values.occupation === "SeniorCitizens"
-                ? 5
-                : values.occupation === "Students"
-                  ? 6
-                  : values.occupation === "Tourist"
-                    ? 7
-                    : 8,
+        ? 2
+        : values.occupation === "PhysicallyChallenged"
+        ? 3
+        : values.occupation === "PilgrimTravelers"
+        ? 4
+        : values.occupation === "SeniorCitizens"
+        ? 5
+        : values.occupation === "Students"
+        ? 6
+        : values.occupation === "Tourist"
+        ? 7
+        : 8,
   };
   console.log(payload.email_id, "verificationforotp");
   sessionStorage.setItem("user_name", values.name);
   const user_id = sessionStorage.getItem("user_id");
-  const url = `${apiUrl}/passenger-details/${user_id}`;
+  const decryptid = user_id && decryptData(user_id);
+  // const user_id = sessionStorage.getItem("user_id");
+  const url = `${apiUrl}/passenger-details/${decryptid}`;
   const method = "put";
   try {
     const response = await api({

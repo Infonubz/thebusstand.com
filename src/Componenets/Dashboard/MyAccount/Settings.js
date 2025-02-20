@@ -14,6 +14,7 @@ import { Drawer, Tooltip } from "antd";
 import LoginMobile from "../../Home/Login/LoginMobile";
 import homesky from "../../../Assets/Theme/Sky/BackgroundSky1.png";
 import { toast } from "react-toastify";
+import { decryptData } from "../../Common/Common-Functions/Encrypt-Decrypt";
 
 export default function Settings() {
   const colors = ColorCodes();
@@ -26,8 +27,10 @@ export default function Settings() {
   const handleonclick = (tab) => {
     navigation("/main", { state: { tabIndex: tab } });
   };
-  const userName = sessionStorage.getItem("user_name");
-
+  const userName1 = sessionStorage.getItem("user_name");
+  const userid = sessionStorage.getItem("user_id");
+  const userName = userName1 && decryptData(userName);
+  const decrypid = userid && decryptData(userid);
   const firstWord = userName?.split(" ")[0];
 
   const secondWord = userName?.split(" ")[1] || "";
@@ -57,7 +60,7 @@ export default function Settings() {
             <div className="cloudhome"></div>
           </div>
           <div className="absolute top-[17.5vw]">
-            {sessionStorage.getItem("user_id") ? (
+            {decrypid ? (
               <div className="py-[2vw]  w-screen">
                 <div className="flex items-center px-[5vw] py-[5vw]  gap-x-[3vw]">
                   <label

@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { getTabIndex } from "@progress/kendo-react-common";
 import { FaEdit } from "react-icons/fa";
+import { decryptData } from "../../Common/Common-Functions/Encrypt-Decrypt";
 
 export default function PassengerDetails({
   BusDetails,
@@ -170,7 +171,8 @@ export default function PassengerDetails({
 
   //   console.log(isAllDetailsFilled, "is_all_details_Filled");
   // const [drawerWidth, setDrawerWidth] = useState("60%");
-  const user_id = sessionStorage.getItem("user_id");
+  const user_id1 = sessionStorage.getItem("user_id");
+  const user_id = user_id1 && decryptData(user_id1);
   const navigation = useNavigate();
 
   const toggleDropDown = (index) => {
@@ -1630,7 +1632,7 @@ export default function PassengerDetails({
                                                 value={
                                                   travelerDetails?.[index]
                                                     ?.age ||
-                                                  // values[`age_${index}`] 
+                                                  // values[`age_${index}`]
                                                   // ||
                                                   ""
                                                 }

@@ -7,6 +7,8 @@ export default function PickUpandDrop({
   busboarding,
   selectedRoutes,
   setSelectedRoutes,
+  setBillAddress,
+  billAddress,
   busdroping,
   layout,
 }) {
@@ -17,8 +19,7 @@ export default function PickUpandDrop({
     type.toLowerCase().includes("bharatBenz") ||
     type.toLowerCase().includes("luxury");
 
-  console.log(layout, "layoutdfghjk");
-  useEffect(()=>{
+  useEffect(() => {
     setSelectedRoutes({
       ...selectedRoutes,
       dep_route: layout?.boarding_info?.[0]?.placeName,
@@ -27,8 +28,16 @@ export default function PickUpandDrop({
       arr_time: layout?.dropping_info?.[0]?.placeTime,
       dep_route_id: layout?.boarding_info?.[0]?.placeId,
       arr_route_id: layout?.dropping_info?.[0]?.placeId,
+      dep_landmark: layout?.boarding_info?.[0]?.landMark,
+      dep_pincode: layout?.boarding_info?.[0]?.pincode,
+      arr_landmark: layout?.dropping_info?.[0]?.landMark
     })
-  },[])
+    setBillAddress({
+      ...billAddress,
+      address: layout?.boarding_info?.[0]?.landMark,
+      pincode: layout?.boarding_info?.[0]?.pincode,
+    })
+  }, [])
   return (
     <div>
       <div
@@ -51,39 +60,43 @@ export default function PickUpandDrop({
 
           {/* SCROLLABLE CONTAINER */}
           <div
-            className={`overflow-y-auto  ${
-              LuxuryFind(BusDetails?.Bus_Type_Name)
-                ? "scrollbar-luxury"
-                : "scrollbar-regular"
-            }`}
+            className={`overflow-y-auto  ${LuxuryFind(BusDetails?.Bus_Type_Name)
+              ? "scrollbar-luxury"
+              : "scrollbar-regular"
+              }`}
             style={{
-              maxHeight: `${
-                Number(layout?.lowerTotalColumns) * 2.5 > 35
-                  ? 35
-                  : Number(layout?.lowerTotalColumns) * 2.5
-              }vw`,
+              maxHeight: `${Number(layout?.lowerTotalColumns) * 2.5 > 35
+                ? 35
+                : Number(layout?.lowerTotalColumns) * 2.5
+                }vw`,
               overflowY: "auto",
             }}
           >
             {layout?.boarding_info?.map((item, index) => (
               <div
                 key={index}
-                className={`${
-                  selectedRoutes.d === item?.placeName
-                    ? "bg-[#E5FFF1]"
-                    : "bg-white hover:bg-gray-200"
-                } ${
-                  LuxuryFind(BusDetails?.Bus_Type_Name)
+                className={`${selectedRoutes.d === item?.placeName
+                  ? "bg-[#E5FFF1]"
+                  : "bg-white hover:bg-gray-200"
+                  } ${LuxuryFind(BusDetails?.Bus_Type_Name)
                     ? "border-gray-400"
                     : "border-gray-400"
-                } border-b-[0.1vw]  flex flex-col py-[0.5vw] px-[1vw] cursor-pointer relative `}
-                onClick={() =>
+                  } border-b-[0.1vw]  flex flex-col py-[0.5vw] px-[1vw] cursor-pointer relative `}
+                onClick={() => {
                   setSelectedRoutes({
                     ...selectedRoutes,
                     dep_route: item?.placeName,
                     dep_time: item?.placeTime,
                     dep_route_id: item?.placeId,
+                    dep_landmark: item?.landMark,
+                    dep_pincode: item?.pincode
                   })
+                  setBillAddress({
+                    ...billAddress,
+                    address: item?.landMark,
+                    pincode: item?.pincode,
+                  })
+                }
                 }
                 style={{
                   backgroundColor:
@@ -134,32 +147,28 @@ export default function PickUpandDrop({
 
           {/* SCROLLABLE CONTAINER */}
           <div
-            className={`overflow-y-auto ${
-              LuxuryFind(BusDetails?.Bus_Type_Name)
-                ? "scrollbar-luxury"
-                : "scrollbar-regular"
-            }`}
+            className={`overflow-y-auto ${LuxuryFind(BusDetails?.Bus_Type_Name)
+              ? "scrollbar-luxury"
+              : "scrollbar-regular"
+              }`}
             style={{
-              maxHeight: `${
-                Number(layout?.lowerTotalColumns) * 2.5 > 35
-                  ? 35
-                  : Number(layout?.lowerTotalColumns) * 2.5
-              }vw`,
+              maxHeight: `${Number(layout?.lowerTotalColumns) * 2.5 > 35
+                ? 35
+                : Number(layout?.lowerTotalColumns) * 2.5
+                }vw`,
               overflowY: "auto",
             }}
           >
             {layout?.dropping_info?.map((item, index) => (
               <div
                 key={index}
-                className={`${
-                  selectedRoutes.arri_route === item?.placeName
-                    ? "bg-[#E5FFF1]"
-                    : "bg-white hover:bg-gray-200"
-                } ${
-                  LuxuryFind(BusDetails?.Bus_Type_Name)
+                className={`${selectedRoutes.arri_route === item?.placeName
+                  ? "bg-[#E5FFF1]"
+                  : "bg-white hover:bg-gray-200"
+                  } ${LuxuryFind(BusDetails?.Bus_Type_Name)
                     ? "border-gray-400"
                     : "border-gray-400"
-                } border-b-[0.1vw]  flex flex-col py-[0.5vw] px-[1vw] cursor-pointer relative`}
+                  } border-b-[0.1vw]  flex flex-col py-[0.5vw] px-[1vw] cursor-pointer relative`}
                 onClick={() =>
                   setSelectedRoutes({
                     ...selectedRoutes,
@@ -204,6 +213,6 @@ export default function PickUpandDrop({
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import { GET_OPERATOR_LIST } from "../../Store/Type";
+import { decryptData } from "../../Componenets/Common/Common-Functions/Encrypt-Decrypt";
 
 //import { object } from "yup";
 
@@ -67,13 +68,30 @@ export const TBS_Booking_Details = async (
   );
 
   const payload = {
+    login_user_id: "",
+    login_user_email: "",
+    login_user_mobile: "",
     name: ticketdetails?.ticket_det?.[0]?.Passenger_Name,
     email: email,
     mobile: mobile,
     ticket_no: TicketNo,
     pnr_no: TicketNo,
-    transaction_id: payment_id,
-    transaction_status: msg,
+    source_id: "",
+    source_name: "",
+    pickup_point_id: "",
+    pickup_point_name: "",
+    depature_date: "",
+    depature_time: "",
+    destination_id: "",
+    destination_name: "",
+    droping_point_id: "",
+    droping_point_name: "",
+    arrival_date: "",
+    arraival_time: "",
+    operator_id: "",
+    operator_name: "",
+    passenger_details: "",
+    payment_status: msg,
     razorpay_order_id: order_id,
     razorpay_payment_id: payment_id,
     razorpay_signature: signature,
@@ -118,8 +136,10 @@ export const PostFeedBack = async (rating, nameValue, feedback, occValue) => {
       ? 8
       : 2;
   try {
+    const passenger_id = sessionStorage.getItem("passenger_id");
+    const decryptPassenger = passenger_id && decryptData(passenger_id);
     const response = await axios.post(`${apiUrl}/feedback`, {
-      tbs_passenger_id: sessionStorage.getItem("passenger_id"),
+      tbs_passenger_id: decryptPassenger,
       name: nameValue,
       rating: rating,
       description: feedback,
@@ -133,7 +153,8 @@ export const PostFeedBack = async (rating, nameValue, feedback, occValue) => {
 };
 
 export const GetFeedbackById = async () => {
-  const id = sessionStorage.getItem("passenger_id");
+  const passenger_id = sessionStorage.getItem("passenger_id");
+  const id = passenger_id && decryptData(passenger_id);
   try {
     const response = await axios.get(`${apiUrl}/passenger-details/${id}`);
     console.log(response.data, "ddddjjjjjjdjdjhfh");

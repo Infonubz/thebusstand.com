@@ -200,11 +200,10 @@ export default function MobileBillAddress({
                             // );
                           }}
                           className={`
-                             ${
-                               !isSubmitting || !enableInput
-                                 ? `cursor-pointer`
-                                 : "cursor-not-allowed"
-                             } border-r-[1.5vw] placeholder:text-[3.5vw] border-[.1vw] text-[4vw]   w-full h-[10vw] rounded-[1.5vw] outline-none px-[0.75vw]`}
+                             ${!isSubmitting || !enableInput
+                              ? `cursor-pointer`
+                              : "cursor-not-allowed"
+                            } border-r-[1.5vw] placeholder:text-[3.5vw] border-[.1vw] text-[4vw]   w-full h-[10vw] rounded-[1.5vw] outline-none px-[0.75vw]`}
                           style={{
                             borderColor:
                               LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
@@ -240,11 +239,10 @@ export default function MobileBillAddress({
                             // );
                           }}
                           className={`
-                             ${
-                               !isSubmitting || !enableInput
-                                 ? `cursor-pointer`
-                                 : "cursor-not-allowed"
-                             } 
+                             ${!isSubmitting || !enableInput
+                              ? `cursor-pointer`
+                              : "cursor-not-allowed"
+                            } 
                              border-r-[1.5vw]  placeholder:text-[3.5vw] border-[.1vw] text-[4vw] w-full h-[10vw] rounded-[1.5vw] outline-none px-[0.75vw]`}
                           style={{
                             borderColor:
@@ -273,7 +271,7 @@ export default function MobileBillAddress({
                           disabled={enableInput}
                           autoComplete="off"
                           placeholder="State"
-                          // value={emailInput}
+                          value={values?.state}
                           onChange={(e) => {
                             handleChange(e);
                             //   setEmailInput(e.target.value);
@@ -284,11 +282,10 @@ export default function MobileBillAddress({
                             // );
                           }}
                           className={`
-                             ${
-                               !isSubmitting || !enableInput
-                                 ? `cursor-pointer`
-                                 : "cursor-not-allowed"
-                             } 
+                             ${!isSubmitting || !enableInput
+                              ? `cursor-pointer`
+                              : "cursor-not-allowed"
+                            } 
                              border-r-[1.5vw] placeholder:text-[3.5vw] border-[.1vw] text-[4vw] w-full h-[10vw] rounded-[1.5vw]  outline-none  px-[0.75vw]`}
                           style={{
                             borderColor:
@@ -314,7 +311,7 @@ export default function MobileBillAddress({
                           disabled={enableInput}
                           autoComplete="off"
                           placeholder="City"
-                          // value={emailInput}
+                          value={values?.city || ''}
                           onChange={(e) => {
                             handleChange(e);
                             //   setEmailInput(e.target.value);
@@ -367,11 +364,10 @@ export default function MobileBillAddress({
                           />
 
                           <p
-                            className={` text-[4vw] underline ${
-                              LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
+                            className={` text-[4vw] underline ${LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
                                 ? "text-[#393939]"
                                 : "text-[#1F487C]"
-                            } `}
+                              } `}
                             onClick={() => {
                               setOpenDrawer(true);
                             }}
@@ -392,12 +388,12 @@ export default function MobileBillAddress({
                               // size={"2vw"}
                               color={
                                 LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                true
+                                  true
                                   ? "#393939"
                                   : LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
                                     true
-                                  ? "#1F4B7F"
-                                  : ""
+                                    ? "#1F4B7F"
+                                    : ""
                               }
                               className="cursor-pointer text-[7vw]"
                               onClick={() => {
@@ -433,11 +429,10 @@ export default function MobileBillAddress({
                                     : "#1F4B7F"
                                   : "gray",
                             }}
-                            className={`${
-                              termschecked && isValid && !enableInput
+                            className={`${termschecked && isValid && !enableInput
                                 ? "cursor-pointer"
                                 : "cursor-not-allowed"
-                            } w-full h-[8vw]  rounded-[2vw]  ml-[1vw]`}
+                              } w-full h-[8vw]  rounded-[2vw]  ml-[1vw]`}
                             disabled={!isAllDetailsFilled}
                           >
                             <span className="text-white text-[3.2vw] font-semibold">

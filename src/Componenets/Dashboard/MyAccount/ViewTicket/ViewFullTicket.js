@@ -132,7 +132,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
   }, []);
 
   return (
-    <div>
+    <div className="p-[2.5vw] md:p-[1.5vw] flex flex-col gap-y-[3vw] md:gap-y-[1.60vw]">
       <div
         className={` ${
           LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true

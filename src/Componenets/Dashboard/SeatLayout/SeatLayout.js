@@ -31,8 +31,11 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
     arr_time: layout?.dropping_info?.[0]?.placeTime,
     dep_route_id: null,
     arr_route_id: null,
+    dep_landmark: layout?.boarding_info?.[0]?.landMark,
+    dep_pincode: '',
+    arr_landmark: layout?.dropping_info?.[0]?.landMark
   });
-  console.log(layout?.boarding_info?.[0]?.placeName, "gggggggggg");
+
 
   const [selectedseatprice, setSelectedSeatsPrice] = useState([]);
   const [totalprice, setTotalPrice] = useState(null);
@@ -111,7 +114,6 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
   const upperDeckSeats = formatSeatData(
     layout?.TotalSeatList?.upperdeck_seat_nos || []
   );
-  console.log(lowerDeckSeats, "lowerDeckSeats");
   const getBorderClass = (seat) => {
     if (seat?.isBooked === true && seat.gender === "M") {
       return "#0088D3";
@@ -143,7 +145,6 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
   };
 
   const getBackgroundClass = (seat) => {
-    console.log(selectedSeats, "seat8888");
     if (
       selectedSeats.includes(seat?.seatNumber) &&
       seat?.isBooked === false &&
@@ -231,7 +232,6 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
   };
   const handleSeatClick = (seat) => {
     if (seat.isBooked === true) return;
-    console.log(seat, "csdcscscscscscscsc");
 
     setSelectedSeats((prevSelectedSeats) => {
       if (prevSelectedSeats.includes(seat.seatNumber)) {
@@ -293,7 +293,6 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
   const totalseats = lowerDeckSeats.concat(upperDeckSeats);
   const allprice = totalseats
     ?.map((item) => {
-      console.log(item?.fare?.totalNetFare, "itemitemitemitemitemitemitemitem");
       return Math.round(item?.price);
     })
     .sort((a, b) => a - b);
@@ -305,15 +304,9 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
         return a + b;
       });
       setTotalPrice(Math.round(price));
-      console.log(price, "pricepricepriceprice");
     }
   }, [selectedseatprice]);
-  console.log(Number(layout?.lowerTotalColumns) * 4.5 > 40, "layoutlayout");
-  console.log(
-    `h-[${Number(layout?.lowerTotalColumns) * 3.8}vw]`,
-    "fghjkdddddd"
-  );
-  console.log(layout, "layoutloading");
+
   const [emailInput, setEmailInput] = useState("");
   const [mobileInput, setMobileInput] = useState("");
   const [travelerDetails, setTravelerDetails] = useState(
@@ -323,8 +316,8 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
     }, {})
   );
   const [billAddress, setBillAddress] = useState({
-    address: "",
-    pincode: "",
+    address: layout?.boarding_info?.[0]?.landMark,
+    pincode: layout?.boarding_info?.[0]?.pincode,
     state: "",
     city: "",
   });
@@ -371,11 +364,10 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
       {layoutloading === false ? (
         <div className="px-[0.5vw] mb-[0.5vw]">
           <div
-            className={`${
-              LuxuryFind(BusDetails?.Bus_Type_Name) === true
-                ? "bg-[#FFEEC9]"
-                : "bg-[#EEEDED]"
-            }  border-x-[0.1vw]  border-b-[0.1vw] rounded-b-[0.5vw]`}
+            className={`${LuxuryFind(BusDetails?.Bus_Type_Name) === true
+              ? "bg-[#FFEEC9]"
+              : "bg-[#EEEDED]"
+              }  border-x-[0.1vw]  border-b-[0.1vw] rounded-b-[0.5vw]`}
           >
             <>
               <div className="h-[4vw] w-full">
@@ -383,22 +375,20 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                   <div className="col-span-3 flex pl-[4vw]">
                     <button
                       type="button"
-                      className={`${
-                        currentrate === 1 ? " " : "  "
-                      } h-[2.5vw] w-[6vw] rounded-l-[0.5vw] font-bold  border-y-[0.1vw] border-l-[0.1vw] border-r-[0.1vw] text-[1.2vw]
-               ${
-                 currentrate === 1
-                   ? LuxuryFind(BusDetails?.Bus_Type_Name) === true
-                     ? "bg-[#393939] text-white"
-                     : LuxuryFind(BusDetails?.Bus_Type_Name) === false
-                     ? "bg-[#1F487C] text-white "
-                     : "bg-white text-black"
-                   : LuxuryFind(BusDetails?.Bus_Type_Name) === true
-                   ? "bg-white text-[#393939] hover:bg-[#d6d6d6ce]"
-                   : LuxuryFind(BusDetails?.Bus_Type_Name) === false
-                   ? "bg-white text-[#1F487C] hover:bg-gray-200"
-                   : "bg-white text-black"
-               }
+                      className={`${currentrate === 1 ? " " : "  "
+                        } h-[2.5vw] w-[6vw] rounded-l-[0.5vw] font-bold  border-y-[0.1vw] border-l-[0.1vw] border-r-[0.1vw] text-[1.2vw]
+               ${currentrate === 1
+                          ? LuxuryFind(BusDetails?.Bus_Type_Name) === true
+                            ? "bg-[#393939] text-white"
+                            : LuxuryFind(BusDetails?.Bus_Type_Name) === false
+                              ? "bg-[#1F487C] text-white "
+                              : "bg-white text-black"
+                          : LuxuryFind(BusDetails?.Bus_Type_Name) === true
+                            ? "bg-white text-[#393939] hover:bg-[#d6d6d6ce]"
+                            : LuxuryFind(BusDetails?.Bus_Type_Name) === false
+                              ? "bg-white text-[#1F487C] hover:bg-gray-200"
+                              : "bg-white text-black"
+                        }
               `}
                       onClick={() => SetCurrentRate(1)}
                       style={{
@@ -414,24 +404,22 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                       uniqueprice.map((item, index) => (
                         <button
                           type="button"
-                          className={`h-[2.5vw] w-[6vw] font-bold border-y-[0.1vw] border-r-[0.1vw] px-[0.5vw] text-[1.2vw] ${
-                            index === uniqueprice.length - 1
-                              ? "rounded-r-[0.5vw]"
-                              : ""
-                          } ${
-                            currentrate === item
+                          className={`h-[2.5vw] w-[6vw] font-bold border-y-[0.1vw] border-r-[0.1vw] px-[0.5vw] text-[1.2vw] ${index === uniqueprice.length - 1
+                            ? "rounded-r-[0.5vw]"
+                            : ""
+                            } ${currentrate === item
                               ? LuxuryFind(BusDetails?.Bus_Type_Name) === true
                                 ? "bg-[#393939] text-white"
                                 : LuxuryFind(BusDetails?.Bus_Type_Name) ===
                                   false
-                                ? "bg-[#1F487C] text-white "
-                                : "bg-white text-black"
+                                  ? "bg-[#1F487C] text-white "
+                                  : "bg-white text-black"
                               : LuxuryFind(BusDetails?.Bus_Type_Name) === true
-                              ? "bg-white text-[#393939] hover:bg-[#d6d6d6ce]"
-                              : LuxuryFind(BusDetails?.Bus_Type_Name) === false
-                              ? "bg-white text-[#1F487C] hover:bg-gray-200"
-                              : "bg-white text-black"
-                          }`}
+                                ? "bg-white text-[#393939] hover:bg-[#d6d6d6ce]"
+                                : LuxuryFind(BusDetails?.Bus_Type_Name) === false
+                                  ? "bg-white text-[#1F487C] hover:bg-gray-200"
+                                  : "bg-white text-black"
+                            }`}
                           onClick={() => SetCurrentRate(item)}
                           style={{
                             borderColor:
@@ -481,17 +469,15 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                 </div>
               </div>
               <div
-                className={`${
-                  LuxuryFind(BusDetails?.Bus_Type_Name) === true
-                    ? "bg-[#FFEEC9]"
-                    : "bg-[#EEEDED]"
-                }  grid grid-cols-7  pt-[1vw] w-full rounded-b-[0.5vw]`}
+                className={`${LuxuryFind(BusDetails?.Bus_Type_Name) === true
+                  ? "bg-[#FFEEC9]"
+                  : "bg-[#EEEDED]"
+                  }  grid grid-cols-7  pt-[1vw] w-full rounded-b-[0.5vw]`}
                 style={{
-                  height: `${
-                    Number(layout?.lowerTotalColumns) * 4.5 > 40
-                      ? `${Number(layout?.lowerTotalColumns) * 4.5}vw`
-                      : "40vw"
-                  }`,
+                  height: `${Number(layout?.lowerTotalColumns) * 4.5 > 40
+                    ? `${Number(layout?.lowerTotalColumns) * 4.5}vw`
+                    : "40vw"
+                    }`,
                 }}
               >
                 <div className="col-span-1 h-[30vw] w-full ml-[1vw] rounded-[1vw] mt-[1vw]  flex items-center py-[1vw] flex-col justify-between gap-[0.5vw]">
@@ -598,9 +584,8 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                       <div
                         className={`border-[0.1vw] border-gray-400  w-full rounded-[0.5vw] relative bg-white`}
                         style={{
-                          height: `${
-                            Number(layout?.lowerTotalColumns) * 3.8
-                          }vw`,
+                          height: `${Number(layout?.lowerTotalColumns) * 3.8
+                            }vw`,
                         }}
                       >
                         <p className="text-[1vw] absolute top-[-1.5vw] left-[3vw] text-center">
@@ -611,18 +596,16 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                           <RiSteering2Fill size={"2vw"} />
                         </span>
                         <div
-                          className={` border-l-[0.2vw] ${
-                            LuxuryFind(BusDetails?.Bus_Type_Name) === true
-                              ? "border-[#FFEEC9]"
-                              : "border-[#EEEDED]"
-                          }  absolute left-[-0.15vw] top-[3vw] h-[3vw]`}
+                          className={` border-l-[0.2vw] ${LuxuryFind(BusDetails?.Bus_Type_Name) === true
+                            ? "border-[#FFEEC9]"
+                            : "border-[#EEEDED]"
+                            }  absolute left-[-0.15vw] top-[3vw] h-[3vw]`}
                         ></div>
                         <div
-                          className={`border-r-[0.1vw] border-t-[0.1vw] border-b-[0.1vw] ${
-                            LuxuryFind(BusDetails?.Bus_Type_Name) === true
-                              ? "bg-[#FFEEC9]"
-                              : "bg-[#EEEDED]"
-                          } border-gray-400 h-[3vw] left-[-0.05vw] w-[3vw] top-[3vw] absolute`}
+                          className={`border-r-[0.1vw] border-t-[0.1vw] border-b-[0.1vw] ${LuxuryFind(BusDetails?.Bus_Type_Name) === true
+                            ? "bg-[#FFEEC9]"
+                            : "bg-[#EEEDED]"
+                            } border-gray-400 h-[3vw] left-[-0.05vw] w-[3vw] top-[3vw] absolute`}
                         ></div>
                         <div
                           className="grid grid-rows-6 h-full w-full gap-[1vw] pt-[6vw] py-[1vw]"
@@ -652,51 +635,57 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                         <div className="absolute top-[0.8vw] right-[58%]">
                                           {seatHighlight(seat)}
                                         </div>
-                                        <Tooltip
+                                        {/* <Tooltip
                                           placement="top"
-                                          title={
-                                            <div className="flex items-center  gap-x-[1vw] justify-between">
-                                              <span className="text-[1.2vw] font-semibold text-white">{`${seat.seatNumber}`}</span>
-                                              <span className=" font-bold text-[1.1vw] text-white">
-                                                {`₹ ${calculateDiscountedFare(
-                                                  BusDetails?.BUS_START_DATE,
-                                                  seat?.price,
-                                                  tbs_discount
-                                                )}`}
-                                              </span>
-                                            </div>
-                                          }
+                                          title={ */}
+                                        {/* }
                                           color={getColor(seat)}
+                                        > */}
+                                        <svg
+                                          width="2.4vw"
+                                          height="2.6vw"
+                                          viewBox="0 0 34 39"
+                                          fill={`${getBackgroundClass(seat)}`}
+                                          onClick={() => handleSeatClick(seat)}
+                                          className="cursor-pointer  hovsvg"
+                                        // data-tooltip-id={`tooltip-${index}`}
+                                        // data-tooltip-content={`${
+                                        //   seat.seatNumber
+                                        // }  -   ₹ ${calculateDiscountedFare(
+                                        //   BusDetails?.BUS_START_DATE,
+                                        //   seat?.price
+                                        // )}`}
                                         >
-                                          <svg
-                                            width="2.4vw"
-                                            height="2.6vw"
-                                            viewBox="0 0 34 39"
+                                          <path
+                                            d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998V11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H3.55687Z"
                                             fill={`${getBackgroundClass(seat)}`}
-                                            onClick={() =>
-                                              handleSeatClick(seat)
-                                            }
-                                            className="cursor-pointer"
-                                            // data-tooltip-id={`tooltip-${index}`}
-                                            // data-tooltip-content={`${
-                                            //   seat.seatNumber
-                                            // }  -   ₹ ${calculateDiscountedFare(
-                                            //   BusDetails?.BUS_START_DATE,
-                                            //   seat?.price
-                                            // )}`}
+                                          />
+                                          <path
+                                            d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998C28.9099 9.12696 28.9099 11.5352 28.9099 11.5352M28.9099 11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H4.6386C5.53474 11.5354 6.2612 12.2619 6.2612 13.158V29.9671C6.2612 31.3113 7.35089 32.401 8.69509 32.401H24.1098C25.454 32.401 26.5437 31.3113 26.5437 29.9671V13.1579C26.5437 12.2618 27.2701 11.5353 28.1661 11.5353L28.9099 11.5352Z"
+                                            stroke={`${getBorderClass(seat)}`}
+                                          />
+                                        </svg>
+                                        <div style={{ transform: "rotateY(180deg)", }}
+                                          className="hovcontent hidden absolute z-[40]   top-[-2.4vw] ">
+                                          <div
+                                            className={`flex items-center w-[7vw] px-[.4vw] py-[.2vw] rounded-[.3vw]  justify-around`}
+                                            style={{
+                                              backgroundColor: getColor(seat),
+                                            }}
                                           >
-                                            <path
-                                              d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998V11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H3.55687Z"
-                                              fill={`${getBackgroundClass(
-                                                seat
+                                            <span className="text-[1.2vw] font-semibold text-white">
+                                              {`${seat.seatNumber}`}
+                                            </span>
+                                            <span className=" font-bold text-[1.1vw] text-white">
+                                              {`₹ ${calculateDiscountedFare(
+                                                BusDetails?.BUS_START_DATE,
+                                                seat?.price,
+                                                tbs_discount
                                               )}`}
-                                            />
-                                            <path
-                                              d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998C28.9099 9.12696 28.9099 11.5352 28.9099 11.5352M28.9099 11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H4.6386C5.53474 11.5354 6.2612 12.2619 6.2612 13.158V29.9671C6.2612 31.3113 7.35089 32.401 8.69509 32.401H24.1098C25.454 32.401 26.5437 31.3113 26.5437 29.9671V13.1579C26.5437 12.2618 27.2701 11.5353 28.1661 11.5353L28.9099 11.5352Z"
-                                              stroke={`${getBorderClass(seat)}`}
-                                            />
-                                          </svg>
-                                          {/* <ReactTooltip
+                                            </span>
+                                          </div>
+                                        </div>
+                                        {/* <ReactTooltip
                                           id={`tooltip-${index}`}
                                           place="top"
                                           style={{
@@ -707,7 +696,7 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                             fontWeight: "bold",
                                           }}
                                         /> */}
-                                        </Tooltip>
+                                        {/* </Tooltip> */}
                                       </div>
                                     </>
                                   ) : (
@@ -727,7 +716,7 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                       <div className="absolute top-[0.8vw] right-[1.3vw]">
                                         {seatHighlight(seat)}
                                       </div>
-                                      <Tooltip
+                                      {/* <Tooltip
                                         placement="top"
                                         title={
                                           <div className="flex items-center gap-x-[1vw] justify-between">
@@ -743,29 +732,48 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                           </div>
                                         }
                                         color={getColor(seat)}
+                                      > */}
+                                      <svg
+                                        width="2.5vw"
+                                        height="6vw"
+                                        viewBox="0 0 94 221"
+                                        fill={getBackgroundClass(seat)}
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        onClick={() => handleSeatClick(seat)}
+                                        className="cursor-pointer hovsvg"
+                                        style={{ userSelect: "none" }}
                                       >
-                                        <svg
-                                          width="2.5vw"
-                                          height="6vw"
-                                          viewBox="0 0 94 221"
-                                          fill={getBackgroundClass(seat)}
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          onClick={() => handleSeatClick(seat)}
-                                          className="cursor-pointer"
-                                          style={{ userSelect: "none" }}
+                                        <path
+                                          d="M1.30176 209.776V7.28689C1.30176 4.18046 3.82002 1.6622 6.92645 1.6622H45.3618L82.8597 1.66212C85.9662 1.66211 88.4844 4.18038 88.4844 7.28681V209.776C88.4844 212.882 85.9662 215.4 82.8597 215.4H45.3618H6.92645C3.82002 215.4 1.30176 212.882 1.30176 209.776Z"
+                                          stroke={getBorderClass(seat)}
+                                          strokeWidth="1.8749"
+                                        />
+                                        <path
+                                          d="M63.5838 180.224H26.2565C22.1334 180.224 18.791 183.566 18.791 187.689C18.791 191.812 22.1334 195.155 26.2565 195.155H63.5838C67.7069 195.155 71.0493 191.812 71.0493 187.689C71.0493 183.566 67.7069 180.224 63.5838 180.224Z"
+                                          stroke={getBorderClass(seat)}
+                                          strokeWidth="1.65808"
+                                        />
+                                      </svg>
+                                      <div style={{ transform: "rotateY(180deg)", }}
+                                        className="hovcontent hidden absolute z-[40]   top-[-2.4vw]">
+                                        <div
+                                          className={`flex items-center w-[7vw] px-[.4vw] py-[.2vw] rounded-[.3vw]  justify-around`}
+                                          style={{
+                                            backgroundColor: getColor(seat),
+                                          }}
                                         >
-                                          <path
-                                            d="M1.30176 209.776V7.28689C1.30176 4.18046 3.82002 1.6622 6.92645 1.6622H45.3618L82.8597 1.66212C85.9662 1.66211 88.4844 4.18038 88.4844 7.28681V209.776C88.4844 212.882 85.9662 215.4 82.8597 215.4H45.3618H6.92645C3.82002 215.4 1.30176 212.882 1.30176 209.776Z"
-                                            stroke={getBorderClass(seat)}
-                                            strokeWidth="1.8749"
-                                          />
-                                          <path
-                                            d="M63.5838 180.224H26.2565C22.1334 180.224 18.791 183.566 18.791 187.689C18.791 191.812 22.1334 195.155 26.2565 195.155H63.5838C67.7069 195.155 71.0493 191.812 71.0493 187.689C71.0493 183.566 67.7069 180.224 63.5838 180.224Z"
-                                            stroke={getBorderClass(seat)}
-                                            strokeWidth="1.65808"
-                                          />
-                                        </svg>
-                                      </Tooltip>
+                                          <span className="text-[1.2vw] font-semibold text-white">{`${seat.seatNumber}`}</span>
+                                          <span className=" font-bold text-[1.1vw] text-white">
+                                            {" "}
+                                            {`₹ ${calculateDiscountedFare(
+                                              BusDetails?.BUS_START_DATE,
+                                              seat?.price,
+                                              tbs_discount
+                                            )}`}
+                                          </span>
+                                        </div>
+                                      </div>
+                                      {/* </Tooltip> */}
                                     </div>
                                   )
                                 )}
@@ -781,9 +789,8 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                         <div
                           className="border-[0.1vw] border-gray-400  w-full rounded-[0.5vw] relative bg-white"
                           style={{
-                            height: `${
-                              Number(layout?.upperTotalColumns) * 3.8
-                            }vw`,
+                            height: `${Number(layout?.upperTotalColumns) * 3.8
+                              }vw`,
                           }}
                         >
                           <p className="text-[1vw] absolute top-[-1.5vw] left-[3vw] text-center">
@@ -815,7 +822,7 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                       <div className="absolute top-[0.8vw] right-[1.23vw]">
                                         {seatHighlight(seat)}
                                       </div>
-                                      <Tooltip
+                                      {/* <Tooltip
                                         placement="top"
                                         title={
                                           <div className="flex items-center gap-x-[1vw] justify-between">
@@ -831,29 +838,48 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                           </div>
                                         }
                                         color={getColor(seat)}
+                                      > */}
+                                      <svg
+                                        width="2.4vw"
+                                        height="2.6vw"
+                                        viewBox="0 0 34 39"
+                                        fill={`${getBackgroundClass(seat)}`}
+                                        // fill="#D8D8D8"
+                                        onClick={() => handleSeatClick(seat)}
+                                        className={` cursor-pointer hovsvg`}
+                                      // ${getShadowClass(seat)}
                                       >
-                                        <svg
-                                          width="2.4vw"
-                                          height="2.6vw"
-                                          viewBox="0 0 34 39"
+                                        <path
+                                          d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998V11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H3.55687Z"
                                           fill={`${getBackgroundClass(seat)}`}
-                                          // fill="#D8D8D8"
-                                          onClick={() => handleSeatClick(seat)}
-                                          className={` cursor-pointer`}
-                                          // ${getShadowClass(seat)}
+                                        // stroke="#D8D8D8"
+                                        />
+                                        <path
+                                          d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998C28.9099 9.12696 28.9099 11.5352 28.9099 11.5352M28.9099 11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H4.6386C5.53474 11.5354 6.2612 12.2619 6.2612 13.158V29.9671C6.2612 31.3113 7.35089 32.401 8.69509 32.401H24.1098C25.454 32.401 26.5437 31.3113 26.5437 29.9671V13.1579C26.5437 12.2618 27.2701 11.5353 28.1661 11.5353L28.9099 11.5352Z"
+                                          stroke={`${getBorderClass(seat)}`}
+                                        // stroke="#D8D8D8"
+                                        />
+                                      </svg>
+                                      <div style={{ transform: "rotateY(180deg)", }}
+                                        className="hovcontent hidden absolute z-[40]   top-[-2.4vw]">
+                                        <div
+                                          className={`flex items-center w-[7vw] px-[.4vw] py-[.2vw] rounded-[.3vw]  justify-around`}
+                                          style={{
+                                            backgroundColor: getColor(seat),
+                                          }}
                                         >
-                                          <path
-                                            d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998V11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H3.55687Z"
-                                            fill={`${getBackgroundClass(seat)}`}
-                                            // stroke="#D8D8D8"
-                                          />
-                                          <path
-                                            d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998C28.9099 9.12696 28.9099 11.5352 28.9099 11.5352M28.9099 11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H4.6386C5.53474 11.5354 6.2612 12.2619 6.2612 13.158V29.9671C6.2612 31.3113 7.35089 32.401 8.69509 32.401H24.1098C25.454 32.401 26.5437 31.3113 26.5437 29.9671V13.1579C26.5437 12.2618 27.2701 11.5353 28.1661 11.5353L28.9099 11.5352Z"
-                                            stroke={`${getBorderClass(seat)}`}
-                                            // stroke="#D8D8D8"
-                                          />
-                                        </svg>
-                                      </Tooltip>
+                                          <span className="text-[1.2vw] font-semibold text-white">{`${seat.seatNumber}`}</span>
+                                          <span className=" font-bold text-[1.1vw] text-white">
+                                            {" "}
+                                            {`₹ ${calculateDiscountedFare(
+                                              BusDetails?.BUS_START_DATE,
+                                              seat?.price,
+                                              tbs_discount
+                                            )}`}
+                                          </span>
+                                        </div>
+                                      </div>
+                                      {/* </Tooltip> */}
                                     </div>
                                   ) : (
                                     <div
@@ -870,7 +896,7 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                       <div className="absolute top-[0.8vw] right-[1.3vw]">
                                         {seatHighlight(seat)}
                                       </div>
-                                      <Tooltip
+                                      {/* <Tooltip
                                         placement="top"
                                         title={
                                           <div className="flex items-center gap-x-[1vw] justify-between">
@@ -886,29 +912,48 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                           </div>
                                         }
                                         color={getColor(seat)}
+                                      > */}
+                                      <svg
+                                        width="2.5vw"
+                                        height="6vw"
+                                        viewBox="0 0 94 221"
+                                        fill={getBackgroundClass(seat)}
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        onClick={() => handleSeatClick(seat)}
+                                        className="cursor-pointer hovsvg"
+                                        style={{ userSelect: "none" }}
                                       >
-                                        <svg
-                                          width="2.5vw"
-                                          height="6vw"
-                                          viewBox="0 0 94 221"
-                                          fill={getBackgroundClass(seat)}
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          onClick={() => handleSeatClick(seat)}
-                                          className="cursor-pointer"
-                                          style={{ userSelect: "none" }}
+                                        <path
+                                          d="M1.30176 209.776V7.28689C1.30176 4.18046 3.82002 1.6622 6.92645 1.6622H45.3618L82.8597 1.66212C85.9662 1.66211 88.4844 4.18038 88.4844 7.28681V209.776C88.4844 212.882 85.9662 215.4 82.8597 215.4H45.3618H6.92645C3.82002 215.4 1.30176 212.882 1.30176 209.776Z"
+                                          stroke={getBorderClass(seat)}
+                                          strokeWidth="1.8749"
+                                        />
+                                        <path
+                                          d="M63.5838 180.224H26.2565C22.1334 180.224 18.791 183.566 18.791 187.689C18.791 191.812 22.1334 195.155 26.2565 195.155H63.5838C67.7069 195.155 71.0493 191.812 71.0493 187.689C71.0493 183.566 67.7069 180.224 63.5838 180.224Z"
+                                          stroke={getBorderClass(seat)}
+                                          strokeWidth="1.65808"
+                                        />
+                                      </svg>
+                                      <div style={{ transform: "rotateY(180deg)", }}
+                                        className="hovcontent hidden absolute z-[40]   top-[-2.4vw]">
+                                        <div
+                                          className={`flex items-center w-[7vw] px-[.4vw] py-[.2vw] rounded-[.3vw]  justify-around`}
+                                          style={{
+                                            backgroundColor: getColor(seat),
+                                          }}
                                         >
-                                          <path
-                                            d="M1.30176 209.776V7.28689C1.30176 4.18046 3.82002 1.6622 6.92645 1.6622H45.3618L82.8597 1.66212C85.9662 1.66211 88.4844 4.18038 88.4844 7.28681V209.776C88.4844 212.882 85.9662 215.4 82.8597 215.4H45.3618H6.92645C3.82002 215.4 1.30176 212.882 1.30176 209.776Z"
-                                            stroke={getBorderClass(seat)}
-                                            strokeWidth="1.8749"
-                                          />
-                                          <path
-                                            d="M63.5838 180.224H26.2565C22.1334 180.224 18.791 183.566 18.791 187.689C18.791 191.812 22.1334 195.155 26.2565 195.155H63.5838C67.7069 195.155 71.0493 191.812 71.0493 187.689C71.0493 183.566 67.7069 180.224 63.5838 180.224Z"
-                                            stroke={getBorderClass(seat)}
-                                            strokeWidth="1.65808"
-                                          />
-                                        </svg>
-                                      </Tooltip>
+                                          <span className="text-[1.2vw] font-semibold text-white">{`${seat.seatNumber}`}</span>
+                                          <span className=" font-bold text-[1.1vw] text-white">
+                                            {" "}
+                                            {`₹ ${calculateDiscountedFare(
+                                              BusDetails?.BUS_START_DATE,
+                                              seat?.price,
+                                              tbs_discount
+                                            )}`}
+                                          </span>
+                                        </div>
+                                      </div>
+                                      {/* </Tooltip> */}
                                     </div>
                                   )
                                 )}
@@ -926,6 +971,8 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                   <PickUpandDrop
                     BusDetails={BusDetails}
                     setSelectedRoutes={setSelectedRoutes}
+                    setBillAddress={setBillAddress}
+                    billAddress={billAddress}
                     selectedRoutes={selectedRoutes}
                     layout={layout}
                   />
@@ -981,11 +1028,10 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                         </div>
                         <div className="row-span-1 px-[1vw] py-[0.5vw]">
                           <button
-                            className={`w-full h-full ${
-                              selectedSeats?.length > 0
-                                ? "bg-[#1F487C] cursor-pointer"
-                                : "bg-gray-400 cursor-not-allowed"
-                            } rounded-[0.5vw] text-white font-bold text-[1.3vw] `}
+                            className={`w-full h-full ${selectedSeats?.length > 0
+                              ? "bg-[#1F487C] cursor-pointer"
+                              : "bg-gray-400 cursor-not-allowed"
+                              } rounded-[0.5vw] text-white font-bold text-[1.3vw] `}
                             disabled={selectedSeats?.length > 0 ? false : true}
                             onClick={() => setShowModal(!modalshow)}
                             style={{
@@ -996,8 +1042,8 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                     ? "#393939"
                                     : LuxuryFind(BusDetails?.Bus_Type_Name) ===
                                       false
-                                    ? "#1F487C"
-                                    : "#9CA3AF"
+                                      ? "#1F487C"
+                                      : "#9CA3AF"
                                   : "#9CA3AF",
                             }}
                           >
@@ -1012,13 +1058,13 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                           key={"right"}
                           // width={"60%"}
                           width={drawerWidth}
-                          // className="drawer"
-                          // style={{
-                          //   backgroundImage:  LuxuryFind(BusDetails?.Bus_Type_Name) === true
-                          //   ? `url(${backgroundImg}),linear-gradient(to right, #F8C550, #FFEB76, #FFE173)`
-                          //   : "#ffffff",
-                          //   zIndex: 2,
-                          // }}
+                        // className="drawer"
+                        // style={{
+                        //   backgroundImage:  LuxuryFind(BusDetails?.Bus_Type_Name) === true
+                        //   ? `url(${backgroundImg}),linear-gradient(to right, #F8C550, #FFEB76, #FFE173)`
+                        //   : "#ffffff",
+                        //   zIndex: 2,
+                        // }}
                         >
                           {/* <DrawerDetails
                             modalshow={modalshow}

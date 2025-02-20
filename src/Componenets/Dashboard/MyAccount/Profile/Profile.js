@@ -14,6 +14,7 @@ import { GetUserDetails } from "../../../../Api-TBS/Login/Login";
 import { TbEdit } from "react-icons/tb";
 import { IoIosCloseCircle } from "react-icons/io";
 import { LuSaveAll } from "react-icons/lu";
+import { decryptData } from "../../../Common/Common-Functions/Encrypt-Decrypt";
 
 export default function Profile({ userName, setUserName }) {
   const validationSchema = Yup.object().shape({
@@ -81,7 +82,8 @@ export default function Profile({ userName, setUserName }) {
   }, [dispatch]);
 
   useEffect(() => {
-    const storedName = sessionStorage.getItem("user_name");
+    const storedName1 = sessionStorage.getItem("user_name");
+    const storedName = storedName1 && decryptData(storedName1);
     if (storedName !== userName) {
       setUserName(storedName);
     }

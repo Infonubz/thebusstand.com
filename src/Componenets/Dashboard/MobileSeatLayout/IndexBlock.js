@@ -23,15 +23,9 @@ export default function IndexBlock() {
     busprice2,
     selectedseatprice2,
     layout2,
+    busdatas
   } = location.state || {};
-  console.log(
-    selectedRoutes2,
-    selectedSeats2,
-    seatDetails2,
-    busdetails2,
-    busprice2,
-    "mobile_seat_lock"
-  );
+  
 
   const [loader, setLoader] = useState(false);
   const [formState, setFormState] = useState({
@@ -45,7 +39,6 @@ export default function IndexBlock() {
       return acc;
     }, {})
   );
-  console.log(travelerDetails, "testtestetttttttttttt");
 
   const [emailInput, setEmailInput] = useState("");
   const [mobileInput, setMobileInput] = useState("");
@@ -74,7 +67,10 @@ export default function IndexBlock() {
       ?.reduce(
         (acc, _, index) => ({
           ...acc,
-          [`user_name_${index}`]: Yup.string().required("Name is required"),
+          [`user_name_${index}`]: Yup.string()
+            .required("Name is required")
+            .min(3, " Name must be atleast 3 Characters long")
+            .matches(/^[A-Za-z\s]+$/, "Name should Contain only Alphabets."),
         }),
         {}
       ),
@@ -83,7 +79,10 @@ export default function IndexBlock() {
       ?.reduce(
         (acc, _, index) => ({
           ...acc,
-          [`age_${index}`]: Yup.string().required("Age is required"),
+          [`age_${index}`]: Yup.number()
+            .required("Age is required")
+            .min(1, "Age cannot be 0.")
+            .typeError("Age must be a number."),
         }),
         {}
       ),
@@ -91,21 +90,16 @@ export default function IndexBlock() {
       [true],
       "You must accept the terms and conditions"
     ),
-    address: Yup.string().required("Address is required"),
     city: Yup.string()
       .matches(/^[A-Za-z\s]+$/, "InValid Names for City")
       .required("City is required"),
     state: Yup.string()
       .matches(/^[A-Za-z\s]+$/, "InValid Names for State")
       .required("State is required"),
-    pin_code: Yup.string()
-      .matches(/^\d{6}$/, "Pin code must be 6 digits")
-      .required("Pin code is required")
-      .test(
-        "is-numeric",
-        "Pin code must contain only numbers",
-        (value) => !isNaN(value)
-      ),
+    pincode: Yup.number()
+      .min(100000, 'Pincode must be at least 6 digits')
+      .max(999999, 'Pincode must be a 6-digit number')
+
   });
 
   const LuxuryFind = (type) =>
@@ -132,7 +126,6 @@ export default function IndexBlock() {
   const { adultCount, childCount } = getPassengerCount(
     Object?.values(travelerDetails)
   );
-  console.log(adultCount, childCount, "tegvyuhubuhbu");
   const [faredetails, setFareDetails] = useState("");
 
   const handleSubmit = async (values) => {
@@ -159,13 +152,11 @@ export default function IndexBlock() {
           );
           setFareDetails(data?.GetFaresInfo);
         } catch {
-          console.log("test");
         }
       }
     } catch (error) {
       console.error("API call failed:", error);
     }
-    console.log(confirmModal, values, "valuesxxsssssssxxx");
   };
   const isAllDetailsFilled = Object.values(travelerDetails).every(
     (traveler) =>
@@ -175,7 +166,6 @@ export default function IndexBlock() {
       traveler.seat !== ""
   );
 
-  console.log(isAllDetailsFilled, "is_all_details_Filled");
 
   const [enableInput, setEnableInput] = useState(false);
   const ticketlist = useSelector((state) => state?.get_ticket_detail);
@@ -208,16 +198,15 @@ export default function IndexBlock() {
           (seat, index) => travelerDetails?.[index]?.gender || "male"
         ),
         terms: termschecked || false,
-        address: "",
-        pin_code: "",
-        state: "",
-        city: "",
-        name: "",
+        address: selectedRoutes2?.dep_landmark ? selectedRoutes2?.dep_landmark : "",
+        pin_code: selectedRoutes2?.dep_pincode ? selectedRoutes2?.dep_pincode : '',
+        state: busdatas?.from_state ? busdatas?.from_state : '',
+        city: busdatas?.from ? busdatas?.from : '',
+
       }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
         handleSubmit(values);
-        console.log(values, "values values");
         setRegisterFullDetails(values);
         localStorage.setItem("page1", true);
         localStorage.setItem("occupation", values.option);
@@ -244,7 +233,7 @@ export default function IndexBlock() {
           // <Form onSubmit={handleSubmit}>
 
           <div className="p-[2.5vw] md:p-[1.5vw] flex flex-col gap-y-[3vw] md:gap-y-[1.60vw]">
-            {showModal === false &&  ticketlist?.length === 0? (
+            {showModal === false && ticketlist?.length === 0 ? (
               <>
                 <MobileJourneyDetails
                   MobBusDetails={busdetails2}
@@ -306,7 +295,7 @@ export default function IndexBlock() {
             ) : (
               <ViewFullTicket
                 ticketDetails={ticketlist}
-                // droppingDate={calculatedDate && ConvertDate(calculatedDate)}
+              // droppingDate={calculatedDate && ConvertDate(calculatedDate)}
               />
             )}
           </div>

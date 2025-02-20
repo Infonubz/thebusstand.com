@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { PROFILE_DATA } from "../../Store/Type";
 import { GetUserDetails } from "../Login/Login";
 import { useNavigate } from "react-router";
+import { decryptData } from "../../Componenets/Common/Common-Functions/Encrypt-Decrypt";
 
 const api = axios.create({
   headers: {
@@ -11,19 +12,20 @@ const api = axios.create({
 });
 const apiUrl = process.env.REACT_APP_API_URL;
 
-export const GetProfileById = async (dispatch, id,setSpinning) => {
+export const GetProfileById = async (dispatch, id, setSpinning) => {
+  const user_id = sessionStorage.getItem("user_id");
+  const decryptid = user_id && decryptData(user_id);
   try {
     const response = await axios.get(
-      `${apiUrl}/passenger-details/${sessionStorage.getItem("user_id")}`
+      `${apiUrl}/passenger-details/${decryptid}`
     );
     dispatch({ type: PROFILE_DATA, payload: response.data });
     return response.data;
   } catch (error) {
     handleError(error);
     // return null;
-  }
-  finally{
-    setSpinning && setSpinning(false)
+  } finally {
+    setSpinning && setSpinning(false);
   }
 };
 // export const Deleteall = async (api, dispatch, module) => {
@@ -81,7 +83,7 @@ export const GetProfileById = async (dispatch, id,setSpinning) => {
 //     return null;
 //   }
 // };
-export const UpdateProfile = async (profilevalues,setSpinning) => {
+export const UpdateProfile = async (profilevalues, setSpinning) => {
   const payload = {
     user_name: profilevalues.user_name,
     date_of_birth: profilevalues.date_of_birth,
@@ -91,11 +93,11 @@ export const UpdateProfile = async (profilevalues,setSpinning) => {
     state: profilevalues.state,
     state_id: profilevalues.state_id || "TN",
     age: profilevalues.age,
-    occupation:profilevalues.occupation,
+    occupation: profilevalues.occupation,
     occupation_id:
-    profilevalues.occupation === "Business"?
-    1 :
-    profilevalues.occupation === "GeneralPublic"
+      profilevalues.occupation === "Business"
+        ? 1
+        : profilevalues.occupation === "GeneralPublic"
         ? 2
         : profilevalues.occupation === "PhysicallyChallenged"
         ? 3
@@ -109,18 +111,19 @@ export const UpdateProfile = async (profilevalues,setSpinning) => {
         ? 7
         : 8,
   };
-  
-  console.log(profilevalues, "profilevalues");
 
+  console.log(profilevalues, "profilevalues");
   const user_id = sessionStorage.getItem("user_id");
+  const decryptid = user_id && decryptData(user_id);
+  // const user_id = sessionStorage.getItem("user_id");
 
   console.log(payload, "Update_profile_payload");
   console.log(user_id, "user_id__user_id");
 
-  const url = user_id
-    ? `${apiUrl}/passenger-details/${user_id}`
+  const url = decryptid
+    ? `${apiUrl}/passenger-details/${decryptid}`
     : `${apiUrl}/passenger-details`;
-  const method = user_id ? "put" : "post";
+  const method = decryptid ? "put" : "post";
 
   try {
     const response = await api({
@@ -138,9 +141,8 @@ export const UpdateProfile = async (profilevalues,setSpinning) => {
   } catch (error) {
     handleError(error);
     return null;
-  }
-  finally{
-    setSpinning(false)
+  } finally {
+    setSpinning(false);
   }
 };
 

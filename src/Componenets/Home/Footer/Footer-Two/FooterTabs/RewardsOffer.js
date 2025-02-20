@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import Footer from "../Home/Footer";
 // import HomeHearder from "../MainComponenet/HomeHearder";
-import homesky from "../../../../../Assets/Theme/Sky/BackgroundSky1.png"
+import homesky from "../../../../../Assets/Theme/Sky/BackgroundSky1.png";
 // import Rewards from "../../assets/Rewards.png";
 // import Rewards1 from "../../assets/Rewards1.png";
 // import Rewards2 from "../../assets/Rewards2.png";
@@ -10,18 +10,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { Empty, Spin } from "antd";
 import { useNavigate } from "react-router";
 import { LoadingOutlined } from "@ant-design/icons";
-import { GetFeedbackById, GetOffersOccupation } from "../../../../../Api-TBS/Home/Home";
+import {
+  GetFeedbackById,
+  GetOffersOccupation,
+} from "../../../../../Api-TBS/Home/Home";
 import Navbar_One from "../../../../Common/Top-Navbar/Navbar-One";
 import FooterTwo from "../FooterTwo";
 import FooterThree from "../../Footer-Three/FooterThree";
 import NavMobile from "./NavMobile";
+import { decryptData } from "../../../../Common/Common-Functions/Encrypt-Decrypt";
 
 export default function Rewardsandoffers() {
   const [currenttab, setCurrenttab] = useState(2);
   // const [getValues, setGetValues] = useState("General Public");
   const [spinning, setSpinning] = useState(false);
-  const [redeemOffers, setRedeemOffers] = useState()
-  console.log(redeemOffers, 'redeemOffers_redeemOffers')
+  const [redeemOffers, setRedeemOffers] = useState();
+  console.log(redeemOffers, "redeemOffers_redeemOffers");
   const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
   // const Reward = [
   //   {
@@ -50,7 +54,10 @@ export default function Rewardsandoffers() {
     setSpinning(true);
     const feedback = async () => {
       const response = await GetFeedbackById();
-      if (response && sessionStorage.getItem("passenger_id")) {
+      const passenger_id = sessionStorage.getItem("passenger_id");
+      const depassenger_id = passenger_id && decryptData(passenger_id);
+
+      if (response && depassenger_id) {
         // setGetValues(
         //   response.occupation_id ===1
         //     ? "Business"
@@ -71,7 +78,12 @@ export default function Rewardsandoffers() {
         //     : "GeneralPublic"
         // );
         console.log(response, "lszfmjdsfksdhgj");
-        GetOffersOccupation(dispatch, response.occupation_id, setSpinning, setRedeemOffers);
+        GetOffersOccupation(
+          dispatch,
+          response.occupation_id,
+          setSpinning,
+          setRedeemOffers
+        );
       } else {
         GetOffersOccupation(dispatch, 2, setSpinning, setRedeemOffers);
       }
@@ -379,73 +391,81 @@ export default function Rewardsandoffers() {
           <div className=" px-[2vw] ">
             <div className=" gap-[1vw] w-full md:my-0 my-[2vw] grid grid-cols-4">
               <button
-                className={`${currenttab === 1
-                  ? "bg-[#1F487C] text-white font-semibold"
-                  : "bg-white text-[#1F487C]"
-                  } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
+                className={`${
+                  currenttab === 1
+                    ? "bg-[#1F487C] text-white font-semibold"
+                    : "bg-white text-[#1F487C]"
+                } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
                 onClick={() => setCurrenttab(0)}
               >
                 All
               </button>
               <button
-                className={`${currenttab === 2
-                  ? "bg-[#1F487C] text-white font-semibold"
-                  : "bg-white text-[#1F487C]"
-                  } w-full h-[10vw] text-[3vw]  px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
+                className={`${
+                  currenttab === 2
+                    ? "bg-[#1F487C] text-white font-semibold"
+                    : "bg-white text-[#1F487C]"
+                } w-full h-[10vw] text-[3vw]  px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
                 onClick={() => setCurrenttab(2)}
               >
                 General Public
               </button>
               <button
-                className={`${currenttab === 3
-                  ? "bg-[#1F487C] text-white font-semibold"
-                  : "bg-white text-[#1F487C]"
-                  } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
+                className={`${
+                  currenttab === 3
+                    ? "bg-[#1F487C] text-white font-semibold"
+                    : "bg-white text-[#1F487C]"
+                } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
                 onClick={() => setCurrenttab(3)}
               >
                 Physically Challenged
               </button>
               <button
-                className={`${currenttab === 4
-                  ? "bg-[#1F487C] text-white font-semibold"
-                  : "bg-white text-[#1F487C]"
-                  } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
+                className={`${
+                  currenttab === 4
+                    ? "bg-[#1F487C] text-white font-semibold"
+                    : "bg-white text-[#1F487C]"
+                } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
                 onClick={() => setCurrenttab(4)}
               >
                 Pilgrim Travellers
               </button>
               <button
-                className={`${currenttab === 5
-                  ? "bg-[#1F487C] text-white font-semibold"
-                  : "bg-white text-[#1F487C]"
-                  } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
+                className={`${
+                  currenttab === 5
+                    ? "bg-[#1F487C] text-white font-semibold"
+                    : "bg-white text-[#1F487C]"
+                } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
                 onClick={() => setCurrenttab(5)}
               >
                 Senior Citizens
               </button>
               <button
-                className={`${currenttab === 6
-                  ? "bg-[#1F487C] text-white font-semibold"
-                  : "bg-white text-[#1F487C]"
-                  } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
+                className={`${
+                  currenttab === 6
+                    ? "bg-[#1F487C] text-white font-semibold"
+                    : "bg-white text-[#1F487C]"
+                } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
                 onClick={() => setCurrenttab(6)}
               >
                 Students
               </button>
               <button
-                className={`${currenttab === 7
-                  ? "bg-[#1F487C] text-white font-semibold"
-                  : "bg-white text-[#1F487C]"
-                  } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
+                className={`${
+                  currenttab === 7
+                    ? "bg-[#1F487C] text-white font-semibold"
+                    : "bg-white text-[#1F487C]"
+                } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
                 onClick={() => setCurrenttab(7)}
               >
                 Tourists
               </button>
               <button
-                className={`${currenttab === 8
-                  ? "bg-[#1F487C] text-white font-semibold"
-                  : "bg-white text-[#1F487C]"
-                  } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
+                className={`${
+                  currenttab === 8
+                    ? "bg-[#1F487C] text-white font-semibold"
+                    : "bg-white text-[#1F487C]"
+                } w-full h-[10vw] text-[3vw] px-[5vw] rounded-lg border-[0.1vw] border-[#1F487C]`}
                 onClick={() => setCurrenttab(8)}
               >
                 Corporate Travellers
