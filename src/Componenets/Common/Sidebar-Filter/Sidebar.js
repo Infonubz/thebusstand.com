@@ -42,6 +42,46 @@ import { Abhibus_GetBusList } from "../../../Api-Abhibus/Home/HomePage";
 import moment from "moment";
 
 const Sidebar = ({ sidebarToggle, share }) => {
+  const [luxurybus, setluxurybus] = useState({
+    luxury: null,
+    normal: null,
+  });
+
+  const [acBus, setAcBus] = useState({
+    ac_bus: null,
+    non_ac_bus: null,
+  });
+  const [busSeatType, setBusSeatType] = useState({
+    sleep: null,
+    seat: null,
+  });
+
+  useEffect(() => {
+    if (sessionStorage.getItem("home_luxury") === "true") {
+      setluxurybus({
+        normal: null,
+        luxury: true,
+      });
+    }
+    if (sessionStorage.getItem("home_ac") === "true") {
+      setAcBus({
+        ac_bus: true,
+        non_ac_bus: null,
+      });
+    }
+    if (sessionStorage.getItem("home_seat_type") === "true") {
+      setBusSeatType({
+        seat: true,
+        sleep: null,
+      });
+    }
+    if (sessionStorage.getItem("home_seat_type") === "false") {
+      setBusSeatType({
+        sleep: true,
+        seat: null,
+      });
+    }
+  }, []);
   const arrange_data = useSelector((state) => state.rearrange);
   const [amenitiesvalue, setAmenitiesValue] = useState({});
 
@@ -65,7 +105,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
   // const [modalpickupsearch, setModalpickupsearch] = useState("");
   // const [busData, setBusData] = useState();
   const [value, setValue] = useState([0, 3000]);
-  const [busFilterType, setBusFilterType] = useState("")
+  const [busFilterType, setBusFilterType] = useState("");
 
   // const buslist = useSelector((state) => state?.card_detail);
   const [pickUp_list, setPickUpList] = useState({});
@@ -141,20 +181,31 @@ const Sidebar = ({ sidebarToggle, share }) => {
     // setAcFilter("");
     // setSeatTypeFilter("");
     // localStorage.setItem("isLuxury", false);
-    amenitiesClear()
-    vehicleclear()
-    pickupClear()
-    dropClear()
-    operatorClear()
-    pickuptimeClear()
+    setluxurybus({
+      luxury: null,
+      normal: null,
+    });
+    setAcBus({
+      ac_bus: null,
+      non_ac_bus: null,
+    });
+    setBusSeatType({
+      sleep: null,
+      seat: null,
+    });
+
+    amenitiesClear();
+    vehicleclear();
+    pickupClear();
+    dropClear();
+    operatorClear();
+    pickuptimeClear();
     setValue([0, 3000]);
     setPriceRange({ min: 0, max: 3000 });
-    timeClear("")
-    sessionStorage.setItem('home_luxury', null)
-    sessionStorage.setItem('home_seat_type', null)
-    sessionStorage.setItem('home_ac', null)
-
-
+    timeClear("");
+    sessionStorage.setItem("home_luxury", null);
+    sessionStorage.setItem("home_seat_type", null);
+    sessionStorage.setItem("home_ac", null);
   }, [timefiltervalue]);
 
   useEffect(() => {
@@ -237,15 +288,27 @@ const Sidebar = ({ sidebarToggle, share }) => {
     //   amenities: [],
     //   radius: false,
     // });
+    setluxurybus({
+      luxury: null,
+      normal: null,
+    });
+    setAcBus({
+      ac_bus: null,
+      non_ac_bus: null,
+    });
+    setBusSeatType({
+      sleep: null,
+      seat: null,
+    });
     setAcFilter(false);
-    SetBusFilters("")
+    SetBusFilters("");
     setNoramlBus(false);
     localStorage.setItem("isLuxury", false);
     setBusType(false);
     setSeatTypeFilter("");
-    sessionStorage.setItem('home_luxury', null)
-    sessionStorage.setItem('home_seat_type', null)
-    sessionStorage.setItem('home_ac', null)
+    sessionStorage.setItem("home_luxury", null);
+    sessionStorage.setItem("home_seat_type", null);
+    sessionStorage.setItem("home_ac", null);
   };
 
   const openModal = (name) => {
@@ -458,18 +521,12 @@ const Sidebar = ({ sidebarToggle, share }) => {
   }, [localSrgAc, localSrgSeat]);
 
   useEffect(() => {
-    // Clear sessionStorage when the page reloads
-    const handleBeforeUnload = () => {
-      localStorage.setItem("isLuxury", false);
-      localStorage.setItem("seatType", "");
-      localStorage.setItem("ac", "");
-      setAcFilter("");
+    const handleBeforeUnload = (event) => {
+      sessionStorage.removeItem("home_luxury");
+      sessionStorage.removeItem("home_seat_type");
+      sessionStorage.removeItem("home_ac");
     };
-
-    // Adding event listener for page unload (reload, close, etc.)
     window.addEventListener("beforeunload", handleBeforeUnload);
-
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
@@ -591,7 +648,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
       //     dispatch
       //   );
       //   setPickUpList(dropPiontFilter || {});
-    } catch (error) { }
+    } catch (error) {}
   }, [dispatch]);
 
   const locSrgSdate = localStorage.getItem("selectdate");
@@ -614,7 +671,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
     const { checked } = event.target;
     // const { name, checked } = event.target;
     // setCheckboxes({ ...checkboxes, [name]: checked });
-    setBusFilterType("pickupfilter")
+    setBusFilterType("pickupfilter");
     setPickupChecked((prevState) => {
       if (checked) {
         return { ...prevState, [itemName]: true };
@@ -624,7 +681,6 @@ const Sidebar = ({ sidebarToggle, share }) => {
         return updatedItems;
       }
     });
-
   };
 
   const handledropCheckbox = (event, itemName) => {
@@ -749,7 +805,7 @@ const Sidebar = ({ sidebarToggle, share }) => {
       //     type: GET_FILTER_DATA,
       //     payload: response.data,
       //   });
-    } catch (error) { }
+    } catch (error) {}
   }, [
     acfilter,
     seattypefilter,
@@ -931,8 +987,8 @@ const Sidebar = ({ sidebarToggle, share }) => {
       return acc;
     }, {});
     const traveldata = Object.entries(travelcount)
-      .filter(([place, count]) => place.trim() !== "")
-      .map(([place, count]) => ({
+      ?.filter(([place, count]) => place.trim() !== "")
+      ?.map(([place, count]) => ({
         place,
         count,
       }));
@@ -981,8 +1037,8 @@ const Sidebar = ({ sidebarToggle, share }) => {
       modalname === "amenities"
         ? a?.amenity?.localeCompare(b?.amenity)
         : modalname === "operators"
-          ? a?.operator?.localeCompare(b?.operator)
-          : a?.name?.localeCompare(b?.name)
+        ? a?.operator?.localeCompare(b?.operator)
+        : a?.name?.localeCompare(b?.name)
     );
 
   const sharing = useSelector((state) => state.share);
@@ -1054,8 +1110,8 @@ const Sidebar = ({ sidebarToggle, share }) => {
     }
 
     return str
-      .split(" ")
-      .map((word) => {
+      ?.split(" ")
+      ?.map((word) => {
         return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
       })
       .join(" ");
@@ -1141,38 +1197,42 @@ const Sidebar = ({ sidebarToggle, share }) => {
   //   }, [NormalBus,busType]);
 
   const OperatorName = [
-    ...new Set(buslist.map((item) => item?.Traveler_Agent_Name)),
+    ...new Set(buslist?.map((item) => item?.Traveler_Agent_Name)),
   ];
 
   const dropCount = buslist
-    .map((item) => item.dropping_info.map((data) => data.split("^")[1])) // Extract names from the string
-    .flat() // Flatten the array if necessary
-    .reduce((acc, dropping_info) => {
+    ?.map((item) => item.dropping_info?.map((data) => data.split("^")[1])) // Extract names from the string
+    ?.flat() // Flatten the array if necessary
+    ?.reduce((acc, dropping_info) => {
       // Count occurrences of each name
       acc[dropping_info] = (acc[dropping_info] || 0) + 1;
       return acc;
     }, {}); // Initialize an empty object to store name counts
 
   // Get the unique names and their counts as an array of objects
-  const DroppingPoints = Object.entries(dropCount).map(([name, count]) => ({
-    name,
-    count,
-  }));
+  const DroppingPoints =
+    dropCount &&
+    Object?.entries(dropCount)?.map(([name, count]) => ({
+      name,
+      count,
+    }));
 
   const boardCount = buslist
-    .map((item) => item.boarding_info.map((data) => data.split("^")[0])) // Extract names from the string
-    .flat() // Flatten the array if necessary
-    .reduce((acc, boarding_info) => {
+    ?.map((item) => item.boarding_info.map((data) => data.split("^")[0]))
+    ?.flat() // Flatten the array if necessary
+    ?.reduce((acc, boarding_info) => {
       // Count occurrences of each name
       acc[boarding_info] = (acc[boarding_info] || 0) + 1;
       return acc;
     }, {}); // Initialize an empty object to store name counts
 
   // Get the unique names and their counts as an array of objects
-  const BoardingPoints = Object.entries(boardCount).map(([name, count]) => ({
-    name,
-    count,
-  }));
+  const BoardingPoints =
+    boardCount &&
+    Object?.entries(boardCount)?.map(([name, count]) => ({
+      name,
+      count,
+    }));
 
   const [searchQueries, setSearchQueries] = useState({
     boardingPoints: "",
@@ -1188,19 +1248,19 @@ const Sidebar = ({ sidebarToggle, share }) => {
     }));
   };
 
-  const filteredBoardingPoints = BoardingPoints.filter((point) =>
+  const filteredBoardingPoints = BoardingPoints?.filter((point) =>
     point.name
       .toLowerCase()
       .includes(searchQueries?.boardingPoints?.toLowerCase())
   );
 
-  const filteredDropingPoints = DroppingPoints.filter((point) =>
+  const filteredDropingPoints = DroppingPoints?.filter((point) =>
     point.name
       .toLowerCase()
       .includes(searchQueries?.droppingPoints?.toLowerCase())
   );
 
-  const filteredOperatorName = OperatorName.filter((operator) =>
+  const filteredOperatorName = OperatorName?.filter((operator) =>
     operator.toLowerCase().includes(searchQueries?.Operators?.toLowerCase())
   );
 
@@ -1293,9 +1353,16 @@ const Sidebar = ({ sidebarToggle, share }) => {
     const endRange = moment(rangeEnd, "h:mm A");
     const target = moment(targetTime, "h:mm A");
     if (startRange.isAfter(endRange)) {
-      return target.isBetween(startRange, moment("11:59 PM", "h:mm A"), null, '[)') || target.isBefore(endRange, null, '[)');
+      return (
+        target.isBetween(
+          startRange,
+          moment("11:59 PM", "h:mm A"),
+          null,
+          "[)"
+        ) || target.isBefore(endRange, null, "[)")
+      );
     }
-    return target.isBetween(startRange, endRange, null, '[)');
+    return target.isBetween(startRange, endRange, null, "[)");
   }
 
   function isTimeInRangedrop(rangeStart, rangeEnd, targetTime) {
@@ -1305,16 +1372,22 @@ const Sidebar = ({ sidebarToggle, share }) => {
     // Case: if the range spans across midnight (e.g., 11:00 PM to 6:00 AM)
     if (startRange.isAfter(endRange)) {
       // Check if target time is either after start time OR before end time
-      return target.isBetween(startRange, moment("11:59 PM", "h:mm A"), null, '[)') || target.isSameOrBefore(endRange, null, '[)');
+      return (
+        target.isBetween(
+          startRange,
+          moment("11:59 PM", "h:mm A"),
+          null,
+          "[)"
+        ) || target.isSameOrBefore(endRange, null, "[)")
+      );
     }
     // Regular case: check if target time is within the range
-    return target.isBetween(startRange, endRange, null, '[)');
+    return target.isBetween(startRange, endRange, null, "[)");
   }
 
-  const home_luxury = sessionStorage.getItem('home_luxury')
-  const home_ac = sessionStorage.getItem('home_ac')
-  const home_seat_type = sessionStorage.getItem('home_seat_type')
-
+  const home_luxury = sessionStorage.getItem("home_luxury");
+  const home_ac = sessionStorage.getItem("home_ac");
+  const home_seat_type = sessionStorage.getItem("home_seat_type");
 
   useEffect(() => {
     let filteredList = buslist || [];
@@ -1322,34 +1395,41 @@ const Sidebar = ({ sidebarToggle, share }) => {
     //++++++++++++++++++++++++ BUS TYPE FILTERS  ++++++++++++++++++++++++++++++++++
 
     // Filter for Bus Type (Luxury/Normal)
-    if (BusFilters?.bustype === true) {
-      filteredList = filteredList.filter((item) =>
-        !(item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
-          item?.Bus_Type_Name?.toLowerCase()?.includes("volvo"))
+    if (luxurybus?.normal === true) {
+      filteredList = filteredList.filter(
+        (item) =>
+          !(
+            item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
+            item?.Bus_Type_Name?.toLowerCase()?.includes("volvo")
+          )
       );
-    } else if (home_luxury === 'true' || BusFilters?.bustype === false) {
-      filteredList = filteredList.filter((item) =>
-        item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
-        item?.Bus_Type_Name?.toLowerCase()?.includes("volvo")
+    } else if (
+      // sessionStorage.getItem('home_luxury') === 'true'  ||
+      luxurybus?.luxury === true
+    ) {
+      filteredList = filteredList.filter(
+        (item) =>
+          item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
+          item?.Bus_Type_Name?.toLowerCase()?.includes("volvo")
       );
     }
 
     // Filter for AC/Non-AC
-    if (home_ac === "true" || BusFilters?.ac_non_ac === true) {
-      filteredList = filteredList.filter((item) =>
-        !item?.bus_type?.toLowerCase()?.includes("non-ac")
+    if (acBus?.ac_bus === true) {
+      filteredList = filteredList.filter(
+        (item) => !item?.bus_type?.toLowerCase()?.includes("non-ac")
       );
-    } else if (BusFilters?.ac_non_ac === false) {
+    } else if (acBus?.non_ac_bus === true) {
       filteredList = filteredList.filter((item) =>
         item?.bus_type?.toLowerCase()?.includes("non-ac")
       );
     }
     // Filter for Seater/Sleeper
-    if (home_seat_type === 'true' || BusFilters?.seat_type === true) {
+    if (busSeatType?.seat === true) {
       filteredList = filteredList.filter((item) =>
         item?.bus_type?.toLowerCase()?.includes("seater")
       );
-    } else if (home_seat_type === 'false' || BusFilters?.seat_type === false) {
+    } else if (busSeatType?.sleep === true) {
       filteredList = filteredList.filter((item) =>
         item?.bus_type?.toLowerCase()?.includes("sleeper")
       );
@@ -1358,33 +1438,39 @@ const Sidebar = ({ sidebarToggle, share }) => {
     //++++++++++++++++++++++++ BUS PRICE FILTERS  ++++++++++++++++++++++++++++++++++
     if (priceRange?.min > 0 || priceRange?.max < 3000) {
       filteredList = filteredList.filter((item) => {
-        return (item?.Fare >= priceRange?.min) && (item?.Fare <= priceRange?.max)
-      }
-      )
+        return item?.Fare >= priceRange?.min && item?.Fare <= priceRange?.max;
+      });
     }
 
     //++++++++++++++++++++++++ BUS PICKUP FILTERS  ++++++++++++++++++++++++++++++++++
 
     if (Object.keys(pickupchecked)?.length > 0) {
       filteredList = filteredList?.filter((item) => {
-        const cityNames = item.boarding_info.map(info => {
+        const cityNames = item.boarding_info?.map((info) => {
           const parts = info.split("^"); // Split the string by "^"
           return parts[0]; // Return the second value (city name)
-        })
+        });
         console.log(cityNames, "citynames");
-        return Object.keys(pickupchecked).some(value => cityNames.includes(value));
-
-      })
+        return Object.keys(pickupchecked).some((value) =>
+          cityNames.includes(value)
+        );
+      });
     }
 
     //++++++++++++++++++++++++ BUS PICKUP TIME FILTERS  ++++++++++++++++++++++++++++++++++
     if (pickuptime != "") {
       filteredList = filteredList?.filter((item) => {
-        const [starttime, endtime] = pickuptime.split(" - ")
-        console.log(isTimeInRange(starttime, endtime, item?.Start_time), starttime, endtime, item?.Start_time, "startendtime");
+        const [starttime, endtime] = pickuptime.split(" - ");
+        console.log(
+          isTimeInRange(starttime, endtime, item?.Start_time),
+          starttime,
+          endtime,
+          item?.Start_time,
+          "startendtime"
+        );
 
-        return isTimeInRange(starttime, endtime, item?.Start_time)
-      })
+        return isTimeInRange(starttime, endtime, item?.Start_time);
+      });
     }
 
     //++++++++++++++++++++++++ BUS OPERATOR FILTERS  ++++++++++++++++++++++++++++++++++
@@ -1392,50 +1478,66 @@ const Sidebar = ({ sidebarToggle, share }) => {
     if (Object.keys(operatorchecked).length > 0) {
       filteredList = filteredList?.filter((item) => {
         const operator = item?.Traveler_Agent_Name.toLowerCase();
-        const operatorCheckList = Object.keys(operatorchecked)
+        const operatorCheckList = Object.keys(operatorchecked);
         // console.log(operatorCheckList.includes(operator), "opppppoeieoirueoiru");
-        return Object.keys(operatorchecked).some(val => val.toLowerCase() === operator);
+        return Object.keys(operatorchecked).some(
+          (val) => val.toLowerCase() === operator
+        );
       });
     }
 
     //++++++++++++++++++++++++ BUS PICKUP TIME FILTERS  ++++++++++++++++++++++++++++++++++
     if (droptime != "") {
       filteredList = filteredList?.filter((item) => {
-        const [starttime, endtime] = droptime.split(" - ")
+        const [starttime, endtime] = droptime.split(" - ");
         // console.log(isTimeInRange(starttime, endtime, item?.Arr_Time), starttime, endtime, item?.Arr_Time, "startendtime");
-        return isTimeInRangedrop(starttime, endtime, item?.Arr_Time)
-      })
+        return isTimeInRangedrop(starttime, endtime, item?.Arr_Time);
+      });
     }
 
     //++++++++++++++++++++++++ BUS DROP FILTERS  ++++++++++++++++++++++++++++++++++
 
     if (Object.keys(dropchecked)?.length > 0) {
       filteredList = filteredList?.filter((item) => {
-        const cityNames = item.dropping_info.map(info => {
+        const cityNames = item.dropping_info.map((info) => {
           const parts = info.split("^"); // Split the string by "^"
           return parts[1]; // Return the second value (city name)
-        })
+        });
         console.log(cityNames, "citynames");
-        return Object.keys(dropchecked).some(value => cityNames.includes(value));
-
-      })
+        return Object.keys(dropchecked).some((value) =>
+          cityNames.includes(value)
+        );
+      });
     }
     dispatch({
       type: GET_BUS_FILTERS,
       payload: filteredList,
     });
     // console.log(BusFilters, buslist, "BusFilters");
-  }, [BusFilters, buslist, priceRange, pickupchecked, dropchecked, operatorchecked, pickuptime, droptime, home_luxury, home_ac, home_seat_type]);
+  }, [
+    BusFilters,
+    buslist,
+    priceRange,
+    pickupchecked,
+    dropchecked,
+    operatorchecked,
+    pickuptime,
+    droptime,
+    home_luxury,
+    home_ac,
+    home_seat_type,
+    luxurybus,
+    acBus,
+    busSeatType,
+  ]);
   // console.log(droptime, "haiiiidfbjkdhfkjdhf");
-
-
-
 
   return (
     <>
       <div
-        className={`${sidebarToggle ? "hidden" : "block"
-          } w-[18vw] bg-[#E5FFF1] h-full fixed pt-[1vw] md:block hidden`}
+        className={`${
+          sidebarToggle ? "hidden" : "block"
+        } w-[18vw] bg-[#E5FFF1] h-full fixed pt-[1vw] md:block hidden`}
         style={{
           zIndex: modalIsOpen || sharing === true ? 1 : 0,
           // fontFamily:"Lato"
@@ -1527,13 +1629,13 @@ const Sidebar = ({ sidebarToggle, share }) => {
                 <div className="py-[0.6vw]">
                   <div className="grid grid-cols-2 gap-[0.8vw] mx-[0.6vw]">
                     <button
-                      className={`${BusFilters?.bustype === true
-                        ? "bg-[#1F487C]"
-                        : "bg-white"
-                        }  ${BusFilters?.bustype === true
+                      className={`${
+                        luxurybus?.normal === true ? "bg-[#1F487C]" : "bg-white"
+                      }  ${
+                        luxurybus?.normal === true
                           ? "text-white border-[#1F487C]"
                           : "border-gray-300"
-                        } w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
+                      } w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
                       onClick={() => {
                         // if (NormalBus) {
                         //   setNoramlBus(false);
@@ -1555,11 +1657,12 @@ const Sidebar = ({ sidebarToggle, share }) => {
                         //   });
                         // }
                         // localStorage.setItem("isNoramlBus", NormalBus);
-                        SetBusFilters((prev) => ({
+                        setluxurybus((prev) => ({
                           ...prev,
-                          bustype: prev.bustype === true ? null : true,
+                          normal: prev.normal === true ? null : true,
+                          luxury: null,
                         }));
-                        setBusFilterType("bustype")
+                        setBusFilterType("bustype");
                       }}
                     >
                       <div className="flex justify-center items-center">
@@ -1575,13 +1678,15 @@ const Sidebar = ({ sidebarToggle, share }) => {
                       </div>
                     </button>
                     <button
-                      className={`${home_luxury === 'true'
-                        ? "bg-custom-gradient-luxury bg-image-url"
-                        : "bg-white"
-                        } h-full ${home_luxury === 'true'
+                      className={`${
+                        luxurybus?.luxury === true
+                          ? "bg-custom-gradient-luxury bg-image-url"
+                          : "bg-white"
+                      } h-full ${
+                        luxurybus?.luxury === true
                           ? "text-black border-custom-gradient-luxury bg-image-url"
                           : "border-gray-300 "
-                        } w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
+                      } w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
                       onClick={() => {
                         // if (busType) {
                         //   setBusType(false);
@@ -1604,12 +1709,15 @@ const Sidebar = ({ sidebarToggle, share }) => {
                         //     bustype: null,
                         //   });
                         // }
-                        SetBusFilters((prev) => ({
+                        setluxurybus((prev) => ({
                           ...prev,
-                          bustype: prev.bustype === false ? null : false,
+                          normal: null,
+                          luxury: prev.luxury === true ? null : true,
                         }));
-                        setBusFilterType("bustype")
-                        sessionStorage.getItem('home_luxury') === 'true' ? sessionStorage.setItem('home_luxury', null) : sessionStorage.setItem('home_luxury', true)
+                        setBusFilterType("bustype");
+                        sessionStorage.getItem("home_luxury") === "true"
+                          ? sessionStorage.setItem("home_luxury", null)
+                          : sessionStorage.setItem("home_luxury", true);
                       }}
                     >
                       <div className="flex justify-center items-center">
@@ -1625,45 +1733,26 @@ const Sidebar = ({ sidebarToggle, share }) => {
                   </div>
                   <div className="grid grid-cols-2 pt-[0.9vw] gap-[0.8vw] mx-[0.6vw]">
                     <button
-                      className={`${sessionStorage.getItem('home_ac') === "true" ? "bg-[#1F487C]" : "bg-white"
-                        }  ${sessionStorage.getItem('home_ac') === "true"
+                      className={`${
+                        acBus?.ac_bus === true ? "bg-[#1F487C]" : "bg-white"
+                      }  ${
+                        acBus?.ac_bus === true
                           ? "text-white border-[#1F487C]"
                           : "border-gray-300"
-                        } w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
+                      } w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
                       onClick={() => {
-                        // if (acfilter === "ac") {
-                        //   setAcFilter("");
-                        // } else {
-                        //   setAcFilter("ac");
-                        // }
-
-                        // if (
-                        //   BusFilters?.ac_non_ac === null ||
-                        //   BusFilters?.ac_non_ac === false
-                        // ) {
-                        //   SetBusFilters({
-                        //     ...BusFilters,
-                        //     ac_non_ac: true,
-                        //   });
-                        // } else {
-                        //   SetBusFilters({
-                        //     ...BusFilters,
-                        //     ac_non_ac: null,
-                        //   });
-                        // }
-                        SetBusFilters((prev) => ({
+                        setAcBus((prev) => ({
                           ...prev,
-                          ac_non_ac: prev.ac_non_ac === true ? null : true,
+                          ac_bus: prev.ac_bus === true ? null : true,
+                          non_ac_bus: null,
                         }));
-                        setBusFilterType("bustype")
-                        sessionStorage.getItem('home_ac') === 'true' ? sessionStorage.setItem('home_ac', null) : sessionStorage.setItem('home_ac', true)
                       }}
                     >
                       <div className="py-[0.5vw] flex items-center justify-center gap-[0.5vw]">
                         {/* <span>
                     <TbAirConditioning size={15} className="mx-1 " />
                   </span> */}
-                        {sessionStorage.getItem('home_ac') === "true" ? (
+                        {acBus?.ac_bus === true ? (
                           <img
                             src={s_c_ac}
                             alt="AcImg"
@@ -1684,30 +1773,26 @@ const Sidebar = ({ sidebarToggle, share }) => {
                       </div>
                     </button>
                     <button
-                      className={`${BusFilters?.ac_non_ac === false ? "bg-[#1F487C]" : "bg-white"
-                        } ${BusFilters?.ac_non_ac === false
+                      className={`${
+                        acBus?.non_ac_bus === true ? "bg-[#1F487C]" : "bg-white"
+                      } ${
+                        acBus?.non_ac_bus === true
                           ? "text-white border-[#1F487C]"
                           : "border-gray-300"
-                        } w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
+                      } w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
                       onClick={() => {
-                        // if (acfilter === "non_ac") {
-                        //   setAcFilter("");
-                        // } else {
-                        //   setAcFilter("non_ac");
-                        // }
-                        SetBusFilters((prev) => ({
+                        setAcBus((prev) => ({
                           ...prev,
-                          ac_non_ac: prev.ac_non_ac === false ? null : false,
+                          non_ac_bus: prev.non_ac_bus === true ? null : true,
+                          ac_bus: null,
                         }));
-                        setBusFilterType("bustype")
-
                       }}
                     >
                       <div className="py-[0.5vw] gap-[0.5vw] flex items-center justify-center">
                         {/* <span>
                     <TbAirConditioningDisabled size={20} className="mx-1" />
                   </span> */}
-                        {BusFilters?.ac_non_ac === false ? (
+                        {acBus?.non_ac_bus === true ? (
                           <img
                             src={s_c_non_ac}
                             alt="NonAcImg"
@@ -1727,25 +1812,26 @@ const Sidebar = ({ sidebarToggle, share }) => {
 
                   <div className="grid grid-cols-2 pt-[0.9vw]  gap-[0.8vw] mx-[0.6vw]">
                     <button
-                      className={`${sessionStorage.getItem('home_seat_type') === 'false'
-                        ? "bg-[#1F487C]"
-                        : "bg-white"
-                        } h-full ${sessionStorage.getItem('home_seat_type') === 'false'
+                      className={`${
+                        busSeatType?.sleep === true
+                          ? "bg-[#1F487C]"
+                          : "bg-white"
+                      } h-full ${
+                        busSeatType?.sleep === true
                           ? "text-white border-[#1F487C]"
                           : "border-gray-300"
-                        } w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
+                      } w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
                       onClick={() => {
                         // if (seattypefilter === "sleeper") {
                         //   setSeatTypeFilter("");
                         // } else {
                         //   setSeatTypeFilter("sleeper");
                         // }
-                        SetBusFilters((prev) => ({
+                        setBusSeatType((prev) => ({
                           ...prev,
-                          seat_type: prev.seat_type === false ? null : false,
+                          sleep: prev.sleep === true ? null : true,
+                          seat: null,
                         }));
-                        sessionStorage.getItem('home_seat_type') === 'false' ? sessionStorage.setItem('home_seat_type', null) : sessionStorage.setItem('home_seat_type', false)
-                        setBusFilterType("bustype")
                       }}
                     >
                       <p className="py-[0.5vw] flex items-center justify-center gap-[0.5vw]">
@@ -1763,20 +1849,19 @@ const Sidebar = ({ sidebarToggle, share }) => {
                       </p>
                     </button>
                     <button
-                      className={`${sessionStorage.getItem('home_seat_type') === 'true'
-                        ? "bg-[#1F487C]"
-                        : "bg-white"
-                        } h-full ${sessionStorage.getItem('home_seat_type') === 'true' 
+                      className={`${
+                        busSeatType?.seat === true ? "bg-[#1F487C]" : "bg-white"
+                      } h-full ${
+                        busSeatType?.seat === true
                           ? "text-white border-[#1F487C]"
                           : "border-gray-300 "
-                        }w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
+                      }w-full border-[0.1vw] rounded-[0.7vw] cursor-pointer `}
                       onClick={() => {
-                        SetBusFilters((prev) => ({
+                        setBusSeatType((prev) => ({
                           ...prev,
-                          seat_type: prev.seat_type === true ? null : true,
+                          sleep: null,
+                          seat: prev.seat === true ? null : true,
                         }));
-                        setBusFilterType("bustype")
-                        sessionStorage.getItem('home_seat_type') === 'true' ? sessionStorage.setItem('home_seat_type', null) : sessionStorage.setItem('home_seat_type', true)
                       }}
                     >
                       <div className="py-[0.5vw] flex gap-[0.5vw] items-center justify-center">
@@ -1818,9 +1903,10 @@ const Sidebar = ({ sidebarToggle, share }) => {
               <div className="col-span-3">
                 <h1 className="text-[1.1vw] font-bold px-[0.6vw]">
                   {busdata?.from
-                    ? `Pick Up Point - ${busdata?.from?.charAt(0).toUpperCase() +
-                    busdata.from.slice(1)
-                    }`
+                    ? `Pick Up Point - ${
+                        busdata?.from?.charAt(0).toUpperCase() +
+                        busdata.from.slice(1)
+                      }`
                     : "Pick Up Point"}
                 </h1>
               </div>
@@ -2004,9 +2090,10 @@ const Sidebar = ({ sidebarToggle, share }) => {
                 <div className="col-span-3">
                   <h1 className="text-[1.1vw] text-black font-bold px-[0.6vw]">
                     {busdata?.from
-                      ? `Pick Up Time - ${busdata?.from.charAt(0).toUpperCase() +
-                      busdata?.from.slice(1)
-                      }`
+                      ? `Pick Up Time - ${
+                          busdata?.from.charAt(0).toUpperCase() +
+                          busdata?.from.slice(1)
+                        }`
                       : "Pick Up Time"}
                   </h1>
                 </div>
@@ -2047,12 +2134,17 @@ const Sidebar = ({ sidebarToggle, share }) => {
               <>
                 <div className="grid grid-cols-2 pt-[0.5vw]  gap-[0.5vw] mx-[0.5vw] ">
                   <button
-                    className={`${pickuptime === "6:00 AM - 11:00 AM" ? "bg-[#1F487C]" : "bg-white"
-                      } h-full ${pickuptime === "6:00 AM - 11:00 AM" ? "text-white " : ""
-                      } w-full  ${pickuptime === "6:00 AM - 11:00 AM"
+                    className={`${
+                      pickuptime === "6:00 AM - 11:00 AM"
+                        ? "bg-[#1F487C]"
+                        : "bg-white"
+                    } h-full ${
+                      pickuptime === "6:00 AM - 11:00 AM" ? "text-white " : ""
+                    } w-full  ${
+                      pickuptime === "6:00 AM - 11:00 AM"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
-                      } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
+                    } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
                     // onClick={() =>
                     //   setTimeFitervalue({
                     //     ...timefiltervalue,
@@ -2075,12 +2167,17 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     </span>
                   </button>
                   <button
-                    className={`${pickuptime === "11:00 AM - 6:00 PM" ? "bg-[#1F487C]" : "bg-white"
-                      } h-full ${pickuptime === "11:00 AM - 6:00 PM" ? "text-white " : ""
-                      } w-full  ${pickuptime === "11:00 AM - 6:00 PM"
+                    className={`${
+                      pickuptime === "11:00 AM - 6:00 PM"
+                        ? "bg-[#1F487C]"
+                        : "bg-white"
+                    } h-full ${
+                      pickuptime === "11:00 AM - 6:00 PM" ? "text-white " : ""
+                    } w-full  ${
+                      pickuptime === "11:00 AM - 6:00 PM"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
-                      } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
+                    } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
                     // onClick={() =>
                     //   setTimeFitervalue({
                     //     ...timefiltervalue,
@@ -2105,12 +2202,17 @@ const Sidebar = ({ sidebarToggle, share }) => {
                 </div>
                 <div className="grid grid-cols-2 pt-[1vw]  gap-[0.5vw] mx-[0.5vw] mb-[1vw]">
                   <button
-                    className={`${pickuptime === "6:00 PM - 11:00 PM" ? "bg-[#1F487C]" : "bg-white"
-                      } h-full ${pickuptime === "6:00 PM - 11:00 PM" ? "text-white " : ""
-                      } w-full  ${pickuptime === "6:00 PM - 11:00 PM"
+                    className={`${
+                      pickuptime === "6:00 PM - 11:00 PM"
+                        ? "bg-[#1F487C]"
+                        : "bg-white"
+                    } h-full ${
+                      pickuptime === "6:00 PM - 11:00 PM" ? "text-white " : ""
+                    } w-full  ${
+                      pickuptime === "6:00 PM - 11:00 PM"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
-                      } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
+                    } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
                     // onClick={() =>
                     //   setTimeFitervalue({
                     //     ...timefiltervalue,
@@ -2133,12 +2235,17 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     </span>
                   </button>
                   <button
-                    className={`${pickuptime === "11:00 PM - 6:00 AM" ? "bg-[#1F487C]" : "bg-white"
-                      } h-full ${pickuptime === "11:00 PM - 6:00 AM" ? "text-white " : ""
-                      } w-full  ${pickuptime === "11:00 PM - 6:00 AM"
+                    className={`${
+                      pickuptime === "11:00 PM - 6:00 AM"
+                        ? "bg-[#1F487C]"
+                        : "bg-white"
+                    } h-full ${
+                      pickuptime === "11:00 PM - 6:00 AM" ? "text-white " : ""
+                    } w-full  ${
+                      pickuptime === "11:00 PM - 6:00 AM"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
-                      } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
+                    } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
                     // onClick={() =>
                     //   setTimeFitervalue({
                     //     ...timefiltervalue,
@@ -2330,11 +2437,11 @@ const Sidebar = ({ sidebarToggle, share }) => {
                                             // item.operator?.charAt(0)?.toUpperCase() +
                                             //   item.operator
                                             item?.charAt(0)?.toUpperCase() +
-                                            item
-                                              ?.slice(1)
-                                              ?.toLowerCase()
-                                              ?.substring(0, 26) +
-                                            "..."
+                                              item
+                                                ?.slice(1)
+                                                ?.toLowerCase()
+                                                ?.substring(0, 26) +
+                                              "..."
                                           }
                                         </span>
                                       </Popover>
@@ -2374,9 +2481,10 @@ const Sidebar = ({ sidebarToggle, share }) => {
               <div className="col-span-3">
                 <h1 className="text-[1.1vw] font-bold pl-[0.6vw] ">
                   {busdata?.from
-                    ? `Drop Point - ${busdata?.to.charAt(0).toUpperCase() +
-                    busdata.to.slice(1)
-                    }`
+                    ? `Drop Point - ${
+                        busdata?.to.charAt(0).toUpperCase() +
+                        busdata.to.slice(1)
+                      }`
                     : "Drop Point"}
                 </h1>
               </div>
@@ -2542,11 +2650,11 @@ const Sidebar = ({ sidebarToggle, share }) => {
                       )
                     }
 
-                    {filteredDropingPoints.length > 5 ? (
+                    {filteredDropingPoints?.length > 5 ? (
                       <p
                         className="text-[#1F487C] font-bold text-[0.8vw] pt-[0.6vw] cursor-pointer"
                         onClick={() => openModal("drop")}
-                      >{`SHOW ALL (${filteredDropingPoints.length})`}</p>
+                      >{`SHOW ALL (${filteredDropingPoints?.length})`}</p>
                     ) : null}
                   </div>
                 </div>
@@ -2560,9 +2668,10 @@ const Sidebar = ({ sidebarToggle, share }) => {
                 <div className="col-span-3">
                   <h1 className="text-[1.1vw] text-black font-bold px-[0.6vw]">
                     {busdata?.from
-                      ? `Drop Time - ${busdata?.to.charAt(0).toUpperCase() +
-                      busdata?.to.slice(1)
-                      }`
+                      ? `Drop Time - ${
+                          busdata?.to.charAt(0).toUpperCase() +
+                          busdata?.to.slice(1)
+                        }`
                       : "Drop Time"}
                   </h1>
                 </div>
@@ -2603,12 +2712,17 @@ const Sidebar = ({ sidebarToggle, share }) => {
               <>
                 <div className="grid grid-cols-2 pt-[0.5vw]  gap-[0.5vw] mx-[0.5vw] ">
                   <button
-                    className={`${droptime === "6:00 AM - 11:00 AM" ? "bg-[#1F487C]" : "bg-white"
-                      } h-full ${droptime === "6:00 AM - 11:00 AM" ? "text-white " : ""
-                      } w-full  ${droptime === "6:00 AM - 11:00 AM"
+                    className={`${
+                      droptime === "6:00 AM - 11:00 AM"
+                        ? "bg-[#1F487C]"
+                        : "bg-white"
+                    } h-full ${
+                      droptime === "6:00 AM - 11:00 AM" ? "text-white " : ""
+                    } w-full  ${
+                      droptime === "6:00 AM - 11:00 AM"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
-                      } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
+                    } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
                     // onClick={() =>
                     //   setTimeFitervalue({
                     //     ...timefiltervalue,
@@ -2631,12 +2745,17 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     </span>
                   </button>
                   <button
-                    className={`${droptime === "11:00 AM - 6:00 PM" ? "bg-[#1F487C]" : "bg-white"
-                      } h-full ${droptime === "11:00 AM - 6:00 PM" ? "text-white " : ""
-                      } w-full  ${droptime === "11:00 AM - 6:00 PM"
+                    className={`${
+                      droptime === "11:00 AM - 6:00 PM"
+                        ? "bg-[#1F487C]"
+                        : "bg-white"
+                    } h-full ${
+                      droptime === "11:00 AM - 6:00 PM" ? "text-white " : ""
+                    } w-full  ${
+                      droptime === "11:00 AM - 6:00 PM"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
-                      } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
+                    } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
                     // onClick={() =>
                     //   setTimeFitervalue({
                     //     ...timefiltervalue,
@@ -2661,12 +2780,17 @@ const Sidebar = ({ sidebarToggle, share }) => {
                 </div>
                 <div className="grid grid-cols-2 pt-[1vw]  gap-[0.5vw] mx-[0.5vw] mb-[1vw]">
                   <button
-                    className={`${droptime === "6:00 PM - 11:00 PM" ? "bg-[#1F487C]" : "bg-white"
-                      } h-full ${droptime === "6:00 PM - 11:00 PM" ? "text-white " : ""
-                      } w-full  ${droptime === "6:00 PM - 11:00 PM"
+                    className={`${
+                      droptime === "6:00 PM - 11:00 PM"
+                        ? "bg-[#1F487C]"
+                        : "bg-white"
+                    } h-full ${
+                      droptime === "6:00 PM - 11:00 PM" ? "text-white " : ""
+                    } w-full  ${
+                      droptime === "6:00 PM - 11:00 PM"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
-                      } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
+                    } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
                     // onClick={() =>
                     //   setTimeFitervalue({
                     //     ...timefiltervalue,
@@ -2689,12 +2813,17 @@ const Sidebar = ({ sidebarToggle, share }) => {
                     </span>
                   </button>
                   <button
-                    className={`${droptime === "11:00 PM - 6:00 AM" ? "bg-[#1F487C]" : "bg-white"
-                      } h-full ${droptime === "11:00 PM - 6:00 AM" ? "text-white " : ""
-                      } w-full  ${droptime === "11:00 PM - 6:00 AM"
+                    className={`${
+                      droptime === "11:00 PM - 6:00 AM"
+                        ? "bg-[#1F487C]"
+                        : "bg-white"
+                    } h-full ${
+                      droptime === "11:00 PM - 6:00 AM" ? "text-white " : ""
+                    } w-full  ${
+                      droptime === "11:00 PM - 6:00 AM"
                         ? "border-[#1F487C] border-[0.1vw]"
                         : "border-gray-300 border-[0.1vw]"
-                      } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
+                    } rounded-[0.6vw] cursor-pointer flex flex-col items-center justify-center py-[0.5vw]`}
                     // onClick={() =>
                     //   setTimeFitervalue({
                     //     ...timefiltervalue,
@@ -2727,7 +2856,9 @@ const Sidebar = ({ sidebarToggle, share }) => {
             <div className="">
               <div className="grid grid-cols-4 justify-between items-center my-[0.6vw]">
                 <div className="col-span-3">
-                  <h1 className="text-[1.1vw] font-bold px-[0.5vw]">Amenities</h1>
+                  <h1 className="text-[1.1vw] font-bold px-[0.5vw]">
+                    Amenities
+                  </h1>
                 </div>
                 <div className="flex items-center">
                   <h3
@@ -2856,7 +2987,9 @@ const Sidebar = ({ sidebarToggle, share }) => {
                                   onChange={(e) =>
                                     handleAmenityCheckbox(e, item.amenity)
                                   }
-                                  checked={amenitiesvalue[item.amenity] || false}
+                                  checked={
+                                    amenitiesvalue[item.amenity] || false
+                                  }
                                 />
                                 <span className="text-[1vw]">
                                   {item?.amenity?.length > 26 ? (
@@ -2865,7 +2998,9 @@ const Sidebar = ({ sidebarToggle, share }) => {
                                       trigger="hover"
                                     >
                                       <span>
-                                        {item.amenity?.charAt(0)?.toUpperCase() +
+                                        {item.amenity
+                                          ?.charAt(0)
+                                          ?.toUpperCase() +
                                           item.amenity
                                             ?.slice(1)
                                             ?.toLowerCase()
@@ -2920,10 +3055,10 @@ const Sidebar = ({ sidebarToggle, share }) => {
             {modalname === "pickup"
               ? "Pickup Point"
               : modalname === "drop"
-                ? "Drop Point"
-                : modalname === "amenities"
-                  ? "Amenities"
-                  : "Travel Operator"}
+              ? "Drop Point"
+              : modalname === "amenities"
+              ? "Amenities"
+              : "Travel Operator"}
           </h1>
           <div className="p-[1vw] overflow-x-auto ">
             {" "}
@@ -3027,30 +3162,30 @@ const Sidebar = ({ sidebarToggle, share }) => {
                           modalname === "pickup"
                             ? handlePickupCheckbox(e, item?.name)
                             : modalname === "drop"
-                              ? handledropCheckbox(e, item?.name)
-                              : modalname === "amenities"
-                                ? handleAmenityCheckbox(e, item?.amenity)
-                                : handleoperatorCheckbox(e, item?.operator)
+                            ? handledropCheckbox(e, item?.name)
+                            : modalname === "amenities"
+                            ? handleAmenityCheckbox(e, item?.amenity)
+                            : handleoperatorCheckbox(e, item?.operator)
                         }
                         checked={
                           modalname === "pickup"
                             ? pickupchecked[item?.name] || false
                             : modalname === "drop"
-                              ? dropchecked[item?.name] || false
-                              : modalname === "amenities"
-                                ? amenitiesvalue[item?.amenity]
-                                : operatorchecked[item?.operator]
+                            ? dropchecked[item?.name] || false
+                            : modalname === "amenities"
+                            ? amenitiesvalue[item?.amenity]
+                            : operatorchecked[item?.operator]
                         }
                       />
                       <span className="pt-1 text-[1vw]">
                         {modalname === "amenities"
                           ? //  item?.amenity?.charAt(0)?.toUpperCase() +
-                          //   item?.amenity?.slice(1)?.toLowerCase()
-                          toTitleCase(item?.amenity)
+                            //   item?.amenity?.slice(1)?.toLowerCase()
+                            toTitleCase(item?.amenity)
                           : modalname === "operators"
-                            ? item?.operator?.charAt(0)?.toUpperCase() +
+                          ? item?.operator?.charAt(0)?.toUpperCase() +
                             item?.operator?.slice(1)?.toLowerCase()
-                            : item?.name?.charAt(0)?.toUpperCase() +
+                          : item?.name?.charAt(0)?.toUpperCase() +
                             item?.name?.slice(1)?.toLowerCase()}
                         <span className="pl-[1vw]">
                           {modalname !== "operators" && `(${item?.count})`}

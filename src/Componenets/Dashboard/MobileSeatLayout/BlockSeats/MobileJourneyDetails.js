@@ -6,6 +6,7 @@ import { IoIosArrowUp } from "react-icons/io";
 import { useLocation } from "react-router";
 import complete from "../../../../Assets/BookingList/complete.png";
 import { calculateDiscountedFare } from "../../../Common/Common-Functions/TBS-Discount-Fare";
+import { useSelector } from "react-redux";
 export default function MobileJourneyDetails({
   MobBusDetails,
   MobSelectedSeats,
@@ -16,6 +17,8 @@ export default function MobileJourneyDetails({
     const [hours, minutes] = timeString.split(":").map(Number);
     return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
   };
+  const tbs_discount = useSelector((state) => state?.live_per);
+
   const calculateArrival = (departureDate, departureTime, duration) => {
     try {
       // Convert 12-hour time format (AM/PM) to Date object
@@ -503,7 +506,8 @@ export default function MobileJourneyDetails({
                               >
                                 {calculateDiscountedFare(
                                   MobBusDetails?.BUS_START_DATE,
-                                  MobBusprice
+                                  MobBusprice,
+                                  tbs_discount
                                 )}
                               </p>
                             </div>

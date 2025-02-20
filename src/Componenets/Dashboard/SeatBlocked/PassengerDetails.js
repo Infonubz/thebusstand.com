@@ -958,15 +958,15 @@ export default function PassengerDetails({
                                           value={
                                             travelerDetails?.[index]
                                               ?.user_name ||
-                                            values[`user_name_${index}`] ||
+                                            // values[`user_name_${index}`] ||
                                             ""
                                           }
                                           onChange={(e) => {
                                             handleChange(e);
-                                            setFieldValue(
-                                              `user_name_${index}`,
-                                              e.target.value
-                                            );
+                                            // setFieldValue(
+                                            //   `user_name_${index}`,
+                                            //   e.target.value
+                                            // );
                                             setTravelerDetails(
                                               (prevDetails) => ({
                                                 ...prevDetails,
@@ -1630,15 +1630,16 @@ export default function PassengerDetails({
                                                 value={
                                                   travelerDetails?.[index]
                                                     ?.age ||
-                                                  values[`age_${index}`] ||
+                                                  // values[`age_${index}`] 
+                                                  // ||
                                                   ""
                                                 }
                                                 onChange={(e) => {
                                                   handleChange(e);
-                                                  setFieldValue(
-                                                    `age_${index}`,
-                                                    e.target.value
-                                                  );
+                                                  // setFieldValue(
+                                                  //   `age_${index}`,
+                                                  //   e.target.value
+                                                  // );
                                                   setTravelerDetails(
                                                     (prevDetails) => ({
                                                       ...prevDetails,

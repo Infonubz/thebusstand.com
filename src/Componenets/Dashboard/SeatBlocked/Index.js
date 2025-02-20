@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import JourneyDetails from "./JourneyDetails";
 import PassengerDetails from "./PassengerDetails";
 import BiilingAddress from "./BiilingAddress";
@@ -10,7 +10,10 @@ import {
   Abhibus_GetFareInfo,
   Abhibus_SeatBlocked,
 } from "../../../Api-Abhibus/Dashboard/DashboardPage";
-
+import { Drawer, Skeleton } from "antd";
+import { useSelector } from "react-redux";
+import ViewFullTicket from "../MyAccount/ViewTicket/ViewFullTicket";
+import busloading from "../../../Assets/Gif/bus.gif";
 export default function DrawerIndex({
   BusDetails,
   layout,
@@ -19,20 +22,35 @@ export default function DrawerIndex({
   busprice,
   seatDetails,
   selectedseatprice,
-  setDropDown
+  setDropDown,
+  travelerDetails,
+  setTravelerDetails,
+  emailInput,
+  setEmailInput,
+  mobileInput,
+  setMobileInput,
+  billAddress,
+  setBillAddress,
+  termschecked,
+  setTermsChecked,
+  setTicketNumber,
+  setTicketLoading,
+  ticketnumber,
+  ticketloading,
 }) {
   const [loader, setLoader] = useState(false);
+  const [razorpayloading, setRazorpayLoading] = useState(false);
   const selectedSeats1 = selectedSeats;
-  const [travelerDetails, setTravelerDetails] = useState(
-    selectedSeats1?.reduce((acc, seat, index) => {
-      acc[index] = { user_name: "", age: "", gender: "male", seat: "" };
-      return acc;
-    }, {})
-  );
+  // const [travelerDetails, setTravelerDetails] = useState(
+  //   selectedSeats1?.reduce((acc, seat, index) => {
+  //     acc[index] = { user_name: "", age: "", gender: "male", seat: "" };
+  //     return acc;
+  //   }, {})
+  // );
   console.log(selectedSeats1, "testtestetttttttttttt");
 
-  const [emailInput, setEmailInput] = useState("");
-  const [mobileInput, setMobileInput] = useState("");
+  // const [emailInput, setEmailInput] = useState("");
+  // const [mobileInput, setMobileInput] = useState("");
   const [confirmModal, setConfirmModal] = useState(false);
   const [confirmRefNo, setConfirmRefNo] = useState(null);
   const sectionRef = useRef(null);
@@ -42,7 +60,8 @@ export default function DrawerIndex({
     isValid: false,
     isSubmitting: false,
   });
-  const [termschecked, setTermsChecked] = useState(false);
+
+  // const [termschecked, setTermsChecked] = useState(false);
   const [enableInput, setEnableInput] = useState(false);
 
   const validationSchema = Yup.object().shape({
@@ -177,133 +196,194 @@ export default function DrawerIndex({
   );
 
   console.log(isAllDetailsFilled, "is_all_details_Filled");
+  const ticketlist = useSelector((state) => state?.get_ticket_detail);
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    const value = sessionStorage.getItem("ticket_view");
+    if (value === "open") {
+      setShowModal(true);
+    } else {
+      setShowModal(false);
+    }
+  }, [sessionStorage.getItem("ticket_view")]);
+  console.log(ticketlist?.status === "success", "ticketlistticketlist");
+  console.log(ticketnumber, ticketloading, "razorpayloadingrazorpayloading");
 
   return (
-    <Formik
-      initialValues={{
-        email: emailInput || "",
-        mobile:
-          mobileInput && mobileInput !== "undefined" && mobileInput !== "null"
-            ? mobileInput
-            : "",
-        user_name:
-          selectedSeats1?.map(
-            (seat, index) => travelerDetails?.[index]?.user_name
-          ) || "",
-        age:
-          selectedSeats1?.map((seat, index) => travelerDetails?.[index]?.age) ||
-          "",
-        gender: selectedSeats1?.map(
-          (seat, index) => travelerDetails?.[index]?.gender || "male"
-        ),
-        terms: termschecked || false,
-        address: "",
-        pin_code: "",
-        state: "",
-        city: "",
-        name: "",
-      }}
-      validationSchema={validationSchema}
-      onSubmit={(values) => {
-        handleSubmit(values);
-        console.log(values, "values values");
-        setRegisterFullDetails(values);
-        localStorage.setItem("page1", true);
-        localStorage.setItem("occupation", values.option);
-        localStorage.setItem("mobile", values.mobile);
-      }}
-      enableReinitialize={false}
-    >
-      {({
-        isSubmitting,
-        isValid,
-        handleSubmit,
-        values,
-        setFieldValue,
-        handleChange,
-      }) => {
-        // Update the form state when Formik state changes
-        if (
-          formState?.isValid !== isValid ||
-          formState?.isSubmitting !== isSubmitting
-        ) {
-          setFormState({ isValid, isSubmitting });
-        }
-
-        return (
-          // <Form onSubmit={handleSubmit}>
-          <div>
-            <div
-              ref={sectionRef}
-              className="p-[2.5vw] md:p-[1.5vw] flex flex-col gap-y-[3vw] md:gap-y-[1.60vw]"
-            >
-              {/* Wrap the components in a Fragment or div */}
-              <>
-                <JourneyDetails
-                  BusDetails={BusDetails}
-                  layout={layout}
-                  selectedSeats={selectedSeats}
-                  selectedRoutes={selectedRoutes}
-                  busprice={busprice}
-                  seatDetails={seatDetails}
-                />
-                <PassengerDetails
-                  registerfulldetails={registerfulldetails}
-                  setRegisterFullDetails={setRegisterFullDetails}
-                  seatDetails={seatDetails}
-                  BusDetails={BusDetails}
-                  selectedSeats={selectedSeats}
-                  discount={busprice}
-                  setTravelerDetails={setTravelerDetails}
-                  travelerDetails={travelerDetails}
-                  setEmailInput={setEmailInput}
-                  emailInput={emailInput}
-                  setMobileInput={setMobileInput}
-                  mobileInput={mobileInput}
-                  enableInput={enableInput}
-                  setEnableInput={setEnableInput}
-                  isAllDetailsFilled={isAllDetailsFilled}
-                />
-                <BiilingAddress
-                  BusDetails={BusDetails}
-                  selectedSeats1={seatDetails}
-                  travelerDetails={travelerDetails}
-                  selectedRoutes={selectedRoutes}
-                  emailInput={emailInput}
-                  mobileInput={mobileInput}
-                  selectedseatprice={selectedseatprice}
-                  setConfirmModal={setConfirmModal}
-                  setConfirmRefNo={setConfirmRefNo}
-                  confirmRefNo={confirmRefNo}
-                  confirmModal={confirmModal}
-                  handleScroll={handleScroll}
-                  faredetails={faredetails}
-                  setFareDetails={setFareDetails}
-                  enableInput={enableInput}
-                  setEnableInput={setEnableInput}
-                  isAllDetailsFilled={isAllDetailsFilled}
-                  termschecked={termschecked}
-                  setTermsChecked={setTermsChecked}
-                />
-                {confirmModal && (
-                  <ConfirmTicket
-                    seatDetails={seatDetails}
-                    BusDetails={BusDetails}
-                    selectedSeats={selectedSeats}
-                    discount={busprice}
-                    confirmRefNo={confirmRefNo}
-                    faredetails={faredetails}
-                    emailInput={emailInput}
-                    mobileInput={mobileInput}
-                    setDropDown={setDropDown}
-                  />
-                )}
-              </>
-            </div>
+    <>
+      {razorpayloading ? (
+        <>
+          {/* <Skeleton
+            loading={razorpayloading}
+            active
+            style={{ margin: "0.5vw", padding: "0.5vw" }}
+            paragraph={{ rows: 4 }}
+            avatar
+          ></Skeleton> */}
+          <div className="flex items-center justify-center h-full w-full">
+            <img src={busloading} className="h-[20vw] w-[40vw]" />
           </div>
-          // </Form>
-        );
-      }}
-    </Formik>
+          {/* <label className="text-center text-[1.5vw]">Loading</label> */}
+        </>
+      ) : (
+        <Formik
+          initialValues={{
+            email: emailInput || "",
+            mobile:
+              mobileInput &&
+              mobileInput !== "undefined" &&
+              mobileInput !== "null"
+                ? mobileInput
+                : "",
+            user_name:
+              selectedSeats1?.map(
+                (seat, index) => travelerDetails?.[index]?.user_name
+              ) || "",
+            age:
+              selectedSeats1?.map(
+                (seat, index) => travelerDetails?.[index]?.age
+              ) || "",
+            gender: selectedSeats1?.map(
+              (seat, index) => travelerDetails?.[index]?.gender || "male"
+            ),
+            terms: termschecked || false,
+            address: "",
+            pin_code: "",
+            state: "",
+            city: "",
+            name: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={(values) => {
+            handleSubmit(values);
+            console.log(values, "values values");
+            setRegisterFullDetails(values);
+            localStorage.setItem("page1", true);
+            localStorage.setItem("occupation", values.option);
+            localStorage.setItem("mobile", values.mobile);
+          }}
+          enableReinitialize={false}
+        >
+          {({
+            isSubmitting,
+            isValid,
+            handleSubmit,
+            values,
+            setFieldValue,
+            handleChange,
+          }) => {
+            // Update the form state when Formik state changes
+            if (
+              formState?.isValid !== isValid ||
+              formState?.isSubmitting !== isSubmitting
+            ) {
+              setFormState({ isValid, isSubmitting });
+            }
+
+            return (
+              // <Form onSubmit={handleSubmit}>
+              <div className="w-full h-full">
+                {ticketloading === false && ticketnumber === null ? (
+                  <div
+                    ref={sectionRef}
+                    className="p-[2.5vw] md:p-[1.5vw] flex flex-col gap-y-[3vw] md:gap-y-[1.60vw]"
+                  >
+                    {/* Wrap the components in a Fragment or div */}
+                    <>
+                      <>
+                        <JourneyDetails
+                          BusDetails={BusDetails}
+                          layout={layout}
+                          selectedSeats={selectedSeats}
+                          selectedRoutes={selectedRoutes}
+                          busprice={busprice}
+                          seatDetails={seatDetails}
+                        />
+                        <PassengerDetails
+                          registerfulldetails={registerfulldetails}
+                          setRegisterFullDetails={setRegisterFullDetails}
+                          seatDetails={seatDetails}
+                          BusDetails={BusDetails}
+                          selectedSeats={selectedSeats}
+                          discount={busprice}
+                          setTravelerDetails={setTravelerDetails}
+                          travelerDetails={travelerDetails}
+                          setEmailInput={setEmailInput}
+                          emailInput={emailInput}
+                          setMobileInput={setMobileInput}
+                          mobileInput={mobileInput}
+                          enableInput={enableInput}
+                          setEnableInput={setEnableInput}
+                          isAllDetailsFilled={isAllDetailsFilled}
+                        />
+                        <BiilingAddress
+                          BusDetails={BusDetails}
+                          selectedSeats1={seatDetails}
+                          travelerDetails={travelerDetails}
+                          selectedRoutes={selectedRoutes}
+                          emailInput={emailInput}
+                          mobileInput={mobileInput}
+                          selectedseatprice={selectedseatprice}
+                          setConfirmModal={setConfirmModal}
+                          setConfirmRefNo={setConfirmRefNo}
+                          confirmRefNo={confirmRefNo}
+                          confirmModal={confirmModal}
+                          handleScroll={handleScroll}
+                          faredetails={faredetails}
+                          setFareDetails={setFareDetails}
+                          enableInput={enableInput}
+                          setEnableInput={setEnableInput}
+                          isAllDetailsFilled={isAllDetailsFilled}
+                          setTermsChecked={setTermsChecked}
+                          termschecked={termschecked}
+                          billAddress={billAddress}
+                          setBillAddress={setBillAddress}
+                        />
+                        {confirmModal && (
+                          <ConfirmTicket
+                            seatDetails={seatDetails}
+                            BusDetails={BusDetails}
+                            selectedSeats={selectedSeats}
+                            discount={busprice}
+                            confirmRefNo={confirmRefNo}
+                            faredetails={faredetails}
+                            emailInput={emailInput}
+                            mobileInput={mobileInput}
+                            setDropDown={setDropDown}
+                            setRazorpayLoading={setRazorpayLoading}
+                            setTicketNumber={setTicketNumber}
+                            setTicketLoading={setTicketLoading}
+                          />
+                        )}
+                      </>
+                    </>
+                  </div>
+                ) : ticketlist?.status === "success" ? (
+                  <div className="p-[2.5vw] md:p-[1.5vw] flex flex-col gap-y-[3vw] md:gap-y-[1.60vw]">
+                    <ViewFullTicket
+                      ticketnumber={ticketnumber}
+                      ticketDetails={ticketlist}
+                      // droppingDate={calculatedDate && ConvertDate(calculatedDate)}
+                    />
+                  </div>
+                ) : (
+                  // <Skeleton
+                  //   active
+                  //   style={{ margin: "0.5vw", padding: "0.5vw" }}
+                  //   paragraph={{ rows: 10 }}
+                  //   avatar
+                  // ></Skeleton>
+                  <div className="flex items-center justify-center h-full w-full">
+                    <img src={busloading} className="h-[20vw] w-[40vw]" />
+                  </div>
+                )}
+              </div>
+              // </Form>
+            );
+          }}
+        </Formik>
+      )}
+    </>
   );
 }

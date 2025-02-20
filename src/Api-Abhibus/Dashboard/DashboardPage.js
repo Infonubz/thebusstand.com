@@ -141,6 +141,7 @@ export const Abhibus_SeatBlocked = async (
     type.toLowerCase().includes("washroom") ||
     type.toLowerCase().includes("bharatBenz") ||
     type.toLowerCase().includes("luxury");
+  console.log(selectedSeats1, "selectedSeats1selectedSeats1");
 
   const seatpriceList = selectedseatprice?.map((item) => item).join(", ");
   const seatFareList = Object.values(selectedSeats1)
@@ -317,7 +318,11 @@ export const Abhibus_SeatConfirmed = async (BusDetails, refno) => {
     return null;
   }
 };
-export const Abhibus_GetFareInfo = async (adultCount, childCount,confirmRefNo) => {
+export const Abhibus_GetFareInfo = async (
+  adultCount,
+  childCount,
+  confirmRefNo
+) => {
   const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
@@ -355,10 +360,7 @@ export const Abhibus_GetFareInfo = async (adultCount, childCount,confirmRefNo) =
     });
 
     console.log("SOAP Response:", response.data);
-    const result = await processSOAPResponse(
-      response.data,
-      "GetFaresInfo"
-    );
+    const result = await processSOAPResponse(response.data, "GetFaresInfo");
     console.log(result, "resultresultresultdddresultresultresult");
     if (result?.status === "fail") {
       toast.error(`${result?.status} - ${result?.message}`);

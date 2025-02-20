@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import MobileJourneyDetails from "./BlockSeats/MobileJourneyDetails";
 import MobilePassengerDetails from "./BlockSeats/MobilePassengerDetails";
@@ -6,10 +6,12 @@ import MobileBillAddress from "./BlockSeats/MobileBillAddress";
 import MobileConfirmTicket from "./BlockSeats/MobileConfirmTicket";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Abhibus_SeatBlocked } from "../../../Api-Abhibus/Dashboard/DashboardPage";
-
-
-
+import {
+  Abhibus_GetFareInfo,
+  Abhibus_SeatBlocked,
+} from "../../../Api-Abhibus/Dashboard/DashboardPage";
+import { useSelector } from "react-redux";
+import ViewFullTicket from "../MyAccount/ViewTicket/ViewFullTicket";
 
 export default function IndexBlock() {
   const location = useLocation();
@@ -20,9 +22,16 @@ export default function IndexBlock() {
     seatDetails2,
     busprice2,
     selectedseatprice2,
-    layout2
+    layout2,
   } = location.state || {};
-  console.log(selectedRoutes2, selectedSeats2, seatDetails2, busdetails2, busprice2, 'mobile_seat_lock')
+  console.log(
+    selectedRoutes2,
+    selectedSeats2,
+    seatDetails2,
+    busdetails2,
+    busprice2,
+    "mobile_seat_lock"
+  );
 
   const [loader, setLoader] = useState(false);
   const [formState, setFormState] = useState({
@@ -36,7 +45,7 @@ export default function IndexBlock() {
       return acc;
     }, {})
   );
-  console.log(travelerDetails, 'testtestetttttttttttt')
+  console.log(travelerDetails, "testtestetttttttttttt");
 
   const [emailInput, setEmailInput] = useState("");
   const [mobileInput, setMobileInput] = useState("");
@@ -82,18 +91,21 @@ export default function IndexBlock() {
       [true],
       "You must accept the terms and conditions"
     ),
-    address: Yup.string()
-      .required('Address is required'),
+    address: Yup.string().required("Address is required"),
     city: Yup.string()
-      .matches(/^[A-Za-z\s]+$/, 'InValid Names for City')
-      .required('City is required'),
+      .matches(/^[A-Za-z\s]+$/, "InValid Names for City")
+      .required("City is required"),
     state: Yup.string()
-      .matches(/^[A-Za-z\s]+$/, 'InValid Names for State')
-      .required('State is required'),
+      .matches(/^[A-Za-z\s]+$/, "InValid Names for State")
+      .required("State is required"),
     pin_code: Yup.string()
-      .matches(/^\d{6}$/, 'Pin code must be 6 digits')
-      .required('Pin code is required')
-      .test('is-numeric', 'Pin code must contain only numbers', value => !isNaN(value)),
+      .matches(/^\d{6}$/, "Pin code must be 6 digits")
+      .required("Pin code is required")
+      .test(
+        "is-numeric",
+        "Pin code must contain only numbers",
+        (value) => !isNaN(value)
+      ),
   });
 
   const LuxuryFind = (type) =>
@@ -102,7 +114,6 @@ export default function IndexBlock() {
     type?.toLowerCase().includes("washroom") ||
     type?.toLowerCase().includes("bharatBenz") ||
     type?.toLowerCase().includes("luxury");
-
 
   const getPassengerCount = (data) => {
     let adultCount = 0;
@@ -122,9 +133,9 @@ export default function IndexBlock() {
     Object?.values(travelerDetails)
   );
   console.log(adultCount, childCount, "tegvyuhubuhbu");
+  const [faredetails, setFareDetails] = useState("");
 
   const handleSubmit = async (values) => {
-
     try {
       const response = await Abhibus_SeatBlocked(
         busdetails2,
@@ -138,8 +149,18 @@ export default function IndexBlock() {
       );
       if (response?.status === "success") {
         setConfirmModal(true);
-        setEnableInput(true)
+        setEnableInput(true);
         setConfirmRefNo(response?.ReferenceNo);
+        try {
+          const data = await Abhibus_GetFareInfo(
+            adultCount,
+            childCount,
+            response?.ReferenceNo
+          );
+          setFareDetails(data?.GetFaresInfo);
+        } catch {
+          console.log("test");
+        }
       }
     } catch (error) {
       console.error("API call failed:", error);
@@ -157,17 +178,23 @@ export default function IndexBlock() {
   console.log(isAllDetailsFilled, "is_all_details_Filled");
 
   const [enableInput, setEnableInput] = useState(false);
+  const ticketlist = useSelector((state) => state?.get_ticket_detail);
+  const [showModal, setShowModal] = useState(false);
 
-
+  useEffect(() => {
+    const value = sessionStorage.getItem("ticket_view");
+    if (value === "open") {
+      setShowModal(true);
+    } else {
+      setShowModal(false);
+    }
+  }, [sessionStorage.getItem("ticket_view")]);
   return (
-
     <Formik
       initialValues={{
         email: emailInput || "",
         mobile:
-          mobileInput &&
-            mobileInput !== "undefined" &&
-            mobileInput !== "null"
+          mobileInput && mobileInput !== "undefined" && mobileInput !== "null"
             ? mobileInput
             : "",
         user_name:
@@ -175,12 +202,10 @@ export default function IndexBlock() {
             (seat, index) => travelerDetails?.[index]?.user_name
           ) || "",
         age:
-          selectedSeats2?.map(
-            (seat, index) => travelerDetails?.[index]?.age
-          ) || "",
+          selectedSeats2?.map((seat, index) => travelerDetails?.[index]?.age) ||
+          "",
         gender: selectedSeats2?.map(
-          (seat, index) =>
-            travelerDetails?.[index]?.gender || "male"
+          (seat, index) => travelerDetails?.[index]?.gender || "male"
         ),
         terms: termschecked || false,
         address: "",
@@ -219,61 +244,75 @@ export default function IndexBlock() {
           // <Form onSubmit={handleSubmit}>
 
           <div className="p-[2.5vw] md:p-[1.5vw] flex flex-col gap-y-[3vw] md:gap-y-[1.60vw]">
-            <MobileJourneyDetails
-              MobBusDetails={busdetails2}
-              MobLayout={layout2}
-              MobSelectedSeats={selectedSeats2}
-              MobSelectedRoutes={selectedRoutes2}
-              MobBusprice={busprice2}
-              MobSeatDetails={seatDetails2}
-            />
-            <MobilePassengerDetails
-              registerfulldetails={registerfulldetails}
-              setRegisterFullDetails={setRegisterFullDetails}
-              MobSeatDetails={seatDetails2}
-              MobBusDetails={busdetails2}
-              MobSelectedSeats={selectedSeats2}
-              MobDiscount={busprice2}
-              travelerDetails={travelerDetails}
-              setTravelerDetails={setTravelerDetails}
-              setEmailInput={setEmailInput}
-              emailInput={emailInput}
-              setMobileInput={setMobileInput}
-              mobileInput={mobileInput}
-              isAllDetailsFilled={isAllDetailsFilled}
-              enableInput={enableInput}
-              setEnableInput={setEnableInput}
-            />
-            <MobileBillAddress
-              MobBusDetails={busdetails2}
-              MobSeatDetails={seatDetails2}
-              travelerDetails={travelerDetails}
-              MobSelectedRoutes={selectedRoutes2}
-              emailInput={emailInput}
-              mobileInput={mobileInput}
-              MobSelectedseatprice={selectedseatprice2}
-              setConfirmModal={setConfirmModal}
-              setConfirmRefNo={setConfirmRefNo}
-              confirmModal={confirmModal}
-              registerfulldetails={registerfulldetails}
-              setRegisterFullDetails={setRegisterFullDetails}
-              isAllDetailsFilled={isAllDetailsFilled}
-              enableInput={enableInput}
-              setEnableInput={setEnableInput}
-            />
-            {confirmModal && (
-              <MobileConfirmTicket
-                MobSeatDetails={seatDetails2}
-                MobBusDetails={busdetails2}
-                MobSelectedSeats={selectedSeats2}
-                MobDiscount={busprice2}
-                confirmRefNo={confirmRefNo}
+            {showModal === false &&  ticketlist?.length === 0? (
+              <>
+                <MobileJourneyDetails
+                  MobBusDetails={busdetails2}
+                  MobLayout={layout2}
+                  MobSelectedSeats={selectedSeats2}
+                  MobSelectedRoutes={selectedRoutes2}
+                  MobBusprice={busprice2}
+                  MobSeatDetails={seatDetails2}
+                />
+                <MobilePassengerDetails
+                  registerfulldetails={registerfulldetails}
+                  setRegisterFullDetails={setRegisterFullDetails}
+                  MobSeatDetails={seatDetails2}
+                  MobBusDetails={busdetails2}
+                  MobSelectedSeats={selectedSeats2}
+                  MobDiscount={busprice2}
+                  travelerDetails={travelerDetails}
+                  setTravelerDetails={setTravelerDetails}
+                  setEmailInput={setEmailInput}
+                  emailInput={emailInput}
+                  setMobileInput={setMobileInput}
+                  mobileInput={mobileInput}
+                  isAllDetailsFilled={isAllDetailsFilled}
+                  enableInput={enableInput}
+                  setEnableInput={setEnableInput}
+                />
+                <MobileBillAddress
+                  MobBusDetails={busdetails2}
+                  MobSeatDetails={seatDetails2}
+                  travelerDetails={travelerDetails}
+                  MobSelectedRoutes={selectedRoutes2}
+                  emailInput={emailInput}
+                  mobileInput={mobileInput}
+                  MobSelectedseatprice={selectedseatprice2}
+                  setConfirmModal={setConfirmModal}
+                  setConfirmRefNo={setConfirmRefNo}
+                  confirmModal={confirmModal}
+                  registerfulldetails={registerfulldetails}
+                  setRegisterFullDetails={setRegisterFullDetails}
+                  isAllDetailsFilled={isAllDetailsFilled}
+                  enableInput={enableInput}
+                  setEnableInput={setEnableInput}
+                  faredetails={faredetails}
+                  setFareDetails={setFareDetails}
+                />
+                {confirmModal && (
+                  <MobileConfirmTicket
+                    MobSeatDetails={seatDetails2}
+                    MobBusDetails={busdetails2}
+                    MobSelectedSeats={selectedSeats2}
+                    MobDiscount={busprice2}
+                    confirmRefNo={confirmRefNo}
+                    faredetails={faredetails}
+                    emailInput={emailInput}
+                    mobileInput={mobileInput}
+                  />
+                )}
+              </>
+            ) : (
+              <ViewFullTicket
+                ticketDetails={ticketlist}
+                // droppingDate={calculatedDate && ConvertDate(calculatedDate)}
               />
             )}
           </div>
           // </Form>
-        )
+        );
       }}
     </Formik>
-  )
+  );
 }

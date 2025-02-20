@@ -19,6 +19,7 @@ export default function MobileSeatLayout({
   layout,
   setLayout
 }) {
+  const tbs_discount = useSelector((state) => state?.live_per);
 
 
   const LuxuryFind = (type) =>
@@ -96,6 +97,7 @@ export default function MobileSeatLayout({
               type: seat.type,
               typeId: seat.seatTypeID,
               tax: seat.tax,
+              price: seat.price,
             }, // Store seat ID and its status
           }));
           return [...prevSelectedSeats, seat.seatNumber];
@@ -373,7 +375,8 @@ export default function MobileSeatLayout({
                                       <span className=" font-bold text-[3.5vw] text-white">
                                         {calculateDiscountedFare(
                                           item?.BUS_START_DATE,
-                                          seat?.price
+                                          seat?.price,
+                                          tbs_discount
                                         )}
                                       </span>
                                     </div>
@@ -429,7 +432,8 @@ export default function MobileSeatLayout({
                                         {" "}
                                         {calculateDiscountedFare(
                                           item?.BUS_START_DATE,
-                                          seat?.price
+                                          seat?.price,
+                                          tbs_discount
                                         )}
                                       </span>
                                     </div>
@@ -515,7 +519,8 @@ export default function MobileSeatLayout({
                                         {" "}
                                         {calculateDiscountedFare(
                                           item?.BUS_START_DATE,
-                                          seat?.price
+                                          seat?.price,
+                                          tbs_discount
                                         )}
                                       </span>
                                     </div>
@@ -569,7 +574,8 @@ export default function MobileSeatLayout({
                                         {" "}
                                         {calculateDiscountedFare(
                                           item?.BUS_START_DATE,
-                                          seat?.price
+                                          seat?.price,
+                                          tbs_discount
                                         )}
                                       </span>
                                     </div>

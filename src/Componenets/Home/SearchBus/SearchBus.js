@@ -23,20 +23,20 @@ import SVG_List from "../../Common/SVG/SVG";
 import { toast } from "react-toastify";
 import { GetStations } from "../../../Api-TBS/Home/Home";
 const validationSchema = Yup.object().shape({
-  occupation: Yup.string()
-    // .oneOf(["option1", "option2", "option3"], "Invalid option")
-    .required("Occupation is required"),
-  mobile: Yup.string()
-    .matches(/^[0-9]+$/, "Mobile number must be a number")
-    .min(min(10), "Mobile number must be at least 10 digits")
-    .max(10, "Mobile number maximum 10 digits only")
-    .required("Mobile Number is required"),
-  age: Yup.number()
-    .required("Age is required")
-    .min(3, "Age must be at least 3 years")
-    .max(100, "Age cannot exceed 100 years"),
-  // from: Yup.string().required("Field is Required"),
-  // to: Yup.string().required("Field is Required"),
+  // occupation: Yup.string()
+  //   // .oneOf(["option1", "option2", "option3"], "Invalid option")
+  //   .required("Occupation is required"),
+  // mobile: Yup.string()
+  //   .matches(/^[0-9]+$/, "Mobile number must be a number")
+  //   .min(min(10), "Mobile number must be at least 10 digits")
+  //   .max(10, "Mobile number maximum 10 digits only")
+  //   .required("Mobile Number is required"),
+  // age: Yup.number()
+  //   .required("Age is required")
+  //   .min(3, "Age must be at least 3 years")
+  //   .max(100, "Age cannot exceed 100 years"),
+  from: Yup.string().required("Field is Required"),
+  to: Yup.string().required("Field is Required"),
 });
 export default function SearchBus() {
   const SVG = SVG_List();
@@ -54,8 +54,8 @@ export default function SearchBus() {
     ac: "false",
     from: "",
     to: "",
-    from_sourceID: null,
-    to_sourceID: null,
+    from_sourceID: "",
+    to_sourceID: "",
     date: "",
     seater: "",
     sleeper: "",
@@ -96,7 +96,7 @@ export default function SearchBus() {
     setFieldValue("from", newBusDatas.from);
     setFieldValue("to", newBusDatas.to);
   };
-  const handlebussearch = async () => {
+  const handleSubmit = async () => {
     try {
       const data = await Abhibus_GetBusList(
         dispatch,
@@ -216,6 +216,12 @@ export default function SearchBus() {
       GetStations(dispatch, newValue, inputbox);
     }
   };
+  useEffect(() => {
+    sessionStorage.removeItem('home_luxury')
+    sessionStorage.removeItem('home_seat_type')
+    sessionStorage.removeItem('home_ac')
+  }, [])
+  console.log(busdatas.to_sourceID, busdatas.from_sourceID, "source idididid");
 
   return (
     <Formik
@@ -229,8 +235,37 @@ export default function SearchBus() {
         to: "",
       }}
       validationSchema={validationSchema}
-      onSubmit={(values) => {
-        setBusDatas(values);
+      onSubmit={(values, { setFieldError }) => {
+        setIsInputFromFocused(false);
+        setIsInputToFocused(false);
+        if (
+          busdatas.from_sourceID === undefined ||
+          busdatas.from_sourceID === "" ||
+          busdatas.to_sourceID === undefined ||
+          busdatas.to_sourceID === ""
+        ) {
+          if (
+            (busdatas.from_sourceID === undefined ||
+              busdatas.from_sourceID === "") &&
+            (busdatas.to_sourceID === undefined || busdatas.to_sourceID === "")
+          ) {
+            setFieldError("from", "Choose the value from dropdown");
+            setFieldError("to", "Choose the value from dropdown");
+          }
+          if (
+            busdatas.from_sourceID === undefined ||
+            busdatas.from_sourceID === ""
+          ) {
+            setFieldError("from", "Choose the value from dropdown");
+          } else {
+            setFieldError("to", "Choose the value from dropdown");
+          }
+        } else if (busdatas.from_sourceID === busdatas.to_sourceID) {
+          setFieldError("from", "Source and Destination cannot be the same");
+        } else {
+          handleSubmit(values);
+          //setBusDatas(values);
+        }
 
         // localStorage.setItem("page1", true);
         // localStorage.setItem("occupation", values.option);
@@ -349,10 +384,34 @@ export default function SearchBus() {
                                   className="h-[3vw] w-full rounded-[0.3vw] pl-[1vw] outline-none text-[1.2vw] placeholder:text-[1.2vw]"
                                   placeholder="From"
                                   onFocus={() => {
+                                    setBusDatas({
+                                      ...busdatas,
+                                      from: "",
+                                      from_sourceID: "",
+                                    });
                                     setIsInputFromFocused(true);
                                     setIsInputToFocused(false);
                                   }}
-                                  // onBlur={() => setIsInputFromFocused(false)}
+                                  onBlur={(e) => {
+                                    if (
+                                      e.target.value !== "" &&
+                                      e.target.value !== undefined
+                                    ) {
+                                      //setIsInputFromFocused(false)
+                                      if (Get_Stations?.length > 0) {
+                                        setFieldValue(
+                                          "from",
+                                          Get_Stations[0].station_name
+                                        );
+                                        setBusDatas({
+                                          ...busdatas,
+                                          from: Get_Stations[0].station_name,
+                                          from_sourceID:
+                                            Get_Stations[0].source_id,
+                                        });
+                                      }
+                                    }
+                                  }}
                                   value={values.from} // Use Formik's field value directly
                                   autoComplete="off"
                                   onChange={(e) =>
@@ -363,8 +422,11 @@ export default function SearchBus() {
                             </Field>
 
                             {isInputFromFocused && (
-                              <div className="absolute top-[3.5vw] w-full">
-                                <div className="w-full min-h-auto max-h-[16vw] flex-col flex overflow-y-scroll bg-white shadow-md rounded-[0.3vw]">
+                              <div className="absolute top-[3.5vw] w-full z-20">
+                                <div
+                                  className="w-full min-h-auto max-h-[16vw] flex-col flex overflow-y-scroll bg-white shadow-md rounded-[0.3vw]"
+                                  tabIndex="-1"
+                                >
                                   {Get_Stations?.map((item, i) => (
                                     <div
                                       key={i}
@@ -398,24 +460,24 @@ export default function SearchBus() {
                               </div>
                             )}
                           </div>
-
+                          <ErrorMessage
+                            name="from"
+                            component="div"
+                            className="text-red-500 text-[0.8vw] absolute top-[3.6vw] z-10 left-[0.25vw]"
+                          />
                           {error.from ? (
                             <div className="text-red-500 text-[0.8vw] absolute top-[3.6vw] left-[0.25vw]">
                               {error?.from}
                             </div>
                           ) : (
-                            <ErrorMessage
-                              name="from"
-                              component="div"
-                              className="text-red-500 text-[0.8vw] absolute top-[3.6vw] left-[0.25vw]"
-                            />
+                            <></>
                           )}
                         </div>
 
                         {/* ------------------------------------------------------------------------------------------------------------------------ */}
                       </div>
                     </div>
-                    <div className="col-span-1 w-full h-full items-center justify-center flex">
+                    <div className="col-span-1 w-full h-full items-center justify-center cursor-pointer flex">
                       <FaArrowRightArrowLeft
                         color={`${colors.primary}`}
                         //className=" cursor-not-allowed"
@@ -501,10 +563,34 @@ export default function SearchBus() {
                                   className="h-[3vw] w-full rounded-[0.3vw] pl-[1vw] outline-none text-[1.2vw] placeholder:text-[1.2vw]"
                                   placeholder="To"
                                   onFocus={() => {
+                                    setBusDatas({
+                                      ...busdatas,
+                                      to: "",
+                                      to_sourceID: "",
+                                    });
                                     setIsInputToFocused(true);
                                     setIsInputFromFocused(false);
                                   }}
-                                  // onBlur={() => setIsInputToFocused(false)}
+                                  onBlur={(e) => {
+                                    //setIsInputToFocused(false)
+                                    if (
+                                      e.target.value !== "" &&
+                                      e.target.value !== undefined
+                                    ) {
+                                      if (Get_des_Statiion?.length > 0) {
+                                        setFieldValue(
+                                          "to",
+                                          Get_des_Statiion[0].station_name
+                                        );
+                                        setBusDatas({
+                                          ...busdatas,
+                                          to: Get_des_Statiion[0].station_name,
+                                          to_sourceID:
+                                            Get_des_Statiion[0].source_id,
+                                        });
+                                      }
+                                    }
+                                  }}
                                   value={values.to}
                                   autoComplete="off"
                                   onChange={(e) =>
@@ -515,8 +601,14 @@ export default function SearchBus() {
                             </Field>
 
                             {isInputToFocused && (
-                              <div className="absolute top-[3.5vw] w-full">
-                                <div className="w-full min-h-auto max-h-[16vw] flex-col flex overflow-y-scroll bg-white shadow-md rounded-[0.3vw]">
+                              <div
+                                className="absolute top-[3.5vw] z-20 w-full"
+                                tabIndex="-1"
+                              >
+                                <div
+                                  className="w-full min-h-auto max-h-[16vw] flex-col flex overflow-y-scroll bg-white shadow-md rounded-[0.3vw]"
+                                  tabIndex="-1"
+                                >
                                   {Get_des_Statiion?.map((item, i) => (
                                     <div
                                       key={i}
@@ -553,7 +645,7 @@ export default function SearchBus() {
                             <ErrorMessage
                               name="to"
                               component="div"
-                              className="text-red-500 text-[0.8vw] absolute top-[3.6vw] left-[0.25vw]"
+                              className="text-red-500 text-[0.8vw] z-10 absolute top-[3.6vw] left-[0.25vw]"
                             />
                           )}
                         </div>
@@ -569,6 +661,7 @@ export default function SearchBus() {
                   {/* <h1>Seat Type (optional)</h1> */}
                   <div className="flex gap-[1vw]   pt-[0.5vw] pl-[2vw] items-center w-full ">
                     <button
+                      onFocus={() => setIsInputToFocused(false)}
                       className={`border-[0.15vw] flex ${
                         seatFilter === "seater"
                           ? `bg-[${colors.primary}] text-white border-white`
@@ -580,7 +673,10 @@ export default function SearchBus() {
                         } else {
                           SetSeatFilter("seater");
                         }
-                        sessionStorage.setItem("home_seat_type", true);
+                        // sessionStorage.setItem("home_seat_type", true);
+                        sessionStorage.getItem("home_seat_type") === "true"
+                          ? sessionStorage.setItem("home_seat_type", null)
+                          : sessionStorage.setItem("home_seat_type", true);
                       }}
                     >
                       {/* <span className="">
@@ -644,7 +740,10 @@ export default function SearchBus() {
                         } else {
                           SetSeatFilter("sleeper");
                         }
-                        sessionStorage.setItem("home_seat_type", false);
+                        // sessionStorage.setItem("home_seat_type", false);
+                        sessionStorage.getItem("home_seat_type") === "false"
+                          ? sessionStorage.setItem("home_seat_type", null)
+                          : sessionStorage.setItem("home_seat_type", false);
                       }}
                     >
                       {/* <span
@@ -702,7 +801,9 @@ export default function SearchBus() {
                       }  py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
                       onClick={() => {
                         setLuxury(!luxury);
-                        sessionStorage.setItem("home_luxury", true);
+                        sessionStorage.getItem("home_luxury") === "true"
+                          ? sessionStorage.setItem("home_luxury", null)
+                          : sessionStorage.setItem("home_luxury", true);
                       }}
                     >
                       {/* <span className="pr-[0.5vw]">
@@ -753,7 +854,12 @@ export default function SearchBus() {
                     style={{
                       backgroundColor: colors.primary,
                     }}
-                    onClick={handlebussearch}
+                    // onClick={handlebussearch
+                    onClick={() => {
+                      setIsInputFromFocused(false);
+                      setIsInputToFocused(false);
+                      handleSubmit();
+                    }}
                   >
                     Search Buses
                   </button>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar_One from "../Common/Top-Navbar/Navbar-One";
 import LocationPermission from "../Common/Common-Functions/LocationPermission";
 import TBS_Theme from "./TBS-Theme/TBS-Theme";
@@ -19,14 +19,32 @@ import FAQS from "./FAQ/FAQ";
 import FeedBacks from "./Feedbacks/FeedBacks";
 
 import SearchBusMobile from "./SearchBus/SearchBusMobile";
+import { CurrentDiscount } from "../../Api-TBS/Home/Home";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router";
 export default function HomeIndex() {
+  const currentpath = useParams();
+  const dispatch = useDispatch();
+  console.log(currentpath,"currentpath");
+  
+  useEffect(() => {
+    if (currentpath?.trip_date) {
+      console.log(currentpath?.trip_date,"currentpathggggg");
+      
+      const date = new Date(currentpath?.trip_date);
+      date.setUTCHours(5, 30, 53, 897);
+      const jdate = date?.toISOString();
+      CurrentDiscount(dispatch, jdate);
+    }
+  }, [currentpath]);
   return (
     <div
       className={`bg-[#E5FFF1]  min-h-screen max-h-auto w-full overflow-auto relative`}
     >
       <Navbar_One />
       <LocationPermission />
-      <div className="Background relative md:block hidden">
+      <div className="Background  relative md:block hidden">
+        {/* <div className="bg-[#1F487C] h-[32vw] w-full  relative md:block hidden"> */}
         <TBS_Theme />
         <SearchBus />
       </div>

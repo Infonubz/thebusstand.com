@@ -40,6 +40,8 @@ export default function BiilingAddress({
   setTermsChecked,
   setFareDetails,
   faredetails,
+  setBillAddress,
+  billAddress,
 }) {
   const LuxuryFind = (type) =>
     type?.toLowerCase().includes("volvo") ||
@@ -224,6 +226,7 @@ export default function BiilingAddress({
                           <Field
                             type="text"
                             name="address"
+                            value={billAddress?.address || ""}
                             disabled={enableInput}
                             autoComplete="off"
                             placeholder="Address"
@@ -236,6 +239,10 @@ export default function BiilingAddress({
                               //   "user_email_id",
                               //   e.target.value
                               // );
+                              setBillAddress((prev) => ({
+                                ...prev,
+                                address: e.target.value,
+                              }));
                             }}
                             className={` ${
                               !isSubmitting || !enableInput
@@ -267,6 +274,7 @@ export default function BiilingAddress({
                             autoComplete="off"
                             placeholder="Pin Code"
                             // value={emailInput}
+                            value={billAddress?.pincode || ""}
                             onChange={(e) => {
                               handleChange(e);
                               //   setEmailInput(e.target.value);
@@ -275,6 +283,10 @@ export default function BiilingAddress({
                               //   "user_email_id",
                               //   e.target.value
                               // );
+                              setBillAddress((prev) => ({
+                                ...prev,
+                                pincode: e.target.value,
+                              }));
                             }}
                             className={`
                             ${
@@ -310,6 +322,7 @@ export default function BiilingAddress({
                             autoComplete="off"
                             placeholder="State"
                             // value={emailInput}
+                            value={billAddress?.state || ""}
                             onChange={(e) => {
                               handleChange(e);
                               //   setEmailInput(e.target.value);
@@ -318,6 +331,10 @@ export default function BiilingAddress({
                               //   "user_email_id",
                               //   e.target.value
                               // );
+                              setBillAddress((prev) => ({
+                                ...prev,
+                                state: e.target.value,
+                              }));
                             }}
                             className={`
                             ${
@@ -350,6 +367,7 @@ export default function BiilingAddress({
                             autoComplete="off"
                             placeholder="City"
                             // value={emailInput}
+                            value={billAddress?.city || ""}
                             onChange={(e) => {
                               handleChange(e);
                               //   setEmailInput(e.target.value);
@@ -358,6 +376,10 @@ export default function BiilingAddress({
                               //   "user_email_id",
                               //   e.target.value
                               // );
+                              setBillAddress((prev) => ({
+                                ...prev,
+                                city: e.target.value,
+                              }));
                             }}
                             className={`
                             ${
@@ -396,7 +418,8 @@ export default function BiilingAddress({
                               type="checkbox"
                               name="terms"
                               className="md:h-[1.5vw] md:w-[2vw] h-[4vw] w-[4vw] cursor-pointer "
-                              checked={values.terms}
+                              // checked={values.terms}
+                              checked={termschecked}
                               //color="#393939"
                               onChange={(e) => {
                                 setFieldValue("terms", e.target.checked);

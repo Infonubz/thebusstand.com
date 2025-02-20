@@ -54,10 +54,12 @@ const SidebarMobile = ({
   setAmenitiesValue,
   departure_local,
   arrival_local,
+  busSeatType, setBusSeatType,
+  luxurybus, setluxurybus,
+  acBus, setAcBus
   // BusFilters,
   // SetBusFilters
 }) => {
-  console.log(pickuptime, 'pickupchecked');
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDrawerName, setIsDrawerName] = useState("");
@@ -110,10 +112,7 @@ const SidebarMobile = ({
     ratings: true,
   });
   const fulllist = useSelector((state) => state?.get_data);
-  const buslist = useSelector((state) => state?.get_buslist);
-
-  // console.log(buslist.map((item) => item?.Start_time), 'bus_list')
-  console.log(buslist.map((item) => item?.Traveler_Agent_Name), 'bus_list')
+  const buslist = useSelector((state) => state?.get_buslist_filter);
 
   const toggleDrawer = (name) => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -129,7 +128,7 @@ const SidebarMobile = ({
   const capitalizeFirstLetter = (string) => {
     return string
       ?.split(" ")
-      ?.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      ?.map((word) => word?.charAt(0)?.toUpperCase() + word.slice(1))
       ?.join(" ");
   };
 
@@ -174,7 +173,18 @@ const SidebarMobile = ({
     sessionStorage.setItem('home_luxury', null)
     sessionStorage.setItem('home_seat_type', null)
     sessionStorage.setItem('home_ac', null)
-
+    setluxurybus({
+      luxury: null,
+      normal: null,
+    })
+    setAcBus({
+      ac_bus: null,
+      non_ac_bus: null,
+    })
+    setBusSeatType({
+      sleep: null,
+      seat: null
+    })
   };
 
   // const handleClear = useCallback(() => {
@@ -212,9 +222,8 @@ const SidebarMobile = ({
   const amenitiesClear = () => {
     setAmenitiesValue({});
   };
-  console.log(amenitiesvalue, "amenitiesvalue");
 
-  console.log(sessionStorage.getItem('home_luxury') === 'true', 'localStorage')
+
   const vehicleclear = () => {
     // setAcFilter("");
     // setSeatTypeFilter("");
@@ -230,7 +239,18 @@ const SidebarMobile = ({
     sessionStorage.setItem('home_luxury', null)
     sessionStorage.setItem('home_seat_type', null)
     sessionStorage.setItem('home_ac', null)
-
+    setluxurybus({
+      luxury: null,
+      normal: null,
+    })
+    setAcBus({
+      ac_bus: null,
+      non_ac_bus: null,
+    })
+    setBusSeatType({
+      sleep: null,
+      seat: null
+    })
   };
 
   const handlePickupCheckbox = (event, itemName) => {
@@ -251,7 +271,6 @@ const SidebarMobile = ({
     return keyName
   }
   const selectedPickUp = fetchPickPoint()
-  console.log(selectedPickUp, 'changing_Keys');
 
 
   const handleDropPoint = useCallback(async () => {
@@ -262,7 +281,6 @@ const SidebarMobile = ({
     //     localStorage.getItem("selectdate"),
     //     dispatch
     //   );
-    //   console.log(dropPointFilter, "dropPointFilter");
     //   setPickUpList(dropPointFilter);
     // } catch (error) {
     //   console.error("Error", error);
@@ -274,7 +292,6 @@ const SidebarMobile = ({
 
     setAmenitiesValue((prevState) => {
       if (checked) {
-        console.log(prevState, "drop checked");
         return { ...prevState, [itemName]: true };
       } else {
         const updatedItems = { ...prevState };
@@ -326,8 +343,6 @@ const SidebarMobile = ({
   };
 
   const handlefilter = useCallback(async () => {
-    // console.log(amenitiesvalue, "searchvaluesearchvalue");
-    console.log(pickupchecked, "pickupchecked");
     try {
       const pickupcheck = Object.keys(pickupchecked)?.filter(
         (key) => pickupchecked[key]
@@ -347,7 +362,6 @@ const SidebarMobile = ({
       const amenitiescheck = Object.keys(transformedData)?.filter(
         (key) => transformedData[key]
       );
-      console.log(amenitiescheck?.join(","), "transformedData");
       const payload = {
         // source: localStorage.getItem("depature"),
         De_source: "Chennai",
@@ -370,8 +384,6 @@ const SidebarMobile = ({
         rating: arrange_data.rating ? arrange_data?.rating : "FALSE",
         // timeDepature:"6am-11am"
       };
-      console.log(payload, "sidebarMobile_payload");
-      console.log(operatorchecked, "dropcheck");
       const response = await axios.get(
         "http://192.168.90.43:8090/bus_Api_Filter",
         {
@@ -382,7 +394,6 @@ const SidebarMobile = ({
       //     type: GET_FILTER_DATA,
       //     payload: response.data,
       //   });
-      console.log("Response", response);
     } catch (error) {
       console.error("Error", error);
     }
@@ -410,7 +421,6 @@ const SidebarMobile = ({
     );
 
   // const Search = async (e, values) => {
-  //   console.log(values, "log11111searchhh");
   //   const response = await handleSearch(
   //     dispatch,
   //     e,
@@ -427,7 +437,6 @@ const SidebarMobile = ({
   //   } else if (handlesearchValue === "operators") {
   //     setHandleSearchOperators(searchData);
   //   }
-  //   console.log("search Amenities", searchData);
   // };
 
   const styles = {
@@ -461,7 +470,6 @@ const SidebarMobile = ({
     } else if (isDrawerName === "drop") {
       setShowingData(dropfulllist);
     } else if (isDrawerName === "amenities") {
-      console.log("hii");
       setShowingData(amenitieslist);
     } else {
       setShowingData(opertorfulllist);
@@ -479,7 +487,6 @@ const SidebarMobile = ({
       const filteredData = showingdata?.filter((item) =>
         item?.name?.toLowerCase()?.includes(drawerSearch?.toLowerCase())
       );
-      console.log(filteredData, "filter_dataa");
 
       setDrawerShowData(filteredData);
     } else if (isDrawerName === "drop") {
@@ -515,7 +522,6 @@ const SidebarMobile = ({
   useEffect(() => {
     if (localStorage.getItem("ac") === "true") {
       setAcFilter("mbleAc");
-      console.log(localStorage.getItem("ac"), "joooooooo");
     }
     if (localStorage.getItem("seatType")) {
       setSeatTypeFilter(localStorage.getItem("seatType"));
@@ -538,7 +544,6 @@ const SidebarMobile = ({
 
   useEffect(() => {
     setAmenitiesList(pickUp_list?.amenities);
-    console.log(pickUp_list, "settamininties");
 
     setDropFullList(pickUp_list?.dropping_points);
 
@@ -551,23 +556,19 @@ const SidebarMobile = ({
       acc[val] = (acc[val] || 0) + 1;
       return acc;
     }, {});
-    console.log(PickuppointsCount, "PickuppointsArray");
 
     setPickupFullList(pickUp_list?.boarding_points);
-    console.log(pickUp_list?.boarding_points, "mobile_pickuplist");
 
     const Bus_operator_name = fulllist?.map((item) => {
       return item.Bus_operator_name;
     });
 
     const uniqueArray = [...new Set(Bus_operator_name)];
-    console.log(uniqueArray, "Bus_operator_name");
 
     const travelcount = uniqueArray?.reduce((acc, val) => {
       acc[val] = (acc[val] || 0) + 1;
       return acc;
     }, {});
-    console.log(uniqueArray, "travelcount");
     const traveldata = Object.entries(travelcount)
       .filter(([place, count]) => place.trim() !== "")
       .map(([place, count]) => ({
@@ -581,12 +582,11 @@ const SidebarMobile = ({
   useEffect(() => {
     // Clear sessionStorage when the page reloads
     const handleBeforeUnload = () => {
-      localStorage.setItem("isLuxury", false);
-      localStorage.setItem("seatType", "");
-      localStorage.setItem("ac", "");
+      sessionStorage.setItem("home_luxury", null);
+      sessionStorage.setItem("home_ac", null);
+      sessionStorage.setItem("home_seat_type", null);
       setAcFilter("");
     };
-
     // Adding event listener for page unload (reload, close, etc.)
     window.addEventListener("beforeunload", handleBeforeUnload);
 
@@ -614,8 +614,9 @@ const SidebarMobile = ({
   };
 
   const OperatorName = [...new Set(buslist?.map(item => item?.Traveler_Agent_Name))];
+
   const dropCount = buslist
-    ?.map(item => item?.dropping_info.map(data => data?.split('^')[1])) // Extract names from the string
+    ?.map(item => item?.dropping_info?.map(data => data?.split('^')[1])) // Extract names from the string
     ?.flat() // Flatten the array if necessary
     ?.reduce((acc, dropping_info) => {
       // Count occurrences of each name
@@ -653,18 +654,16 @@ const SidebarMobile = ({
   };
 
   const filteredBoardingPoints = BoardingPoints?.filter((point) =>
-    point?.name?.toLowerCase().includes(searchQueries?.boardingPoints?.toLowerCase())
+    point?.name?.toLowerCase()?.includes(searchQueries?.boardingPoints?.toLowerCase())
   );
 
   const filteredDropingPoints = DroppingPoints?.filter((point) =>
-    point?.name?.toLowerCase().includes(searchQueries?.droppingPoints?.toLowerCase())
+    point?.name?.toLowerCase()?.includes(searchQueries?.droppingPoints?.toLowerCase())
   );
 
   const filteredOperatorName = OperatorName?.filter((operator) =>
-    operator.toLowerCase().includes(searchQueries?.Operators?.toLowerCase())
+    operator.toLowerCase()?.includes(searchQueries?.Operators?.toLowerCase())
   );
-
-  console.log(filteredBoardingPoints, 'filteredBoardingPoints')
 
   useEffect(() => {
     let newShowingData = [];
@@ -692,7 +691,6 @@ const SidebarMobile = ({
     price_range: null,
   });
 
-  console.log(BusFilters, 'home_busfilters')
   // Helper function to convert 12-hour time string (e.g., '11:30 PM') to 24-hour format in minutes
   const timeToMinutes = (time) => {
     const [hours, minutes] = time.split(":");
@@ -723,47 +721,89 @@ const SidebarMobile = ({
     return timeRanges[range] || [0, 0];
   };
 
-  const home_luxury = sessionStorage.getItem('home_luxury')
-  const home_ac = sessionStorage.getItem('home_ac')
-  const home_seat_type = sessionStorage.getItem('home_seat_type')
+  // const [luxurybus, setluxurybus] = useState({
+  //   luxury: null,
+  //   normal: null,
+  // });
+
+  // const [acBus, setAcBus] = useState({
+  //   ac_bus: null,
+  //   non_ac_bus: null,
+  // });
+  // const [busSeatType, setBusSeatType] = useState({
+  //   sleep: null,
+  //   seat: null
+  // })
+
+  // useEffect(() => {
+  //   const homeLuxury = sessionStorage.getItem('home_luxury');
+  //   const homeAc = sessionStorage.getItem('home_ac');
+  //   const homeSeatType = sessionStorage.getItem('home_seat_type');
+
+  //   if (homeLuxury === 'true') {
+  //     setluxurybus({
+  //       normal: null,
+  //       luxury: true,
+  //     });
+  //   }
+  //   if (homeAc === 'true') {
+  //     setAcBus({
+  //       ac_bus: true,
+  //       non_ac_bus: null,
+  //     });
+  //   }
+  //   if (homeSeatType === 'true') {
+  //     setBusSeatType({
+  //       seat: true,
+  //       sleep: null,
+  //     });
+  //   } else if (homeSeatType === 'false') {
+  //     setBusSeatType({
+  //       sleep: true,
+  //       seat: null,
+  //     });
+  //   }
+  // }, []);
+
+
   useEffect(() => {
+
     let filteredList = buslist || [];
-    console.log(filteredList, 'filtereedList')
     // Filter for Bus Type (Luxury/Normal)
 
+    // if (luxurybus?.normal === true) {
+    //   filteredList = filteredList?.filter((item) =>
+    //     !(item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
+    //       item?.Bus_Type_Name?.toLowerCase()?.includes("volvo"))
+    //   );
+    // } else if (luxurybus?.luxury === true) {
+    //   filteredList = filteredList?.filter((item) =>
+    //     item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
+    //     item?.Bus_Type_Name?.toLowerCase()?.includes("volvo")
+    //   );
+    // }
 
-    if (BusFilters?.bustype === true) {
-      filteredList = filteredList.filter((item) =>
-        !(item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
-          item?.Bus_Type_Name?.toLowerCase()?.includes("volvo"))
-      );
-    } else if (home_luxury === 'true' || BusFilters?.bustype === false) {
-      filteredList = filteredList.filter((item) =>
-        item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
-        item?.Bus_Type_Name?.toLowerCase()?.includes("volvo")
-      );
-    }
+    // // Filter for AC/Non-AC
+    // if (acBus?.ac_bus === true) {
+    //   filteredList = filteredList?.filter((item) =>
+    //     !item?.bus_type?.toLowerCase()?.includes("non-ac")
+    //   );
+    // } else if (acBus?.non_ac_bus === true) {
+    //   filteredList = filteredList.filter((item) =>
+    //     item?.bus_type?.toLowerCase()?.includes("non-ac")
+    //   );
+    // }
+    // // Filter for Seater/Sleeper
+    // if (busSeatType?.seat === true) {
+    //   filteredList = filteredList?.filter((item) =>
+    //     item?.bus_type?.toLowerCase()?.includes("seater")
+    //   );
+    // } else if (busSeatType?.sleep === true) {
+    //   filteredList = filteredList?.filter((item) =>
+    //     item?.bus_type?.toLowerCase()?.includes("sleeper")
+    //   );
+    // }
 
-    // Filter for AC/Non-AC
-    if (home_ac === "true" || BusFilters?.ac_non_ac === true) {
-      filteredList = filteredList.filter((item) =>
-        !item?.bus_type?.toLowerCase()?.includes("non-ac")
-      );
-    } else if (BusFilters?.ac_non_ac === false) {
-      filteredList = filteredList.filter((item) =>
-        item?.bus_type?.toLowerCase()?.includes("non-ac")
-      );
-    }
-    // Filter for Seater/Sleeper
-    if (home_seat_type === 'true' || BusFilters?.seat_type === true) {
-      filteredList = filteredList.filter((item) =>
-        item?.bus_type?.toLowerCase()?.includes("seater")
-      );
-    } else if (home_seat_type === 'false' || BusFilters?.seat_type === false) {
-      filteredList = filteredList.filter((item) =>
-        item?.bus_type?.toLowerCase()?.includes("sleeper")
-      );
-    }
     if (priceRange?.min > 0 || priceRange?.max < 3000) {
       filteredList = filteredList?.filter((item) =>
         item?.Fare >= priceRange?.min && item?.Fare <= priceRange?.max
@@ -775,7 +815,6 @@ const SidebarMobile = ({
           const parts = info?.split("^");
           return parts[0];
         })
-        console.log(pick_up, "pick_upPoints");
         return Object.keys(pickupchecked).some(value => pick_up.includes(value));
 
       })
@@ -786,7 +825,6 @@ const SidebarMobile = ({
           const parts = info?.split("^");
           return parts[1];
         })
-        console.log(drop_points, "drop_points");
         return Object.keys(dropchecked)?.some(value => drop_points?.includes(value));
 
       })
@@ -843,9 +881,8 @@ const SidebarMobile = ({
       payload: filteredList,
     });
 
-    console.log(BusFilters, buslist, "BusFilters");
 
-  }, [dispatch, BusFilters, buslist, priceRange, pickupchecked, dropchecked, pickuptime, operatorchecked, droptime, home_luxury, home_ac, home_seat_type]);
+  }, [dispatch, buslist, priceRange, pickupchecked, dropchecked, pickuptime, operatorchecked, droptime]);
 
 
 
@@ -931,7 +968,7 @@ const SidebarMobile = ({
               <div className="grid gap-y-[1vw]">
                 <div className="grid grid-cols-2 pt-[2vw] gap-[3.5vw] mx-[2vw]">
                   <button
-                    className={`${BusFilters?.bustype === true
+                    className={`${luxurybus?.normal === true
                       ? "text-white bg-[#1F487C] border-[#1F487C]"
                       : "border-gray-300 bg-white"
                       } w-full border-[0.1vw] rounded-md cursor-pointer `}
@@ -943,10 +980,11 @@ const SidebarMobile = ({
                       //   setNoramlBus(true);
                       //   sessionStorage.setItem("isMbleNoramlBus", true);
                       // }
-                      SetBusFilters((prev) => ({
+                      setluxurybus((prev) => ({
                         ...prev,
-                        bustype: prev.bustype === true ? null : true,
-                      }));
+                        normal: prev.normal === true ? null : true,
+                        luxury: null
+                      }))
                     }}
                   >
                     <div className="flex justify-center items-center">
@@ -960,19 +998,19 @@ const SidebarMobile = ({
                     </div>
                   </button>
                   <button
-                    className={`${home_luxury === 'true'
+                    className={`${luxurybus?.luxury === true
                       ? "bg-custom-gradient-luxury bg-image-url"
                       : "bg-white"
-                      } h-full ${home_luxury === 'true'
+                      } h-full ${luxurybus?.luxury === true
                         ? "text-black border-custom-gradient-luxury bg-image-url"
                         : "border-gray-300 "
                       } w-full border-[0.1vw] rounded-[1.2vw] cursor-pointer `}
                     onClick={() => {
-                      SetBusFilters((prev) => ({
+                      setluxurybus((prev) => ({
                         ...prev,
-                        bustype: prev.bustype === false ? null : false,
+                        luxury: prev.luxury === true ? null : true,
+                        normal: null
                       }));
-                      sessionStorage.getItem('home_luxury') === 'true' ? sessionStorage.setItem('home_luxury', null) : sessionStorage.setItem('home_luxury', true)
                     }}
                   >
                     <div className="flex justify-center items-center">
@@ -986,8 +1024,8 @@ const SidebarMobile = ({
 
                 <div className="grid grid-cols-2 pt-[2vw] gap-[3.5vw] mx-[2vw]">
                   <button
-                    className={`${sessionStorage.getItem('home_ac') === "true" ? "bg-[#1F487C]" : "bg-white"
-                      }  ${sessionStorage.getItem('home_ac') === "true"
+                    className={`${acBus?.ac_bus === true ? "bg-[#1F487C]" : "bg-white"
+                      }  ${acBus?.ac_bus === true
                         ? "text-white border-[#1F487C]"
                         : "border-gray-300"
                       } w-full border-[0.1vw] rounded-md cursor-pointer `}
@@ -997,18 +1035,18 @@ const SidebarMobile = ({
                       // } else {
                       //   setAcFilter("mbleAc");
                       // }
-                      SetBusFilters((prev) => ({
+                      setAcBus((prev) => ({
                         ...prev,
-                        ac_non_ac: prev.ac_non_ac === true ? null : true,
+                        ac_bus: prev.ac_bus === true ? null : true,
+                        non_ac_bus: null
                       }));
-                      sessionStorage.getItem('home_ac') === 'true' ? sessionStorage.setItem('home_ac', null) : sessionStorage.setItem('home_ac', true)
                     }}
                   >
                     <div className="py-[0.5vw] flex items-center justify-center gap-[2vw]">
                       {/* <span>
                     <TbAirConditioning size={15} className="mx-1 " />
                   </span> */}
-                      {sessionStorage.getItem('home_ac') === "true" ? (
+                      {acBus?.ac_bus === true ? (
                         <img
                           src={s_c_ac}
                           className="w-[4.5vw] h-[4.5vw]"
@@ -1029,8 +1067,8 @@ const SidebarMobile = ({
                     </div>
                   </button>
                   <button
-                    className={`${BusFilters?.ac_non_ac === false ? "bg-[#1F487C]" : "bg-white"
-                      } ${BusFilters?.ac_non_ac === false
+                    className={`${acBus?.non_ac_bus === true ? "bg-[#1F487C]" : "bg-white"
+                      } ${acBus?.non_ac_bus === true
                         ? "text-white border-[#1F487C]"
                         : "border-gray-300"
                       } w-full border-[0.1vw]  rounded-md cursor-pointer `}
@@ -1040,9 +1078,10 @@ const SidebarMobile = ({
                       // } else {
                       //   setAcFilter("mbleNon_Ac");
                       // }
-                      SetBusFilters((prev) => ({
+                      setAcBus((prev) => ({
                         ...prev,
-                        ac_non_ac: prev.ac_non_ac === false ? null : false,
+                        non_ac_bus: prev.non_ac_bus === true ? null : true,
+                        ac_bus: null
                       }));
 
                     }}
@@ -1051,7 +1090,7 @@ const SidebarMobile = ({
                       {/* <span>
                     <TbAirConditioningDisabled size={20} className="mx-1" />
                   </span> */}
-                      {BusFilters?.ac_non_ac === false ? (
+                      {acBus?.non_ac_bus === true ? (
                         <img
                           src={s_c_non_ac}
                           className="w-[4.5vw] h-[4.5vw]"
@@ -1071,8 +1110,8 @@ const SidebarMobile = ({
 
                 <div className="grid grid-cols-2 pt-[2vw] gap-[3.5vw] mx-[2vw]">
                   <button
-                    className={`${sessionStorage.getItem('home_seat_type') === 'false' ? "bg-[#1F487C]" : "bg-white"
-                      } h-full ${sessionStorage.getItem('home_seat_type') === 'false'
+                    className={`${busSeatType?.sleep === true ? "bg-[#1F487C]" : "bg-white"
+                      } h-full ${busSeatType?.sleep === true
                         ? "text-white border-[#1F487C]"
                         : "border-gray-300"
                       } w-full border-[0.1vw] rounded-md cursor-pointer `}
@@ -1082,11 +1121,11 @@ const SidebarMobile = ({
                       // } else {
                       //   setSeatTypeFilter("sleeper");
                       // }
-                      SetBusFilters((prev) => ({
+                      setBusSeatType((prev) => ({
                         ...prev,
-                        seat_type: prev.seat_type === false ? null : false,
+                        sleep: prev.sleep === true ? null : true,
+                        seat: null
                       }));
-                      sessionStorage.getItem('home_seat_type') === 'false' ? sessionStorage.setItem('home_seat_type', null) : sessionStorage.setItem('home_seat_type', false)
                     }}
 
                   >
@@ -1103,17 +1142,17 @@ const SidebarMobile = ({
                     </p>
                   </button>
                   <button
-                    className={`${sessionStorage.getItem('home_seat_type') === 'true' ? "bg-[#1F487C]" : "bg-white"
-                      } h-full ${sessionStorage.getItem('home_seat_type') === 'true'
+                    className={`${busSeatType?.seat === true ? "bg-[#1F487C]" : "bg-white"
+                      } h-full ${busSeatType?.seat === true
                         ? "text-white border-[#1F487C]"
                         : "border-gray-300 "
                       } w-full border-[0.1vw] rounded-md cursor-pointer `}
                     onClick={() => {
-                      SetBusFilters((prev) => ({
+                      setBusSeatType((prev) => ({
                         ...prev,
-                        seat_type: prev.seat_type === true ? null : true,
+                        sleep: null,
+                        seat: prev.seat === true ? null : true,
                       }));
-                      sessionStorage.getItem('home_seat_type') === 'true' ? sessionStorage.setItem('home_seat_type', null) : sessionStorage.setItem('home_seat_type', true)
                     }}
 
                   >

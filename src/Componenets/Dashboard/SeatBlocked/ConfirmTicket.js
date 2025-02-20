@@ -1,5 +1,5 @@
 import { Field, Form, Formik, useFormikContext } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiSolidOffer } from "react-icons/bi";
 import { RiArrowRightDoubleLine } from "react-icons/ri";
 import { Abhibus_SeatConfirmed } from "../../../Api-Abhibus/Dashboard/DashboardPage";
@@ -7,8 +7,12 @@ import { toast } from "react-toastify";
 import { calculateDiscountedFare } from "../../Common/Common-Functions/TBS-Discount-Fare";
 import logo from "../../../Assets/Logo/tbs_logo.png";
 import { ViewTicketById } from "../../../Api-Abhibus/MyAccount/ViewTicket";
-import { Drawer } from "antd";
+import { Drawer, Skeleton } from "antd";
 import ViewFullTicket from "../MyAccount/ViewTicket/ViewFullTicket";
+import { useDispatch, useSelector } from "react-redux";
+import { GET_TICKET_DETAILS } from "../../../Store/Type";
+import axios from "axios";
+import { TBS_Booking_Details } from "../../../Api-TBS/Dashboard/Dashboard";
 export default function ConfirmTicket({
   seatDetails,
   BusDetails,
@@ -19,44 +23,45 @@ export default function ConfirmTicket({
   emailInput,
   mobileInput,
   setDropDown,
+  setRazorpayLoading,
+  setTicketNumber,
+  setTicketLoading
 }) {
+  const dispatch = useDispatch();
+  const key_id = process.env.REACT_APP_RAZORPAY_KEY_ID;
+  const key_secret = process.env.REACT_APP_RAZORPAY_KEY_SECRET;
+  const OrderApi = process.env.REACT_APP_API_URL;
+  const ticketlist = useSelector((state) => state?.get_ticket_detail);
+  const tbs_discount = useSelector((state) => state?.live_per);
   const [promoCode, setPromoCode] = useState("");
-  const handlePromoCode = async () => {
-    console.log(promoCode, "Promocode Submit");
-  };
+  const [spinning, setSpinning] = useState(false);
+  const [ticketDetails, setTicketDetails] = useState(null);
+  const [showTicket, setShowTicket] = useState(false);
+  const { handleChange, isSubmitting } = useFormikContext();
+  const [orderid, setOrderId] = useState(null);
+  const abhibusamount = Number(faredetails?.totalAmount);
   const seatTaxList = Object.values(seatDetails)
     .map((item) => item.tax.split(",")[0])
     .filter((tax) => tax);
-  console.log(seatTaxList, "seatTaxListseatTaxList");
   const totaltax =
     seatTaxList?.length > 0 &&
     seatTaxList?.reduce((a, b) => {
       return Number(a) + Number(b);
     });
-  const [spinning, setSpinning] = useState(false);
-  const [showTicket, setShowTicket] = useState(false);
-  const [ticketDetails, setTicketDetails] = useState("");
-  const handleBookingPrice = async () => {
-    try {
-      console.log("Calling API...");
-      const response = await Abhibus_SeatConfirmed(BusDetails, confirmRefNo);
-      if (response?.status === "success") {
-        toast.success(
-          `Ticket Booked Successfully, your TicketNo: ${response?.TicketNo}`
-        );
-        setDropDown(null);
-        const ticketdetails = await ViewTicketById(
-          response?.TicketNo,
-          setSpinning
-        );
-        setShowTicket(true);
-        setTicketDetails(ticketdetails);
-      }
-      console.log(response, "API Response");
-      console.log(response);
-    } catch (error) {
-      console.error("API call failed:", error);
-    }
+  const gstamount = calculateDiscountedFare(
+    BusDetails?.BUS_START_DATE,
+    faredetails?.TotadultFare,
+    tbs_discount
+  );
+  const tbsamount =
+    calculateDiscountedFare(
+      BusDetails?.BUS_START_DATE,
+      Number(faredetails?.TotadultFare),
+      tbs_discount
+    ) + Number(Math.round(totaltax));
+
+  const handlePromoCode = async () => {
+    console.log(promoCode, "Promocode Submit");
   };
   const LuxuryFind = (type) =>
     type.toLowerCase().includes("volvo") ||
@@ -73,75 +78,273 @@ export default function ConfirmTicket({
     },
     { Coupon: "WEEKEND50", details: "Avail 50% off on weekend bus travel." },
   ];
-  const gstamount = calculateDiscountedFare(
-    BusDetails?.BUS_START_DATE,
-    faredetails?.TotadultFare
-  );
-  const tbsamount =
-    calculateDiscountedFare(
-      BusDetails?.BUS_START_DATE,
-      Number(faredetails?.TotadultFare)
-    ) + Number(totaltax);
+
+  const OrderId_Generate = async () => {
+    const username = key_id;
+    const password = key_secret;
+    const apiUrl = `${OrderApi}/order`;
+
+    const requestBody = {
+      amount: tbsamount * 100,
+      currency: "INR",
+      receipt: `receipt_${Date.now()}`,
+      notes: {
+        notes_key_1: "test",
+        notes_key_2: "test2",
+      },
+      payment_capture: 1,
+    };
+
+    try {
+      console.log("API URL:", apiUrl); // Debugging API URL
+
+      const authHeader = `Basic ${btoa(`${username}:${password}`)}`;
+
+      const response = await axios.post(apiUrl, requestBody, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: authHeader,
+        },
+      });
+
+      console.log("Generated Order ID:", response?.data?.id); // Debugging Order ID
+      setOrderId(response?.data?.id);
+      return response?.data.id; // Return the order ID
+    } catch (error) {
+      if (error.response) {
+        console.error("Response Data:", error.response.data);
+        console.error("Response Status:", error.response.status);
+      } else if (error.request) {
+        console.error("No Response Received:", error.request);
+      } else {
+        console.error("Error Configuring Request:", error.message);
+      }
+      return null;
+    }
+  };
+
   const loadRazorpayScript = (callback) => {
+    if (
+      document.querySelector(
+        'script[src="https://checkout.razorpay.com/v1/checkout.js"]'
+      )
+    ) {
+      callback();
+      return;
+    }
+
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
     script.async = true;
     script.onload = callback;
+    script.onerror = () => console.error("Failed to load Razorpay script.");
     document.body.appendChild(script);
   };
-  console.log(tbsamount, "tbsamounttbsamount");
-  const { handleChange, isSubmitting } = useFormikContext();
-  const RazorpayGateway = () => {
+
+  const initiateRazorpay = (generatedOrderId) => {
+    const options = {
+      key: key_id,
+      amount: tbsamount * 100,
+      currency: "INR",
+      name: "thebusstand.com",
+      description: "For testing purposes",
+      order_id: generatedOrderId,
+      handler: async function (response) {
+        if (response?.razorpay_payment_id) {
+          try {
+            const payload = {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            };
+
+            const { data: jsonRes } = await axios.post(
+              `${OrderApi}/order/validate`,
+              payload
+            );
+
+            if (jsonRes?.msg === "success") {
+              handleBookingPrice(
+                response.razorpay_order_id,
+                response.razorpay_payment_id,
+                response.razorpay_signature,
+                jsonRes?.msg
+              );
+            }
+          } catch (err) {
+            console.error("Validation failed:", err);
+          }
+        }
+      },
+      prefill: {
+        name: "Nubiznez",
+        email: emailInput,
+        contact: mobileInput,
+      },
+      theme: {
+        color: "#1F4B7F",
+      },
+    };
+
+    const pay = new window.Razorpay(options);
+    pay.open();
+  };
+
+  const RazorpayGateway = async () => {
+    setRazorpayLoading(true);
     if (!tbsamount) {
       alert("Please enter an amount");
       return;
     }
 
-    loadRazorpayScript(() => {
-      const options = {
-        key: "rzp_test_eyuWUoPChgfzBC",
-        amount: tbsamount * 100, // Razorpay expects amount in paise
-        currency: "INR",
-        name: "THEBUSSTAND.COM",
-        description: "For testing purposes",
-        // image: logo,
-        handler: function (response) {
-          console.log(response, "responseresponsrazorpaye");
-          if (response?.razorpay_payment_id) {
-            handleBookingPrice();
-          }
-          toast.success(`Payment ID: ${response.razorpay_payment_id}`);
-          //   alert(`Payment ID: ${response.razorpay_payment_id}`);
-        },
-        prefill: {
-          name: "Nubiznez",
-          email: emailInput,
-          contact: mobileInput,
-        },
-        notes: {
-          address: "Razorpay Corporate Office",
-        },
-        theme: {
-          color: "#1F4B7F",
-        },
-        modal: {
-          escape: false,
-          backdropclose: false,
-          handleback: true,
-        },
-      };
+    try {
+      const generatedOrderId = await OrderId_Generate();
+      if (!generatedOrderId) {
+        alert("Failed to generate Order ID. Please try again.");
+        return;
+      }
 
-      const pay = new window.Razorpay(options);
-      pay.open();
-    });
+      loadRazorpayScript(() => {
+        setRazorpayLoading(false);
+        initiateRazorpay(generatedOrderId);
+      });
+    } catch (error) {
+      console.error("Error generating order ID:", error);
+    }
   };
 
-  console.log(faredetails, "faredetailsfaredetails");
-  const abhibusamount = Number(faredetails?.totalAmount);
+  const handleBookingPrice = async (order_id, payment_id, signature, msg) => {
+    setTicketLoading(true)
+    try {
+      console.log("Calling API...");
+      const response = await Abhibus_SeatConfirmed(BusDetails, confirmRefNo);
 
-  console.log(gstamount, "gstamountgstamount");
-  console.log(abhibusamount, "abhibusamountabhibusamount");
-  console.log(ticketDetails, "ticketDetailsticketDetails");
+      if (response?.status === "success") {
+        // toast.success(
+        //   `Ticket Booked Successfully, your TicketNo: ${response?.TicketNo}`
+        // );
+        sessionStorage.setItem("testing", "hello");
+        // setDropDown(null);
+        // Fetch ticket details
+        const ticketdetails = await ViewTicketById(
+          response?.TicketNo,
+          setSpinning
+        );
+        if(response?.TicketNo){
+          setTicketNumber(response?.TicketNo)
+          setTicketLoading(false)
+        }
+        const TBS_booking = await TBS_Booking_Details(
+          response?.TicketNo,
+          order_id,
+          payment_id,
+          signature,
+          ticketdetails?.ticketInfo,
+          emailInput,
+          mobileInput,
+          msg
+        );
+        dispatch({
+          type: GET_TICKET_DETAILS,
+          payload: ticketdetails,
+        });
+        sessionStorage.setItem("ticket_view", "open"); // Update state with ticket details
+        setTicketDetails(ticketdetails);
+        setShowTicket(true);
+        console.log(ticketdetails, "ggggggggggg");
+      }
+      console.log(response, "API Response");
+    } catch (error) {
+      console.error("API call failed:", error);
+    }
+  };
+  useEffect(() => {
+    loadRazorpayScript(() => console.log("Razorpay script preloaded"));
+  }, []);
+
+  // const loadRazorpayScript = (callback) => {
+  //   const script = document.createElement("script");
+  //   script.src = "https://checkout.razorpay.com/v1/checkout.js";
+  //   script.async = true;
+  //   script.onload = callback;
+  //   document.body.appendChild(script);
+  // };
+
+  // const RazorpayGateway = async () => {
+  //   if (!tbsamount) {
+  //     alert("Please enter an amount");
+  //     return;
+  //   }
+
+  //   const generatedOrderId = await OrderId_Generate(); // Ensure order ID is generated before proceeding
+
+  //   if (!generatedOrderId) {
+  //     alert("Failed to generate Order ID. Please try again.");
+  //     return;
+  //   }
+
+  //   loadRazorpayScript(() => {
+  //     const options = {
+  //       key: key_id, // demo key
+  //       amount: tbsamount * 100, // Razorpay expects amount in paise
+  //       currency: "INR",
+  //       name: "THEBUSSTAND.COM",
+  //       description: "For testing purposes",
+  //       order_id: generatedOrderId, // Use the generated order ID
+  //       handler: async function (response) {
+  //         console.log(response, "Razorpay response");
+
+  //         if (response?.razorpay_payment_id) {
+  //           const payload = {
+  //             razorpay_order_id: response?.razorpay_order_id,
+  //             razorpay_payment_id: response?.razorpay_payment_id,
+  //             razorpay_signature: response?.razorpay_signature,
+  //           };
+  //           try {
+  //             // Validate payment
+  //             const { data: jsonRes } = await axios.post(
+  //               `${OrderApi}/order/validate`,
+  //               payload
+  //             );
+  //             console.log(jsonRes, "jsonRes");
+
+  //             if (jsonRes?.msg === "success") {
+  //               handleBookingPrice(
+  //                 response?.razorpay_order_id,
+  //                 response?.razorpay_payment_id,
+  //                 response?.razorpay_signature,
+  //                 jsonRes?.msg
+  //               );
+  //             }
+  //             console.log(jsonRes, "Payment validation response");
+  //           } catch (err) {
+  //             console.error("Validation failed:", err);
+  //           }
+  //         }
+  //       },
+  //       prefill: {
+  //         name: "Nubiznez",
+  //         email: emailInput,
+  //         contact: mobileInput,
+  //       },
+  //       notes: {
+  //         address: "Razorpay Corporate Office",
+  //       },
+  //       theme: {
+  //         color: "#1F4B7F",
+  //       },
+  //       modal: {
+  //         escape: false,
+  //         backdropclose: false,
+  //         handleback: true,
+  //       },
+  //     };
+
+  //     const pay = new window.Razorpay(options);
+  //     pay.open();
+  //   });
+  // };
+
 
   return (
     <>
@@ -310,7 +513,8 @@ export default function ConfirmTicket({
                   <p className="md:text-[1.1vw] text-[3.5vw]">
                     {`₹ ${calculateDiscountedFare(
                       BusDetails?.BUS_START_DATE,
-                      faredetails?.TotadultFare
+                      faredetails?.TotadultFare,
+                      tbs_discount
                     )}`}
                   </p>
                 </div>
@@ -334,7 +538,7 @@ export default function ConfirmTicket({
               </div> */}
                 <button
                   className="w-full md:h-[3vw] h-[8vw] rounded-[1.5vw] md:rounded-[0vw] md:rounded-b-[0.5vw] mt-[12vw] md:mt-[7.8vw] flex 
-                                          items-center justify-between px-[3vw] md:px-[1vw]"
+                                          items-center justify-between px-[3vw] md:px-[1vw] cursor-pointer"
                   style={{
                     backgroundColor:
                       LuxuryFind(BusDetails.Bus_Type_Name) === true
@@ -343,21 +547,22 @@ export default function ConfirmTicket({
                   }}
                   onClick={RazorpayGateway}
                 >
-                  <label className="text-white text-[3.5vw] md:text-[1.1vw] flex items-center font-semibold">
+                  <label className="text-white cursor-pointer text-[3.5vw] md:text-[1.1vw] flex items-center font-semibold">
                     Proceed to Pay
                     {/* {`₹ ${
                     Number(discount) + Number(Math.round(discount * 0.03))
                   }`} */}
-                    <span className="font-extrabold pl-[1vw] text-[1.3vw]">
+                    <span className="font-extrabold cursor-pointer pl-[1vw] text-[1.3vw]">
                       {`₹ ${
                         calculateDiscountedFare(
                           BusDetails?.BUS_START_DATE,
-                          Number(faredetails?.TotadultFare)
-                        ) + Number(totaltax)
+                          Number(faredetails?.TotadultFare),
+                          tbs_discount
+                        ) + Number(Math.round(totaltax))
                       }`}
                     </span>
                   </label>
-                  <span className="pl-[0.5vw]">
+                  <span className="pl-[0.5vw] cursor-pointer">
                     <RiArrowRightDoubleLine
                       // size={"1.7vw"}
                       color="white"
@@ -375,9 +580,9 @@ export default function ConfirmTicket({
       </div>
       {/* <Drawer
         placement={"right"}
-        closable={false}
-        onClose={setShowTicket(false)}
-        open={showTicket}
+        closable={sessionStorage.getItem("ticket_view", "open")}
+        onClose={sessionStorage.setItem("ticket_view", "close")}
+        open={showModal}
         key={"right"}
         width={"60%"}
         // width={drawerWidth}

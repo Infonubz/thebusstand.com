@@ -10,7 +10,7 @@ import {
   GoogleLogin,
   //useGoogleLogin,
 } from "@react-oauth/google";
-//import jwt_decode from "jwt-decode";
+import jwt_decode from "jwt-decode";
 import { SendVerificationOTP } from "../../../Api-TBS/Login/Login";
 import { useDispatch } from "react-redux";
 import { FaPhoneAlt } from "react-icons/fa";
@@ -24,6 +24,8 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router";
 
 const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
+  const clientId = "374324582256-oisc65slv95m53pod51lmg7r5elfobjv.apps.googleusercontent.com";
+
   const navigation = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -50,24 +52,33 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
       ),
   });
 
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
+
+  // Handle successful login
   const handleSuccess = (response) => {
-    //const token = response.credential;
-    // const decodedUser = jwt_decode(token); // Decode the JWT
-    // console.log("User Information:", decodedUser); // Log the decoded token
+    try {
+      const decoded = jwt_decode(response.credential); // Decode JWT token
+      setUser(decoded);
+      setError(null);
+      console.log("User Info:", decoded);
+    } catch (err) {
+      console.error("JWT Decode Error:", err);
+      setError("Failed to decode token");
+    }
   };
 
-  // const handleSuccess = useGoogleLogin({
-  //   onSuccess: async (tokenResponse) => {
-  //     console.log(tokenResponse);
-  //     const userInfo = await axios.get(
-  //       'https://www.googleapis.com/oauth2/v3/userinfo',
-  //       { headers: { Authorization: 'Bearer <tokenResponse.access_token>' } },
-  //     );
+  // Handle failed login
+  const handleFailure = (error) => {
+    console.error("Login Failed:", error);
+    setError("Google login failed. Please try again.");
+  };
 
-  //     console.log(userInfo);
-  //   },
-  //   onError: errorResponse => console.log(errorResponse),
-  // });
+  // Handle logout
+  const handleLogout = () => {
+    setUser(null);
+    setError(null);
+  };
   const handleKeyEnter = (event, values) => {
     // Regular expression to check for special characters except for email-friendly ones
     const specialCharPattern = /[^a-zA-Z0-9@.]/;
@@ -89,9 +100,8 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
     } catch {}
   };
 
-  const handleFailure = (error) => {
-    console.log("Google login failed: ", error);
-  };
+  console.log(user,"useruseruseruser");
+
 
   console.log(toggleNum, "toggleNumtoggleNum");
 
@@ -312,7 +322,7 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
               </div>
               <div>Sign in with Google</div>
             </div> */}
-              <GoogleOAuthProvider clientId="374324582256-oisc65slv95m53pod51lmg7r5elfobjv.apps.googleusercontent.com">
+              <GoogleOAuthProvider clientId={clientId}>
                 <div className="mt-[1vw] ">
                   <GoogleLogin
                     onSuccess={handleSuccess}
@@ -540,7 +550,7 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
               <div>Sign in with Google</div>
             </div> */}
             <div className="md:hidden block">
-              <GoogleOAuthProvider clientId="374324582256-oisc65slv95m53pod51lmg7r5elfobjv.apps.googleusercontent.com">
+              <GoogleOAuthProvider clientId={clientId}>
                 <div className="mt-[3vw]">
                   <GoogleLogin
                     onSuccess={handleSuccess}
@@ -554,7 +564,7 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
             </div>
 
             <div className="md:block hidden">
-              <GoogleOAuthProvider clientId="374324582256-oisc65slv95m53pod51lmg7r5elfobjv.apps.googleusercontent.com">
+              <GoogleOAuthProvider clientId={clientId}>
                 <div className="mt-[3vw]">
                   <GoogleLogin
                     onSuccess={handleSuccess}

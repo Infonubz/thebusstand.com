@@ -244,7 +244,7 @@ export default function Promo_ViewAll() {
   // ]);
 
   useEffect(() => {
-    GetPromotion(dispatch);
+    // GetPromotion(dispatch);
     GetDiscountOffers(dispatch);
   }, [dispatch]);
 
@@ -253,22 +253,22 @@ export default function Promo_ViewAll() {
     "promotionlist8888"
   );
 
-  useEffect(() => {
-    let temp = [];
+  // useEffect(() => {
+  //   let temp = [];
 
-    if (Array.isArray(promotionlist)) {
-      promotionlist.forEach((item) => {
-        temp.push(item.background_image);
-      });
-    }
+  //   if (Array.isArray(promotionlist)) {
+  //     promotionlist.forEach((item) => {
+  //       temp.push(item.background_image);
+  //     });
+  //   }
 
-    if (Array.isArray(offerlist)) {
-      offerlist.forEach((item) => {
-        temp.push(item.theme);
-      });
-    }
-    setTotalOffer(temp);
-  }, [promotionlist, offerlist]);
+  //   if (Array.isArray(offerlist)) {
+  //     offerlist.forEach((item) => {
+  //       temp.push(item.theme);
+  //     });
+  //   }
+  //   setTotalOffer(temp);
+  // }, [promotionlist, offerlist]);
 
   const navigation = useNavigate();
   const location = useLocation();
@@ -333,7 +333,7 @@ export default function Promo_ViewAll() {
           </div> */}
           <Navbar_One />
           <div
-            className="relative md:h-[45vw] h-[100%] bg-[#d1f8e3]"
+            className="relative md:h-[45vw] h-[100%] bg-[#E5FFF1]"
             style={{ zIndex: 1 }}
           >
             <div
@@ -366,8 +366,8 @@ export default function Promo_ViewAll() {
               </div>
               <div className="md:max-h-[28vw] h-[80vh] overflow-y-auto w-[100%] px-[3vw] place-items-center pt-[1vw] items-center justify-center flex">
                 <div className="grid md:grid-cols-3 w-full h-full items-center flex-col gap-[2.7vw] justify-center px-[1vw]">
-                  {totaloffer.length > 0 &&
-                    totaloffer?.map((item, index) => (
+                  {offerlist?.response?.length > 0 &&
+                    offerlist?.response?.map((item, index) => (
                       // <>
                       //   <div className="relative">
                       //     <img src={item?.img} className="w-[100%] h-[100%] " />
@@ -387,7 +387,7 @@ export default function Promo_ViewAll() {
                       <div key={index} className="relative">
                         <img
                           alt="background_image"
-                          src={`${apicrmimage}${item}`}
+                          src={`${apicrmimage}${item?.theme ? item?.theme : item?.background_image}`}
                           className="md:w-[84vw]  md:h-[12vw] w-full h-full"
                         />
                         <span className="absolute left-[23.3vw] top-[-0.2vw] md:left-[5.8vw] md:top-[0vw] z-[2] ">
@@ -396,7 +396,6 @@ export default function Promo_ViewAll() {
                           ></div>
                         </span>
 
-                        <div className="border-dashed h-[38vw] border-[0.4vw] absolute top-[4.5vw] left-[27vw] border-white z-[2] md:h-[10vw] md:border-[0.10vw] md:top-[1.1vw] md:left-[6.7vw]"></div>
 
                         <span className="absolute md:left-[5.8vw] md:bottom-[0vw] left-[23.3vw] bottom-[-0.2vw] z-[2] ">
                           <div

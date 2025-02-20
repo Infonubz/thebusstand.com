@@ -1,6 +1,7 @@
 import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
 import { toast } from "react-toastify";
+import { GET_TICKET_DETAILS } from "../../Store/Type";
 
 const username = process.env.REACT_APP_ABHIBUS_USERNAME || "demo@test";
 const password = process.env.REACT_APP_ABHIBUS_PASSWORD || "demo@abhibus";
@@ -58,7 +59,6 @@ export const ViewTicketById = async (ticketID, setSpinning) => {
 
   //   <tns:ticketNo>ABRS7354857</tns:ticketNo>
   const url = `https://staging.abhibus.com/abhiWebServer`;
-
   try {
     // Assuming you need a Basic Auth header with username and password
     const authHeader = `Basic ${btoa(`${username}:${password}`)}`;
@@ -75,8 +75,9 @@ export const ViewTicketById = async (ticketID, setSpinning) => {
       response.data,
       "GetTicketDetailsV4"
     );
+    sessionStorage.setItem("ticket_view", "open");
     setSpinning(false);
-
+    // dispatch({ GET_TICKET_DETAILS, payload: result });
     // console.log([result.ticketInfo], "Responsesdsdsdsdsd Data");
     return result;
   } catch (err) {
@@ -123,7 +124,6 @@ export const PreCancelTicket = async (values) => {
   }
 };
 export const CancelTicket = async (values, info) => {
-
   const cancelseat = values?.seat_numbers?.map((item) => item).join(",");
   const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -156,38 +156,38 @@ export const CancelTicket = async (values, info) => {
         SOAPAction: "http://staging.abhibus.com/CancelTicket",
       },
     });
-    console.log(response,"yyyyyyyyyyyyyyy");
-    
+    console.log(response, "yyyyyyyyyyyyyyy");
+
     const result = await processSOAPResponse(response.data, "CancelTicket");
     // console.log([result.ticketInfo], "Responsesdsdsdsdsd Data");
     return result;
-} catch (error) {
+  } catch (error) {
     handleError(error);
-}
+  }
 };
 
 const handleError = (error) => {
-    console.error("Error details:", error);
-    let errorMessage = "An error occurred";
+  console.error("Error details:", error);
+  let errorMessage = "An error occurred";
 
-    if (error?.response) {
-        console.error("Error response from server:", error?.response);
-        errorMessage = `Server responded with status ${error?.response?.status}`;
-    } else if (error?.request) {
-        console.error("No response received:", error?.request);
-        errorMessage = "No response received from server";
-    } else {
-        console.error("Error setting up request:", error?.message);
-        errorMessage = error?.message;
-    }
+  if (error?.response) {
+    console.error("Error response from server:", error?.response);
+    errorMessage = `Server responded with status ${error?.response?.status}`;
+  } else if (error?.request) {
+    console.error("No response received:", error?.request);
+    errorMessage = "No response received from server";
+  } else {
+    console.error("Error setting up request:", error?.message);
+    errorMessage = error?.message;
+  }
 
-    if (error?.code === "ERR_NETWORK") {
-        errorMessage =
-            "Network Error: Unable to connect to the server. Please check the server status and your network connection.";
-    }
-    if (error?.code === "ERR_CONNECTION_REFUSED") {
-        errorMessage =
-            "Network Error: Unable to connect to the server. Please check the server status and your network connection.";
-    }
-    toast.error(errorMessage);
+  if (error?.code === "ERR_NETWORK") {
+    errorMessage =
+      "Network Error: Unable to connect to the server. Please check the server status and your network connection.";
+  }
+  if (error?.code === "ERR_CONNECTION_REFUSED") {
+    errorMessage =
+      "Network Error: Unable to connect to the server. Please check the server status and your network connection.";
+  }
+  toast.error(errorMessage);
 };

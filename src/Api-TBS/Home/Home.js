@@ -14,8 +14,12 @@ import {
   OFFERS_OCCUPATION,
   GET_STATIONS,
   GET_DES_STATION,
+  CURRENT_PERCENTAGE,
 } from "../../Store/Type";
-
+import { useParams } from "react-router";
+import { useDispatch } from "react-redux";
+let lastToastTime = 0;
+const TOAST_DELAY = 3000;
 const api = axios.create({
   headers: {
     "Content-Type": "application/json",
@@ -23,6 +27,17 @@ const api = axios.create({
 });
 const apiUrl = process.env.REACT_APP_API_URL;
 const apicrm = process.env.REACT_APP_CRM_API_URL;
+
+export const CurrentDiscount = async (dispatch, jdate) => {
+  try {
+    const response = await axios.get(`${apiUrl}/getdate/${jdate}`);
+    dispatch({ type: CURRENT_PERCENTAGE, payload: response });
+    return response?.data?.data; // Return only data
+  } catch (error) {
+    toast.warning(error.message);
+    return null; // Handle error gracefully
+  }
+};
 
 export const GetPromotion = async (dispatch, id) => {
   try {
@@ -38,7 +53,7 @@ export const GetPromotion = async (dispatch, id) => {
 
 export const GetDiscountOffers = async (dispatch, id) => {
   try {
-    const response = await axios.get(`${apicrm}/getLiveOffersDeals/0`);
+    const response = await axios.get(`${apicrm}/livediscountandpromotion/0`);
     dispatch({ type: DISCOUNT_OFFER_LIST, payload: response.data });
     console.log(response.data, "footerresponse");
     return response.data;
@@ -229,26 +244,27 @@ export const GetFeedbackById = async () => {
     handleError(err);
   }
 };
-export const GetStations = async (dispatch,val,module) =>{
-  try{
-    const response = val===""? await axios.get(`${apiUrl}/getStation/$`) : await axios.get(`${apiUrl}/getStation/${val}`)
+export const GetStations = async (dispatch, val, module) => {
+  try {
+    const response =
+      val === ""
+        ? await axios.get(`${apiUrl}/getStation/$`)
+        : await axios.get(`${apiUrl}/getStation/${val}`);
 
-    if(module==="from"){
-      dispatch({type:GET_STATIONS,payload:response.data})
+    if (module === "from") {
+      dispatch({ type: GET_STATIONS, payload: response.data });
+    } else if (module === "to") {
+      dispatch({ type: GET_DES_STATION, payload: response.data });
+    } else {
+      dispatch({ type: GET_STATIONS, payload: response.data });
+      dispatch({ type: GET_DES_STATION, payload: response.data });
     }
-    else if(module === "to"){
-      dispatch({type:GET_DES_STATION,payload:response.data})
-    }
-    else{
-      dispatch({type:GET_STATIONS,payload:response.data})
-      dispatch({type:GET_DES_STATION,payload:response.data})
-    }
-    console.log(response.data,"station response");
+    console.log(response.data, "station response");
+  } catch (err) {
+    handleError(err);
   }
-  catch(err){
-    handleError(err)
-  }
-}
+};
+
 const handleError = (error) => {
   console.error("Error details:", error);
   let errorMessage = "An error occurred";
@@ -264,13 +280,17 @@ const handleError = (error) => {
     errorMessage = error?.message;
   }
 
-  if (error?.code === "ERR_NETWORK") {
+  if (
+    error?.code === "ERR_NETWORK" ||
+    error?.code === "ERR_CONNECTION_REFUSED"
+  ) {
     errorMessage =
       "Network Error: Unable to connect to the server. Please check the server status and your network connection.";
   }
-  if (error?.code === "ERR_CONNECTION_REFUSED") {
-    errorMessage =
-      "Network Error: Unable to connect to the server. Please check the server status and your network connection.";
+
+  const currentTime = new Date().getTime();
+  if (currentTime - lastToastTime > TOAST_DELAY) {
+    toast.error(errorMessage, { autoClose: 2000 });
+    lastToastTime = currentTime;
   }
-  toast.error(errorMessage);
 };

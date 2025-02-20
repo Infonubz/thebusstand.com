@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import "./SeatLayout.css"; // Ensure correct styles
 import { Abhibus_SeatLayout } from "../../../Api-Abhibus/Dashboard/DashboardPage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Drawer, Flex, Popover, Skeleton, Spin, Tooltip } from "antd";
 import SeatContent from "./SeatContent";
 import SVG_List from "../.././Common/SVG/SVG";
@@ -14,8 +14,12 @@ import PickUpandDrop from "./PickUp&Drop";
 import DrawerIndex from "../SeatBlocked/Index";
 import { calculateDiscountedFare } from "../../Common/Common-Functions/TBS-Discount-Fare";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import { GET_TICKET_DETAILS } from "../../../Store/Type";
 
 const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
+  const tbs_discount = useSelector((state) => state?.live_per);
+  const [ticketnumber, setTicketNumber] = useState(null);
+  const [ticketloading, setTicketLoading] = useState(false);
   const dispatch = useDispatch();
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [modalshow, setShowModal] = useState(false);
@@ -278,12 +282,14 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
     });
   };
   const [drawerWidth, setDrawerWidth] = useState("60%");
-  const onClose = () => {
-    setShowModal(false);
-    if (bookingId1) {
-      // setDropDown(null);
-    }
-  };
+  // const onClose = () => {
+  //   setShowModal(false);
+  //   setDropDown(false);
+  //   sessionStorage.setItem("ticket_view", "close");
+  //   if (bookingId1) {
+  //     // setDropDown(null);
+  //   }
+  // };
   const totalseats = lowerDeckSeats.concat(upperDeckSeats);
   const allprice = totalseats
     ?.map((item) => {
@@ -308,7 +314,57 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
     "fghjkdddddd"
   );
   console.log(layout, "layoutloading");
-
+  const [emailInput, setEmailInput] = useState("");
+  const [mobileInput, setMobileInput] = useState("");
+  const [travelerDetails, setTravelerDetails] = useState(
+    selectedSeats?.reduce((acc, seat, index) => {
+      acc[index] = { user_name: "", age: "", gender: "male", seat: "" };
+      return acc;
+    }, {})
+  );
+  const [billAddress, setBillAddress] = useState({
+    address: "",
+    pincode: "",
+    state: "",
+    city: "",
+  });
+  const [termschecked, setTermsChecked] = useState(false);
+  // useslecteor
+  const onClose = () => {
+    setShowModal(false);
+    if (ticketnumber) {
+      setDropDown(false);
+    }
+    sessionStorage.setItem("ticket_view", "close");
+    setTicketNumber(null);
+    setTicketLoading(false);
+    if (bookingId1) {
+      // setDropDown(null);
+    }
+    dispatch({
+      type: GET_TICKET_DETAILS,
+      payload: [],
+    });
+    setEmailInput("");
+    setMobileInput("");
+    setTermsChecked(false);
+    selectedSeats?.forEach((seat, index) => {
+      setTravelerDetails((prevDetails) => ({
+        ...prevDetails,
+        [index]: {
+          ...prevDetails[index],
+          user_name: "",
+          age: "",
+        },
+      }));
+    });
+    setBillAddress({
+      address: "",
+      pincode: "",
+      city: "",
+      state: "",
+    });
+  };
   return (
     <>
       {/* ------------------------------------------------------------------------------------ */}
@@ -387,7 +443,8 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                           {/* {`₹ ${item}`} */}
                           {`₹ ${calculateDiscountedFare(
                             BusDetails?.BUS_START_DATE,
-                            item
+                            item,
+                            tbs_discount
                           )}`}
                         </button>
                       ))}
@@ -596,45 +653,50 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                           {seatHighlight(seat)}
                                         </div>
                                         <Tooltip
-                                        placement="top"
-                                        title={
-                                          <div className="flex items-center  gap-x-[1vw] justify-between">
-                                            <span className="text-[1.2vw] font-semibold text-white">{`${seat.seatNumber}`}</span>
-                                            <span className=" font-bold text-[1.1vw] text-white">
-                                              {`₹ ${calculateDiscountedFare(
-                                                BusDetails?.BUS_START_DATE,
-                                                seat?.price
-                                              )}`}
-                                            </span>
-                                          </div>
-                                        }
-                                        color={getColor(seat)}
-                                      >
-                                        <svg
-                                          width="2.4vw"
-                                          height="2.6vw"
-                                          viewBox="0 0 34 39"
-                                          fill={`${getBackgroundClass(seat)}`}
-                                          onClick={() => handleSeatClick(seat)}
-                                          className="cursor-pointer"
-                                          // data-tooltip-id={`tooltip-${index}`}
-                                          // data-tooltip-content={`${
-                                          //   seat.seatNumber
-                                          // }  -   ₹ ${calculateDiscountedFare(
-                                          //   BusDetails?.BUS_START_DATE,
-                                          //   seat?.price
-                                          // )}`}
+                                          placement="top"
+                                          title={
+                                            <div className="flex items-center  gap-x-[1vw] justify-between">
+                                              <span className="text-[1.2vw] font-semibold text-white">{`${seat.seatNumber}`}</span>
+                                              <span className=" font-bold text-[1.1vw] text-white">
+                                                {`₹ ${calculateDiscountedFare(
+                                                  BusDetails?.BUS_START_DATE,
+                                                  seat?.price,
+                                                  tbs_discount
+                                                )}`}
+                                              </span>
+                                            </div>
+                                          }
+                                          color={getColor(seat)}
                                         >
-                                          <path
-                                            d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998V11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H3.55687Z"
+                                          <svg
+                                            width="2.4vw"
+                                            height="2.6vw"
+                                            viewBox="0 0 34 39"
                                             fill={`${getBackgroundClass(seat)}`}
-                                          />
-                                          <path
-                                            d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998C28.9099 9.12696 28.9099 11.5352 28.9099 11.5352M28.9099 11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H4.6386C5.53474 11.5354 6.2612 12.2619 6.2612 13.158V29.9671C6.2612 31.3113 7.35089 32.401 8.69509 32.401H24.1098C25.454 32.401 26.5437 31.3113 26.5437 29.9671V13.1579C26.5437 12.2618 27.2701 11.5353 28.1661 11.5353L28.9099 11.5352Z"
-                                            stroke={`${getBorderClass(seat)}`}
-                                          />
-                                        </svg>
-                                        {/* <ReactTooltip
+                                            onClick={() =>
+                                              handleSeatClick(seat)
+                                            }
+                                            className="cursor-pointer"
+                                            // data-tooltip-id={`tooltip-${index}`}
+                                            // data-tooltip-content={`${
+                                            //   seat.seatNumber
+                                            // }  -   ₹ ${calculateDiscountedFare(
+                                            //   BusDetails?.BUS_START_DATE,
+                                            //   seat?.price
+                                            // )}`}
+                                          >
+                                            <path
+                                              d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998V11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H3.55687Z"
+                                              fill={`${getBackgroundClass(
+                                                seat
+                                              )}`}
+                                            />
+                                            <path
+                                              d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998C28.9099 9.12696 28.9099 11.5352 28.9099 11.5352M28.9099 11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H4.6386C5.53474 11.5354 6.2612 12.2619 6.2612 13.158V29.9671C6.2612 31.3113 7.35089 32.401 8.69509 32.401H24.1098C25.454 32.401 26.5437 31.3113 26.5437 29.9671V13.1579C26.5437 12.2618 27.2701 11.5353 28.1661 11.5353L28.9099 11.5352Z"
+                                              stroke={`${getBorderClass(seat)}`}
+                                            />
+                                          </svg>
+                                          {/* <ReactTooltip
                                           id={`tooltip-${index}`}
                                           place="top"
                                           style={{
@@ -674,7 +736,8 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                               {" "}
                                               {`₹ ${calculateDiscountedFare(
                                                 BusDetails?.BUS_START_DATE,
-                                                seat?.price
+                                                seat?.price,
+                                                tbs_discount
                                               )}`}
                                             </span>
                                           </div>
@@ -761,7 +824,8 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                               {" "}
                                               {`₹ ${calculateDiscountedFare(
                                                 BusDetails?.BUS_START_DATE,
-                                                seat?.price
+                                                seat?.price,
+                                                tbs_discount
                                               )}`}
                                             </span>
                                           </div>
@@ -815,7 +879,8 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                               {" "}
                                               {`₹ ${calculateDiscountedFare(
                                                 BusDetails?.BUS_START_DATE,
-                                                seat?.price
+                                                seat?.price,
+                                                tbs_discount
                                               )}`}
                                             </span>
                                           </div>
@@ -898,7 +963,8 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                   {" "}
                                   {`₹ ${calculateDiscountedFare(
                                     BusDetails?.BUS_START_DATE,
-                                    totalprice
+                                    totalprice,
+                                    tbs_discount
                                   )}`}
                                 </p>
 
@@ -979,6 +1045,20 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                             seatDetails={seatDetails}
                             selectedseatprice={selectedseatprice}
                             setDropDown={setDropDown}
+                            emailInput={emailInput}
+                            setEmailInput={setEmailInput}
+                            mobileInput={mobileInput}
+                            setMobileInput={setMobileInput}
+                            termschecked={termschecked}
+                            setTermsChecked={setTermsChecked}
+                            travelerDetails={travelerDetails}
+                            setTravelerDetails={setTravelerDetails}
+                            billAddress={billAddress}
+                            setBillAddress={setBillAddress}
+                            setTicketNumber={setTicketNumber}
+                            setTicketLoading={setTicketLoading}
+                            ticketnumber={ticketnumber}
+                            ticketloading={ticketloading}
                           />
                         </Drawer>
                       </div>

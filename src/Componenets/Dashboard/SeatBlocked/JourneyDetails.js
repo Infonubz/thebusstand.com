@@ -7,6 +7,7 @@ import { useLocation } from "react-router";
 import complete from "../../../Assets/BookingList/complete.png";
 import Logo from "../../../Assets/Logo/tbs_logo.png";
 import { calculateDiscountedFare } from "../../Common/Common-Functions/TBS-Discount-Fare";
+import { useSelector } from "react-redux";
 export default function JourneyDetails({
   BusDetails,
   layout,
@@ -14,6 +15,8 @@ export default function JourneyDetails({
   selectedRoutes,
   busprice,
 }) {
+  const tbs_discount = useSelector((state) => state?.live_per);
+
   console.log(BusDetails, "BusDetails888");
   const formatTime = (timeString) => {
     const [hours, minutes] = timeString.split(":").map(Number);
@@ -594,7 +597,8 @@ export default function JourneyDetails({
                               >
                                 {`₹ ${calculateDiscountedFare(
                                   BusDetails?.BUS_START_DATE,
-                                  busprice
+                                  busprice,
+                                  tbs_discount
                                 )}`}
                               </p>
                             </div>

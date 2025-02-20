@@ -49,26 +49,55 @@ export default function MobileFilterNavbar() {
         setIsSortDrawer(false)
     };
 
-    const [BusFilters, SetBusFilters] = useState({
-        bustype: null,
-        ac_non_ac: null,
-        seat_type: null,
-        price_range: null,
+
+    const [luxurybus, setluxurybus] = useState({
+        luxury: null,
+        normal: null,
     });
 
-    console.log(BusFilters?.bustype, 'BusFilters_bustype')
+    const [acBus, setAcBus] = useState({
+        ac_bus: null,
+        non_ac_bus: null,
+    });
+    const [busSeatType, setBusSeatType] = useState({
+        sleep: null,
+        seat: null
+    })
+
+
+    useEffect(() => {
+        if (sessionStorage.getItem('home_luxury') === 'true') {
+            setluxurybus({
+                normal: null,
+                luxury: true
+            })
+        }
+        if (sessionStorage.getItem('home_ac') === 'true') {
+            setAcBus({
+                ac_bus: true,
+                non_ac_bus: null,
+            })
+        }
+        if (sessionStorage.getItem('home_seat_type') === 'true') {
+            setBusSeatType({
+                seat: true,
+                sleep: null
+            })
+        }
+        if (sessionStorage.getItem('home_seat_type') === 'false') {
+            setBusSeatType({
+                sleep: true,
+                seat: null
+            })
+        }
+    }, [])
 
     const filter =
-        BusFilters?.bustype ||
-        BusFilters?.bustype === false ||
+        luxurybus?.luxury === true || luxurybus?.normal === true || acBus?.ac_bus === true || acBus?.non_ac_bus === true || busSeatType?.seat === true || busSeatType?.sleep === true ||
         sessionStorage.getItem('home_luxury') === 'true' ||
-        BusFilters?.seat_type === false ||
-        BusFilters?.ac_non_ac === false ||
-        BusFilters?.seat_type ||
         sessionStorage.getItem('home_ac') === "true" ||
         sessionStorage.getItem('home_seat_type') === 'true' ||
         sessionStorage.getItem('home_seat_type') === 'false' ||
-        BusFilters?.ac_non_ac ||
         pickuptime ||
         droptime ||
         JSON.stringify(priceRange) !== JSON.stringify([0, 3000]) ||
@@ -77,7 +106,6 @@ export default function MobileFilterNavbar() {
         Object.keys(dropchecked).length > 0 ||
         Object.keys(pickupchecked).length > 0;
 
-    console.log(priceRange, filter, "ac_filter");
     const handleAllFilters = useCallback(async () => {
         try {
             const pickupcheck = Object.keys(pickupchecked).filter(
@@ -124,7 +152,6 @@ export default function MobileFilterNavbar() {
             //     dispatch
             // );
 
-            // console.error("allFilters", allFilters);
         } catch (error) {
             console.error("Error", error);
         }
@@ -173,41 +200,41 @@ export default function MobileFilterNavbar() {
 
     const buslist = useSelector((state) => state?.get_buslist);
 
-    const home_luxury = sessionStorage.getItem('home_luxury')
-    const home_ac = sessionStorage.getItem('home_ac')
-    const home_seat_type = sessionStorage.getItem('home_seat_type')
+    // const home_luxury = sessionStorage.getItem('home_luxury')
+    // const home_ac = sessionStorage.getItem('home_ac')
+    // const home_seat_type = sessionStorage.getItem('home_seat_type')
+
     useEffect(() => {
         let filteredList = buslist || [];
-        console.log(filteredList, 'filtereedList')
         // Filter for Bus Type (Luxury/Normal)
-        if (BusFilters?.bustype === true) {
+        if (luxurybus?.normal === true) {
             filteredList = filteredList.filter((item) =>
                 !(item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
                     item?.Bus_Type_Name?.toLowerCase()?.includes("volvo"))
             );
-        } else if (home_luxury === 'true' || BusFilters?.bustype === false) {
+        } else if (luxurybus?.luxury === true) {
             filteredList = filteredList.filter((item) =>
                 item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
                 item?.Bus_Type_Name?.toLowerCase()?.includes("volvo")
             );
         }
         // Filter for AC/Non-AC
-        if (home_ac === "true" || BusFilters?.ac_non_ac === true) {
+        if (acBus?.ac_bus === true) {
             filteredList = filteredList.filter((item) =>
                 !item?.bus_type?.toLowerCase()?.includes("non-ac")
             );
-        } else if (BusFilters?.ac_non_ac === false) {
+        } else if (acBus?.non_ac_bus === true) {
             filteredList = filteredList.filter((item) =>
                 item?.bus_type?.toLowerCase()?.includes("non-ac")
             );
         }
         // Filter for Seater/Sleeper
-        if (home_seat_type === 'true' || BusFilters?.seat_type === true) {
-            filteredList = filteredList.filter((item) =>
+        if (busSeatType?.seat === true) {
+            filteredList = filteredList?.filter((item) =>
                 item?.bus_type?.toLowerCase()?.includes("seater")
             );
-        } else if (home_seat_type === 'false' || BusFilters?.seat_type === false) {
-            filteredList = filteredList.filter((item) =>
+        } else if (busSeatType?.sleep === true) {
+            filteredList = filteredList?.filter((item) =>
                 item?.bus_type?.toLowerCase()?.includes("sleeper")
             );
         }
@@ -217,7 +244,7 @@ export default function MobileFilterNavbar() {
         });
 
 
-    }, [dispatch, BusFilters, buslist, home_luxury, home_ac, home_seat_type]);
+    }, [dispatch, luxurybus, acBus, busSeatType, buslist]);
 
 
     return (
@@ -268,31 +295,26 @@ export default function MobileFilterNavbar() {
                     </span>
                 </button>
                 <button
-                    className={`flex items-center py-[0.5vw] px-[2vw] gap-[2vw] border-[#1F487C] border-[0.1vw] ${BusFilters?.bustype === false
+                    className={`flex items-center py-[0.5vw] px-[2vw] gap-[2vw] border-[#1F487C] border-[0.1vw] ${luxurybus?.luxury === true
                         ? "bg-custom-gradient-luxury bg-image-url "
                         : "bg-white"
                         }  rounded-[1vw]`}
                     onClick={() => {
-                        SetBusFilters((prev) => ({
+                        setluxurybus((prev) => ({
                             ...prev,
-                            bustype: prev.bustype === false ? null : false,
+                            luxury: prev.luxury === true ? null : true,
+                            normal: null
                         }));
-
-                        if (sessionStorage.getItem('home_luxury') === 'true') {
-                            sessionStorage.setItem('home_luxury', null)
-                        } else {
-                            sessionStorage.setItem('home_luxury', true)
-                        }
                     }}
                 >
                     <span>
                         <FaBusAlt
-                            color={`${BusFilters?.bustype === false ? "black" : "#1F487C"}`}
+                            color={`${luxurybus?.luxury === true ? "black" : "#1F487C"}`}
                             size={"4vw"}
                         />
                     </span>
                     <span
-                        className={`${BusFilters?.bustype === false ? "text-black" : "text-[#1F487C]"
+                        className={`${luxurybus?.luxury === true ? "text-black" : "text-[#1F487C]"
                             }  text-[4vw] font-semibold whitespace-nowrap`}
                         onClick={() => {
                             sessionStorage.setItem("isMbleLuxury", true);
@@ -303,24 +325,25 @@ export default function MobileFilterNavbar() {
                     </span>
                 </button>
                 <button
-                    className={`flex items-center py-[0.5vw] px-[2vw] gap-[2vw] border-[#1F487C] border-[0.1vw] ${BusFilters?.bustype === true ? "bg-[#1F487C]" : "bg-white"
+                    className={`flex items-center py-[0.5vw] px-[2vw] gap-[2vw] border-[#1F487C] border-[0.1vw] ${luxurybus?.normal === true ? "bg-[#1F487C]" : "bg-white"
                         }  rounded-[1vw]`}
                     onClick={() => {
-                        SetBusFilters((prev) => ({
+                        setluxurybus((prev) => ({
                             ...prev,
-                            bustype: prev.bustype === true ? null : true,
-                        }));
+                            normal: prev.normal === true ? null : true,
+                            luxury: null
+                        }))
                     }}
                 >
                     <span>
                         <RiBusFill
-                            color={`${BusFilters?.bustype === true ? "white" : "#1F487C"
+                            color={`${luxurybus?.normal === true ? "white" : "#1F487C"
                                 }`}
                             size={"4vw"}
                         />
                     </span>
                     <span
-                        className={`${BusFilters?.bustype === true
+                        className={`${luxurybus?.normal === true
                             ? "text-white"
                             : "text-[#1F487C]"
                             }  text-[4vw] font-semibold whitespace-nowrap`}
@@ -394,8 +417,12 @@ export default function MobileFilterNavbar() {
                         setAmenitiesValue={setAmenitiesValue}
                         departure_local={departure_local}
                         arrival_local={departure_local}
-                        BusFilters={BusFilters}
-                        SetBusFilters={SetBusFilters}
+                        luxurybus={luxurybus}
+                        setluxurybus={setluxurybus}
+                        acBus={acBus}
+                        setAcBus={setAcBus}
+                        busSeatType={busSeatType}
+                        setBusSeatType={setBusSeatType}
                     />
                 )}
                 {/* {selectedButton === 'map' && <MapDrawer />} */}

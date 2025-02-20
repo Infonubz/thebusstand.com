@@ -1,22 +1,28 @@
-import { Tooltip } from "antd";
+import { Skeleton, Tooltip } from "antd";
 import dayjs from "dayjs";
 import moment from "moment";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Barcode from "react-barcode";
 import { FiDownload } from "react-icons/fi";
 import Logo from "../../../../Assets/Logo/tbs_logo.png";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { calculateDiscountedFare } from "../../../Common/Common-Functions/TBS-Discount-Fare";
+import { useSelector } from "react-redux";
+import { RatingFeedBack } from "../../../Common/Rating&FeedBack/Ratings&Feedback.js";
+import ModalPopup from "../../../Common/Modal/Modal.js";
 
-const ViewFullTicket = ({ ticketDetails, droppingDate }) => {
-  console.log(ticketDetails, "tickckckckckc");
+const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
+  const ticketlist = useSelector((state) => state?.get_ticket_detail);
+  const tbs_discount = useSelector((state) => state?.live_per);
+
+  console.log(ticketlist, "tickckckckckc");
   const componentRef = useRef();
   const colorcode = {
     theme: "#1F4B7F",
   };
   function generateRandomId(prefix, length) {
-    return prefix + ticketDetails?.ticketInfo?.Ticket_no;
+    return prefix;
   }
 
   const calculateDuration = (startTime, endTime) => {
@@ -85,7 +91,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate }) => {
   const formatDate = (inputDate) => {
     // Extract parts from input
     const regex = /(\d{1,2})[a-z]{2} (\w{3}) (\d{4})/;
-    const match = inputDate.match(regex);
+    const match = inputDate?.match(regex);
 
     if (!match) return "Invalid Date Format";
 
@@ -111,11 +117,24 @@ const ViewFullTicket = ({ ticketDetails, droppingDate }) => {
 
     return `${year}-${month}-${day.padStart(2, "0")}`;
   };
+  const [ratingModal, setRatingModal] = useState(false);
+
+  const closeRatingModal = () => {
+    setRatingModal(false);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (ticketnumber != null) {
+        setRatingModal(true);
+      }
+    }, [5000]);
+  }, []);
 
   return (
     <div>
       <div
-        className={`p-[2vw] ${
+        className={` ${
           LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
             ? "bg-[#FFEFCE]"
             : "bg-white"
@@ -139,11 +158,11 @@ const ViewFullTicket = ({ ticketDetails, droppingDate }) => {
           >
             <label className="text-white text-[1.1vw] font-semibold">
               {/* {`Booking Id : ${bookingId?.Booking_Id}`} */}
-              {`Booking Id : ${ticketDetails?.ticketInfo.Ticket_no}`}
+              {`Booking Id : ${ticketDetails?.ticketInfo?.Ticket_no}`}
             </label>
             <label className="text-white text-[1.1vw] font-semibold">
               {/* {`Bus Partner Id : ${generateRandomId("CHEN", 12)}`} */}
-              {`Bus Operator PNR : ${ticketDetails?.ticketInfo.operator_pnr}`}
+              {`Bus Operator PNR : ${ticketDetails?.ticketInfo?.operator_pnr}`}
             </label>
           </div>
           <span className="absolute md:block hidden left-[15.5vw]">
@@ -810,10 +829,18 @@ const ViewFullTicket = ({ ticketDetails, droppingDate }) => {
                                       }`}
                       >
                         {/* {`₹ ${ticketDetails?.ticketInfo?.TicketFare}`} */}
-                        {`₹ ${calculateDiscountedFare(
-                          formatDate(ticketDetails?.ticketInfo?.Journey_Date),
-                          ticketDetails?.ticketInfo?.FareBreakup?.baseFare
-                        ) + Number(ticketDetails?.ticketInfo?.FareBreakup?.serviceTax)}`}
+                        {`₹ ${
+                          calculateDiscountedFare(
+                            formatDate(ticketDetails?.ticketInfo?.Journey_Date),
+                            ticketDetails?.ticketInfo?.FareBreakup?.baseFare,
+                            tbs_discount
+                          ) +
+                          Number(
+                            Math.round(
+                              ticketDetails?.ticketInfo?.FareBreakup?.serviceTax
+                            )
+                          )
+                        }`}
                       </p>
                     </div>
                   </div>
@@ -1211,8 +1238,8 @@ const ViewFullTicket = ({ ticketDetails, droppingDate }) => {
           <div className="flex items-center justify-between pl-[1vw] pr-[2vw] pt-[1vw]">
             <div className="barcode">
               <Barcode
-                className="w-[45vw] h-[13vw] text-red-500"
-                value={generateRandomId("AXER", 12)}
+                className="w-[40vw] h-[13vw] text-red-500"
+                value={generateRandomId(ticketDetails?.ticketInfo?.Ticket_no)}
                 // width={3}
                 // height={70}
                 // lineColor={colorcode.theme}
@@ -1260,6 +1287,15 @@ const ViewFullTicket = ({ ticketDetails, droppingDate }) => {
             </button>
           </div> */}
       </div>
+      <ModalPopup
+        show={ratingModal}
+        onClose={closeRatingModal}
+        height="40vw"
+        width="37.5vw"
+        padding="0px"
+      >
+        <RatingFeedBack setRatingModal={setRatingModal} />
+      </ModalPopup>
     </div>
   );
 };

@@ -297,7 +297,10 @@
   /* z-index: 1; */
   animation: auto 35s linear infinite;
 }
-
+.duplicatee {
+  left: 100%; /* Start below the first image */
+  /* background-color: #e5fff1; */
+}
 @keyframes nodatabus {
   0% {
     transform: translateX(-100%);

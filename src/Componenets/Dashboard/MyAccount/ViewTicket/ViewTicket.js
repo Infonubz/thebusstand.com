@@ -12,6 +12,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import empty from "../../../../Assets/CommonImages/empty.png";
 import { useNavigate } from "react-router";
 import ViewFullTicket from "./ViewFullTicket";
+import { useDispatch } from "react-redux";
 
 export default function ViewTicket() {
   const validationSchema = Yup.object({
@@ -28,13 +29,17 @@ export default function ViewTicket() {
     starTime: "",
     endTime: "",
   });
-
+  const dispatch = useDispatch();
   const handleSubmit = async (values) => {
     // alert(values);
     // console.log(values.ticketNumber, "dkjfhdkjfhkdjf");
     // setSpinning(true)
     setShowList(true);
-    const response = await ViewTicketById(values.ticketNumber, setSpinning);
+    const response = await ViewTicketById(
+      values.ticketNumber,
+      setSpinning
+      // dispatch
+    );
     setTicketDetails(response);
     setCalArrival({
       journeyDate: response?.ticketInfo?.originStartTime,
@@ -48,6 +53,7 @@ export default function ViewTicket() {
 
   const onClose = () => {
     setShowDrawer(false);
+    // sessionStorage.setItem("ticket_view", false);
   };
 
   // const calculateArrival = (departureDate, departureTime, duration) => {

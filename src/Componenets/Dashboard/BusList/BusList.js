@@ -19,7 +19,7 @@ import { IoIosArrowUp } from "react-icons/io";
 // import Policy from "../Policy";
 // import DropPick from "../DropPick";
 import { useDispatch, useSelector } from "react-redux";
-import { Skeleton, Spin } from "antd";
+import { Drawer, Skeleton, Spin } from "antd";
 // import { useDispatch } from "react-redux";
 // import {
 //   GetCardDetails,
@@ -56,6 +56,9 @@ import CancelPolicy from "./CancelPolicy";
 import SeatLayout from "../SeatLayout/SeatLayout";
 import MobileBusList from "./MobileView/MobileBusList";
 import Advertisement from "../Advertisement/Advertisement";
+import ViewFullTicket from "../MyAccount/ViewTicket/ViewFullTicket";
+import { calculateDiscountedFare } from "../../Common/Common-Functions/TBS-Discount-Fare";
+import { CurrentDiscount } from "../../../Api-TBS/Home/Home";
 export default function BusList() {
   // const [dropDown, setDropDown] = useState(0)
   const [dropDown, setDropDown] = useState(false);
@@ -157,13 +160,41 @@ export default function BusList() {
   //   return isWeekend(date) ? "Weekend" : "Weekday";
   // };
 
-  const calculateDiscountedFare = (date, baseFare) => {
-    if (!date || isNaN(new Date(date))) return baseFare;
-    const day = new Date(date).getDay();
-    const isWeekend = day === 0 || day === 6;
-    const discount = isWeekend ? 0.01 : 0.02;
-    return `₹ ${Math.round(baseFare - baseFare * discount)}`;
-  };
+  // const calculateDiscountedFare = (date, baseFare) => {
+  //   if (!date || isNaN(new Date(date))) return baseFare;
+  //   const day = new Date(date).getDay();
+  //   const isWeekend = day === 0 || day === 6;
+  //   const discount = isWeekend ? 0.01 : 0.02;
+  //   return `₹ ${Math.round(baseFare - baseFare * discount)}`;
+  // };
+  const ticketlist = useSelector((state) => state?.get_ticket_detail);
+  const [showModal, setShowModal] = useState(false);
+  const tbs_discount = useSelector((state) => state?.live_per);
+  console.log(tbs_discount, "tbs_discount");
+  const currentpath = useParams();
+  const dispatch = useDispatch();
+  console.log(currentpath, "currentpath");
+
+  useEffect(() => {
+    if (currentpath?.trip_date) {
+      console.log(currentpath?.trip_date, "currentpathggggg");
+
+      const date = new Date(currentpath?.trip_date);
+      date.setUTCHours(5, 30, 53, 897);
+      const jdate = date?.toISOString();
+      console.log(jdate,"jdatejdatejdate");
+      
+      CurrentDiscount(dispatch, jdate);
+    }
+  }, [currentpath]);
+  // useEffect(() => {
+  //   const value = sessionStorage.getItem("ticket_view");
+  //   if (value === "open") {
+  //     setShowModal(true);
+  //   } else {
+  //     setShowModal(false);
+  //   }
+  // }, [sessionStorage.getItem("ticket_view")]);
   return (
     <>
       <div>
@@ -575,9 +606,10 @@ export default function BusList() {
                                       >
                                         {/* ₹ { Math.round(item.Fare)} */}
 
-                                        {`${calculateDiscountedFare(
+                                        {`₹ ${calculateDiscountedFare(
                                           item?.BUS_START_DATE,
-                                          item.Fare
+                                          item.Fare,
+                                          tbs_discount
                                         )}`}
                                       </p>
                                       <div
@@ -1042,6 +1074,20 @@ export default function BusList() {
          // busdroping={item.dropping}
          /> */}
       </div>
+      {/* <Drawer
+        placement={"right"}
+        // closable={sessionStorage.getItem("ticket_view", "close")}
+        // onClose={sessionStorage.setItem("ticket_view", "close")}
+        open={showModal}
+        key={"right"}
+        width={"60%"}
+        // width={drawerWidth}
+      >
+        <ViewFullTicket
+          ticketDetails={ticketlist}
+          // droppingDate={calculatedDate && ConvertDate(calculatedDate)}
+        />
+      </Drawer> */}
     </>
   );
 }

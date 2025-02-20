@@ -16,44 +16,132 @@ const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
 const apiUrl = process.env.REACT_APP_API_URL;
 const apicrm = process.env.REACT_APP_CRM_API_URL;
 
-
-
 export const GetOperators = async (dispatch) => {
-    try {
-      const response = await axios.get(`${apiUrl}/operator-name`);
-      dispatch({ type: GET_OPERATOR_LIST, payload: response.data });
-      return response;
-    } catch (error) {
-      handleError(error);
-    }
-  };
-  
-export const OperatorFilters = async (operator, e = null) => {
-    const payload = {
-      search: e ? e.target.value : operator,
-    };
-  
-    const url = `${apiUrl}/operator-names/${operator}`;
-    const method = "post";
-    try {
-      const response = await api({
-        method,
-        url,
-        data: payload,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(response, "locationdatas");
-      console.log(response.data, "submitlocationdata");
-      return response.data;
-      //  const response = await axios.get(`${apiUrl}/operator-names/${operator}`);
-    } catch (error) {
-      handleError(error);
-    }
-  };
-  
+  try {
+    const response = await axios.get(`${apiUrl}/operator-name`);
+    dispatch({ type: GET_OPERATOR_LIST, payload: response.data });
+    return response;
+  } catch (error) {
+    handleError(error);
+  }
+};
 
+export const OperatorFilters = async (operator, e = null) => {
+  const payload = {
+    search: e ? e.target.value : operator,
+  };
+
+  const url = `${apiUrl}/operator-names/${operator}`;
+  const method = "post";
+  try {
+    const response = await api({
+      method,
+      url,
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response, "locationdatas");
+    console.log(response.data, "submitlocationdata");
+    return response.data;
+    //  const response = await axios.get(`${apiUrl}/operator-names/${operator}`);
+  } catch (error) {
+    handleError(error);
+  }
+};
+export const TBS_Booking_Details = async (
+  TicketNo,
+  order_id,
+  payment_id,
+  signature,
+  ticketdetails,
+  email,
+  mobile,
+  msg
+) => {
+  console.log(
+    ticketdetails,
+    "ticketdetailsticketdetailsticketdetails",
+    ticketdetails?.ticket_det?.[0]?.Passenger_Name
+  );
+
+  const payload = {
+    name: ticketdetails?.ticket_det?.[0]?.Passenger_Name,
+    email: email,
+    mobile: mobile,
+    ticket_no: TicketNo,
+    pnr_no: TicketNo,
+    transaction_id: payment_id,
+    transaction_status: msg,
+    razorpay_order_id: order_id,
+    razorpay_payment_id: payment_id,
+    razorpay_signature: signature,
+  };
+
+  const url = `${apiUrl}/tbsbookinghistory`;
+  const method = "post";
+  try {
+    const response = await api({
+      method,
+      url,
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response, "locationdatas");
+    console.log(response.data, "submitlocationdata");
+    return response.data;
+    //  const response = await axios.get(`${apiUrl}/operator-names/${operator}`);
+  } catch (error) {
+    handleError(error);
+  }
+};
+export const PostFeedBack = async (rating, nameValue, feedback, occValue) => {
+  const occId =
+    occValue === "Business"
+      ? 1
+      : occValue === "General Public"
+      ? 2
+      : occValue === "Physically Challenged"
+      ? 3
+      : occValue === "Pilgrim Traveler"
+      ? 4
+      : occValue === "Senior Citizen"
+      ? 5
+      : occValue === "Student"
+      ? 6
+      : occValue === "Tourist"
+      ? 7
+      : occValue === "Corporate Traveler"
+      ? 8
+      : 2;
+  try {
+    const response = await axios.post(`${apiUrl}/feedback`, {
+      tbs_passenger_id: sessionStorage.getItem("passenger_id"),
+      name: nameValue,
+      rating: rating,
+      description: feedback,
+      occupation: occValue,
+      occupation_id: occId,
+    });
+    toast.success(response.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const GetFeedbackById = async () => {
+  const id = sessionStorage.getItem("passenger_id");
+  try {
+    const response = await axios.get(`${apiUrl}/passenger-details/${id}`);
+    console.log(response.data, "ddddjjjjjjdjdjhfh");
+    return response.data;
+  } catch (err) {
+    handleError(err);
+  }
+};
 const handleError = (error) => {
   console.error("Error details:", error);
   let errorMessage = "An error occurred";

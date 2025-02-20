@@ -24,6 +24,8 @@ import {
   MOB_ADS_LIST,
   ADS_LIST,
   GET_DES_STATION,
+  GET_TICKET_DETAILS,
+  CURRENT_PERCENTAGE,
 } from "./Type";
 
 const initial = {
@@ -55,40 +57,37 @@ const initial = {
   ads_list: [],
   mob_ads_list: [],
   get_des_station: [],
+  get_ticket_detail: [],
+  live_per: [],
 };
 export const busreducer = (state = initial, action) => {
   const { type, payload } = action;
   switch (type) {
     case SEND_OTP: {
-      console.log(payload, "SEND_OTP");
       return {
         ...state,
         send_otp: payload,
       };
     }
     case GET_STATIONS: {
-      console.log(payload, "payloadpayload");
       return {
         ...state,
         get_stations: payload,
       };
     }
     case HOME_SELECTED_DATE: {
-      console.log(payload, "pyaloaddddd");
       return {
         ...state,
         selected_date: payload,
       };
     }
     case GET_BUS_LIST: {
-      console.log(payload, "pyaloaddddd8888");
       return {
         ...state,
         get_buslist: payload,
       };
     }
     case GET_OPERATORS: {
-      console.log(payload, "payloadpayload");
       return {
         ...state,
         get_operators: payload,
@@ -107,7 +106,6 @@ export const busreducer = (state = initial, action) => {
       };
     }
     case PROMOTION_LIST: {
-      console.log(payload, "promo_list");
       return {
         ...state,
         promo_list: payload,
@@ -120,7 +118,6 @@ export const busreducer = (state = initial, action) => {
       };
     }
     case PDP: {
-      console.log(payload, "p_d_p");
       return {
         ...state,
         pdp: payload,
@@ -128,7 +125,6 @@ export const busreducer = (state = initial, action) => {
     }
 
     case FEED_BACK: {
-      console.log(payload, "FEED_BACK__FEED_BACK");
       return {
         ...state,
         feed_back: payload,
@@ -160,21 +156,18 @@ export const busreducer = (state = initial, action) => {
       };
     }
     case TBS_INFO: {
-      console.log(payload, "TBS_INFO__TBS_INFO");
       return {
         ...state,
         tbs_info: payload,
       };
     }
     case GET_OPERATOR_LIST: {
-      console.log(payload, "GET_OPERATOR_LIST");
       return {
         ...state,
         get_operator_list: payload,
       };
     }
     case OFFERS_OCCUPATION: {
-      console.log(payload, "OFFERS_OCCUPATION");
       return {
         ...state,
         offers_occupation: payload,
@@ -193,7 +186,6 @@ export const busreducer = (state = initial, action) => {
       };
     }
     case PROFILE_DATA: {
-      console.log(payload, "profile_data");
       return {
         ...state,
         profile_data: payload,
@@ -222,6 +214,21 @@ export const busreducer = (state = initial, action) => {
       return {
         ...state,
         get_des_station: payload,
+      };
+    }
+    case GET_TICKET_DETAILS: {
+
+      return {
+        ...state,
+        get_ticket_detail: payload,
+      };
+    }
+    case CURRENT_PERCENTAGE: {
+     
+
+      return {
+        ...state,
+        live_per: payload?.data?.data?.[0].Percentage,
       };
     }
     default: {

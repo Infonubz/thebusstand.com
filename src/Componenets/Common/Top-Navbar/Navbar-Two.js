@@ -32,7 +32,15 @@ import "./CSS/Navbar-Two.css";
 import SVG_List from "../../Common/SVG/SVG";
 import { Abhibus_GetBusList } from "../../../Api-Abhibus/Home/HomePage";
 import dayjs from "dayjs";
+import { GetStations } from "../../../Api-TBS/Home/Home";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import * as Yup from "yup";
 export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
+  const validationSchema = Yup.object().shape({
+    from: Yup.string().required("Field is Required"),
+    to: Yup.string().required("Field is Required"),
+  });
+
   // const [startDate, setStartDate] = useState(new Date());
   const location = useLocation();
   const currentplace = location.state?.currentplace || "";
@@ -53,6 +61,7 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
   const [isInputFromFocused, setIsInputFromFocused] = useState(false);
   const [isInputToFocused, setIsInputToFocused] = useState(false);
   const Get_Stations = useSelector((state) => state.get_stations);
+  const Get_des_Statiion = useSelector((state) => state.get_des_station);
   const SVG = SVG_List();
   const currentpath = useParams();
 
@@ -834,20 +843,22 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
 
     // Update local state (if needed)
     if (input === "from") {
-      console.log("frommmmm");
+      console.log("frommmmm", item.station_name);
 
       setBusDatas({
         ...busdatas,
-        from: item.Station_Name,
-        from_sourceID: item.Source_ID,
+        from: item.station_name,
+        from_sourceID: item.source_id,
       });
+      console.log(busdatas, "busdatafrom");
       setIsInputFromFocused(false);
     } else {
       setBusDatas({
         ...busdatas,
-        to: item.Station_Name,
-        to_sourceID: item.Source_ID,
+        to: item.station_name,
+        to_sourceID: item.source_id,
       });
+      console.log(busdatas, "busdatafromto");
       setIsInputToFocused(false);
     }
 
@@ -855,9 +866,51 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
   };
   console.log(busdatas, "testingsss");
 
+  useEffect(() => {
+    // Abhibus_GetStations(dispatch);
+    const val = "";
+    GetStations(dispatch, val);
+  }, []);
+  const handlesearchFrom = (e, inputbox) => {
+    // e.preventDefault();
+    console.log(e.target.value, "fromvallalala");
+    const newValue = e.target.value;
+    if (inputbox === "from") {
+      // setBusDatas({"from":newValue})
+      setBusDatas((prevData) => ({
+        ...prevData,
+        from: newValue,
+      }));
+      console.log(newValue, "vlaues");
+      GetStations(dispatch, newValue, inputbox);
+    } else if (inputbox === "to") {
+      // setBusDatas("to",newValue)
+      setBusDatas((prevData) => ({
+        ...prevData,
+        to: newValue,
+      }));
+      GetStations(dispatch, newValue, inputbox);
+    }
+  };
+  console.log(busdatas, "busssddddaattaaa");
+  const GetBusList = async () => {
+    const busdatas = {
+      from: currentpath?.source_name,
+      to: currentpath?.destination_name,
+      from_sourceID: currentpath?.source_ID,
+      to_sourceID: currentpath?.destionation_ID,
+      date: currentpath?.trip_date,
+    };
+
+    const data = await Abhibus_GetBusList(dispatch, busdatas, busdatas?.date);
+  };
+
+  useEffect(() => {
+    GetBusList();
+  }, []);
   return (
     <>
-      <div className="fixed w-full " style={{ zIndex: 20 }}>
+      <div className="fixed w-full z-20" >
         <div className="md:block hidden">
           <Navbar_One />
         </div>{" "}
@@ -915,14 +968,70 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
             </div>
           </>
         ) : (
-          <div
-            className="h-[12vw] md:h-[5vw] w-full bg-[#1F487C] "
-            style={{
-              zIndex: 2,
+          <Formik
+            initialValues={{
+              from: busdatas?.from || "",
+              to: busdatas?.to || "",
             }}
+            validationSchema={validationSchema}
+            onSubmit={(values, { setFieldError }) => {
+              setIsInputFromFocused(false);
+              setIsInputToFocused(false);
+              if (
+                busdatas.from_sourceID === undefined ||
+                busdatas.from_sourceID === "" ||
+                busdatas.to_sourceID === undefined ||
+                busdatas.to_sourceID === ""
+              ) {
+                if (
+                  (busdatas.from_sourceID === undefined ||
+                    busdatas.from_sourceID === "") &&
+                  (busdatas.to_sourceID === undefined ||
+                    busdatas.to_sourceID === "")
+                ) {
+                  setFieldError("from", "Choose the value from dropdown");
+                  setFieldError("to", "Choose the value from dropdown");
+                }
+                if (
+                  busdatas.from_sourceID === undefined ||
+                  busdatas.from_sourceID === ""
+                ) {
+                  setFieldError("from", "Choose the value from dropdown");
+                } else {
+                  setFieldError("to", "Choose the value from dropdown");
+                }
+              } else if (busdatas.from_sourceID === busdatas.to_sourceID) {
+                setFieldError(
+                  "from",
+                  "Source and Destination cannot be the same"
+                );
+              } else {
+                //handleSubmit(values)
+                handleSearch();
+                setModifyBtn(false);
+                //setBusDatas(values);
+              }
+
+              // localStorage.setItem("page1", true);
+              // localStorage.setItem("occupation", values.option);
+              // localStorage.setItem("mobile", values.mobile);
+            }}
+            enableReinitialize
           >
-            <div className="md:h-[0.3vw] md:block hidden w-full bg-[#E5FFF1] opacity-90"></div>
-            {/* <div className="grid md:hidden block w-full  h-[12vw]">
+            {({
+              isSubmitting,
+              isValid,
+              handleSubmit,
+              values,
+              handleChange,
+              setFieldValue,
+              errors,
+              touched,
+            }) => (
+              <Form onSubmit={handleSubmit}>
+                <div className="h-[12vw] md:h-[5vw] w-full bg-[#1F487C] md:-z-10">
+                  <div className="md:h-[0.3vw] md:block hidden w-full bg-[#E5FFF1] opacity-90"></div>
+                  {/* <div className="grid md:hidden block w-full  h-[12vw]">
             <div className="items-center flex justify-around text-white">
               <div
                 onClick={() => {
@@ -983,91 +1092,91 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
               </div>
             </Drawer>
           </div> */}
-            <div className=" md:hidden block">
-              <div className="flex px-[2vw] items-center justify-between h-full">
-                <div className="flex flex-col ">
-                  <div className="flex gap-x-[2vw] items-center">
-                    <div className="text-[4.5vw] text-white font-semibold">
-                      {fromValue}
-                    </div>
-                    <div className="text-white">
-                      <FaArrowRight />
-                    </div>
-                    <div className="text-[4.5vw] text-white font-semibold">
-                      {toValue}
-                    </div>
-                  </div>
-                  <div className="mt-[-2vw]">
-                    <label className="text-gray-300 text-[3vw]">{`Showing ${
-                      totalbuses?.length > 0 ? totalbuses?.length : "0"
-                    } Buses on This Route`}</label>
-                  </div>
-                </div>
-                <div>
-                  <button
-                    onClick={showDrawer}
-                    className="px-[4vw] h-[7vw] flex items-center justify-center bg-white text-[#1F487C] rounded-full shadow-lg"
-                  >
-                    <div className="text-center text-[3.5vw] flex font-extrabold">
-                      {/* <span className="text-[4.5vw]">
+                  <div className=" md:hidden block">
+                    <div className="flex px-[2vw] items-center justify-between h-full">
+                      <div className="flex flex-col ">
+                        <div className="flex gap-x-[2vw] items-center">
+                          <div className="text-[4.5vw] text-white font-semibold">
+                            {fromValue}
+                          </div>
+                          <div className="text-white">
+                            <FaArrowRight />
+                          </div>
+                          <div className="text-[4.5vw] text-white font-semibold">
+                            {toValue}
+                          </div>
+                        </div>
+                        <div className="mt-[-2vw]">
+                          <label className="text-gray-300 text-[3vw]">{`Showing ${
+                            totalbuses?.length > 0 ? totalbuses?.length : "0"
+                          } Buses on This Route`}</label>
+                        </div>
+                      </div>
+                      <div>
+                        <button
+                          onClick={showDrawer}
+                          className="px-[4vw] h-[7vw] flex items-center justify-center bg-white text-[#1F487C] rounded-full shadow-lg"
+                        >
+                          <div className="text-center text-[3.5vw] flex font-extrabold">
+                            {/* <span className="text-[4.5vw]">
                     <MdKeyboardArrowLeft />
                   </span>{" "} */}
-                      <span>{mobileformattedDate}</span>{" "}
-                      {/* <span className="text-[4.5vw]">
+                            <span>{mobileformattedDate}</span>{" "}
+                            {/* <span className="text-[4.5vw]">
                     <MdKeyboardArrowRight />
                   </span> */}
+                          </div>
+                        </button>
+                        <Drawer
+                          title="Select Date"
+                          placement="bottom"
+                          closable={false}
+                          onClose={onClosee}
+                          open={openDatee}
+                          height="50%" // Adjust height as needed
+                          bodyStyle={{ padding: 0 }} // Removes extra padding
+                          className="flex justify-center md:hidden"
+                        >
+                          <div className="flex items-center justify-center">
+                            <Calendar
+                              onChange={(date) => {
+                                setSelectedDatee(date);
+                                setFromDate(date);
+                                setBusDatas({
+                                  ...busdatas,
+                                  date: date,
+                                });
+                                onClosee(); // Close drawer on date select
+                              }}
+                              value={busdatas?.date}
+                              minDate={new Date()}
+                              style={{ width: "100%" }}
+                            />
+                          </div>
+                        </Drawer>
+                      </div>
                     </div>
-                  </button>
-                  <Drawer
-                    title="Select Date"
-                    placement="bottom"
-                    closable={false}
-                    onClose={onClosee}
-                    open={openDatee}
-                    height="50%" // Adjust height as needed
-                    bodyStyle={{ padding: 0 }} // Removes extra padding
-                    className="flex justify-center md:hidden"
-                  >
-                    <div className="flex items-center justify-center">
-                      <Calendar
-                        onChange={(date) => {
-                          setSelectedDatee(date);
-                          setFromDate(date);
-                          setBusDatas({
-                            ...busdatas,
-                            date: date,
-                          });
-                          onClosee(); // Close drawer on date select
-                        }}
-                        value={busdatas?.date}
-                        minDate={new Date()}
-                        style={{ width: "100%" }}
-                      />
-                    </div>
-                  </Drawer>
-                </div>
-              </div>
-            </div>
-            <img
-              src={newbus1}
-              className="absolute md:block hidden top-[1.7vw] h-[8.1vw] w-[21.75vw]   left-[-3vw]"
-              alt=""
-              // style={{
-              //   transform: "rotateY(180deg)",
-              // }}
-            />
-            <div className="md:block hidden">
-              <div className="  pl-[1vw] md:pl-[19.5vw] md:pt-[0.2vw] grid grid-cols-12 w-full md:h-[4.5vw] h-[12vw]">
-                {/* <div className="col-span-2 w-full"> */}
-                {/* </div> */}
-                <div className="hidden">
-                  <div className="col-span-6 md:col-span-4  h-full items-center">
-                    <div className="grid grid-cols-7 gap-[1vw] md:gap-0 md:grid-cols-5 items-center h-full">
-                      <div
-                        className="md:block hidden md:col-span-2"
-                        ref={popoverRef}
-                      >
-                        {/* <Select
+                  </div>
+                  <img
+                    src={newbus1}
+                    className="absolute md:block hidden top-[1.7vw] h-[8.1vw] w-[21.75vw]   left-[-3vw]"
+                    alt=""
+                    // style={{
+                    //   transform: "rotateY(180deg)",
+                    // }}
+                  />
+                  <div className="md:block hidden">
+                    <div className="  pl-[1vw] md:pl-[19.5vw] md:pt-[0.2vw] grid grid-cols-12 w-full md:h-[4.5vw] h-[12vw]">
+                      {/* <div className="col-span-2 w-full"> */}
+                      {/* </div> */}
+                      <div className="hidden">
+                        <div className="col-span-6 md:col-span-4  h-full items-center">
+                          <div className="grid grid-cols-7 gap-[1vw] md:gap-0 md:grid-cols-5 items-center h-full">
+                            <div
+                              className="md:block hidden md:col-span-2"
+                              ref={popoverRef}
+                            >
+                              {/* <Select
                     showSearch
                     placeholder="From"
                     optionFilterProp="children"
@@ -1082,82 +1191,85 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                     style={{ backgroundColor: "black", color: "white" }}
                   /> */}
 
-                        <Popover
-                          placement="bottom"
-                          trigger="click"
-                          // title={text}
-                          content={
-                            <div
-                              style={{ maxHeight: "10vw", overflow: "auto" }}
-                            >
-                              {content}
+                              <Popover
+                                placement="bottom"
+                                trigger="click"
+                                // title={text}
+                                content={
+                                  <div
+                                    style={{
+                                      maxHeight: "10vw",
+                                      overflow: "auto",
+                                    }}
+                                  >
+                                    {content}
+                                  </div>
+                                }
+                                overlayStyle={{ width: "11vw" }}
+                                className="scrolbar-hide"
+                                onOpenChange={handleOpenChange}
+                                open={open}
+                              >
+                                <div className="relative cursor-pointer top-[1.5vw] md:top-0">
+                                  <img
+                                    src={dropdown}
+                                    className="h-[7.5vw] md:h-[2.7vw] md:w-full "
+                                    alt=""
+                                  />
+                                  <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.5vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
+                                    {traveldetails?.from?.value?.toUpperCase()}
+                                  </p>
+                                </div>
+                              </Popover>
                             </div>
-                          }
-                          overlayStyle={{ width: "11vw" }}
-                          className="scrolbar-hide"
-                          onOpenChange={handleOpenChange}
-                          open={open}
-                        >
-                          <div className="relative cursor-pointer top-[1.5vw] md:top-0">
-                            <img
-                              src={dropdown}
-                              className="h-[7.5vw] md:h-[2.7vw] md:w-full "
-                              alt=""
-                            />
-                            <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.5vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
-                              {traveldetails?.from?.value?.toUpperCase()}
-                            </p>
-                          </div>
-                        </Popover>
-                      </div>
-                      <div
-                        className="col-span-3 md:hidden block"
-                        onClick={() => {
-                          setModalShow(true);
-                          setSelectInput("from");
-                        }}
-                      >
-                        <div className="relative cursor-pointer top-[1.5vw] md:top-0">
-                          <img
-                            src={dropdown}
-                            className="h-[7.5vw] md:h-[2.7vw] md:w-full "
-                            alt=""
-                          />
-                          <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.5vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
-                            {traveldetails?.from?.value?.toUpperCase()}
-                          </p>
-                        </div>{" "}
-                      </div>
-                      <div className="col-span-1">
-                        {/* <div
+                            <div
+                              className="col-span-3 md:hidden block"
+                              onClick={() => {
+                                setModalShow(true);
+                                setSelectInput("from");
+                              }}
+                            >
+                              <div className="relative cursor-pointer top-[1.5vw] md:top-0">
+                                <img
+                                  src={dropdown}
+                                  className="h-[7.5vw] md:h-[2.7vw] md:w-full "
+                                  alt=""
+                                />
+                                <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.5vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
+                                  {traveldetails?.from?.value?.toUpperCase()}
+                                </p>
+                              </div>{" "}
+                            </div>
+                            <div className="col-span-1">
+                              {/* <div
                     className="bg-white py-2 mx-4  rounded-md flex justify-center items-center cursor-pointer"
                     onClick={handleSwap}
                   >
                     <FaArrowRightArrowLeft />
                   </div> */}
-                        <div className="relative flex items-center justify-center cursor-pointer top-[1.5vw] md:top-0">
-                          <div
-                            onClick={handleflip}
-                            className=" cursor-not-allowed"
-                          >
-                            <img
-                              src={split}
-                              className="w-[7vw] h-[7.5vw] md:h-[2.5vw] md:w-[2.5vw]"
-                              alt=""
-                            />
-                            <FaArrowRightArrowLeft
-                              color="white"
-                              size={"1.2vw"}
-                              className="absolute size-[4vw] md:size-[1.2vw] left-[1vw] top-[1.5vw] md:top-[0.6vw] md:left-[2.2vw] transform translate[-50%,-50%]"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="md:block hidden md:col-span-2"
-                        ref={topopoverRef}
-                      >
-                        {/* <Select
+                              <div className="relative flex items-center justify-center cursor-pointer top-[1.5vw] md:top-0">
+                                <div
+                                  onClick={handleflip}
+                                  className=" cursor-not-allowed"
+                                >
+                                  <img
+                                    src={split}
+                                    className="w-[7vw] h-[7.5vw] md:h-[2.5vw] md:w-[2.5vw]"
+                                    alt=""
+                                  />
+                                  <FaArrowRightArrowLeft
+                                    color="white"
+                                    size={"1.2vw"}
+                                    className="absolute size-[4vw] md:size-[1.2vw] left-[1vw] top-[1.5vw] md:top-[0.6vw] md:left-[2.2vw] transform translate[-50%,-50%]"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              className="md:block hidden md:col-span-2"
+                              ref={topopoverRef}
+                            >
+                              {/* <Select
                     showSearch
                     placeholder="To"
                     optionFilterProp="children"
@@ -1170,63 +1282,63 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                     value={traveldetails.to}
                     className="w-full"
                   /> */}
-                        <Popover
-                          placement="bottom"
-                          trigger="click"
-                          // title={text}
-                          content={
+                              <Popover
+                                placement="bottom"
+                                trigger="click"
+                                // title={text}
+                                content={
+                                  <div
+                                    style={{
+                                      maxHeight: "10vw",
+                                      overflow: "auto",
+                                      padding: "0px",
+                                    }}
+                                  >
+                                    {tocontent}
+                                  </div>
+                                }
+                                overlayStyle={{ width: "11vw", padding: "0px" }}
+                                onOpenChange={tohandleOpenChange}
+                                open={toopen}
+                              >
+                                <div className="relative cursor-pointer top-[1.5vw] md:top-0">
+                                  <img
+                                    src={dropdown}
+                                    className="h-[7.5vw] md:h-[2.7vw] w-full "
+                                    alt=""
+                                  />
+                                  <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.6vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
+                                    {/* {traveldetails?.to?.value?.toUpperCase()} */}
+                                    Coimbatore
+                                  </p>
+                                </div>
+                              </Popover>
+                            </div>
                             <div
-                              style={{
-                                maxHeight: "10vw",
-                                overflow: "auto",
-                                padding: "0px",
+                              className="col-span-3 md:hidden block"
+                              onClick={() => {
+                                setModalShow(true);
+                                setSelectInput("to");
                               }}
                             >
-                              {tocontent}
+                              <div className="relative cursor-pointer top-[1.5vw] md:top-0">
+                                <img
+                                  src={dropdown}
+                                  className="h-[7.5vw] md:h-[2.7vw] w-full "
+                                  alt=""
+                                />
+                                <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.6vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
+                                  {traveldetails?.to?.value?.toUpperCase()}
+                                </p>
+                              </div>
                             </div>
-                          }
-                          overlayStyle={{ width: "11vw", padding: "0px" }}
-                          onOpenChange={tohandleOpenChange}
-                          open={toopen}
-                        >
-                          <div className="relative cursor-pointer top-[1.5vw] md:top-0">
-                            <img
-                              src={dropdown}
-                              className="h-[7.5vw] md:h-[2.7vw] w-full "
-                              alt=""
-                            />
-                            <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.6vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
-                              {/* {traveldetails?.to?.value?.toUpperCase()} */}
-                              Coimbatore
-                            </p>
                           </div>
-                        </Popover>
-                      </div>
-                      <div
-                        className="col-span-3 md:hidden block"
-                        onClick={() => {
-                          setModalShow(true);
-                          setSelectInput("to");
-                        }}
-                      >
-                        <div className="relative cursor-pointer top-[1.5vw] md:top-0">
-                          <img
-                            src={dropdown}
-                            className="h-[7.5vw] md:h-[2.7vw] w-full "
-                            alt=""
-                          />
-                          <p className="absolute top-[1.7vw] text-[2.5vw] md:top-[0.6vw] font-semibold text-white md:text-[1vw] left-1/2 transform -translate-x-1/2">
-                            {traveldetails?.to?.value?.toUpperCase()}
-                          </p>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="md:block hidden md:col-span-3"></div>
-                  <div className="col-span-6 md:pl-0 md:col-span-5">
-                    <div className="grid grid-cols-6 md:grid-cols-3 gap-[1vw] items-center h-full ">
-                      <div className="col-span-3 pl-[5vw] md:hidden block bg-green-400 w-full">
-                        {/* <DatePicker
+                        <div className="md:block hidden md:col-span-3"></div>
+                        <div className="col-span-6 md:pl-0 md:col-span-5">
+                          <div className="grid grid-cols-6 md:grid-cols-3 gap-[1vw] items-center h-full ">
+                            <div className="col-span-3 pl-[5vw] md:hidden block bg-green-400 w-full">
+                              {/* <DatePicker
                     format={{
                       format: "MMM-DD",
                       type: "mask",
@@ -1234,7 +1346,7 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                     className="w-[21vw] top-[2vw]"
                     onChange={onChange}
                   /> */}
-                        {/* <DatePicker
+                              {/* <DatePicker
                     // open
                     format={{
                       format: "DD-MM-YYYY",
@@ -1249,22 +1361,22 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                     //   backgroundColor:"blue"
                     // }}
                   /> */}
-                        {/* <DateInput value={fromDate} onChange={setFromDate} /> */}
-                      </div>
+                              {/* <DateInput value={fromDate} onChange={setFromDate} /> */}
+                            </div>
 
-                      <div className="col-span-3  md:hidden block">
-                        {/* <TimePicker
+                            <div className="col-span-3  md:hidden block">
+                              {/* <TimePicker
                     // defaultValue={dayjs('12:08', format)}
                     format={format}
                     placeholder="Select time"
                     className="w-[21vw] top-[2vw]"
                     onChange={Clockonchange}
                   /> */}
-                        {/* <TimePickerComponent onTimeChanged={handleTimeChanged} /> */}
-                      </div>
+                              {/* <TimePickerComponent onTimeChanged={handleTimeChanged} /> */}
+                            </div>
 
-                      <div className="md:block hidden md:col-span-1">
-                        {/* <DatePicker
+                            <div className="md:block hidden md:col-span-1">
+                              {/* <DatePicker
                     onChange={(date, dateString) =>
                       setTraveldetails({
                         ...traveldetails,
@@ -1284,7 +1396,7 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                       <img src={date} className="w-[1.2vw] h-[2.4vh]" />
                     }
                   /> */}
-                        {/* <Calendar
+                              {/* <Calendar
                     value={traveldetails.date}
                     onChange={handleDateChange}
                     placeholder="Select Date"
@@ -1292,7 +1404,7 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                     className=" h-[2.3vw]"
                     // className="md:block hidden h-[6.5vw] md:w-[10vw] w-[30.5vw] md:h-[2.5vw] top-[2vw] md:top-0"
                   /> */}
-                        {/* <DatePicker
+                              {/* <DatePicker
                     open
                     format={{
                       format: "DD-MM-YYYY",
@@ -1307,16 +1419,16 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                     //   backgroundColor:"blue"
                     // }}
                   /> */}
-                        <div className="md:col-span-1 mr-[1vw] md:block hidden mt-[0.2vw]">
-                          <div className="bg-white w-full  h-[2.3vw]  rounded-[0.5vw] text-[1.1vw]">
-                            <DateInput
-                              value={busdatas?.date}
-                              onChange={setFromDate}
-                            />
-                          </div>
-                        </div>
-                        {/* <CalendarComponent value={dateValue} /> */}
-                        {/* <input
+                              <div className="md:col-span-1 mr-[1vw] md:block hidden mt-[0.2vw]">
+                                <div className="bg-white w-full  h-[2.3vw]  rounded-[0.5vw] text-[1.1vw]">
+                                  <DateInput
+                                    value={busdatas?.date}
+                                    onChange={setFromDate}
+                                  />
+                                </div>
+                              </div>
+                              {/* <CalendarComponent value={dateValue} /> */}
+                              {/* <input
                     type="date"
                     style={{
                       // backgroundColor: "blue",
@@ -1324,9 +1436,9 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                     }}
                     className="px-2 rounded-md py-1 outline-none custom-date-input"
                   /> */}
-                      </div>
-                      {/* <div className="md:col-span-1 md:block hidden relative"> */}
-                      {/* <input
+                            </div>
+                            {/* <div className="md:col-span-1 md:block hidden relative"> */}
+                            {/* <input
                     className="w-full px-2 py-1 rounded-md"
                     type="time"
                     onChange={(e) =>
@@ -1336,7 +1448,7 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                       })
                     }
                   /> */}
-                      {/* <TimePicker
+                            {/* <TimePicker
                     // defaultValue={dayjs("12:08", format)}
                     format={format}
                     style={{
@@ -1349,317 +1461,394 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                     onChange={Clockonchange}
                     className="md:block hidden h-[6.6vw] top-[2vw] md:top-0 text-[1vw] w-[13vw] md:w-full md:text-[1vw] md:h-[2.3vw]"
                   /> */}
-                      {/* <input
+                            {/* <input
                     {...inputProps}
                     ref={inputRef}
                     className="text-white bg-white border-[0.1vw] py-[0.2vw] w-[90%] rounded-lg"
                   /> */}
-                      {/* <TimePickerComponent onTimeChanged={handleTimeChanged} /> */}
-                      {/* <ResponsiveTimePickers /> */}
-                      {/* <TimePicker.RangePicker
+                            {/* <TimePickerComponent onTimeChanged={handleTimeChanged} /> */}
+                            {/* <ResponsiveTimePickers /> */}
+                            {/* <TimePicker.RangePicker
                     format="HH:mm"
                     placeholder={["Start", "End"]}
                     showNow={true}
                   /> */}
-                      {/* <TimePick /> */}
-                      {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            {/* <TimePick /> */}
+                            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <MobileTimePicker
                       defaultValue={dayjs("2022-04-17T15:30")}
                       className="bg-white h-[30px] rounded-md items-center justify-center text-center"
                     />
                   </LocalizationProvider> */}
-                      {/* </div> */}
-                      <div className="md:col-span-1 mr-[1vw] md:block hidden">
-                        <button
-                          className="bg-white text-black w-full  h-[2.3vw]  rounded-[0.5vw] text-[1.1vw]"
-                          onClick={handleSearch}
-                        >
-                          Search
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="md:col-span-6 grid md:grid-cols-5 w-full  flex items-center justify-center">
-                  {/* <div className="col-span-1  md:hidden  flex justify-start items-center ">
-                <TbArrowBackUpDouble className="text-white text-5xl" onClick={()=>navigate("/")} />
-              </div> */}
-                  <div className="md:col-span-2 md:block hidden ">
-                    {modifyBtn === true ? (
-                      // <ConfigProvider
-                      //   theme={{
-                      //     components: {
-                      //       Select: {
-                      //         activeBorderColor: "#1F487C",
-                      //         hoverBorderColor: "#1F487C",
-                      //       },
-                      //     },
-                      //   }}
-                      // >
-                      //   <Select
-                      //     showSearch
-                      //     removeIcon
-                      //     value={fromValue}
-                      //     onChange={(value) => {
-                      //       handleChangeFromValue(value);
-                      //     }}
-                      //     style={{
-                      //       width: "100%",
-                      //       height: "2.5vw",
-                      //       color: "red",
-                      //       fontSize: "1.5vw",
-                      //     }}
-                      //     placeholder="Search to Select"
-                      //     optionFilterProp="label"
-                      //     filterSort={(optionA, optionB) =>
-                      //       (optionA?.label ?? "")
-                      //         .toLowerCase()
-                      //         .localeCompare((optionB?.label ?? "").toLowerCase())
-                      //     }
-                      //     options={options}
-                      //   />
-                      // </ConfigProvider>
-                      <div>
-                        <input
-                          className="h-[3vw] w-full rounded-[0.3vw] pl-[1vw] outline-none text-[1.2vw] placeholder:text-[1.2vw]"
-                          placeholder="From"
-                          onFocus={() => setIsInputFromFocused(true)}
-                          // onBlur={() => setIsInputFromFocused(false)}
-                          value={busdatas?.from}
-                          autoComplete="off"
-                        />
-                        {isInputFromFocused && (
-                          <div className="absolute top-[8.5vw] w-full ">
-                            <div
-                              className="w-[16vw] min-h-auto max-h-[16vw] flex-col flex  overflow-y-scroll bg-white shadow-md rounded-[0.3vw]"
-                              style={{
-                                zIndex: 2,
-                              }}
-                            >
-                              {Get_Stations?.map((item, i) => (
-                                <div
-                                  key={i}
-                                  className="flex gap-x-[0.75vw] w-full px-[1vw] py-[0.5vw] items-center hover:bg-gray-100 "
-                                  onClick={
-                                    () => handleonClick(item, "from")
-                                    // handleChangeFromValue(item)
-                                  }
-                                >
-                                  {SVG.building_dropdown}
-                                  <div
-                                    className="flex flex-col cursor-pointer"
-                                    onClick={() =>
-                                      // handleonClick(item, setFieldValue)
-                                      console.log("ghhggggh")
-                                    }
-                                  >
-                                    <label className="text-[0.9vw] flex-wrap w-full font-semibold">
-                                      {item.Station_Name}
-                                    </label>
-                                    <label className="text-gray-400 text-[0.8vw]">
-                                      {item?.State_Name}
-                                    </label>
-                                  </div>
-                                </div>
-                              ))}
+                            {/* </div> */}
+                            <div className="md:col-span-1 mr-[1vw] md:block hidden">
+                              <button
+                                className="bg-white text-black w-full  h-[2.3vw]  rounded-[0.5vw] text-[1.1vw]"
+                                onClick={handleSearch}
+                              >
+                                Search
+                              </button>
                             </div>
                           </div>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="relative flex justify-center">
-                        <svg
-                          width="25vw"
-                          height="3vw"
-                          viewBox="0 0 176 54"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          preserveAspectRatio="none"
-                        >
-                          <path
-                            d="M144.006 0.980469H32.0263C14.3565 0.980469 0.0322266 5.44593 0.0322266 10.9544V43.3695C0.0322266 48.8779 14.3565 53.3434 32.0263 53.3434H144.006C161.676 53.3434 176 48.8779 176 43.3695V10.9544C176 5.44593 161.676 0.980469 144.006 0.980469Z"
-                            fill="white"
-                            fillOpacity="0.2"
-                          />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center text-white text-[2.5vw] md:text-[1.3vw]">
-                          {busdatas?.from}
                         </div>
                       </div>
-                    )}
-                  </div>
-                  <div className="md:col-span-1 md:block hidden ">
-                    <div className=" relative flex justify-center cursor-pointer">
-                      <div
-                        onClick={() => {
-                          if (modifyBtn === true) {
-                            handleflip();
-                          } else {
-                            console.log("NOT ALLOWED");
-                          }
-                        }}
-                        className={`${
-                          modifyBtn === true
-                            ? "cursor-pointer"
-                            : "cursor-not-allowed"
-                        }`}
-                      >
-                        {/* <img
+                      <div className="md:col-span-6 grid md:grid-cols-5 w-full  flex items-center justify-center">
+                        {/* <div className="col-span-1  md:hidden  flex justify-start items-center ">
+                <TbArrowBackUpDouble className="text-white text-5xl" onClick={()=>navigate("/")} />
+              </div> */}
+                        <div className="md:col-span-2 md:block hidden ">
+                          {modifyBtn === true ? (
+                            // <ConfigProvider
+                            //   theme={{
+                            //     components: {
+                            //       Select: {
+                            //         activeBorderColor: "#1F487C",
+                            //         hoverBorderColor: "#1F487C",
+                            //       },
+                            //     },
+                            //   }}
+                            // >
+                            //   <Select
+                            //     showSearch
+                            //     removeIcon
+                            //     value={fromValue}
+                            //     onChange={(value) => {
+                            //       handleChangeFromValue(value);
+                            //     }}
+                            //     style={{
+                            //       width: "100%",
+                            //       height: "2.5vw",
+                            //       color: "red",
+                            //       fontSize: "1.5vw",
+                            //     }}
+                            //     placeholder="Search to Select"
+                            //     optionFilterProp="label"
+                            //     filterSort={(optionA, optionB) =>
+                            //       (optionA?.label ?? "")
+                            //         .toLowerCase()
+                            //         .localeCompare((optionB?.label ?? "").toLowerCase())
+                            //     }
+                            //     options={options}
+                            //   />
+                            // </ConfigProvider>
+                            <div className="relative">
+                              <Field
+                                className="h-[3vw] w-full rounded-[0.3vw] pl-[1vw] outline-none text-[1.2vw] placeholder:text-[1.2vw]"
+                                placeholder="From"
+                                //onFocus={() => setIsInputFromFocused(true)}
+                                // onBlur={() => setIsInputFromFocused(false)}
+                                onFocus={() => {
+                                  // setBusDatas({
+                                  //   ...busdatas,
+                                  //   from: "",
+                                  //   from_sourceID: "",
+                                  // })
+                                  setIsInputFromFocused(true);
+                                  setIsInputToFocused(false);
+                                }}
+                                onBlur={(e) => {
+                                  if (
+                                    e.target.value !== "" &&
+                                    e.target.value !== undefined &&
+                                    busdatas?.from
+                                  ) {
+                                    //setIsInputFromFocused(false)
+                                    if (Get_Stations?.length > 0) {
+                                      setFieldValue(
+                                        "from",
+                                        Get_Stations[0].station_name
+                                      );
+                                      setBusDatas({
+                                        ...busdatas,
+                                        from: Get_Stations[0].station_name,
+                                        from_sourceID:
+                                          Get_Stations[0].source_id,
+                                      });
+                                    }
+                                  }
+                                }}
+                                value={busdatas?.from}
+                                autoComplete="off"
+                                id="from"
+                                name="from"
+                                onChange={(e) => handlesearchFrom(e, "from")}
+                              />
+                              {isInputFromFocused && (
+                                <div className="absolute top-[3.5vw] z-[20] w-full">
+                                  <div
+                                    className="w-[16vw] min-h-auto max-h-[16vw] flex-col flex overflow-y-scroll bg-white shadow-md rounded-[0.3vw]"
+                                    tabIndex="-1"
+                                  >
+                                    {Get_Stations?.map((item, i) => (
+                                      <div
+                                        key={i}
+                                        className="flex gap-x-[0.75vw] w-full px-[1vw] py-[0.5vw] items-center hover:bg-gray-100 "
+                                        onClick={
+                                          () => handleonClick(item, "from")
+                                          // handleChangeFromValue(item)
+                                        }
+                                      >
+                                        {SVG.building_dropdown}
+                                        <div
+                                          className="flex flex-col cursor-pointer"
+                                          onClick={() =>
+                                            // handleonClick(item, setFieldValue)
+                                            console.log("ghhggggh")
+                                          }
+                                        >
+                                          <label className="text-[0.9vw] flex-wrap w-full font-semibold">
+                                            {item.station_name}
+                                          </label>
+                                          <label className="text-gray-400 text-[0.8vw]">
+                                            {item?.state_name}
+                                          </label>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                              <ErrorMessage
+                                name="from"
+                                component="div"
+                                className="text-red-500 text-[0.6vw] absolute top-[3vw] font-semibold z-10 left-[0.25vw]"
+                              />
+                            </div>
+                          ) : (
+                            <div className="relative flex justify-center">
+                              <svg
+                                width="25vw"
+                                height="3vw"
+                                viewBox="0 0 176 54"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                preserveAspectRatio="none"
+                              >
+                                <path
+                                  d="M144.006 0.980469H32.0263C14.3565 0.980469 0.0322266 5.44593 0.0322266 10.9544V43.3695C0.0322266 48.8779 14.3565 53.3434 32.0263 53.3434H144.006C161.676 53.3434 176 48.8779 176 43.3695V10.9544C176 5.44593 161.676 0.980469 144.006 0.980469Z"
+                                  fill="white"
+                                  fillOpacity="0.2"
+                                />
+                              </svg>
+                              <div className="absolute inset-0 flex items-center justify-center text-white text-[2.5vw] md:text-[1.3vw]">
+                                {busdatas?.from}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        <div className="md:col-span-1 md:block hidden ">
+                          <div className=" relative flex justify-center cursor-pointer">
+                            <div
+                              onClick={() => {
+                                if (modifyBtn === true) {
+                                  handleflip();
+                                } else {
+                                  console.log("NOT ALLOWED");
+                                }
+                              }}
+                              className={`${
+                                modifyBtn === true
+                                  ? "cursor-pointer"
+                                  : "cursor-not-allowed"
+                              }`}
+                            >
+                              {/* <img
                       src={split}
                       className="md:h-[2.5vw] md:w-[2.5vw]"
                       alt="split"
                     /> */}
-                        <svg
-                          width="3vw"
-                          height="3vw"
-                          viewBox="0 0 52 47"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M41.9353 0.308594H9.94123C4.89269 0.308594 0.800049 4.20635 0.800049 9.01448V37.3086C0.800049 42.1167 4.89269 46.0145 9.94123 46.0145H41.9353C46.9839 46.0145 51.0765 42.1167 51.0765 37.3086V9.01448C51.0765 4.20635 46.9839 0.308594 41.9353 0.308594Z"
-                            fill="white"
-                            fill-opacity="0.2"
-                          />
-                        </svg>
-                        <FaArrowRightArrowLeft
-                          color="white"
-                          size={"1.2vw"}
-                          className="absolute size-[4vw] md:size-[1.2vw] left-[1.3vw] top-[1.8vw] md:top-[0.85vw] md:left-[3.4vw] transform translate[-50%,-50%]"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="md:col-span-2 content-center md:block hidden">
-                    {modifyBtn === true ? (
-                      // <ConfigProvider
-                      //   theme={{
-                      //     components: {
-                      //       Select: {
-                      //         activeBorderColor: "#1F487C",
-                      //         hoverBorderColor: "#1F487C",
-                      //       },
-                      //     },
-                      //   }}
-                      // >
-                      //   <Select
-                      //     removeIcon
-                      //     showSearch
-                      //     value={toValue}
-                      //     onChange={(value) => {
-                      //       handleChangeToValue(value);
-                      //     }}
-                      //     style={{
-                      //       width: "100%",
-                      //       height: "2.5vw",
-                      //       color: "red  ",
-                      //       fontSize: "1.5vw",
-                      //     }}
-                      //     className="text-[1vw]"
-                      //     placeholder="Search to Select"
-                      //     optionFilterProp="label"
-                      //     filterSort={(optionA, optionB) =>
-                      //       (optionA?.label ?? "")
-                      //         .toLowerCase()
-                      //         .localeCompare((optionB?.label ?? "").toLowerCase())
-                      //     }
-                      //     // options={[
-                      //     //   {
-                      //     //     value: toValue,
-                      //     //     label: toValue,
-                      //     //   },
-                      //     //   {
-                      //     //     value: '2',
-                      //     //     label: 'Closed',
-                      //     //   },
-                      //     //   {
-                      //     //     value: '3',
-                      //     //     label: 'Communicated',
-                      //     //   },
-                      //     //   {
-                      //     //     value: '4',
-                      //     //     label: 'Identified',
-                      //     //   },
-                      //     //   {
-                      //     //     value: '5',
-                      //     //     label: 'Resolved',
-                      //     //   },
-                      //     //   {
-                      //     //     value: '6',
-                      //     //     label: 'Cancelled',
-                      //     //   },
-                      //     // ]}
-                      //     // options={tooptions}
-                      //     options={toBus}
-                      //   />
-                      // </ConfigProvider>
-                      <div>
-                        <input
-                          className="h-[3vw] w-full rounded-[0.3vw] pl-[1vw] outline-none text-[1.2vw] placeholder:text-[1.2vw]"
-                          placeholder="To"
-                          onFocus={() => setIsInputToFocused(true)}
-                          // onBlur={() => setIsInputFromFocused(false)}
-                          value={busdatas?.to}
-                          autoComplete="off"
-                        />
-                        {isInputToFocused && (
-                          <div className="absolute top-[8.5vw] w-full">
-                            <div className="w-[16vw] min-h-auto max-h-[16vw] flex-col flex overflow-y-scroll bg-white shadow-md rounded-[0.3vw]">
-                              {Get_Stations?.map((item, i) => (
-                                <div
-                                  key={i}
-                                  className="flex gap-x-[0.75vw] w-full px-[1vw] py-[0.5vw] items-center hover:bg-gray-100 "
-                                  onClick={
-                                    () => handleonClick(item, "to")
-                                    // handleChangeFromValue(item)
-                                  }
-                                >
-                                  {SVG.building_dropdown}
-                                  <div
-                                    className="flex flex-col cursor-pointer"
-                                    onClick={() =>
-                                      // handleonClick(item, setFieldValue)
-                                      console.log("ghhggggh")
-                                    }
-                                  >
-                                    <label className="text-[0.9vw] flex-wrap w-full font-semibold">
-                                      {item.Station_Name}
-                                    </label>
-                                    <label className="text-gray-400 text-[0.8vw]">
-                                      {item?.State_Name}
-                                    </label>
-                                  </div>
-                                </div>
-                              ))}
+                              <svg
+                                width="3vw"
+                                height="3vw"
+                                viewBox="0 0 52 47"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M41.9353 0.308594H9.94123C4.89269 0.308594 0.800049 4.20635 0.800049 9.01448V37.3086C0.800049 42.1167 4.89269 46.0145 9.94123 46.0145H41.9353C46.9839 46.0145 51.0765 42.1167 51.0765 37.3086V9.01448C51.0765 4.20635 46.9839 0.308594 41.9353 0.308594Z"
+                                  fill="white"
+                                  fill-opacity="0.2"
+                                />
+                              </svg>
+                              <FaArrowRightArrowLeft
+                                color="white"
+                                size={"1.2vw"}
+                                className="absolute size-[4vw] md:size-[1.2vw] left-[1.3vw] top-[1.8vw] md:top-[0.85vw] md:left-[3.4vw] transform translate[-50%,-50%]"
+                              />
                             </div>
                           </div>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="relative custnav flex justify-center">
-                        <svg
-                          width="25vw"
-                          height="3vw"
-                          viewBox="0 0 176 54"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          preserveAspectRatio="none"
-                        >
-                          <path
-                            d="M144.006 0.980469H32.0263C14.3565 0.980469 0.0322266 5.44593 0.0322266 10.9544V43.3695C0.0322266 48.8779 14.3565 53.3434 32.0263 53.3434H144.006C161.676 53.3434 176 48.8779 176 43.3695V10.9544C176 5.44593 161.676 0.980469 144.006 0.980469Z"
-                            fill="white"
-                            fillOpacity="0.2"
-                          />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center text-white text-[2.5vw] md:text-[1.3vw]">
-                          {busdatas?.to}
                         </div>
-                      </div>
-                    )}
-                  </div>
+                        <div className="md:col-span-2 content-center md:block hidden">
+                          {modifyBtn === true ? (
+                            // <ConfigProvider
+                            //   theme={{
+                            //     components: {
+                            //       Select: {
+                            //         activeBorderColor: "#1F487C",
+                            //         hoverBorderColor: "#1F487C",
+                            //       },
+                            //     },
+                            //   }}
+                            // >
+                            //   <Select
+                            //     removeIcon
+                            //     showSearch
+                            //     value={toValue}
+                            //     onChange={(value) => {
+                            //       handleChangeToValue(value);
+                            //     }}
+                            //     style={{
+                            //       width: "100%",
+                            //       height: "2.5vw",
+                            //       color: "red  ",
+                            //       fontSize: "1.5vw",
+                            //     }}
+                            //     className="text-[1vw]"
+                            //     placeholder="Search to Select"
+                            //     optionFilterProp="label"
+                            //     filterSort={(optionA, optionB) =>
+                            //       (optionA?.label ?? "")
+                            //         .toLowerCase()
+                            //         .localeCompare((optionB?.label ?? "").toLowerCase())
+                            //     }
+                            //     // options={[
+                            //     //   {
+                            //     //     value: toValue,
+                            //     //     label: toValue,
+                            //     //   },
+                            //     //   {
+                            //     //     value: '2',
+                            //     //     label: 'Closed',
+                            //     //   },
+                            //     //   {
+                            //     //     value: '3',
+                            //     //     label: 'Communicated',
+                            //     //   },
+                            //     //   {
+                            //     //     value: '4',
+                            //     //     label: 'Identified',
+                            //     //   },
+                            //     //   {
+                            //     //     value: '5',
+                            //     //     label: 'Resolved',
+                            //     //   },
+                            //     //   {
+                            //     //     value: '6',
+                            //     //     label: 'Cancelled',
+                            //     //   },
+                            //     // ]}
+                            //     // options={tooptions}
+                            //     options={toBus}
+                            //   />
+                            // </ConfigProvider>
+                            <div className="relative">
+                              <Field
+                                className="h-[3vw] w-full rounded-[0.3vw] pl-[1vw] outline-none text-[1.2vw] placeholder:text-[1.2vw]"
+                                placeholder="To"
+                                //onFocus={() => setIsInputToFocused(true)}
+                                onFocus={() => {
+                                  // setBusDatas({
+                                  //   ...busdatas,
+                                  //   to: "",
+                                  //   to_sourceID: "",
+                                  // });
+                                  setIsInputToFocused(true);
+                                  setIsInputFromFocused(false);
+                                }}
+                                // onBlur={() => setIsInputFromFocused(false)}
+                                onBlur={(e) => {
+                                  //setIsInputToFocused(false)
+                                  if (
+                                    e.target.value !== "" &&
+                                    e.target.value !== undefined &&
+                                    !busdatas?.to
+                                  ) {
+                                    if (Get_des_Statiion?.length > 0) {
+                                      setFieldValue(
+                                        "to",
+                                        Get_des_Statiion[0].station_name
+                                      );
+                                      setBusDatas({
+                                        ...busdatas,
+                                        to: Get_des_Statiion[0].station_name,
+                                        to_sourceID:
+                                          Get_des_Statiion[0].source_id,
+                                      });
+                                    }
+                                  }
+                                }}
+                                value={busdatas?.to}
+                                id="to"
+                                onChange={(e) => handlesearchFrom(e, "to")}
+                                autoComplete="off"
+                                name="to"
+                              />
+                              {isInputToFocused && (
+                                <div className="absolute top-[3.5vw] z-[20] w-full">
+                                  <div
+                                    className="w-[16vw] min-h-auto max-h-[16vw] flex-col flex overflow-y-scroll bg-white shadow-md rounded-[0.3vw]"
+                                    tabIndex="-1"
+                                  >
+                                    {Get_des_Statiion?.map((item, i) => (
+                                      <div
+                                        key={i}
+                                        className="flex gap-x-[0.75vw] w-full px-[1vw] py-[0.5vw] items-center hover:bg-gray-100 "
+                                        onClick={
+                                          () => handleonClick(item, "to")
+                                          // handleChangeFromValue(item)
+                                        }
+                                      >
+                                        {SVG.building_dropdown}
+                                        <div
+                                          className="flex flex-col cursor-pointer"
+                                          onClick={() =>
+                                            // handleonClick(item, setFieldValue)
+                                            console.log("ghhggggh")
+                                          }
+                                        >
+                                          <label className="text-[0.9vw] flex-wrap w-full font-semibold">
+                                            {item.station_name}
+                                          </label>
+                                          <label className="text-gray-400 text-[0.8vw]">
+                                            {item?.state_name}
+                                          </label>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                              <ErrorMessage
+                                name="to"
+                                component="div"
+                                className="text-red-500 text-[0.6vw] absolute top-[3vw] font-semibold z-10 left-[0.25vw]"
+                              />
+                            </div>
+                          ) : (
+                            <div className="relative custnav flex justify-center">
+                              <svg
+                                width="25vw"
+                                height="3vw"
+                                viewBox="0 0 176 54"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                preserveAspectRatio="none"
+                              >
+                                <path
+                                  d="M144.006 0.980469H32.0263C14.3565 0.980469 0.0322266 5.44593 0.0322266 10.9544V43.3695C0.0322266 48.8779 14.3565 53.3434 32.0263 53.3434H144.006C161.676 53.3434 176 48.8779 176 43.3695V10.9544C176 5.44593 161.676 0.980469 144.006 0.980469Z"
+                                  fill="white"
+                                  fillOpacity="0.2"
+                                />
+                              </svg>
+                              <div className="absolute inset-0 flex items-center justify-center text-white text-[2.5vw] md:text-[1.3vw]">
+                                {busdatas?.to}
+                              </div>
+                            </div>
+                          )}
+                        </div>
 
-                  {/* <div className=" md:hidden col-span-1"></div> */}
-                  {/* <div className="md:hidden block col-span-3 content-center ml-[1vw]">
+                        {/* <div className=" md:hidden col-span-1"></div> */}
+                        {/* <div className="md:hidden block col-span-3 content-center ml-[1vw]">
             <div className="bg-blue-200 w-full  h-[7vw] rounded-[0.5vw] text-[1.1vw]">
                       <DateInput
                         value={fromDate}
@@ -1668,73 +1857,82 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                       <input type="date"/>
                     </div>
                     </div> */}
-                </div>
+                      </div>
 
-                <div className="md:col-span-2"></div>
-                <div className="md:block hidden col-span-4 content-center">
-                  <div className="grid grid-cols-4 gap-[1vw]  px-[0.5vw] ">
-                    <div className="col-span-2">
-                      {modifyBtn === true ? (
-                        <div className="bg-white w-full h-[2.5vw] rounded-[0.5vw] text-[1.1vw]">
-                          <div className="pt-[0.2vw]">
-                            <DateInput
-                              value={busdatas?.date}
-                              onChange={handleChangeDateValue}
-                            />
+                      <div className="md:col-span-2"></div>
+                      <div className="md:block hidden col-span-4 content-center">
+                        <div className="grid grid-cols-4 gap-[1vw]  px-[0.5vw] ">
+                          <div className="col-span-2">
+                            {modifyBtn === true ? (
+                              <div className="bg-white w-full h-[2.5vw] rounded-[0.5vw] text-[1.1vw]">
+                                <div
+                                  className="pt-[0.2vw]"
+                                  onFocus={() => setIsInputToFocused(false)}
+                                >
+                                  <DateInput
+                                    value={busdatas?.date}
+                                    onChange={handleChangeDateValue}
+                                  />
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="relative custnav flex justify-center">
+                                <svg
+                                  width="25vw"
+                                  height="3vw"
+                                  viewBox="0 0 176 54"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  preserveAspectRatio="none"
+                                >
+                                  <path
+                                    d="M144.006 0.980469H32.0263C14.3565 0.980469 0.0322266 5.44593 0.0322266 10.9544V43.3695C0.0322266 48.8779 14.3565 53.3434 32.0263 53.3434H144.006C161.676 53.3434 176 48.8779 176 43.3695V10.9544C176 5.44593 161.676 0.980469 144.006 0.980469Z"
+                                    fill="white"
+                                    fillOpacity="0.2"
+                                  />
+                                </svg>
+                                <div className="absolute inset-0 flex items-center justify-center text-white text-[2.5vw] md:text-[1.3vw]">
+                                  {dayjs(busdatas?.date).format("DD-MM-YYYY")}
+                                </div>
+                              </div>
+                            )}
                           </div>
+                          {modifyBtn === true ? (
+                            <div className="col-span-2">
+                              <button
+                                type="submit"
+                                className="bg-white w-full h-[2.5vw] rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer"
+                                onClick={() => {
+                                  //  handleSearch();
+                                  //  setModifyBtn(false);
+                                  setIsInputFromFocused(false);
+                                  setIsInputToFocused(false);
+                                }}
+                              >
+                                Search
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="col-span-2">
+                              <div
+                                className="bg-white w-full h-[2.5vw] mt-[.3vw] rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer"
+                                onClick={() => {
+                                  setModifyBtn(true);
+                                  sessionStorage.setItem("clearFilter", "true");
+                                }}
+                              >
+                                Modify
+                              </div>
+                            </div>
+                          )}
                         </div>
-                      ) : (
-                        <div className="relative custnav flex justify-center">
-                          <svg
-                            width="25vw"
-                            height="3vw"
-                            viewBox="0 0 176 54"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            preserveAspectRatio="none"
-                          >
-                            <path
-                              d="M144.006 0.980469H32.0263C14.3565 0.980469 0.0322266 5.44593 0.0322266 10.9544V43.3695C0.0322266 48.8779 14.3565 53.3434 32.0263 53.3434H144.006C161.676 53.3434 176 48.8779 176 43.3695V10.9544C176 5.44593 161.676 0.980469 144.006 0.980469Z"
-                              fill="white"
-                              fillOpacity="0.2"
-                            />
-                          </svg>
-                          <div className="absolute inset-0 flex items-center justify-center text-white text-[2.5vw] md:text-[1.3vw]">
-                            {dayjs(busdatas?.date).format("DD-MM-YYYY")}
-                          </div>
-                        </div>
-                      )}
+                      </div>
                     </div>
-                    {modifyBtn === true ? (
-                      <div className="col-span-2">
-                        <div
-                          className="bg-white w-full h-[2.5vw] rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer"
-                          onClick={() => {
-                            handleSearch();
-                            setModifyBtn(false);
-                          }}
-                        >
-                          Search
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="col-span-2">
-                        <div
-                          className="bg-white w-full h-[2.5vw] mt-[.3vw] rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer"
-                          onClick={() => {
-                            setModifyBtn(true);
-                            sessionStorage.setItem("clearFilter", "true");
-                          }}
-                        >
-                          Modify
-                        </div>
-                      </div>
-                    )}
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
+              </Form>
+            )}
+          </Formik>
         )}
       </div>
 

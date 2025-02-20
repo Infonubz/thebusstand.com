@@ -1,5 +1,5 @@
-import { Collapse } from "antd";
-import React, { useState } from "react";
+import { Collapse, Drawer } from "antd";
+import React, { useState, useEffect } from "react";
 import { IoIosArrowUp } from "react-icons/io";
 import { RiArrowRightSLine } from "react-icons/ri";
 import complete from "../../../../Assets/BookingList/complete.png";
@@ -7,7 +7,8 @@ import { ErrorMessage, Field, Form, Formik, useFormikContext } from "formik";
 import { FaEdit } from "react-icons/fa";
 import { Abhibus_SeatBlocked } from "../../../../Api-Abhibus/Dashboard/DashboardPage";
 import * as Yup from "yup";
-
+import { GetFooterTabs } from "../../../../Api-TBS/Home/Home";
+import { useDispatch, useSelector } from "react-redux";
 // const validationSchema = Yup.object().shape({
 //   address: Yup.string()
 //     .required('Address is required'),
@@ -38,8 +39,19 @@ export default function MobileBillAddress({
   setConfirmRefNo,
   confirmModal,
   isAllDetailsFilled,
-  enableInput, setEnableInput
+  enableInput,
+  setEnableInput,
+  faredetails,
+  setFareDetails,
 }) {
+  const dispatch = useDispatch();
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const conditionsMobile = useSelector((state) => state?.tbs_info || []);
+  const terms_conditions = conditionsMobile?.terms_conditions;
+  useEffect(() => {
+    GetFooterTabs(dispatch);
+  }, [dispatch]);
+
   const LuxuryFind = (type) =>
     type?.toLowerCase().includes("volvo") ||
     type?.toLowerCase().includes("mercedes benz") ||
@@ -52,7 +64,14 @@ export default function MobileBillAddress({
     isSubmitting: false,
   });
 
-  const { handleSubmit, isSubmitting, isValid, values, setFieldValue, handleChange } = useFormikContext();
+  const {
+    handleSubmit,
+    isSubmitting,
+    isValid,
+    values,
+    setFieldValue,
+    handleChange,
+  } = useFormikContext();
 
   const [registerfulldetails, setRegisterFullDetails] = useState({});
   const [termschecked, setTermsChecked] = useState(false);
@@ -181,20 +200,18 @@ export default function MobileBillAddress({
                             // );
                           }}
                           className={`
-                             ${!isSubmitting ||
-                              !enableInput
-                              ? `cursor-pointer`
-                              : "cursor-not-allowed"
-                            } border-r-[1.5vw] placeholder:text-[3.5vw] border-[.1vw] text-[4vw]   w-full h-[10vw] rounded-[1.5vw] outline-none px-[0.75vw]`}
+                             ${
+                               !isSubmitting || !enableInput
+                                 ? `cursor-pointer`
+                                 : "cursor-not-allowed"
+                             } border-r-[1.5vw] placeholder:text-[3.5vw] border-[.1vw] text-[4vw]   w-full h-[10vw] rounded-[1.5vw] outline-none px-[0.75vw]`}
                           style={{
                             borderColor:
-                              LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                true
+                              LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
                                 ? "#393939"
                                 : "#1F4B7F",
                             color:
-                              LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                true
+                              LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
                                 ? "#393939"
                                 : "#1F4B7F",
                           }}
@@ -223,21 +240,19 @@ export default function MobileBillAddress({
                             // );
                           }}
                           className={`
-                             ${!isSubmitting ||
-                              !enableInput
-                              ? `cursor-pointer`
-                              : "cursor-not-allowed"
-                            } 
+                             ${
+                               !isSubmitting || !enableInput
+                                 ? `cursor-pointer`
+                                 : "cursor-not-allowed"
+                             } 
                              border-r-[1.5vw]  placeholder:text-[3.5vw] border-[.1vw] text-[4vw] w-full h-[10vw] rounded-[1.5vw] outline-none px-[0.75vw]`}
                           style={{
                             borderColor:
-                              LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                true
+                              LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
                                 ? "#393939"
                                 : "#1F4B7F",
                             color:
-                              LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                true
+                              LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
                                 ? "#393939"
                                 : "#1F4B7F",
                           }}
@@ -269,21 +284,19 @@ export default function MobileBillAddress({
                             // );
                           }}
                           className={`
-                             ${!isSubmitting ||
-                              !enableInput
-                              ? `cursor-pointer`
-                              : "cursor-not-allowed"
-                            } 
+                             ${
+                               !isSubmitting || !enableInput
+                                 ? `cursor-pointer`
+                                 : "cursor-not-allowed"
+                             } 
                              border-r-[1.5vw] placeholder:text-[3.5vw] border-[.1vw] text-[4vw] w-full h-[10vw] rounded-[1.5vw]  outline-none  px-[0.75vw]`}
                           style={{
                             borderColor:
-                              LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                true
+                              LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
                                 ? "#393939"
                                 : "#1F4B7F",
                             color:
-                              LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                true
+                              LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
                                 ? "#393939"
                                 : "#1F4B7F",
                           }}
@@ -315,13 +328,11 @@ export default function MobileBillAddress({
                              border-r-[1.5vw] placeholder:text-[3.5vw] border-[.1vw] text-[4vw] w-full h-[10vw] rounded-[1.5vw]  outline-none px-[0.75vw]`}
                           style={{
                             borderColor:
-                              LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                true
+                              LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
                                 ? "#393939"
                                 : "#1F4B7F",
                             color:
-                              LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                true
+                              LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
                                 ? "#393939"
                                 : "#1F4B7F",
                           }}
@@ -351,23 +362,24 @@ export default function MobileBillAddress({
                             onChange={(e) => {
                               setFieldValue("terms", e.target.checked);
                               setTermsChecked(e.target.checked);
-                              console.log(
-                                e.target.checked,
-                                "setTermsChecked"
-                              );
+                              console.log(e.target.checked, "setTermsChecked");
                             }}
                           />
 
                           <p
-                            className={` text-[4vw] ${LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                              true
-                              ? "text-[#393939]"
-                              : "text-[#1F487C]"
-                              } `}
+                            className={` text-[4vw] underline ${
+                              LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
+                                ? "text-[#393939]"
+                                : "text-[#1F487C]"
+                            } `}
+                            onClick={() => {
+                              setOpenDrawer(true);
+                            }}
                           >
                             Yes and I Accept the{" "}
                             <span>Terms and Conditions</span>
                           </p>
+
                           <ErrorMessage
                             name="terms"
                             component="div"
@@ -380,13 +392,12 @@ export default function MobileBillAddress({
                               // size={"2vw"}
                               color={
                                 LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
-                                  true
+                                true
                                   ? "#393939"
-                                  : LuxuryFind(
-                                    MobBusDetails?.Bus_Type_Name
-                                  ) === true
-                                    ? "#1F4B7F"
-                                    : ""
+                                  : LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
+                                    true
+                                  ? "#1F4B7F"
+                                  : ""
                               }
                               className="cursor-pointer text-[7vw]"
                               onClick={() => {
@@ -398,7 +409,6 @@ export default function MobileBillAddress({
 
                           <button
                             type="button"
-
                             onClick={handleSubmit}
                             // style={{
                             //   backgroundColor:
@@ -416,19 +426,18 @@ export default function MobileBillAddress({
                             // }}
                             style={{
                               backgroundColor:
-                                isValid && termschecked ?
-                                  LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
+                                isValid && termschecked
+                                  ? LuxuryFind(MobBusDetails?.Bus_Type_Name) ===
                                     true
                                     ? "#393939"
                                     : "#1F4B7F"
-                                  : 'gray'
+                                  : "gray",
                             }}
-                            className={`${termschecked &&
-                              isValid &&
-                              !enableInput
-                              ? "cursor-pointer"
-                              : "cursor-not-allowed"
-                              } w-full h-[8vw]  rounded-[2vw]  ml-[1vw]`}
+                            className={`${
+                              termschecked && isValid && !enableInput
+                                ? "cursor-pointer"
+                                : "cursor-not-allowed"
+                            } w-full h-[8vw]  rounded-[2vw]  ml-[1vw]`}
                             disabled={!isAllDetailsFilled}
                           >
                             <span className="text-white text-[3.2vw] font-semibold">
@@ -452,6 +461,54 @@ export default function MobileBillAddress({
           },
         ]}
       />
+      <Drawer
+        open={openDrawer}
+        onClose={() => {
+          setOpenDrawer(false);
+        }}
+        placement="bottom"
+        width="100%"
+        height="75vh"
+        title={
+          <span
+            style={{
+              fontSize: "5vw",
+              color:
+                LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
+                  ? "#393939"
+                  : "#1F4B7F",
+            }}
+          >
+            Terms and Conditions
+          </span>
+        }
+      >
+        <span
+          className={`text-[1.5vw] font-semibold `}
+          style={{
+            color:
+              LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
+                ? "#393939"
+                : "#1F4B7F",
+          }}
+        ></span>
+        <div className="Legal-Information-Mobile overflow-y-auto max-h-screen px-[3vw] pt-[1vw]">
+          {terms_conditions?.split("\r\n")?.map((line, index) => (
+            <p
+              key={index}
+              style={{
+                color:
+                  LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
+                    ? "#393939"
+                    : "#1F4B7F",
+              }}
+              className={`text-[4vw] pb-[0.75vw]`}
+            >
+              {line}
+            </p>
+          ))}
+        </div>
+      </Drawer>
     </div>
   );
 }

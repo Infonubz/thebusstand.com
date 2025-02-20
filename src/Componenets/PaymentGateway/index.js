@@ -16,7 +16,7 @@ export default function RazorPayindex() {
 
   return (
     <div>
-      <RazorpayGateway amount={amount} />
+      <RazorpayGateway amount1={amount} />
     </div>
   );
 }

@@ -21,6 +21,7 @@ export default function TBS_Theme() {
         className="absolute top-0 "
       /> */}
           <div className="Road"></div>
+          {/* <div className="Road duplicatee"></div> */}
           <div className="cloud1"></div>
           <div className="vehicle-container">
             {/* {/* <div className="cloud2"></div> */}

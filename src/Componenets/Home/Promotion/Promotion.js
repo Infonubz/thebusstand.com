@@ -18,13 +18,11 @@ export default function Promotion() {
   const prevSlide = () => {
     const newIndex = Math.max(0, startIndex - 1);
     setStartIndex(newIndex);
-    console.log(newIndex, startIndex, "newIndex");
   };
 
   const nextSlide = () => {
-    const newIndex = Math.min(startIndex + 1, totaloffer?.length - 5);
+    const newIndex = Math.min(startIndex + 1, offerlist?.response?.length - 5);
     setStartIndex(newIndex);
-    console.log(startIndex, newIndex, "nextIndex");
   };
 
   const updateStartIndex = () => {
@@ -42,7 +40,7 @@ export default function Promotion() {
   };
 
   useEffect(() => {
-    GetPromotion(dispatch);
+    // GetPromotion(dispatch);
     GetDiscountOffers(dispatch);
   }, [dispatch]);
 
@@ -54,21 +52,21 @@ export default function Promotion() {
     };
   }, []);
 
-  useEffect(() => {
-    let temp = [];
+  // useEffect(() => {
+  //   let temp = [];
 
-    if (Array.isArray(promotionlist)) {
-      promotionlist.forEach((item) => {
-        temp.push(item.background_image);
-      });
-    }
-    if (Array.isArray(offerlist)) {
-      offerlist.forEach((item) => {
-        temp.push(item.theme);
-      });
-    }
-    setTotalOffer(temp);
-  }, [promotionlist, offerlist]);
+  //   if (Array.isArray(promotionlist)) {
+  //     promotionlist.forEach((item) => {
+  //       temp.push(item.background_image);
+  //     });
+  //   }
+  //   if (Array.isArray(offerlist)) {
+  //     offerlist.forEach((item) => {
+  //       temp.push(item.theme);
+  //     });
+  //   }
+  //   setTotalOffer(temp);
+  // }, [promotionlist, offerlist]);
 
   return (
     <>
@@ -87,7 +85,7 @@ export default function Promotion() {
             >
               Trending Offers
             </p>
-            {totaloffer?.length >5 && (
+            {offerlist?.response?.length > 5 && (
               <div className="">
                 <Link to="/TrendingOffer" className="">
                   <button
@@ -103,8 +101,8 @@ export default function Promotion() {
             <div
               className={`grid lg:grid-cols-5 md:grid-cols-4  w-full h-full items-center gap-[1vw] justify-center px-[2vw]`}
             >
-              {totaloffer?.length > 0 &&
-                totaloffer
+              {offerlist?.response?.length > 0 &&
+                offerlist?.response
                   .slice(startIndex, startIndex + plusvalues)
                   .map((item, index) => (
                     <div key={index}>
@@ -136,7 +134,7 @@ export default function Promotion() {
                         ></div> */}
                         <img
                           alt="background_Image"
-                          src={`${apicrmimage}${item}`}
+                          src={`${apicrmimage}${item?.theme ? item?.theme :item?.background_image}`}
                           className="w-[80vw] lg:h-[9.5vw] md:h-[8vw] h-[40vw]"
                         />
                         <div className={`absolute left-[4.6vw] bottom-0`}>
@@ -149,7 +147,7 @@ export default function Promotion() {
                   ))}
             </div>
           </div>
-          {startIndex > 0 && totaloffer?.length > 5 && (
+          {startIndex > 0 && offerlist?.response?.length > 5 && (
             <div className={`absolute left-[-3vw] top-[50%]`}>
               <button
                 className={`cursor-pointer  p-2 rounded-full`}
@@ -161,7 +159,7 @@ export default function Promotion() {
             </div>
           )}
           <div className={`absolute right-[-3vw] top-[50%]`}>
-            {totaloffer?.length > 5 && startIndex < totaloffer?.length - 5 && (
+            {offerlist?.response?.length > 5 && startIndex < offerlist?.response?.length - 5 && (
               <button
                 className={`cursor-pointer  p-2 rounded-full`}
                 onClick={nextSlide}
@@ -193,12 +191,12 @@ export default function Promotion() {
         <div className={`flex overflow-x-auto scrollbar-hide mt-[2vw]`}>
           {/* <div className="flex"> */}
 
-          {totaloffer?.length > 0 &&
-            totaloffer?.map((item, index) => (
+          {offerlist?.response?.length > 0 &&
+            offerlist?.response?.map((item, index) => (
               <div key={index} className={`relative flex-shrink-0 mr-[2vw]`}>
                 <img
                   alt="background_image"
-                  src={`${apicrmimage}${item}`}
+                  src={`${apicrmimage}${item?.theme ? item?.theme :item?.background_image}`}
                   className="w-[80vw] lg:h-[80%] md:h-[12vw] h-[45vw] relative z-10" // Ensure z-index is higher
                 />
                 {/* <div
