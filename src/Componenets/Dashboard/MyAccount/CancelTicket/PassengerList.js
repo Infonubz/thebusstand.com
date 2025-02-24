@@ -13,6 +13,8 @@ import dayjs from "dayjs";
 import { CancelTicket } from "../../../../Api-Abhibus/MyAccount/ViewTicket";
 import { toast } from "react-toastify";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { TBS_Booking_Cancellation } from "../../../../Api-TBS/Dashboard/Dashboard";
+import { useParams } from "react-router";
 // import { capitalizeFirstLetter } from "../../../Common/Captalization";
 
 const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
@@ -35,7 +37,11 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
   });
 
   const [selectedRowsData, setSelectedRowsData] = useState([]);
-  console.log(selectedRowsData, "selected_rows_data");
+  console.log(
+    selectedRowsData,
+    passengerDetails?.ticket_det,
+    "selected_rows_data"
+  );
   const closeDeleteModal = () => {
     setDeleteModalIsOpen(false);
   };
@@ -71,12 +77,25 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
 
   const dispatch = useDispatch();
 
+  const currentpath = useParams();
+
   const handleCancel = async () => {
     setSpinning(true);
     // CancelTicket(dispatch, deleteId, setSpinning);
+    const partialCancellation =
+      selectedRowsData?.length === passengerDetails?.ticket_det?.length ? 1 : 0;
     try {
-      const response = await CancelTicket(deleteId, info);
+      const response = await CancelTicket(deleteId, info, partialCancellation);
+      console.log(response,"responseresponssdcdscsdcdse");
+      
       if (response?.status === "success") {
+        const data = await TBS_Booking_Cancellation(
+          passengerDetails,
+          currentpath,
+          selectedRowsData,
+          partialCancellation,
+          response?.NewPNR
+        );
         toast.success("Ticket Cancelled Successfully");
       }
       setSpinning(false);
@@ -293,6 +312,8 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
     return `${day} ${month}, ${year}`;
   };
   console.log(passengerDetails, "testingdeleteid");
+  const [calculatedDate, setCalculatedDate] = useState("");
+  const [showmodal, setShowModal] = useState(false);
 
   return (
     <div>

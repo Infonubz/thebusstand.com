@@ -26,6 +26,7 @@ import {
   GET_DES_STATION,
   GET_TICKET_DETAILS,
   CURRENT_PERCENTAGE,
+  BOOKING_DETAILS_STATUS,
 } from "./Type";
 
 const initial = {
@@ -59,6 +60,7 @@ const initial = {
   get_des_station: [],
   get_ticket_detail: [],
   live_per: [],
+  booking_details: [],
 };
 export const busreducer = (state = initial, action) => {
   const { type, payload } = action;
@@ -217,18 +219,21 @@ export const busreducer = (state = initial, action) => {
       };
     }
     case GET_TICKET_DETAILS: {
-
       return {
         ...state,
         get_ticket_detail: payload,
       };
     }
     case CURRENT_PERCENTAGE: {
-     
-
       return {
         ...state,
         live_per: payload?.data?.data?.[0].Percentage,
+      };
+    }
+    case BOOKING_DETAILS_STATUS: {
+      return {
+        ...state,
+        booking_details: payload,
       };
     }
     default: {

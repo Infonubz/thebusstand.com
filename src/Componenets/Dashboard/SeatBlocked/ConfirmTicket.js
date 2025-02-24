@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { GET_TICKET_DETAILS } from "../../../Store/Type";
 import axios from "axios";
 import { TBS_Booking_Details } from "../../../Api-TBS/Dashboard/Dashboard";
+import dayjs from "dayjs";
+import { useParams } from "react-router";
 export default function ConfirmTicket({
   seatDetails,
   BusDetails,
@@ -25,7 +27,9 @@ export default function ConfirmTicket({
   setDropDown,
   setRazorpayLoading,
   setTicketNumber,
-  setTicketLoading
+  setTicketLoading,
+  selectedRoutes,
+  travelerDetails
 }) {
   const dispatch = useDispatch();
   const key_id = process.env.REACT_APP_RAZORPAY_KEY_ID;
@@ -78,7 +82,33 @@ export default function ConfirmTicket({
     },
     { Coupon: "WEEKEND50", details: "Avail 50% off on weekend bus travel." },
   ];
-
+  const calculateArrival = (departureDate, departureTime, duration) => {
+    try {
+      const departureDateTime = new Date(`${departureDate} ${departureTime}`);
+      if (isNaN(departureDateTime.getTime())) {
+        throw new Error("Invalid departure date or time format.");
+      }
+      const [hours, minutes] = duration.split(":").map(Number);
+      if (isNaN(hours) || isNaN(minutes)) {
+        throw new Error("Invalid duration format.");
+      }
+      departureDateTime.setHours(departureDateTime.getHours() + hours);
+      departureDateTime.setMinutes(departureDateTime.getMinutes() + minutes);
+      const arrivalDate = departureDateTime.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      });
+      const arrivalTime = departureDateTime.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+      return dayjs(arrivalDate).format("YYYY-MM-DD");
+    } catch (error) {
+      return { arrivalDate: null, arrivalTime: null };
+    }
+  };
   const OrderId_Generate = async () => {
     const username = key_id;
     const password = key_secret;
@@ -212,9 +242,15 @@ export default function ConfirmTicket({
       console.error("Error generating order ID:", error);
     }
   };
+  const arraivaldate = calculateArrival(
+    BusDetails?.BUS_START_DATE,
+    BusDetails?.Start_time,
+    BusDetails?.TravelTime
+  );
+  const currentpath = useParams();
 
   const handleBookingPrice = async (order_id, payment_id, signature, msg) => {
-    setTicketLoading(true)
+    setTicketLoading(true);
     try {
       console.log("Calling API...");
       const response = await Abhibus_SeatConfirmed(BusDetails, confirmRefNo);
@@ -230,10 +266,11 @@ export default function ConfirmTicket({
           response?.TicketNo,
           setSpinning
         );
-        if(response?.TicketNo){
-          setTicketNumber(response?.TicketNo)
-          setTicketLoading(false)
+        if (response?.TicketNo) {
+          setTicketNumber(response?.TicketNo);
+          setTicketLoading(false);
         }
+    
         const TBS_booking = await TBS_Booking_Details(
           response?.TicketNo,
           order_id,
@@ -242,7 +279,12 @@ export default function ConfirmTicket({
           ticketdetails?.ticketInfo,
           emailInput,
           mobileInput,
-          msg
+          msg,
+          BusDetails,
+          arraivaldate,
+          selectedRoutes,
+          seatDetails,
+          currentpath
         );
         dispatch({
           type: GET_TICKET_DETAILS,
@@ -344,7 +386,7 @@ export default function ConfirmTicket({
   //     pay.open();
   //   });
   // };
-
+console.log(travelerDetails,"travelerDetails");
 
   return (
     <>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import MobileJourneyDetails from "./BlockSeats/MobileJourneyDetails";
 import MobilePassengerDetails from "./BlockSeats/MobilePassengerDetails";
 import MobileBillAddress from "./BlockSeats/MobileBillAddress";
@@ -12,6 +12,9 @@ import {
 } from "../../../Api-Abhibus/Dashboard/DashboardPage";
 import { useSelector } from "react-redux";
 import ViewFullTicket from "../MyAccount/ViewTicket/ViewFullTicket";
+import MobileViewTicket from "../MyAccount/ViewTicket/MobileViewTicket";
+import dayjs from "dayjs";
+import busloading from "../../../Assets/Gif/bus.gif";
 
 export default function IndexBlock() {
   const location = useLocation();
@@ -25,7 +28,7 @@ export default function IndexBlock() {
     layout2,
     busdatas
   } = location.state || {};
-  
+
 
   const [loader, setLoader] = useState(false);
   const [formState, setFormState] = useState({
@@ -46,7 +49,9 @@ export default function IndexBlock() {
   const [confirmRefNo, setConfirmRefNo] = useState(null);
   const [registerfulldetails, setRegisterFullDetails] = useState({});
   const [termschecked, setTermsChecked] = useState(false);
-
+  const [ticketNo, setTicketNo] = useState(null);
+  const navigation = useNavigate()
+  const [ticketLoader, setTicketLoader] = useState(false)
   const validationSchema = Yup.object().shape({
     mobile: Yup.string()
       .matches(/^[0-9]+$/, "Mobile number must be a number")
@@ -168,8 +173,21 @@ export default function IndexBlock() {
 
 
   const [enableInput, setEnableInput] = useState(false);
+
   const ticketlist = useSelector((state) => state?.get_ticket_detail);
+
   const [showModal, setShowModal] = useState(false);
+  const [calArrival, setCalArrival] = useState({
+    journeyDate: ticketlist?.ticketInfo?.originStartTime,
+    starTime: ticketlist?.ticketInfo?.Start_Time,
+    endTime: ticketlist?.ticketInfo?.Arr_Time,
+  });
+
+  useEffect(() => {
+    if (ticketNo?.length > 0) {
+      setTicketLoader(false)
+    }
+  }, [ticketNo])
 
   useEffect(() => {
     const value = sessionStorage.getItem("ticket_view");
@@ -179,6 +197,155 @@ export default function IndexBlock() {
       setShowModal(false);
     }
   }, [sessionStorage.getItem("ticket_view")]);
+
+  useEffect(() => {
+    if (confirmModal) {
+      const element = document.getElementById("targetSection");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [confirmModal]);
+
+  const getDaySuffix = (day) => {
+    // Check for the special case of 11th, 12th, and 13th
+    if (day >= 11 && day <= 13) return "th";
+
+    // Use the last digit of the day to determine the suffix
+    switch (day % 10) {
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
+    }
+  };
+  const [calculatedDate, setCalculatedDate] = useState("");
+
+  const ConvertDate = (date) => {
+    // Get the day of the month
+    const day = dayjs(date)?.date();
+
+    // Get the suffix for the day (st, nd, rd, th)
+    const dayWithSuffix = day + getDaySuffix(day);
+
+    // Format the date to 'Thu, 6th Feb 2025'
+    const formattedDate = dayjs(date)?.format(`ddd, MMM YYYY`);
+    // const formattedDate = format(new Date(calculatedDate), `EEE, MMM yyyy`);
+    const dateParts = formattedDate?.split(" ");
+    dateParts?.splice(1, 0, `${dayWithSuffix}`);
+    const modifiedDate = dateParts?.join(" ");
+    return modifiedDate;
+  };
+
+  // const calculateArrivalDate = (boardingDateTime, arrTime) => {
+  //   // Parse the boarding date and time (in "YYYY-MM-DD HH:mm" format)
+  //   const [datePart, timePart] = boardingDateTime?.split(" ");
+  //   const [year, month, day] = datePart?.split("-");
+  //   const [startHours, startMinutes] = timePart?.split(":")?.map(Number);
+
+  //   // Create a Date object with the parsed values
+  //   const journeyDateObj = new Date(
+  //     year,
+  //     month - 1,
+  //     day,
+  //     startHours,
+  //     startMinutes
+  //   );
+
+  //   // Extract hours and minutes from Arrival Time (in "HH:mm:ss" format)
+  //   const [arrHours, arrMinutes, arrSeconds] = arrTime?.split(":")?.map(Number);
+
+  //   // Calculate the arrival time by adding hours and minutes from "Arrival_Time"
+  //   const arrivalDateObj = new Date(journeyDateObj);
+  //   arrivalDateObj?.setHours(arrivalDateObj?.getHours() + arrHours);
+  //   arrivalDateObj?.setMinutes(arrivalDateObj?.getMinutes() + arrMinutes);
+  //   arrivalDateObj?.setSeconds(arrivalDateObj?.getSeconds() + arrSeconds);
+
+  //   return arrivalDateObj;
+  // };
+
+  const calculateArrivalDate = (boardingDateTime, arrTime) => {
+    if (!boardingDateTime || !arrTime) {
+      throw new Error(
+        "Invalid input: boardingDateTime and arrTime must be provided."
+      );
+    }
+
+    // Parse the boarding date and time (in "YYYY-MM-DD HH:mm" format)
+    const [datePart, timePart] = boardingDateTime?.split(" ");
+    if (!datePart || !timePart) {
+      throw new Error(
+        'Invalid boardingDateTime format. Expected "YYYY-MM-DD HH:mm".'
+      );
+    }
+
+    const [year, month, day] = datePart?.split("-");
+    const [startHours, startMinutes] = timePart?.split(":").map(Number);
+    if (isNaN(startHours) || isNaN(startMinutes)) {
+      throw new Error("Invalid time format in boardingDateTime.");
+    }
+
+    // Create a Date object with the parsed values
+    const journeyDateObj = new Date(
+      year,
+      month - 1,
+      day,
+      startHours,
+      startMinutes
+    );
+
+    // Extract hours and minutes from Arrival Time (in "HH:mm:ss" format)
+    const [arrHours, arrMinutes, arrSeconds] = arrTime.split(":").map(Number);
+    if (isNaN(arrHours) || isNaN(arrMinutes) || isNaN(arrSeconds)) {
+      throw new Error("Invalid time format in arrTime.");
+    }
+
+    // Calculate the arrival time by adding hours and minutes from "arrTime"
+    const arrivalDateObj = new Date(journeyDateObj);
+    arrivalDateObj.setHours(arrivalDateObj.getHours() + arrHours);
+    arrivalDateObj.setMinutes(arrivalDateObj.getMinutes() + arrMinutes);
+    arrivalDateObj.setSeconds(arrivalDateObj.getSeconds() + arrSeconds);
+
+    return arrivalDateObj;
+  };
+
+  useEffect(() => {
+    if (ticketlist?.status === "success" && calArrival) {
+      setCalArrival({
+        journeyDate: ticketlist?.ticketInfo?.originStartTime,
+        starTime: ticketlist?.ticketInfo?.Start_Time,
+        endTime: ticketlist?.ticketInfo?.Arr_Time,
+      });
+      // if (ticketlist?.status === "success") {
+      // alert("heieei")
+      const values = calculateArrivalDate(
+        ticketlist?.ticketInfo?.originStartTime,
+        ticketlist?.ticketInfo?.Arr_Time
+      );
+
+      setCalculatedDate(values);
+      //setShowModal(true);
+
+      // }
+    }
+  }, [ticketlist]);
+  const handleNavigate = () => {
+    navigation(`/bookedTicket`, { state: { ticketDetails: ticketlist?.ticketInfo, droppingDate: ConvertDate(calculatedDate), ticketNo: ticketNo } })
+
+  }
+  useEffect(() => {
+    if (confirmModal) {
+      const element = document.getElementById("targetSection");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [confirmModal]);
+ 
   return (
     <Formik
       initialValues={{
@@ -231,77 +398,92 @@ export default function IndexBlock() {
         }
         return (
           // <Form onSubmit={handleSubmit}>
+          <>
 
-          <div className="p-[2.5vw] md:p-[1.5vw] flex flex-col gap-y-[3vw] md:gap-y-[1.60vw]">
-            {showModal === false && ticketlist?.length === 0 ? (
-              <>
-                <MobileJourneyDetails
-                  MobBusDetails={busdetails2}
-                  MobLayout={layout2}
-                  MobSelectedSeats={selectedSeats2}
-                  MobSelectedRoutes={selectedRoutes2}
-                  MobBusprice={busprice2}
-                  MobSeatDetails={seatDetails2}
-                />
-                <MobilePassengerDetails
-                  registerfulldetails={registerfulldetails}
-                  setRegisterFullDetails={setRegisterFullDetails}
-                  MobSeatDetails={seatDetails2}
-                  MobBusDetails={busdetails2}
-                  MobSelectedSeats={selectedSeats2}
-                  MobDiscount={busprice2}
-                  travelerDetails={travelerDetails}
-                  setTravelerDetails={setTravelerDetails}
-                  setEmailInput={setEmailInput}
-                  emailInput={emailInput}
-                  setMobileInput={setMobileInput}
-                  mobileInput={mobileInput}
-                  isAllDetailsFilled={isAllDetailsFilled}
-                  enableInput={enableInput}
-                  setEnableInput={setEnableInput}
-                />
-                <MobileBillAddress
-                  MobBusDetails={busdetails2}
-                  MobSeatDetails={seatDetails2}
-                  travelerDetails={travelerDetails}
-                  MobSelectedRoutes={selectedRoutes2}
-                  emailInput={emailInput}
-                  mobileInput={mobileInput}
-                  MobSelectedseatprice={selectedseatprice2}
-                  setConfirmModal={setConfirmModal}
-                  setConfirmRefNo={setConfirmRefNo}
-                  confirmModal={confirmModal}
-                  registerfulldetails={registerfulldetails}
-                  setRegisterFullDetails={setRegisterFullDetails}
-                  isAllDetailsFilled={isAllDetailsFilled}
-                  enableInput={enableInput}
-                  setEnableInput={setEnableInput}
-                  faredetails={faredetails}
-                  setFareDetails={setFareDetails}
-                />
-                {confirmModal && (
-                  <MobileConfirmTicket
+
+            {ticketLoader === false && ticketNo === null ?
+              <div className="p-[2.5vw] md:p-[1.5vw] flex flex-col gap-y-[3vw] md:gap-y-[1.60vw]">
+                <>
+                  <MobileJourneyDetails
+                    MobBusDetails={busdetails2}
+                    MobLayout={layout2}
+                    MobSelectedSeats={selectedSeats2}
+                    MobSelectedRoutes={selectedRoutes2}
+                    MobBusprice={busprice2}
+                    MobSeatDetails={seatDetails2}
+                  />
+                  <MobilePassengerDetails
+                    registerfulldetails={registerfulldetails}
+                    setRegisterFullDetails={setRegisterFullDetails}
                     MobSeatDetails={seatDetails2}
                     MobBusDetails={busdetails2}
                     MobSelectedSeats={selectedSeats2}
                     MobDiscount={busprice2}
-                    confirmRefNo={confirmRefNo}
-                    faredetails={faredetails}
+                    travelerDetails={travelerDetails}
+                    setTravelerDetails={setTravelerDetails}
+                    setEmailInput={setEmailInput}
+                    emailInput={emailInput}
+                    setMobileInput={setMobileInput}
+                    mobileInput={mobileInput}
+                    isAllDetailsFilled={isAllDetailsFilled}
+                    enableInput={enableInput}
+                    setEnableInput={setEnableInput}
+                  />
+                  <MobileBillAddress
+                    MobBusDetails={busdetails2}
+                    MobSeatDetails={seatDetails2}
+                    travelerDetails={travelerDetails}
+                    MobSelectedRoutes={selectedRoutes2}
                     emailInput={emailInput}
                     mobileInput={mobileInput}
+                    MobSelectedseatprice={selectedseatprice2}
+                    setConfirmModal={setConfirmModal}
+                    setConfirmRefNo={setConfirmRefNo}
+                    confirmModal={confirmModal}
+                    registerfulldetails={registerfulldetails}
+                    setRegisterFullDetails={setRegisterFullDetails}
+                    isAllDetailsFilled={isAllDetailsFilled}
+                    enableInput={enableInput}
+                    setEnableInput={setEnableInput}
+                    faredetails={faredetails}
+                    setFareDetails={setFareDetails}
                   />
-                )}
-              </>
-            ) : (
-              <ViewFullTicket
-                ticketDetails={ticketlist}
-              // droppingDate={calculatedDate && ConvertDate(calculatedDate)}
-              />
-            )}
-          </div>
+                  {confirmModal && (
+                    <span id="targetSection">
+                    <MobileConfirmTicket
+                      MobSeatDetails={seatDetails2}
+                      MobBusDetails={busdetails2}
+                      MobSelectedSeats={selectedSeats2}
+                      MobDiscount={busprice2}
+                      confirmRefNo={confirmRefNo}
+                      faredetails={faredetails}
+                      emailInput={emailInput}
+                      mobileInput={mobileInput}
+                      droppingDate={calculatedDate && ConvertDate(calculatedDate)}
+                      ticketNo={ticketNo}
+                      setTicketNo={setTicketNo}
+                      ticketLoader={ticketLoader}
+                      setTicketLoader={setTicketLoader}
+                    />
+                    </span>
+                  )}
+                </>
+              </div>
+              : ticketlist?.status === "success" ? handleNavigate()
+                : <div>
+                  <div className="flex items-center justify-center h-full w-full">
+                    <img src={busloading} className="h-[50vw] w-[100vw]" />
+                  </div>
+                </div>
+            }
+
+
+            {/* navigation(`/bookedTicket`, { state: { ticketDetails: ticketlist?.ticketInfo, droppingDate: droppingDate } }) */}
+
+          </>
           // </Form>
         );
       }}
-    </Formik>
+    </Formik >
   );
 }

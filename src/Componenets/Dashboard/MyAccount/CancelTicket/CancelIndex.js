@@ -71,7 +71,11 @@ const CancelIndex = () => {
   };
   const navigation = useNavigate();
   return (
-    <div className="w-full md:h-auto h-[60vw] pb-[2.5vw] bg-white shadow-lg shadow-gray-400 rounded-[2vw] md:rounded-[.9vw] border-b-[0.1vw] ">
+    <div
+      className={`w-full md:h-auto h-[60vw] ${
+        passengerDetails?.ticket_det?.length > 0 ? "pb-[0vw]" : "pb-[2.5vw]"
+      }   bg-white shadow-lg shadow-gray-400 rounded-[2vw] md:rounded-[.9vw] border-b-[0.1vw] `}
+    >
       <Formik
         initialValues={{
           ticketNumber: "",
@@ -159,28 +163,29 @@ const CancelIndex = () => {
           />
         </div>
       ) : (
-        showTable === true &&
-        <div className="flex flex-col gap-x-[3vw] items-center mt-[13vw] md:mt-[0vw] md:pt-[1.5vw] justify-center">
-          <img
-            src={empty}
-            alt="empty"
-            className="md:w-[8vw] md:h-[9vw] h-[24vw] w-[22vw]"
-          />
-          <div className="flex flex-col gap-y-[0.5vw] items-center pt-[2vw] justify-center">
-            <label className="text-[4.2vw] md:text-[2vw] text-[#1F487C] font-bold text-center">
-              Invalid Ticket Number or Phone Number
-            </label>
-            <label className="flex text-[3.6vw] md:text-[1.1vw] text-[#1F487C] items-center gap-[0.5vw]">
-              Looks like given details are invalid
-            </label>
-            <button
-              onClick={() => navigation("/")}
-              className="bg-[#1F487C] md:mt-[1vw] mt-[3vw] md:w-[12vw] w-[30vw] text-white font-bold md:text-[1.1vw] text-[3.6vw] md:h-[3vw] h-[8vw] rounded-full"
-            >
-              Plan a Trip
-            </button>
+        showTable === true && (
+          <div className="flex flex-col gap-x-[3vw] items-center mt-[13vw] md:mt-[0vw] md:pt-[1.5vw] justify-center">
+            <img
+              src={empty}
+              alt="empty"
+              className="md:w-[8vw] md:h-[9vw] h-[24vw] w-[22vw]"
+            />
+            <div className="flex flex-col gap-y-[0.5vw] items-center pt-[2vw] justify-center">
+              <label className="text-[4.2vw] md:text-[2vw] text-[#1F487C] font-bold text-center">
+                Invalid Ticket Number or Phone Number
+              </label>
+              <label className="flex text-[3.6vw] md:text-[1.1vw] text-[#1F487C] items-center gap-[0.5vw]">
+                Looks like given details are invalid
+              </label>
+              <button
+                onClick={() => navigation("/")}
+                className="bg-[#1F487C] md:mt-[1vw] mt-[3vw] md:w-[12vw] w-[30vw] text-white font-bold md:text-[1.1vw] text-[3.6vw] md:h-[3vw] h-[8vw] rounded-full"
+              >
+                Plan a Trip
+              </button>
+            </div>
           </div>
-        </div>
+        )
       )}
     </div>
   );

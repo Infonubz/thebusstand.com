@@ -13,6 +13,7 @@ import { RatingFeedBack } from "../../../Common/Rating&FeedBack/Ratings&Feedback
 import ModalPopup from "../../../Common/Modal/Modal.js";
 
 const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
+  console.log(droppingDate, "droppingDate");
   const ticketlist = useSelector((state) => state?.get_ticket_detail);
   const tbs_discount = useSelector((state) => state?.live_per);
 
@@ -44,6 +45,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
 
     return `${hours}h ${minutes}m`;
   };
+
   const LuxuryFind = (type) =>
     type?.toLowerCase().includes("volvo") ||
     type?.toLowerCase().includes("mercedes benz") ||
@@ -134,7 +136,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
   return (
     <div className="p-[2.5vw] md:p-[1.5vw] flex flex-col gap-y-[3vw] md:gap-y-[1.60vw]">
       <div
-        className={` ${
+        className={`rounded-[1vw] ${
           LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
             ? "bg-[#FFEFCE]"
             : "bg-white"
@@ -144,7 +146,11 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
         <div
           ref={componentRef}
           id="capture"
-          className="h-auto w-full rounded-[1vw] relative"
+          className={`h-auto w-full rounded-[1vw] relative border-[.2vw]  ${
+            LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
+              ? "border-[#393939]"
+              : "border-[#1F4B7F]"
+          }`}
           style={{ boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)" }}
         >
           <div
@@ -165,10 +171,10 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
               {`Bus Operator PNR : ${ticketDetails?.ticketInfo?.operator_pnr}`}
             </label>
           </div>
-          <span className="absolute md:block hidden left-[15.5vw]">
+          <span className="absolute md:block hidden top-[4.1vw] left-[12.5vw]">
             <div className="h-full py-[0.5vw]">
               <svg
-                className="md:h-[17.5vw] md:w-[3.76vw]"
+                className="md:h-[14.6vw] md:w-[3.76vw]"
                 viewBox="0 0 58 233"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -179,8 +185,8 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                   width="7.77032"
                   height="7.77032"
                   rx="3.88516"
-                  stroke={
-                    ticketDetails?.bus_type_status === "luxury"
+                  fill={
+                    LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
                       ? "#393939"
                       : "#1F4B7F"
                   }
@@ -193,7 +199,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                 <path
                   d="M29.8068 203.374V201.647H28.6537V203.374H29.8068ZM29.8068 199.344V195.89H28.6537V199.344H29.8068ZM29.8068 193.587V190.133H28.6537V193.587H29.8068ZM29.8068 187.83V184.375H28.6537V187.83H29.8068ZM29.8068 182.072V178.618H28.6537V182.072H29.8068ZM29.8068 176.315V172.861H28.6537V176.315H29.8068ZM29.8068 170.558V167.104H28.6537V170.558H29.8068ZM29.8068 164.801V161.346H28.6537V164.801H29.8068ZM29.8068 159.043V155.589H28.6537V159.043H29.8068ZM29.8068 153.286V149.832H28.6537V153.286H29.8068ZM29.8068 147.529V144.075H28.6537V147.529H29.8068ZM29.8068 141.772V138.317H28.6537V141.772H29.8068ZM29.8068 136.014V132.56H28.6537V136.014H29.8068ZM29.8068 130.257V126.803H28.6537V130.257H29.8068ZM29.8068 124.5V121.046H28.6537V124.5H29.8068ZM29.8068 118.743V117.016H28.6537V118.743H29.8068ZM30.3834 203.374V201.647H28.0771V203.374H30.3834ZM30.3834 199.344V195.89H28.0771V199.344H30.3834ZM30.3834 193.587V190.133H28.0771V193.587H30.3834ZM30.3834 187.83V184.375H28.0771V187.83H30.3834ZM30.3834 182.072V178.618H28.0771V182.072H30.3834ZM30.3834 176.315V172.861H28.0771V176.315H30.3834ZM30.3834 170.558V167.104H28.0771V170.558H30.3834ZM30.3834 164.801V161.346H28.0771V164.801H30.3834ZM30.3834 159.043V155.589H28.0771V159.043H30.3834ZM30.3834 153.286V149.832H28.0771V153.286H30.3834ZM30.3834 147.529V144.075H28.0771V147.529H30.3834ZM30.3834 141.772V138.317H28.0771V141.772H30.3834ZM30.3834 136.014V132.56H28.0771V136.014H30.3834ZM30.3834 130.257V126.803H28.0771V130.257H30.3834ZM30.3834 124.5V121.046H28.0771V124.5H30.3834ZM30.3834 118.743V117.016H28.0771V118.743H30.3834Z"
                   fill={
-                    ticketDetails?.bus_type_status === "luxury"
+                    LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
                       ? "#393939"
                       : "#1F4B7F"
                   }
@@ -335,19 +341,35 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                   />
                   <path
                     d="M22.4341 22.1641C22.4341 22.6492 22.0404 23.043 21.5552 23.043H17.3793L17.2925 21.2852H21.5552C22.0404 21.2852 22.4341 21.6789 22.4341 22.1641Z"
-                    fill="#FFF81E"
+                    fill={
+                      LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
+                        ? "#393939"
+                        : "#1F4B7F"
+                    }
                   />
                   <path
                     d="M39.8775 21.3438L39.7914 23.1016H35.6177C35.1326 23.1016 34.7388 22.7078 34.7388 22.2227C34.7388 21.7375 35.1326 21.3438 35.6177 21.3438H39.8775Z"
-                    fill="#FFF81E"
+                    fill={
+                      LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
+                        ? "#393939"
+                        : "#1F4B7F"
+                    }
                   />
                   <path
                     d="M32.0435 21.2852H25.0709C24.5855 21.2852 24.192 21.6787 24.192 22.1641V23.8963C24.192 24.3805 24.5835 24.7735 25.0676 24.7752L32.0403 24.8008H32.0435C32.276 24.8008 32.4991 24.7087 32.6639 24.5445C32.8294 24.3796 32.9224 24.1555 32.9224 23.9219V22.1641C32.9224 21.6787 32.5289 21.2852 32.0435 21.2852Z"
-                    fill="#596C76"
+                    fill={
+                      LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
+                        ? "#393939"
+                        : "#1F4B7F"
+                    }
                   />
                   <path
                     d="M32.9224 22.1641V23.9219C32.9224 24.1557 32.8293 24.3795 32.664 24.5447C32.4994 24.7088 32.2761 24.8008 32.0435 24.8008H32.0406L28.5865 24.7879V21.2852H32.0435C32.5287 21.2852 32.9224 21.6789 32.9224 22.1641Z"
-                    fill="#465A61"
+                    fill={
+                      LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
+                        ? "#393939"
+                        : "#1F4B7F"
+                    }
                   />
                 </g>
                 <defs>
@@ -365,9 +387,9 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
             </div>
           </span>
           <div className="px-[1vw] py-[1vw] relative">
-            <div className="grid grid-cols-6 w-full h-[18vw]">
-              <div className="col-span-2 w-[100%] h-full flex">
-                <div className="w-[100vw] h-full items-center justify-center flex flex-col">
+            <div className="grid grid-cols-10 w-full h-[18vw]">
+              <div className="col-span-3 w-[70%] h-full flex">
+                <div className="w-[50vw] h-full items-center justify-center flex flex-col">
                   <div className="h-[60%] flex justify-center items-center">
                     {/* {" "}
                                         {ticketDetails?.logos != null && (
@@ -457,10 +479,166 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                   </div>
                 </div>
               </div>
-              <div className="col-span-4">
-                <div className="grid grid-rows-7 w-full h-full">
-                  <div className="row-span-3">
-                    <div className="grid grid-cols-4">
+              <div className="col-span-7">
+                <div className="grid grid-rows-2 gap-y-[2.5vw]">
+                  {/* <div className="row-span-2 flex px-[1vw] justify-between ">
+                    <div className="flex flex-col  ">
+                      <p
+                        className={`text-[1vw] ${
+                          LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
+                          true
+                            ? "text-[#393939]"
+                            : "text-[#1F487C]"
+                        }`}
+                      >
+                        Dropping Point & Time
+                      </p>
+                      <p
+                        className={`${
+                          LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
+                          true
+                            ? "text-[#393939]"
+                            : "text-[#1F487C]"
+                        }  text-[1.1vw] font-bold`}
+                        // style={{ color: colorcode.theme }}
+                      >
+                    
+                        {ticketDetails?.ticketInfo?.dest_name}
+                        {"  "}(
+                        {moment(
+                          ticketDetails?.ticketInfo?.Arr_Time,
+                          "HH:mm:ss"
+                        ).format("hh:mm A")}
+                        )
+                      </p>
+                    </div>
+                    <div className="relative flex  items-center justify-center">
+                      <svg
+                        className="w-[11vw] h-[4vw]"
+                        viewBox="0 0 191 65"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M63.8027 21.9522V46.3763C63.8027 49.4454 66.3049 51.9629 69.3893 51.9629H104.074C107.159 51.9629 109.661 49.4446 109.661 46.3763V21.9522C109.661 18.883 107.159 16.3656 104.074 16.3656H69.3893C66.3049 16.3656 63.8027 18.8839 63.8027 21.9522Z"
+                          fill={
+                            LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
+                            true
+                              ? "#393939"
+                              : "#1F4B7F"
+                          }
+                        />
+                        <path
+                          d="M15.9289 2.65835C12.1005 0.255909 8.38323 -0.150284 5.5036 1.50614C-0.254637 4.80155 -0.571095 15.0933 4.76045 24.9138C5.82014 26.8619 7.05462 28.648 8.39942 30.2544C6.51724 33.8422 6.97543 38.339 9.87036 41.4234L28.4267 61.1303C30.1672 62.9812 32.6192 64.0527 35.1345 64.0527H181.215C186.356 64.0527 190.533 59.7672 190.533 54.4913L190.532 15.0765C190.532 9.8006 186.355 5.51503 181.214 5.51503L35.1337 5.51503C32.6184 5.51503 30.1816 6.58665 28.4258 8.43743L24.7869 12.3011C22.3833 8.14502 19.2666 4.73605 15.9289 2.65835ZM35.1337 8.71347L181.214 8.71347C184.631 8.71347 187.431 11.5704 187.431 15.0933V54.491C187.431 57.9974 184.647 60.8709 181.214 60.8709L35.1337 60.8709C33.4571 60.8709 31.8275 60.1565 30.6724 58.9229L12.1161 39.1993C10.9455 37.9657 10.3602 36.3584 10.3602 34.7675C10.3602 33.1766 10.9455 31.5858 12.1161 30.3356L23.9969 17.7063C25.2784 20.7907 27.3527 23.6617 27.0355 26.7161V26.8133C27.0355 27.2519 27.0039 27.6897 26.9723 28.0959C26.4502 27.9663 25.9126 27.8683 25.3427 27.8683C21.6408 27.8683 18.6196 30.9527 18.6196 34.7515C18.6196 38.5662 21.6408 41.6505 25.3427 41.6505C29.0602 41.6505 32.0659 38.566 32.0659 34.7515C32.0659 32.7545 31.2118 30.9527 29.8826 29.7033C30.0404 28.7946 30.136 27.8525 30.136 26.8299V26.716C29.8826 22.046 28.0939 19.1183 26.3065 15.2389L30.6408 10.645C31.8276 9.42716 33.4571 8.71347 35.1337 8.71347ZM22.5412 14.6714L10.344 27.6255C9.29964 26.3105 8.33468 24.8983 7.48069 23.3565C3.13026 15.3691 2.92467 6.63597 7.02169 4.29839C8.88849 3.22677 11.483 3.6164 14.3148 5.38581C17.4161 7.33383 20.3264 10.6291 22.5412 14.6714Z"
+                          fill={
+                            LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
+                            true
+                              ? "#393939"
+                              : "#1F4B7F"
+                          }
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M32.2528 54.6614C34.0086 54.6614 35.4319 55.8294 35.4319 57.2702C35.4319 58.711 34.0086 59.879 32.2528 59.879C32.2365 59.879 32.2202 59.8789 32.2039 59.8787L32.2528 62.4375L184.608 62.4375L187.301 59.8787C187.284 59.8789 187.269 59.879 187.252 59.879C185.496 59.879 184.073 58.711 184.073 57.2702C184.073 55.8294 185.496 54.6614 187.252 54.6614C187.269 54.6614 187.284 54.6615 187.301 54.6617V50.4067C187.284 50.4069 187.269 50.407 187.252 50.407C185.496 50.407 184.073 49.239 184.073 47.7982C184.073 46.3574 185.496 45.1894 187.252 45.1894H187.26L187.275 45.1895L187.284 45.1895L187.301 45.1897V41.5772C182.493 41.5772 178.595 38.3786 178.595 34.433C178.595 30.4875 182.493 27.2889 187.301 27.2889V23.7566C187.284 23.7569 187.269 23.757 187.252 23.757C185.496 23.757 184.073 22.5889 184.073 21.1481C184.073 19.7073 185.496 18.5393 187.252 18.5393C187.269 18.5393 187.284 18.5394 187.301 18.5396V14.2846C187.292 14.2847 187.284 14.2848 187.275 14.2849C187.268 14.2849 187.26 14.2849 187.252 14.2849C185.496 14.2849 184.073 13.1169 184.073 11.6761C184.073 10.2353 185.496 9.0673 187.252 9.0673C187.269 9.0673 187.284 9.06738 187.301 9.06762L185.147 6.42857L32.2039 6.96711L32.2039 9.06762C32.1876 9.06762 32.2202 9.06738 32.2039 9.06762C33.9597 9.06762 35.4319 10.2353 35.4319 11.6761C35.4319 13.1169 34.0086 14.2849 32.2528 14.2849C32.2365 14.2849 32.2202 14.2849 32.2039 14.2846V18.5396C32.2202 18.5394 32.2365 18.5393 32.2528 18.5393C34.0086 18.5393 35.4319 19.7073 35.4319 21.1481C35.4319 22.5889 34.0086 23.757 32.2528 23.757C32.2365 23.757 32.2202 23.7569 32.2039 23.7566V27.2889C37.0119 27.2889 41.9793 30.4875 41.9793 34.433C41.9793 38.3786 37.0119 41.5772 32.2039 41.5772V45.1897C32.2202 45.1895 32.2365 45.1894 32.2528 45.1894C34.0086 45.1894 35.4319 46.3574 35.4319 47.7982C35.4319 49.239 34.0086 50.407 32.2528 50.407C32.2365 50.407 32.2202 50.4069 32.2039 50.4067V54.6617C32.2202 54.6615 32.2365 54.6614 32.2528 54.6614Z"
+                          fill={
+                            LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
+                            true
+                              ? "#393939"
+                              : "#1F4B7F"
+                          }
+                        />
+                      </svg>
+                      <p
+                        className={`md:text-[1.5vw] text-[4vw] pl-[1.5vw] font-bold text-white absolute 
+                                      ${
+                                        LuxuryFind(
+                                          ticketDetails?.ticketInfo?.bustype
+                                        ) === true
+                                          ? "text-[#393939]"
+                                          : "text-[#1F487C]"
+                                      }`}
+                      >
+          
+                        {`₹ ${
+                          calculateDiscountedFare(
+                            formatDate(ticketDetails?.ticketInfo?.Journey_Date),
+                            ticketDetails?.ticketInfo?.FareBreakup?.baseFare,
+                            tbs_discount
+                          ) +
+                          Number(
+                            Math.round(
+                              ticketDetails?.ticketInfo?.FareBreakup?.serviceTax
+                            )
+                          )
+                        }`}
+                      </p>
+                    </div>
+                  </div> */}
+                  <div className=" flex justify-between px-[1vw] ">
+                    <div className="flex flex-col gap-x-[1vw]  ">
+                      <div
+                        className={`text-[1vw] ${
+                          LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
+                          true
+                            ? "text-[#393939]"
+                            : "text-[#1F487C]"
+                        }`}
+                      >
+                        Source Point
+                      </div>
+                      <div
+                        className={`${
+                          LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
+                          true
+                            ? "text-[#393939]"
+                            : "text-[#1F487C]"
+                        } font-bold text-[1.2vw]`}
+                        // style={{ color: colorcode.theme }}
+                      >
+                        {ticketDetails?.ticketInfo?.source_name}
+                        {/* Venkatanarasimharajuvaripeta */}
+                        {/* {"  "}(
+                        {moment(
+                          ticketDetails?.ticketInfo?.Start_Time,
+                          "HH:mm:ss"
+                        ).format("hh:mm A")}
+                        ) */}
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-end  ">
+                      <p
+                        className={`text-[1vw] ${
+                          LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
+                          true
+                            ? "text-[#393939]"
+                            : "text-[#1F487C]"
+                        }`}
+                      >
+                        Destination Point
+                      </p>
+                      <p
+                        className={`${
+                          LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
+                          true
+                            ? "text-[#393939]"
+                            : "text-[#1F487C]"
+                        }  text-[1.1vw] font-bold text-end`}
+                        // style={{ color: colorcode.theme }}
+                      >
+                        {ticketDetails?.ticketInfo?.dest_name}
+                        {/* Venkatanarasimharajuvaripeta */}
+                        {/* {"  "}(
+                        {moment(
+                          ticketDetails?.ticketInfo?.Arr_Time,
+                          "HH:mm:ss"
+                        ).format("hh:mm A")}
+                        ) */}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="content-center">
+                    <div className="grid grid-cols-4 ">
                       <div className="col-span-1 ">
                         <div className="flex flex-col pl-[1vw] text-left">
                           <p
@@ -469,7 +647,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                               true
                                 ? "text-[#393939]"
                                 : "text-[#1F487C]"
-                            }  pt-[0.5vw]`}
+                            } `}
                             // style={{ color: colorcode.theme }}
                           >
                             {ticketDetails?.ticketInfo?.Journey_Date}
@@ -506,8 +684,8 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                           </p>
                         </div>
                       </div>
-                      <div className="col-span-2 flex-col mt-[0.5vw] items-center w-full justify-center">
-                        <div className="absolute top-[2.8vw] w-[18.5vw]">
+                      <div className="col-span-2 flex-col  items-center w-full justify-center">
+                        <div className="absolute top-[7.3vw] w-[18.5vw]">
                           <svg
                             className="w-[36vw] md:w-[19vw] h-[15vw] md:h-[2vw]"
                             viewBox="0 0 300 28"
@@ -586,7 +764,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                             zIndex: 2,
                           }}
                           className="relative h-[2.1vw] flex w-[5.5vw]
-                                           text-white text-[1vw] font-bold justify-center items-center left-[6.2vw] top-[1.3vw]"
+                                           text-white text-[1vw] font-bold justify-center items-center left-[6.2vw] top-[.5vw]"
                         >
                           <svg
                             className="w-[40vw] h-[10vw]"
@@ -630,7 +808,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                               true
                                 ? "text-[#393939]"
                                 : "text-[#1F487C]"
-                            } text-[0.8vw] pt-[0.5vw]`}
+                            } text-[0.8vw] `}
                             // style={{ color: colorcode.theme }}
                           >
                             {droppingDate}
@@ -665,38 +843,73 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="row-span-2 flex justify-between px-[1vw] ">
-                    <div className="flex flex-col  ">
-                      <p
-                        className={`text-[1vw] ${
-                          LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
-                          true
-                            ? "text-[#393939]"
-                            : "text-[#1F487C]"
-                        }`}
-                      >
-                        Boarding Point & Time
-                      </p>
-                      <p
-                        className={`${
-                          LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
-                          true
-                            ? "text-[#393939]"
-                            : "text-[#1F487C]"
-                        } font-bold text-[1.2vw]`}
-                        // style={{ color: colorcode.theme }}
-                      >
-                        {/* {ticketDetails?.ticketInfo?.Boarding_Place_Name}{"  "}({ticketDetails?.ticketInfo?.Board_Halt_Time}) */}
-                        {ticketDetails?.ticketInfo?.source_name}
-                        {"  "}(
-                        {moment(
-                          ticketDetails?.ticketInfo?.Start_Time,
-                          "HH:mm:ss"
-                        ).format("hh:mm A")}
-                        )
-                      </p>
-                    </div>
-                    <div className="flex flex-col  items-center">
+                </div>
+
+                <div className="px-[1vw] pt-[3vw]">
+                  <div className=" grid grid-cols-2">
+                    <p
+                      className={`text-[1vw] ${
+                        LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
+                          ? "text-[#393939]"
+                          : "text-[#1F487C]"
+                      }`}
+                    >
+                      Boarding Point & Time
+                    </p>
+
+                    <p
+                      className={`text-[1vw] text-end ${
+                        LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
+                          ? "text-[#393939]"
+                          : "text-[#1F487C]"
+                      }`}
+                    >
+                      Dropping Point & Time
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-x-[1vw]">
+                    <p
+                      className={`${
+                        LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
+                          ? "text-[#393939]"
+                          : "text-[#1F487C]"
+                      } font-bold text-[1.1vw]  break-words`}
+                      // style={{ color: colorcode.theme }}
+                    >
+                      {/* {ticketDetails?.ticketInfo?.Boarding_Place_Name}{"  "}({ticketDetails?.ticketInfo?.Board_Halt_Time}) */}
+                      {ticketDetails?.ticketInfo?.Boarding_Place_Name}
+                      {/* Kalasipalayam,A.V.Road,Near Busstand,market jtn */}
+                      {"  "}(
+                      {moment(
+                        ticketDetails?.ticketInfo?.Board_Halt_Time,
+                        "HH:mm:ss"
+                      ).format("hh:mm A")}
+                      )
+                    </p>
+                    <p
+                      className={`${
+                        LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
+                          ? "text-[#393939]"
+                          : "text-[#1F487C]"
+                      }  text-[1.1vw] font-bold text-end break-words`}
+                      // style={{ color: colorcode.theme }}
+                    >
+                      {/* {`${selectedRoutes?.arri_route} : ${dayjs(
+                                  selectedRoutes?.arr_time
+                                ).format("HH:mm")}`} */}
+                      {ticketDetails?.ticketInfo?.dest_name}
+                      {/* Kalasipalayam,A.V.Road,NearBusstand,market jtn */}
+                      {"  "}(
+                      {moment(
+                        ticketDetails?.ticketInfo?.Arr_Time,
+                        "HH:mm:ss"
+                      ).format("hh:mm A")}
+                      )
+                    </p>
+                  </div>
+
+                  {/* <div className="flex flex-col  items-center">
                       <p
                         className={`text-[1vw] ${
                           LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
@@ -746,109 +959,12 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                           )}
                         </div>
                       </div>
-                    </div>
-                  </div>
-                  <div className="row-span-2 flex px-[1vw] justify-between ">
-                    <div className="flex flex-col  ">
-                      <p
-                        className={`text-[1vw] ${
-                          LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
-                          true
-                            ? "text-[#393939]"
-                            : "text-[#1F487C]"
-                        }`}
-                      >
-                        Dropping Point & Time
-                      </p>
-                      <p
-                        className={`${
-                          LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
-                          true
-                            ? "text-[#393939]"
-                            : "text-[#1F487C]"
-                        }  text-[1.1vw] font-bold`}
-                        // style={{ color: colorcode.theme }}
-                      >
-                        {/* {`${selectedRoutes?.arri_route} : ${dayjs(
-                                  selectedRoutes?.arr_time
-                                ).format("HH:mm")}`} */}
-                        {ticketDetails?.ticketInfo?.dest_name}
-                        {"  "}(
-                        {moment(
-                          ticketDetails?.ticketInfo?.Arr_Time,
-                          "HH:mm:ss"
-                        ).format("hh:mm A")}
-                        )
-                      </p>
-                    </div>
-                    <div className="relative flex  items-center justify-center">
-                      <svg
-                        className="w-[11vw] h-[4vw]"
-                        viewBox="0 0 191 65"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M63.8027 21.9522V46.3763C63.8027 49.4454 66.3049 51.9629 69.3893 51.9629H104.074C107.159 51.9629 109.661 49.4446 109.661 46.3763V21.9522C109.661 18.883 107.159 16.3656 104.074 16.3656H69.3893C66.3049 16.3656 63.8027 18.8839 63.8027 21.9522Z"
-                          fill={
-                            LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
-                            true
-                              ? "#393939"
-                              : "#1F4B7F"
-                          }
-                        />
-                        <path
-                          d="M15.9289 2.65835C12.1005 0.255909 8.38323 -0.150284 5.5036 1.50614C-0.254637 4.80155 -0.571095 15.0933 4.76045 24.9138C5.82014 26.8619 7.05462 28.648 8.39942 30.2544C6.51724 33.8422 6.97543 38.339 9.87036 41.4234L28.4267 61.1303C30.1672 62.9812 32.6192 64.0527 35.1345 64.0527H181.215C186.356 64.0527 190.533 59.7672 190.533 54.4913L190.532 15.0765C190.532 9.8006 186.355 5.51503 181.214 5.51503L35.1337 5.51503C32.6184 5.51503 30.1816 6.58665 28.4258 8.43743L24.7869 12.3011C22.3833 8.14502 19.2666 4.73605 15.9289 2.65835ZM35.1337 8.71347L181.214 8.71347C184.631 8.71347 187.431 11.5704 187.431 15.0933V54.491C187.431 57.9974 184.647 60.8709 181.214 60.8709L35.1337 60.8709C33.4571 60.8709 31.8275 60.1565 30.6724 58.9229L12.1161 39.1993C10.9455 37.9657 10.3602 36.3584 10.3602 34.7675C10.3602 33.1766 10.9455 31.5858 12.1161 30.3356L23.9969 17.7063C25.2784 20.7907 27.3527 23.6617 27.0355 26.7161V26.8133C27.0355 27.2519 27.0039 27.6897 26.9723 28.0959C26.4502 27.9663 25.9126 27.8683 25.3427 27.8683C21.6408 27.8683 18.6196 30.9527 18.6196 34.7515C18.6196 38.5662 21.6408 41.6505 25.3427 41.6505C29.0602 41.6505 32.0659 38.566 32.0659 34.7515C32.0659 32.7545 31.2118 30.9527 29.8826 29.7033C30.0404 28.7946 30.136 27.8525 30.136 26.8299V26.716C29.8826 22.046 28.0939 19.1183 26.3065 15.2389L30.6408 10.645C31.8276 9.42716 33.4571 8.71347 35.1337 8.71347ZM22.5412 14.6714L10.344 27.6255C9.29964 26.3105 8.33468 24.8983 7.48069 23.3565C3.13026 15.3691 2.92467 6.63597 7.02169 4.29839C8.88849 3.22677 11.483 3.6164 14.3148 5.38581C17.4161 7.33383 20.3264 10.6291 22.5412 14.6714Z"
-                          fill={
-                            LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
-                            true
-                              ? "#393939"
-                              : "#1F4B7F"
-                          }
-                        />
-                        <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
-                          d="M32.2528 54.6614C34.0086 54.6614 35.4319 55.8294 35.4319 57.2702C35.4319 58.711 34.0086 59.879 32.2528 59.879C32.2365 59.879 32.2202 59.8789 32.2039 59.8787L32.2528 62.4375L184.608 62.4375L187.301 59.8787C187.284 59.8789 187.269 59.879 187.252 59.879C185.496 59.879 184.073 58.711 184.073 57.2702C184.073 55.8294 185.496 54.6614 187.252 54.6614C187.269 54.6614 187.284 54.6615 187.301 54.6617V50.4067C187.284 50.4069 187.269 50.407 187.252 50.407C185.496 50.407 184.073 49.239 184.073 47.7982C184.073 46.3574 185.496 45.1894 187.252 45.1894H187.26L187.275 45.1895L187.284 45.1895L187.301 45.1897V41.5772C182.493 41.5772 178.595 38.3786 178.595 34.433C178.595 30.4875 182.493 27.2889 187.301 27.2889V23.7566C187.284 23.7569 187.269 23.757 187.252 23.757C185.496 23.757 184.073 22.5889 184.073 21.1481C184.073 19.7073 185.496 18.5393 187.252 18.5393C187.269 18.5393 187.284 18.5394 187.301 18.5396V14.2846C187.292 14.2847 187.284 14.2848 187.275 14.2849C187.268 14.2849 187.26 14.2849 187.252 14.2849C185.496 14.2849 184.073 13.1169 184.073 11.6761C184.073 10.2353 185.496 9.0673 187.252 9.0673C187.269 9.0673 187.284 9.06738 187.301 9.06762L185.147 6.42857L32.2039 6.96711L32.2039 9.06762C32.1876 9.06762 32.2202 9.06738 32.2039 9.06762C33.9597 9.06762 35.4319 10.2353 35.4319 11.6761C35.4319 13.1169 34.0086 14.2849 32.2528 14.2849C32.2365 14.2849 32.2202 14.2849 32.2039 14.2846V18.5396C32.2202 18.5394 32.2365 18.5393 32.2528 18.5393C34.0086 18.5393 35.4319 19.7073 35.4319 21.1481C35.4319 22.5889 34.0086 23.757 32.2528 23.757C32.2365 23.757 32.2202 23.7569 32.2039 23.7566V27.2889C37.0119 27.2889 41.9793 30.4875 41.9793 34.433C41.9793 38.3786 37.0119 41.5772 32.2039 41.5772V45.1897C32.2202 45.1895 32.2365 45.1894 32.2528 45.1894C34.0086 45.1894 35.4319 46.3574 35.4319 47.7982C35.4319 49.239 34.0086 50.407 32.2528 50.407C32.2365 50.407 32.2202 50.4069 32.2039 50.4067V54.6617C32.2202 54.6615 32.2365 54.6614 32.2528 54.6614Z"
-                          fill={
-                            LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
-                            true
-                              ? "#393939"
-                              : "#1F4B7F"
-                          }
-                        />
-                      </svg>
-                      <p
-                        className={`md:text-[1.5vw] text-[4vw] pl-[1.5vw] font-bold text-white absolute 
-                                      ${
-                                        LuxuryFind(
-                                          ticketDetails?.ticketInfo?.bustype
-                                        ) === true
-                                          ? "text-[#393939]"
-                                          : "text-[#1F487C]"
-                                      }`}
-                      >
-                        {/* {`₹ ${ticketDetails?.ticketInfo?.TicketFare}`} */}
-                        {`₹ ${
-                          calculateDiscountedFare(
-                            formatDate(ticketDetails?.ticketInfo?.Journey_Date),
-                            ticketDetails?.ticketInfo?.FareBreakup?.baseFare,
-                            tbs_discount
-                          ) +
-                          Number(
-                            Math.round(
-                              ticketDetails?.ticketInfo?.FareBreakup?.serviceTax
-                            )
-                          )
-                        }`}
-                      </p>
-                    </div>
-                  </div>
+                    </div> */}
                 </div>
               </div>
             </div>
           </div>
-          <div className="h-auto w-full px-[1vw] pt-[1vw]">
+          <div className="h-auto w-full px-[1vw] ">
             {/* <p className="text-[1.4vw] font-bold">Traveller Details:</p>
                     <div className="flex justify-between text-[1.2vw] font-bold pt-[1.5vw]">
                       <div className="flex-1">Name</div>
@@ -903,27 +1019,169 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                     : "border-[#1F487C]"
                 } relative`}
               >
-                <span className={`absolute left-[-1.1vw] top-[-1.4vw] z-[3]`}>
+                <span className={`absolute left-[-1.3vw] top-[-1.4vw] z-[3]`}>
                   <div
                     className={` ${
                       LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
-                        ? "bg-[#FFEFCE] border-l-[#FFEFCE] border-[#393939]"
+                        ? "bg-white border-l-[#ffffff] border-[#393939]"
                         : " bg-white border-l-[#ffffff] border-[#1F487C]"
-                    } border-dashed border-[0.16vw]  w-[2.3vw] h-[2.7vw] rounded-r-full `}
+                    }  border-[0.16vw]  w-[1.6vw] h-[2.8vw] rounded-full rounded-l-none `}
                   ></div>
                 </span>
-                <span className="absolute right-[-1.1vw] top-[-1.4vw] z-[3]">
+                <span className="absolute right-[-1.3vw] top-[-1.4vw] z-[3]">
                   <div
                     className={`${
                       LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
-                        ? "bg-[#FFEFCE] border-r-[#FFEFCE] border-[#393939]"
+                        ? "bg-white border-r-[#ffffff] border-[#393939]"
                         : "bg-white border-r-[#ffffff] border-[#1F487C]"
-                    }  border-dashed border-[0.16vw]  w-[2.3vw] h-[2.7vw] rounded-l-full `}
+                    }   border-[0.16vw]  w-[1.6vw] h-[2.8vw]  rounded-full rounded-r-none `}
                   ></div>
                 </span>
               </div>
-              <div className="row-span-1 py-[1vw]">
-                {/* {Object.keys(travelerDetails).map((key) => ( */}
+              <div className="row-span-1 py-[1vw">
+                <div></div>
+                <div
+                  className={`grid grid-cols-8 py-[1vw] font-bold px-[2vw]  ${
+                    LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
+                      ? "text-[#393939]"
+                      : "text-[#1F487C]"
+                  }`}
+                >
+                  <div className="col-span-2  text-[1.1vw] ">Seat No</div>
+                  <div className="col-span-3  text-[1.1vw]">Passenger Name</div>
+                  <div className="col-span-2  text-[1.1vw]">Gender</div>
+                  <div className="col-span-1  text-[1.1vw]">Age</div>
+                </div>
+                <div className="">
+                  {ticketDetails?.ticketInfo?.ticket_det?.length > 0
+                    ? ticketDetails?.ticketInfo?.ticket_det?.map((v, ind) => (
+                        <div
+                          className={`grid grid-cols-8 px-[2vw] py-[.3vw] ${
+                            LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
+                            true
+                              ? "text-[#393939]"
+                              : "text-[#1F487C]"
+                          }`}
+                        >
+                          <div className="col-span-2 text-[1vw] font-semibold">
+                            {v.Seat_Num}
+                          </div>
+                          <div className="col-span-3 text-[1vw] font-semibold">
+                            {v.Passenger_Name}
+                          </div>
+                          <div className="col-span-2 text-[1vw] font-semibold">
+                            {v.GENDER_TYPE}
+                          </div>
+                          <div className="col-span-1 text-[1vw] font-semibold">
+                            {v.Age}
+                          </div>
+                        </div>
+                      ))
+                    : ""}
+                </div>
+                {/* <div className="col-span-2"><svg
+                        className="w-[5vw] h-[4vw]"
+                        viewBox="0 0 191 65"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M63.8027 21.9522V46.3763C63.8027 49.4454 66.3049 51.9629 69.3893 51.9629H104.074C107.159 51.9629 109.661 49.4446 109.661 46.3763V21.9522C109.661 18.883 107.159 16.3656 104.074 16.3656H69.3893C66.3049 16.3656 63.8027 18.8839 63.8027 21.9522Z"
+                          fill={
+                            LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
+                            true
+                              ? "#393939"
+                              : "#1F4B7F"
+                          }
+                        />
+                        <path
+                          d="M15.9289 2.65835C12.1005 0.255909 8.38323 -0.150284 5.5036 1.50614C-0.254637 4.80155 -0.571095 15.0933 4.76045 24.9138C5.82014 26.8619 7.05462 28.648 8.39942 30.2544C6.51724 33.8422 6.97543 38.339 9.87036 41.4234L28.4267 61.1303C30.1672 62.9812 32.6192 64.0527 35.1345 64.0527H181.215C186.356 64.0527 190.533 59.7672 190.533 54.4913L190.532 15.0765C190.532 9.8006 186.355 5.51503 181.214 5.51503L35.1337 5.51503C32.6184 5.51503 30.1816 6.58665 28.4258 8.43743L24.7869 12.3011C22.3833 8.14502 19.2666 4.73605 15.9289 2.65835ZM35.1337 8.71347L181.214 8.71347C184.631 8.71347 187.431 11.5704 187.431 15.0933V54.491C187.431 57.9974 184.647 60.8709 181.214 60.8709L35.1337 60.8709C33.4571 60.8709 31.8275 60.1565 30.6724 58.9229L12.1161 39.1993C10.9455 37.9657 10.3602 36.3584 10.3602 34.7675C10.3602 33.1766 10.9455 31.5858 12.1161 30.3356L23.9969 17.7063C25.2784 20.7907 27.3527 23.6617 27.0355 26.7161V26.8133C27.0355 27.2519 27.0039 27.6897 26.9723 28.0959C26.4502 27.9663 25.9126 27.8683 25.3427 27.8683C21.6408 27.8683 18.6196 30.9527 18.6196 34.7515C18.6196 38.5662 21.6408 41.6505 25.3427 41.6505C29.0602 41.6505 32.0659 38.566 32.0659 34.7515C32.0659 32.7545 31.2118 30.9527 29.8826 29.7033C30.0404 28.7946 30.136 27.8525 30.136 26.8299V26.716C29.8826 22.046 28.0939 19.1183 26.3065 15.2389L30.6408 10.645C31.8276 9.42716 33.4571 8.71347 35.1337 8.71347ZM22.5412 14.6714L10.344 27.6255C9.29964 26.3105 8.33468 24.8983 7.48069 23.3565C3.13026 15.3691 2.92467 6.63597 7.02169 4.29839C8.88849 3.22677 11.483 3.6164 14.3148 5.38581C17.4161 7.33383 20.3264 10.6291 22.5412 14.6714Z"
+                          fill={
+                            LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
+                            true
+                              ? "#393939"
+                              : "#1F4B7F"
+                          }
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M32.2528 54.6614C34.0086 54.6614 35.4319 55.8294 35.4319 57.2702C35.4319 58.711 34.0086 59.879 32.2528 59.879C32.2365 59.879 32.2202 59.8789 32.2039 59.8787L32.2528 62.4375L184.608 62.4375L187.301 59.8787C187.284 59.8789 187.269 59.879 187.252 59.879C185.496 59.879 184.073 58.711 184.073 57.2702C184.073 55.8294 185.496 54.6614 187.252 54.6614C187.269 54.6614 187.284 54.6615 187.301 54.6617V50.4067C187.284 50.4069 187.269 50.407 187.252 50.407C185.496 50.407 184.073 49.239 184.073 47.7982C184.073 46.3574 185.496 45.1894 187.252 45.1894H187.26L187.275 45.1895L187.284 45.1895L187.301 45.1897V41.5772C182.493 41.5772 178.595 38.3786 178.595 34.433C178.595 30.4875 182.493 27.2889 187.301 27.2889V23.7566C187.284 23.7569 187.269 23.757 187.252 23.757C185.496 23.757 184.073 22.5889 184.073 21.1481C184.073 19.7073 185.496 18.5393 187.252 18.5393C187.269 18.5393 187.284 18.5394 187.301 18.5396V14.2846C187.292 14.2847 187.284 14.2848 187.275 14.2849C187.268 14.2849 187.26 14.2849 187.252 14.2849C185.496 14.2849 184.073 13.1169 184.073 11.6761C184.073 10.2353 185.496 9.0673 187.252 9.0673C187.269 9.0673 187.284 9.06738 187.301 9.06762L185.147 6.42857L32.2039 6.96711L32.2039 9.06762C32.1876 9.06762 32.2202 9.06738 32.2039 9.06762C33.9597 9.06762 35.4319 10.2353 35.4319 11.6761C35.4319 13.1169 34.0086 14.2849 32.2528 14.2849C32.2365 14.2849 32.2202 14.2849 32.2039 14.2846V18.5396C32.2202 18.5394 32.2365 18.5393 32.2528 18.5393C34.0086 18.5393 35.4319 19.7073 35.4319 21.1481C35.4319 22.5889 34.0086 23.757 32.2528 23.757C32.2365 23.757 32.2202 23.7569 32.2039 23.7566V27.2889C37.0119 27.2889 41.9793 30.4875 41.9793 34.433C41.9793 38.3786 37.0119 41.5772 32.2039 41.5772V45.1897C32.2202 45.1895 32.2365 45.1894 32.2528 45.1894C34.0086 45.1894 35.4319 46.3574 35.4319 47.7982C35.4319 49.239 34.0086 50.407 32.2528 50.407C32.2365 50.407 32.2202 50.4069 32.2039 50.4067V54.6617C32.2202 54.6615 32.2365 54.6614 32.2528 54.6614Z"
+                          fill={
+                            LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
+                            true
+                              ? "#393939"
+                              : "#1F4B7F"
+                          }
+                        />
+                      </svg>
+                <div className="relative ">
+                      <svg
+                        className="w-[5vw] h-[4vw]"
+                        viewBox="0 0 191 65"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M63.8027 21.9522V46.3763C63.8027 49.4454 66.3049 51.9629 69.3893 51.9629H104.074C107.159 51.9629 109.661 49.4446 109.661 46.3763V21.9522C109.661 18.883 107.159 16.3656 104.074 16.3656H69.3893C66.3049 16.3656 63.8027 18.8839 63.8027 21.9522Z"
+                          fill={
+                            LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
+                            true
+                              ? "#393939"
+                              : "#1F4B7F"
+                          }
+                        />
+                        <path
+                          d="M15.9289 2.65835C12.1005 0.255909 8.38323 -0.150284 5.5036 1.50614C-0.254637 4.80155 -0.571095 15.0933 4.76045 24.9138C5.82014 26.8619 7.05462 28.648 8.39942 30.2544C6.51724 33.8422 6.97543 38.339 9.87036 41.4234L28.4267 61.1303C30.1672 62.9812 32.6192 64.0527 35.1345 64.0527H181.215C186.356 64.0527 190.533 59.7672 190.533 54.4913L190.532 15.0765C190.532 9.8006 186.355 5.51503 181.214 5.51503L35.1337 5.51503C32.6184 5.51503 30.1816 6.58665 28.4258 8.43743L24.7869 12.3011C22.3833 8.14502 19.2666 4.73605 15.9289 2.65835ZM35.1337 8.71347L181.214 8.71347C184.631 8.71347 187.431 11.5704 187.431 15.0933V54.491C187.431 57.9974 184.647 60.8709 181.214 60.8709L35.1337 60.8709C33.4571 60.8709 31.8275 60.1565 30.6724 58.9229L12.1161 39.1993C10.9455 37.9657 10.3602 36.3584 10.3602 34.7675C10.3602 33.1766 10.9455 31.5858 12.1161 30.3356L23.9969 17.7063C25.2784 20.7907 27.3527 23.6617 27.0355 26.7161V26.8133C27.0355 27.2519 27.0039 27.6897 26.9723 28.0959C26.4502 27.9663 25.9126 27.8683 25.3427 27.8683C21.6408 27.8683 18.6196 30.9527 18.6196 34.7515C18.6196 38.5662 21.6408 41.6505 25.3427 41.6505C29.0602 41.6505 32.0659 38.566 32.0659 34.7515C32.0659 32.7545 31.2118 30.9527 29.8826 29.7033C30.0404 28.7946 30.136 27.8525 30.136 26.8299V26.716C29.8826 22.046 28.0939 19.1183 26.3065 15.2389L30.6408 10.645C31.8276 9.42716 33.4571 8.71347 35.1337 8.71347ZM22.5412 14.6714L10.344 27.6255C9.29964 26.3105 8.33468 24.8983 7.48069 23.3565C3.13026 15.3691 2.92467 6.63597 7.02169 4.29839C8.88849 3.22677 11.483 3.6164 14.3148 5.38581C17.4161 7.33383 20.3264 10.6291 22.5412 14.6714Z"
+                          fill={
+                            LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
+                            true
+                              ? "#393939"
+                              : "#1F4B7F"
+                          }
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M32.2528 54.6614C34.0086 54.6614 35.4319 55.8294 35.4319 57.2702C35.4319 58.711 34.0086 59.879 32.2528 59.879C32.2365 59.879 32.2202 59.8789 32.2039 59.8787L32.2528 62.4375L184.608 62.4375L187.301 59.8787C187.284 59.8789 187.269 59.879 187.252 59.879C185.496 59.879 184.073 58.711 184.073 57.2702C184.073 55.8294 185.496 54.6614 187.252 54.6614C187.269 54.6614 187.284 54.6615 187.301 54.6617V50.4067C187.284 50.4069 187.269 50.407 187.252 50.407C185.496 50.407 184.073 49.239 184.073 47.7982C184.073 46.3574 185.496 45.1894 187.252 45.1894H187.26L187.275 45.1895L187.284 45.1895L187.301 45.1897V41.5772C182.493 41.5772 178.595 38.3786 178.595 34.433C178.595 30.4875 182.493 27.2889 187.301 27.2889V23.7566C187.284 23.7569 187.269 23.757 187.252 23.757C185.496 23.757 184.073 22.5889 184.073 21.1481C184.073 19.7073 185.496 18.5393 187.252 18.5393C187.269 18.5393 187.284 18.5394 187.301 18.5396V14.2846C187.292 14.2847 187.284 14.2848 187.275 14.2849C187.268 14.2849 187.26 14.2849 187.252 14.2849C185.496 14.2849 184.073 13.1169 184.073 11.6761C184.073 10.2353 185.496 9.0673 187.252 9.0673C187.269 9.0673 187.284 9.06738 187.301 9.06762L185.147 6.42857L32.2039 6.96711L32.2039 9.06762C32.1876 9.06762 32.2202 9.06738 32.2039 9.06762C33.9597 9.06762 35.4319 10.2353 35.4319 11.6761C35.4319 13.1169 34.0086 14.2849 32.2528 14.2849C32.2365 14.2849 32.2202 14.2849 32.2039 14.2846V18.5396C32.2202 18.5394 32.2365 18.5393 32.2528 18.5393C34.0086 18.5393 35.4319 19.7073 35.4319 21.1481C35.4319 22.5889 34.0086 23.757 32.2528 23.757C32.2365 23.757 32.2202 23.7569 32.2039 23.7566V27.2889C37.0119 27.2889 41.9793 30.4875 41.9793 34.433C41.9793 38.3786 37.0119 41.5772 32.2039 41.5772V45.1897C32.2202 45.1895 32.2365 45.1894 32.2528 45.1894C34.0086 45.1894 35.4319 46.3574 35.4319 47.7982C35.4319 49.239 34.0086 50.407 32.2528 50.407C32.2365 50.407 32.2202 50.4069 32.2039 50.4067V54.6617C32.2202 54.6615 32.2365 54.6614 32.2528 54.6614Z"
+                          fill={
+                            LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
+                            true
+                              ? "#393939"
+                              : "#1F4B7F"
+                          }
+                        />
+                      </svg>
+                      <p
+                        className={`md:text-[1.5vw] text-[4vw] pl-[1.5vw] font-bold text-white absolute 
+                                      ${
+                                        LuxuryFind(
+                                          ticketDetails?.ticketInfo?.bustype
+                                        ) === true
+                                          ? "text-[#393939]"
+                                          : "text-[#1F487C]"
+                                      }`}
+                      >
+          
+                        {`₹ ${
+                          calculateDiscountedFare(
+                            formatDate(ticketDetails?.ticketInfo?.Journey_Date),
+                            ticketDetails?.ticketInfo?.FareBreakup?.baseFare,
+                            tbs_discount
+                          ) +
+                          Number(
+                            Math.round(
+                              ticketDetails?.ticketInfo?.FareBreakup?.serviceTax
+                            )
+                          )
+                        }`}
+                      </p>
+                    </div>
+
+                </div> */}
+              </div>
+              {/* <div className="row-span-1 py-[1vw]">
+             
                 {ticketDetails?.ticketInfo?.ticket_det?.length > 0
                   ? ticketDetails?.ticketInfo?.ticket_det?.map((v, ind) => (
                       <div
@@ -944,14 +1202,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                           </p>
                         </div>
                         <div className="col-span-3">
-                          {/* <div
-                              className="border-r-[0.5vw] border-[0.1vw] text-[1.2vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[1vw] relative"
-                              style={{
-                                //background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`,
-                                borderColor: colorcode.theme,
-                                color: colorcode.theme,
-                              }}
-                            > */}
+                    
                           <div
                             className="flex items-center border-r-[0.5vw] border-[0.1vw] text-[1vw] h-[3vw] w-[100%] rounded-[0.5vw] outline-none px-[0.5vw] relative"
                             style={{
@@ -1008,7 +1259,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                                 }}
                               >
                                 <p className=" text-[1vw] ">
-                                  {/* {travelerDetails[key].age} */}
+                              
                                   {v.Age}
                                 </p>
                               </div>
@@ -1116,8 +1367,8 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                       </div>
                     ))
                   : ""}
-                {/* ))}  */}
-              </div>
+   
+              </div> */}
               {/* <div className="row-span-1 py-[1vw]">
                                 <div className="grid grid-cols-6 gap-[1vw]">
                                     <div className="col-span-1 flex items-center">
@@ -1207,36 +1458,36 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                             </div> */}
             </div>
 
-            <div
+            {/* <div
               className={`border-dashed border-[0.11vw] ${
                 LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
                   ? "border-[#393939]"
                   : "border-[#1F487C]"
               }  relative mt-[2vw]`}
             >
-              <span className={`absolute left-[-1.1vw] top-[-1.4vw] z-[3]`}>
-                <div
-                  className={`${
-                    LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
-                      ? "border-l-[#FFEFCE] border-[#393939] bg-[#FFEFCE]"
-                      : "border-l-[#ffffff] border-[#1F487C] bg-white"
-                  }  border-dashed border-[0.16vw]  w-[2.3vw] h-[2.7vw] rounded-r-full `}
-                ></div>
+              <span className={`absolute left-[-1.3vw] top-[-1.4vw] z-[3]`}>
+              <div
+                    className={` ${
+                      LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
+                        ? "bg-[#FFEFCE] border-l-[#FFEFCE] border-[#393939]"
+                        : " bg-white border-l-[#ffffff] border-[#1F487C]"
+                    }  border-[0.16vw]  w-[1.6vw] h-[2.8vw] rounded-full rounded-l-none `}
+                  ></div>
               </span>
-              <span className="absolute right-[-1.1vw] top-[-1.4vw] z-[3]">
-                <div
-                  className={`${
-                    LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
-                      ? "border-r-[#FFEFCE] border-[#393939] bg-[#FFEFCE]"
-                      : "border-r-[#ffffff] border-[#1F487C] bg-white"
-                  }   border-dashed border-[0.16vw] w-[2.3vw] h-[2.7vw] rounded-l-full`}
-                ></div>
+              <span className="absolute right-[-1.3vw] top-[-1.4vw] z-[3]">
+              <div
+                    className={`${
+                      LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
+                        ? "bg-[#FFEFCE] border-r-[#FFEFCE] border-[#393939]"
+                        : "bg-white border-r-[#ffffff] border-[#1F487C]"
+                    }   border-[0.16vw]  w-[1.6vw] h-[2.8vw]  rounded-full rounded-r-none `}
+                  ></div>
               </span>
-            </div>
+            </div> */}
           </div>
 
-          <div className="flex items-center justify-between pl-[1vw] pr-[2vw] pt-[1vw]">
-            <div className="barcode">
+          <div className="flex items-center justify-between pl-[3vw] pr-[2vw] py-[2vw]">
+            {/* <div className="barcode">
               <Barcode
                 className="w-[40vw] h-[13vw] text-red-500"
                 value={generateRandomId(ticketDetails?.ticketInfo?.Ticket_no)}
@@ -1244,18 +1495,29 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                 // height={70}
                 // lineColor={colorcode.theme}
               />
-            </div>
-            <div
-              className="cursor-pointer pr-[2vw] pb-[2vw]"
-              style={{ userSelect: "none" }}
-            >
+            </div> */}
+            <div className="flex items-center text-[1vw] mt-[.2vw] font-semibold text-[#1F487C]">
               <div
+                className={`text-white h-[2.5vw] w-[12.5vw] rounded-[1vw] flex items-center justify-evenly ${
+                  LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
+                    ? "bg-[#393939]"
+                    : "bg-[#1F487C] "
+                }`}
+              >
+                <FiDownload size={"1.2vw"} color="white" />
+                <div>Download Invoice</div>
+              </div>
+              <div
+                className="cursor-pointer px-[2vw] pb-[vw] items-center"
+                style={{ userSelect: "none" }}
+              >
+                {/* <div
                 onClick={handleDownloadClick}
-                className=" h-[6vw] w-[6vw] rounded-[50%] flex justify-center items-center border-[.6vw]  "
+                className=" h-[3.5vw] w-[3.5vw] rounded-[50%] flex justify-center items-center border-[.6vw]  "
                 style={{
                   borderColor:
                     LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
-                      ? "#393939"
+                      ? "#737373"
                       : colorcode.gradient,
                   backgroundColor:
                     LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
@@ -1264,9 +1526,68 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                 }}
               >
                 <span>
-                  <FiDownload size={"3.5vw"} color="white" />
+                  <FiDownload size={"1.5vw"} color="white" />
                 </span>
+              </div> */}
               </div>
+            </div>
+            <div className="relative flex  items-center justify-center">
+              <svg
+                className="w-[10vw] h-[3vw]"
+                viewBox="0 0 191 65"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M63.8027 21.9522V46.3763C63.8027 49.4454 66.3049 51.9629 69.3893 51.9629H104.074C107.159 51.9629 109.661 49.4446 109.661 46.3763V21.9522C109.661 18.883 107.159 16.3656 104.074 16.3656H69.3893C66.3049 16.3656 63.8027 18.8839 63.8027 21.9522Z"
+                  fill={
+                    LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
+                      ? "#393939"
+                      : "#1F4B7F"
+                  }
+                />
+                <path
+                  d="M15.9289 2.65835C12.1005 0.255909 8.38323 -0.150284 5.5036 1.50614C-0.254637 4.80155 -0.571095 15.0933 4.76045 24.9138C5.82014 26.8619 7.05462 28.648 8.39942 30.2544C6.51724 33.8422 6.97543 38.339 9.87036 41.4234L28.4267 61.1303C30.1672 62.9812 32.6192 64.0527 35.1345 64.0527H181.215C186.356 64.0527 190.533 59.7672 190.533 54.4913L190.532 15.0765C190.532 9.8006 186.355 5.51503 181.214 5.51503L35.1337 5.51503C32.6184 5.51503 30.1816 6.58665 28.4258 8.43743L24.7869 12.3011C22.3833 8.14502 19.2666 4.73605 15.9289 2.65835ZM35.1337 8.71347L181.214 8.71347C184.631 8.71347 187.431 11.5704 187.431 15.0933V54.491C187.431 57.9974 184.647 60.8709 181.214 60.8709L35.1337 60.8709C33.4571 60.8709 31.8275 60.1565 30.6724 58.9229L12.1161 39.1993C10.9455 37.9657 10.3602 36.3584 10.3602 34.7675C10.3602 33.1766 10.9455 31.5858 12.1161 30.3356L23.9969 17.7063C25.2784 20.7907 27.3527 23.6617 27.0355 26.7161V26.8133C27.0355 27.2519 27.0039 27.6897 26.9723 28.0959C26.4502 27.9663 25.9126 27.8683 25.3427 27.8683C21.6408 27.8683 18.6196 30.9527 18.6196 34.7515C18.6196 38.5662 21.6408 41.6505 25.3427 41.6505C29.0602 41.6505 32.0659 38.566 32.0659 34.7515C32.0659 32.7545 31.2118 30.9527 29.8826 29.7033C30.0404 28.7946 30.136 27.8525 30.136 26.8299V26.716C29.8826 22.046 28.0939 19.1183 26.3065 15.2389L30.6408 10.645C31.8276 9.42716 33.4571 8.71347 35.1337 8.71347ZM22.5412 14.6714L10.344 27.6255C9.29964 26.3105 8.33468 24.8983 7.48069 23.3565C3.13026 15.3691 2.92467 6.63597 7.02169 4.29839C8.88849 3.22677 11.483 3.6164 14.3148 5.38581C17.4161 7.33383 20.3264 10.6291 22.5412 14.6714Z"
+                  fill={
+                    LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
+                      ? "#393939"
+                      : "#1F4B7F"
+                  }
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M32.2528 54.6614C34.0086 54.6614 35.4319 55.8294 35.4319 57.2702C35.4319 58.711 34.0086 59.879 32.2528 59.879C32.2365 59.879 32.2202 59.8789 32.2039 59.8787L32.2528 62.4375L184.608 62.4375L187.301 59.8787C187.284 59.8789 187.269 59.879 187.252 59.879C185.496 59.879 184.073 58.711 184.073 57.2702C184.073 55.8294 185.496 54.6614 187.252 54.6614C187.269 54.6614 187.284 54.6615 187.301 54.6617V50.4067C187.284 50.4069 187.269 50.407 187.252 50.407C185.496 50.407 184.073 49.239 184.073 47.7982C184.073 46.3574 185.496 45.1894 187.252 45.1894H187.26L187.275 45.1895L187.284 45.1895L187.301 45.1897V41.5772C182.493 41.5772 178.595 38.3786 178.595 34.433C178.595 30.4875 182.493 27.2889 187.301 27.2889V23.7566C187.284 23.7569 187.269 23.757 187.252 23.757C185.496 23.757 184.073 22.5889 184.073 21.1481C184.073 19.7073 185.496 18.5393 187.252 18.5393C187.269 18.5393 187.284 18.5394 187.301 18.5396V14.2846C187.292 14.2847 187.284 14.2848 187.275 14.2849C187.268 14.2849 187.26 14.2849 187.252 14.2849C185.496 14.2849 184.073 13.1169 184.073 11.6761C184.073 10.2353 185.496 9.0673 187.252 9.0673C187.269 9.0673 187.284 9.06738 187.301 9.06762L185.147 6.42857L32.2039 6.96711L32.2039 9.06762C32.1876 9.06762 32.2202 9.06738 32.2039 9.06762C33.9597 9.06762 35.4319 10.2353 35.4319 11.6761C35.4319 13.1169 34.0086 14.2849 32.2528 14.2849C32.2365 14.2849 32.2202 14.2849 32.2039 14.2846V18.5396C32.2202 18.5394 32.2365 18.5393 32.2528 18.5393C34.0086 18.5393 35.4319 19.7073 35.4319 21.1481C35.4319 22.5889 34.0086 23.757 32.2528 23.757C32.2365 23.757 32.2202 23.7569 32.2039 23.7566V27.2889C37.0119 27.2889 41.9793 30.4875 41.9793 34.433C41.9793 38.3786 37.0119 41.5772 32.2039 41.5772V45.1897C32.2202 45.1895 32.2365 45.1894 32.2528 45.1894C34.0086 45.1894 35.4319 46.3574 35.4319 47.7982C35.4319 49.239 34.0086 50.407 32.2528 50.407C32.2365 50.407 32.2202 50.4069 32.2039 50.4067V54.6617C32.2202 54.6615 32.2365 54.6614 32.2528 54.6614Z"
+                  fill={
+                    LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
+                      ? "#393939"
+                      : "#1F4B7F"
+                  }
+                />
+              </svg>
+              <p
+                className={`md:text-[1.5vw] text-[3.5vw] pl-[.9vw] font-bold text-white absolute 
+                                      ${
+                                        LuxuryFind(
+                                          ticketDetails?.ticketInfo?.bustype
+                                        ) === true
+                                          ? "text-[#393939]"
+                                          : "text-[#1F487C]"
+                                      }`}
+              >
+                {`₹ ${
+                  calculateDiscountedFare(
+                    formatDate(ticketDetails?.ticketInfo?.Journey_Date),
+                    ticketDetails?.ticketInfo?.FareBreakup?.baseFare,
+                    tbs_discount
+                  ) +
+                  Number(
+                    Math.round(
+                      ticketDetails?.ticketInfo?.FareBreakup?.serviceTax
+                    )
+                  )
+                }`}
+              </p>
             </div>
           </div>
         </div>

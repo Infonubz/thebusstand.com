@@ -359,14 +359,13 @@ export default function MobileBillAddress({
                             onChange={(e) => {
                               setFieldValue("terms", e.target.checked);
                               setTermsChecked(e.target.checked);
-                              console.log(e.target.checked, "setTermsChecked");
                             }}
                           />
 
                           <p
                             className={` text-[4vw] underline ${LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
-                                ? "text-[#393939]"
-                                : "text-[#1F487C]"
+                              ? "text-[#393939]"
+                              : "text-[#1F487C]"
                               } `}
                             onClick={() => {
                               setOpenDrawer(true);
@@ -430,8 +429,8 @@ export default function MobileBillAddress({
                                   : "gray",
                             }}
                             className={`${termschecked && isValid && !enableInput
-                                ? "cursor-pointer"
-                                : "cursor-not-allowed"
+                              ? "cursor-pointer"
+                              : "cursor-not-allowed"
                               } w-full h-[8vw]  rounded-[2vw]  ml-[1vw]`}
                             disabled={!isAllDetailsFilled}
                           >
@@ -489,20 +488,36 @@ export default function MobileBillAddress({
         ></span>
         <div className="Legal-Information-Mobile overflow-y-auto max-h-screen px-[3vw] pt-[1vw]">
           {terms_conditions?.split("\r\n")?.map((line, index) => (
-            <p
-              key={index}
-              style={{
-                color:
-                  LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
-                    ? "#393939"
-                    : "#1F4B7F",
-              }}
-              className={`text-[4vw] pb-[0.75vw]`}
-            >
-              {line}
-            </p>
+            <div key={index} className="flex items-start pb-[1.5vw]"> 
+              <span
+                style={{
+                  color:
+                    LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
+                      ? "#393939"
+                      : "#1F4B7F",
+                }}
+                className="text-[4vw] mr-[1vw]"
+              >
+                •
+              </span>
+              <p
+                style={{
+                  color:
+                    LuxuryFind(MobBusDetails?.Bus_Type_Name) === true
+                      ? "#393939"
+                      : "#1F4B7F",
+                  lineHeight: "1.8",
+                }}
+                className="text-[4vw] leading-tight"
+              >
+                {line}
+              </p>
+            </div>
           ))}
         </div>
+
+
+
       </Drawer>
     </div>
   );

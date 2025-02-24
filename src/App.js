@@ -30,6 +30,7 @@ import MyAccountIndex from "./Componenets/Dashboard/MyAccount/MyAccountIndex";
 import Settings from "./Componenets/Dashboard/MyAccount/Settings";
 import IndexSeatLayout from "./Componenets/Dashboard/MobileSeatLayout/IndexSeatLayout"
 import IndexBlock from "./Componenets/Dashboard/MobileSeatLayout/IndexBlock";
+import MobileViewTicket from "./Componenets/Dashboard/MyAccount/ViewTicket/MobileViewTicket";
 function App() {
   function DashboardRoute({ element: Component }) {
     const departure = localStorage.getItem("departure");
@@ -69,6 +70,7 @@ function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/seats" element={<IndexSeatLayout />} />
           <Route path="/bookingDetails" element={<IndexBlock />}/>
+          <Route path="/bookedTicket" element={<MobileViewTicket />} />
         </Routes>
       </Router>
       {/* </ScrollToTop> */}

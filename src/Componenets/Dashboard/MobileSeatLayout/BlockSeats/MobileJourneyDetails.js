@@ -504,7 +504,7 @@ export default function MobileJourneyDetails({
                                     : "text-[#1F487C]"
                                   }`}
                               >
-                                {calculateDiscountedFare(
+                                ₹  {calculateDiscountedFare(
                                   MobBusDetails?.BUS_START_DATE,
                                   MobBusprice,
                                   tbs_discount

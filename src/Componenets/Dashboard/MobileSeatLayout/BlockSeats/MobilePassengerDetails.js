@@ -66,7 +66,6 @@ export default function MobilePassengerDetails({
   const busdetails1 = MobBusDetails;
   const seatDetails1 = MobSeatDetails;
   const discount1 = MobDiscount;
-  console.log(selectedSeats1, "selectedSeats1");
 
   // const validationSchema = Yup.object().shape({
   //   mobile: Yup.string()
@@ -119,7 +118,6 @@ export default function MobilePassengerDetails({
     type?.toLowerCase().includes("bharatBenz") ||
     type?.toLowerCase().includes("luxury");
 
-  console.log(registerfulldetails, "register_full_details");
   const [continuenext, setContinue] = useState(false);
   const [sumbitbutton, setSubmitButon] = useState(false);
 
@@ -156,7 +154,6 @@ export default function MobilePassengerDetails({
   const componentRef = useRef();
   const dispatch = useDispatch();
 
-  console.log(travelerDetails, "traveler_Details");
 
   //   const isAllDetailsFilled = Object?.values(travelerDetails).every(
   //     (traveler) =>
@@ -215,10 +212,7 @@ export default function MobilePassengerDetails({
         // If valid details, you can execute any additional logic here
         if (hasValidDetails) {
           // Add any logic for displaying the icon or other actions
-          console.log(
-            "Valid traveler details selected:",
-            updatedDetails[index]
-          );
+        
         }
 
         return updatedDetails;
@@ -334,7 +328,7 @@ export default function MobilePassengerDetails({
   // };
 
   const handlePromoCode = async () => {
-    console.log(promoCode, "Promocode Submit");
+    // console.log(promoCode, "Promocode Submit");
   };
 
   const handleBookingPrice = async () => {
@@ -342,13 +336,7 @@ export default function MobilePassengerDetails({
     const totalAmount = `${
       Number(discount1) + Number(Math.round(discount1 * 0.03))
     }`;
-    console.log(
-      totalAmount,
-      bookingId,
-      selectedSeats1,
-      busdetails1,
-      "busdetails1"
-    );
+ 
     setTimeout(() => {
       // setShowModal(false);
       setRatingModal(true);
@@ -410,7 +398,6 @@ export default function MobilePassengerDetails({
   //   }
   // }, [proceed]);
   const seatStatus = seatDetails1;
-  console.log(seatDetails1, selectedSeats1, "seatStatusseatStatus");
 
   useEffect(() => {
     setTravelerDetails(
@@ -419,7 +406,6 @@ export default function MobilePassengerDetails({
         const seatStatus = seatDetails1?.[seat]?.Status;
 
         // Determine gender based on the seatStatus
-        console.log(seatStatus, "seatStatus888888");
 
         let gender = "male"; // Default to male
         if (seatStatus === "F") {
@@ -469,7 +455,6 @@ export default function MobilePassengerDetails({
 
   useEffect(() => {
     const handleTicketDetail = async () => {
-      console.log(busBookingId, "response for ticket id");
       //   try {
       //     const response = await TicketViewDetails(busBookingId, mobileInput);
       //     setTicketDetail(response);
@@ -479,7 +464,6 @@ export default function MobilePassengerDetails({
       //   }
     };
 
-    console.log(busBookingId, "response for ticket id");
     if (busBookingId) {
       handleTicketDetail();
     }
@@ -487,7 +471,6 @@ export default function MobilePassengerDetails({
 
   useEffect(() => {
     const fetchGetPassenger = async () => {
-      console.log(passengerId, "passengerId");
       const updateData = passengerId;
       //   try {
       //     const data = await GetPassengById(updateData);
@@ -497,7 +480,6 @@ export default function MobilePassengerDetails({
       //   }
     };
 
-    console.log(passengerId, "passengerId");
     if (passengerId) {
       fetchGetPassenger();
     }
@@ -559,10 +541,7 @@ export default function MobilePassengerDetails({
 
   // const borderColor =
   //   busdetails1?.bus_type_status === "luxury" ? "#393939" : colorcode.theme;
-  console.log(
-    MobBusDetails?.Bus_Type_Name === true,
-    "seatDetails1seatDetails1"
-  );
+
   const getSeatColor = (index, travelerDetails, BusDetails, enableInput) => {
     const isMale =
       travelerDetails?.[index]?.gender === "male" || !travelerDetails?.[index];
@@ -607,12 +586,7 @@ export default function MobilePassengerDetails({
         isSelected || isEmpty ? (isLuxury ? "#393939" : "#1F4B7F") : "",
     };
   };
-  console.log(
-    travelerDetails,
-    mobileInput,
-    emailInput,
-    "travsdddddddddddddddddddd"
-  );
+
   const [isEmpty, setIsEmpty] = useState(true);
 
   useEffect(() => {

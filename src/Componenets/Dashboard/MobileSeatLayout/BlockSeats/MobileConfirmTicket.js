@@ -22,13 +22,17 @@ export default function MobileConfirmTicket({
   faredetails,
   emailInput,
   mobileInput,
+  droppingDate,
+  ticketNo, setTicketNo,
+  ticketLoader, setTicketLoader
 }) {
   const navigation = useNavigate();
   const [promoCode, setPromoCode] = useState("");
   const [ticektConfirm, setTicektConfirm] = useState(false);
-  const [ticketNo, setTicketNo] = useState("");
+  // const [ticketNo, setTicketNo] = useState("");
   const [navigate, setNavigate] = useState(false);
   const tbs_discount = useSelector((state) => state?.live_per);
+  const ticketlist = useSelector((state) => state?.get_ticket_detail);
 
   const closeModal = () => {
     setTicektConfirm(false);
@@ -37,7 +41,6 @@ export default function MobileConfirmTicket({
   const seatTaxList = Object.values(MobSeatDetails)
     .map((item) => item?.tax?.split(",")[0])
     .filter((tax) => tax);
-  console.log(MobSeatDetails, "seatTaxListseatTaxList");
   const totaltax =
     seatTaxList?.length > 0 &&
     seatTaxList?.reduce((a, b) => {
@@ -52,13 +55,12 @@ export default function MobileConfirmTicket({
   const { handleSubmit, handleChange, isSubmitting, isValid, values } =
     useFormikContext();
   const handlePromoCode = async () => {
-    console.log(promoCode, "Promocode Submit");
   };
   const dispatch = useDispatch();
   const [spinning, setSpinning] = useState(false);
   const handleBookingPrice = async () => {
+    setTicketLoader(true)
     try {
-      console.log("Calling API...");
       const response = await Abhibus_SeatConfirmed(MobBusDetails, confirmRefNo);
       if (response?.status === "success") {
         // toast.success(`Ticket Booked Successfully, your TicketNo: ${response?.TicketNo}`);
@@ -73,10 +75,7 @@ export default function MobileConfirmTicket({
         sessionStorage.setItem("ticket_view", "open");
         setTicketNo(response?.TicketNo);
         setTicektConfirm(true);
-        console.log(ticketNo, "ticket_No");
       }
-      console.log(response, "API Response");
-      console.log(response);
     } catch (error) {
       console.error("API call failed:", error);
     }
@@ -127,12 +126,12 @@ export default function MobileConfirmTicket({
         description: "For testing purposes",
         // image: logo,
         handler: async function (response) {
-          console.log(response, "responseresponsrazorpaye");
           if (response?.razorpay_payment_id) {
             handleBookingPrice();
           }
-          toast.success(`Payment ID: ${response.razorpay_payment_id}`);
+          // toast.success(`Payment ID: ${response.razorpay_payment_id}`);
           //   alert(`Payment ID: ${response.razorpay_payment_id}`);
+        
         },
         prefill: {
           name: "Nubiznez",
@@ -160,11 +159,10 @@ export default function MobileConfirmTicket({
     <div>
       <div className="grid grid-cols-1  gap-[2vw] h-[5vw]">
         <div
-          className={`${
-            LuxuryFind(MobBusDetails.Bus_Type_Name) === true
-              ? "bg-[#FFEEC9]"
-              : "bg-white"
-          } col-span-1 h-[67vw]  w-full rounded-[1.5vw]`}
+          className={`${LuxuryFind(MobBusDetails.Bus_Type_Name) === true
+            ? "bg-[#FFEEC9]"
+            : "bg-white"
+            } col-span-1 h-[67vw]  w-full rounded-[1.5vw]`}
           style={{
             boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
           }}
@@ -210,7 +208,7 @@ export default function MobileConfirmTicket({
                     <div className="col-span-9 flex flex-col w-full">
                       <p
                         className=" text-[3.3vw] font-bold"
-                        // style={{ color: "#1F487C" }}
+                      // style={{ color: "#1F487C" }}
                       >
                         {item.Coupon}
                       </p>
@@ -267,7 +265,6 @@ export default function MobileConfirmTicket({
                     onChange={(e) => {
                       setPromoCode(e.target.value);
                       handleChange(e);
-                      console.log(e.target.value, "promoCode11");
                     }}
                   />
                   <button
@@ -290,11 +287,10 @@ export default function MobileConfirmTicket({
           </div>
         </div>
         <div
-          className={`${
-            LuxuryFind(MobBusDetails.Bus_Type_Name) === true
-              ? "bg-[#FFEEC9]"
-              : "bg-white"
-          } col-span-1 h-[40vw]  w-full rounded-[0.5vw]`}
+          className={`${LuxuryFind(MobBusDetails.Bus_Type_Name) === true
+            ? "bg-[#FFEEC9]"
+            : "bg-white"
+            } col-span-1 h-[40vw]  w-full rounded-[0.5vw]`}
           style={{
             boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
           }}

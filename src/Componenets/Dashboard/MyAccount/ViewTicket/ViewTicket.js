@@ -236,7 +236,20 @@ export default function ViewTicket() {
     console.log(date, "modfuhdifhdataadff");
     return <div>{modifiedDate}</div>;
   };
+  const [dropDate, setDropDate] = useState();
 
+  useEffect(() => {
+    setDropDate(ConvertDate(calculatedDate));
+  }, []);
+
+  const handleNavigation = () => {
+    navigation(`/bookedTicket`, {
+      state: {
+        ticketDetails: ticketDetails?.ticketInfo,
+        droppingDate: dropDate?.props?.children,
+      },
+    });
+  };
   return (
     <div>
       <Formik
@@ -581,7 +594,7 @@ export default function ViewTicket() {
                               : "bg-[#1F487C]"
                           }  text-[3.6vw] md:text-[1.1vw] font-bold rounded-full text-white md:w-[15vw] md:h-[3vw] w-[20vw] h-[7vw] outline-none`}
                         >
-                          <span className="md:hidden block">VIEW</span>{" "}
+                          <span className="md:hidden block" onClick={handleNavigation}>VIEW</span>{" "}
                           <span
                             className="md:block hidden"
                             onClick={() => {

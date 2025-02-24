@@ -29,6 +29,7 @@ import FooterTwo from "../../Home/Footer/Footer-Two/FooterTwo";
 import FooterThree from "../../Home/Footer/Footer-Three/FooterThree";
 import CancelIndex from "./CancelTicket/CancelIndex";
 import { decryptData } from "../../Common/Common-Functions/Encrypt-Decrypt";
+import MyBookingIndex from "./MyBookings/Index";
 
 export default function MyAccountIndex() {
   const [currenttab, setCurrentTab] = useState();
@@ -324,7 +325,7 @@ export default function MyAccountIndex() {
                         />
                       )}
                       {currenttab === 2 && <PassengerIndex />}
-                      {/* {currenttab === 3 && <MyBookingIndex />} */}
+                      {currenttab === 3 && <MyBookingIndex />}
                       {currenttab === 4 && <ReferralsIndex />}
                       {currenttab === 5 && <ViewTicket />}
                       {currenttab === 6 && <CancelIndex />}

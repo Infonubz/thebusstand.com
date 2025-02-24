@@ -521,6 +521,7 @@ export default function IndexSeatLayout() {
                     busdatas: busdatas
                   },
                 });
+                sessionStorage.removeItem("ticket_view")
               } else {
                 setCurrentTab(2);
               }

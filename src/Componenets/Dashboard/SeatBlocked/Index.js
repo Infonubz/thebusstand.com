@@ -14,6 +14,7 @@ import { Drawer, Skeleton } from "antd";
 import { useSelector } from "react-redux";
 import ViewFullTicket from "../MyAccount/ViewTicket/ViewFullTicket";
 import busloading from "../../../Assets/Gif/bus.gif";
+import dayjs from "dayjs";
 export default function DrawerIndex({
   BusDetails,
   layout,
@@ -116,9 +117,8 @@ export default function DrawerIndex({
       .matches(/^[A-Za-z\s]+$/, "InValid Names for State")
       .required("State is required"),
     pincode: Yup.number()
-      .min(100000, 'Pincode must be at least 6 digits')
-      .max(999999, 'Pincode must be a 6-digit number')
-
+      .min(100000, "Pincode must be at least 6 digits")
+      .max(999999, "Pincode must be a 6-digit number"),
   });
 
   const getPassengerCount = (data) => {
@@ -140,7 +140,6 @@ export default function DrawerIndex({
   );
 
   const handleSubmit = async (values) => {
-
     try {
       const response = await Abhibus_SeatBlocked(
         BusDetails,
@@ -164,8 +163,7 @@ export default function DrawerIndex({
             response?.ReferenceNo
           );
           setFareDetails(data?.GetFaresInfo);
-        } catch {
-        }
+        } catch {}
       }
     } catch (error) {
       console.error("API call failed:", error);
@@ -185,7 +183,14 @@ export default function DrawerIndex({
   );
 
   const ticketlist = useSelector((state) => state?.get_ticket_detail);
+
   const [showModal, setShowModal] = useState(false);
+  const [calArrival, setCalArrival] = useState({
+    journeyDate: ticketlist?.ticketInfo?.originStartTime,
+    starTime: ticketlist?.ticketInfo?.Start_Time,
+    endTime: ticketlist?.ticketInfo?.Arr_Time,
+  });
+  console.log(calArrival, "calArrival");
 
   useEffect(() => {
     const value = sessionStorage.getItem("ticket_view");
@@ -196,7 +201,6 @@ export default function DrawerIndex({
     }
   }, [sessionStorage.getItem("ticket_view")]);
 
-
   useEffect(() => {
     if (confirmModal) {
       const element = document.getElementById("targetSection");
@@ -205,6 +209,144 @@ export default function DrawerIndex({
       }
     }
   }, [confirmModal]);
+
+  const getDaySuffix = (day) => {
+    // Check for the special case of 11th, 12th, and 13th
+    if (day >= 11 && day <= 13) return "th";
+
+    // Use the last digit of the day to determine the suffix
+    switch (day % 10) {
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
+    }
+  };
+  const [calculatedDate, setCalculatedDate] = useState("");
+
+  const ConvertDate = (date) => {
+    // Get the day of the month
+    const day = dayjs(date)?.date();
+
+    // Get the suffix for the day (st, nd, rd, th)
+    const dayWithSuffix = day + getDaySuffix(day);
+
+    // Format the date to 'Thu, 6th Feb 2025'
+    const formattedDate = dayjs(date)?.format(`ddd, MMM YYYY`);
+    // const formattedDate = format(new Date(calculatedDate), `EEE, MMM yyyy`);
+    const dateParts = formattedDate?.split(" ");
+    dateParts?.splice(1, 0, `${dayWithSuffix}`);
+    const modifiedDate = dateParts?.join(" ");
+    console.log(date, "modfuhdifhdataadff");
+    return modifiedDate;
+  };
+
+  // const calculateArrivalDate = (boardingDateTime, arrTime) => {
+  //   // Parse the boarding date and time (in "YYYY-MM-DD HH:mm" format)
+  //   const [datePart, timePart] = boardingDateTime?.split(" ");
+  //   const [year, month, day] = datePart?.split("-");
+  //   const [startHours, startMinutes] = timePart?.split(":")?.map(Number);
+
+  //   // Create a Date object with the parsed values
+  //   const journeyDateObj = new Date(
+  //     year,
+  //     month - 1,
+  //     day,
+  //     startHours,
+  //     startMinutes
+  //   );
+
+  //   // Extract hours and minutes from Arrival Time (in "HH:mm:ss" format)
+  //   const [arrHours, arrMinutes, arrSeconds] = arrTime?.split(":")?.map(Number);
+
+  //   // Calculate the arrival time by adding hours and minutes from "Arrival_Time"
+  //   const arrivalDateObj = new Date(journeyDateObj);
+  //   arrivalDateObj?.setHours(arrivalDateObj?.getHours() + arrHours);
+  //   arrivalDateObj?.setMinutes(arrivalDateObj?.getMinutes() + arrMinutes);
+  //   arrivalDateObj?.setSeconds(arrivalDateObj?.getSeconds() + arrSeconds);
+
+  //   return arrivalDateObj;
+  // };
+
+  const calculateArrivalDate = (boardingDateTime, arrTime) => {
+    if (!boardingDateTime || !arrTime) {
+      throw new Error(
+        "Invalid input: boardingDateTime and arrTime must be provided."
+      );
+    }
+
+    // Parse the boarding date and time (in "YYYY-MM-DD HH:mm" format)
+    const [datePart, timePart] = boardingDateTime?.split(" ");
+    if (!datePart || !timePart) {
+      throw new Error(
+        'Invalid boardingDateTime format. Expected "YYYY-MM-DD HH:mm".'
+      );
+    }
+
+    const [year, month, day] = datePart?.split("-");
+    const [startHours, startMinutes] = timePart?.split(":").map(Number);
+    if (isNaN(startHours) || isNaN(startMinutes)) {
+      throw new Error("Invalid time format in boardingDateTime.");
+    }
+
+    // Create a Date object with the parsed values
+    const journeyDateObj = new Date(
+      year,
+      month - 1,
+      day,
+      startHours,
+      startMinutes
+    );
+
+    // Extract hours and minutes from Arrival Time (in "HH:mm:ss" format)
+    const [arrHours, arrMinutes, arrSeconds] = arrTime.split(":").map(Number);
+    if (isNaN(arrHours) || isNaN(arrMinutes) || isNaN(arrSeconds)) {
+      throw new Error("Invalid time format in arrTime.");
+    }
+
+    // Calculate the arrival time by adding hours and minutes from "arrTime"
+    const arrivalDateObj = new Date(journeyDateObj);
+    arrivalDateObj.setHours(arrivalDateObj.getHours() + arrHours);
+    arrivalDateObj.setMinutes(arrivalDateObj.getMinutes() + arrMinutes);
+    arrivalDateObj.setSeconds(arrivalDateObj.getSeconds() + arrSeconds);
+
+    return arrivalDateObj;
+  };
+
+  useEffect(() => {
+    if (ticketlist?.status === "success" && calArrival) {
+      setCalArrival({
+        journeyDate: ticketlist?.ticketInfo?.originStartTime,
+        starTime: ticketlist?.ticketInfo?.Start_Time,
+        endTime: ticketlist?.ticketInfo?.Arr_Time,
+      });
+      // if (ticketlist?.status === "success") {
+      // alert("heieei")
+      const values = calculateArrivalDate(
+        ticketlist?.ticketInfo?.originStartTime,
+        ticketlist?.ticketInfo?.Arr_Time
+      );
+      console.log(
+        ticketlist?.ticketInfo?.originStartTime,
+        ticketlist?.ticketInfo?.Arr_Time,
+        "vashdfkjdhkjfsdd"
+      );
+      setCalculatedDate(values);
+      //setShowModal(true);
+      console.log(
+        (ticketlist?.ticketInfo?.Journey_Date,
+        ticketlist?.ticketInfo?.Start_Time,
+        ticketlist?.ticketInfo?.Arr_Time),
+        calculatedDate && ConvertDate(calculatedDate),
+        "helldfhkdxjhfkdjhfkxdjhf"
+      );
+      // }
+    }
+  }, [ticketlist]);
 
   return (
     <>
@@ -228,8 +370,8 @@ export default function DrawerIndex({
             email: emailInput || "",
             mobile:
               mobileInput &&
-                mobileInput !== "undefined" &&
-                mobileInput !== "null"
+              mobileInput !== "undefined" &&
+              mobileInput !== "null"
                 ? mobileInput
                 : "",
             user_name:
@@ -350,6 +492,8 @@ export default function DrawerIndex({
                               setRazorpayLoading={setRazorpayLoading}
                               setTicketNumber={setTicketNumber}
                               setTicketLoading={setTicketLoading}
+                              selectedRoutes={selectedRoutes}
+                              travelerDetails={travelerDetails}
                             />
                           </div>
                         )}
@@ -361,7 +505,9 @@ export default function DrawerIndex({
                     <ViewFullTicket
                       ticketnumber={ticketnumber}
                       ticketDetails={ticketlist}
-                    // droppingDate={calculatedDate && ConvertDate(calculatedDate)}
+                      droppingDate={
+                        calculatedDate && ConvertDate(calculatedDate)
+                      }
                     />
                   </div>
                 ) : (

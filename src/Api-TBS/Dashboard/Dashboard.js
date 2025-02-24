@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { GET_OPERATOR_LIST } from "../../Store/Type";
 import { decryptData } from "../../Componenets/Common/Common-Functions/Encrypt-Decrypt";
+import { useParams } from "react-router";
 
 //import { object } from "yup";
 
@@ -59,45 +60,110 @@ export const TBS_Booking_Details = async (
   ticketdetails,
   email,
   mobile,
-  msg
+  msg,
+  BusDetails,
+  arraivaldate,
+  selectedRoutes,
+  seatDetails,
+  currentpath
 ) => {
-  console.log(
-    ticketdetails,
-    "ticketdetailsticketdetailsticketdetails",
-    ticketdetails?.ticket_det?.[0]?.Passenger_Name
-  );
+  console.log(ticketdetails, "ticketdetailsticketdetailsticketdetails");
+  const l_user_id = sessionStorage.getItem("user_id");
+  const l_email_id = sessionStorage.getItem("user_email_id");
+  const l_mobile = sessionStorage.getItem("user_mobile");
+  const l_name = sessionStorage.getItem("user_name");
+  const login_name = decryptData(l_name);
+  const login_email_id = decryptData(l_email_id);
+  const login_mobile = decryptData(l_mobile);
+  const login_user_id = decryptData(l_user_id);
 
   const payload = {
-    login_user_id: "",
-    login_user_email: "",
-    login_user_mobile: "",
-    name: ticketdetails?.ticket_det?.[0]?.Passenger_Name,
+    login_user_id: login_user_id,
+    login_user_email: login_email_id,
+    login_user_mobile: login_mobile,
+    name: login_name ? login_name : null,
     email: email,
     mobile: mobile,
     ticket_no: TicketNo,
     pnr_no: TicketNo,
-    source_id: "",
-    source_name: "",
-    pickup_point_id: "",
-    pickup_point_name: "",
-    depature_date: "",
-    depature_time: "",
-    destination_id: "",
-    destination_name: "",
-    droping_point_id: "",
-    droping_point_name: "",
-    arrival_date: "",
-    arraival_time: "",
-    operator_id: "",
-    operator_name: "",
-    passenger_details: "",
+    source_id: currentpath?.source_ID,
+    source_name: currentpath?.source_name,
+    pickup_point_id: selectedRoutes?.dep_route_id,
+    pickup_point_name: selectedRoutes?.dep_route,
+    depature_date: BusDetails?.BUS_START_DATE,
+    depature_time: BusDetails?.Start_time,
+    destination_id: currentpath?.destionation_ID,
+    destination_name: currentpath?.destination_name,
+    droping_point_id: selectedRoutes?.arr_route_id,
+    droping_point_name: selectedRoutes?.arri_route,
+    arrival_date: arraivaldate,
+    arraival_time: BusDetails?.Arr_Time,
+    operator_id: BusDetails?.operatorId,
+    operator_name: BusDetails?.Traveler_Agent_Name,
+    passenger_details: ticketdetails?.ticket_det,
     payment_status: msg,
     razorpay_order_id: order_id,
     razorpay_payment_id: payment_id,
     razorpay_signature: signature,
+    total_fare: null,
   };
 
   const url = `${apiUrl}/tbsbookinghistory`;
+  const method = "post";
+  try {
+    const response = await api({
+      method,
+      url,
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response, "locationdatas");
+    console.log(response.data, "submitlocationdata");
+    return response.data;
+    //  const response = await axios.get(`${apiUrl}/operator-names/${operator}`);
+  } catch (error) {
+    handleError(error);
+  }
+};
+export const TBS_Booking_Cancellation = async (
+  passengerDetails,
+  currentpath,
+  selectedRowsData,
+  partialCancellation,
+  NewPNR
+) => {
+  const l_user_id = sessionStorage.getItem("user_id");
+  const l_email_id = sessionStorage.getItem("user_email_id");
+  const l_mobile = sessionStorage.getItem("user_mobile");
+  const l_name = sessionStorage.getItem("user_name");
+  const login_name = decryptData(l_name);
+  const login_email_id = decryptData(l_email_id);
+  const login_mobile = decryptData(l_mobile);
+  const login_user_id = decryptData(l_user_id);
+
+  const payload = {
+    login_user_id: login_user_id,
+    login_user_email: login_email_id,
+    login_user_mobile: login_mobile,
+    ticket_no: passengerDetails.Ticket_no,
+    pnr_no: passengerDetails.Ticket_no,
+    source_name: passengerDetails?.source_name,
+    pickup_point_name: passengerDetails?.Boarding_Place_Name,
+    depature_date: passengerDetails?.Journey_Date,
+    depature_time: passengerDetails?.Boarding_Place_Name,
+    destination_name: passengerDetails?.dest_name,
+    droping_point_name: null,
+    arrival_date: null,
+    arraival_time: passengerDetails?.Arr_Time,
+    operator_name: passengerDetails?.operatorname,
+    passenger_details: selectedRowsData,
+    partialcancellation: partialCancellation == 0 ? true : false,
+    new_ticket_no: NewPNR ? NewPNR : null,
+  };
+
+  const url = `${apiUrl}/cancellation`;
   const method = "post";
   try {
     const response = await api({

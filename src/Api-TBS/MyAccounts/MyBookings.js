@@ -1,11 +1,8 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import {
-  BOOKING_DETAILS_STATUS,
-  GET_BOOKING_DETAILS,
-  GET_TICKET_TO_CANCEL,
-} from "../../Store/Type";
+
 import { string } from "yup";
+import { BOOKING_DETAILS_STATUS } from "../../Store/Type";
 
 const api = axios.create({
   headers: {
@@ -14,16 +11,16 @@ const api = axios.create({
 });
 const apiUrl = process.env.REACT_APP_API_URL;
 
-export const GetBookingDetails = async (mbleNum, dispatch) => {
-  try {
-    const response = await axios.get(`${apiUrl}/booking_details/${mbleNum}`);
-    dispatch({ type: GET_BOOKING_DETAILS, payload: response.data });
-    console.log(response, "response for bookingDetails");
-    return response.data;
-  } catch (error) {
-    handleError(error);
-  }
-};
+// export const GetBookingDetails = async (mbleNum, dispatch) => {
+//   try {
+//     const response = await axios.get(`${apiUrl}/booking_details/${mbleNum}`);
+//     dispatch({ type: GET_BOOKING_DETAILS, payload: response.data });
+//     console.log(response, "response for bookingDetails");
+//     return response.data;
+//   } catch (error) {
+//     handleError(error);
+//   }
+// };
 
 export const SendBookingDetails = async (
   busdetails,
@@ -176,15 +173,15 @@ export const sendBookingPrice = async (
 };
 export const GetBookingStatusDetails = async (
   statusid,
-  Number,
+  user_id,
   dispatch,
   setSpinning
 ) => {
   try {
-    const response = await axios.post(`${apiUrl}/${statusid}`, {
-      mobile_number: Number,
+    const response = await axios.post(`${apiUrl}/journey/${statusid}`, {
+      login_user_id: user_id,
     });
-    dispatch({ type: BOOKING_DETAILS_STATUS, payload: response.data });
+    dispatch({ type: BOOKING_DETAILS_STATUS, payload: response?.data?.data });
     console.log(response.data, "upcomingdata");
     return response.data;
   } catch (err) {
@@ -205,7 +202,7 @@ export const GetCancelTicket = async (
       mobile_number: mobileNum,
       Booking_Id: busBookingId,
     });
-    dispatch({ type: GET_TICKET_TO_CANCEL, payload: response.data });
+    // dispatch({ type: GET_TICKET_TO_CANCEL, payload: response.data });
     console.log(response.data, "canceldetails");
   } catch (err) {
     handleError(err);

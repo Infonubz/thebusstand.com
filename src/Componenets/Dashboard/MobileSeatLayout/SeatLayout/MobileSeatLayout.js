@@ -69,8 +69,7 @@ export default function MobileSeatLayout({
   const lowerdeckcol = lowerdeckc?.length > 0 ? Math.max(...lowerdeckc) : [];
   const upperdeckrow = Math.max(upperdeck?.map((item) => item.x));
   const upperdeckcol = upperdeckc?.length > 0 ? Math.max(...upperdeckc) : [];
-  console.log(lowerdeckrow, upperdeckrow, "lowerdeckrowlowerdeckrow");
-  console.log(lowerdeckcol, "lowerdeckcol", upperdeckcol, "upperdeckcol");
+
 
   const handleSeatClick = (seat) => {
     if (seat.isBooked === true) return;

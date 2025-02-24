@@ -144,9 +144,6 @@
   overflow: auto;
 }
 
-
-
-
 :where(.css-5wsri9).ant-drawer .ant-drawer-body {
   padding: 0;
 }
@@ -223,7 +220,6 @@
   border-radius: 0.2vw 0vw 0vw 0.2vw; /* You can modify the border radius */
 }
 /* ------MobileSelect---- */
-
 
 /* ------MobileSelect---- */
 
@@ -365,7 +361,6 @@
   padding-inline-end: 1vw !important;
 }
 
-
 .custom-rate .ant-rate-star {
   transition: color 0.0001s ease;
 }
@@ -423,8 +418,22 @@
   display: none;
   transition: all 2s;
 }
- 
+
 .hovsvg:hover + .hovcontent {
   display: block;
 }
- 
+.ant-table-tbody > tr > th,
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid #1f4b7f; /* Row bottom border */
+  padding: 0; /* Adjust padding as needed */
+}
+.ant-table-tbody .ant-table-cell {
+  padding: 0.1vw !important; /* Remove default padding for body cells */
+  border-right: 1px solid #1f4b7f; /* Add right border to body cells */
+}
+
+.ant-table {
+  border-radius: 1vw; /* Rounded corners */
+  overflow: hidden; /* Ensure rounded corners are visible */
+  border: 0.1vw solid #1f4b7f; /* Border around the table */
+}

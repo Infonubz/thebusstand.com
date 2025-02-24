@@ -123,7 +123,7 @@ export const PreCancelTicket = async (values) => {
     console.error(err, "Error in the response");
   }
 };
-export const CancelTicket = async (values, info) => {
+export const CancelTicket = async (values, info, partialCancellation) => {
   const cancelseat = values?.seat_numbers?.map((item) => item).join(",");
   const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -135,7 +135,7 @@ export const CancelTicket = async (values, info) => {
       <tns:phoneNum>${info?.phoneNumber}</tns:phoneNum>
       <tns:operatorId>100</tns:operatorId>
       <tns:cancelSeats>${cancelseat}</tns:cancelSeats>
-      <tns:partialCancellation>0</tns:partialCancellation>
+      <tns:partialCancellation>${partialCancellation}</tns:partialCancellation>
     </tns:CancelTicket>
   </soap:Body>
 </soap:Envelope>
