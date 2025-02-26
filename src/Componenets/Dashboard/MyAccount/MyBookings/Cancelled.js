@@ -12,7 +12,10 @@ import { Spin } from "antd";
 import { HiTicket } from "react-icons/hi2";
 import { capitalizeFirstLetter } from "../../../Common/Common-Functions/Captalization";
 import ViewFullTicket from "../ViewTicket/ViewFullTicket";
-import { GetBookingStatusDetails } from "../../../../Api-TBS/MyAccounts/MyBookings";
+import {
+  GetBookingStatusDetails,
+  GetCancelDetails,
+} from "../../../../Api-TBS/MyAccounts/MyBookings";
 import { decryptData } from "../../../Common/Common-Functions/Encrypt-Decrypt";
 import { GET_TICKET_DETAILS } from "../../../../Store/Type";
 import { ViewTicketById } from "../../../../Api-Abhibus/MyAccount/ViewTicket";
@@ -82,7 +85,7 @@ export default function Cancelled() {
     const user_id = sessionStorage.getItem("user_id");
     const login_user_id = decryptData(user_id);
     setSpinning1(true);
-    GetBookingStatusDetails(statusid, login_user_id, dispatch, setSpinning1);
+    GetCancelDetails(statusid, login_user_id, dispatch, setSpinning1);
   }, [dispatch]);
 
   const [viewmodalIsOpen, setViewModalIsOpen] = useState(false);
@@ -260,7 +263,7 @@ export default function Cancelled() {
                           <label
                             className={`md:block hidden md:text-[1.1vw] text-[2.6vw] text-[#1F487C]`}
                           >
-                            {capitalizeFirstLetter(item.status)}
+                            Cancelled{" "}
                           </label>
                           {/* <div className="h-[0.5vw] w-[0.5vw] bg-[#1F487C] rounded-full"></div> */}
                           <label
@@ -279,14 +282,14 @@ export default function Cancelled() {
                         </div>
                       </div>
                       <div className={`md:col-span-1 col-span-2`}>
-                        <button
+                        {/* <button
                           onClick={() => {
                             handleviewticket(item?.ticket_no);
                           }}
                           className={`md:block hidden bg-[#1F487C] text-[1.1vw] font-bold rounded-full text-white w-[15vw] h-[3vw]`}
                         >
                           VIEW BOOKING
-                        </button>
+                        </button> */}
                         <div className="flex flex-col ">
                           <label
                             className={`md:text-[1.1vw] md:hidden block text-[3.5vw] font-semibold text-[#1F487C] `}
@@ -440,7 +443,7 @@ export default function Cancelled() {
                       <div className={`md:block hidden w-full col-span-2  `}>
                         <div className={`flex justify-center`}>
                           {console.log(
-                            item?.passenger_details?.length,
+                            item?.passenger_details,
                             "lengthhhhhhhhhhhhhhhhhhhhh"
                           )}
                           <div
@@ -451,9 +454,9 @@ export default function Cancelled() {
                             }`}
                           >
                             {item?.passenger_details?.map((list) =>
-                              list?.Passenger_Name?.length > 10 ? (
+                              list?.name?.length > 10 ? (
                                 <Tooltip
-                                  title={list.Passenger_Name}
+                                  title={list.name}
                                   color="white"
                                   placement="bottom"
                                   overlayInnerStyle={{
@@ -478,12 +481,12 @@ export default function Cancelled() {
                                     <span
                                       className={`md:text-[1.1vw] text-[3vw] text-[#1F487C] font-bold`}
                                     >
-                                      {list?.Passenger_Name?.length > 10
-                                        ? `${list.Passenger_Name.slice(
+                                      {list?.name?.length > 10
+                                        ? `${list.name.slice(
                                             0,
                                             10
                                           )}...`
-                                        : list.Passenger_Name}
+                                        : list.name}
                                       {/* {(list.user_name)} */}
                                     </span>
                                   </label>

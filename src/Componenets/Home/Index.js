@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import About from "./TBS/About/About";
 import { decryptData } from "../Common/Common-Functions/Encrypt-Decrypt";
+import { Abhibus_GetStations } from "../../Api-Abhibus/Home/HomePage";
 export default function HomeIndex() {
   const currentpath = useParams();
   const dispatch = useDispatch();
@@ -47,7 +48,9 @@ export default function HomeIndex() {
   } else {
     console.log("No user ID found in session storage.");
   }
-
+  useEffect(() => {
+    Abhibus_GetStations();
+  }, []);
   return (
     <div
       className={`bg-[#E5FFF1]  min-h-screen max-h-auto w-full overflow-auto relative`}

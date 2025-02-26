@@ -70,8 +70,8 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
         passenger.gender === "male"
           ? "AFM"
           : passenger.gender === "female"
-          ? "AFF"
-          : "AFA",
+            ? "AFF"
+            : "AFA",
     }));
   }, [passengerDetails]);
 
@@ -86,8 +86,8 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
       selectedRowsData?.length === passengerDetails?.ticket_det?.length ? 1 : 0;
     try {
       const response = await CancelTicket(deleteId, info, partialCancellation);
-      console.log(response,"responseresponssdcdscsdcdse");
-      
+      console.log(response, "responseresponssdcdscsdcdse");
+
       if (response?.status === "success") {
         const data = await TBS_Booking_Cancellation(
           passengerDetails,
@@ -112,6 +112,7 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
       seat_numbers: [],
       status: [],
     });
+    
   };
 
   const handleSelectAll = (e) => {
@@ -265,6 +266,55 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
     //     </div>
     //   ),
     // },
+  ];
+
+
+  const mobileColumn = [
+    {
+      title: (
+        <span className="flex items-center justify-center">
+          <input
+            type="checkbox"
+            className="border-white h-[3.2vw] w-[3.2vw] md:h-[1.3vw] md:w-[1.3vw] mt-[1vw] md:mt-[.3vw] cursor-pointer"
+            indeterminate={
+              selectedRowsData?.length > 0 &&
+              selectedRowsData?.length < passengerData?.length
+            }
+            autoComplete="off"
+            checked={selectedRowsData?.length === passengerData?.length}
+            onChange={handleSelectAll}
+          />{" "}
+          {/* <span className={`text-[3.5vw] md:text-[1.2vw]`}>Select</span> */}
+        </span>
+      ),
+      width: "8%",
+      render: (_, record) => (
+        <input
+          type="checkbox"
+          className="border-black h-[3.2vw] w-[3.2vw] md:h-[1.3vw] md:w-[1.3vw] mt-[.5vw] cursor-pointer"
+          checked={selectedRowsData?.some((item) => item.key === record.key)}
+          onChange={(e) => handleRowSelection(record, e.target.checked)}
+        />
+      ),
+    },
+    {
+      title: <div className={`text-[4.5vw] md:text-[1.2vw]`}>Passenger Details</div>,
+      width: "65%",
+      render: (row) => (
+        <div className="text-start px-[2vw] break-words ">
+          <h1 className="text-[4.5vw] md:text-[1vw] w-[85%] break-words font-semibold">{row.name} , {row.gender[0]} / {row.age}</h1>
+        </div>
+      ),
+    },
+    {
+      title: <div className={`text-[4.5vw] md:text-[1.2vw]`}>Seat NO</div>,
+      width: "25%",
+      render: (row) => (
+        <div className="flex justify-center">
+          <h1 className="text-[4vw] md:text-[1vw] font-semibold">{row.seat}</h1>
+        </div>
+      ),
+    },
   ];
 
   const getRandomColor = () => {
@@ -506,12 +556,12 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
         // </span>
         <div className="flex items-center justify-between">
           <>
-            <div>
+            <div className='md:block hidden'>
               <label className="text-[1.2vw] text-[#1F487C] font-extrabold">
                 {passengerDetails?.operatorname}
                 <span className="text-[1vw] pl-[1vw] font-semibold text-gray-500">{`( ${passengerDetails?.bustype} )`}</span>
               </label>
-              <div className="mt-[0.5vw] mb-[1.5vw] flex items-center gap-x-[2vw]">
+              <div className="mt-[0.5vw] mb-[1.5vw] flex justify-between gap-x-[2vw] w-full">
                 <div className="flex flex-col">
                   {/* <label className="text-[1vw]">From</label> */}
                   <label className="text-[1.1vw] ">
@@ -552,13 +602,12 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
                 <>
                   <div className={`md:block hidden`}>
                     <button
-                      className={`flex justify-center items-center bg-[#FFC1C180] ${
-                        deleteId.Booking_Id &&
+                      className={`flex justify-center items-center bg-[#FFC1C180] ${deleteId.Booking_Id &&
                         // deleteId.mobile_number &&
                         deleteId.seat_numbers
-                          ? "cursor-pointer"
-                          : "cursor-not-allowed bg-gray-400"
-                      }  w-[12vw] rounded-full h-[2.5vw] gap-[1vw] mb-[1vw]`}
+                        ? "cursor-pointer"
+                        : "cursor-not-allowed bg-gray-400"
+                        }  w-[12vw] rounded-full h-[2.5vw] gap-[1vw] mb-[1vw]`}
                       onClick={() => {
                         if (
                           deleteId.Booking_Id &&
@@ -573,90 +622,22 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
                         <TbTicketOff
                           size="1.7vw"
                           className={`
-                    ${
-                      selectedRowsData.length === 0
-                        ? "text-white"
-                        : "text-[#C62B2B]"
-                    }
+                    ${selectedRowsData.length === 0
+                              ? "text-white"
+                              : "text-[#C62B2B]"
+                            }
                   text-[#C62B2B]`}
                         />
                       </div>
                       <div
                         className={`
-                  ${
-                    selectedRowsData.length === 0
-                      ? "text-white"
-                      : "text-[#C62B2B]"
-                  }
+                  ${selectedRowsData.length === 0
+                            ? "text-white"
+                            : "text-[#C62B2B]"
+                          }
                 text-[1.1vw] text-[#C62B2B] font-bold`}
                       >
                         Cancel Ticket
-                      </div>
-                    </button>
-                  </div>
-                  <div className={`block md:hidden pl-[25vw]`}>
-                    <button
-                      className={`block md:hidden flex justify-center items-center bg-[#FFC1C180] ${
-                        deleteId.Booking_Id &&
-                        // deleteId.mobile_number &&
-                        deleteId.seat_numbers
-                          ? "cursor-pointer"
-                          : "cursor-not-allowed bg-gray-400"
-                      }
-             w-[30vw] h-[9vw] rounded-[7vw] gap-[1vw] mb-[1vw]`}
-                      onClick={() => {
-                        if (
-                          deleteId.Booking_Id &&
-                          // deleteId.mobile_number &&
-                          deleteId.seat_numbers
-                        ) {
-                          setCancelModalIsOpen(true);
-                        } else {
-                          <Popover
-                            content={"Please Select passenger"}
-                            trigger="hover"
-                            overlayStyle={{ maxWidth: "20vw" }}
-                          >
-                            {/* <p
-                    className={`block md:hidden text-[${colors.primary}] text-[1.1vw]`}
-                  ></p> */}
-                          </Popover>;
-                        }
-                      }}
-                    >
-                      <div>
-                        <TbTicketOff
-                          className={`
-                    ${
-                      selectedRowsData.length === 0
-                        ? "text-white"
-                        : "text-[#C62B2B]"
-                    }
-                  h-[4vw] w-[4vw] text-[#C62B2B]`}
-                        />
-                      </div>
-                      <div
-                        className={`
-                ${
-                  selectedRowsData.length === 0
-                    ? "text-white"
-                    : "text-[#C62B2B]"
-                }
-                text-[3.5vw] text-[#C62B2B] font-bold`}
-                      >
-                        {selectedRowsData.length === 0 ? (
-                          <Popover
-                            content="Please select Passenger"
-                            trigger="hover"
-                            overlayStyle={{ maxWidth: "70vw" }}
-                          >
-                            <p>Cancel Ticket</p>
-                          </Popover>
-                        ) : (
-                          <p className={` items-center justify-center flex`}>
-                            Cancel Ticket
-                          </p>
-                        )}
                       </div>
                     </button>
                   </div>
@@ -679,63 +660,188 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
           className="Passenger-class"
         />
       </div>
-      <div
-        className={`h-[82vw] overflow-y-auto block md:hidden pt-[5vw] pb-[5vw]`}
-      >
-        <div className="rounded-lg">
-          {passengerData?.map((passenger, index) => {
-            const userIconColor = passengerColors[passenger.key];
-            const isSelected = selectedRowsData.some(
-              (item) => item.key === passenger.key
-            );
-            const backgroundColor = isSelected ? "#1F487C" : "";
 
-            return (
-              <div
-                key={index}
-                onClick={() => {
-                  handleRowSelection(passenger);
-                  console.log(passenger, "passenger");
-                }}
-                style={{ backgroundColor }}
-                className={`${isSelected ? "text-white" : ""} 
+      {/* ----------------------------------------------------Mobile--------------------------------------- */}
+      <div className=" px-[3vw] rounded-[1.5vw] h-[100vw] overflow-y-auto block md:hidden bg-white">
+
+        <div className='md:hidden block'>
+          <label className="text-[5vw] text-[#1F487C] font-extrabold">
+            {passengerDetails?.operatorname}
+            <span className="text-[3.5vw] pl-[1vw] font-semibold text-gray-500">{`( ${passengerDetails?.bustype} )`}</span>
+          </label>
+          <div className="mt-[0.5vw] mb-[1.5vw] flex items-center justify-between gap-x-[2vw]">
+            <div className="flex flex-col">
+              {/* <label className="text-[1vw]">From</label> */}
+              <label className="text-[5vw] ">
+                {passengerDetails?.source_name}{" "}
+              </label>
+              {/* <span className="text-[3.5vw] pl-[0.5vw]  text-gray-500">
+                {`( ${passengerDetails?.Boarding_Place_Name} )`}
+              </span> */}
+              <label className="text-[3.5vw] font-semibold">
+                {`${passengerDetails?.Reporting_Time},`}
+                <span className="text-[3.5vw] pl-[0.5vw] text-gray-500">{` ${formatDate(
+                  passengerDetails?.Journey_Date
+                )}`}</span>
+              </label>
+            </div>
+
+            <div>
+              <FaArrowRightLong color="gray" size={"3.5vw"} />
+            </div>
+            <div className="flex flex-col">
+              {/* <label className="text-[1vw]">From</label> */}
+              <label className="text-[5vw] ">
+                {passengerDetails?.dest_name}{" "}
+                {/* <span className="text-[1vw] pl-[0.5vw] font-semibold text-gray-500">
+                    {`( ${passengerDetails?.dest_name} )`}
+                  </span> */}
+              </label>
+              <label className="text-[3.5vw] font-semibold">
+                {`${formatTo12Hour(passengerDetails?.Arr_Time)},`}
+                <span className="text-[3.5vw] pl-[0.5vw] text-gray-500">{` ${formatDate(
+                  passengerDetails?.Journey_Date
+                )}`}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        {/* <div
+          className={`h-[60vw] overflow-y-auto block md:hidden `}
+        >
+        <div className="rounded-lg">
+            {passengerData?.map((passenger, index) => {
+              const userIconColor = passengerColors[passenger.key];
+              const isSelected = selectedRowsData.some(
+                (item) => item.key === passenger.key
+              );
+              const backgroundColor = isSelected ? "#1F487C" : "";
+
+              return (
+                <div
+                  key={index}
+                  onClick={() => {
+                    handleRowSelection(passenger);
+                    console.log(passenger, "passenger");
+                  }}
+                  style={{ backgroundColor }}
+                  className={`${isSelected ? "text-white" : ""} 
               flex items-center justify-between mt-[3vw] p-[3vw] gap-[3vw] rounded-[2.5vw] cursor-pointer border-t border-b border-gray-300`}
-              >
-                <div
-                  style={{ backgroundColor: userIconColor }}
-                  className={`w-11 h-11 flex justify-center items-center rounded-full text-white`}
                 >
-                  <LuUser2 color="white" size={"8vw"} />
-                </div>
-                <div className="flex-1">
-                  <span
-                    className={`${
-                      isSelected ? "text-white" : ""
-                    } block font-semibold text-gray-800`}
+                  <div
+                    style={{ backgroundColor: userIconColor }}
+                    className={`w-11 h-11 flex justify-center items-center rounded-full text-white`}
                   >
-                    {passenger?.name}
-                  </span>
-                  <span
-                    className={`${
-                      isSelected ? "text-white" : ""
-                    } block text-[4vw] text-gray-600`}
+                    <LuUser2 color="white" size={"8vw"} />
+                  </div>
+                  <div className="flex-1">
+                    <span
+                      className={`${isSelected ? "text-white" : ""
+                        } block font-semibold text-gray-800`}
+                    >
+                      {passenger?.name}
+                    </span>
+                    <span
+                      className={`${isSelected ? "text-white" : ""
+                        } block text-[4vw] text-gray-600`}
+                    >
+                  
+                      years
+                    </span>
+                  </div>
+                  <div
+                    className={`${isSelected ? "text-white" : ""
+                      } flex-1 text-[3.5vw] text-center text-gray-800 font-semibold`}
                   >
-                    {/* {capitalizeFirstLetter(passenger?.gender)}, {passenger?.age}{" "} */}
-                    years
-                  </span>
+                    Seat: {passenger?.seat}
+                  </div>
                 </div>
-                <div
-                  className={`${
-                    isSelected ? "text-white" : ""
-                  } flex-1 text-[3.5vw] text-center text-gray-800 font-semibold`}
-                >
-                  Seat: {passenger?.seat}
+              );
+            })}
+          </div> 
+        </div> */}
+        <div>
+          {passengerDetails?.ticket_det?.length > 0 ? (
+            <>
+              <div className={`block md:hidden`}>
+                <div className="flex items-center justify-end py-[2vw]">
+                  <button
+                    className={`flex justify-center items-center bg-[#FFC1C180] ${deleteId.Booking_Id &&
+                      // deleteId.mobile_number &&
+                      deleteId.seat_numbers
+                      ? "cursor-pointer"
+                      : "cursor-not-allowed bg-gray-400"
+                      } px-[2.5vw] py-[1.5vw] rounded-[1.5vw] gap-[1vw] mb-[1vw]`}
+                    onClick={() => {
+                      if (
+                        deleteId.Booking_Id &&
+                        // deleteId.mobile_number &&
+                        deleteId.seat_numbers
+                      ) {
+                        setCancelModalIsOpen(true);
+                      } else {
+                        <Popover
+                          content={"Please Select passenger"}
+                          trigger="hover"
+                          overlayStyle={{ maxWidth: "20vw" }}
+                        >
+                          {/* <p
+                    className={`block md:hidden text-[${colors.primary}] text-[1.1vw]`}
+                  ></p> */}
+                        </Popover>;
+                      }
+                    }}
+                  >
+                    <div>
+                      <TbTicketOff
+                        className={`
+                    ${selectedRowsData.length === 0
+                            ? "text-white"
+                            : "text-[#C62B2B]"
+                          }
+                  h-[4vw] w-[4vw] text-[#C62B2B]`}
+                      />
+                    </div>
+                    <div
+                      className={`
+                ${selectedRowsData.length === 0
+                          ? "text-white"
+                          : "text-[#C62B2B]"
+                        }
+                text-[3.5vw] text-[#C62B2B] font-bold`}
+                    >
+                      {selectedRowsData.length === 0 ? (
+                        <Popover
+                          content="Please select Passenger"
+                          trigger="hover"
+                          overlayStyle={{ maxWidth: "70vw" }}
+                        >
+                          <p>Cancel Ticket</p>
+                        </Popover>
+                      ) : (
+                        <p className={` items-center justify-center flex`}>
+                          Cancel Ticket
+                        </p>
+                      )}
+                    </div>
+                  </button>
                 </div>
               </div>
-            );
-          })}
+            </>
+          ) : (
+            ""
+          )}
         </div>
+
+        <Table
+          columns={mobileColumn}
+          dataSource={passengerData}
+          pagination={false}
+          className="Passenger-class"
+        />
       </div>
+
       <ModalPopup
         show={deletemodalIsOpen}
         onClose={closeDeleteModal}

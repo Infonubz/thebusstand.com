@@ -19,7 +19,7 @@ export default function CustomerFeedBack() {
     const colors = useSelector((state) => state?.themecolors[0]);
     const ratingdata = useSelector((state) => state?.feed_back);
     const dispatch = useDispatch();
-
+    console.log(ratingdata, 'ratingData')
     //  const handleChange = (value) =>{
     //   setSpinner(true)
     //       GetFeedbacks(dispatch,value,setSpinner)
@@ -153,7 +153,8 @@ export default function CustomerFeedBack() {
                                                         <div className="flex flex-col justify-end items-end">
                                                             <span className="md:block hidden">
                                                                 <Rate
-                                                                    defaultValue={item.rating}
+                                                                    // defaultValue={item.rating}
+                                                                    value={item?.rating}
                                                                     style={{
                                                                         fontSize: "1vw",
                                                                         color: getColorForValue(item.rating),
@@ -163,7 +164,8 @@ export default function CustomerFeedBack() {
                                                             </span>
                                                             <span className=" md:hidden block">
                                                                 <Rate
-                                                                    defaultValue={item.rating}
+                                                                    // defaultValue={item.rating}
+                                                                    value={item?.rating}
                                                                     style={{
                                                                         fontSize: "3vw",
                                                                         color: getColorForValue(item.rating),
@@ -177,7 +179,7 @@ export default function CustomerFeedBack() {
                                                         </div>
                                                     </div>
                                                     <div className="py-[1vw] md:px-[1vw] px-[3vw]">
-                                                        <p className="md:text-[0.9vw] text-[3.5vw]">
+                                                        <p className="md:text-[0.9vw] text-[3.5vw]  break-words">
                                                             {capitalizeLetter(item.description)}
                                                         </p>
                                                     </div>

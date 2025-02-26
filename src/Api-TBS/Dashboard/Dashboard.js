@@ -65,9 +65,10 @@ export const TBS_Booking_Details = async (
   arraivaldate,
   selectedRoutes,
   seatDetails,
-  currentpath
+  currentpath,
+  Bustype
 ) => {
-  console.log(ticketdetails, "ticketdetailsticketdetailsticketdetails");
+  console.log(ticketdetails?.bustype, "ticketdetailsticketdetailsticketdetails");
   const l_user_id = sessionStorage.getItem("user_id");
   const l_email_id = sessionStorage.getItem("user_email_id");
   const l_mobile = sessionStorage.getItem("user_mobile");
@@ -76,7 +77,12 @@ export const TBS_Booking_Details = async (
   const login_email_id = decryptData(l_email_id);
   const login_mobile = decryptData(l_mobile);
   const login_user_id = decryptData(l_user_id);
-
+  const LuxuryFind = (type) =>
+    type.toLowerCase().includes("volvo") ||
+    type.toLowerCase().includes("mercedes benz") ||
+    type.toLowerCase().includes("washroom") ||
+    type.toLowerCase().includes("bharatBenz") ||
+    type.toLowerCase().includes("luxury");
   const payload = {
     login_user_id: login_user_id,
     login_user_email: login_email_id,
@@ -106,6 +112,7 @@ export const TBS_Booking_Details = async (
     razorpay_payment_id: payment_id,
     razorpay_signature: signature,
     total_fare: null,
+    bustype: Bustype,
   };
 
   const url = `${apiUrl}/tbsbookinghistory`;
@@ -132,7 +139,8 @@ export const TBS_Booking_Cancellation = async (
   currentpath,
   selectedRowsData,
   partialCancellation,
-  NewPNR
+  NewPNR,
+  formattedDate
 ) => {
   const l_user_id = sessionStorage.getItem("user_id");
   const l_email_id = sessionStorage.getItem("user_email_id");
@@ -142,6 +150,7 @@ export const TBS_Booking_Cancellation = async (
   const login_email_id = decryptData(l_email_id);
   const login_mobile = decryptData(l_mobile);
   const login_user_id = decryptData(l_user_id);
+  console.log(passengerDetails, "formattedDate");
 
   const payload = {
     login_user_id: login_user_id,
@@ -151,8 +160,8 @@ export const TBS_Booking_Cancellation = async (
     pnr_no: passengerDetails.Ticket_no,
     source_name: passengerDetails?.source_name,
     pickup_point_name: passengerDetails?.Boarding_Place_Name,
-    depature_date: passengerDetails?.Journey_Date,
-    depature_time: passengerDetails?.Boarding_Place_Name,
+    depature_date: formattedDate,
+    depature_time: passengerDetails?.Start_Time,
     destination_name: passengerDetails?.dest_name,
     droping_point_name: null,
     arrival_date: null,
@@ -179,6 +188,8 @@ export const TBS_Booking_Cancellation = async (
     return response.data;
     //  const response = await axios.get(`${apiUrl}/operator-names/${operator}`);
   } catch (error) {
+    console.log(error, "errorerror");
+
     handleError(error);
   }
 };
@@ -228,6 +239,16 @@ export const GetFeedbackById = async () => {
   } catch (err) {
     handleError(err);
   }
+};
+export const DownloadTicket = async (ticketID) => {
+  try {
+    const response = await axios.get(`${apiUrl}/downloadticket/${ticketID}`);
+    console.log(response, 'downloading_ticket')
+    return response?.data;
+  } catch (err) {
+    handleError(err);
+  }
+
 };
 const handleError = (error) => {
   console.error("Error details:", error);

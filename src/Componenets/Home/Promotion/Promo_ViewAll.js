@@ -246,7 +246,7 @@ export default function Promo_ViewAll() {
   useEffect(() => {
     // GetPromotion(dispatch);
     GetDiscountOffers(dispatch);
-  }, [dispatch]);
+  }, [dispatch,sessionStorage.getItem("occupation_id")]);
 
   console.log(
     `${apicrmimage}/${promotionlist[0]?.background_image}`,

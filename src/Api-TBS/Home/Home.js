@@ -52,9 +52,10 @@ export const GetPromotion = async (dispatch, id) => {
   }
 };
 
-export const GetDiscountOffers = async (dispatch, id) => {
+export const GetDiscountOffers = async (dispatch) => {
+  const userid = sessionStorage.getItem("occupation_id") ? decryptData(sessionStorage.getItem("occupation_id"))  : 8
   try {
-    const response = await axios.get(`${apicrm}/livediscountandpromotion/0`);
+    const response = await axios.get(`${apicrm}/livediscountandpromotion/${userid}`);
     dispatch({ type: DISCOUNT_OFFER_LIST, payload: response.data });
     console.log(response.data, "footerresponse");
     return response.data;
@@ -63,6 +64,7 @@ export const GetDiscountOffers = async (dispatch, id) => {
     // return null;
   }
 };
+ 
 
 export const GetTopBusRoutes = async (dispatch, id) => {
   try {

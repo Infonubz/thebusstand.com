@@ -41,6 +41,7 @@ export default function MobileViewTicket({
 
     const location = useLocation()
     const ticket_Details = location?.state?.ticketDetails
+    const ticketInfo = ticket_Details?.ticketInfo
     const dropping_Date = location?.state?.droppingDate
     const ticketnumber = location?.state?.ticketNo
     const ticketlist = useSelector((state) => state?.get_ticket_detail);
@@ -49,9 +50,12 @@ export default function MobileViewTicket({
     const colorcode = {
         theme: "#1F4B7F",
     };
+
     function generateRandomId(prefix, length) {
         return prefix;
     }
+
+
 
     const calculateDuration = (startTime, endTime) => {
         // Parse start and end times using Moment.js
@@ -72,13 +76,132 @@ export default function MobileViewTicket({
 
         return `${hours}h ${minutes}m`;
     };
+
     const convertTo12HourFormat = (time) => {
+        if (!time || typeof time !== 'string') {
+            throw new Error("Invalid input: time should be a string");
+        }
+
         const [hours, minutes] = time.split(':');
+
+        if (!hours || !minutes) {
+            throw new Error("Invalid time format");
+        }
+
         const period = hours >= 12 ? 'PM' : 'AM';
         const formattedHour = hours % 12 || 12; // Convert 0 hours to 12 (for 12:00 AM)
 
         return `${formattedHour}:${minutes} ${period}`;
     };
+
+
+    const [calArrival, setCalArrival] = useState({
+        journeyDate: ticket_Details?.ticketInfo?.originStartTime,
+        starTime: ticket_Details?.ticketInfo?.Start_Time,
+        endTime: ticket_Details?.ticketInfo?.Arr_Time,
+    });
+
+    const getDaySuffix = (day) => {
+        // Check for the special case of 11th, 12th, and 13th
+        if (day >= 11 && day <= 13) return "th";
+
+        // Use the last digit of the day to determine the suffix
+        switch (day % 10) {
+            case 1:
+                return "st";
+            case 2:
+                return "nd";
+            case 3:
+                return "rd";
+            default:
+                return "th";
+        }
+    };
+
+    const [calculatedDate, setCalculatedDate] = useState("");
+
+    const ConvertDate = (date) => {
+        // Get the day of the month
+        const day = dayjs(date)?.date();
+
+        // Get the suffix for the day (st, nd, rd, th)
+        const dayWithSuffix = day + getDaySuffix(day);
+
+        // Format the date to 'Thu, 6th Feb 2025'
+        const formattedDate = dayjs(date)?.format(`ddd, MMM YYYY`);
+        // const formattedDate = format(new Date(calculatedDate), `EEE, MMM yyyy`);
+        const dateParts = formattedDate?.split(" ");
+        dateParts?.splice(1, 0, `${dayWithSuffix}`);
+        const modifiedDate = dateParts?.join(" ");
+        return modifiedDate;
+    };
+
+    const calculateArrivalDate = (boardingDateTime, arrTime) => {
+        if (!boardingDateTime || !arrTime) {
+            throw new Error(
+                "Invalid input: boardingDateTime and arrTime must be provided."
+            );
+        }
+
+        // Parse the boarding date and time (in "YYYY-MM-DD HH:mm" format)
+        const [datePart, timePart] = boardingDateTime?.split(" ");
+        if (!datePart || !timePart) {
+            throw new Error(
+                'Invalid boardingDateTime format. Expected "YYYY-MM-DD HH:mm".'
+            );
+        }
+
+        const [year, month, day] = datePart?.split("-");
+        const [startHours, startMinutes] = timePart?.split(":").map(Number);
+        if (isNaN(startHours) || isNaN(startMinutes)) {
+            throw new Error("Invalid time format in boardingDateTime.");
+        }
+
+        // Create a Date object with the parsed values
+        const journeyDateObj = new Date(
+            year,
+            month - 1,
+            day,
+            startHours,
+            startMinutes
+        );
+
+        // Extract hours and minutes from Arrival Time (in "HH:mm:ss" format)
+        const [arrHours, arrMinutes, arrSeconds] = arrTime.split(":").map(Number);
+        if (isNaN(arrHours) || isNaN(arrMinutes) || isNaN(arrSeconds)) {
+            throw new Error("Invalid time format in arrTime.");
+        }
+
+        // Calculate the arrival time by adding hours and minutes from "arrTime"
+        const arrivalDateObj = new Date(journeyDateObj);
+        arrivalDateObj.setHours(arrivalDateObj.getHours() + arrHours);
+        arrivalDateObj.setMinutes(arrivalDateObj.getMinutes() + arrMinutes);
+        arrivalDateObj.setSeconds(arrivalDateObj.getSeconds() + arrSeconds);
+
+        return arrivalDateObj;
+    };
+
+
+    useEffect(() => {
+        if (ticket_Details?.status === "success" && calArrival) {
+            setCalArrival({
+                journeyDate: ticket_Details?.ticketInfo?.originStartTime,
+                starTime: ticket_Details?.ticketInfo?.Start_Time,
+                endTime: ticket_Details?.ticketInfo?.Arr_Time,
+            });
+            // if (ticketlist?.status === "success") {
+            // alert("heieei")
+            const values = calculateArrivalDate(
+                ticket_Details?.ticketInfo?.originStartTime,
+                ticket_Details?.ticketInfo?.Arr_Time
+            );
+
+            setCalculatedDate(values);
+            //setShowModal(true);
+
+            // }
+        }
+    }, [ticket_Details]);
 
 
     const LuxuryFind = (type) =>
@@ -168,11 +291,10 @@ export default function MobileViewTicket({
         }, [5000]);
     }, []);
 
-
     return (
         <>
             <div
-                className={`h-screen ${ticket_Details?.bus_type_status === "luxury"
+                className={`h-screen ${ticketInfo?.bus_type_status === "luxury"
                     ? "bg-[#FFEFCE]"
                     : "bg-white"
                     } `}
@@ -193,7 +315,7 @@ export default function MobileViewTicket({
                         <div
                             ref={componentRef}
                             id="capture"
-                            className={`h-auto w-full border-solid border-2 ${ticket_Details?.bus_type_status === "luxury"
+                            className={`h-auto w-full border-solid border-2 ${ticketInfo?.bus_type_status === "luxury"
                                 ? "border-[#393939]"
                                 : "border-[#1F487C]"
                                 }  rounded-t-[3.5vw]`}
@@ -213,22 +335,22 @@ export default function MobileViewTicket({
                        */}
                                             {/* {ticket_Details?.departure_name} */}
                                             {/* Mahabalipuram */}
-                                            {ticket_Details?.source_name?.length > 11 ? (
+                                            {ticketInfo?.source_name?.length > 11 ? (
                                                 <Tooltip
-                                                    title={ticket_Details?.source_name}
+                                                    title={ticketInfo?.source_name}
                                                     placement="top"
                                                 >
-                                                    {ticket_Details?.source_name?.slice(0, 11)}..
+                                                    {ticketInfo?.source_name?.slice(0, 11)}..
                                                 </Tooltip>
                                             ) : (
-                                                <span>{ticket_Details?.source_name}</span>
+                                                <span>{ticketInfo?.source_name}</span>
                                             )}
                                         </label>
 
                                         <p
                                             className={`text-[4vw] text-white text-center font-semibold`}
                                         >
-                                            {ticket_Details?.Journey_Date}
+                                            {ticketInfo?.Journey_Date}
                                         </p>
                                     </div>
                                     <div className="col-span-2 flex items-center">
@@ -240,22 +362,22 @@ export default function MobileViewTicket({
                                         >
                                             {/* {ticket_Details?.arrival_name?.slice(0, 3)} */}
                                             {/* {ticket_Details?.arrival_name} */}
-                                            {ticket_Details?.dest_name?.length > 11 ? (
+                                            {ticketInfo?.dest_name?.length > 11 ? (
                                                 <Tooltip
-                                                    title={ticket_Details?.dest_name}
+                                                    title={ticketInfo?.dest_name}
                                                     placement="top"
                                                 >
-                                                    {ticket_Details?.dest_name?.slice(0, 11)}..
+                                                    {ticketInfo?.dest_name?.slice(0, 11)}..
                                                 </Tooltip>
                                             ) : (
-                                                <span>{ticket_Details?.dest_name}</span>
+                                                <span>{ticketInfo?.dest_name}</span>
                                             )}
                                         </label>
                                         <p
                                             className={`text-[4vw] text-center text-white font-semibold`}
                                         >
-                                            {dropping_Date?.length > 0 ? dropping_Date : ''}
-
+                                            {/* {dropping_Date?.length > 0 ? dropping_Date : ''} */}
+                                            {ConvertDate(calculatedDate)}
                                         </p>
                                     </div>
                                 </div>
@@ -263,17 +385,17 @@ export default function MobileViewTicket({
                                 <p
                                     className={`flex pt-[3vw] justify-center  items-center text-white text-[4.5vw] font-normal`}
                                 >
-                                    {`Ticket Number : ${ticket_Details?.Ticket_no}`}
+                                    {`Ticket Number : ${ticketInfo?.Ticket_no}`}
                                 </p>
                                 <p
                                     className={`flex pt-[2vw] justify-center font-normal items-center text-white text-[4.5vw]`}
                                 >
-                                    {`PNR : ${ticket_Details?.operator_pnr}`}
+                                    {`PNR : ${ticketInfo?.operator_pnr}`}
                                 </p>
                                 {/* </div> */}
                             </div>
                             <div
-                                className={`pl-[7vw] py-[3.5vw] ${ticket_Details?.bus_type_status === "luxury"
+                                className={`pl-[7vw] py-[3.5vw] ${ticketInfo?.bus_type_status === "luxury"
                                     ? "text-[#393939]"
                                     : "text-black"
                                     }`}
@@ -283,8 +405,8 @@ export default function MobileViewTicket({
                                     <p className={`text-[4.5vw]`}>Age/ Gender</p>
                                     <p className={`text-[4.5vw] px-[8vw]`}>Seat</p>
                                 </div>
-                                {ticket_Details?.ticket_det?.length > 0
-                                    ? ticket_Details?.ticket_det?.map((v) => (
+                                {ticketInfo?.ticket_det?.length > 0
+                                    ? ticketInfo?.ticket_det?.map((v) => (
                                         <div className={`grid grid-cols-3 w-full pt-[2vw]`}>
                                             <p className={`text-[4vw] font-semibold`}>
                                                 {capitalizeFirstLetter(v?.Passenger_Name)}
@@ -300,14 +422,14 @@ export default function MobileViewTicket({
                                     : ""}
                             </div>
                             <div
-                                className={`border-dashed border-[0.4vw] ${ticket_Details?.bus_type_status === "luxury"
+                                className={`border-dashed border-[0.4vw] ${ticketInfo?.bus_type_status === "luxury"
                                     ? "border-[#393939]"
                                     : "border-[#1F487C]"
                                     } mt-[2vw] relative`}
                             >
                                 <span className={`absolute left-[-1vw] top-[-5vw] z-[3]`}>
                                     <div
-                                        className={`${ticket_Details?.bus_type_status === "luxury"
+                                        className={`${ticketInfo?.bus_type_status === "luxury"
                                             ? "bg-[#FFEFCE] border-l-[#FFEFCE] border-[#393939]"
                                             : "bg-[white] border-l-white border-[#1F487C]"
                                             }  border  border-r-[1vw]  w-[5vw] h-[10vw] rounded-r-full `}
@@ -315,7 +437,7 @@ export default function MobileViewTicket({
                                 </span>
                                 <span className="absolute right-[-1vw] top-[-5.5vw] z-[1]">
                                     <div
-                                        className={`${ticket_Details?.bus_type_status === "luxury"
+                                        className={`${ticketInfo?.bus_type_status === "luxury"
                                             ? "border-[#393939] bg-[#FFEFCE] border-r-[#FFEFCE]"
                                             : "border-[#1F487C] bg-[white] border-r-white"
                                             }  border  border-l-[.8vw]  w-[5vw] h-[10vw] rounded-l-full `}
@@ -336,11 +458,11 @@ export default function MobileViewTicket({
                                     // />
                                 )} */}
                                 <label className={`text-[4.5vw] font-bold pt-[1.5vw] pl-[2vw]`}>
-                                    {ticket_Details?.operatorname}
+                                    {ticketInfo?.operatorname}
                                 </label>
                             </div>
                             <div
-                                className={`grid grid-cols-7 px-[1vw] pt-[4vw] pb-[2vw] ${ticket_Details?.bus_type_status === "luxury"
+                                className={`grid grid-cols-7 px-[1vw] pt-[4vw] pb-[2vw] ${ticketInfo?.bus_type_status === "luxury"
                                     ? "text-[#393939]"
                                     : "text-black"
                                     }`}
@@ -350,17 +472,17 @@ export default function MobileViewTicket({
                                         className={`flex flex-col pl-[1vw] gap-y-[1vw] text-left`}
                                     >
                                         <p
-                                            className={`text-[3.7vw] ${ticket_Details?.bus_type_status === "luxury"
+                                            className={`text-[3.7vw] ${ticketInfo?.bus_type_status === "luxury"
                                                 ? "text-[#393939]"
                                                 : "text-[#1F487C]"
                                                 } pt-[0.5vw] flex items-center`}
                                         >
                                             {/* {moment(ticket_Details?.departure_date).format("DD MMM")} */}
-                                            {ticket_Details?.Journey_Date}
+                                            {ticketInfo?.Journey_Date}
                                         </p>
                                         <p className={`font-bold text-[4vw]`}>
                                             {/* {ticket_Details?.Start_Time?.slice(0, 5)} */}
-                                            {convertTo12HourFormat(ticket_Details?.Start_Time)}
+                                            {convertTo12HourFormat(ticketInfo?.Start_Time)}
 
                                         </p>
                                         {/* <p className="text-[3.8vw] ">
@@ -392,7 +514,7 @@ export default function MobileViewTicket({
                                                     x2="279.058"
                                                     y2="13.6426"
                                                     stroke={
-                                                        ticket_Details?.bus_type_status === "luxury"
+                                                        ticketInfo?.bus_type_status === "luxury"
                                                             ? "#393939"
                                                             : "#1F4B7F"
                                                     }
@@ -405,7 +527,7 @@ export default function MobileViewTicket({
                                                     x2="111.618"
                                                     y2="13.6426"
                                                     stroke={
-                                                        ticket_Details?.bus_type_status === "luxury"
+                                                        ticketInfo?.bus_type_status === "luxury"
                                                             ? "#393939"
                                                             : "#1F4B7F"
                                                     }
@@ -418,7 +540,7 @@ export default function MobileViewTicket({
                                                     rx="5.82925"
                                                     ry="5.42191"
                                                     fill={
-                                                        ticket_Details?.bus_type_status === "luxury"
+                                                        ticketInfo?.bus_type_status === "luxury"
                                                             ? "#393939"
                                                             : "#1F4B7F"
                                                     }
@@ -428,12 +550,12 @@ export default function MobileViewTicket({
                                                     clip-rule="evenodd"
                                                     d="M280.078 6.24612C280.553 5.805 281.321 5.805 281.796 6.24612L289.082 13.0235C289.557 13.4646 289.557 14.1798 289.082 14.621L281.796 21.3983C281.321 21.8395 280.553 21.8395 280.078 21.3983C279.604 20.9572 279.604 20.242 280.078 19.8009L286.506 13.8222L280.078 7.84357C279.604 7.40245 279.604 6.68725 280.078 6.24612Z"
                                                     fill={
-                                                        ticket_Details?.bus_type_status === "luxury"
+                                                        ticketInfo?.bus_type_status === "luxury"
                                                             ? "#393939"
                                                             : "#1F4B7F"
                                                     }
                                                     stroke={
-                                                        ticket_Details?.bus_type_status === "luxury"
+                                                        ticketInfo?.bus_type_status === "luxury"
                                                             ? "#393939"
                                                             : "#1F4B7F"
                                                     }
@@ -459,21 +581,21 @@ export default function MobileViewTicket({
                                                 <path
                                                     d="M9.62178 0.374512C4.61028 0.374512 0.592041 4.3313 0.592041 9.26618V35.1452C0.592041 38.0402 2.93887 40.387 5.83382 40.387H11.5805C11.5805 43.9243 13.0076 47.3168 15.5477 49.818C18.0878 52.3193 21.5329 53.7245 25.1251 53.7245C28.7174 53.7245 32.1625 52.3193 34.7026 49.818C37.2427 47.3168 38.6698 43.9243 38.6698 40.387H69.6765C69.6765 43.9243 71.1035 47.3168 73.6436 49.818C76.1837 52.3193 79.6288 53.7245 83.2211 53.7245C86.8133 53.7245 90.2585 52.3193 92.7986 49.818C95.3387 47.3168 96.7657 43.9243 96.7657 40.387H100.554C103.449 40.387 105.795 38.0402 105.795 35.1452V9.26618C105.795 4.3313 101.777 0.374512 96.7657 0.374512H9.62178ZM25.1251 33.7182C26.9213 33.7182 28.6438 34.4208 29.9139 35.6715C31.1839 36.9221 31.8975 38.6183 31.8975 40.387C31.8975 42.1557 31.1839 43.8519 29.9139 45.1025C28.6438 46.3531 26.9213 47.0557 25.1251 47.0557C23.329 47.0557 21.6065 46.3531 20.3364 45.1025C19.0663 43.8519 18.3528 42.1557 18.3528 40.387C18.3528 38.6183 19.0663 36.9221 20.3364 35.6715C21.6065 34.4208 23.329 33.7182 25.1251 33.7182ZM83.2211 33.7182C85.0172 33.7182 86.7398 34.4208 88.0098 35.6715C89.2799 36.9221 89.9934 38.6183 89.9934 40.387C89.9934 42.1557 89.2799 43.8519 88.0098 45.1025C86.7398 46.3531 85.0172 47.0557 83.2211 47.0557C81.425 47.0557 79.7024 46.3531 78.4324 45.1025C77.1623 43.8519 76.4488 42.1557 76.4488 40.387C76.4488 38.6183 77.1623 36.9221 78.4324 35.6715C79.7024 34.4208 81.425 33.7182 83.2211 33.7182Z"
                                                     fill={
-                                                        ticket_Details?.bus_type_status === "luxury"
+                                                        ticketInfo?.bus_type_status === "luxury"
                                                             ? "#393939"
                                                             : "#1F4B7F"
                                                     }
                                                 />
                                             </svg>
                                             <div className="absolute pb-[3vw]">
-                                                {ticket_Details?.duration}
+                                                {ticketInfo?.duration}
                                                 {calculateDuration(
                                                     moment(
-                                                        ticket_Details?.Start_Time,
+                                                        ticketInfo?.Start_Time,
                                                         "HH:mm:ss"
                                                     ).format("hh:mm A"),
                                                     moment(
-                                                        ticket_Details?.Arr_Time,
+                                                        ticketInfo?.Arr_Time,
                                                         "HH:mm:ss"
                                                     ).format("hh:mm A")
                                                 )}
@@ -487,17 +609,18 @@ export default function MobileViewTicket({
                                         className={`flex flex-col gap-y-[1vw] text-right pr-[1vw]`}
                                     >
                                         <p
-                                            className={`text-[3.7vw] ${ticket_Details?.bus_type_status === "luxury"
+                                            className={`text-[3.7vw] ${ticketInfo?.bus_type_status === "luxury"
                                                 ? "text-[#393939]"
                                                 : "text-[#1F487C]"
                                                 } pt-[0.5vw] `}
                                         >
 
-                                            {dropping_Date?.length > 0 ? dropping_Date : ''}
+                                            {/* {dropping_Date?.length > 0 ? dropping_Date : ''} */}
+                                            {ConvertDate(calculatedDate)}
                                         </p>
                                         <p className={`font-bold text-[4vw]`}>
                                             {/* {ticket_Details?.Arr_Time?.slice(0, 5)} */}
-                                            {convertTo12HourFormat(ticket_Details?.Arr_Time)}
+                                            {convertTo12HourFormat(ticketInfo?.Arr_Time)}
                                         </p>
 
                                         {/* <p className="text-[3.8vw] ">
@@ -516,26 +639,26 @@ export default function MobileViewTicket({
                                     <span className="flex justify-end"> Dropping Point</span>
                                 </div>
                                 <div className="grid grid-cols-2 gap-x-[6vw]">
-                                    <div className={` row-span-1 flex justify-start break-words`}>
+                                    <div className={` row-span-1 justify-start`}>
                                         <span >
-                                            <p className="text-[3.8vw]  ">
+                                            <p className="text-[3.8vw]  break-words  ">
                                                 {" "}
-                                                {ticket_Details?.Boarding_Place_Name}
+                                                {ticketInfo?.Boarding_Place_Name}
                                             </p>
                                             <p className="text-[2.8vw] ">
                                                 {" "}
-                                                {ticket_Details?.Board_Halt_Time}
+                                                {ticketInfo?.Board_Halt_Time}
                                             </p>
                                         </span>
                                     </div>
-                                    <div className={` row-span-1 flex justify-end break-words`}>
-                                        <span >
-                                            <p className="text-[3.8vw] ">
-                                                {ticket_Details?.dest_name}
+                                    <div className={` row-span-1 grid break-words`}>
+                                        <span className="place-items-end" >
+                                            <p className="text-[3.8vw]   break-words    ">
+                                                {ticketInfo?.dest_name}
                                             </p>
-                                            <p className="text-[2.8vw] ">
+                                            <p className="text-[2.8vw]  ">
                                                 {" "}
-                                                {convertTo12HourFormat(ticket_Details?.Arr_Time)}
+                                                {convertTo12HourFormat(ticketInfo?.Arr_Time)}
                                             </p>
                                         </span>
                                     </div>

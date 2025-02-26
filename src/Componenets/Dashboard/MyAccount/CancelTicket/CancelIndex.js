@@ -28,7 +28,6 @@ const CancelIndex = () => {
   const dispatch = useDispatch();
   const [info, setInfo] = useState("");
   const handleSubmit = async (values) => {
-    console.log("Form Data:", values);
     // GetCancelTicket(
     //   dispatch,
     //   values.ticketNumber,
@@ -41,9 +40,7 @@ const CancelIndex = () => {
       // console.log(data,"datadatadatadatadata");
       const response = await ViewTicketById(values?.ticketNumber, setSpinning);
       setPassengerDetails(response?.ticketInfo);
-      console.log(response, "responseresponse");
     } catch {
-      console.log("hi");
     }
     setShowtable(true);
   };
@@ -105,7 +102,7 @@ const CancelIndex = () => {
                   <ErrorMessage
                     name="ticketNumber"
                     component="div"
-                    className="text-red-500 text-[.9vw] absolute top-full left-0 mt-1"
+                    className="text-red-500 text-[2.8vw] md:text-[0.9vw] absolute top-full left-0 mt-1"
                   />
                 </div>
                 <div className={`relative`}>
@@ -122,7 +119,7 @@ const CancelIndex = () => {
                   <ErrorMessage
                     name="phoneNumber"
                     component="div"
-                    className="text-red-500 text-[.9vw] absolute top-full left-0 mt-1"
+                    className="text-red-500 md:text-[0.9vw] text-[2.75vw] absolute top-full left-0 mt-1"
                   />
                 </div>
                 <div className={`relative flex justify-center`}>
@@ -154,7 +151,7 @@ const CancelIndex = () => {
         )}
       </Formik>
       {showTable === true && passengerDetails?.ticket_det?.length > 0 ? (
-        <div className="px-[3.5vw] pb-[2vw]">
+        <div className="md:px-[3.5vw] md:pb-[2vw] md:mt-0 mt-[7.5vw]">
           <PassengerList
             spinning={spinning}
             setSpinning={setSpinning}

@@ -5,6 +5,8 @@ import { GET_TICKET_DETAILS } from "../../Store/Type";
 
 const username = process.env.REACT_APP_ABHIBUS_USERNAME || "demo@test";
 const password = process.env.REACT_APP_ABHIBUS_PASSWORD || "demo@abhibus";
+const abhibusurl = process.env.REACT_APP_ABHIBUS_URL;
+const abhibuscollection = process.env.REACT_APP_ABHIBUS_COLLECTIONS;
 
 export const processSOAPResponse = async (soapResponse, name) => {
   try {
@@ -49,7 +51,7 @@ export const ViewTicketById = async (ticketID, setSpinning) => {
   const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <tns:GetTicketDetailsV4 xmlns:tns="https://staging.abhibus.com/">
+    <tns:GetTicketDetailsV4 xmlns:tns="${abhibuscollection}">
       <tns:username>${username}</tns:username>
       <tns:password>${password}</tns:password>
        <tns:ticketNo>${ticketID}</tns:ticketNo>
@@ -58,7 +60,7 @@ export const ViewTicketById = async (ticketID, setSpinning) => {
 </soap:Envelope>`;
 
   //   <tns:ticketNo>ABRS7354857</tns:ticketNo>
-  const url = `https://staging.abhibus.com/abhiWebServer`;
+  const url = `${abhibusurl}abhiWebServer`;
   try {
     // Assuming you need a Basic Auth header with username and password
     const authHeader = `Basic ${btoa(`${username}:${password}`)}`;
@@ -68,7 +70,7 @@ export const ViewTicketById = async (ticketID, setSpinning) => {
       headers: {
         "Content-Type": "text/xml;charset=UTF-8",
         Authorization: authHeader,
-        SOAPAction: "http://staging.abhibus.com/GetTicketDetailsV4",
+        SOAPAction: `${abhibusurl}/GetTicketDetailsV4`,
       },
     });
     const result = await processSOAPResponse(
@@ -90,7 +92,7 @@ export const PreCancelTicket = async (values) => {
   const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <tns:PreCancellation xmlns:tns="https://staging.abhibus.com/">
+    <tns:PreCancellation xmlns:tns="${abhibuscollection}">
        <tns:username>${username}</tns:username>
       <tns:password>${password}</tns:password>
        <tns:ticketNo>${values?.ticketNumber}</tns:ticketNo>
@@ -101,7 +103,7 @@ export const PreCancelTicket = async (values) => {
 `;
 
   //   <tns:ticketNo>ABRS7354857</tns:ticketNo>
-  const url = `https://staging.abhibus.com/abhiWebServer`;
+  const url = `${abhibusurl}abhiWebServer`;
 
   try {
     // Assuming you need a Basic Auth header with username and password
@@ -112,7 +114,7 @@ export const PreCancelTicket = async (values) => {
       headers: {
         "Content-Type": "text/xml;charset=UTF-8",
         Authorization: authHeader,
-        SOAPAction: "http://staging.abhibus.com/PreCancellation",
+        SOAPAction: `${abhibusurl}/PreCancellation`,
       },
     });
     const result = await processSOAPResponse(response.data, "PreCancellation");
@@ -128,7 +130,7 @@ export const CancelTicket = async (values, info, partialCancellation) => {
   const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <tns:CancelTicket xmlns:tns="https://staging.abhibus.com/">
+    <tns:CancelTicket xmlns:tns="${abhibuscollection}">
         <tns:username>${username}</tns:username>
       <tns:password>${password}</tns:password>
        <tns:ticketNo>${info?.ticketNumber}</tns:ticketNo>
@@ -142,7 +144,7 @@ export const CancelTicket = async (values, info, partialCancellation) => {
 `;
 
   //   <tns:ticketNo>ABRS7354857</tns:ticketNo>
-  const url = `https://staging.abhibus.com/abhiWebServer`;
+  const url = `${abhibusurl}abhiWebServer`;
 
   try {
     // Assuming you need a Basic Auth header with username and password
@@ -153,7 +155,7 @@ export const CancelTicket = async (values, info, partialCancellation) => {
       headers: {
         "Content-Type": "text/xml;charset=UTF-8",
         Authorization: authHeader,
-        SOAPAction: "http://staging.abhibus.com/CancelTicket",
+        SOAPAction: `${abhibusurl}/CancelTicket`,
       },
     });
     console.log(response, "yyyyyyyyyyyyyyy");

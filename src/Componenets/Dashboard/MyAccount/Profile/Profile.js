@@ -92,7 +92,7 @@ export default function Profile({ userName, setUserName }) {
 
   return (
     <>
-      <div className="bg-white shadow-lg shadow-gray-400  md:mx-[0vw] w-[90vw] md:w-full md:rounded-[1vw] rounded-[2vw] md:px-[2vw] px-[4vw] pb-[1vw]">
+      <div className="bg-white shadow-lg shadow-gray-400 min-h-auto max-h-auto md:mx-[0vw] w-[90vw] md:w-full md:rounded-[1vw] rounded-[2vw] md:px-[2vw] pb-[1vw]">
         {spinning ? (
           <div
             style={{
@@ -164,7 +164,7 @@ export default function Profile({ userName, setUserName }) {
         >
           {({ isSubmitting, handleSubmit, values, handleChange }) => (
             <Form
-              className="py-[0.70vw] h-[75vh] overflow-y-auto"
+              className="py-[0.70vw] overflow-y-auto scrollbar-hide w-full px-[3vw] md:px-0"
               onSubmit={handleSubmit}
             >
               <div className="grid md:grid-rows-2 md:gap-[1vw] ">
@@ -204,8 +204,8 @@ export default function Profile({ userName, setUserName }) {
                       </div>
                     </div>
                   </span>
-                  <div className="pt-[1vw]">
-                    <div className="grid md:grid-cols-2  grid-cols-1 gap-y-[6vw]  md:pt-[1vw] md:py-[1vw] relative">
+                  <div className="pt-[1vw] w-full">
+                    <div className="grid md:grid-cols-2  grid-cols-1 gap-y-[8vw]  md:pt-[1vw] md:py-[1vw] relative">
                       <div className="">
                         <Field
                           type="text"
@@ -248,7 +248,7 @@ export default function Profile({ userName, setUserName }) {
                         <ErrorMessage
                           name="user_name"
                           component="div"
-                          className="text-red-500 md:text-[0.8vw] text-[2.1vw] absolute top-[10vw] md:top-[4vw]"
+                          className="text-red-500 md:text-[0.8vw] text-[2.75vw] absolute top-[10vw] md:top-[4vw]"
                         />
                       </div>
                       <div className="relative z-0 w-full">
@@ -283,7 +283,7 @@ export default function Profile({ userName, setUserName }) {
                         <ErrorMessage
                           name="date_of_birth"
                           component="div"
-                          className="text-red-500 md:text-[0.8vw] text-[2.1vw] absolute top-[10 vw] md:top-[3vw]"
+                          className="text-red-500 md:text-[0.8vw] text-[2.75vw] absolute top-[10 vw] md:top-[3vw]"
                         />
                       </div>
                     </div>
@@ -474,7 +474,7 @@ export default function Profile({ userName, setUserName }) {
                       <ErrorMessage
                         name="email_id"
                         component="div"
-                        className="text-red-500 md:text-[0.8vw] text-[2.1vw] absolute top-[10vw] md:top-[2.8vw]"
+                        className="text-red-500 md:text-[0.8vw] text-[2.75vw] absolute top-[10vw] md:top-[2.8vw]"
                       />
                     </div>
                     <div className="relative z-0 w-full md:pt-[1.5vw] ">
@@ -505,7 +505,7 @@ export default function Profile({ userName, setUserName }) {
                       <ErrorMessage
                         name="mobile_number"
                         component="div"
-                        className="text-red-500 md:text-[0.8vw] text-[2.1vw] absolute top-[10vw]   md:top-[5vw]"
+                        className="text-red-500 md:text-[0.8vw] text-[2.75vw] absolute top-[10vw]   md:top-[5vw]"
                       />
                     </div>
                     <div className="relative z-0 w-full md:pt-[1.5vw] pt-[0vw]">
@@ -588,7 +588,7 @@ export default function Profile({ userName, setUserName }) {
                       <ErrorMessage
                         name="occupation"
                         component="div"
-                        className="text-red-500 md:text-[0.8vw] text-[2.1vw] absolute top-[10vw] md:top-[2.8vw]"
+                        className="text-red-500 md:text-[0.8vw] text-[2.75vw] absolute top-[10vw] md:top-[2.8vw]"
                       />
                     </div>
                   </div>

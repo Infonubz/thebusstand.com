@@ -52,6 +52,8 @@ export default function IndexBlock() {
   const [ticketNo, setTicketNo] = useState(null);
   const navigation = useNavigate()
   const [ticketLoader, setTicketLoader] = useState(false)
+  const [razorpayloading, setRazorpayLoading] = useState(false);
+
   const validationSchema = Yup.object().shape({
     mobile: Yup.string()
       .matches(/^[0-9]+$/, "Mobile number must be a number")
@@ -128,6 +130,7 @@ export default function IndexBlock() {
 
     return { adultCount, childCount };
   };
+
   const { adultCount, childCount } = getPassengerCount(
     Object?.values(travelerDetails)
   );
@@ -223,6 +226,7 @@ export default function IndexBlock() {
         return "th";
     }
   };
+
   const [calculatedDate, setCalculatedDate] = useState("");
 
   const ConvertDate = (date) => {
@@ -334,9 +338,10 @@ export default function IndexBlock() {
     }
   }, [ticketlist]);
   const handleNavigate = () => {
-    navigation(`/bookedTicket`, { state: { ticketDetails: ticketlist?.ticketInfo, droppingDate: ConvertDate(calculatedDate), ticketNo: ticketNo } })
+    navigation(`/bookedTicket`, { state: { ticketDetails: ticketlist, ticketNo: ticketNo } })
 
   }
+
   useEffect(() => {
     if (confirmModal) {
       const element = document.getElementById("targetSection");
@@ -345,145 +350,160 @@ export default function IndexBlock() {
       }
     }
   }, [confirmModal]);
- 
+
   return (
-    <Formik
-      initialValues={{
-        email: emailInput || "",
-        mobile:
-          mobileInput && mobileInput !== "undefined" && mobileInput !== "null"
-            ? mobileInput
-            : "",
-        user_name:
-          selectedSeats2?.map(
-            (seat, index) => travelerDetails?.[index]?.user_name
-          ) || "",
-        age:
-          selectedSeats2?.map((seat, index) => travelerDetails?.[index]?.age) ||
-          "",
-        gender: selectedSeats2?.map(
-          (seat, index) => travelerDetails?.[index]?.gender || "male"
-        ),
-        terms: termschecked || false,
-        address: selectedRoutes2?.dep_landmark ? selectedRoutes2?.dep_landmark : "",
-        pin_code: selectedRoutes2?.dep_pincode ? selectedRoutes2?.dep_pincode : '',
-        state: busdatas?.from_state ? busdatas?.from_state : '',
-        city: busdatas?.from ? busdatas?.from : '',
+    <>
 
-      }}
-      validationSchema={validationSchema}
-      onSubmit={(values) => {
-        handleSubmit(values);
-        setRegisterFullDetails(values);
-        localStorage.setItem("page1", true);
-        localStorage.setItem("occupation", values.option);
-        localStorage.setItem("mobile", values.mobile);
-      }}
-      enableReinitialize={false}
-    >
-      {({
-        isSubmitting,
-        isValid,
-        handleSubmit,
-        values,
-        setFieldValue,
-        handleChange,
-      }) => {
-        // Update the form state when Formik state changes
-        if (
-          formState?.isValid !== isValid ||
-          formState?.isSubmitting !== isSubmitting
-        ) {
-          setFormState({ isValid, isSubmitting });
-        }
-        return (
-          // <Form onSubmit={handleSubmit}>
-          <>
+      {razorpayloading ? (
+        < div className="flex items-center justify-center h-screen w-full">
+          <img src={busloading} className="h-[50vw] w-[100vw]" />
+        </div >
+      ) : (
+        <Formik
+          initialValues={{
+            email: emailInput || "",
+            mobile:
+              mobileInput && mobileInput !== "undefined" && mobileInput !== "null"
+                ? mobileInput
+                : "",
+            user_name:
+              selectedSeats2?.map(
+                (seat, index) => travelerDetails?.[index]?.user_name
+              ) || "",
+            age:
+              selectedSeats2?.map((seat, index) => travelerDetails?.[index]?.age) ||
+              "",
+            gender: selectedSeats2?.map(
+              (seat, index) => travelerDetails?.[index]?.gender || "male"
+            ),
+            terms: termschecked || false,
+            address: selectedRoutes2?.dep_landmark ? selectedRoutes2?.dep_landmark : "",
+            pin_code: selectedRoutes2?.dep_pincode ? selectedRoutes2?.dep_pincode : '',
+            state: busdatas?.from_state ? busdatas?.from_state : '',
+            city: busdatas?.from ? busdatas?.from : '',
 
-
-            {ticketLoader === false && ticketNo === null ?
-              <div className="p-[2.5vw] md:p-[1.5vw] flex flex-col gap-y-[3vw] md:gap-y-[1.60vw]">
-                <>
-                  <MobileJourneyDetails
-                    MobBusDetails={busdetails2}
-                    MobLayout={layout2}
-                    MobSelectedSeats={selectedSeats2}
-                    MobSelectedRoutes={selectedRoutes2}
-                    MobBusprice={busprice2}
-                    MobSeatDetails={seatDetails2}
-                  />
-                  <MobilePassengerDetails
-                    registerfulldetails={registerfulldetails}
-                    setRegisterFullDetails={setRegisterFullDetails}
-                    MobSeatDetails={seatDetails2}
-                    MobBusDetails={busdetails2}
-                    MobSelectedSeats={selectedSeats2}
-                    MobDiscount={busprice2}
-                    travelerDetails={travelerDetails}
-                    setTravelerDetails={setTravelerDetails}
-                    setEmailInput={setEmailInput}
-                    emailInput={emailInput}
-                    setMobileInput={setMobileInput}
-                    mobileInput={mobileInput}
-                    isAllDetailsFilled={isAllDetailsFilled}
-                    enableInput={enableInput}
-                    setEnableInput={setEnableInput}
-                  />
-                  <MobileBillAddress
-                    MobBusDetails={busdetails2}
-                    MobSeatDetails={seatDetails2}
-                    travelerDetails={travelerDetails}
-                    MobSelectedRoutes={selectedRoutes2}
-                    emailInput={emailInput}
-                    mobileInput={mobileInput}
-                    MobSelectedseatprice={selectedseatprice2}
-                    setConfirmModal={setConfirmModal}
-                    setConfirmRefNo={setConfirmRefNo}
-                    confirmModal={confirmModal}
-                    registerfulldetails={registerfulldetails}
-                    setRegisterFullDetails={setRegisterFullDetails}
-                    isAllDetailsFilled={isAllDetailsFilled}
-                    enableInput={enableInput}
-                    setEnableInput={setEnableInput}
-                    faredetails={faredetails}
-                    setFareDetails={setFareDetails}
-                  />
-                  {confirmModal && (
-                    <span id="targetSection">
-                    <MobileConfirmTicket
-                      MobSeatDetails={seatDetails2}
-                      MobBusDetails={busdetails2}
-                      MobSelectedSeats={selectedSeats2}
-                      MobDiscount={busprice2}
-                      confirmRefNo={confirmRefNo}
-                      faredetails={faredetails}
-                      emailInput={emailInput}
-                      mobileInput={mobileInput}
-                      droppingDate={calculatedDate && ConvertDate(calculatedDate)}
-                      ticketNo={ticketNo}
-                      setTicketNo={setTicketNo}
-                      ticketLoader={ticketLoader}
-                      setTicketLoader={setTicketLoader}
-                    />
-                    </span>
-                  )}
-                </>
-              </div>
-              : ticketlist?.status === "success" ? handleNavigate()
-                : <div>
-                  <div className="flex items-center justify-center h-full w-full">
-                    <img src={busloading} className="h-[50vw] w-[100vw]" />
-                  </div>
-                </div>
+          }}
+          validationSchema={validationSchema}
+          onSubmit={(values) => {
+            handleSubmit(values);
+            setRegisterFullDetails(values);
+            localStorage.setItem("page1", true);
+            localStorage.setItem("occupation", values.option);
+            localStorage.setItem("mobile", values.mobile);
+          }}
+          enableReinitialize={false}
+        >
+          {({
+            isSubmitting,
+            isValid,
+            handleSubmit,
+            values,
+            setFieldValue,
+            handleChange,
+          }) => {
+            // Update the form state when Formik state changes
+            if (
+              formState?.isValid !== isValid ||
+              formState?.isSubmitting !== isSubmitting
+            ) {
+              setFormState({ isValid, isSubmitting });
             }
+            return (
+              // <Form onSubmit={handleSubmit}>
+              <>
 
 
-            {/* navigation(`/bookedTicket`, { state: { ticketDetails: ticketlist?.ticketInfo, droppingDate: droppingDate } }) */}
+                {ticketLoader === false && ticketNo === null ?
+                  <div className="p-[2.5vw] md:p-[1.5vw] flex flex-col gap-y-[3vw] md:gap-y-[1.60vw]">
+                    <>
+                      <MobileJourneyDetails
+                        MobBusDetails={busdetails2}
+                        MobLayout={layout2}
+                        MobSelectedSeats={selectedSeats2}
+                        MobSelectedRoutes={selectedRoutes2}
+                        MobBusprice={busprice2}
+                        MobSeatDetails={seatDetails2}
+                      />
+                      <MobilePassengerDetails
+                        registerfulldetails={registerfulldetails}
+                        setRegisterFullDetails={setRegisterFullDetails}
+                        MobSeatDetails={seatDetails2}
+                        MobBusDetails={busdetails2}
+                        MobSelectedSeats={selectedSeats2}
+                        MobDiscount={busprice2}
+                        travelerDetails={travelerDetails}
+                        setTravelerDetails={setTravelerDetails}
+                        setEmailInput={setEmailInput}
+                        emailInput={emailInput}
+                        setMobileInput={setMobileInput}
+                        mobileInput={mobileInput}
+                        isAllDetailsFilled={isAllDetailsFilled}
+                        enableInput={enableInput}
+                        setEnableInput={setEnableInput}
+                      />
+                      <MobileBillAddress
+                        MobBusDetails={busdetails2}
+                        MobSeatDetails={seatDetails2}
+                        travelerDetails={travelerDetails}
+                        MobSelectedRoutes={selectedRoutes2}
+                        emailInput={emailInput}
+                        mobileInput={mobileInput}
+                        MobSelectedseatprice={selectedseatprice2}
+                        setConfirmModal={setConfirmModal}
+                        setConfirmRefNo={setConfirmRefNo}
+                        confirmModal={confirmModal}
+                        registerfulldetails={registerfulldetails}
+                        setRegisterFullDetails={setRegisterFullDetails}
+                        isAllDetailsFilled={isAllDetailsFilled}
+                        enableInput={enableInput}
+                        setEnableInput={setEnableInput}
+                        faredetails={faredetails}
+                        setFareDetails={setFareDetails}
+                      />
+                      {confirmModal && (
+                        <span id="targetSection">
+                          <MobileConfirmTicket
+                            MobSeatDetails={seatDetails2}
+                            MobBusDetails={busdetails2}
+                            MobSelectedSeats={selectedSeats2}
+                            MobDiscount={busprice2}
+                            MobSelectedRoutes={selectedRoutes2}
+                            confirmRefNo={confirmRefNo}
+                            faredetails={faredetails}
+                            emailInput={emailInput}
+                            mobileInput={mobileInput}
+                            droppingDate={calculatedDate && ConvertDate(calculatedDate)}
+                            ticketNo={ticketNo}
+                            setTicketNo={setTicketNo}
+                            ticketLoader={ticketLoader}
+                            setTicketLoader={setTicketLoader}
+                            razorpayloading={razorpayloading}
+                            setRazorpayLoading={setRazorpayLoading}
+                          />
+                        </span>
+                      )}
+                    </>
+                  </div>
+                  : ticketlist?.status === "success" && ticketNo !== null ? handleNavigate()
+                    : <div>
+                      <div className="flex items-center justify-center h-screen w-full">
+                        <img src={busloading} className="h-[50vw] w-[100vw]" />
+                      </div>
+                    </div>
+                }
 
-          </>
-          // </Form>
-        );
-      }}
-    </Formik >
+
+                {/* navigation(`/bookedTicket`, { state: { ticketDetails: ticketlist?.ticketInfo, droppingDate: droppingDate } }) */}
+
+              </>
+              // </Form>
+            );
+          }}
+        </Formik >
+      )
+      }
+
+    </>
+
   );
 }

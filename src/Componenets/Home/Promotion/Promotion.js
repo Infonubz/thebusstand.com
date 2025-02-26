@@ -42,7 +42,7 @@ export default function Promotion() {
   useEffect(() => {
     // GetPromotion(dispatch);
     GetDiscountOffers(dispatch);
-  }, [dispatch]);
+  }, [dispatch, sessionStorage.getItem("occupation_id")]);
 
   useEffect(() => {
     updateStartIndex(); // Set initial startIndex based on screen size
@@ -134,7 +134,9 @@ export default function Promotion() {
                         ></div> */}
                         <img
                           alt="background_Image"
-                          src={`${apicrmimage}${item?.theme ? item?.theme :item?.background_image}`}
+                          src={`${apicrmimage}${
+                            item?.theme ? item?.theme : item?.background_image
+                          }`}
                           className="w-[80vw] lg:h-[9.5vw] md:h-[8vw] h-[40vw]"
                         />
                         <div className={`absolute left-[4.6vw] bottom-0`}>
@@ -159,14 +161,18 @@ export default function Promotion() {
             </div>
           )}
           <div className={`absolute right-[-3vw] top-[50%]`}>
-            {offerlist?.response?.length > 5 && startIndex < offerlist?.response?.length - 5 && (
-              <button
-                className={`cursor-pointer  p-2 rounded-full`}
-                onClick={nextSlide}
-              >
-                <IoIosArrowForward size={"2.5vw"} color={`${colors.primary}`} />
-              </button>
-            )}
+            {offerlist?.response?.length > 5 &&
+              startIndex < offerlist?.response?.length - 5 && (
+                <button
+                  className={`cursor-pointer  p-2 rounded-full`}
+                  onClick={nextSlide}
+                >
+                  <IoIosArrowForward
+                    size={"2.5vw"}
+                    color={`${colors.primary}`}
+                  />
+                </button>
+              )}
           </div>
         </div>
       </div>
@@ -196,7 +202,9 @@ export default function Promotion() {
               <div key={index} className={`relative flex-shrink-0 mr-[2vw]`}>
                 <img
                   alt="background_image"
-                  src={`${apicrmimage}${item?.theme ? item?.theme :item?.background_image}`}
+                  src={`${apicrmimage}${
+                    item?.theme ? item?.theme : item?.background_image
+                  }`}
                   className="w-[80vw] lg:h-[80%] md:h-[12vw] h-[45vw] relative z-10" // Ensure z-index is higher
                 />
                 {/* <div

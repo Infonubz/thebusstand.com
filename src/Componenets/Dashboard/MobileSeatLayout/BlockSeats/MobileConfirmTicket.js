@@ -5,7 +5,7 @@ import { RiArrowRightDoubleLine } from "react-icons/ri";
 import { Abhibus_SeatConfirmed } from "../../../../Api-Abhibus/Dashboard/DashboardPage";
 import { toast } from "react-toastify";
 import { calculateDiscountedFare } from "../../../Common/Common-Functions/TBS-Discount-Fare";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Modal } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
@@ -13,18 +13,26 @@ import ModalPopup from "../../../Common/Modal/Modal";
 import { GET_TICKET_DETAILS } from "../../../../Store/Type";
 import { ViewTicketById } from "../../../../Api-Abhibus/MyAccount/ViewTicket";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import dayjs from "dayjs";
+import { TBS_Booking_Details } from "../../../../Api-TBS/Dashboard/Dashboard";
 
 export default function MobileConfirmTicket({
   MobSeatDetails,
   MobBusDetails,
   MobDiscount,
+  MobSelectedRoutes,
   confirmRefNo,
   faredetails,
   emailInput,
   mobileInput,
   droppingDate,
-  ticketNo, setTicketNo,
-  ticketLoader, setTicketLoader
+  ticketNo,
+  setTicketNo,
+  ticketLoader,
+  setTicketLoader,
+  razorpayloading,
+  setRazorpayLoading
 }) {
   const navigation = useNavigate();
   const [promoCode, setPromoCode] = useState("");
@@ -33,6 +41,10 @@ export default function MobileConfirmTicket({
   const [navigate, setNavigate] = useState(false);
   const tbs_discount = useSelector((state) => state?.live_per);
   const ticketlist = useSelector((state) => state?.get_ticket_detail);
+
+  const key_id = process.env.REACT_APP_RAZORPAY_KEY_ID;
+  const key_secret = process.env.REACT_APP_RAZORPAY_KEY_SECRET;
+  const OrderApi = process.env.REACT_APP_API_URL;
 
   const closeModal = () => {
     setTicektConfirm(false);
@@ -58,7 +70,96 @@ export default function MobileConfirmTicket({
   };
   const dispatch = useDispatch();
   const [spinning, setSpinning] = useState(false);
-  const handleBookingPrice = async () => {
+
+
+  const initiateRazorpay = (generatedOrderId) => {
+    const options = {
+      key: key_id,
+      amount: tbsamount * 100,
+      currency: "INR",
+      name: "thebusstand.com",
+      description: "For testing purposes",
+      order_id: generatedOrderId,
+      handler: async function (response) {
+        if (response?.razorpay_payment_id) {
+          try {
+            const payload = {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            };
+
+            const { data: jsonRes } = await axios.post(
+              `${OrderApi}/order/validate`,
+              payload
+            );
+
+            if (jsonRes?.msg === "success") {
+              handleBookingPrice(
+                response.razorpay_order_id,
+                response.razorpay_payment_id,
+                response.razorpay_signature,
+                jsonRes?.msg
+              );
+            }
+          } catch (err) {
+            console.error("Validation failed:", err);
+          }
+        }
+      },
+      prefill: {
+        name: "Nubiznez",
+        email: emailInput,
+        contact: mobileInput,
+      },
+      theme: {
+        color: "#1F4B7F",
+      },
+    };
+
+    const pay = new window.Razorpay(options);
+    pay.open();
+  };
+
+
+  const calculateArrival = (departureDate, departureTime, duration) => {
+    try {
+      const departureDateTime = new Date(`${departureDate} ${departureTime}`);
+      if (isNaN(departureDateTime.getTime())) {
+        throw new Error("Invalid departure date or time format.");
+      }
+      const [hours, minutes] = duration.split(":").map(Number);
+      if (isNaN(hours) || isNaN(minutes)) {
+        throw new Error("Invalid duration format.");
+      }
+      departureDateTime.setHours(departureDateTime.getHours() + hours);
+      departureDateTime.setMinutes(departureDateTime.getMinutes() + minutes);
+      const arrivalDate = departureDateTime.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      });
+      const arrivalTime = departureDateTime.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+      return dayjs(arrivalDate).format("YYYY-MM-DD");
+    } catch (error) {
+      return { arrivalDate: null, arrivalTime: null };
+    }
+  };
+
+
+  const currentpath = useParams();
+
+  const arraivaldate = calculateArrival(
+    MobBusDetails?.BUS_START_DATE,
+    MobBusDetails?.Start_time,
+    MobBusDetails?.TravelTime
+  );
+
+  const handleBookingPrice = async (order_id, payment_id, signature, msg) => {
     setTicketLoader(true)
     try {
       const response = await Abhibus_SeatConfirmed(MobBusDetails, confirmRefNo);
@@ -68,14 +169,32 @@ export default function MobileConfirmTicket({
           response?.TicketNo,
           setSpinning
         );
+        const TBS_booking = await TBS_Booking_Details(
+          response?.TicketNo,
+          order_id,
+          payment_id,
+          signature,
+          ticketdetails?.ticketInfo,
+          emailInput,
+          mobileInput,
+          msg,
+          MobBusDetails,
+          arraivaldate,
+          MobSelectedRoutes,
+          MobSeatDetails,
+          currentpath
+        );
         dispatch({
           type: GET_TICKET_DETAILS,
           payload: ticketdetails,
         });
         sessionStorage.setItem("ticket_view", "open");
-        setTicketNo(response?.TicketNo);
-        setTicektConfirm(true);
+        if (response?.TicketNo) {
+          setTicketNo(response?.TicketNo);
+          setTicektConfirm(true);
+        }
       }
+
     } catch (error) {
       console.error("API call failed:", error);
     }
@@ -104,56 +223,132 @@ export default function MobileConfirmTicket({
       });
     }
   }, [navigate]);
+
+  const OrderId_Generate = async () => {
+    const username = key_id;
+    const password = key_secret;
+    const apiUrl = `${OrderApi}/order`;
+
+    const requestBody = {
+      amount: tbsamount * 100,
+      currency: "INR",
+      receipt: `receipt_${Date.now()}`,
+      notes: {
+        notes_key_1: "test",
+        notes_key_2: "test2",
+      },
+      payment_capture: 1,
+    };
+
+    try {
+      console.log("API URL:", apiUrl); // Debugging API URL
+
+      const authHeader = `Basic ${btoa(`${username}:${password}`)}`;
+
+      const response = await axios.post(apiUrl, requestBody, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: authHeader,
+        },
+      });
+
+      console.log("Generated Order ID:", response?.data?.id); // Debugging Order ID
+      return response?.data.id; // Return the order ID
+    } catch (error) {
+      if (error.response) {
+        console.error("Response Data:", error.response.data);
+        console.error("Response Status:", error.response.status);
+      } else if (error.request) {
+        console.error("No Response Received:", error.request);
+      } else {
+        console.error("Error Configuring Request:", error.message);
+      }
+      return null;
+    }
+  };
+
   const loadRazorpayScript = (callback) => {
+    if (
+      document.querySelector(
+        'script[src="https://checkout.razorpay.com/v1/checkout.js"]'
+      )
+    ) {
+      callback();
+      return;
+    }
+
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
     script.async = true;
     script.onload = callback;
+    script.onerror = () => console.error("Failed to load Razorpay script.");
     document.body.appendChild(script);
   };
+  // const RazorpayGateway = async () => {
+  //   if (!tbsamount) {
+  //     alert("Please enter an amount");
+  //     return;
+  //   }
+
+  //   loadRazorpayScript(() => {
+  //     const options = {
+  //       key: "rzp_test_eyuWUoPChgfzBC",
+  //       amount: tbsamount * 100, // Razorpay expects amount in paise
+  //       currency: "INR",
+  //       name: "THEBUSSTAND.COM",
+  //       description: "For testing purposes",
+  //       // image: logo,
+  //       handler: async function (response) {
+  //         if (response?.razorpay_payment_id) {
+  //           handleBookingPrice();
+  //         }
+  //         // toast.success(`Payment ID: ${response.razorpay_payment_id}`);
+  //         //   alert(`Payment ID: ${response.razorpay_payment_id}`);
+
+  //       },
+  //       prefill: {
+  //         name: "Nubiznez",
+  //         email: emailInput,
+  //         contact: mobileInput,
+  //       },
+  //       notes: {
+  //         address: "Razorpay Corporate Office",
+  //       },
+  //       theme: {
+  //         color: "#1F4B7F",
+  //       },
+  //       modal: {
+  //         escape: false,
+  //         backdropclose: false,
+  //         handleback: true,
+  //       },
+  //     };
+
+  //     const pay = new window.Razorpay(options);
+  //     pay.open();
+  //   });
+  // };
   const RazorpayGateway = async () => {
+    setRazorpayLoading(true);
     if (!tbsamount) {
       alert("Please enter an amount");
       return;
     }
 
-    loadRazorpayScript(() => {
-      const options = {
-        key: "rzp_test_eyuWUoPChgfzBC",
-        amount: tbsamount * 100, // Razorpay expects amount in paise
-        currency: "INR",
-        name: "THEBUSSTAND.COM",
-        description: "For testing purposes",
-        // image: logo,
-        handler: async function (response) {
-          if (response?.razorpay_payment_id) {
-            handleBookingPrice();
-          }
-          // toast.success(`Payment ID: ${response.razorpay_payment_id}`);
-          //   alert(`Payment ID: ${response.razorpay_payment_id}`);
-        
-        },
-        prefill: {
-          name: "Nubiznez",
-          email: emailInput,
-          contact: mobileInput,
-        },
-        notes: {
-          address: "Razorpay Corporate Office",
-        },
-        theme: {
-          color: "#1F4B7F",
-        },
-        modal: {
-          escape: false,
-          backdropclose: false,
-          handleback: true,
-        },
-      };
+    try {
+      const generatedOrderId = await OrderId_Generate();
+      if (!generatedOrderId) {
+        alert("Failed to generate Order ID. Please try again.");
+        return;
+      }
 
-      const pay = new window.Razorpay(options);
-      pay.open();
-    });
+      loadRazorpayScript(() => {
+        setRazorpayLoading(false);
+        initiateRazorpay(generatedOrderId);
+      });
+    } catch (error) {
+      console.error("Error generating order ID:", error);
+    }
   };
   return (
     <div>

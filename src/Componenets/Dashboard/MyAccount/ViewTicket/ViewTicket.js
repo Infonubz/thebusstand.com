@@ -18,6 +18,7 @@ export default function ViewTicket() {
   const validationSchema = Yup.object({
     ticketNumber: Yup.string().required("Ticket Number is required"),
   });
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const navigation = useNavigate();
   const [ticketDetails, setTicketDetails] = useState([]);
@@ -249,6 +250,11 @@ export default function ViewTicket() {
         droppingDate: dropDate?.props?.children,
       },
     });
+  };
+  const handleDownloadClick = async (ticketid) => {
+    // const response = await DownloadTicket(ticketid);
+    const downloadUrl = `${apiUrl}/downloadticket/${ticketid}`;
+    window.open(downloadUrl, "_blank");
   };
   return (
     <div>
@@ -594,7 +600,12 @@ export default function ViewTicket() {
                               : "bg-[#1F487C]"
                           }  text-[3.6vw] md:text-[1.1vw] font-bold rounded-full text-white md:w-[15vw] md:h-[3vw] w-[20vw] h-[7vw] outline-none`}
                         >
-                          <span className="md:hidden block" onClick={handleNavigation}>VIEW</span>{" "}
+                          <span
+                            className="md:hidden block"
+                            onClick={handleNavigation}
+                          >
+                            VIEW
+                          </span>{" "}
                           <span
                             className="md:block hidden"
                             onClick={() => {
@@ -870,7 +881,12 @@ export default function ViewTicket() {
                           //   setShowModal(true);
                           //   setTicketDetails(item);
                           // }}
-                          className="flex items-center gap-x-[0.5vw]"
+                          onClick={() =>
+                            handleDownloadClick(
+                              ticketDetails?.ticketInfo?.Ticket_no
+                            )
+                          }
+                          className="flex items-center cursor-pointer gap-x-[0.5vw]"
                         >
                           <span>
                             {/* <LuDownload size={"1.2vw"} color={"#1F487C"} />  */}

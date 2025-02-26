@@ -1,14 +1,13 @@
 {
   "files": {
-    "main.css": "/static/css/main.651ac0d1.css",
-    "main.js": "/static/js/main.7bceaf1f.js",
+    "main.css": "/static/css/main.daa62bd1.css",
+    "main.js": "/static/js/main.2fe1741f.js",
     "static/js/32.62135ec3.chunk.js": "/static/js/32.62135ec3.chunk.js",
     "static/js/357.55ccad3b.chunk.js": "/static/js/357.55ccad3b.chunk.js",
     "static/js/542.02a7bc4a.chunk.js": "/static/js/542.02a7bc4a.chunk.js",
     "static/media/referralnew.gif": "/static/media/referralnew.b42c65eaaf4597520332.gif",
     "static/media/Password.gif": "/static/media/Password.312d7028a13151f70077.gif",
     "static/media/faq.gif": "/static/media/faq.334999c8db4e23e9a090.gif",
-    "static/media/Grouplogos.png": "/static/media/Grouplogos.cf3f41a37ec676766239.png",
     "static/media/iPhone 13 Pro.png": "/static/media/iPhone 13 Pro.c36ecf1474eeede87121.png",
     "static/media/bgimage.png": "/static/media/bgimage.cdd90ac47b4fb5b1bbf7.png",
     "static/media/bus.gif": "/static/media/bus.83c9ac1769378d344f3d.gif",
@@ -68,6 +67,7 @@
     "static/media/PUNBUS.png": "/static/media/PUNBUS.d13d2249d3ffdb1fe11b.png",
     "static/media/cloud3.png": "/static/media/cloud3.b554d9aa05dc7d888fde.png",
     "static/media/man.png": "/static/media/man.f866877b9fbdb1c45181.png",
+    "static/media/Grouplogos.jpg": "/static/media/Grouplogos.6e9649ffac66f7cf68e6.jpg",
     "static/media/prtc.png": "/static/media/prtc.004bc20d6feff43d9d42.png",
     "static/media/thinkbox3.png": "/static/media/thinkbox3.3d61abd673e2fd812a44.png",
     "static/media/empty.png": "/static/media/empty.b2e0fe9315c1a24379b7.png",
@@ -76,7 +76,7 @@
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/css/main.651ac0d1.css",
-    "static/js/main.7bceaf1f.js"
+    "static/css/main.daa62bd1.css",
+    "static/js/main.2fe1741f.js"
   ]
 }

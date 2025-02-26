@@ -11,6 +11,8 @@ import { calculateDiscountedFare } from "../../../Common/Common-Functions/TBS-Di
 import { useSelector } from "react-redux";
 import { RatingFeedBack } from "../../../Common/Rating&FeedBack/Ratings&Feedback.js";
 import ModalPopup from "../../../Common/Modal/Modal.js";
+import { DownloadTicket } from "../../../../Api-TBS/Dashboard/Dashboard.js";
+import { useNavigate } from "react-router";
 
 const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
   console.log(droppingDate, "droppingDate");
@@ -25,7 +27,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
   function generateRandomId(prefix, length) {
     return prefix;
   }
-
+  const apiUrl = process.env.REACT_APP_API_URL;
   const calculateDuration = (startTime, endTime) => {
     // Parse start and end times using Moment.js
     const start = moment(startTime, "hh:mm A"); // 12-hour format (e.g., "08:20 PM")
@@ -81,14 +83,21 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
       //   setLoader(false);
     }
   };
+  const navigate = useNavigate();
 
-  const handleDownloadClick = () => {
-    const capture = componentRef.current;
-    if (capture) {
-      downloadPDF();
-    } else {
-      console.error("Element not found on button click.");
-    }
+  const handleDownloadClick = async (ticketid) => {
+    // const capture = componentRef.current;
+    // if (capture) {
+    //   downloadPDF();
+    // } else {
+    //   console.error("Element not found on button click.");
+    // }
+    // const response = await DownloadTicket(ticketid);
+    // navigate(`http://192.168.90.47:4001/api/downloadticket/${ticketid}`)
+    const downloadUrl = `${apiUrl}/downloadticket/${ticketid}`;
+    window.open(downloadUrl, "_blank");
+    // console.log(ticketid, response?.data, "downloading_main_ticket");
+    // return response?.data
   };
   const formatDate = (inputDate) => {
     // Extract parts from input
@@ -395,7 +404,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                                         {ticketDetails?.logos != null && (
                                             <img
                                                 //   src={`${apiUrlimage}${ticketDetails.logos}`}
-                                               src={Logo}
+                                              src={Logo}
                                                 alt="logos"
                                                 className={`w-[6vw] h-[6vw] rounded-full bg-white  ${LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
                                                         ? "shadow-lg shadow-[rgba(255, 238, 201, 0.9)]"
@@ -415,7 +424,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                   </div>
                   <div className="flex flex-col h-[40%] items-center">
                     <p
-                      className="text-[1vw] font-bold"
+                      className="text-[1vw] font-bold text-center break-words"
                       style={{
                         color:
                           LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
@@ -424,7 +433,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                             : colorcode.theme,
                       }}
                     >
-                      {ticketDetails?.ticketInfo?.operatorname?.length > 23 ? (
+                      {/* {ticketDetails?.ticketInfo?.operatorname?.length > 23 ? (
                         <Tooltip
                           placement="top"
                           title={ticketDetails?.ticketInfo?.operatorname}
@@ -446,16 +455,18 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                           0,
                           22
                         )}`
-                      )}
+                      )} */}
+                      {ticketDetails?.ticketInfo?.operatorname}
                     </p>
                     <p
-                      className={`${
+                      className={`text-center break-words ${
                         LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
                           ? "text-[#393939]"
                           : "text-[#1F487C]"
                       }  text-[0.8vw]`}
                     >
-                      {ticketDetails?.ticketInfo?.bustype?.length > 25 ? (
+                      {ticketDetails?.ticketInfo?.bustype}
+                      {/* {ticketDetails?.ticketInfo?.bustype?.length > 25 ? (
                         <Tooltip
                           placement="top"
                           title={ticketDetails?.ticketInfo?.bustype}
@@ -474,7 +485,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                         </Tooltip>
                       ) : (
                         `${ticketDetails?.ticketInfo?.bustype?.slice(0, 24)}`
-                      )}
+                      )} */}
                     </p>
                   </div>
                 </div>
@@ -764,7 +775,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                             zIndex: 2,
                           }}
                           className="relative h-[2.1vw] flex w-[5.5vw]
-                                           text-white text-[1vw] font-bold justify-center items-center left-[6.2vw] top-[.5vw]"
+                                          text-white text-[1vw] font-bold justify-center items-center left-[6.2vw] top-[.5vw]"
                         >
                           <svg
                             className="w-[40vw] h-[10vw]"
@@ -1181,7 +1192,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                 </div> */}
               </div>
               {/* <div className="row-span-1 py-[1vw]">
-             
+            
                 {ticketDetails?.ticketInfo?.ticket_det?.length > 0
                   ? ticketDetails?.ticketInfo?.ticket_det?.map((v, ind) => (
                       <div
@@ -1347,11 +1358,11 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                                     ? " text-white"
                                     : ""
                                 }
-                               h-[3vw] w-[50%] rounded-r-[0.5vw] border-[0.1vw] ${
-                                 ticketDetails?.bus_type_status === "luxury"
-                                   ? "border-[#393939]"
-                                   : "border-[#1F487C]"
-                               } `}
+                              h-[3vw] w-[50%] rounded-r-[0.5vw] border-[0.1vw] ${
+                                ticketDetails?.bus_type_status === "luxury"
+                                  ? "border-[#393939]"
+                                  : "border-[#1F487C]"
+                              } `}
                                 // onClick={() =>
                                 //   setUserDetails({
                                 //     ...userdetails,
@@ -1367,7 +1378,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                       </div>
                     ))
                   : ""}
-   
+  
               </div> */}
               {/* <div className="row-span-1 py-[1vw]">
                                 <div className="grid grid-cols-6 gap-[1vw]">
@@ -1449,7 +1460,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                                             }}
                                         >
                                             <p className="absolute left-[1vw] top-[0.6vw] text-[1vw]">
-                                                 {registerfulldetails.mobile} 
+                                                {registerfulldetails.mobile} 
                                                 {ticketDetails?.mobile_number}
                                             </p>
                                         </div>
@@ -1498,7 +1509,10 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
             </div> */}
             <div className="flex items-center text-[1vw] mt-[.2vw] font-semibold text-[#1F487C]">
               <div
-                className={`text-white h-[2.5vw] w-[12.5vw] rounded-[1vw] flex items-center justify-evenly ${
+                onClick={() =>
+                  handleDownloadClick(ticketDetails?.ticketInfo?.Ticket_no)
+                }
+                className={`text-white h-[2.5vw] w-[12.5vw] cursor-pointer rounded-[1vw] flex items-center justify-evenly ${
                   LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true
                     ? "bg-[#393939]"
                     : "bg-[#1F487C] "
@@ -1594,8 +1608,8 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
         {/* ))} */}
         {/* <div className="flex justify-end items-end mt-[1vw] mr-[-0.3vw]">
           <button type="button" onClick={generatePDF}
-           className={`h-[3vw] w-[15vw] flex flex-cols-2 gap-[1.8vw] justify-center items-center rounded-[1vw] border-[0.1vw] border-[#1F487C] bg-[#1F487C]`}>
-             
+          className={`h-[3vw] w-[15vw] flex flex-cols-2 gap-[1.8vw] justify-center items-center rounded-[1vw] border-[0.1vw] border-[#1F487C] bg-[#1F487C]`}>
+            
                   <div className="" ><p className="text-[1.3vw] text-white">Download Ticket</p>  </div>
                   <div
                     className=" h-[2.4vw] w-[2.4vw] rounded-[50%] flex justify-center items-center "

@@ -15,6 +15,7 @@ import axios from "axios";
 import { TBS_Booking_Details } from "../../../Api-TBS/Dashboard/Dashboard";
 import dayjs from "dayjs";
 import { useParams } from "react-router";
+import { GetDiscountOffers } from "../../../Api-TBS/Home/Home";
 export default function ConfirmTicket({
   seatDetails,
   BusDetails,
@@ -29,9 +30,10 @@ export default function ConfirmTicket({
   setTicketNumber,
   setTicketLoading,
   selectedRoutes,
-  travelerDetails
+  travelerDetails,
 }) {
   const dispatch = useDispatch();
+  const [tbsdiscountamount, setDiscount] = useState(null);
   const key_id = process.env.REACT_APP_RAZORPAY_KEY_ID;
   const key_secret = process.env.REACT_APP_RAZORPAY_KEY_SECRET;
   const OrderApi = process.env.REACT_APP_API_URL;
@@ -62,7 +64,9 @@ export default function ConfirmTicket({
       BusDetails?.BUS_START_DATE,
       Number(faredetails?.TotadultFare),
       tbs_discount
-    ) + Number(Math.round(totaltax));
+    ) +
+    Number(Math.round(totaltax)) -
+    Number(tbsdiscountamount);
 
   const handlePromoCode = async () => {
     console.log(promoCode, "Promocode Submit");
@@ -270,7 +274,7 @@ export default function ConfirmTicket({
           setTicketNumber(response?.TicketNo);
           setTicketLoading(false);
         }
-    
+
         const TBS_booking = await TBS_Booking_Details(
           response?.TicketNo,
           order_id,
@@ -284,7 +288,8 @@ export default function ConfirmTicket({
           arraivaldate,
           selectedRoutes,
           seatDetails,
-          currentpath
+          currentpath,
+          LuxuryFind(ticketdetails?.ticketInfo?.bustype)
         );
         dispatch({
           type: GET_TICKET_DETAILS,
@@ -303,6 +308,11 @@ export default function ConfirmTicket({
   useEffect(() => {
     loadRazorpayScript(() => console.log("Razorpay script preloaded"));
   }, []);
+  useEffect(() => {
+    GetDiscountOffers(dispatch);
+  }, [dispatch, sessionStorage.getItem("occupation_id")]);
+  const offerlist = useSelector((state) => state?.discount_offer_list);
+  console.log(offerlist?.response, "offerlistofferlist");
 
   // const loadRazorpayScript = (callback) => {
   //   const script = document.createElement("script");
@@ -386,7 +396,48 @@ export default function ConfirmTicket({
   //     pay.open();
   //   });
   // };
-console.log(travelerDetails,"travelerDetails");
+  console.log(travelerDetails, "travelerDetails");
+  const handleoffer = (item) => {
+    if (item?.value_symbol?.includes("₹")) {
+      const amount = calculateDiscountedFare(
+        BusDetails?.BUS_START_DATE,
+        faredetails?.TotadultFare,
+        tbs_discount
+      );
+      console.log(amount, "amountgggggg");
+
+      const final = Number(amount) - Number(item?.promo_value);
+      setDiscount(Math.round(item?.promo_value));
+    } else {
+      const amount = calculateDiscountedFare(
+        BusDetails?.BUS_START_DATE,
+        faredetails?.TotadultFare,
+        tbs_discount
+      );
+      const per = Number(item?.promo_value) / 100;
+      const final = Number(amount) * Number(per);
+      console.log(final, per, amount, "finalfinalfinal");
+
+      setDiscount(Math.round(final));
+    }
+  };
+  const [spin,setSpin] = useState(true)
+
+useEffect(()=>{
+  if(calculateDiscountedFare(
+    BusDetails?.BUS_START_DATE,
+    faredetails?.TotadultFare,
+    tbs_discount
+  )){
+    setSpin(false)
+  }
+  else{
+    setTimeout(() => {
+      setSpin(false)
+    },1000);
+  }
+
+},[faredetails?.TotadultFare])
 
   return (
     <>
@@ -421,7 +472,7 @@ console.log(travelerDetails,"travelerDetails");
                 Offers
               </h1>
               <div className="md:px-[1vw] px-[3vw] h-[42vw] md:h-[9.5vw] overflow-y-auto">
-                {offers.map((item, index) => (
+                {offerlist?.response?.map((item, index) => (
                   <div
                     key={index}
                     className="border-[0.1vw] rounded-[2vw] md:rounded-[0.5vw] mb-[2vw] md:mb-[1vw]"
@@ -438,6 +489,7 @@ console.log(travelerDetails,"travelerDetails");
                           type="radio"
                           name="offer"
                           className="w-full h-auto"
+                          onClick={() => handleoffer(item)}
                         />
                       </div>
                       <div className="col-span-9 flex flex-col w-full">
@@ -445,10 +497,10 @@ console.log(travelerDetails,"travelerDetails");
                           className="md:text-[1.1vw] text-[3.3vw] font-bold"
                           // style={{ color: "#1F487C" }}
                         >
-                          {item.Coupon}
+                          {item.promo_code}
                         </p>
                         <p className="md:text-[1vw] text-[3vw] font-semibold text-[#A4A4A4]">
-                          {item.details}
+                          {item.promo_description}
                         </p>
                       </div>
                     </div>
@@ -572,14 +624,16 @@ console.log(travelerDetails,"travelerDetails");
                     + ₹ {Math.round(totaltax)}
                   </p>
                 </div>
-                {/* <div className="px-[1vw] flex justify-between">
-                <p className="md:text-[1vw] text-[3.5vw]">GST 3%</p>
-                <p className="md:text-[1vw] text-[3.5vw]">
-                  + ₹ {Math.round(Number(gstamount) * 0.03)}
-                </p>
-              </div> */}
+                {offerlist?.response?.length > 0 && (
+                  <div className="px-[1vw] flex justify-between">
+                    <p className="md:text-[1.1vw] text-[3.5vw]">Discount</p>
+                    <p className="md:text-[1.1vw] text-[3.5vw]">
+                      - ₹ {tbsdiscountamount}
+                    </p>
+                  </div>
+                )}
                 <button
-                  className="w-full md:h-[3vw] h-[8vw] rounded-[1.5vw] md:rounded-[0vw] md:rounded-b-[0.5vw] mt-[12vw] md:mt-[7.8vw] flex 
+                  className="w-full md:h-[3vw] h-[8vw] rounded-[1.5vw] md:rounded-[0vw] md:rounded-b-[0.5vw] mt-[12vw] md:mt-[6.2vw] flex 
                                           items-center justify-between px-[3vw] md:px-[1vw] cursor-pointer"
                   style={{
                     backgroundColor:
@@ -600,7 +654,9 @@ console.log(travelerDetails,"travelerDetails");
                           BusDetails?.BUS_START_DATE,
                           Number(faredetails?.TotadultFare),
                           tbs_discount
-                        ) + Number(Math.round(totaltax))
+                        ) +
+                        Number(Math.round(totaltax)) -
+                        Number(tbsdiscountamount)
                       }`}
                     </span>
                   </label>

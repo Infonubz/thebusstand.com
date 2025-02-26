@@ -16,10 +16,10 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 export const SendVerificationOTP = async (dispatch, values) => {
   const payload = {
-    email_id: values.email,
+    email_id: values.email ? values?.email : values,
     // phone: values.mobile
   };
-
+console.log(values, 'values')
   const url = `${apiUrl}/send-request`;
   const method = "post";
   try {

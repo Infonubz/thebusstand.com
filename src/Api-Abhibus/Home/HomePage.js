@@ -12,6 +12,8 @@ import dayjs from "dayjs";
 
 const username = process.env.REACT_APP_ABHIBUS_USERNAME || "demo@test"; // Replace with actual username if not in .env
 const password = process.env.REACT_APP_ABHIBUS_PASSWORD || "demo@abhibus"; // Replace with actual password if not in .env
+const abhibusurl = process.env.REACT_APP_ABHIBUS_URL;
+const abhibuscollection = process.env.REACT_APP_ABHIBUS_COLLECTIONS;
 
 // Utility function to parse XML response using DOMParser
 
@@ -56,7 +58,7 @@ export const processSOAPResponse = async (soapResponse, name) => {
 // Main function for fetching stations
 export const Abhibus_GetStations = async (dispatch) => {
   const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
-    <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="https://staging.abhibus.com/">
+    <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="${abhibuscollection}">
       <soap:Body>
         <tns:GetStationsV1>
           <username>${username}</username>
@@ -65,7 +67,7 @@ export const Abhibus_GetStations = async (dispatch) => {
       </soap:Body>
     </soap:Envelope>`;
 
-  const url = `https://staging.abhibus.com/abhiWebServer`;
+  const url = `${abhibusurl}abhiWebServer`;
 
   try {
     const authHeader = `Basic ${btoa(`${username}:${password}`)}`;
@@ -73,7 +75,7 @@ export const Abhibus_GetStations = async (dispatch) => {
     console.log("Request Headers:", {
       "Content-Type": "text/xml;charset=UTF-8",
       Authorization: authHeader,
-      SOAPAction: '"https://staging.abhibus.com/GetStationsV1"',
+      SOAPAction: `${abhibusurl}GetStationsV1`,
     });
 
     console.log("SOAP Request Body:", soapRequest);
@@ -85,7 +87,7 @@ export const Abhibus_GetStations = async (dispatch) => {
       headers: {
         "Content-Type": "text/xml;charset=UTF-8",
         Authorization: authHeader,
-        SOAPAction: '"https://staging.abhibus.com/GetStationsV1"', // Ensure quotes if required
+        SOAPAction: `${abhibusurl}GetStationsV1`, // Ensure quotes if required
       },
     });
 
@@ -111,7 +113,7 @@ export const Abhibus_GetBusList = async (
   const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <tns:GetAvailableServices xmlns:tns="https://staging.abhibus.com/">
+    <tns:GetAvailableServices xmlns:tns="${abhibuscollection}">
       <tns:username>${username}</tns:username>
       <tns:password>${password}</tns:password>
       <tns:sourceStationId>${busdatas.from_sourceID}</tns:sourceStationId>
@@ -126,7 +128,7 @@ export const Abhibus_GetBusList = async (
 </soap:Envelope>
 `;
 
-  const url = `https://staging.abhibus.com/abhiWebServer`;
+  const url = `${abhibusurl}abhiWebServer`;
   dispatch({ type: BUSLIST_LOADER, payload: true });
 
   try {
@@ -135,7 +137,7 @@ export const Abhibus_GetBusList = async (
     console.log("Request Headers:", {
       "Content-Type": "text/xml;charset=UTF-8",
       Authorization: authHeader,
-      SOAPAction: '"https://staging.abhibus.com/GetAvailableServices"',
+      SOAPAction: `${abhibusurl}/GetAvailableServices`,
     });
 
     console.log("SOAP Request Body:", soapRequest);
@@ -147,7 +149,7 @@ export const Abhibus_GetBusList = async (
       headers: {
         "Content-Type": "text/xml;charset=UTF-8",
         Authorization: authHeader,
-        SOAPAction: '"https://staging.abhibus.com/GetAvailableServices"', // Ensure quotes if required
+        SOAPAction: `${abhibusurl}/GetAvailableServices`, // Ensure quotes if required
       },
     });
     dispatch({ type: BUSLIST_LOADER, payload: false });
@@ -171,9 +173,10 @@ export const Abhibus_GetBusList = async (
     return null;
   }
 };
+
 export const Abhibus_GetOperators = async (dispatch) => {
   const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
-    <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="https://staging.abhibus.com/">
+    <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="${abhibuscollection}">
       <soap:Body>
         <tns:GetOperators>
           <username>${username}</username>
@@ -181,12 +184,12 @@ export const Abhibus_GetOperators = async (dispatch) => {
         </tns:GetOperators>
       </soap:Body>
     </soap:Envelope>`;
-
-  const url = `https://staging.abhibus.com/abhiWebServer`;
-
+ 
+  const url = `${abhibusurl}abhiWebServer`;
+ 
   try {
     const authHeader = `Basic ${btoa(`${username}:${password}`)}`;
-
+ 
     // console.log("Request Headers:", {
     //   "Content-Type": "text/xml;charset=UTF-8",
     //   Authorization: authHeader,
@@ -199,15 +202,15 @@ export const Abhibus_GetOperators = async (dispatch) => {
       headers: {
         "Content-Type": "text/xml;charset=UTF-8",
         Authorization: authHeader,
-        SOAPAction: '"https://staging.abhibus.com/GetOperators"', // Ensure quotes if required
+        SOAPAction: `${abhibusurl}/GetOperators`, // Ensure quotes if required
       },
     });
-
+ 
     // Process the SOAP response using the utility function
     const result = await processSOAPResponse(response.data, "GetOperators");
     // Dispatch the result to the Redux store
     dispatch({ type: GET_OPERATORS, payload: result?.operatorsInfo });
-
+ 
     return result;
   } catch (error) {
     console.error("Error Response:", error.response?.data || error.message);
@@ -215,3 +218,4 @@ export const Abhibus_GetOperators = async (dispatch) => {
     return null;
   }
 };
+ 

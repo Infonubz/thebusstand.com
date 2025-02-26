@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   //Modal,
   Spin,
@@ -68,7 +68,6 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
       const decoded = jwt_decode(response.credential); // Decode JWT token
       setUser(decoded);
       setError(null);
-      console.log("User Info:", decoded);
     } catch (err) {
       console.error("JWT Decode Error:", err);
       setError("Failed to decode token");
@@ -97,25 +96,31 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
 
   const handleSubmit = async (values) => {
     const email = values.email;
-    console.log(email,"emailemailemailemail");
-    
     const encryptedUserEmail = email && encryptData(values.email);
-    console.log(encryptedUserEmail, "encryptedUserEmail");
     sessionStorage.setItem("email_id", encryptedUserEmail);
     setLoading(true);
     try {
       const response = await SendVerificationOTP(dispatch, values);
-      console.log(response, "responseresponse77");
 
       setCurrentPage(1);
       // nextPage();
       setLoading(false);
-    } catch {}
+    } catch { }
   };
 
-  console.log(user, "useruseruseruser");
 
-  console.log(toggleNum, "toggleNumtoggleNum");
+  useEffect(() => {
+    if (user?.email) {
+      const email = user?.email
+      const encryptedUserEmail = email && encryptData(user?.email);
+      sessionStorage.setItem("email_id", encryptedUserEmail);
+      setLoading(true);
+      const response = SendVerificationOTP(dispatch, user?.email);
+      setCurrentPage(1);
+      // nextPage();
+      setLoading(false);
+    }
+  }, [dispatch, user])
 
   return (
     <>
@@ -153,31 +158,28 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
             </div>
             <div className="flex items-center mt-[1vw]">
               <button
-                className={`border-[#1F487C] cursor-not-allowed border-[0.1vw] rounded-tl-[0.5vw] rounded-bl-[0.5vw] w-[13.5vw] gap-x-[0.5vw] h-[3vw] flex items-center justify-center ${
-                  toggleNum === 1 ? "bg-[#1F487C]" : "bg-white"
-                }`}
+                className={`border-[#1F487C] cursor-not-allowed border-[0.1vw] rounded-tl-[0.5vw] rounded-bl-[0.5vw] w-[13.5vw] gap-x-[0.5vw] h-[3vw] flex items-center justify-center ${toggleNum === 1 ? "bg-[#1F487C]" : "bg-white"
+                  }`}
                 disabled
                 onClick={() => setToggleNum(1)}
-                // style={{
-                //   transition: "ease-in all 0.3s",
-                // }}
+              // style={{
+              //   transition: "ease-in all 0.3s",
+              // }}
               >
                 <FaPhoneAlt
                   color={`${toggleNum === 1 ? "white" : "#1F487C"}`}
                   size={"1.3vw"}
                 />
                 <span
-                  className={`text-[1.2vw] ${
-                    toggleNum === 1 ? "text-white" : "text-[#1F487C]"
-                  }`}
+                  className={`text-[1.2vw] ${toggleNum === 1 ? "text-white" : "text-[#1F487C]"
+                    }`}
                 >
                   Mobile Number
                 </span>
               </button>
               <button
-                className={`border-[#1F487C] border-[0.1vw] rounded-tr-[0.5vw] rounded-br-[0.5vw] w-[13.5vw] gap-x-[0.5vw] h-[3vw] flex items-center justify-center ${
-                  toggleNum === 2 ? "bg-[#1F487C]" : "bg-white"
-                }`}
+                className={`border-[#1F487C] border-[0.1vw] rounded-tr-[0.5vw] rounded-br-[0.5vw] w-[13.5vw] gap-x-[0.5vw] h-[3vw] flex items-center justify-center ${toggleNum === 2 ? "bg-[#1F487C]" : "bg-white"
+                  }`}
                 // style={{
                 //   transition: "ease-in all 0.3s",
                 // }}
@@ -188,9 +190,8 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
                   size={"1.6vw"}
                 />
                 <span
-                  className={` text-[1.2vw] ${
-                    toggleNum === 2 ? "text-white" : "text-[#1F487C]"
-                  }`}
+                  className={` text-[1.2vw] ${toggleNum === 2 ? "text-white" : "text-[#1F487C]"
+                    }`}
                 >
                   Email Address
                 </span>
@@ -292,7 +293,7 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
                     <button
                       type="submit"
                       className="bg-[#1F487C] w-[27vw] h-[3vw] rounded-[0.5vw] border-[0.1vw]  gap-x-[0.5vw] border-slate-700  flex items-center justify-center text-white"
-                      // disabled={isSubmitting} // Disable button during submission
+                    // disabled={isSubmitting} // Disable button during submission
                     >
                       <span className="text-[1.2vw]">GENERATE OTP</span>
                       <span className="text-[1vw]">(One Time Password)</span>
@@ -378,31 +379,28 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
           <div className="flex items-center mt-[1vw]">
             <button
               className={`border-[#1F487C] cursor-not-allowed border-[0.1vw] rounded-tl-[1.5vw] rounded-bl-[1.5vw] w-[43vw] gap-x-[3vw] h-[9vw] flex items-center 
-                  justify-center ${
-                    toggleNum === 1 ? "bg-[#1F487C]" : "bg-white"
-                  }`}
+                  justify-center ${toggleNum === 1 ? "bg-[#1F487C]" : "bg-white"
+                }`}
               disabled
               onClick={() => setToggleNum(1)}
-              // style={{
-              //   transition: "ease-in all 0.3s",
-              // }}
+            // style={{
+            //   transition: "ease-in all 0.3s",
+            // }}
             >
               <FaPhoneAlt
                 color={`${toggleNum === 1 ? "white" : "#1F487C"}`}
                 size={"5vw"}
               />
               <span
-                className={`text-[4vw] ${
-                  toggleNum === 1 ? "text-white" : "text-[#1F487C]"
-                }`}
+                className={`text-[4vw] ${toggleNum === 1 ? "text-white" : "text-[#1F487C]"
+                  }`}
               >
                 Mobile Number
               </span>
             </button>
             <button
-              className={`border-[#1F487C] border-[0.1vw] rounded-tr-[1.5vw] rounded-br-[1.5vw] w-[43vw] gap-x-[3vw] h-[9vw] flex items-center justify-center ${
-                toggleNum === 2 ? "bg-[#1F487C]" : "bg-white"
-              }`}
+              className={`border-[#1F487C] border-[0.1vw] rounded-tr-[1.5vw] rounded-br-[1.5vw] w-[43vw] gap-x-[3vw] h-[9vw] flex items-center justify-center ${toggleNum === 2 ? "bg-[#1F487C]" : "bg-white"
+                }`}
               // style={{
               //   transition: "ease-in all 0.3s",
               // }}
@@ -413,9 +411,8 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
                 size={"5vw"}
               />
               <span
-                className={` text-[4vw] ${
-                  toggleNum === 2 ? "text-white" : "text-[#1F487C]"
-                }`}
+                className={` text-[4vw] ${toggleNum === 2 ? "text-white" : "text-[#1F487C]"
+                  }`}
               >
                 Email Address
               </span>
@@ -518,7 +515,7 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
                     type="submit"
                     className="bg-[#1F487C] w-[85vw] h-[10vw] rounded-[1.5vw] border-[0.1vw] gap-x-[0.5vw] border-slate-700 mt-[5vw]  
                       flex items-center justify-center text-white"
-                    // disabled={isSubmitting} // Disable button during submission
+                  // disabled={isSubmitting} // Disable button during submission
                   >
                     <span className="text-[4vw]">GENERATE OTP</span>
                     <span className="text-[3vw]">(One Time Password)</span>

@@ -29,7 +29,7 @@ export default function Settings() {
   };
   const userName1 = sessionStorage.getItem("user_name");
   const userid = sessionStorage.getItem("user_id");
-  const userName = userName1 && decryptData(userName);
+  const userName = userName1 && decryptData(userName1);
   const decrypid = userid && decryptData(userid);
   const firstWord = userName?.split(" ")[0];
 
@@ -167,7 +167,6 @@ export default function Settings() {
                   <div
                     className={`flex items-center px-[5vw] gap-x-[3vw] border-t-[0.1vw] py-[3vw] border-[${colors.primary}]`}
                     onClick={() => {
-                      console.log("hiiiiii", "main");
                       navigation("/");
                       toast.success("Logged Out Successfully.");
                       sessionStorage.clear();
