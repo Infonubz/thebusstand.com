@@ -1,4 +1,4 @@
-import { Skeleton, Tooltip } from "antd";
+import { Modal, Skeleton, Tooltip } from "antd";
 import dayjs from "dayjs";
 import moment from "moment";
 import { useEffect, useRef, useState } from "react";
@@ -891,12 +891,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                       {/* {ticketDetails?.ticketInfo?.Boarding_Place_Name}{"  "}({ticketDetails?.ticketInfo?.Board_Halt_Time}) */}
                       {ticketDetails?.ticketInfo?.Boarding_Place_Name}
                       {/* Kalasipalayam,A.V.Road,Near Busstand,market jtn */}
-                      {"  "}(
-                      {moment(
-                        ticketDetails?.ticketInfo?.Board_Halt_Time,
-                        "HH:mm:ss"
-                      ).format("hh:mm A")}
-                      )
+                      {"  "}({ticketDetails?.ticketInfo?.Board_Halt_Time})
                     </p>
                     <p
                       className={`${
@@ -1622,15 +1617,14 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
             </button>
           </div> */}
       </div>
-      <ModalPopup
-        show={ratingModal}
-        onClose={closeRatingModal}
-        height="40vw"
-        width="37.5vw"
-        padding="0px"
+      <Modal
+        open={ratingModal}
+        onCancel={closeRatingModal}
+        footer={null}
+        maskClosable={false}
       >
         <RatingFeedBack setRatingModal={setRatingModal} />
-      </ModalPopup>
+      </Modal>
     </div>
   );
 };

@@ -15,6 +15,7 @@ import ViewFullTicket from "../MyAccount/ViewTicket/ViewFullTicket";
 import MobileViewTicket from "../MyAccount/ViewTicket/MobileViewTicket";
 import dayjs from "dayjs";
 import busloading from "../../../Assets/Gif/bus.gif";
+import { decryptData } from "../../Common/Common-Functions/Encrypt-Decrypt";
 
 export default function IndexBlock() {
   const location = useLocation();
@@ -26,9 +27,8 @@ export default function IndexBlock() {
     busprice2,
     selectedseatprice2,
     layout2,
-    busdatas
+    busdatas,
   } = location.state || {};
-
 
   const [loader, setLoader] = useState(false);
   const [formState, setFormState] = useState({
@@ -43,15 +43,19 @@ export default function IndexBlock() {
     }, {})
   );
 
-  const [emailInput, setEmailInput] = useState("");
-  const [mobileInput, setMobileInput] = useState("");
+  const [emailInput, setEmailInput] = useState(
+    decryptData(sessionStorage.getItem("email_id")) || ""
+  );
+  const [mobileInput, setMobileInput] = useState(
+    decryptData(sessionStorage.getItem("user_mobile")) || ""
+  );
   const [confirmModal, setConfirmModal] = useState(false);
   const [confirmRefNo, setConfirmRefNo] = useState(null);
   const [registerfulldetails, setRegisterFullDetails] = useState({});
   const [termschecked, setTermsChecked] = useState(false);
   const [ticketNo, setTicketNo] = useState(null);
-  const navigation = useNavigate()
-  const [ticketLoader, setTicketLoader] = useState(false)
+  const navigation = useNavigate();
+  const [ticketLoader, setTicketLoader] = useState(false);
   const [razorpayloading, setRazorpayLoading] = useState(false);
 
   const validationSchema = Yup.object().shape({
@@ -104,9 +108,8 @@ export default function IndexBlock() {
       .matches(/^[A-Za-z\s]+$/, "InValid Names for State")
       .required("State is required"),
     pincode: Yup.number()
-      .min(100000, 'Pincode must be at least 6 digits')
-      .max(999999, 'Pincode must be a 6-digit number')
-
+      .min(100000, "Pincode must be at least 6 digits")
+      .max(999999, "Pincode must be a 6-digit number"),
   });
 
   const LuxuryFind = (type) =>
@@ -159,8 +162,7 @@ export default function IndexBlock() {
             response?.ReferenceNo
           );
           setFareDetails(data?.GetFaresInfo);
-        } catch {
-        }
+        } catch {}
       }
     } catch (error) {
       console.error("API call failed:", error);
@@ -173,7 +175,6 @@ export default function IndexBlock() {
       traveler.gender !== "" &&
       traveler.seat !== ""
   );
-
 
   const [enableInput, setEnableInput] = useState(false);
 
@@ -188,9 +189,9 @@ export default function IndexBlock() {
 
   useEffect(() => {
     if (ticketNo?.length > 0) {
-      setTicketLoader(false)
+      setTicketLoader(false);
     }
-  }, [ticketNo])
+  }, [ticketNo]);
 
   useEffect(() => {
     const value = sessionStorage.getItem("ticket_view");
@@ -338,9 +339,10 @@ export default function IndexBlock() {
     }
   }, [ticketlist]);
   const handleNavigate = () => {
-    navigation(`/bookedTicket`, { state: { ticketDetails: ticketlist, ticketNo: ticketNo } })
-
-  }
+    navigation(`/bookedTicket`, {
+      state: { ticketDetails: ticketlist, ticketNo: ticketNo },
+    });
+  };
 
   useEffect(() => {
     if (confirmModal) {
@@ -353,17 +355,18 @@ export default function IndexBlock() {
 
   return (
     <>
-
       {razorpayloading ? (
-        < div className="flex items-center justify-center h-screen w-full">
+        <div className="flex items-center justify-center h-screen w-full">
           <img src={busloading} className="h-[50vw] w-[100vw]" />
-        </div >
+        </div>
       ) : (
         <Formik
           initialValues={{
             email: emailInput || "",
             mobile:
-              mobileInput && mobileInput !== "undefined" && mobileInput !== "null"
+              mobileInput &&
+              mobileInput !== "undefined" &&
+              mobileInput !== "null"
                 ? mobileInput
                 : "",
             user_name:
@@ -371,17 +374,21 @@ export default function IndexBlock() {
                 (seat, index) => travelerDetails?.[index]?.user_name
               ) || "",
             age:
-              selectedSeats2?.map((seat, index) => travelerDetails?.[index]?.age) ||
-              "",
+              selectedSeats2?.map(
+                (seat, index) => travelerDetails?.[index]?.age
+              ) || "",
             gender: selectedSeats2?.map(
               (seat, index) => travelerDetails?.[index]?.gender || "male"
             ),
             terms: termschecked || false,
-            address: selectedRoutes2?.dep_landmark ? selectedRoutes2?.dep_landmark : "",
-            pin_code: selectedRoutes2?.dep_pincode ? selectedRoutes2?.dep_pincode : '',
-            state: busdatas?.from_state ? busdatas?.from_state : '',
-            city: busdatas?.from ? busdatas?.from : '',
-
+            address: selectedRoutes2?.dep_landmark
+              ? selectedRoutes2?.dep_landmark
+              : "",
+            pin_code: selectedRoutes2?.dep_pincode
+              ? selectedRoutes2?.dep_pincode
+              : "",
+            state: busdatas?.from_state ? busdatas?.from_state : "",
+            city: busdatas?.from ? busdatas?.from : "",
           }}
           validationSchema={validationSchema}
           onSubmit={(values) => {
@@ -411,9 +418,7 @@ export default function IndexBlock() {
             return (
               // <Form onSubmit={handleSubmit}>
               <>
-
-
-                {ticketLoader === false && ticketNo === null ?
+                {ticketLoader === false && ticketNo === null ? (
                   <div className="p-[2.5vw] md:p-[1.5vw] flex flex-col gap-y-[3vw] md:gap-y-[1.60vw]">
                     <>
                       <MobileJourneyDetails
@@ -472,7 +477,9 @@ export default function IndexBlock() {
                             faredetails={faredetails}
                             emailInput={emailInput}
                             mobileInput={mobileInput}
-                            droppingDate={calculatedDate && ConvertDate(calculatedDate)}
+                            droppingDate={
+                              calculatedDate && ConvertDate(calculatedDate)
+                            }
                             ticketNo={ticketNo}
                             setTicketNo={setTicketNo}
                             ticketLoader={ticketLoader}
@@ -484,26 +491,23 @@ export default function IndexBlock() {
                       )}
                     </>
                   </div>
-                  : ticketlist?.status === "success" && ticketNo !== null ? handleNavigate()
-                    : <div>
-                      <div className="flex items-center justify-center h-screen w-full">
-                        <img src={busloading} className="h-[50vw] w-[100vw]" />
-                      </div>
+                ) : ticketlist?.status === "success" && ticketNo !== null ? (
+                  handleNavigate()
+                ) : (
+                  <div>
+                    <div className="flex items-center justify-center h-screen w-full">
+                      <img src={busloading} className="h-[50vw] w-[100vw]" />
                     </div>
-                }
-
+                  </div>
+                )}
 
                 {/* navigation(`/bookedTicket`, { state: { ticketDetails: ticketlist?.ticketInfo, droppingDate: droppingDate } }) */}
-
               </>
               // </Form>
             );
           }}
-        </Formik >
-      )
-      }
-
+        </Formik>
+      )}
     </>
-
   );
 }

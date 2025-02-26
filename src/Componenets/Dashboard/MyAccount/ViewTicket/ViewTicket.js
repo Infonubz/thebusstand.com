@@ -246,7 +246,7 @@ export default function ViewTicket() {
   const handleNavigation = () => {
     navigation(`/bookedTicket`, {
       state: {
-        ticketDetails: ticketDetails?.ticketInfo,
+        ticketDetails: ticketDetails,
         droppingDate: dropDate?.props?.children,
       },
     });

@@ -53,9 +53,9 @@ export const GetPromotion = async (dispatch, id) => {
 };
 
 export const GetDiscountOffers = async (dispatch) => {
-  const userid = sessionStorage.getItem("occupation_id") ? decryptData(sessionStorage.getItem("occupation_id"))  : 8
+  // const userid = sessionStorage.getItem("occupation_id") ? decryptData(sessionStorage.getItem("occupation_id"))  : 8
   try {
-    const response = await axios.get(`${apicrm}/livediscountandpromotion/${userid}`);
+    const response = await axios.get(`${apicrm}/livediscountandpromotion/8`);
     dispatch({ type: DISCOUNT_OFFER_LIST, payload: response.data });
     console.log(response.data, "footerresponse");
     return response.data;

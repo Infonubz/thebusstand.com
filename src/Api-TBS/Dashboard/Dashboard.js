@@ -66,9 +66,16 @@ export const TBS_Booking_Details = async (
   selectedRoutes,
   seatDetails,
   currentpath,
-  Bustype
+  Bustype,
+  discountamount,
+  code,
+  tbsamount,
+  tbsbasefare
 ) => {
-  console.log(ticketdetails?.bustype, "ticketdetailsticketdetailsticketdetails");
+  console.log(
+    ticketdetails?.bustype,
+    "ticketdetailsticketdetailsticketdetails"
+  );
   const l_user_id = sessionStorage.getItem("user_id");
   const l_email_id = sessionStorage.getItem("user_email_id");
   const l_mobile = sessionStorage.getItem("user_mobile");
@@ -111,8 +118,11 @@ export const TBS_Booking_Details = async (
     razorpay_order_id: order_id,
     razorpay_payment_id: payment_id,
     razorpay_signature: signature,
-    total_fare: null,
+    total_fare: tbsamount,
     bustype: Bustype,
+    dicount_amt: discountamount,
+    offer_code: code,
+    base_fare: tbsbasefare,
   };
 
   const url = `${apiUrl}/tbsbookinghistory`;
@@ -243,12 +253,11 @@ export const GetFeedbackById = async () => {
 export const DownloadTicket = async (ticketID) => {
   try {
     const response = await axios.get(`${apiUrl}/downloadticket/${ticketID}`);
-    console.log(response, 'downloading_ticket')
+    console.log(response, "downloading_ticket");
     return response?.data;
   } catch (err) {
     handleError(err);
   }
-
 };
 const handleError = (error) => {
   console.error("Error details:", error);

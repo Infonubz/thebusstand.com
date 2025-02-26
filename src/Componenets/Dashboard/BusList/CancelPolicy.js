@@ -159,7 +159,7 @@ export default function CancelPolicy({ policies, busPrice, busType, bus_type }) 
                                         LuxuryFind(bus_type) === true
                                             ? 'text-[#393939]' : 'text-[#1F4B7F]'} font-semibold col-span-2 flex justify-center`}>
                                         {/* Refund Amount */}
-                                        Penalty(%)
+                                        Refund(%)
                                     </p>
                                     <p className={`text-[1.25vw] ${
                                         // busType === 'luxury'
