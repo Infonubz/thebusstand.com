@@ -58,6 +58,7 @@ export default function CancelPolicy({ policies, busPrice, busType, bus_type }) 
             </div>
         );
     });
+console.log(policies,"policyArraypolicyArray");
 
     return (
         <>
@@ -182,7 +183,7 @@ export default function CancelPolicy({ policies, busPrice, busType, bus_type }) 
                                         // Calculate the value
                                         const calculatedValue = busPrice * percentage;
 
-                                        const CancellationFare = busPrice - calculatedValue
+                                        const CancellationFare = calculatedValue
                                         // Log the calculated value if you want to inspect it
 
 

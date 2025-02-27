@@ -18,8 +18,8 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
   console.log(droppingDate, "droppingDate");
   const ticketlist = useSelector((state) => state?.get_ticket_detail);
   const tbs_discount = useSelector((state) => state?.live_per);
-
-  console.log(ticketlist, "tickckckckckc");
+  const tbs_ticket_details = useSelector((state) => state?.tbs_booking_details);
+  console.log(tbs_ticket_details, "tickckckckckc");
   const componentRef = useRef();
   const colorcode = {
     theme: "#1F4B7F",
@@ -1584,7 +1584,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                                           : "text-[#1F487C]"
                                       }`}
               >
-                {`₹ ${
+                {/* {`₹ ${
                   calculateDiscountedFare(
                     formatDate(ticketDetails?.ticketInfo?.Journey_Date),
                     ticketDetails?.ticketInfo?.FareBreakup?.baseFare,
@@ -1595,7 +1595,8 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                       ticketDetails?.ticketInfo?.FareBreakup?.serviceTax
                     )
                   )
-                }`}
+                }`} */}
+                {`₹ ${Math?.round(tbs_ticket_details?.total_fare)}`}
               </p>
             </div>
           </div>

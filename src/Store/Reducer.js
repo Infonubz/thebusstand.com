@@ -27,6 +27,8 @@ import {
   GET_TICKET_DETAILS,
   CURRENT_PERCENTAGE,
   BOOKING_DETAILS_STATUS,
+  TBS_TICKET_DETAILS,
+  GET_AVAILABLE_OFFER,
 } from "./Type";
 
 const initial = {
@@ -61,6 +63,8 @@ const initial = {
   get_ticket_detail: [],
   live_per: [],
   booking_details: [],
+  tbs_booking_details: [],
+  tbs_available_offer:[]
 };
 export const busreducer = (state = initial, action) => {
   const { type, payload } = action;
@@ -234,6 +238,18 @@ export const busreducer = (state = initial, action) => {
       return {
         ...state,
         booking_details: payload,
+      };
+    }
+    case TBS_TICKET_DETAILS: {
+      return {
+        ...state,
+        tbs_booking_details: payload?.data?.[0],
+      };
+    }
+    case GET_AVAILABLE_OFFER: {
+      return {
+        ...state,
+        tbs_available_offer: payload,
       };
     }
     default: {

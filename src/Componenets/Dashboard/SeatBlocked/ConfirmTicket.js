@@ -1,4 +1,4 @@
-import { Field, Form, Formik, useFormikContext } from "formik";
+import { ErrorMessage, Field, Form, Formik, useFormikContext } from "formik";
 import React, { useEffect, useState } from "react";
 import { BiSolidOffer } from "react-icons/bi";
 import { RiArrowRightDoubleLine } from "react-icons/ri";
@@ -7,15 +7,25 @@ import { toast } from "react-toastify";
 import { calculateDiscountedFare } from "../../Common/Common-Functions/TBS-Discount-Fare";
 import logo from "../../../Assets/Logo/tbs_logo.png";
 import { ViewTicketById } from "../../../Api-Abhibus/MyAccount/ViewTicket";
-import { Drawer, Skeleton } from "antd";
+import { Drawer, Empty, Skeleton } from "antd";
 import ViewFullTicket from "../MyAccount/ViewTicket/ViewFullTicket";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_TICKET_DETAILS } from "../../../Store/Type";
 import axios from "axios";
-import { TBS_Booking_Details } from "../../../Api-TBS/Dashboard/Dashboard";
+import {
+  GetAvailableOffers,
+  GetOfferValid,
+  TBS_Booking_Details,
+} from "../../../Api-TBS/Dashboard/Dashboard";
 import dayjs from "dayjs";
 import { useParams } from "react-router";
 import { GetDiscountOffers } from "../../../Api-TBS/Home/Home";
+import * as Yup from "yup";
+
+const validationSchema = Yup.object().shape({
+  coupon_code: Yup.string().required("Coupon Code is required"),
+});
+
 export default function ConfirmTicket({
   seatDetails,
   BusDetails,
@@ -38,12 +48,16 @@ export default function ConfirmTicket({
     Symbol: "",
     code: "",
   });
+  const [paybutton, setPayButton] = useState(false);
   const [tbsdiscountamount, setDiscount] = useState(null);
   const key_id = process.env.REACT_APP_RAZORPAY_KEY_ID;
   const key_secret = process.env.REACT_APP_RAZORPAY_KEY_SECRET;
   const OrderApi = process.env.REACT_APP_API_URL;
   const ticketlist = useSelector((state) => state?.get_ticket_detail);
   const tbs_discount = useSelector((state) => state?.live_per);
+  const tbs_available_offer = useSelector(
+    (state) => state?.tbs_available_offer?.data
+  );
   const [promoCode, setPromoCode] = useState("");
   const [spinning, setSpinning] = useState(false);
   const [ticketDetails, setTicketDetails] = useState(null);
@@ -79,7 +93,7 @@ export default function ConfirmTicket({
       tbs_discount
     ) + Number(Math.round(totaltax));
   const handlePromoCode = async () => {
-    console.log(promoCode, "Promocode Submit");
+    console.log("hi");
   };
   const LuxuryFind = (type) =>
     type.toLowerCase().includes("volvo") ||
@@ -186,6 +200,7 @@ export default function ConfirmTicket({
   };
 
   const initiateRazorpay = (generatedOrderId) => {
+    setPayButton(false);
     const options = {
       key: key_id,
       amount: tbsamount * 100,
@@ -233,8 +248,8 @@ export default function ConfirmTicket({
     const pay = new window.Razorpay(options);
     pay.open();
   };
-
   const RazorpayGateway = async () => {
+    setPayButton(true);
     setRazorpayLoading(true);
     if (!tbsamount) {
       alert("Please enter an amount");
@@ -303,7 +318,8 @@ export default function ConfirmTicket({
           tbsdiscountamount,
           selectvalue?.code,
           tbsamount,
-          tbsbasefare
+          tbsbasefare,
+          dispatch
         );
         dispatch({
           type: GET_TICKET_DETAILS,
@@ -327,7 +343,16 @@ export default function ConfirmTicket({
   }, [dispatch, sessionStorage.getItem("occupation_id")]);
   const offerlist = useSelector((state) => state?.discount_offer_list);
   console.log(offerlist?.response, "offerlistofferlist");
-
+  const GetOffers = async () => {
+    try {
+      const data = await GetAvailableOffers(dispatch, emailInput, mobileInput);
+    } catch {
+      console.log("hi");
+    }
+  };
+  useEffect(() => {
+    GetOffers();
+  }, []);
   // const loadRazorpayScript = (callback) => {
   //   const script = document.createElement("script");
   //   script.src = "https://checkout.razorpay.com/v1/checkout.js";
@@ -445,6 +470,7 @@ export default function ConfirmTicket({
       const final = Number(amount) - Number(item?.offer_value);
       if (selectvalue?.value === item?.offer_value) {
         setDiscount(null);
+        setFinalDiscount(null);
       } else {
         setDiscount(Math.round(item?.offer_value));
       }
@@ -481,6 +507,29 @@ export default function ConfirmTicket({
       }, 1000);
     }
   }, [faredetails?.TotadultFare]);
+  const [finaldiscount, setFinalDiscount] = useState(null);
+  const handlesubmit = async (values, { setFieldError }) => {
+    if (!values.coupon_code) {
+      setFieldError("coupon_code", "Promo code is required");
+      return;
+    }
+    try {
+      const response = await GetOfferValid(
+        emailInput,
+        mobileInput,
+        values.coupon_code
+      );
+      if (response?.data === true) {
+        setFinalDiscount(tbsdiscountamount);
+      } else {
+        setFinalDiscount(null);
+        setFieldError("coupon_code", "Coupon code is already used");
+      }
+      console.log("datawdedwedew", response?.data);
+    } catch (error) {
+      console.log("Error fetching offer:", error);
+    }
+  };
   console.log(tbsdiscountamount, "tbsdiscountamount");
   console.log(selectvalue, "selectvalueselectvalue");
 
@@ -526,108 +575,124 @@ export default function ConfirmTicket({
                   Offers
                 </h1>
                 <div className="md:px-[1vw] px-[3vw] h-[42vw] md:h-[9.5vw] overflow-y-auto">
-                  {offerlist?.response?.map((item, index) => (
-                    <div
-                      key={index}
-                      className="border-[0.1vw] rounded-[2vw] md:rounded-[0.5vw] mb-[2vw] md:mb-[1vw]"
-                      style={{
-                        borderColor:
-                          LuxuryFind(BusDetails.Bus_Type_Name) === true
-                            ? "#393939"
-                            : "#1F487C",
-                      }}
-                    >
-                      <div className="grid grid-cols-10 m-[1vw] md:m-[0.5vw] w-full">
-                        <div className="col-span-1 pt-[.5vw] md:pt-[0.2vw]">
-                          <input
-                            type="radio"
-                            name="offer"
-                            className="w-full h-auto"
-                            checked={selectvalue?.value === item.offer_value} // Properly control the selection state
-                            onClick={() => {
-                              handleoffer(item);
-                            }}
-                            // value={selectvalue?.value}
-                          />
-                        </div>
-                        <div className="col-span-9 flex flex-col w-full">
-                          <p
-                            className="md:text-[1.1vw] text-[3.3vw] font-bold"
-                            // style={{ color: "#1F487C" }}
-                          >
-                            {item.code}
-                          </p>
-                          <p className="md:text-[1vw] text-[3vw] font-semibold text-[#A4A4A4]">
-                            {item.offer_desc}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="md:h-[1.9vw] h-[15vw] md:py-[0vw] py-[2vw]  w-full">
-                  <div className="px-[2.5vw] md:px-[0vw]">
-                    {/* <Formik
-                  initialValues={{
-                    name: "",
-                  }}
-                  //   validationSchema={validationSchema}
-                  onSubmit={(values) => {
-                    // Handle form submission
-                    // setShowRegister(true);
-                    localStorage.setItem("page1", true);
-                    localStorage.setItem("occupation", values.option);
-                    localStorage.setItem("mobile", values.mobileData);
-                  }}
-                >
-                  {({ handleChange, isSubmitting }) => ( */}
-                    <Form className="flex px-[1vw] mt-[0.8vw] relative">
-                      <BiSolidOffer
-                        className="absolute left-[1.5vw] top-[0.5vw] text-[7vw] md:text-[2vw]"
-                        // color="color"
+                  {tbs_available_offer?.length > 0 ? (
+                    tbs_available_offer?.map((item, index) => (
+                      <div
+                        key={index}
+                        className="border-[0.1vw] rounded-[2vw] md:rounded-[0.5vw] mb-[2vw] md:mb-[1vw]"
                         style={{
-                          color:
-                            LuxuryFind(BusDetails.Bus_Type_Name) === true
-                              ? "#393939"
-                              : "#1F487C",
-                        }}
-                      />
-
-                      <Field
-                        type="text"
-                        name="name"
-                        placeholder="Enter promo code"
-                        className="border-dashed border-[.3vw] md:border-[0.1vw] placeholder:text-[3.5vw] md:placeholder:text-[1.2vw]  outline-none text-[3.5vw] md:text-[1.2vw] h-[9vw] md:h-[3vw] w-[75%] md:rounded-l-[0.5vw] rounded-l-[1.5vw] pl-[9vw]  md:pl-[3vw] "
-                        style={{
-                          // color: "#1F487C",
                           borderColor:
-                            LuxuryFind(BusDetails.Bus_Type_Name) === true
-                              ? "#393939"
-                              : "#1F487C",
-                          // background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`
-                        }}
-                        onChange={(e) => {
-                          setPromoCode(e.target.value);
-                          handleChange(e);
-                          console.log(e.target.value, "promoCode11");
-                        }}
-                      />
-                      <button
-                        onClick={handlePromoCode}
-                        className=" w-[25%] md:h-[3vw] h-[9vw] md:rounded-r-[0.5vw] rounded-r-[1.5vw]  text-white  font-bold flex items-center justify-center"
-                        style={{
-                          backgroundColor:
                             LuxuryFind(BusDetails.Bus_Type_Name) === true
                               ? "#393939"
                               : "#1F487C",
                         }}
                       >
-                        Apply
-                      </button>
-                    </Form>
-                    {/* )}
-                </Formik> */}
+                        <div className="grid grid-cols-10 m-[1vw] md:m-[0.5vw] w-full">
+                          <div className="col-span-1 pt-[.5vw] md:pt-[0.2vw]">
+                            <input
+                              type="radio"
+                              name="offer"
+                              className="w-full h-auto"
+                              checked={selectvalue?.value === item.offer_value} // Properly control the selection state
+                              onClick={() => {
+                                handleoffer(item);
+                              }}
+                              // value={selectvalue?.value}
+                            />
+                          </div>
+                          <div className="col-span-9 flex flex-col w-full">
+                            <p
+                              className="md:text-[1.1vw] text-[3.3vw] font-bold"
+                              // style={{ color: "#1F487C" }}
+                            >
+                              {item.code}
+                            </p>
+                            <p className="md:text-[1vw] text-[3vw] font-semibold text-[#A4A4A4]">
+                              {item.offer_desc}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="flex flex-col items-center justify-center">
+                      <Empty description={false} />
+                      <label
+                        className="text-[1.1vw] font-semibold "
+                        style={{
+                          color: LuxuryFind(BusDetails.Bus_Type_Name)
+                            ? "#393939"
+                            : "#1F487C",
+                        }}
+                      >
+                        No Offers Available
+                      </label>
+                    </div>
+                  )}
+                </div>
+
+                <div className="md:h-[1.9vw] h-[15vw] md:py-[0vw] py-[2vw]  w-full">
+                  <div className="px-[2.5vw] md:px-[0vw]">
+                    <Formik
+                      initialValues={{
+                        coupon_code: selectvalue?.code || "",
+                      }}
+                      validationSchema={validationSchema}
+                      onSubmit={handlesubmit}
+                      enableReinitialize
+                    >
+                      {({ handleChange, handleSubmit, values }) => (
+                        <Form
+                          className="flex px-[1vw] mt-[0.8vw] relative"
+                          onSubmit={handleSubmit}
+                        >
+                          <BiSolidOffer
+                            className="absolute left-[1.5vw] top-[0.5vw] text-[7vw] md:text-[2vw]"
+                            style={{
+                              color: LuxuryFind(BusDetails.Bus_Type_Name)
+                                ? "#393939"
+                                : "#1F487C",
+                            }}
+                          />
+
+                          <Field
+                            type="text"
+                            name="coupon_code"
+                            placeholder="Enter offer code"
+                            className="border-dashed border-[.3vw] md:border-[0.1vw] placeholder:text-[3.5vw] md:placeholder:text-[1.2vw] 
+        outline-none text-[3.5vw] md:text-[1.2vw] h-[9vw] md:h-[3vw] w-[75%] md:rounded-l-[0.5vw] rounded-l-[1.5vw] pl-[9vw] md:pl-[3vw]"
+                            style={{
+                              borderColor: LuxuryFind(BusDetails.Bus_Type_Name)
+                                ? "#393939"
+                                : "#1F487C",
+                            }}
+                            value={values?.coupon_code}
+                            onChange={(e) => {
+                              setPromoCode(e.target.value);
+                              handleChange(e);
+                            }}
+                          />
+                          <ErrorMessage
+                            name="coupon_code"
+                            component="div"
+                            className="text-red-500 text-[2.5vw] md:text-[0.75vw] absolute md:top-[2.75vw] md:left-[4vw] top-[4.5vw]"
+                          />
+                          <button
+                            type="submit"
+                            className="w-[25%] md:h-[3vw] h-[9vw] md:rounded-r-[0.5vw] rounded-r-[1.5vw] text-white font-bold flex items-center justify-center"
+                            style={{
+                              backgroundColor: LuxuryFind(
+                                BusDetails.Bus_Type_Name
+                              )
+                                ? "#393939"
+                                : "#1F487C",
+                            }}
+                          >
+                            Apply
+                          </button>
+                        </Form>
+                      )}
+                    </Formik>
                   </div>
                 </div>
               </div>
@@ -682,7 +747,7 @@ export default function ConfirmTicket({
                       + ₹ {Math.round(totaltax)}
                     </p>
                   </div>
-                  {selectvalue?.value != null && (
+                  {finaldiscount != null && (
                     <div className="px-[1vw] flex justify-between">
                       <p className="md:text-[1.1vw] text-[3.5vw]">
                         Discount
@@ -693,15 +758,13 @@ export default function ConfirmTicket({
                         </span>
                       </p>
                       <p className="md:text-[1.1vw] text-[3.5vw]">
-                        - ₹ {tbsdiscountamount}
+                        - ₹ {finaldiscount}
                       </p>
                     </div>
                   )}
                   <button
                     className={`w-full md:h-[3vw] h-[8vw] rounded-[1.5vw] md:rounded-[0vw] md:rounded-b-[0.5vw] mt-[12vw] ${
-                      selectvalue?.value != null
-                        ? "md:mt-[6.2vw]"
-                        : "md:mt-[7.85vw]"
+                      finaldiscount != null ? "md:mt-[6.2vw]" : "md:mt-[7.85vw]"
                     } flex 
                                           items-center justify-between px-[3vw] md:px-[1vw] cursor-pointer`}
                     style={{
@@ -710,6 +773,7 @@ export default function ConfirmTicket({
                           ? "#393939"
                           : "#1F487C",
                     }}
+                    disabled={paybutton}
                     onClick={RazorpayGateway}
                   >
                     <label className="text-white cursor-pointer text-[3.5vw] md:text-[1.1vw] flex items-center font-semibold">
@@ -725,7 +789,7 @@ export default function ConfirmTicket({
                             tbs_discount
                           ) +
                           Number(Math.round(totaltax)) -
-                          Number(tbsdiscountamount)
+                          Number(finaldiscount)
                         }`}
                       </span>
                     </label>

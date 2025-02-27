@@ -42,6 +42,7 @@ export default function BiilingAddress({
   faredetails,
   setBillAddress,
   billAddress,
+  buttondisable,
 }) {
   const LuxuryFind = (type) =>
     type?.toLowerCase().includes("volvo") ||
@@ -226,7 +227,9 @@ export default function BiilingAddress({
                           <Field
                             type="text"
                             name="address"
-                            value={billAddress?.address ? billAddress?.address : ""}
+                            value={
+                              billAddress?.address ? billAddress?.address : ""
+                            }
                             disabled={enableInput}
                             autoComplete="off"
                             placeholder="Address"
@@ -244,10 +247,11 @@ export default function BiilingAddress({
                                 address: e.target.value,
                               }));
                             }}
-                            className={` ${!isSubmitting || !enableInput
-                              ? `cursor-pointer`
-                              : "cursor-not-allowed"
-                              } border-r-[1.5vw] md:border-r-[0.5vw] md:placeholder:text-[1.2vw] placeholder:text-[3.5vw] border-[.1vw] text-[4vw] md:text-[1.2vw] md:h-[3vw] w-full h-[10vw] md:w-full rounded-[1.5vw] md:rounded-[0.3vw] outline-none px-[0.75vw] md:px-[0.5vw]   `}
+                            className={` ${
+                              !isSubmitting || !enableInput
+                                ? `cursor-pointer`
+                                : "cursor-not-allowed"
+                            } border-r-[1.5vw] md:border-r-[0.5vw] md:placeholder:text-[1.2vw] placeholder:text-[3.5vw] border-[.1vw] text-[4vw] md:text-[1.2vw] md:h-[3vw] w-full h-[10vw] md:w-full rounded-[1.5vw] md:rounded-[0.3vw] outline-none px-[0.75vw] md:px-[0.5vw]   `}
                             style={{
                               borderColor:
                                 LuxuryFind(BusDetails?.Bus_Type_Name) === true
@@ -273,7 +277,9 @@ export default function BiilingAddress({
                             autoComplete="off"
                             placeholder="Pin Code"
                             // value={emailInput}
-                            value={billAddress?.pincode || values?.pin_code || ""}
+                            value={
+                              billAddress?.pincode || values?.pin_code || ""
+                            }
                             onChange={(e) => {
                               handleChange(e);
                               //   setEmailInput(e.target.value);
@@ -288,10 +294,11 @@ export default function BiilingAddress({
                               }));
                             }}
                             className={`
-                            ${!isSubmitting || !enableInput
+                            ${
+                              !isSubmitting || !enableInput
                                 ? `cursor-pointer`
                                 : "cursor-not-allowed"
-                              } border-r-[1.5vw] md:border-r-[0.5vw] md:placeholder:text-[1.2vw] placeholder:text-[3.5vw] border-[.1vw]  text-[4vw] md:text-[1.2vw] md:h-[3vw] w-full h-[10vw] md:w-full rounded-[1.5vw] md:rounded-[0.3vw] outline-none px-[0.75vw] md:px-[0.5vw]   `}
+                            } border-r-[1.5vw] md:border-r-[0.5vw] md:placeholder:text-[1.2vw] placeholder:text-[3.5vw] border-[.1vw]  text-[4vw] md:text-[1.2vw] md:h-[3vw] w-full h-[10vw] md:w-full rounded-[1.5vw] md:rounded-[0.3vw] outline-none px-[0.75vw] md:px-[0.5vw]   `}
                             style={{
                               borderColor:
                                 LuxuryFind(BusDetails?.Bus_Type_Name) === true
@@ -335,10 +342,11 @@ export default function BiilingAddress({
                               }));
                             }}
                             className={`
-                            ${!isSubmitting || !enableInput
+                            ${
+                              !isSubmitting || !enableInput
                                 ? `cursor-pointer`
                                 : "cursor-not-allowed"
-                              }  border-r-[1.5vw] md:border-r-[0.5vw] md:placeholder:text-[1.2vw] placeholder:text-[3.5vw] border-[.1vw] text-[4vw] md:text-[1.2vw] md:h-[3vw] w-full h-[10vw] md:w-full rounded-[1.5vw] md:rounded-[0.3vw] outline-none px-[0.75vw] md:px-[0.5vw]   `}
+                            }  border-r-[1.5vw] md:border-r-[0.5vw] md:placeholder:text-[1.2vw] placeholder:text-[3.5vw] border-[.1vw] text-[4vw] md:text-[1.2vw] md:h-[3vw] w-full h-[10vw] md:w-full rounded-[1.5vw] md:rounded-[0.3vw] outline-none px-[0.75vw] md:px-[0.5vw]   `}
                             style={{
                               borderColor:
                                 LuxuryFind(BusDetails?.Bus_Type_Name) === true
@@ -379,10 +387,11 @@ export default function BiilingAddress({
                               }));
                             }}
                             className={`
-                            ${!isSubmitting || !enableInput
+                            ${
+                              !isSubmitting || !enableInput
                                 ? `cursor-pointer`
                                 : "cursor-not-allowed"
-                              }  border-r-[1.5vw] md:border-r-[0.5vw] md:placeholder:text-[1.2vw] placeholder:text-[3.5vw] border-[.1vw]  text-[4vw] md:text-[1.2vw] md:h-[3vw] w-full h-[10vw] md:w-full rounded-[1.5vw] md:rounded-[0.3vw] outline-none px-[0.75vw] md:px-[0.5vw]   `}
+                            }  border-r-[1.5vw] md:border-r-[0.5vw] md:placeholder:text-[1.2vw] placeholder:text-[3.5vw] border-[.1vw]  text-[4vw] md:text-[1.2vw] md:h-[3vw] w-full h-[10vw] md:w-full rounded-[1.5vw] md:rounded-[0.3vw] outline-none px-[0.75vw] md:px-[0.5vw]   `}
                             style={{
                               borderColor:
                                 LuxuryFind(BusDetails?.Bus_Type_Name) === true
@@ -420,18 +429,19 @@ export default function BiilingAddress({
                               onChange={(e) => {
                                 setFieldValue("terms", e.target.checked);
                                 setTermsChecked(e.target.checked);
-                              
                               }}
                             />
 
                             <p
-                              className={`${!isSubmitting || !enableInput
-                                ? `cursor-pointer`
-                                : "cursor-not-allowed"
-                                } md:text-[0.9vw] underline text-[4vw] ${LuxuryFind(BusDetails?.Bus_Type_Name) === true
+                              className={`${
+                                !isSubmitting || !enableInput
+                                  ? `cursor-pointer`
+                                  : "cursor-not-allowed"
+                              } md:text-[0.9vw] underline text-[4vw] ${
+                                LuxuryFind(BusDetails?.Bus_Type_Name) === true
                                   ? "text-[#393939]"
                                   : "text-[#1F487C]"
-                                }`}
+                              }`}
                               onClick={() => {
                                 setModalOpen(true);
                               }}
@@ -454,8 +464,8 @@ export default function BiilingAddress({
                                     ? "#393939"
                                     : LuxuryFind(BusDetails?.Bus_Type_Name) ===
                                       true
-                                      ? "#1F4B7F"
-                                      : ""
+                                    ? "#1F4B7F"
+                                    : ""
                                 }
                                 className="cursor-pointer md:ml-[12vw] md:text-[2vw] text-[7vw]"
                                 onClick={() => {
@@ -491,11 +501,18 @@ export default function BiilingAddress({
                                       : "#1F4B7F"
                                     : "gray",
                               }}
-                              className={`${termschecked && isValid && !enableInput
-                                ? "cursor-pointer"
-                                : "cursor-not-allowed"
-                                } md:w-[18vw] w-full h-[8vw] md:h-[2.5vw] rounded-[2vw] md:rounded-[0.5vw] ml-[1vw]`}
-                              disabled={!isAllDetailsFilled}
+                              className={`${
+                                termschecked && isValid && !enableInput
+                                  ? "cursor-pointer"
+                                  : "cursor-not-allowed"
+                              } md:w-[18vw] w-full h-[8vw] md:h-[2.5vw] rounded-[2vw] md:rounded-[0.5vw] ml-[1vw]`}
+                              disabled={
+                                !isAllDetailsFilled ||
+                                buttondisable ||
+                                confirmRefNo == null
+                                  ? false
+                                  : true
+                              }
                             >
                               <span className="text-white text-[3.2vw] md:text-[1.1vw] font-semibold">
                                 {/* {isSubmitting && isValid

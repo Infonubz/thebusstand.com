@@ -204,6 +204,7 @@ export const Abhibus_GetOperators = async (dispatch) => {
         Authorization: authHeader,
         SOAPAction: `${abhibusurl}/GetOperators`, // Ensure quotes if required
       },
+      mode: "no-cors",
     });
  
     // Process the SOAP response using the utility function

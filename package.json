@@ -80,7 +80,7 @@
     "eject": "react-scripts eject",
     "dev": "tailwindcss -i ./src/input.css -o ./src/output.css --watch"
   },
-  "proxy": "https://affapi.abhibus.com/abhiWebServer",
+  "proxy": "https://www.abhibus.com",
   "jest": {
     "transform": {
       "^.+\\.[t|j]sx?$": "babel-jest"

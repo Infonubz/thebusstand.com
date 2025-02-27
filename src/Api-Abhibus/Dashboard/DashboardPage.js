@@ -198,7 +198,6 @@ export const Abhibus_SeatBlocked = async (
         "YYYY-MM-DD"
       )}</tns:journeyDate>
       <tns:layoutId>${BusDetails?.layout_id}</tns:layoutId>
-      <tns:seatFare>${BusDetails?.Fare}</tns:seatFare>
       <tns:boardingPointID>${selectedRoutes?.dep_route_id}</tns:boardingPointID>
       <tns:droppingPointID>${selectedRoutes?.arr_route_id}</tns:droppingPointID>
       <tns:address>${values?.address}</tns:address>

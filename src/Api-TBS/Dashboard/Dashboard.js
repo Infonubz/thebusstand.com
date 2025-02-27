@@ -1,6 +1,10 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import { GET_OPERATOR_LIST } from "../../Store/Type";
+import {
+  GET_AVAILABLE_OFFER,
+  GET_OPERATOR_LIST,
+  TBS_TICKET_DETAILS,
+} from "../../Store/Type";
 import { decryptData } from "../../Componenets/Common/Common-Functions/Encrypt-Decrypt";
 import { useParams } from "react-router";
 
@@ -52,6 +56,19 @@ export const OperatorFilters = async (operator, e = null) => {
     handleError(error);
   }
 };
+export const Get_TBS_Booking_details = async (TicketNo, dispatch) => {
+  try {
+    const response = await axios.get(`${apiUrl}/getbookingdetails/${TicketNo}`);
+    console.log(response?.data, "ddddjjjjjjdjdjhfh");
+    dispatch({
+      type: TBS_TICKET_DETAILS,
+      payload: response?.data,
+    });
+    return response.data;
+  } catch (err) {
+    handleError(err);
+  }
+};
 export const TBS_Booking_Details = async (
   TicketNo,
   order_id,
@@ -70,10 +87,11 @@ export const TBS_Booking_Details = async (
   discountamount,
   code,
   tbsamount,
-  tbsbasefare
+  tbsbasefare,
+  dispatch
 ) => {
   console.log(
-    ticketdetails?.bustype,
+    ticketdetails,
     "ticketdetailsticketdetailsticketdetails"
   );
   const l_user_id = sessionStorage.getItem("user_id");
@@ -123,6 +141,7 @@ export const TBS_Booking_Details = async (
     dicount_amt: discountamount,
     offer_code: code,
     base_fare: tbsbasefare,
+    // bustype_name:ticketdetails?.bustype,
   };
 
   const url = `${apiUrl}/tbsbookinghistory`;
@@ -138,6 +157,7 @@ export const TBS_Booking_Details = async (
     });
     console.log(response, "locationdatas");
     console.log(response.data, "submitlocationdata");
+    Get_TBS_Booking_details(TicketNo, dispatch);
     return response.data;
     //  const response = await axios.get(`${apiUrl}/operator-names/${operator}`);
   } catch (error) {
@@ -248,6 +268,65 @@ export const GetFeedbackById = async () => {
     return response.data;
   } catch (err) {
     handleError(err);
+  }
+};
+export const GetAvailableOffers = async (dispatch, emailInput, mobileInput) => {
+  const userid = sessionStorage.getItem("user_id");
+  const id = userid && decryptData(userid);
+  const payload = {
+    user_id: id,
+    email: emailInput,
+    mobile: mobileInput,
+  };
+  const url = `${apiUrl}/getdiscountoffers`;
+  const method = "post";
+  try {
+    const response = await api({
+      method,
+      url,
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    dispatch({
+      type: GET_AVAILABLE_OFFER,
+      payload: response?.data,
+    });
+    console.log(response, "locationdatas");
+    console.log(response.data, "submitlocationdata");
+    return response.data;
+    //  const response = await axios.get(`${apiUrl}/operator-names/${operator}`);
+  } catch (error) {
+    handleError(error);
+  }
+};
+export const GetOfferValid = async (emailInput, mobileInput, coupon_code) => {
+  const userid = sessionStorage.getItem("user_id");
+  const id = userid && decryptData(userid);
+  const payload = {
+    code: coupon_code,
+    user_id: id,
+    email: emailInput,
+    mobile: mobileInput,
+  };
+  const url = `${apiUrl}/offervalid`;
+  const method = "post";
+  try {
+    const response = await api({
+      method,
+      url,
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response, "locationdatas");
+    console.log(response.data, "submitlocationdata");
+    return response.data;
+    //  const response = await axios.get(`${apiUrl}/operator-names/${operator}`);
+  } catch (error) {
+    handleError(error);
   }
 };
 export const DownloadTicket = async (ticketID) => {

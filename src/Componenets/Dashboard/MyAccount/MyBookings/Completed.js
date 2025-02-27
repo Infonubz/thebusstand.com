@@ -17,6 +17,7 @@ import { decryptData } from "../../../Common/Common-Functions/Encrypt-Decrypt";
 import { GET_TICKET_DETAILS } from "../../../../Store/Type";
 import { ViewTicketById } from "../../../../Api-Abhibus/MyAccount/ViewTicket";
 import busloading from "../../../../Assets/Gif/bus.gif";
+import { Get_TBS_Booking_details } from "../../../../Api-TBS/Dashboard/Dashboard";
 
 function convertTo12Hour(timeString) {
   // Split the time string into its components (hours, minutes, seconds)
@@ -128,6 +129,7 @@ export default function Completed() {
   const handleviewticket = async (ticketno) => {
     setViewModalIsOpen(true);
     console.log("yyyyyyyyyyyyy");
+    Get_TBS_Booking_details(ticketno, dispatch);
 
     try {
       console.log("tyucusdcsd");

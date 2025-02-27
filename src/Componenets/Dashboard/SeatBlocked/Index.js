@@ -138,8 +138,9 @@ export default function DrawerIndex({
   const { adultCount, childCount } = getPassengerCount(
     Object?.values(travelerDetails)
   );
-
+  const [buttondisable, setButtonDisable] = useState(false);
   const handleSubmit = async (values) => {
+    setButtonDisable(true);
     try {
       const response = await Abhibus_SeatBlocked(
         BusDetails,
@@ -167,6 +168,8 @@ export default function DrawerIndex({
       }
     } catch (error) {
       console.error("API call failed:", error);
+    } finally {
+      setButtonDisable(false);
     }
   };
 
@@ -476,6 +479,7 @@ export default function DrawerIndex({
                           termschecked={termschecked}
                           billAddress={billAddress}
                           setBillAddress={setBillAddress}
+                          buttondisable={buttondisable}
                         />
                         {confirmModal && (
                           <div id="targetSection">
