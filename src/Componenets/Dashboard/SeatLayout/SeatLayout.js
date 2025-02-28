@@ -116,10 +116,13 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
   );
   const getBorderClass = (seat) => {
     if (seat?.isBooked === true && seat.gender === "M") {
-      return "#0088D3";
+      return "#7fc3e9";
     }
     if (seat?.isBooked === false && seat.gender === "F") {
       return "#FF00D5";
+    }
+    if (seat?.isBooked === true && seat.gender === "F") {
+      return "#ff84ea";
     }
     if (
       selectedSeats.includes(seat?.seatNumber) &&
@@ -172,7 +175,7 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
     } else if (seat?.gender === "M" && seat?.isBooked === true) {
       return "#edfbff";
     } else if (seat?.gender === "F" && seat?.isBooked === true) {
-      return "#FFE9FE";
+      return "#fff6fe";
     }
   };
   const LuxuryFind = (type) =>
@@ -226,8 +229,8 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
   };
   const seatHighlight = (seat) => {
     const roundedFare = Math.round(seat?.price);
-    return currentrate === roundedFare ? (
-      <div className="h-[1.3vh] w-[0.6vw] rounded-full bg-[#1F487C] absolute top-[-1vw] left-1/2 transform -translate-x-1/2"></div>
+    return currentrate === roundedFare && seat.isBooked === false ? (
+      <div className="h-[0.6vw] w-[0.6vw] rounded-full bg-[#1F487C] absolute top-[-1vw] left-1/2 transform -translate-x-1/2"></div>
     ) : null;
   };
   const handleSeatClick = (seat) => {
@@ -500,25 +503,29 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                     <div className="grid grid-rows-3 gap-y-[0.5vw]">
                       <div className="row-span-1 ">
                         <div className="flex items-center gap-x-[1vw]">
-                          <span className="w-[1.6vw] h-[1.6vw]">
+                          {/* <span className="w-[1.6vw] h-[1.6vw]">
                             {SVG?.available_unisex}
-                          </span>
+                          </span> */}
+                          <span className="w-[1.25vw] h-[1.25vw] rounded-[0.1vw] bg-white border-[0.1vw] border-[#4C9646]"></span>
                           <span className="text-[1vw] font-bold ">Unisex</span>
                         </div>
                       </div>
                       <div className=" row-span-1">
                         <div className="flex items-center gap-x-[1vw]">
-                          <span className="w-[1.6vw] h-[1.6vw]">
+                          {/* <span className="w-[1.6vw] h-[1.6vw]">
                             {SVG?.available_men}
-                          </span>
+                            
+                          </span> */}
+                          <span className="w-[1.25vw] h-[1.25vw] rounded-[0.1vw] bg-white border-[0.1vw] border-[#FE35DF]"></span>
                           <span className="text-[1vw] font-bold ">Women</span>
                         </div>
                       </div>
                       <div className=" row-span-1">
                         <div className="flex items-center gap-x-[1vw]">
-                          <span className="w-[1.6vw] h-[1.6vw]">
+                          {/* <span className="w-[1.6vw] h-[1.6vw]">
                             {SVG?.available_women}
-                          </span>
+                          </span> */}
+                          <span className="w-[1.25vw] h-[1.25vw] rounded-[0.1vw] bg-white border-[0.1vw] border-[#28AFE6]"></span>
                           <span className="text-[1vw] font-bold ">Men</span>
                         </div>
                       </div>
@@ -532,25 +539,29 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                     <div className="grid grid-rows-3 gap-y-[0.5vw]">
                       <div className="row-span-1 ">
                         <div className="flex items-center gap-x-[1vw]">
-                          <span className="w-[1.6vw] h-[1.6vw]">
+                          {/* <span className="w-[1.6vw] h-[1.6vw]">
                             {SVG?.selected_unisex}
-                          </span>
+                          </span> */}
+                          <span className="w-[1.25vw] h-[1.25vw] rounded-[0.1vw] bg-[#84EC7A] border-[0.1vw] border-[#4C9646]"></span>
+
                           <span className="text-[1vw] font-bold ">Unisex</span>
                         </div>
                       </div>
                       <div className=" row-span-1">
                         <div className="flex items-center gap-x-[1vw]">
-                          <span className="w-[1.6vw] h-[1.6vw]">
+                          {/* <span className="w-[1.6vw] h-[1.6vw]">
                             {SVG?.selected_women}
-                          </span>
+                          </span> */}
+                          <span className="w-[1.25vw] h-[1.25vw] rounded-[0.1vw] bg-[#FDB0F9] border-[0.1vw] border-[#FE35DF]"></span>
                           <span className="text-[1vw] font-bold ">Women</span>
                         </div>
                       </div>
                       <div className=" row-span-1">
                         <div className="flex items-center gap-x-[1vw]">
-                          <span className="w-[1.6vw] h-[1.6vw]">
+                          {/* <span className="w-[1.6vw] h-[1.6vw]">
                             {SVG?.selected_men}
-                          </span>
+                          </span> */}
+                          <span className="w-[1.25vw] h-[1.25vw] rounded-[0.1vw] bg-[#58E1FF] border-[0.1vw] border-[#28AFE6]"></span>
                           <span className="text-[1vw] font-bold ">Men</span>
                         </div>
                       </div>
@@ -564,25 +575,28 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                     <div className="grid grid-rows-3 gap-y-[0.5vw] ">
                       <div className="row-span-1 ">
                         <div className="flex items-center gap-x-[1vw]">
-                          <span className="w-[1.6vw] h-[1.6vw]">
+                          {/* <span className="w-[1.6vw] h-[1.6vw]">
                             {SVG?.booked_unisex}
-                          </span>
+                          </span> */}
+                          <span className="w-[1.25vw] h-[1.25vw] rounded-[0.1vw] bg-[#D8D8D8] border-[0.1vw] border-[#958F8F]"></span>
                           <span className="text-[1vw] font-bold ">Unisex</span>
                         </div>
                       </div>
                       <div className=" row-span-1">
                         <div className="flex items-center gap-x-[1vw]">
-                          <span className="w-[1.6vw] h-[1.6vw]">
+                          {/* <span className="w-[1.6vw] h-[1.6vw]">
                             {SVG?.booked_women}
-                          </span>
+                          </span> */}
+                          <span className="w-[1.25vw] h-[1.25vw] rounded-[0.1vw] bg-[#FFE9FE] border-[0.1vw] border-[#FE35DF]"></span>
                           <span className="text-[1vw] font-bold ">Women</span>
                         </div>
                       </div>
                       <div className=" row-span-1">
                         <div className="flex items-center gap-x-[1vw]">
-                          <span className="w-[1.6vw] h-[1.6vw]">
+                          {/* <span className="w-[1.6vw] h-[1.6vw]">
                             {SVG?.booked_men}
-                          </span>
+                          </span> */}
+                          <span className="w-[1.25vw] h-[1.25vw] rounded-[0.1vw] bg-[#CCF6FF] border-[0.1vw] border-[#28AFE6]"></span>
                           <span className="text-[1vw] font-bold ">Men</span>
                         </div>
                       </div>
@@ -646,9 +660,9 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                         }}
                                       >
                                         {" "}
-                                        <div className="absolute top-[0.8vw] right-[58%]">
+                                        {/* <div className="absolute top-[0.8vw] right-[58%]">
                                           {seatHighlight(seat)}
-                                        </div>
+                                        </div> */}
                                         {/* <Tooltip
                                           placement="top"
                                           title={ */}
@@ -661,7 +675,17 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                           viewBox="0 0 34 39"
                                           fill={`${getBackgroundClass(seat)}`}
                                           onClick={() => handleSeatClick(seat)}
-                                          className="cursor-pointer  hovsvg"
+                                          className={`cursor-pointer hovsvg`}
+                                          style={{
+                                            filter:
+                                              currentrate ===
+                                                Math.round(seat?.price) &&
+                                              seat.isBooked === false
+                                                ? `drop-shadow(2px 2px 2px  ${getBorderClass(
+                                                    seat
+                                                  )})`
+                                                : null,
+                                          }}
                                           // data-tooltip-id={`tooltip-${index}`}
                                           // data-tooltip-content={`${
                                           //   seat.seatNumber
@@ -731,9 +755,9 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                         gridColumn: seat.column,
                                       }}
                                     >
-                                      <div className="absolute top-[0.8vw] right-[1.3vw]">
+                                      {/* <div className="absolute top-[0.8vw] right-[1.3vw]">
                                         {seatHighlight(seat)}
-                                      </div>
+                                      </div> */}
                                       {/* <Tooltip
                                         placement="top"
                                         title={
@@ -759,7 +783,18 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                         xmlns="http://www.w3.org/2000/svg"
                                         onClick={() => handleSeatClick(seat)}
                                         className="cursor-pointer hovsvg"
-                                        style={{ userSelect: "none" }}
+                                        // style={{ userSelect: "none" }}
+                                        style={{
+                                          userSelect: "none",
+                                          filter:
+                                            currentrate ===
+                                              Math.round(seat?.price) &&
+                                            seat.isBooked === false
+                                              ? `drop-shadow(2px 2px 2px  ${getBorderClass(
+                                                  seat
+                                                )})`
+                                              : null,
+                                        }}
                                       >
                                         <path
                                           d="M1.30176 209.776V7.28689C1.30176 4.18046 3.82002 1.6622 6.92645 1.6622H45.3618L82.8597 1.66212C85.9662 1.66211 88.4844 4.18038 88.4844 7.28681V209.776C88.4844 212.882 85.9662 215.4 82.8597 215.4H45.3618H6.92645C3.82002 215.4 1.30176 212.882 1.30176 209.776Z"
@@ -840,9 +875,9 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                       }}
                                     >
                                       {" "}
-                                      <div className="absolute top-[0.8vw] right-[1.23vw]">
+                                      {/* <div className="absolute top-[0.8vw] right-[1.23vw]">
                                         {seatHighlight(seat)}
-                                      </div>
+                                      </div> */}
                                       {/* <Tooltip
                                         placement="top"
                                         title={
@@ -869,6 +904,16 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                         onClick={() => handleSeatClick(seat)}
                                         className={` cursor-pointer hovsvg`}
                                         // ${getShadowClass(seat)}
+                                        style={{
+                                          filter:
+                                            currentrate ===
+                                              Math.round(seat?.price) &&
+                                            seat.isBooked === false
+                                              ? `drop-shadow(2px 2px 2px  ${getBorderClass(
+                                                  seat
+                                                )})`
+                                              : null,
+                                        }}
                                       >
                                         <path
                                           d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998V11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H3.55687Z"
@@ -916,9 +961,9 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                         gridColumn: seat.column,
                                       }}
                                     >
-                                      <div className="absolute top-[0.8vw] right-[1.3vw]">
+                                      {/* <div className="absolute top-[0.8vw] right-[1.3vw]">
                                         {seatHighlight(seat)}
-                                      </div>
+                                      </div> */}
                                       {/* <Tooltip
                                         placement="top"
                                         title={
@@ -944,7 +989,18 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
                                         xmlns="http://www.w3.org/2000/svg"
                                         onClick={() => handleSeatClick(seat)}
                                         className="cursor-pointer hovsvg"
-                                        style={{ userSelect: "none" }}
+                                        // style={{ userSelect: "none" }}
+                                        style={{
+                                          userSelect: "none",
+                                          filter:
+                                            currentrate ===
+                                              Math.round(seat?.price) &&
+                                            seat.isBooked === false
+                                              ? `drop-shadow(2px 2px 2px  ${getBorderClass(
+                                                  seat
+                                                )})`
+                                              : null,
+                                        }}
                                       >
                                         <path
                                           d="M1.30176 209.776V7.28689C1.30176 4.18046 3.82002 1.6622 6.92645 1.6622H45.3618L82.8597 1.66212C85.9662 1.66211 88.4844 4.18038 88.4844 7.28681V209.776C88.4844 212.882 85.9662 215.4 82.8597 215.4H45.3618H6.92645C3.82002 215.4 1.30176 212.882 1.30176 209.776Z"

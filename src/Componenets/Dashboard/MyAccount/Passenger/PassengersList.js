@@ -15,9 +15,9 @@ import {
 import ModalPopup from "../../../Common/Modal/Modal";
 import Delete from "./DeleteModal";
 import { LoadingOutlined } from "@ant-design/icons";
-import { FaUser } from "react-icons/fa";
+import { FaPlus, FaUser } from "react-icons/fa";
 // import { TfiArrowCircleRight } from "react-icons/tfi";
-import { LuUser2 } from "react-icons/lu";
+// import { LuUser2 } from "react-icons/lu";
 import ReactPaginate from "react-js-pagination";
 import { FaAngleDoubleLeft } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa6";
@@ -30,7 +30,6 @@ import {
   faAngleDoubleLeft,
   faAngleDoubleRight,
 } from "@fortawesome/free-solid-svg-icons";
-
 
 export default function PassengersList({
   nextPage,
@@ -229,7 +228,8 @@ export default function PassengersList({
             className="order-last bg-[#1F487C] text-white font-semibold font-size-[1.2vw] flex px-[4vw] items-center justify-center gap-[3.5vw] rounded-full h-[10vw]"
             onClick={handleNextPage}
           >
-            <LuUser2 size="7vw" color="white" />
+            {/* <LuUser2 size="7vw" color="white" /> */}
+            <FaPlus size="7vw" color="white" />
             <p>Add New Passenger </p>
           </button>
         </span>
