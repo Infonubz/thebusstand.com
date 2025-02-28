@@ -6,7 +6,10 @@ import { Abhibus_SeatConfirmed } from "../../../Api-Abhibus/Dashboard/DashboardP
 import { toast } from "react-toastify";
 import { calculateDiscountedFare } from "../../Common/Common-Functions/TBS-Discount-Fare";
 import logo from "../../../Assets/Logo/tbs_logo.png";
-import { ViewTicketById } from "../../../Api-Abhibus/MyAccount/ViewTicket";
+import {
+  PreCancelTicket,
+  ViewTicketById,
+} from "../../../Api-Abhibus/MyAccount/ViewTicket";
 import { Drawer, Empty, Skeleton } from "antd";
 import ViewFullTicket from "../MyAccount/ViewTicket/ViewFullTicket";
 import { useDispatch, useSelector } from "react-redux";
@@ -295,6 +298,15 @@ export default function ConfirmTicket({
           response?.TicketNo,
           setSpinning
         );
+        const values = {
+          ticketNumber: response?.TicketNo,
+        };
+        const cancel_data = await PreCancelTicket(
+          values,
+          ticketdetails?.ticketInfo?.mobile
+        );
+        console.log("cancel_data",cancel_data);
+        
         if (response?.TicketNo) {
           setTicketNumber(response?.TicketNo);
           setTicketLoading(false);

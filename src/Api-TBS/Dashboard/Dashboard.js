@@ -142,6 +142,7 @@ export const TBS_Booking_Details = async (
     offer_code: code,
     base_fare: tbsbasefare,
     // bustype_name:ticketdetails?.bustype,
+    // cancel_policy:ticketdetails?.cancelpolicy
   };
 
   const url = `${apiUrl}/tbsbookinghistory`;

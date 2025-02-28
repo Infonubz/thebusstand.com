@@ -111,6 +111,7 @@ export default function TopTravelledRoutes() {
   //   console.log(encodeURI(sanitizedPath), "techimage");
   //   return encodeURI(sanitizedPath);
   // };
+console.log(getroutes,"getroutesgetroutes");
 
   return (
     <>

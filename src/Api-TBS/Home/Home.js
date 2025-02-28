@@ -71,7 +71,7 @@ export const GetTopBusRoutes = async (dispatch, id) => {
     const response = await axios.get(`${apiUrl}/top-bus-routes`);
     dispatch({
       type: TOP_ROUTE_LIST,
-      payload: response?.data,
+      payload: response?.data?.data,
     });
     console.log(response.data, "footerresponse");
     return response.data;

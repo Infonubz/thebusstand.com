@@ -170,7 +170,7 @@ const SeatLayout = ({ BusDetails, busdroping, busboarding, setDropDown }) => {
     if (seat?.isBooked === false) {
       return "#FFFFFF";
     } else if (seat?.gender === "M" && seat?.isBooked === true) {
-      return "#CCF6FF";
+      return "#edfbff";
     } else if (seat?.gender === "F" && seat?.isBooked === true) {
       return "#FFE9FE";
     }
