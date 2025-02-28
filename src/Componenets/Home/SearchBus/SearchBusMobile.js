@@ -51,17 +51,14 @@ export default function SearchBusMobile() {
         localStorage.removeItem("arrivalID");
         localStorage.removeItem("selectedDate");
       } else if (navigationEntry.type === "navigate") {
-        console.log("Page was loaded normally!");
       }
     }
   }, []);
 
   const SVG = SVG_List();
   const getselecteddate = useSelector((state) => state.selected_date);
-  console.log(getselecteddate, "getselecteddate");
 
   const Get_Stations = useSelector((state) => state.get_stations);
-  console.log(Get_Stations, "Get_Stations");
 
   const [isInputFromFocused, setIsInputFromFocused] = useState(false);
   const [isInputToFocused, setIsInputToFocused] = useState(false);
@@ -87,7 +84,6 @@ export default function SearchBusMobile() {
     from_state: '',
     to_state: ''
   });
-  console.log(busdatas, "bus_data_mobile");
 
   const [error, setError] = useState();
 
@@ -104,15 +100,14 @@ export default function SearchBusMobile() {
 
   const handleflip = () => {
     // Swap the 'from' and 'to' values in busdatas
-    console.log("flippingValues");
     const newBusDatas = {
       ...busdatas,
       from: busdatas.to,
       to: busdatas.from,
       from_sourceID: busdatas.to_sourceID,
       to_sourceID: busdatas.from_sourceID,
-      to_state:busdatas?.from_state,
-      from_state:busdatas?.to_state
+      to_state: busdatas?.from_state,
+      from_state: busdatas?.to_state
     };
 
     // Update the busdatas state
@@ -129,7 +124,6 @@ export default function SearchBusMobile() {
     seat_type: null,
     price_range: null,
   });
-  console.log(BusFilters, "busfilters_homefilters");
 
   const handlebussearch = async () => {
     try {
@@ -147,8 +141,8 @@ export default function SearchBusMobile() {
           getselecteddate,
           luxury
         );
-
-        console.log(data, "datadatadata");
+        sessionStorage.setItem('loader', true)
+        // sessionStorage.removeItem('loader')
         navigation(
           `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${busdatas.to_sourceID
           }/${dayjs(getselecteddate).format("YYYY-MM-DD")}`, { state: busdatas }
@@ -170,7 +164,6 @@ export default function SearchBusMobile() {
     to: "",
   });
 
-  console.log(inputsearch, "inputsearch");
   const [modalshow, setModalShow] = useState(false);
 
   const onClose = () => {
@@ -227,7 +220,6 @@ export default function SearchBusMobile() {
 
   const [searchQuery, setSearchQuery] = useState("");
 
-  console.log(searchQuery, "search_Query");
 
   const handleSearch = (event) => {
     const query = event.target.value;

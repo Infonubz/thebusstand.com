@@ -1623,6 +1623,9 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
         onCancel={closeRatingModal}
         footer={null}
         maskClosable={false}
+        width={"37.5vw"}
+        height={"40vw"}
+        // padding={'0vw'}
       >
         <RatingFeedBack setRatingModal={setRatingModal} />
       </Modal>

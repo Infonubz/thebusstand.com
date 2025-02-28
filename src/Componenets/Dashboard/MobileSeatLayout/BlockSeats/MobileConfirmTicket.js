@@ -58,18 +58,32 @@ export default function MobileConfirmTicket({
     seatTaxList?.reduce((a, b) => {
       return Number(a) + Number(b);
     });
+
+  const gstamount = calculateDiscountedFare(
+    MobBusDetails?.BUS_START_DATE,
+    faredetails?.TotadultFare,
+    tbs_discount
+  );
+
   const tbsamount =
     calculateDiscountedFare(
       MobBusDetails?.BUS_START_DATE,
       Number(faredetails?.TotadultFare),
       tbs_discount
     ) + Number(Math.round(totaltax));
-  const { handleSubmit, handleChange, isSubmitting, isValid, values } =
-    useFormikContext();
+
+  const tbsbasefare =
+    calculateDiscountedFare(
+      MobBusDetails?.BUS_START_DATE,
+      Number(faredetails?.TotadultFare),
+      tbs_discount
+    ) + Number(Math.round(totaltax));
   const handlePromoCode = async () => {
   };
   const dispatch = useDispatch();
   const [spinning, setSpinning] = useState(false);
+  const { handleSubmit, handleChange, isSubmitting, isValid, values } =
+    useFormikContext();
 
 
   const initiateRazorpay = (generatedOrderId) => {
@@ -182,7 +196,12 @@ export default function MobileConfirmTicket({
           arraivaldate,
           MobSelectedRoutes,
           MobSeatDetails,
-          currentpath
+          currentpath,
+          LuxuryFind(ticketdetails?.ticketInfo?.bustype),
+          tbsdiscountamount,
+          selectvalue?.code,
+          tbsamount,
+          tbsbasefare
         );
         dispatch({
           type: GET_TICKET_DETAILS,
@@ -215,7 +234,8 @@ export default function MobileConfirmTicket({
     },
     { Coupon: "WEEKEND50", details: "Avail 50% off on weekend bus travel." },
   ];
-
+  const offerlist = useSelector((state) => state?.discount_offer_list);
+  console.log(offerlist?.response, "offerlistofferlist");
   useEffect(() => {
     if (navigate === true) {
       navigation("/seats", {
@@ -350,6 +370,85 @@ export default function MobileConfirmTicket({
       console.error("Error generating order ID:", error);
     }
   };
+  const [selectvalue, setSelectValues] = useState({
+    value: null,
+    Symbol: "",
+    code: "",
+  });
+  const [tbsdiscountamount, setDiscount] = useState(null);
+
+  const handleoffer = (item) => {
+    if (selectvalue?.value === item?.offer_value) {
+      setSelectValues({
+        ...selectvalue,
+        value: null,
+        Symbol: "",
+        code: "",
+      });
+    } else {
+      setSelectValues({
+        ...selectvalue,
+        value: item?.offer_value,
+        Symbol: item?.value_symbol,
+        code: item?.code,
+      });
+    }
+    // setSelectValues({
+    //   ...selectvalue,
+    //   value: item?.offer_value,
+    //   Symbol: item?.value_symbol,
+    //   code: item?.code,
+    // });
+    if (item?.value_symbol?.includes("₹")) {
+      const amount = calculateDiscountedFare(
+        MobBusDetails?.BUS_START_DATE,
+        faredetails?.TotadultFare,
+        tbs_discount
+      );
+      console.log(amount, "amountgggggg");
+
+      const final = Number(amount) - Number(item?.offer_value);
+      if (selectvalue?.value === item?.offer_value) {
+        setDiscount(null);
+      } else {
+        setDiscount(Math.round(item?.offer_value));
+      }
+    } else {
+      const amount = calculateDiscountedFare(
+        MobBusDetails?.BUS_START_DATE,
+        faredetails?.TotadultFare,
+        tbs_discount
+      );
+      const per = Number(item?.offer_value) / 100;
+      const final = Number(amount) * Number(per);
+      console.log(final, per, amount, "finalfinalfinal");
+      if (selectvalue?.value === item?.offer_value) {
+        setDiscount(null);
+      } else {
+        setDiscount(Math.round(final));
+      }
+    }
+  };
+  const [spin, setSpin] = useState(true);
+
+  useEffect(() => {
+    if (
+      calculateDiscountedFare(
+        MobBusDetails?.BUS_START_DATE,
+        faredetails?.TotadultFare,
+        tbs_discount
+      )
+    ) {
+      setSpin(false);
+    } else {
+      setTimeout(() => {
+        setSpin(false);
+      }, 1000);
+    }
+  }, [faredetails?.TotadultFare]);
+  console.log(tbsdiscountamount, "tbsdiscountamount");
+  console.log(selectvalue, "selectvalueselectvalue");
+
   return (
     <div>
       <div className="grid grid-cols-1  gap-[2vw] h-[5vw]">
@@ -381,7 +480,7 @@ export default function MobileConfirmTicket({
               Offers
             </h1>
             <div className=" px-[3vw] h-[42vw]  overflow-y-auto">
-              {offers.map((item, index) => (
+              {offerlist?.response?.map((item, index) => (
                 <div
                   key={index}
                   className="border-[0.1vw] rounded-[2vw]  mb-[2vw]"
@@ -391,6 +490,7 @@ export default function MobileConfirmTicket({
                         ? "#393939"
                         : "#1F487C",
                   }}
+
                 >
                   <div className="grid grid-cols-10 m-[1vw] w-full">
                     <div className="col-span-1 pt-[.5vw] ">
@@ -398,6 +498,10 @@ export default function MobileConfirmTicket({
                         type="radio"
                         name="offer"
                         className="w-full h-auto"
+                        checked={selectvalue?.value === item.offer_value}
+                        onClick={() => {
+                          handleoffer(item)
+                        }}
                       />
                     </div>
                     <div className="col-span-9 flex flex-col w-full">
@@ -405,10 +509,10 @@ export default function MobileConfirmTicket({
                         className=" text-[3.3vw] font-bold"
                       // style={{ color: "#1F487C" }}
                       >
-                        {item.Coupon}
+                        {item.code}
                       </p>
-                      <p className=" text-[3vw] font-semibold text-[#A4A4A4]">
-                        {item.details}
+                      <p className=" text-[3vw] font-semibold text-[#A4A4A4] break-words px-[2vw]">
+                        {item.offer_desc}
                       </p>
                     </div>
                   </div>
@@ -511,20 +615,40 @@ export default function MobileConfirmTicket({
               <div className="px-[1vw] flex justify-between">
                 <p className=" text-[3.5vw]">Base Fare</p>
                 <p className=" text-[3.5vw]">
-                  {calculateDiscountedFare(
+                  {/* {calculateDiscountedFare(
                     MobBusDetails?.BUS_START_DATE,
                     MobDiscount,
                     tbs_discount
-                  )}
+                  )} */}
+                  {`₹ ${calculateDiscountedFare(
+                    MobBusDetails?.BUS_START_DATE,
+                    faredetails?.TotadultFare,
+                    tbs_discount
+                  )}`}
                 </p>
               </div>
+              {selectvalue?.value != null && (
+                <div className="px-[1vw] flex justify-between">
+                  <p className="md:text-[1.1vw] text-[3.5vw]">
+                    Discount
+                    <span className="pl-[0.5vw]">
+                      {selectvalue.Symbol?.includes("%")
+                        ? ` ( ${selectvalue?.value} % )`
+                        : `( Flat ₹ ${selectvalue?.value} )`}
+                    </span>
+                  </p>
+                  <p className="md:text-[1.1vw] text-[3.5vw]">
+                    - ₹ {tbsdiscountamount}
+                  </p>
+                </div>
+              )}
               <div className="px-[1vw] flex justify-between">
                 <p className=" text-[3.5vw]">Service Tax</p>
                 <p className=" text-[3.5vw]">+ ₹ {Math.round(totaltax)}</p>
               </div>
               <button
-                className="w-full h-[8vw] rounded-[1.5vw]  mt-[12vw]  flex 
-                                          items-center justify-between px-[3vw] "
+                className={`w-full h-[8vw] rounded-[1.5vw] ${selectvalue?.value ? 'mt-[8vw]' : 'mt-[12vw]'}  flex 
+                                          items-center justify-between px-[3vw] `}
                 style={{
                   backgroundColor:
                     LuxuryFind(MobBusDetails.Bus_Type_Name) === true
@@ -540,9 +664,9 @@ export default function MobileConfirmTicket({
                   }`} */}
                   {calculateDiscountedFare(
                     MobBusDetails?.BUS_START_DATE,
-                    Number(MobDiscount),
+                    Number(faredetails?.TotadultFare),
                     tbs_discount
-                  ) + Number(Math.round(totaltax))}
+                  ) + Number(Math.round(totaltax)) - Number(tbsdiscountamount)}
                 </span>
                 <span className="pl-[0.5vw]">
                   <RiArrowRightDoubleLine

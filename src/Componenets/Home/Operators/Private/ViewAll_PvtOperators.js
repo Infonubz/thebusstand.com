@@ -140,7 +140,7 @@ export default function ViewAll_PvtOperators() {
                   {currentItems?.length > 0 &&
                     currentItems?.map((operator, index) => (
                       <div key={index} className="col-span-1 w-full py-[0.4vw]">
-                        <p className="md:text-[1vw] text-[2.8vw]">
+                        <p className="md:text-[1vw] text-[2.8vw] ">
                           {operator?.operater_name?.length > 19 ? (
                             <Tooltip
                               placement="top"

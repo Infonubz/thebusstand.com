@@ -87,17 +87,17 @@ export const ViewTicketById = async (ticketID, setSpinning) => {
   }
 };
 
-export const PreCancelTicket = async (values) => {
+export const PreCancelTicket = async (values, mblno) => {
   //   setSpinning(true);
   const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <tns:PreCancellation xmlns:tns="${abhibuscollection}">
+    <tns:PreCancellationV5 xmlns:tns="${abhibuscollection}">
        <tns:username>${username}</tns:username>
       <tns:password>${password}</tns:password>
        <tns:ticketNo>${values?.ticketNumber}</tns:ticketNo>
-      <tns:phoneNum>${values?.phoneNumber}</tns:phoneNum>
-    </tns:PreCancellation>
+      <tns:phoneNum>${mblno}</tns:phoneNum>
+    </tns:PreCancellationV5>
   </soap:Body>
 </soap:Envelope>
 `;
@@ -114,18 +114,26 @@ export const PreCancelTicket = async (values) => {
       headers: {
         "Content-Type": "text/xml;charset=UTF-8",
         Authorization: authHeader,
-        SOAPAction: `${abhibusurl}/PreCancellation`,
+        SOAPAction: `${abhibusurl}/PreCancellationV5`,
       },
     });
-    const result = await processSOAPResponse(response.data, "PreCancellation");
+    const result = await processSOAPResponse(
+      response.data,
+      "PreCancellationV5"
+    );
 
-    // console.log([result.ticketInfo], "Responsesdsdsdsdsd Data");
+    console.log(result.CancellationPolicyWithRefund, "Responsesdsdsdsdsd Data");
     return result;
   } catch (err) {
     console.error(err, "Error in the response");
   }
 };
-export const CancelTicket = async (values, info, partialCancellation) => {
+export const CancelTicket = async (
+  values,
+  info,
+  partialCancellation,
+  mobileno
+) => {
   const cancelseat = values?.seat_numbers?.map((item) => item).join(",");
   const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -134,7 +142,7 @@ export const CancelTicket = async (values, info, partialCancellation) => {
         <tns:username>${username}</tns:username>
       <tns:password>${password}</tns:password>
        <tns:ticketNo>${info?.ticketNumber}</tns:ticketNo>
-      <tns:phoneNum>${info?.phoneNumber}</tns:phoneNum>
+      <tns:phoneNum>${mobileno}</tns:phoneNum>
       <tns:operatorId>100</tns:operatorId>
       <tns:cancelSeats>${cancelseat}</tns:cancelSeats>
       <tns:partialCancellation>${partialCancellation}</tns:partialCancellation>

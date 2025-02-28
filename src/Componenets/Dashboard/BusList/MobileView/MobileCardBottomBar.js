@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Drawer } from "antd";
+import React, { useEffect, useState } from "react";
+import { Drawer, Skeleton } from "antd";
 import { useRef } from "react";
 import { BsNutFill, BsPlug } from "react-icons/bs";
 import { BiSolidBlanket, BiCctv } from "react-icons/bi";
@@ -15,6 +15,8 @@ import { IoPawOutline } from "react-icons/io5";
 import { Collapse } from "antd";
 import { capitalizeLetter } from "../../../Common/Common-Functions/Captalization";
 import SVG_List from "../../../Common/SVG/SVG";
+import { toast } from "react-toastify";
+import { Abhibus_Cancelation_Policy } from "../../../../Api-Abhibus/Dashboard/DashboardPage";
 
 export default function MobileCardBottomBar({
     drawername,
@@ -27,13 +29,15 @@ export default function MobileCardBottomBar({
     bus_type,
     policies,
     price,
+    buslist,
+    services_amenity,
+    Amenities
 }) {
     // const colorcode = {
     //   theme: "#1F487C",
     // };
     const [isToggleSwitch, setIsToggleSwitch] = useState("CDCP");
 
-    console.log(bus_type, 'boarding_boarding')
     const onClose = () => {
         setShowModal(false);
     };
@@ -44,136 +48,141 @@ export default function MobileCardBottomBar({
         type?.toLowerCase().includes("mercedes benz");
 
     const componentRef = useRef();
+    // ---------------------------------------------------------------------Amenities-----------------------------------------------------
+    const servicesArray = services_amenity.split(',');
 
-    const amenityIcons = {
-        Blankets: (
-            <BiSolidBlanket
-                color={
-                    LuxuryFind(bus_type) === true
-                        // busType === "luxury"
-                        ? "#393939" : "#1F487C"}
-                size="4.5vw"
-            />
-        ),
-        "Charging Point": (
-            <BsPlug
-                color={
-                    // busType === "luxury"
-                    LuxuryFind(bus_type) === true
-                        ? "#393939" : "#1F487C"}
-                size="4.5vw"
-            />
-        ),
-        "Emergency exit": (
-            // <svg
-            //     xmlns="http://www.w3.org/2000/svg"
-            //     color={busType === "luxury" ? "#393939" : "#1F487C"}
-            //     width="4.5vw"
-            //     height="4.5vw"
-            //     viewBox="0 0 24 24"
-            // >
-            //     <path
-            //         fill={busType === "luxury" ? "#393939" : "#1F487C"}
-            //         d="M13.34 8.17c-.93 0-1.69-.77-1.69-1.7a1.69 1.69 0 0 1 1.69-1.69c.94 0 1.7.76 1.7 1.69s-.76 1.7-1.7 1.7M10.3 19.93l-5.93-1.18l.34-1.7l4.15.85l1.35-6.86l-1.52.6v2.86H7v-3.96l4.4-1.87l.67-.08c.6 0 1.1.34 1.43.85l.86 1.35c.68 1.21 2.03 2.03 3.64 2.03v1.68c-1.86 0-3.56-.83-4.66-2.1l-.5 2.54l1.77 1.69V23h-1.69v-5.1l-1.78-1.69zM21 23h-2V3H6v13.11l-2-.42V1h17zM6 23H4v-3.22l2 .42z"
-            //     />
-            // </svg>
-            LuxuryFind(bus_type) === true ? SVG?.luxury_mobile_emergency : SVG?.normal_mobile_emergency
-        ),
-        "Live Bus Tracking": (
-            <MdMyLocation
-                color={
-                    // busType === "luxury"
-                    LuxuryFind(bus_type) === true
-                        ? "#393939" : "#1F487C"}
-                size="4.5vw"
-            />
-        ),
-        Pillow: (
-            <BiSolidBlanket
-                color={
-                    // busType === "luxury"
-                    LuxuryFind(bus_type) === true
-                        ? "#393939" : "#1F487C"}
-                size="4.5vw"
-            />
-        ),
-        "Reading Light": (
-            <MdOutlineLight
-                color={
-                    // busType === "luxury"
-                    LuxuryFind(bus_type) === true
-                        ? "#393939" : "#1F487C"}
-                size="4.5vw"
-            />
-        ),
-        "Water Bottle": (
-            <GiWaterBottle
-                color={
-                    LuxuryFind(bus_type) === true
-                        // busType === "luxury" 
-                        ? "#393939" : "#1F487C"}
-                size="4.5vw"
-            />
-        ),
-        "CC Camera": (
-            <BiCctv
-                color={
-                    // busType === "luxury"
-                    LuxuryFind(bus_type) === true
-                        ? "#393939" : "#1F487C"}
-                size="4.5vw"
-            />
-        ),
-        "First Aid Box": (
-            <FaFirstAid
-                color={
-                    // busType === "luxury"
-                    LuxuryFind(bus_type) === true
-                        ? "#393939" : "#1F487C"}
-                size="4.5vw"
-            />
-        ),
-        "M Ticket": (
-            <IoTicketOutline
-                color={
-                    // busType === "luxury"
-                    LuxuryFind(bus_type) === true
-                        ? "#393939" : "#1F487C"}
-                size="4.5vw"
-            />
-        ),
-        BedSheet: (
-            // <svg
-            //     xmlns="http://www.w3.org/2000/svg"
-            //     color={busType === "luxury" ? "#393939" : "#1F487C"}
-            //     width="4.5vw"
-            //     height="4.5vw"
-            //     viewBox="0 0 24 24"
-            // >
-            //     <path
-            //         fill={busType === "luxury" ? "#393939" : "#1F487C"}
-            //         d="M4 4h16v12H4V4zm0 14v-2h16v2H4zm0 2h16c1.1 0 2-.9 2-2v-2H2v2c0 1.1.9 2 2 2z"
-            //     />
-            // </svg>
-            LuxuryFind(bus_type) === true ? SVG?.luxury_mobile_bedsheet : SVG?.normal_mobile_bedsheet
+    // const amenityIcons = {
+    //     Blankets: (
+    //         <BiSolidBlanket
+    //             color={
+    //                 LuxuryFind(bus_type) === true
+    //                     // busType === "luxury"
+    //                     ? "#393939" : "#1F487C"}
+    //             size="4.5vw"
+    //         />
+    //     ),
+    //     "Charging Point": (
+    //         <BsPlug
+    //             color={
+    //                 // busType === "luxury"
+    //                 LuxuryFind(bus_type) === true
+    //                     ? "#393939" : "#1F487C"}
+    //             size="4.5vw"
+    //         />
+    //     ),
+    //     "Emergency exit": (
+    //         // <svg
+    //         //     xmlns="http://www.w3.org/2000/svg"
+    //         //     color={busType === "luxury" ? "#393939" : "#1F487C"}
+    //         //     width="4.5vw"
+    //         //     height="4.5vw"
+    //         //     viewBox="0 0 24 24"
+    //         // >
+    //         //     <path
+    //         //         fill={busType === "luxury" ? "#393939" : "#1F487C"}
+    //         //         d="M13.34 8.17c-.93 0-1.69-.77-1.69-1.7a1.69 1.69 0 0 1 1.69-1.69c.94 0 1.7.76 1.7 1.69s-.76 1.7-1.7 1.7M10.3 19.93l-5.93-1.18l.34-1.7l4.15.85l1.35-6.86l-1.52.6v2.86H7v-3.96l4.4-1.87l.67-.08c.6 0 1.1.34 1.43.85l.86 1.35c.68 1.21 2.03 2.03 3.64 2.03v1.68c-1.86 0-3.56-.83-4.66-2.1l-.5 2.54l1.77 1.69V23h-1.69v-5.1l-1.78-1.69zM21 23h-2V3H6v13.11l-2-.42V1h17zM6 23H4v-3.22l2 .42z"
+    //         //     />
+    //         // </svg>
+    //         LuxuryFind(bus_type) === true ? SVG?.luxury_mobile_emergency : SVG?.normal_mobile_emergency
+    //     ),
+    //     "Live Bus Tracking": (
+    //         <MdMyLocation
+    //             color={
+    //                 // busType === "luxury"
+    //                 LuxuryFind(bus_type) === true
+    //                     ? "#393939" : "#1F487C"}
+    //             size="4.5vw"
+    //         />
+    //     ),
+    //     Pillow: (
+    //         <BiSolidBlanket
+    //             color={
+    //                 // busType === "luxury"
+    //                 LuxuryFind(bus_type) === true
+    //                     ? "#393939" : "#1F487C"}
+    //             size="4.5vw"
+    //         />
+    //     ),
+    //     "Reading Light": (
+    //         <MdOutlineLight
+    //             color={
+    //                 // busType === "luxury"
+    //                 LuxuryFind(bus_type) === true
+    //                     ? "#393939" : "#1F487C"}
+    //             size="4.5vw"
+    //         />
+    //     ),
+    //     "Water Bottle": (
+    //         <GiWaterBottle
+    //             color={
+    //                 LuxuryFind(bus_type) === true
+    //                     // busType === "luxury" 
+    //                     ? "#393939" : "#1F487C"}
+    //             size="4.5vw"
+    //         />
+    //     ),
+    //     "CC Camera": (
+    //         <BiCctv
+    //             color={
+    //                 // busType === "luxury"
+    //                 LuxuryFind(bus_type) === true
+    //                     ? "#393939" : "#1F487C"}
+    //             size="4.5vw"
+    //         />
+    //     ),
+    //     "First Aid Box": (
+    //         <FaFirstAid
+    //             color={
+    //                 // busType === "luxury"
+    //                 LuxuryFind(bus_type) === true
+    //                     ? "#393939" : "#1F487C"}
+    //             size="4.5vw"
+    //         />
+    //     ),
+    //     "M Ticket": (
+    //         <IoTicketOutline
+    //             color={
+    //                 // busType === "luxury"
+    //                 LuxuryFind(bus_type) === true
+    //                     ? "#393939" : "#1F487C"}
+    //             size="4.5vw"
+    //         />
+    //     ),
+    //     BedSheet: (
+    //         // <svg
+    //         //     xmlns="http://www.w3.org/2000/svg"
+    //         //     color={busType === "luxury" ? "#393939" : "#1F487C"}
+    //         //     width="4.5vw"
+    //         //     height="4.5vw"
+    //         //     viewBox="0 0 24 24"
+    //         // >
+    //         //     <path
+    //         //         fill={busType === "luxury" ? "#393939" : "#1F487C"}
+    //         //         d="M4 4h16v12H4V4zm0 14v-2h16v2H4zm0 2h16c1.1 0 2-.9 2-2v-2H2v2c0 1.1.9 2 2 2z"
+    //         //     />
+    //         // </svg>
+    //         LuxuryFind(bus_type) === true ? SVG?.luxury_mobile_bedsheet : SVG?.normal_mobile_bedsheet
 
-        ),
-        // "Mobile Charging Point": (
-        //   <BsPlug
-        //     color={busType === "luxury" ? "#393939" : "#1F487C"}
-        //     size="4.5vw"
-        //   />
-        // ),
-        Wifi: (
-            <PiWifiMedium
-                color={
-                    // busType === "luxury"
-                    LuxuryFind(bus_type) === true
-                        ? "#393939" : "#1F487C"}
-                size="4.5vw"
-            />
-        ),
-    };
+    //     ),
+    //     // "Mobile Charging Point": (
+    //     //   <BsPlug
+    //     //     color={busType === "luxury" ? "#393939" : "#1F487C"}
+    //     //     size="4.5vw"
+    //     //   />
+    //     // ),
+    //     Wifi: (
+    //         <PiWifiMedium
+    //             color={
+    //                 // busType === "luxury"
+    //                 LuxuryFind(bus_type) === true
+    //                     ? "#393939" : "#1F487C"}
+    //             size="4.5vw"
+    //         />
+    //     ),
+    // };
+
+    // --------------------------------------------------------TravelPolicies------------------------------------------------------------
+
     const Travel = [
         {
             travel_img: (
@@ -301,32 +310,63 @@ export default function MobileCardBottomBar({
         return parseInt(discountedPrice);
     };
 
-    // Split the policies by '#*#*' into an array
-    const policyArray = policies?.split('#*#*');
+    // --------------------------------------------------------------------------------CancelationPolicies-------------------------------------------
 
-    // Separate time intervals and percentages
-    const times = policyArray?.slice(0, 4); // First 4 elements are time intervals
-    const percentages = policyArray?.slice(4); // Last 4 elements are percentages
 
-    // Rearranging and pairing time intervals with percentages (reverse the percentage array)
-    const formattedPolicies = times?.map((time, index) => {
-        // If the time contains '--', split it into the time part and percentage part
-        let cleanedTime = time;
-        let percentage = percentages[percentages?.length - 1 - index];
+    // // Split the policies by '#*#*' into an array
+    // const policyArray = policies?.split('#*#*');
 
-        if (time.includes('--')) {
-            // Split the time and percentage part at '--'
-            const [timePart, percentPart] = time?.split('--');
-            cleanedTime = timePart?.trim(); // Cleaned time part (before '--')
-            percentage = percentPart?.trim() || percentage; // Cleaned percentage part (after '--')
+    // // Separate time intervals and percentages
+    // const times = policyArray?.slice(0, 4); // First 4 elements are time intervals
+    // const percentages = policyArray?.slice(4); // Last 4 elements are percentages
+
+    // // Rearranging and pairing time intervals with percentages (reverse the percentage array)
+    // const formattedPolicies = times?.map((time, index) => {
+    //     // If the time contains '--', split it into the time part and percentage part
+    //     let cleanedTime = time;
+    //     let percentage = percentages[percentages?.length - 1 - index];
+
+    //     if (time.includes('--')) {
+    //         // Split the time and percentage part at '--'
+    //         const [timePart, percentPart] = time?.split('--');
+    //         cleanedTime = timePart?.trim(); // Cleaned time part (before '--')
+    //         percentage = percentPart?.trim() || percentage; // Cleaned percentage part (after '--')
+    //     }
+
+    //     return (
+    //         <div key={index}>
+    //             {cleanedTime} {percentage} {/* Combine cleaned time and percentage */}
+    //         </div>
+    //     );
+    // });
+
+
+    const [cancelPolicy, setCancelPolicy] = useState()
+    const [policyloader, setPolicyLoader] = useState(true)
+    const selectedBus = {
+        operatorId: policies?.operatorId,
+        Service_key: policies?.Service_key,
+        Source_ID: policies?.Source_ID,
+        Destination_ID: policies?.Destination_ID,
+        jdate: policies?.jdate
+    }
+    console.log(policies !== null, selectedBus, 'iamironman')
+
+    const fetch_Cancellation_Policy = async () => {
+        try {
+            const response = await Abhibus_Cancelation_Policy(selectedBus, setPolicyLoader)
+            setCancelPolicy(response?.Cancellationpy)
+            return response
+        } catch (error) {
+            toast.error(error)
         }
+    }
+    useEffect(() => {
+        if (policies !== null) {
+            fetch_Cancellation_Policy()
+        }
+    }, [policies])
 
-        return (
-            <div key={index}>
-                {cleanedTime} {percentage} {/* Combine cleaned time and percentage */}
-            </div>
-        );
-    });
 
 
     return (
@@ -363,23 +403,41 @@ export default function MobileCardBottomBar({
                     <div ref={componentRef} id="capture" className={`h-auto w-full`}>
                         <div className={`h-auto w-full`}>
                             {drawername === "Amenities" ? (
-                                <div className="w-full grid grid-flow-col grid-rows-9 gap-[3vw] py-[1.5vw] overflow-x-auto overflow-y-hidden">
-                                    {amenities && amenities?.map((amenity, idx) => (
-                                        <div key={idx} className="flex items-center gap-[2vw]">
-                                            {amenityIcons?.[amenity] || <span>Icon not found</span>}
-                                            <p
-                                                className={`${
-                                                    // busType === "luxury"
-                                                    LuxuryFind(bus_type) === true
-                                                        ? "text-[#393939]"
-                                                        : "text-[#1F487C]"
-                                                    } text-[3.5vw]`}
-                                            >
-                                                {capitalizeLetter(amenity)}
-                                            </p>
-                                        </div>
-                                    ))}
-                                </div>
+                                // <div className="w-full grid grid-flow-col grid-rows-9 gap-[3vw] py-[1.5vw] overflow-x-auto overflow-y-hidden">
+                                //     {amenities && amenities?.map((amenity, idx) => (
+                                //         <div key={idx} className="flex items-center gap-[2vw]">
+                                //             {amenityIcons?.[amenity] || <span>Icon not found</span>}
+                                //             <p
+                                //                 className={`${
+                                //                     // busType === "luxury"
+                                //                     LuxuryFind(bus_type) === true
+                                //                         ? "text-[#393939]"
+                                //                         : "text-[#1F487C]"
+                                //                     } text-[3.5vw]`}
+                                //             >
+                                //                 {capitalizeLetter(amenity)}
+                                //             </p>
+                                //         </div>
+                                //     ))}
+                                // </div>
+                                <>
+                                    <div className={`text-[4vw] grid grid-cols-2 p-[2vw] gap-[3vw] ${LuxuryFind(busType) === true ? 'text-[#393939]' : 'text-[#1F487C]'}`}>
+                                        {Amenities.map((amenity, index) => {
+                                            if (servicesArray[index] === '1') {
+                                                return (
+                                                    <>
+                                                        <div className="grid grid-cols-12 items-center justify-stretch">
+                                                            <div className="col-span-2">{amenity?.icon}</div>
+                                                            <div className="col-span-10">{amenity.amenity_title}</div>
+                                                        </div>
+                                                    </>
+                                                )
+
+                                            }
+                                            return null; // Return null for false values
+                                        })}
+                                    </div>
+                                </>
                             ) : drawername === "pickupDrop" ? (
                                 <div className={`h-auto w-full`}>
                                     <div className="grid grid-col gap-[3vw]">
@@ -420,7 +478,6 @@ export default function MobileCardBottomBar({
                                                             {boarding?.map((item) => {
                                                                 // Split the string item by '^'
                                                                 const parts = item.split('^');
-                                                                console.log(parts, 'parts_dropping')
                                                                 // Ensure we have enough parts in the split string
                                                                 if (parts.length >= 3) {
                                                                     const place = parts[0];  // "Ameerpet"
@@ -624,7 +681,7 @@ export default function MobileCardBottomBar({
 
                                     {isToggleSwitch === "CDCP" ? (
                                         <div className="py-[5vw]">
-                                            <div className="">
+                                            {/* <div className="">
                                                 <div className="grid grid-cols-12 justify-between  gap-[1vw]">
                                                     <div className="col-span-7">
                                                         <p
@@ -703,6 +760,146 @@ export default function MobileCardBottomBar({
                                                     </div>
                                                 </div>
 
+                                            </div> */}
+                                            <div>
+                                                {cancelPolicy === undefined || null ?
+                                                    <Skeleton
+                                                        loading={policyloader}
+                                                        active
+                                                        style={{ margin: "0.5vw", padding: "0.5vw" }}
+                                                        paragraph={{ rows: 4 }}
+
+                                                    ></Skeleton> :
+
+                                                    <>
+                                                        <div className="w-full gap-[1vw] col-span-8">
+                                                            <div className="grid grid-cols-12">
+                                                                <p
+                                                                    className={`text-[3.5vw] ${
+                                                                        // busType === "luxury"
+                                                                        LuxuryFind(bus_type) === true
+                                                                            ? "text-[#393939]" : "text-[#1F4B7F]"
+                                                                        }  font-semibold col-span-7 `}
+                                                                >
+                                                                    Cancellation Time
+                                                                </p>
+                                                                <p className={`text-[3.5vw] ${
+                                                                    // busType === 'luxury'
+                                                                    LuxuryFind(bus_type) === true
+                                                                        ? 'text-[#393939]' : 'text-[#1F4B7F]'} font-semibold col-span-2 flex justify-center`}>
+                                                                    {/* Refund Amount */}
+                                                                    Refund(%)
+                                                                </p>
+                                                                <p className={`text-[3.5vw] ${
+                                                                    // busType === 'luxury'
+                                                                    LuxuryFind(bus_type) === true
+                                                                        ? 'text-[#393939]' : 'text-[#1F4B7F]'} font-semibold col-span-3 flex justify-center`}>
+                                                                    Refund(₹)
+                                                                </p>
+                                                            </div>
+                                                            <div className={`text-[3vw]  ${
+                                                                // busType === 'luxury'
+                                                                LuxuryFind(bus_type) === true
+                                                                    ? 'text-[#393939]' : 'text-[#1F4B7F]'}`}>
+                                                                {/* {formattedPolicies?.map((items, index) => {
+                                        const parts = items?.props?.children;
+                                        const percentageString = parts[2]; // Assume parts[2] contains "20%" as a string
+
+                                        // Check if the percentage is valid
+                                        const percentage = percentageString ? parseFloat(percentageString) / 100 : 0;
+
+                                        // Calculate the value
+                                        const calculatedValue = busPrice * percentage;
+
+                                        const CancellationFare = busPrice - calculatedValue
+                                        // Log the calculated value if you want to inspect it
+
+
+                                        if (parts && parts.length > 0) {
+                                            return (
+                                                <>
+                                                    <div className="grid grid-cols-12 py-[0.25vw]">
+                                                        <div className="col-span-7 justify-center items-center" key={index}>{parts[0]}</div>
+                                                        <div className="col-span-2 flex justify-center items-center" key={index}>{parts[2]}</div>
+                                                        <div className="col-span-3 flex justify-center items-center" key={index}>
+                                                            {`₹ ${Math.floor(CancellationFare)}`}
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            );  // Display the first part safely
+                                        } else {
+                                            return <div key={index}>No content</div>;  // Fallback for empty or missing parts
+                                        }
+                                    })} */}
+
+                                                                {cancelPolicy?.Cancellationpy?.conditions?.map((item, index) => (
+                                                                    <div className="grid grid-cols-12 py-[0.25vw]">
+                                                                        <div className="col-span-7 justify-center items-center" key={index}>{item?.con}</div>
+                                                                        <div className="col-span-2 flex justify-center items-center" key={index}>{item?.rp}</div>
+                                                                        <div className="col-span-3 flex justify-center items-center" key={index}>{item?.cc}</div>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                            {/* {policies?.length > 0 &&
+                                        policies?.map((item) => {
+                                            const [start, end] = item?.span?.split("-").map(Number); // Split and convert to numbers
+                                            const displaySpan =
+                                                start >= 24
+                                                    ? `${Math.floor(start / 24)}${end ? " to " + Math.floor(end / 24) : ""
+                                                    }`
+                                                    : `${start}${end ? " to " + end : ""}`;
+
+                                            const timeUnit = start >= 24 ? "Days" : "Hours";
+
+                                            return (
+                                                <p
+                                                    className={`text-[1.1vw] ${busType === "luxury"
+                                                        ? "text-[#393939]"
+                                                        : "text-[#1F4B7F]"
+                                                        }`}
+                                                >
+                                                    <span className="px-[.2vw]">Before </span>
+                                                    <span>{displaySpan}</span>
+                                                    <span className="px-[.2vw]">{timeUnit}</span>
+                                                </p>
+                                            );
+                                        })} */}
+                                                            {/* {policies?.length > 0 &&
+                    policies?.map((item) => (
+                      <p className="text-[1.1vw] text-[#1F4B7F] ">
+                        <span className="px-[.2vw]">Before </span>
+                        <span className="">
+                          {item?.span?.split("-")?.join(" to ")}
+                        </span>
+                        <span className="px-[.2vw]">Hours</span>
+                      </p>
+                    ))} */}
+                                                        </div>
+                                                        <div className="flex flex-col gap-[1vw]">
+                                                            {/* {policies?.length > 0 &&
+                                        policies?.map((item) => (
+                                            <p className={`text-[1.1vw] flex justify-center  ${busType === 'luxury' ? 'text-[#393939]' : 'text-[#1F4B7F]'}`}>
+                                                <span className="text-center">{`${item.rate}`}</span>
+                                                <span className="mx-[2vw] col-span-1">
+                    {
+                     ( parseInt(item?.rate?.replace('%','') )/100 * parseInt(price?.price))
+                    }
+                    </span>
+                                            </p>
+                                        ))} */}
+                                                        </div>
+                                                        <div className="flex flex-col gap-[1vw]">
+                                                            {/* {policies?.length > 0 &&
+                                        policies?.map((item) => (
+                                            <p className={`text-[1.1vw] flex justify-center   ${busType === 'luxury' ? 'text-[#393939]' : 'text-[#1F4B7F]'}`}>
+                                                <span className="col-span-1">{item.rate}</span>
+                                                <span className="text-center">
+                                                    {`${DiscountedPrice(price, item)}`}
+                                                </span>
+                                            </p>
+                                        ))} */}
+                                                        </div>
+                                                    </>}
                                             </div>
                                         </div>
                                     ) : (

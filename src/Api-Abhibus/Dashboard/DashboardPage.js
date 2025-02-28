@@ -373,3 +373,45 @@ export const Abhibus_GetFareInfo = async (
     return null;
   }
 };
+
+export const Abhibus_Cancelation_Policy = async (item, setPolicyLoader) => {
+
+  const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <tns:GetCancellationPolicyV4 xmlns:tns="https://staging.abhibus.com/">
+            <tns:username>${username}</tns:username>
+            <tns:password>${password}</tns:password>
+            <tns:operatorId>${item?.operatorId}</tns:operatorId>
+            <tns:serviceId>${item?.Service_key}</tns:serviceId>
+            <tns:sourceStationId>${item?.Source_ID}</tns:sourceStationId>
+            <tns:destinationStationId>${item?.Destination_ID}</tns:destinationStationId>
+            <tns:journeyDate>${item?.jdate}</tns:journeyDate>
+        </tns:GetCancellationPolicyV4>
+    </soap:Body>
+</soap:Envelope>`;
+
+  const url = `${abhibusurl}abhiWebServer`;
+  try {
+    const authHeader = `Basic ${btoa(`${username}:${password}`)}`
+    const response = await axios({
+      method: 'post',
+      url,
+      data: soapRequest,
+      headers: {
+        "Content-Type": "text/xml;charset=UTF-8",
+        Authorization: authHeader,
+        SOAPAction: `${abhibusurl}/GetFaresInfo`, // Ensure quotes if required
+      },
+    })
+    const result = await processSOAPResponse(response.data, "GetCancellationPolicyV4");
+    setPolicyLoader(false)
+    if (result?.status === "fail") {
+      toast.error(`${result?.status}-${result?.message}`)
+    }
+    return result
+  } catch (error) {
+    toast.error(error)
+    return null
+  }
+}

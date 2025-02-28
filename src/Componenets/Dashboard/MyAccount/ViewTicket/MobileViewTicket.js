@@ -729,6 +729,8 @@ export default function MobileViewTicket({ ticketDetails, droppingDate }) {
         onCancel={closeRatingModal}
         footer={null}
         maskClosable={false}
+        height={"103vw"}
+        width={"80vw"}
       >
         <RatingFeedBack setRatingModal={setRatingModal} />
       </Modal>

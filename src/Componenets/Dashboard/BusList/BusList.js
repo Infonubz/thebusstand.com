@@ -59,6 +59,12 @@ import Advertisement from "../Advertisement/Advertisement";
 import ViewFullTicket from "../MyAccount/ViewTicket/ViewFullTicket";
 import { calculateDiscountedFare } from "../../Common/Common-Functions/TBS-Discount-Fare";
 import { CurrentDiscount } from "../../../Api-TBS/Home/Home";
+import { FaWater, FaBlanket, FaTv, FaAirConditioner, FaCookieBite, FaPlug, FaVideo, FaExit, FaHammer, FaTissue, FaFireExtinguisher, FaLightbulb, FaLocationArrow, FaFirstAid, FaWifi, FaHandSparkles, FaTemperatureHigh, FaUsers, FaSprayCan, FaUsersCog } from 'react-icons/fa';
+import { FaMattressPillow } from "react-icons/fa6";
+import { FaBoxTissue } from "react-icons/fa";
+import { RxExit } from "react-icons/rx";
+import { TbAirConditioning } from "react-icons/tb";
+import { FaBottleWater } from "react-icons/fa6";
 export default function BusList() {
   // const [dropDown, setDropDown] = useState(0)
   const [dropDown, setDropDown] = useState(false);
@@ -73,12 +79,18 @@ export default function BusList() {
   const navigation = useNavigate();
   const user_id = sessionStorage.getItem("user_id");
   const apiUrlimage = process.env.REACT_APP_API_URL_IMAGE;
-
   // const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
   const formatTime = (timeString) => {
     const [hours, minutes] = timeString.split(":").map(Number);
     return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
   };
+
+  const data = [
+    { id: 1, title: 'Card Title 1', description: 'Description for Card 1' },
+    { id: 2, title: 'Card Title 2', description: 'Description for Card 2' },
+    { id: 3, title: 'Card Title 3', description: 'Description for Card 3' },
+    { id: 4, title: 'Card Title 4', description: 'Description for Card 4' },
+  ];
 
   const LuxuryFind = (type) =>
     type.toLowerCase().includes("volvo") ||
@@ -119,7 +131,6 @@ export default function BusList() {
   //     }
   //   }, [user_id, navigation]);
 
-  console.log(loader, "spinnerrrrrrrrrrr");
   const calculateArrival = (departureDate, departureTime, duration) => {
     try {
       const departureDateTime = new Date(`${departureDate} ${departureTime}`);
@@ -182,8 +193,8 @@ export default function BusList() {
       const date = new Date(currentpath?.trip_date);
       date.setUTCHours(5, 30, 53, 897);
       const jdate = date?.toISOString();
-      console.log(jdate,"jdatejdatejdate");
-      
+      console.log(jdate, "jdatejdatejdate");
+
       CurrentDiscount(dispatch, jdate);
     }
   }, [currentpath]);
@@ -195,6 +206,36 @@ export default function BusList() {
   //     setShowModal(false);
   //   }
   // }, [sessionStorage.getItem("ticket_view")]);
+
+  const services = { Amenities:  "0,1,0,0,0,1,0,1,0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0", };
+  const amenities = [
+    { "amenity_title": "Water Bottle", "amenity_position": 1, "icon": <FaBottleWater /> },
+    { "amenity_title": "Blanket", "amenity_position": 2, "icon": <BiSolidBlanket /> },
+    { "amenity_title": "TV", "amenity_position": 3, "icon": <FaTv /> },
+    { "amenity_title": "AC", "amenity_position": 4, "icon": <TbAirConditioning /> },
+    { "amenity_title": "Snacks", "amenity_position": 5, "icon": <FaCookieBite /> },
+    { "amenity_title": "Charging Point", "amenity_position": 6, "icon": <FaPlug /> },
+    { "amenity_title": "CCTV", "amenity_position": 7, "icon": <FaVideo /> },
+    { "amenity_title": "Emergency Exit", "amenity_position": 8, "icon": <RxExit /> },
+    { "amenity_title": "Individual TV", "amenity_position": 9, "icon": <FaTv /> },
+    { "amenity_title": "Hammer", "amenity_position": 10, "icon": <FaHammer /> },
+    { "amenity_title": "Facial Tissues", "amenity_position": 11, "icon": <FaBoxTissue /> },
+    { "amenity_title": "Pillows", "amenity_position": 12, "icon": <FaMattressPillow /> },
+    { "amenity_title": "Fire Extinguisher", "amenity_position": 13, "icon": <FaFireExtinguisher /> },
+    { "amenity_title": "Reading Light", "amenity_position": 14, "icon": <FaLightbulb /> },
+    { "amenity_title": "GPS Tracking", "amenity_position": 15, "icon": <FaLocationArrow /> },
+    { "amenity_title": "First Aid Box", "amenity_position": 16, "icon": <FaFirstAid /> },
+    { "amenity_title": "Wifi", "amenity_position": 17, "icon": <FaWifi /> },
+    { "amenity_title": "Hand Sanitizer", "amenity_position": 18, "icon": <FaHandSparkles /> },
+    { "amenity_title": "Temperature checks", "amenity_position": 19, "icon": <FaTemperatureHigh /> },
+    { "amenity_title": "Social Distancing", "amenity_position": 20, "icon": <FaUsers /> },
+    { "amenity_title": "Driver Conductor with masks", "amenity_position": 21, "icon": <FaUsersCog /> },
+    { "amenity_title": "Fumigation", "amenity_position": 22, "icon": <FaSprayCan /> },
+    { "amenity_title": "Staff", "amenity_position": 23, "icon": <FaUsers /> }
+  ];
+
+
+
   return (
     <>
       <div>
@@ -212,14 +253,13 @@ export default function BusList() {
                     LuxuryFind(item.Bus_Type_Name) === true
                       ? "custom-gradient-luxury"
                       : "bg-white"
-                  }  ${
-                    dropDown === `liveTracking${index}` ||
-                    dropDown === `policy${index}`
+                    }  ${dropDown === `liveTracking${index}` ||
+                      dropDown === `policy${index}`
                       ? "h-auto"
                       : "h-[1vw]" || dropDown === `droppick${index}`
-                      ? "h-auto"
-                      : "h-[1vw]"
-                  } w-full mt-[0.4vw] flex-col rounded-[0.5vw] border-[0.15vw] border-[#C9C9C9]`}
+                        ? "h-auto"
+                        : "h-[1vw]"
+                    } w-full mt-[0.4vw] flex-col rounded-[0.5vw] border-[0.15vw] border-[#C9C9C9]`}
                   key={index}
                   style={{
                     backgroundImage:
@@ -287,11 +327,10 @@ export default function BusList() {
                                     src={`${apiUrlimage}${item.logos}`}
                                     // src={orange_travel_logo}
                                     alt="logos"
-                                    className={`w-[3.5vw] h-[3.5vw] rounded-full bg-white  ${
-                                      LuxuryFind(item.Bus_Type_Name) === true
-                                        ? "shadow-lg shadow-[rgba(255, 238, 201, 0.9)]"
-                                        : "shadow-lg shadow-[rgba(238, 237, 237, 0.7)]"
-                                    }`}
+                                    className={`w-[3.5vw] h-[3.5vw] rounded-full bg-white  ${LuxuryFind(item.Bus_Type_Name) === true
+                                      ? "shadow-lg shadow-[rgba(255, 238, 201, 0.9)]"
+                                      : "shadow-lg shadow-[rgba(238, 237, 237, 0.7)]"
+                                      }`}
                                   />
                                 )}
                               </div>
@@ -301,7 +340,7 @@ export default function BusList() {
                                   LuxuryFind(item.Bus_Type_Name) === true
                                     ? "text-black"
                                     : " text-white"
-                                } text-[0.9vw] absolute left-[0.5vw] top-[0.1vw] underline underline-offset-2 underline-white`}
+                                  } text-[0.9vw] absolute left-[0.5vw] top-[0.1vw] underline underline-offset-2 underline-white`}
                               >
                                 Bus Operator
                               </label>
@@ -311,7 +350,7 @@ export default function BusList() {
                                   LuxuryFind(item.Bus_Type_Name) === true
                                     ? "text-black"
                                     : " text-white"
-                                }  text-[1.4vw] tracking-wider font-semibold absolute left-[0.5vw] top-[1.4vw]`}
+                                  }  text-[1.4vw] tracking-wider font-semibold absolute left-[0.5vw] top-[1.4vw]`}
                               >
                                 {item?.Traveler_Agent_Name}
                               </label>
@@ -325,7 +364,7 @@ export default function BusList() {
                                       LuxuryFind(item.Bus_Type_Name) === true
                                         ? "text-black"
                                         : "text-[#1F487C]"
-                                    } font-semibold opacity-60`}
+                                      } font-semibold opacity-60`}
                                   >
                                     {dayjs(item?.BUS_START_DATE).format(
                                       "DD MMM"
@@ -337,7 +376,7 @@ export default function BusList() {
                                       LuxuryFind(item.Bus_Type_Name) === true
                                         ? "text-black"
                                         : "text-[#1F487C]"
-                                    } font-bold`}
+                                      } font-bold`}
                                   >
                                     {item?.Start_time}
                                   </label>
@@ -431,7 +470,7 @@ export default function BusList() {
                                   81.425 33.7182 83.2211 33.7182Z"
                                         fill={
                                           LuxuryFind(item.Bus_Type_Name) ===
-                                          true
+                                            true
                                             ? "#393939"
                                             : "#1F4B7F"
                                         }
@@ -474,7 +513,7 @@ export default function BusList() {
                                       LuxuryFind(item.Bus_Type_Name) === true
                                         ? "text-black"
                                         : "text-[#1F487C]"
-                                    } font-semibold opacity-60`}
+                                      } font-semibold opacity-60`}
                                   >
                                     {/* {dayjs(item?.arrival_date_time).format(
                                     "DD MMM"
@@ -491,7 +530,7 @@ export default function BusList() {
                                       LuxuryFind(item.Bus_Type_Name) === true
                                         ? "text-black"
                                         : "text-[#1F487C]"
-                                    } font-bold`}
+                                      } font-bold`}
                                   >
                                     {item?.Arr_Time}
                                   </label>
@@ -509,18 +548,17 @@ export default function BusList() {
                                   LuxuryFind(item.Bus_Type_Name) === true
                                     ? "text-black"
                                     : "text-[#1F487C]"
-                                } font-semibold text-[1.2vw] px-[1vw]`}
+                                  } font-semibold text-[1.2vw] px-[1vw]`}
                               >
                                 {item.Bus_Type_Name}
                               </div>
                             </div>
                             <div className="row-span-3  flex flex-col">
                               <div
-                                className={`border-r-[0.2vw] border-l-[0.2vw] w-[15.5vw] h-auto ${
-                                  LuxuryFind(item.Bus_Type_Name) === true
-                                    ? "border-[#393939]"
-                                    : "border-slate-400"
-                                }  border-dashed relative top-[1vw]`}
+                                className={`border-r-[0.2vw] border-l-[0.2vw] w-[15.5vw] h-auto ${LuxuryFind(item.Bus_Type_Name) === true
+                                  ? "border-[#393939]"
+                                  : "border-slate-400"
+                                  }  border-dashed relative top-[1vw]`}
                               >
                                 <div className="flex flex-col items-center  border-dashed px-[1vw] gap-[1vw]">
                                   <div className="flex gap-[0.5vw] ">
@@ -530,7 +568,7 @@ export default function BusList() {
                                         LuxuryFind(item.Bus_Type_Name) === true
                                           ? "text-black"
                                           : "text-[#1F487C]"
-                                      } text-[1.1vw] w-full`}
+                                        } text-[1.1vw] w-full`}
                                     >
                                       Available Seats
                                     </div>
@@ -568,7 +606,7 @@ export default function BusList() {
                                       LuxuryFind(item.Bus_Type_Name) === true
                                         ? "text-black"
                                         : "text-[#1F487C]"
-                                    }`}
+                                      }`}
                                   >
                                     Starting @
                                   </p>
@@ -593,16 +631,16 @@ export default function BusList() {
                                         LuxuryFind(item.Bus_Type_Name) === true
                                           ? "bg-custom-gradient"
                                           : "clip-trapezoid"
-                                      } `}
+                                        } `}
                                     >
                                       <p
                                         className={`  top-[0.2vw] left-[3.2vw] font-bold text-[2.5vw] ${
                                           // isluxury == true || isluxury == "true"
                                           LuxuryFind(item.Bus_Type_Name) ===
-                                          true
+                                            true
                                             ? "text-black"
                                             : "text-white"
-                                        } `}
+                                          } `}
                                       >
                                         {/* ₹ { Math.round(item.Fare)} */}
 
@@ -616,19 +654,19 @@ export default function BusList() {
                                         className={` absolute right-0 top-[-1vw] -rotate-90 w-0 h-0 border-l-[1vw] border-l-transparent border-r-[1vw] border-r-transparent border-b-[2vw] ${
                                           // isluxury == "true" || isluxury == true
                                           LuxuryFind(item.Bus_Type_Name) ===
-                                          true
+                                            true
                                             ? "border-b-[#FFEB76]"
                                             : "border-b-white"
-                                        } `}
+                                          } `}
                                       ></div>
                                       <div
                                         className={` absolute right-0 bottom-[-1vw] -rotate-90 w-0 h-0 border-l-[1vw] border-l-transparent border-r-[1vw] border-r-transparent border-b-[2vw] ${
                                           // isluxury == "true" || isluxury == true
                                           LuxuryFind(item.Bus_Type_Name) ===
-                                          true
+                                            true
                                             ? "border-b-[#FFEB76]"
                                             : "border-b-white"
-                                        } `}
+                                          } `}
                                       ></div>
                                       <div className="bg-[#61B00F] absolute top-1/2 right-0 transform -translate-y-1/2 w-[2vw] h-[1.5vw] flex items-center justify-center">
                                         <div className="bg-[#2D5C05] w-[1vw] h-[1vw] rounded-full flex items-center justify-center">
@@ -636,10 +674,10 @@ export default function BusList() {
                                             className={` ${
                                               // isluxury == "true" || isluxury == true
                                               LuxuryFind(item.Bus_Type_Name) ===
-                                              true
+                                                true
                                                 ? "bg-[#FFEB76]"
                                                 : "bg-white"
-                                            } w-[0.6vw] h-[0.6vw] rounded-full`}
+                                              } w-[0.6vw] h-[0.6vw] rounded-full`}
                                           ></div>
                                         </div>
                                       </div>
@@ -657,7 +695,7 @@ export default function BusList() {
                                         LuxuryFind(item.Bus_Type_Name) === true
                                           ? "bg-[#FFEB76]"
                                           : "bg-white"
-                                      } rounded-r-full `}
+                                        } rounded-r-full `}
                                     ></div>
                                     {/* <div className="absolute top-[-1vw] right-[-16vw] w-[4vw] h-[8vw] bg-white rounded-l-full flex items-center justify-center "></div> */}
                                     <div className=" absolute top-[-1.4vw] left-[-7.5vw] w-[9vw] h-[9vw]">
@@ -674,11 +712,10 @@ export default function BusList() {
                                       toggleDropDown(`seat${index}`);
                                     }}
                                   >
-                                    {`${
-                                      dropDown === `seat${index}`
-                                        ? "Hide Seats"
-                                        : "Show Seats"
-                                    }`}
+                                    {`${dropDown === `seat${index}`
+                                      ? "Hide Seats"
+                                      : "Show Seats"
+                                      }`}
                                   </button>
                                 </div>
                               </div>
@@ -686,9 +723,9 @@ export default function BusList() {
                           </div>
                         </div>
                       </div>
-                      <div className="h-[2.7vw] w-full">
+                      <div className="h-[2.7vw] w-full flex items-center">
                         <div className="px-[1vw] ">
-                          <div className="flex items-center gap-[0.5vw] py-[0.1vw]">
+                          <div className="flex items-center gap-[0.5vw] py-[0.1vw] w-full">
                             {/* <div
                             className={`${item.rating >= 4
                               ? "border-[#61B00F]"
@@ -745,11 +782,11 @@ export default function BusList() {
                             </div>
                           </div> */}
 
-                            <div className="flex items-center gap-[0.5vw]">
-                              {item?.Amenities === null ? (
+                            <div className="flex items-center gap-[0.5vw] w-full">
+                              {item?.Amenities || services?.Amenities === null ? (
                                 ""
                               ) : (
-                                <div>
+                                <div className="flex items-center">
                                   <div
                                     className="flex items-center cursor-pointer gap-[0.5vw]"
                                     onClick={() =>
@@ -762,10 +799,10 @@ export default function BusList() {
                                         color={`${
                                           // isluxury == "true" || isluxury == true
                                           LuxuryFind(item.Bus_Type_Name) ===
-                                          true
+                                            true
                                             ? "black"
                                             : "#1F487C"
-                                        }`}
+                                          }`}
                                       />
                                     </div>
                                     <div
@@ -774,7 +811,7 @@ export default function BusList() {
                                         LuxuryFind(item.Bus_Type_Name) === true
                                           ? "text-black"
                                           : "text-[#1F487C]"
-                                      }`}
+                                        }`}
                                     >
                                       Live Tracking
                                     </div>
@@ -784,10 +821,10 @@ export default function BusList() {
                                         color={`${
                                           // isluxury == "true" || isluxury == true
                                           LuxuryFind(item.Bus_Type_Name) ===
-                                          true
+                                            true
                                             ? "black"
                                             : "#1F487C"
-                                        }`}
+                                          }`}
                                       />
                                     </div>
                                     {/* <div>
@@ -818,10 +855,10 @@ export default function BusList() {
                                           color={`${
                                             // isluxury == "true" || isluxury == true
                                             LuxuryFind(item.Bus_Type_Name) ===
-                                            true
+                                              true
                                               ? "black"
                                               : "#1F487C"
-                                          }`}
+                                            }`}
                                           size="1.2vw"
                                         />
                                       ) : (
@@ -829,21 +866,20 @@ export default function BusList() {
                                           color={`${
                                             // isluxury == "true" || isluxury == true
                                             LuxuryFind(item.Bus_Type_Name) ===
-                                            true
+                                              true
                                               ? "black"
                                               : "#1F487C"
-                                          }`}
+                                            }`}
                                           size="1.2vw"
                                         />
                                       )}
                                     </div>
                                   </div>
                                   <div
-                                    className={`h-[1vw] w-[0.1vw] ${
-                                      LuxuryFind(item.Bus_Type_Name) === true
-                                        ? "bg-[#393939]"
-                                        : "bg-[#1F487C]"
-                                    } gap-[1vw]`}
+                                    className={`h-[1vw] w-[0.1vw] ${LuxuryFind(item.Bus_Type_Name) === true
+                                      ? "bg-[#393939]"
+                                      : "bg-[#1F487C]"
+                                      } gap-[1vw]`}
                                   ></div>
                                 </div>
                               )}
@@ -859,7 +895,7 @@ export default function BusList() {
                                     LuxuryFind(item.Bus_Type_Name) === true
                                       ? "text-black"
                                       : "text-[#1F487C]"
-                                  }  text-[1.1vw] `}
+                                    }  text-[1.1vw] `}
                                 >
                                   Boarding & Dropping Points
                                 </div>
@@ -871,7 +907,7 @@ export default function BusList() {
                                         LuxuryFind(item.Bus_Type_Name) === true
                                           ? "black"
                                           : "#1F487C"
-                                      }`}
+                                        }`}
                                       size="1.2vw"
                                     />
                                   ) : (
@@ -881,18 +917,17 @@ export default function BusList() {
                                         LuxuryFind(item.Bus_Type_Name) === true
                                           ? "black"
                                           : "#1F487C"
-                                      }`}
+                                        }`}
                                       size="1.2vw"
                                     />
                                   )}
                                 </div>
                               </div>
                               <div
-                                className={`h-[1vw] w-[0.1vw] ${
-                                  LuxuryFind(item.Bus_Type_Name) === true
-                                    ? "bg-[#393939]"
-                                    : "bg-[#1F487C]"
-                                } gap-[1vw]`}
+                                className={`h-[1vw] w-[0.1vw] ${LuxuryFind(item.Bus_Type_Name) === true
+                                  ? "bg-[#393939]"
+                                  : "bg-[#1F487C]"
+                                  } gap-[1vw]`}
                               ></div>
                               <div
                                 className="flex items-center cursor-pointer gap-[0.5vw]"
@@ -906,7 +941,7 @@ export default function BusList() {
                                     LuxuryFind(item.Bus_Type_Name) === true
                                       ? "text-black"
                                       : "text-[#1F487C]"
-                                  } text-[1.1vw]`}
+                                    } text-[1.1vw]`}
                                 >
                                   Cancel Policies
                                 </div>
@@ -918,7 +953,7 @@ export default function BusList() {
                                         LuxuryFind(item.Bus_Type_Name) === true
                                           ? "black"
                                           : "#1F487C"
-                                      }`}
+                                        }`}
                                       size="1.2vw"
                                     />
                                   ) : (
@@ -928,18 +963,17 @@ export default function BusList() {
                                         LuxuryFind(item.Bus_Type_Name) === true
                                           ? "black"
                                           : "#1F487C"
-                                      }`}
+                                        }`}
                                       size="1.2vw"
                                     />
                                   )}
                                 </div>
                               </div>
                               <div
-                                className={`h-[1vw] w-[0.1vw] ${
-                                  LuxuryFind(item.Bus_Type_Name) === true
-                                    ? "bg-[#393939]"
-                                    : "bg-[#1F487C]"
-                                } gap-[1vw]`}
+                                className={`h-[1vw] w-[0.1vw] ${LuxuryFind(item.Bus_Type_Name) === true
+                                  ? "bg-[#393939]"
+                                  : "bg-[#1F487C]"
+                                  } gap-[1vw]`}
                               ></div>
                               <div
                                 className="flex items-center cursor-pointer gap-[0.5vw]"
@@ -951,7 +985,7 @@ export default function BusList() {
                                     LuxuryFind(item.Bus_Type_Name) === true
                                       ? "text-black"
                                       : "text-[#1F487C]"
-                                  } text-[1.1vw]`}
+                                    } text-[1.1vw]`}
                                 >
                                   Travel Policy
                                 </div>
@@ -963,7 +997,7 @@ export default function BusList() {
                                         LuxuryFind(item.Bus_Type_Name) === true
                                           ? "black"
                                           : "#1F487C"
-                                      }`}
+                                        }`}
                                       size="1.2vw"
                                     />
                                   ) : (
@@ -973,7 +1007,7 @@ export default function BusList() {
                                         LuxuryFind(item.Bus_Type_Name) === true
                                           ? "black"
                                           : "#1F487C"
-                                      }`}
+                                        }`}
                                       size="1.2vw"
                                     />
                                   )}
@@ -993,8 +1027,10 @@ export default function BusList() {
                           <LiveTracking
                             trackingCount={trackingCount}
                             setTrackingCount={setTrackingCount}
-                            amenities={item?.amenities}
-                            busType={item?.bus_type_status}
+                            amenities={item?.Amenities}
+                            busType={item?.Bus_Type_Name}
+                            services_amenities={services?.Amenities}
+                            amenity={amenities}
                           />
                         </div>
                       )}
@@ -1025,6 +1061,7 @@ export default function BusList() {
                       {dropDown === `cancel_policy${index}` && (
                         <div className="bg-gray-200 h-auto m-[0.5vw] rounded-[0.5vw]">
                           <CancelPolicy
+                            item={item}
                             policies={item?.Cancellationpolicy}
                             price={item?.lowest_price}
                             busType={item?.bus_type_status}
@@ -1053,15 +1090,36 @@ export default function BusList() {
                   </div> */}
               </>
             ))
-          ) : (
-            <div className="flex flex-col w-full h-[100%]] items-center mt-[0.5vw] justify-center ">
-              <BsBusFront size={"7.5vw"} className="" color="#1F487C" />
-              <span className="font-bold text-[#1F487C] text-[2.5vw]">
-                {" "}
-                No Buses Are Available!
-              </span>
-            </div>
-          )}
+          ) : sessionStorage.getItem('busListLoader') === 'true' ?
+
+            <>
+              {data?.map((item) => {
+                return (
+                  <div
+                    key={item.id}
+                    className="bg-white h-auto w-full mt-[0.4vw] flex-col rounded-[0.5vw] border-[0.15vw] border-[#C9C9C9]"
+                  >
+                    <Skeleton
+                      loading={sessionStorage.getItem('busListLoader') === 'true'}
+                      active
+                      style={{ margin: "0.5vw", padding: "0.5vw" }}
+                      paragraph={{ rows: 3 }}
+                      avatar
+                    ></Skeleton>
+                  </div>
+                );
+              })}
+
+            </>
+            : (
+              <div className="flex flex-col w-full h-[100%]] items-center mt-[0.5vw] justify-center ">
+                <BsBusFront size={"7.5vw"} className="" color="#1F487C" />
+                <span className="font-bold text-[#1F487C] text-[2.5vw]">
+                  {" "}
+                  No Buses Are Available!
+                </span>
+              </div>
+            )}
         </div>
       </div>
       <div className="md:hidden block ">

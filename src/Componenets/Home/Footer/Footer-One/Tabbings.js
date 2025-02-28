@@ -67,7 +67,7 @@ export default function Tabbings({ top_bus_routeFooter, buses_from_top_citiesFoo
     return (
         <>
             <div className="">
-                <div className="grid grid-cols-5 grid-flow-row">
+                <div className="grid grid-cols-4 grid-flow-row">
                     <div
                         onClick={() => setBtns(1)}
                         className={`${btns === 1 ? "bg-[#03ccf4] rounded-full" : "border-b-[0.1vw] border-white"
@@ -96,13 +96,13 @@ export default function Tabbings({ top_bus_routeFooter, buses_from_top_citiesFoo
                     >
                         <p className="text-white text-[1.3vw] font-bold">Top Bus Service</p>
                     </div>
-                    <div
+                    {/* <div
                         onClick={() => setBtns(5)}
                         className={`${btns === 5 ? "bg-[#03ccf4] rounded-full" : "border-b-[0.2vh] border-white"
                             } items-center justify-center flex h-[3.1vw] cursor-pointer`}
                     >
                         <p className="text-white text-[1.3vw] font-bold">Quick Links</p>
-                    </div>
+                    </div> */}
                 </div>
 
                 {btns === 1 && (

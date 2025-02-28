@@ -108,7 +108,7 @@ export const Abhibus_GetBusList = async (
   busdatas,
   getselecteddate
 ) => {
-  console.log(busdatas, "busdatasyyyy");
+
 
   const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -117,12 +117,11 @@ export const Abhibus_GetBusList = async (
       <tns:username>${username}</tns:username>
       <tns:password>${password}</tns:password>
       <tns:sourceStationId>${busdatas.from_sourceID}</tns:sourceStationId>
-      <tns:destinationStationId>${
-        busdatas.to_sourceID
-      }</tns:destinationStationId>
+      <tns:destinationStationId>${busdatas.to_sourceID
+    }</tns:destinationStationId>
       <tns:journeyDate>${dayjs(getselecteddate).format(
-        "YYYY-MM-DD"
-      )}</tns:journeyDate>
+      "YYYY-MM-DD"
+    )}</tns:journeyDate>
     </tns:GetAvailableServices>
   </soap:Body>
 </soap:Envelope>
@@ -165,6 +164,7 @@ export const Abhibus_GetBusList = async (
     }
     dispatch({ type: GET_BUS_LIST, payload: result?.services });
     dispatch({ type: GET_BUS_FILTERS, payload: result?.services });
+  sessionStorage.setItem('busListLoader', false)
 
     return result;
   } catch (error) {
@@ -219,4 +219,3 @@ export const Abhibus_GetOperators = async (dispatch) => {
     return null;
   }
 };
- 

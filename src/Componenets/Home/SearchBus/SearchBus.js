@@ -110,6 +110,7 @@ export default function SearchBus() {
         luxury
       );
       if (data?.status === "success") {
+        sessionStorage.setItem('loader', true)
         navigation(
           `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${busdatas.to_sourceID
           }/${dayjs(getselecteddate).format("YYYY-MM-DD")}`,
@@ -445,7 +446,7 @@ export default function SearchBus() {
                                       {SVG.building_dropdown}
                                       <div
                                         className="flex flex-col cursor-pointer"
-                             
+
                                       >
                                         <label className="text-[0.9vw] flex-wrap w-full font-semibold">
                                           {item.station_name}

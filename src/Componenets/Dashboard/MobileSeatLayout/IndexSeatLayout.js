@@ -20,7 +20,7 @@ export default function IndexSeatLayout() {
   const [currentrate, SetCurrentRate] = useState(1);
   const getseats = useSelector((state) => state.get_buslist_filter);
   const [layout, setLayout] = useState();
-
+  console.log(layout, item, 'layout_layout')
   // Function to format seat data (for both decks)
   const formatSeatData = (seatList) => {
     return seatList?.map((seat) => {

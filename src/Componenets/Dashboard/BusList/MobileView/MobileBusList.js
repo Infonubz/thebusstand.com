@@ -29,10 +29,25 @@ import MobileCardBottomBar from "./MobileCardBottomBar";
 import BottomNavbar from "../../../Common/Mobile-NavBar/BottomNavBar";
 import Advertisement from "../../Advertisement/Advertisement";
 import { calculateDiscountedFare } from "../../../Common/Common-Functions/TBS-Discount-Fare";
+import { FaWater, FaBlanket, FaTv, FaAirConditioner, FaCookieBite, FaPlug, FaVideo, FaExit, FaHammer, FaTissue, FaFireExtinguisher, FaLightbulb, FaLocationArrow, FaFirstAid, FaWifi, FaHandSparkles, FaTemperatureHigh, FaUsers, FaSprayCan, FaUsersCog } from 'react-icons/fa';
+import { FaMattressPillow } from "react-icons/fa6";
+import { FaBoxTissue } from "react-icons/fa";
+import { RxExit } from "react-icons/rx";
+import { TbAirConditioning } from "react-icons/tb";
+import { FaBottleWater } from "react-icons/fa6";
+import { BiSolidBlanket } from "react-icons/bi";
+
 export default function MobileBusList() {
   const dispatch = useDispatch();
   const buslist = useSelector((state) => state?.get_buslist_filter);
   const tbs_discount = useSelector((state) => state?.live_per);
+
+  const data = [
+    { id: 1, title: 'Card Title 1', description: 'Description for Card 1' },
+    { id: 2, title: 'Card Title 2', description: 'Description for Card 2' },
+    { id: 3, title: 'Card Title 3', description: 'Description for Card 3' },
+    { id: 4, title: 'Card Title 4', description: 'Description for Card 4' },
+  ];
 
   const [drawername, setDrawerName] = useState("");
   const [dropDown, setDropDown] = useState(null);
@@ -51,7 +66,7 @@ export default function MobileBusList() {
   const [bus_type, setBus_type] = useState();
   const location = useLocation()
   const busdatas = location?.state || {}
-  
+
   // const [busdatas, setBusDatas] = useState({
   //   ac: "false",
   //   from: "",
@@ -197,6 +212,34 @@ export default function MobileBusList() {
     const [hours, minutes] = timeString.split(":").map(Number);
     return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
   };
+
+  const services = { Amenities: "0,1,0,0,0,1,0,1,0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0", };
+  const amenities = [
+    { "amenity_title": "Water Bottle", "amenity_position": 1, "icon": <FaBottleWater /> },
+    { "amenity_title": "Blanket", "amenity_position": 2, "icon": <BiSolidBlanket /> },
+    { "amenity_title": "TV", "amenity_position": 3, "icon": <FaTv /> },
+    { "amenity_title": "AC", "amenity_position": 4, "icon": <TbAirConditioning /> },
+    { "amenity_title": "Snacks", "amenity_position": 5, "icon": <FaCookieBite /> },
+    { "amenity_title": "Charging Point", "amenity_position": 6, "icon": <FaPlug /> },
+    { "amenity_title": "CCTV", "amenity_position": 7, "icon": <FaVideo /> },
+    { "amenity_title": "Emergency Exit", "amenity_position": 8, "icon": <RxExit /> },
+    { "amenity_title": "Individual TV", "amenity_position": 9, "icon": <FaTv /> },
+    { "amenity_title": "Hammer", "amenity_position": 10, "icon": <FaHammer /> },
+    { "amenity_title": "Facial Tissues", "amenity_position": 11, "icon": <FaBoxTissue /> },
+    { "amenity_title": "Pillows", "amenity_position": 12, "icon": <FaMattressPillow /> },
+    { "amenity_title": "Fire Extinguisher", "amenity_position": 13, "icon": <FaFireExtinguisher /> },
+    { "amenity_title": "Reading Light", "amenity_position": 14, "icon": <FaLightbulb /> },
+    { "amenity_title": "GPS Tracking", "amenity_position": 15, "icon": <FaLocationArrow /> },
+    { "amenity_title": "First Aid Box", "amenity_position": 16, "icon": <FaFirstAid /> },
+    { "amenity_title": "Wifi", "amenity_position": 17, "icon": <FaWifi /> },
+    { "amenity_title": "Hand Sanitizer", "amenity_position": 18, "icon": <FaHandSparkles /> },
+    { "amenity_title": "Temperature checks", "amenity_position": 19, "icon": <FaTemperatureHigh /> },
+    { "amenity_title": "Social Distancing", "amenity_position": 20, "icon": <FaUsers /> },
+    { "amenity_title": "Driver Conductor with masks", "amenity_position": 21, "icon": <FaUsersCog /> },
+    { "amenity_title": "Fumigation", "amenity_position": 22, "icon": <FaSprayCan /> },
+    { "amenity_title": "Staff", "amenity_position": 23, "icon": <FaUsers /> }
+  ];
+
 
   return (
     <>
@@ -794,7 +837,7 @@ export default function MobileBusList() {
                       </div>
                       <div className=" absolute left-[25vw] bottom-[0.5vw]">
                         <div className="flex items-center gap-x-[4vw]">
-                          {item?.Amenities ? (
+                          {item?.Amenities || services ? (
                             <label
                               className={`text-[3.5vw] font-semibold`}
                               onClick={() => {
@@ -833,7 +876,7 @@ export default function MobileBusList() {
                               setDrawerIsOpen(true);
                               setCardDetails((prev) => ({
                                 ...prev,
-                                policies: item?.Cancellationpolicy,
+                                policies: item,
                                 bus_type: item?.Bus_Type_Name,
                                 bus_price: item?.Fare,
                               }));
@@ -862,19 +905,41 @@ export default function MobileBusList() {
 )} */}
                 </div>
               ))
-            ) : (
-              <div className="flex flex-col justify-center items-center w-full ">
-                <BsBusFront
-                  size={"25vw"}
-                  className="mt-[20vw]"
-                  color="#1F487C"
-                />
-                <span className="font-bold text-[#1F487C] text-[5vw]">
-                  {" "}
-                  No Buses Are Available!
-                </span>
-              </div>
-            )}
+            )
+              : sessionStorage.getItem('busListLoader') === 'true' ?
+
+                <>
+                  {data?.map((item) => {
+                    return (
+                      <div
+                        key={item.id}
+                        className="bg-white h-auto w-full mt-[0.4vw] flex-col rounded-[0.5vw] border-[0.15vw] border-[#C9C9C9]"
+                      >
+                        <Skeleton
+                          loading={sessionStorage.getItem('busListLoader') === 'true'}
+                          active
+                          style={{ margin: "0.5vw", padding: "0.5vw" }}
+                          paragraph={{ rows: 3 }}
+                          avatar
+                        ></Skeleton>
+                      </div>
+                    );
+                  })}
+
+                </>
+                : (
+                  <div className="flex flex-col justify-center items-center w-full ">
+                    <BsBusFront
+                      size={"25vw"}
+                      className="mt-[20vw]"
+                      color="#1F487C"
+                    />
+                    <span className="font-bold text-[#1F487C] text-[5vw]">
+                      {" "}
+                      No Buses Are Available!
+                    </span>
+                  </div>
+                )}
           </div>
           {/* )} */}
         </div>
@@ -889,6 +954,8 @@ export default function MobileBusList() {
           bus_type={cardDetails?.bus_type}
           policies={cardDetails?.policies}
           price={cardDetails?.bus_price}
+          services_amenity={services?.Amenities}
+          Amenities={amenities}
         />
       </div>
     </>

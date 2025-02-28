@@ -31,6 +31,20 @@ const Loader = () => {
     }
   }, [menulist]);
   const [loading, setLoading] = useState(true);
+  const loader = sessionStorage.getItem('loader')
+  useEffect(() => {
+    if (loader === 'true') {
+      setLoading(true);
+    } else if (loader === 'false') {
+      setLoading(false)
+    }
+    setTimeout(() => {
+      setLoading(false);
+      sessionStorage.setItem('loader', false)
+    }, 6000);
+  }, [loader]);
+
+
   // const getCityAbbreviation = (city) => {
   //   const cityAbbreviations = {
   //     Ahmedabad: "AMD",
@@ -100,13 +114,6 @@ const Loader = () => {
     return abbreviation;
   };
 
-  useEffect(() => {
-    setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 6000);
-  }, []);
   const logos = [parveen, redlogo, yatralogo, ixigo];
   const [currentLogo, setCurrentLogo] = useState(logos[0]);
 
@@ -266,9 +273,11 @@ const Loader = () => {
 
   return (
     <>
-      <Navbar_Two loading={loading} />
+      <Navbar_Two
+       loading={loading}
+       loader={loader} />
       {/* <div> */}
-      {loading ? (
+      {loading && loader === 'true' ? (
         <div>
           <div className="md:block hidden">
             <div className="flex pt-[8vw] h-screen">
@@ -1238,12 +1247,11 @@ const Loader = () => {
           <Sidebar sidebarToggle={sidebarToggle} />
           <div className="flex flex-col flex-1">
             <div
-              className={` ${
-                sidebarToggle ? "" : "md:pl-[18vw] ml-0"
-              } fixed w-full mt-[0.5vw] md:block hidden z-10`}
-              // style={{
-              //   zIndex: 1,
-              // }}
+              className={` ${sidebarToggle ? "" : "md:pl-[18vw] ml-0"
+                } fixed w-full mt-[0.5vw] md:block hidden z-10`}
+            // style={{
+            //   zIndex: 1,
+            // }}
             >
               <Navbar_Three
                 sidebarToggle={sidebarToggle}
@@ -1256,9 +1264,8 @@ const Loader = () => {
               <Sample />
             </div> */}
             <main
-              className={` ${
-                sidebarToggle ? "" : "md:ml-[18vw] ml-0"
-              } md:mt-[2.8vw]  md:pt-0 pt-[1vw] -z-1`}
+              className={` ${sidebarToggle ? "" : "md:ml-[18vw] ml-0"
+                } md:mt-[2.8vw]  md:pt-0 pt-[1vw] -z-1`}
             >
               <Outlet />
             </main>

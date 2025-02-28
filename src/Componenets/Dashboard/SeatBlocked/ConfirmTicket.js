@@ -523,7 +523,7 @@ export default function ConfirmTicket({
         setFinalDiscount(tbsdiscountamount);
       } else {
         setFinalDiscount(null);
-        setFieldError("coupon_code", "Coupon code is already used");
+        setFieldError("coupon_code", "Coupon code is not valid");
       }
       console.log("datawdedwedew", response?.data);
     } catch (error) {
@@ -574,12 +574,12 @@ export default function ConfirmTicket({
                 >
                   Offers
                 </h1>
-                <div className="md:px-[1vw] px-[3vw] h-[42vw] md:h-[9.5vw] overflow-y-auto">
+                <div className="md:px-[1vw] px-[3vw] h-[42vw] md:h-[9.5vw] overflow-y-auto overflow-x-hidden w-full">
                   {tbs_available_offer?.length > 0 ? (
                     tbs_available_offer?.map((item, index) => (
                       <div
                         key={index}
-                        className="border-[0.1vw] rounded-[2vw] md:rounded-[0.5vw] mb-[2vw] md:mb-[1vw]"
+                        className="border-[0.1vw] w-full rounded-[2vw] h-auto md:rounded-[0.5vw] mb-[2vw] md:mb-[1vw]"
                         style={{
                           borderColor:
                             LuxuryFind(BusDetails.Bus_Type_Name) === true
@@ -600,14 +600,11 @@ export default function ConfirmTicket({
                               // value={selectvalue?.value}
                             />
                           </div>
-                          <div className="col-span-9 flex flex-col w-full">
-                            <p
-                              className="md:text-[1.1vw] text-[3.3vw] font-bold"
-                              // style={{ color: "#1F487C" }}
-                            >
+                          <div className="col-span-9 flex flex-col w-full min-w-0 pr-[2vw]">
+                            <p className="md:text-[1.1vw] text-[3.3vw] font-bold break-words whitespace-normal">
                               {item.code}
                             </p>
-                            <p className="md:text-[1vw] text-[3vw] font-semibold text-[#A4A4A4]">
+                            <p className="md:text-[1vw] text-[3vw] font-semibold text-[#A4A4A4] break-words whitespace-normal">
                               {item.offer_desc}
                             </p>
                           </div>

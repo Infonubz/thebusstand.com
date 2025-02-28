@@ -12,12 +12,25 @@ import ModalPopup from "../../../Common/Modal/Modal";
 import dayjs from "dayjs";
 import { CancelTicket } from "../../../../Api-Abhibus/MyAccount/ViewTicket";
 import { toast } from "react-toastify";
-import { FaArrowRightLong } from "react-icons/fa6";
+import { FaArrowRightLong, FaCircleInfo } from "react-icons/fa6";
 import { TBS_Booking_Cancellation } from "../../../../Api-TBS/Dashboard/Dashboard";
 import { useParams } from "react-router";
+import { CurrentDiscount } from "../../../../Api-TBS/Home/Home";
+import { calculateDiscountedFare } from "../../../Common/Common-Functions/TBS-Discount-Fare";
 // import { capitalizeFirstLetter } from "../../../Common/Captalization";
 
-const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
+const PassengerList = ({
+  spinning,
+  setSpinning,
+  passengerDetails,
+  info,
+  cancellationPolicy,
+  droppingDate,
+  setPassengerDetails,
+  setShowtable,
+  setFormValues,
+  mobileno
+}) => {
   const cancelledDetails = useSelector((state) => state.get_ticket_to_cancel);
   const [deletemodalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [cancelmodalIsOpen, setCancelModalIsOpen] = useState(false);
@@ -50,6 +63,17 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
     setCancelModalIsOpen(false);
   };
 
+  const newConvertDate = (dateStr) => {
+    // Remove ordinal suffix (st, nd, rd, th)
+    const cleanedDateStr = dateStr.replace(/(\d+)(st|nd|rd|th)/, "$1");
+
+    // Parse the date using moment
+    const formattedDate = moment(cleanedDateStr, "DD MMM YYYY").format(
+      "YYYY-MM-DD"
+    );
+
+    return formattedDate;
+  };
   const passengerData = useMemo(() => {
     if (!passengerDetails || passengerDetails?.ticket_det?.length === 0)
       return [];
@@ -77,6 +101,9 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
 
   const dispatch = useDispatch();
 
+
+  console.log(passengerDetails, "passdetailssss");
+
   const currentpath = useParams();
 
   const handleCancel = async () => {
@@ -85,23 +112,40 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
     const partialCancellation =
       selectedRowsData?.length === passengerDetails?.ticket_det?.length ? 1 : 0;
     try {
-      const response = await CancelTicket(deleteId, info, partialCancellation);
-      console.log(response, "responseresponssdcdscsdcdse");
+      const response = await CancelTicket(deleteId, info, partialCancellation,mobileno);
+      console.log(droppingDate, "responseresponssdcdscsdcdse");
 
-      if (response?.status === "success") {
+      if (response?.status == "success") {
         const data = await TBS_Booking_Cancellation(
           passengerDetails,
           currentpath,
           selectedRowsData,
           partialCancellation,
-          response?.NewPNR
+          response?.NewPNR,
+          newConvertDate(droppingDate),
+          newConvertDate(passengerDetails?.Journey_Date)
         );
-        toast.success("Ticket Cancelled Successfully");
+        // toast.success(
+        //   `Ticket Cancelled Successfully  ${
+        //     response?.NewPNR ? "and New Pnr Generated :" response?.NewPNR : ""
+        //   }`
+        // );
+        toast.success(
+          `Ticket Cancelled Successfully ${response?.NewPNR ? "and New Pnr Generated :" + response?.NewPNR : ""}`
+        );
+
       }
       setSpinning(false);
+      setShowtable(false);
+      setPassengerDetails(null);
       console.log(response, "responsegggggggggg");
     } catch (error) {
       console.log(error, "errorerrorerror");
+    } finally {
+      setFormValues({
+        ticketNo: "",
+        phoneNo: "",
+      });
     }
     setDeleteModalIsOpen(false);
     setCancelModalIsOpen(false);
@@ -112,7 +156,6 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
       seat_numbers: [],
       status: [],
     });
-    
   };
 
   const handleSelectAll = (e) => {
@@ -165,6 +208,9 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
     }
   };
   console.log(deleteId, "selectedRowsData");
+
+  const tbs_discount = useSelector((state) => state?.live_per);
+  CurrentDiscount(dispatch, newConvertDate(passengerDetails?.Journey_Date))
 
   const columns = [
     {
@@ -268,7 +314,6 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
     // },
   ];
 
-
   const mobileColumn = [
     {
       title: (
@@ -298,11 +343,15 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
       ),
     },
     {
-      title: <div className={`text-[4.5vw] md:text-[1.2vw]`}>Passenger Details</div>,
+      title: (
+        <div className={`text-[4.5vw] md:text-[1.2vw]`}>Passenger Details</div>
+      ),
       width: "65%",
       render: (row) => (
         <div className="text-start px-[2vw] break-words ">
-          <h1 className="text-[4.5vw] md:text-[1vw] w-[85%] break-words font-semibold">{row.name} , {row.gender[0]} / {row.age}</h1>
+          <h1 className="text-[4.5vw] md:text-[1vw] w-[85%] break-words font-semibold">
+            {row.name} , {row.gender[0]} / {row.age}
+          </h1>
         </div>
       ),
     },
@@ -556,7 +605,7 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
         // </span>
         <div className="flex items-center justify-between">
           <>
-            <div className='md:block hidden'>
+            <div className="md:block hidden">
               <label className="text-[1.2vw] text-[#1F487C] font-extrabold">
                 {passengerDetails?.operatorname}
                 <span className="text-[1vw] pl-[1vw] font-semibold text-gray-500">{`( ${passengerDetails?.bustype} )`}</span>
@@ -572,9 +621,12 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
                   </label>
                   <label className="text-[0.9vw] font-semibold">
                     {`${passengerDetails?.Reporting_Time},`}
-                    <span className="text-[0.9vw] pl-[0.5vw] text-gray-500">{` ${formatDate(
+                    {/* <span className="text-[0.9vw] pl-[0.5vw] text-gray-500">{` ${formatDate(
                       passengerDetails?.Journey_Date
-                    )}`}</span>
+                    )}`}</span> */}
+                    <span className="text-[0.9vw] pl-[0.5vw] text-gray-500">
+                      {passengerDetails?.Journey_Date}
+                    </span>
                   </label>
                 </div>
                 <div>
@@ -588,58 +640,119 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
                     {`( ${passengerDetails?.dest_name} )`}
                   </span> */}
                   </label>
-                  <label className="text-[0.9vw] font-semibold">
-                    {`${formatTo12Hour(passengerDetails?.Arr_Time)},`}
-                    <span className="text-[0.9vw] pl-[0.5vw] text-gray-500">{` ${formatDate(
+                  <label className="text-[0.9vw] flex font-semibold">
+                    {/* {`${formatTo12Hour(passengerDetails?.Arr_Time)},`} */}
+                    <span>
+                      {moment(passengerDetails?.Arr_Time, "HH:mm:ss").format(
+                        "hh:mm A"
+                      )}
+                      ,
+                    </span>
+
+                    <span className="text-[0.9vw] pl-[0.5vw] text-gray-500">
+                      {/* {` ${formatDate(
                       passengerDetails?.Journey_Date
-                    )}`}</span>
+                    )}`} */}
+                      {droppingDate}
+                    </span>
                   </label>
                 </div>
               </div>
             </div>
             <div>
+              {cancellationPolicy?.CancellationPolicyWithRefund?.length > 0 && (
+                <div className="flex justify-center text-[#1F487C] items-center gap-[.5vw] pb-[.5vw]">
+                  <Popover
+                    content={
+                      <div className="">
+                        {/* <div className="pb-[1vw] text-[#1F487C] font-bold">
+                    <div>Ticket Fare : <span className="font-semibold">{cancellationPolicy?.Collect_amt}</span></div>
+                    <div>Cancellation Charges :<span className="font-semibold"> {cancellationPolicy?.canncellation_charges}</span></div>
+                    <div>Refund Amount : <span className="font-semibold">{cancellationPolicy?.return_amount}</span></div>
+                    </div> */}
+                        <div className="grid grid-cols-2 gap-x-[1vw] items-center">
+                          {cancellationPolicy?.CancellationPolicyWithRefund
+                            ?.length > 0
+                            ? cancellationPolicy?.CancellationPolicyWithRefund?.map(
+                              (val, ind) => {
+                                return (
+                                  <>
+                                    <div className="py-[.5vw] text-[#1F487C] font-semibold">
+                                      {/* <li>{val.cc}</li>
+                            <div>{val.rp}</div> */}
+                                      <div>{val.tl}</div>
+                                      <div>{val.con}</div>
+                                    </div>
+                                  </>
+                                );
+                              }
+                            )
+                            : ""}
+                        </div>
+                      </div>
+                    }
+                    placement="left"
+                    trigger="hover"
+                  // overlayStyle={{ maxWidth: "70vw" }}
+                  >
+                    <FaCircleInfo
+                      size={"1vw"}
+                      color="#1F487c"
+                      className="cursor-pointer"
+                    />
+                  </Popover>
+                  <span className="text-[1vw] font-semibold ">
+                    cancellation policy
+                  </span>
+                </div>
+              )}
+
               {passengerDetails?.ticket_det?.length > 0 ? (
                 <>
                   <div className={`md:block hidden`}>
-                    <button
-                      className={`flex justify-center items-center bg-[#FFC1C180] ${deleteId.Booking_Id &&
-                        // deleteId.mobile_number &&
-                        deleteId.seat_numbers
-                        ? "cursor-pointer"
-                        : "cursor-not-allowed bg-gray-400"
-                        }  w-[12vw] rounded-full h-[2.5vw] gap-[1vw] mb-[1vw]`}
-                      onClick={() => {
-                        if (
-                          deleteId.Booking_Id &&
-                          // deleteId.mobile_number &&
-                          deleteId.seat_numbers
-                        ) {
-                          setDeleteModalIsOpen(true);
-                        }
-                      }}
-                    >
-                      <div>
-                        <TbTicketOff
-                          size="1.7vw"
+                    {cancellationPolicy?.CancellationPolicyWithRefund?.length > 0 ?
+                      <button
+                        className={`flex justify-center items-center bg-[#FFC1C180] ${deleteId.Booking_Id &&
+                            // deleteId.mobile_number &&
+                            deleteId.seat_numbers
+                            ? "cursor-pointer"
+                            : "cursor-not-allowed bg-gray-400"
+                          }  w-[12vw] rounded-full h-[2.5vw] gap-[1vw] mb-[1vw]`}
+                        onClick={() => {
+                          if (
+                            deleteId.Booking_Id &&
+                            // deleteId.mobile_number &&
+                            deleteId.seat_numbers
+                          ) {
+                            setDeleteModalIsOpen(true);
+                          }
+                        }}
+                      >
+                        <div>
+                          <TbTicketOff
+                            size="1.7vw"
+                            className={`
+                   ${selectedRowsData.length === 0
+                                ? "text-white"
+                                : "text-[#C62B2B]"
+                              }
+                 text-[#C62B2B]`}
+                          />
+                        </div>
+                        <div
                           className={`
-                    ${selectedRowsData.length === 0
+                 ${selectedRowsData.length === 0
                               ? "text-white"
                               : "text-[#C62B2B]"
                             }
-                  text-[#C62B2B]`}
-                        />
-                      </div>
-                      <div
-                        className={`
-                  ${selectedRowsData.length === 0
-                            ? "text-white"
-                            : "text-[#C62B2B]"
-                          }
-                text-[1.1vw] text-[#C62B2B] font-bold`}
-                      >
-                        Cancel Ticket
-                      </div>
-                    </button>
+               text-[1.1vw] text-[#C62B2B] font-bold`}
+                        >
+                          Cancel Ticket
+                        </div>
+                      </button> :
+                      <div className="text-red-600 font-bold text-[1vw]"> cancellation policy has expired</div>
+                    }
+
                   </div>
                 </>
               ) : (
@@ -659,12 +772,19 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
           pagination={false}
           className="Passenger-class"
         />
+
+        <div className="flex justify-end items-center font-bold text-[1.2vw] text-[#1F487C] gap-x-[.5vw] pt-[1.5vw]"><div className="" >Total Fare : </div> <div className="font-semibold" >
+          {/* {passengerDetails?.TicketFare}  */}
+          {`₹ ${calculateDiscountedFare(
+          newConvertDate(passengerDetails?.Journey_Date),
+          passengerDetails?.TicketFare,
+          tbs_discount
+        )}`}</div></div>
       </div>
 
       {/* ----------------------------------------------------Mobile--------------------------------------- */}
       <div className=" px-[3vw] rounded-[1.5vw] h-[100vw] overflow-y-auto block md:hidden bg-white">
-
-        <div className='md:hidden block'>
+        <div className="md:hidden block">
           <label className="text-[5vw] text-[#1F487C] font-extrabold">
             {passengerDetails?.operatorname}
             <span className="text-[3.5vw] pl-[1vw] font-semibold text-gray-500">{`( ${passengerDetails?.bustype} )`}</span>
@@ -768,10 +888,10 @@ const PassengerList = ({ spinning, setSpinning, passengerDetails, info }) => {
                 <div className="flex items-center justify-end py-[2vw]">
                   <button
                     className={`flex justify-center items-center bg-[#FFC1C180] ${deleteId.Booking_Id &&
-                      // deleteId.mobile_number &&
-                      deleteId.seat_numbers
-                      ? "cursor-pointer"
-                      : "cursor-not-allowed bg-gray-400"
+                        // deleteId.mobile_number &&
+                        deleteId.seat_numbers
+                        ? "cursor-pointer"
+                        : "cursor-not-allowed bg-gray-400"
                       } px-[2.5vw] py-[1.5vw] rounded-[1.5vw] gap-[1vw] mb-[1vw]`}
                     onClick={() => {
                       if (

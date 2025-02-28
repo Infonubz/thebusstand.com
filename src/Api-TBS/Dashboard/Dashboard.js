@@ -170,7 +170,8 @@ export const TBS_Booking_Cancellation = async (
   selectedRowsData,
   partialCancellation,
   NewPNR,
-  formattedDate
+  droppingDate,
+  pickupData,
 ) => {
   const l_user_id = sessionStorage.getItem("user_id");
   const l_email_id = sessionStorage.getItem("user_email_id");
@@ -180,7 +181,7 @@ export const TBS_Booking_Cancellation = async (
   const login_email_id = decryptData(l_email_id);
   const login_mobile = decryptData(l_mobile);
   const login_user_id = decryptData(l_user_id);
-  console.log(passengerDetails, "formattedDate");
+  console.log(droppingDate, "formattedDate");
 
   const payload = {
     login_user_id: login_user_id,
@@ -190,11 +191,12 @@ export const TBS_Booking_Cancellation = async (
     pnr_no: passengerDetails.Ticket_no,
     source_name: passengerDetails?.source_name,
     pickup_point_name: passengerDetails?.Boarding_Place_Name,
-    depature_date: formattedDate,
+    // depature_date: formattedDate,
+    depature_date: pickupData,
     depature_time: passengerDetails?.Start_Time,
     destination_name: passengerDetails?.dest_name,
     droping_point_name: null,
-    arrival_date: null,
+    arrival_date: droppingDate,
     arraival_time: passengerDetails?.Arr_Time,
     operator_name: passengerDetails?.operatorname,
     passenger_details: selectedRowsData,

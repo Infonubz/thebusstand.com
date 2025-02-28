@@ -68,6 +68,7 @@ export default function TopTravelledRoutes() {
       console.log(data?.status === "success", "datadatadata");
       if (data?.status === "success") {
         console.log(data, "test");
+        sessionStorage.setItem('loader', true)
         navigate(
           `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${busdatas.to_sourceID
           }/${dayjs(getselecteddate).format("YYYY-MM-DD")}`

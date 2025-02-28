@@ -12,7 +12,7 @@ export default function About() {
         >
           Why Booking Buses with thebusstand.com ?{" "}
         </p>
-        {/* <p className="md:text-[1.1vw] text-[3vw] md:leading-[2.5vw] leading-[5vw] text-justify  tracking-wide  md:tracking-wider mt-[1vw]">
+        <p className="md:text-[1.1vw] text-[3vw] md:leading-[2.5vw] leading-[5vw] text-justify  tracking-wide  md:tracking-wider mt-[1vw]">
           <span className="font-bold md:text-[1.3vw] text-[2.8vw]">
             thebusstand.com
           </span>
@@ -21,9 +21,9 @@ export default function About() {
             bus travel in the country by bringing ease and comfort to millions
             of Indians who commute by bus.
           </span>
-        </p>
-        <p className="md:text-[1.1vw] text-[3vw] md:leading-[2.5vw] leading-[5vw] tracking-wide text-justify   md:tracking-wider mt-[1vw]">
-          <span className="font-bold md:text-[1.3vw] text-[2.8vw]">
+        {/* </p> */}
+        {/* <p className="md:text-[1.1vw] text-[3vw] md:leading-[2.5vw] leading-[5vw] tracking-wide text-justify   md:tracking-wider mt-[1vw]"> */}
+          <span className="font-bold md:text-[1.3vw] pl-[0.5vw] text-[2.8vw]">
             thebusstand.com
           </span>
           <span className="pl-[0.5vw]">
@@ -32,9 +32,9 @@ export default function About() {
             booking solutions to help customers boost their profitability and
             efficiency.
           </span>
-        </p>
-        <p className="md:text-[1.1vw] text-[3vw] md:leading-[2.5vw] leading-[5vw]  text-justify tracking-wide  md:tracking-wider mt-[1vw]">
-          <span className="font-bold md:text-[1.3vw] text-[2.8vw]">
+        {/* </p> */}
+        {/* <p className="md:text-[1.1vw] text-[3vw] md:leading-[2.5vw] leading-[5vw]  text-justify tracking-wide  md:tracking-wider mt-[1vw]"> */}
+          <span className="font-bold md:text-[1.3vw] pl-[0.5vw] text-[2.8vw]">
             thebusstand.com
           </span>
           <span className="pl-[0.5vw]">
@@ -45,16 +45,16 @@ export default function About() {
             Having a registered thebusstand.com wallet can provide you with
             numerous perks.
           </span>
-        </p>
-        <p className="md:text-[1.1vw] text-[3vw] md:leading-[2.5vw] leading-[5vw] text-justify  tracking-wide  md:tracking-wider mt-[1vw]">
+        {/* </p> */}
+        {/* <p className="md:text-[1.1vw] text-[3vw] md:leading-[2.5vw] leading-[5vw] text-justify  tracking-wide  md:tracking-wider mt-[1vw]"> */}
           <span className="">
             You can also choose from different payment methods such as
             debit/credit card or net banking. Thebusstand.com utilizes the most
             modern AI technologies to assist us make your travel experience more
             enjoyable.
           </span>
-        </p> */}
-        <ul style={{ listStyleType: "disc" }} className="pl-[3vw]">
+        </p>
+        {/* <ul style={{ listStyleType: "disc" }} className="pl-[3vw]">
           <li>
             <p className="md:text-[1.1vw] text-[3vw] md:leading-[2.5vw] leading-[5vw] text-justify  tracking-wide  md:tracking-wider mt-[1vw]">
               <span className="font-bold md:text-[1.3vw] text-[2.8vw]">
@@ -105,7 +105,7 @@ export default function About() {
               </span>
             </p>
           </li>
-        </ul>
+        </ul> */}
       </div>
     </>
   );

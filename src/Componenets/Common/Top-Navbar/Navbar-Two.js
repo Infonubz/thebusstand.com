@@ -35,7 +35,7 @@ import dayjs from "dayjs";
 import { GetStations } from "../../../Api-TBS/Home/Home";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
+export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) => {
   const validationSchema = Yup.object().shape({
     from: Yup.string().required("Field is Required"),
     to: Yup.string().required("Field is Required"),
@@ -263,8 +263,7 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
       );
       // if (data?.status === "success") {
       navigation(
-        `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${
-          busdatas.to_sourceID
+        `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${busdatas.to_sourceID
         }/${dayjs(busdatas?.date).format("YYYY-MM-DD")}`
       );
       // }
@@ -896,7 +895,7 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
         <div className="md:block hidden">
           <Navbar_One />
         </div>{" "}
-        {loading ? (
+        {loading && loader === 'true' ? (
           <>
             <div className="h-[12vw] md:h-[5vw] w-full bg-[#1F487C] md:-z-10">
               <div className="navbar-container">
@@ -1089,9 +1088,8 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                           </div>
                         </div>
                         <div className="mt-[-2vw]">
-                          <label className="text-gray-300 text-[3vw]">{`Showing ${
-                            totalbuses?.length > 0 ? totalbuses?.length : "0"
-                          } Buses on This Route`}</label>
+                          <label className="text-gray-300 text-[3vw]">{`Showing ${totalbuses?.length > 0 ? totalbuses?.length : "0"
+                            } Buses on This Route`}</label>
                         </div>
                       </div>
                       <div>
@@ -1143,9 +1141,9 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                     src={newbus1}
                     className="absolute md:block hidden top-[1.7vw] h-[8.1vw] w-[21.75vw]   left-[-3vw]"
                     alt=""
-                    // style={{
-                    //   transform: "rotateY(180deg)",
-                    // }}
+                  // style={{
+                  //   transform: "rotateY(180deg)",
+                  // }}
                   />
                   <div className="md:block hidden">
                     <div className="  pl-[1vw] md:pl-[19.5vw] md:pt-[0.2vw] grid grid-cols-12 w-full md:h-[4.5vw] h-[12vw]">
@@ -1621,11 +1619,10 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                                   handleflip();
                                 }
                               }}
-                              className={`${
-                                modifyBtn === true
-                                  ? "cursor-pointer"
-                                  : "cursor-not-allowed"
-                              }`}
+                              className={`${modifyBtn === true
+                                ? "cursor-pointer"
+                                : "cursor-not-allowed"
+                                }`}
                             >
                               {/* <img
                       src={split}
@@ -2070,7 +2067,7 @@ export const Navbar_Two = ({ loading, onTimeChanged, ...inputProps }) => {
                     from: e.target.value,
                   });
                 }}
-                // value={inputsearch.from}
+              // value={inputsearch.from}
               />
             </div>
             <div className="h-[100%]  w-full">

@@ -37,7 +37,7 @@ export default function Private_Operators() {
         {Get_Operators?.length > 0 &&
           Get_Operators?.slice(0, 60).map((operator, index) => (
             <div key={index} className="col-span-1 w-full py-[0.3vw]">
-              <p className="md:text-[1.1vw] text-[2.8vw]">
+              <p className="md:text-[1vw] text-[2.8vw] uppercase">
                 {operator?.operater_name?.length > 19 ? (
                   <Tooltip
                     placement="top"
