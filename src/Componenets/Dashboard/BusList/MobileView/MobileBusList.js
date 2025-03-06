@@ -41,7 +41,7 @@ export default function MobileBusList() {
   const dispatch = useDispatch();
   const buslist = useSelector((state) => state?.get_buslist_filter);
   const tbs_discount = useSelector((state) => state?.live_per);
-
+  const [startTime, setStartTime] = useState('')
   const data = [
     { id: 1, title: 'Card Title 1', description: 'Description for Card 1' },
     { id: 2, title: 'Card Title 2', description: 'Description for Card 2' },
@@ -165,11 +165,18 @@ export default function MobileBusList() {
   const navigation = useNavigate();
 
   const toggleDropDown = (item) => {
-    navigation("/seats", {
-      state: { data: item, busdatas: busdatas },
-      busboarding: item.busboarding,
-      busdroping: item.busdroping,
-    });
+    if (item?.available_seats === "0") {
+      return null
+    } else {
+
+      navigation("/seats", {
+        state: { data: item, busdatas: busdatas },
+        busboarding: item.busboarding,
+        busdroping: item.busdroping,
+      });
+
+    }
+
     // setDropDown(dropDown === index ? null : index);
     // setModalOpen(true);
   };
@@ -209,7 +216,7 @@ export default function MobileBusList() {
 
   // const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
   const formatTime = (timeString) => {
-    const [hours, minutes] = timeString.split(":").map(Number);
+    const [hours, minutes] = timeString?.split(":")?.map(Number);
     return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
   };
 
@@ -431,7 +438,7 @@ export default function MobileBusList() {
                           LuxuryFind(item.Bus_Type_Name) === true
                             ? "text-black"
                             : "text-white"
-                          } underline underline-offset-2`}
+                          } `}
                       >
                         Bus Operator
                       </label>
@@ -495,7 +502,7 @@ export default function MobileBusList() {
                         >
                           <path
                             d="M0.00012207 35.0001L12.0444 0.00012207H129.98C133.305 0.00012207 136 2.6952 136 6.01975V35.0001H0.00012207Z"
-                            fill="black"
+                            fill={`${LuxuryFind(item.Bus_Type_Name) === true ? '#393939' : '#10243f'}`}
                           //   fill-opacity="0.5"
                           />
                         </svg>
@@ -555,12 +562,7 @@ export default function MobileBusList() {
                         <path
                           d="M12.8719 0.0335693L0.334861 17.8141C0.334861 17.8141 1.85487 12.2663 1.85487 9.70735C1.85487 6.16066 1.85487 0.0335692 1.85487 0.0335692L12.8719 0.0335693Z"
                           // fill="#001938"
-                          fill={
-                            // item?.bus_type_status === "luxury"
-                            LuxuryFind(item.Bus_Type_Name) === true
-                              ? "black"
-                              : "black"
-                          }
+                          fill={`${LuxuryFind(item.Bus_Type_Name) === true ? '#393939' : '#10243f'}`}
                         />
                       </svg>
                       <label
@@ -591,7 +593,7 @@ export default function MobileBusList() {
                       </label>
                       <div className="absolute top-[13vw] left-[20vw]">
                         <svg
-                          width="23.5vw"
+                          width="25vw"
                           height="8.5vw"
                           viewBox="0 0 55 29"
                           fill="none"
@@ -784,13 +786,13 @@ export default function MobileBusList() {
                                                 </div>
                                             </div>
                                         </div> */}
-                      <div className=" absolute right-[1.3vw] top-[11vw]">
+                      <div className=" absolute right-[1.3vw] top-[8.5vw]">
                         <div className="text-[3.3vw] text-center py-[2vw]">
                           Available Seats
                         </div>
                         <div className="flex justify-center items-center bg-[#FFC1C180] rounded-full h-[5vw] px-[2vw] gap-[1vw]">
                           <div className="text-[3.3vw] text-[#C62B2B] font-bold">
-                            {item?.available_seats} Seats Left
+                            {item?.available_seats === "0" ? <span className="text-[3.5vw] font-extrabold">SOLD-OUT</span> : `${item?.available_seats} Seats Left`}
                           </div>
                         </div>
                       </div>
@@ -836,44 +838,54 @@ export default function MobileBusList() {
   )} */}
                       </div>
                       <div className=" absolute left-[25vw] bottom-[0.5vw]">
-                        <div className="flex items-center gap-x-[4vw]">
-                          {item?.Amenities || services ? (
-                            <label
-                              className={`text-[3.5vw] font-semibold`}
-                              onClick={() => {
-                                setDrawerName("Amenities");
-                                setDrawerIsOpen(true);
-                                setCardDetails((prev) => ({
-                                  bus_type: item?.Bus_Type_Name,
-                                  amenities: item?.Amenities,
-                                }));
-                              }}
-                            >
-                              Amenities
-                            </label>
+                        <div className="flex items-center gap-x-[2vw]">
+                          {item?.Amenities ? (
+                         
+                               <div className="flex items-center gap-[2vw]">
+                                <label
+                                  className={`text-[3.5vw] font-semibold`}
+                                  onClick={() => {
+                                    setDrawerName("Amenities");
+                                    setDrawerIsOpen(true);
+                                    setCardDetails((prev) => ({
+                                      bus_type: item?.Bus_Type_Name,
+                                      amenities: item?.Amenities,
+                                    }));
+                                  }}
+                                >
+                                  Amenities
+                                </label>
+                                <div className="w-[0.1vw] h-[4vw] bg-black"></div>
+                              </div>
+
                           ) : (
                             ""
                           )}
-                          <label
-                            className={`text-[3.5vw] font-semibold`}
-                            onClick={() => {
-                              setDrawerName("pickupDrop");
-                              setDrawerIsOpen(true);
-                              setCardDetails((prev) => ({
-                                ...prev,
-                                boarding_point: item?.boarding_info,
-                                dropping_point: item?.dropping_info,
-                                bus_type: item?.Bus_Type_Name,
-                              }));
-                            }}
-                          >
-                            Drop & Pickup
-                          </label>
+                          <div className="flex items-center gap-[2vw]">
+                            <label
+                              className={`text-[3.5vw] font-semibold`}
+                              onClick={() => {
+                                setDrawerName("pickupDrop");
+                                setDrawerIsOpen(true);
+                                setCardDetails((prev) => ({
+                                  ...prev,
+                                  boarding_point: item?.boarding_info,
+                                  dropping_point: item?.dropping_info,
+                                  bus_type: item?.Bus_Type_Name,
+                                }));
+                              }}
+                            >
+                              Drop & Pickup
+                            </label>
+                            <div className="w-[0.1vw] h-[4vw] bg-black"></div>
+                          </div>
+
                           <label
                             className={`text-[3.5vw] font-semibold`}
                             onClick={() => {
                               setDrawerName("Policies");
                               setDrawerIsOpen(true);
+                              setStartTime(item?.BUS_START_DATE)
                               setCardDetails((prev) => ({
                                 ...prev,
                                 policies: item,
@@ -954,8 +966,10 @@ export default function MobileBusList() {
           bus_type={cardDetails?.bus_type}
           policies={cardDetails?.policies}
           price={cardDetails?.bus_price}
-          services_amenity={services?.Amenities}
+          // services_amenity={services?.Amenities}
           Amenities={amenities}
+          tbs_discount={tbs_discount}
+          startTime={startTime}
         />
       </div>
     </>

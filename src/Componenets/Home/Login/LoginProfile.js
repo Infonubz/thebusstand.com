@@ -25,18 +25,39 @@ const LoginProfile = ({ setLoginIsOpen, setLoginMobileIsOpen }) => {
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .min(2, "Name must be at least 2 characters long")
-      .max(40, "Name must be 50 characters or less")
+      .max(40, "Name must be 40 characters or less")
       .required("Name is required"),
-    // email: Yup.string()
-    //   .email("Invalid email address")
-    //   .required("Email is required"),
+
+    email: Yup.string()
+      .email("Invalid email address")
+      .test(
+        "email-or-mobile",
+        "Either Email or Mobile number is required",
+        function (value) {
+          const { mobile } = this.parent; // Get mobile value
+          return value || mobile; // Email is required only if mobile is empty
+        }
+      ),
+
     mobile: Yup.string()
       .matches(/^(\+?\d{1,3}[- ]?)?\d{10}$/, "Invalid mobile number format")
-      .required("Mobile number is required")
-      .max(10, "Mobile Number must be exactly 10"),
+      .max(10, "Mobile Number must be exactly 10")
+      .test(
+        "mobile-or-email",
+        "Either Mobile number or Email is required",
+        function (value) {
+          const { email } = this.parent; // Get email value
+          return value || email; // Mobile is required only if email is empty
+        }
+      ),
+
     occupation: Yup.string().required("Occupation is required"),
   });
 
+  const decryptedEmailId = sessionStorage.getItem("email_id");
+  const passenger_mail = decryptedEmailId && decryptData(decryptedEmailId);
+  const decryptedMobile = sessionStorage.getItem("mobile");
+  const passenger_Mobile = decryptedMobile && decryptData(decryptedMobile);
   const handleSubmit = async (values) => {
     console.log(values, "vaaaaaaaaaaaaaaaaaaaaafddddddddddd");
     const response = await SendPassengerName(dispatch, values, setLoginIsOpen);
@@ -90,8 +111,8 @@ const LoginProfile = ({ setLoginIsOpen, setLoginMobileIsOpen }) => {
           <Formik
             initialValues={{
               name: "",
-              //   email: sessionStorage.getItem("email_id"),
-              mobile: "",
+              email: passenger_mail || "",
+              mobile: passenger_Mobile || "",
               occupation: "",
             }}
             validationSchema={validationSchema}
@@ -142,50 +163,52 @@ const LoginProfile = ({ setLoginIsOpen, setLoginMobileIsOpen }) => {
                       />
                     </div>
                   </div>
-                  {/* <div>
-                    <label className="text-[1.2vw] font-bold opacity-50">
-                      Email
-                    </label>
-                    <div className="">
-                      <Field
-                        type="text"
-                        name="email"
-                        placeholder="Enter Your Mail"
-                        value={values.email}
-                        className="border-[0.1vw] border-slate-500 text-[#1F487C] text-[1.2vw] h-[3vw] w-[27vw]  outline-none px-[1vw]"
-                        disabled
-                      />
-                      <ErrorMessage
-                        name="email"
-                        component="div"
-                        className="text-red-500 text-[0.8vw] "
-                      />
+                  {passenger_mail ? (
+                    <div className="relative">
+                      <label className="text-[1.2vw] flex items-center font-bold opacity-50">
+                        <span className="pr-[0.2vw] font-bold">Mobile</span>
+                        <span className="text-red-600">*</span>
+                      </label>
+                      <div className="">
+                        <Field
+                          type="text"
+                          name="mobile"
+                          placeholder="Enter Your Mobile Number"
+                          maxLength={10}
+                          onKeyDown={handleKeyDown}
+                          value={values.email}
+                          autoComplete="off"
+                          className="border-[0.1vw] border-slate-500 rounded-[0.5vw] text-[#1F487C] text-[1.2vw] h-[3vw] w-[27vw]  outline-none px-[1vw]"
+                          // disabled
+                        />
+                        <ErrorMessage
+                          name="mobile"
+                          component="div"
+                          className="text-red-500 text-[0.8vw] absolute"
+                        />
+                      </div>
                     </div>
-                  </div> */}
-                  <div className="relative">
-                    <label className="text-[1.2vw] flex items-center font-bold opacity-50">
-                      <span className="pr-[0.2vw] font-bold">Mobile</span>
-                      <span className="text-red-600">*</span>
-                    </label>
-                    <div className="">
-                      <Field
-                        type="text"
-                        name="mobile"
-                        placeholder="Enter Your Mobile Number"
-                        maxLength={10}
-                        onKeyDown={handleKeyDown}
-                        value={values.email}
-                        autoComplete="off"
-                        className="border-[0.1vw] border-slate-500 rounded-[0.5vw] text-[#1F487C] text-[1.2vw] h-[3vw] w-[27vw]  outline-none px-[1vw]"
-                        // disabled
-                      />
-                      <ErrorMessage
-                        name="mobile"
-                        component="div"
-                        className="text-red-500 text-[0.8vw] absolute"
-                      />
+                  ) : (
+                    <div>
+                      <label className="text-[1.2vw] font-bold opacity-50">
+                        Email
+                      </label>
+                      <div className="">
+                        <Field
+                          type="text"
+                          name="email"
+                          placeholder="Enter Your Email"
+                          value={values.email}
+                          className="border-[0.1vw] border-slate-500 rounded-[0.5vw] text-[#1F487C] text-[1.2vw] h-[3vw] w-[27vw]  outline-none px-[1vw]"
+                        />
+                        <ErrorMessage
+                          name="email"
+                          component="div"
+                          className="text-red-500 text-[0.8vw] "
+                        />
+                      </div>
                     </div>
-                  </div>
+                  )}
                   <div className="relative">
                     <label className="text-[1.2vw] flex items-center font-bold opacity-50">
                       <span className="pr-[0.2vw] font-bold">Occupation</span>

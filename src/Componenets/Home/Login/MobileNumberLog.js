@@ -11,7 +11,7 @@ import {
   //useGoogleLogin,
 } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
-import { SendVerificationOTP } from "../../../Api-TBS/Login/Login";
+import { SendVerificationOTP, SendMessage } from "../../../Api-TBS/Login/Login";
 import { useDispatch } from "react-redux";
 import { FaPhoneAlt } from "react-icons/fa";
 import {
@@ -31,18 +31,21 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
   const clientId =
     "374324582256-oisc65slv95m53pod51lmg7r5elfobjv.apps.googleusercontent.com";
   const email1 = sessionStorage.getItem("email_id");
+  const mobile1 = sessionStorage.getItem("mobile");
+  // const mobile = mobile1 && decryptData(mobile1);
   const email = email1 && decryptData(email1);
   const decryptEmailId = email && decryptData(email);
+  const decryptMobile = mobile1 && decryptData(mobile1);
   const navigation = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [toggleNum, setToggleNum] = useState(2);
+  const [toggleNum, setToggleNum] = useState(1);
   // const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   const validationSchema = Yup.object({
-    // mobile: Yup.string()
-    //   .required("Mobile number is required")
-    //   .matches(/^\d{10}$/, "Mobile number must be exactly 10 digits"),
+    mobile: Yup.string()
+      .required("Mobile number is required")
+      .matches(/^\d{10}$/, "Mobile number must be exactly 10 digits"),
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required")
@@ -93,25 +96,51 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
       handleSubmit(values);
     }
   };
-
-  const handleSubmit = async (values) => {
-    const email = values.email;
-    const encryptedUserEmail = email && encryptData(values.email);
-    sessionStorage.setItem("email_id", encryptedUserEmail);
-    setLoading(true);
-    try {
-      const response = await SendVerificationOTP(dispatch, values);
-
-      setCurrentPage(1);
-      // nextPage();
-      setLoading(false);
-    } catch { }
+  const [otpvalid, setOTPValid] = useState(null);
+  const generateOTP = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString();
   };
+  const random = generateOTP();
+  const handleSubmit = async (values) => {
+    const email = values?.email;
+    const mobile = values?.mobile;
+    const encryptedUserEmail = email && encryptData(values.email);
+    const encryptedUserMobile = mobile && encryptData(values.mobile);
+    sessionStorage.setItem("email_id", encryptedUserEmail);
+    sessionStorage.setItem("mobile", encryptedUserMobile);
+    setLoading(true);
+    console.log("testiiiiiiiii");
 
+    if (values?.email) {
+      try {
+        const response = await SendVerificationOTP(dispatch, values);
+        setCurrentPage(1);
+        // nextPage();
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      try {
+        const mblres = await SendMessage(values?.mobile, random);
+        setOTPValid(random);
+        setCurrentPage(1);
+        // nextPage();
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+  useEffect(() => {
+    const OTPdata = sessionStorage.getItem("mobileOTP");
+    const decryptOTP = OTPdata && decryptData(OTPdata);
+    console.log(random, decryptOTP, OTPdata, otpvalid, "wssssssssssss");
+  }, [sessionStorage.getItem("mobileOTP")]);
 
   useEffect(() => {
     if (user?.email) {
-      const email = user?.email
+      const email = user?.email;
       const encryptedUserEmail = email && encryptData(user?.email);
       sessionStorage.setItem("email_id", encryptedUserEmail);
       setLoading(true);
@@ -120,7 +149,9 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
       // nextPage();
       setLoading(false);
     }
-  }, [dispatch, user])
+  }, [dispatch, user]);
+  console.log(decryptMobile, "decryptMobiledecryptMobile");
+  console.log(toggleNum, "toggleNumhhhhhhhhh");
 
   return (
     <>
@@ -158,28 +189,31 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
             </div>
             <div className="flex items-center mt-[1vw]">
               <button
-                className={`border-[#1F487C] cursor-not-allowed border-[0.1vw] rounded-tl-[0.5vw] rounded-bl-[0.5vw] w-[13.5vw] gap-x-[0.5vw] h-[3vw] flex items-center justify-center ${toggleNum === 1 ? "bg-[#1F487C]" : "bg-white"
-                  }`}
-                disabled
+                className={`border-[#1F487C]  border-[0.1vw] rounded-tl-[0.5vw] rounded-bl-[0.5vw] w-[13.5vw] gap-x-[0.5vw] h-[3vw] flex items-center justify-center ${
+                  toggleNum === 1 ? "bg-[#1F487C]" : "bg-white"
+                }`}
+                // disabled
                 onClick={() => setToggleNum(1)}
-              // style={{
-              //   transition: "ease-in all 0.3s",
-              // }}
+                // style={{
+                //   transition: "ease-in all 0.3s",
+                // }}
               >
                 <FaPhoneAlt
                   color={`${toggleNum === 1 ? "white" : "#1F487C"}`}
                   size={"1.3vw"}
                 />
                 <span
-                  className={`text-[1.2vw] ${toggleNum === 1 ? "text-white" : "text-[#1F487C]"
-                    }`}
+                  className={`text-[1.2vw] ${
+                    toggleNum === 1 ? "text-white" : "text-[#1F487C]"
+                  }`}
                 >
                   Mobile Number
                 </span>
               </button>
               <button
-                className={`border-[#1F487C] border-[0.1vw] rounded-tr-[0.5vw] rounded-br-[0.5vw] w-[13.5vw] gap-x-[0.5vw] h-[3vw] flex items-center justify-center ${toggleNum === 2 ? "bg-[#1F487C]" : "bg-white"
-                  }`}
+                className={`border-[#1F487C] border-[0.1vw] rounded-tr-[0.5vw] rounded-br-[0.5vw] w-[13.5vw] gap-x-[0.5vw] h-[3vw] flex items-center justify-center ${
+                  toggleNum === 2 ? "bg-[#1F487C]" : "bg-white"
+                }`}
                 // style={{
                 //   transition: "ease-in all 0.3s",
                 // }}
@@ -190,8 +224,9 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
                   size={"1.6vw"}
                 />
                 <span
-                  className={` text-[1.2vw] ${toggleNum === 2 ? "text-white" : "text-[#1F487C]"
-                    }`}
+                  className={` text-[1.2vw] ${
+                    toggleNum === 2 ? "text-white" : "text-[#1F487C]"
+                  }`}
                 >
                   Email Address
                 </span>
@@ -199,10 +234,10 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
             </div>
             <Formik
               initialValues={{
-                mobile: "",
+                mobile: decryptMobile || "",
                 email: decryptEmailId || "",
               }}
-              validationSchema={validationSchema}
+              // validationSchema={validationSchema}
               onSubmit={(values) => {
                 handleSubmit(values);
                 // sessionStorage.setItem("email_id", values.email);
@@ -237,17 +272,21 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
                       {toggleNum === 1 ? (
                         <>
                           <Field
-                            as="select"
-                            name="option"
+                            // as="select"
+                            type="text"
+                            // name="option"
+                            name="country_code"
                             autoComplete="off"
-                            className={` border-l-[0.1vw] rounded-tl-[0.5vw] rounded-bl-[0.5vw] border-t-[0.1vw] border-b-[0.1vw] border-slate-500 border-py-[0.5vw]  text-[1.1vw] h-[3vw] w-[5vw] outline-none px-[0.1vw]`}
-                          >
-                            <option
+                            value={"+91"}
+                            disabled
+                            className={`pl-[1vw] text-[#1F487C] flex items-center justify-center border-r-[0.1vw]   border-l-[0.1vw] rounded-tl-[0.5vw] rounded-bl-[0.5vw] border-t-[0.1vw] border-b-[0.1vw] border-slate-500 border-py-[0.5vw]  text-[1.1vw] h-[3vw] w-[5vw] outline-none px-[0.1vw]`}
+                          />
+                          {/* <option
                               value=""
                               label="+91"
                               className="text-gray-400 text-[1.1vw] w-[20vw]"
                             />
-                          </Field>
+                          </Field> */}
                           <Field
                             type="text"
                             name="mobile"
@@ -293,7 +332,7 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
                     <button
                       type="submit"
                       className="bg-[#1F487C] w-[27vw] h-[3vw] rounded-[0.5vw] border-[0.1vw]  gap-x-[0.5vw] border-slate-700  flex items-center justify-center text-white"
-                    // disabled={isSubmitting} // Disable button during submission
+                      // disabled={isSubmitting} // Disable button during submission
                     >
                       <span className="text-[1.2vw]">GENERATE OTP</span>
                       <span className="text-[1vw]">(One Time Password)</span>
@@ -359,7 +398,7 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
                 <span
                   className="font-semibold text-[#1F487C] cursor-pointer"
                   onClick={() =>
-                    navigation("/terms", { state: { toggleTabs: 1 } })
+                    navigation("/privacy", { state: { toggleTabs: 1 } })
                   }
                 >
                   Privacy Policy
@@ -378,29 +417,31 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
           </div>
           <div className="flex items-center mt-[1vw]">
             <button
-              className={`border-[#1F487C] cursor-not-allowed border-[0.1vw] rounded-tl-[1.5vw] rounded-bl-[1.5vw] w-[43vw] gap-x-[3vw] h-[9vw] flex items-center 
-                  justify-center ${toggleNum === 1 ? "bg-[#1F487C]" : "bg-white"
-                }`}
-              disabled
+              className={`border-[#1F487C] border-[0.1vw] rounded-tl-[1.5vw] rounded-bl-[1.5vw] w-[43vw] gap-x-[3vw] h-[9vw] flex items-center 
+                  justify-center ${
+                    toggleNum === 1 ? "bg-[#1F487C]" : "bg-white"
+                  }`}
               onClick={() => setToggleNum(1)}
-            // style={{
-            //   transition: "ease-in all 0.3s",
-            // }}
+              // style={{
+              //   transition: "ease-in all 0.3s",
+              // }}
             >
               <FaPhoneAlt
                 color={`${toggleNum === 1 ? "white" : "#1F487C"}`}
                 size={"5vw"}
               />
               <span
-                className={`text-[4vw] ${toggleNum === 1 ? "text-white" : "text-[#1F487C]"
-                  }`}
+                className={`text-[4vw] ${
+                  toggleNum === 1 ? "text-white" : "text-[#1F487C]"
+                }`}
               >
                 Mobile Number
               </span>
             </button>
             <button
-              className={`border-[#1F487C] border-[0.1vw] rounded-tr-[1.5vw] rounded-br-[1.5vw] w-[43vw] gap-x-[3vw] h-[9vw] flex items-center justify-center ${toggleNum === 2 ? "bg-[#1F487C]" : "bg-white"
-                }`}
+              className={`border-[#1F487C] border-[0.1vw] rounded-tr-[1.5vw] rounded-br-[1.5vw] w-[43vw] gap-x-[3vw] h-[9vw] flex items-center justify-center ${
+                toggleNum === 2 ? "bg-[#1F487C]" : "bg-white"
+              }`}
               // style={{
               //   transition: "ease-in all 0.3s",
               // }}
@@ -411,8 +452,9 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
                 size={"5vw"}
               />
               <span
-                className={` text-[4vw] ${toggleNum === 2 ? "text-white" : "text-[#1F487C]"
-                  }`}
+                className={` text-[4vw] ${
+                  toggleNum === 2 ? "text-white" : "text-[#1F487C]"
+                }`}
               >
                 Email Address
               </span>
@@ -420,12 +462,13 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
           </div>
           <Formik
             initialValues={{
-              mobile: "",
+              mobile: decryptMobile || "",
               email: decryptEmailId || "",
             }}
-            validationSchema={validationSchema}
+            // validationSchema={validationSchema}
             onSubmit={(values) => {
               handleSubmit(values);
+              // sessionStorage.setItem("email_id", values.email);
             }}
             enableReinitialize
           >
@@ -456,10 +499,10 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
 
                     {toggleNum === 1 ? (
                       <>
-                        <Field
+                        {/* <Field
                           as="select"
                           name="option"
-                          className={` border-l-[0.1vw] rounded-tl-[1.5vw] rounded-bl-[1.5vw] border-t-[0.1vw] border-b-[0.1vw] border-slate-500 border-py-[0.5vw]  
+                          className={` border-l-[0.1vw] text-[#1F487C] rounded-tl-[1.5vw] rounded-bl-[1.5vw] border-t-[0.1vw] border-b-[0.1vw] border-slate-500 border-py-[0.5vw]  
                               text-[1.1vw] h-[3vw] w-[5vw] outline-none px-[0.1vw]`}
                         >
                           <option
@@ -467,7 +510,18 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
                             label="+91"
                             className="text-gray-400 text-[1.1vw] w-[20vw]"
                           />
-                        </Field>
+                        </Field> */}
+                        <Field
+                          // as="select"
+                          type="text"
+                          // name="option"
+                          name="country_code"
+                          autoComplete="off"
+                          value={"+91"}
+                          disabled
+                          className="placeholder:text-lg text-[4vw] border-l-[0.1vw] border-t-[0.1vw] border-b-[0.1vw] rounded-tl-[1.5vw] rounded-bl-[1.5vw] border-slate-500 text-[#1F487C]
+                            h-[10vw] w-[15vw] outline-none px-[3vw]"
+                        />
                         <Field
                           type="text"
                           name="mobile"
@@ -478,8 +532,8 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
                           onChange={(e) => {
                             handleChange(e);
                           }}
-                          className=" border-r-[0.1vw] border-t-[0.1vw] border-b-[0.1vw] rounded-tr-[1.5vw] rounded-br-[1.5vw] border-slate-500 text-[#1F487C] 
-                            text-[1.2vw] h-[3vw] w-[40vw] outline-none px-[1vw]"
+                          className="placeholder:text-lg text-[4vw] border-[0.1vw] rounded-tr-[1.5vw] rounded-br-[1.5vw] border-slate-500 text-[#1F487C]
+                            h-[10vw] w-[100vw] outline-none px-[3vw]"
                         />
                         <ErrorMessage
                           name="mobile"
@@ -515,7 +569,7 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
                     type="submit"
                     className="bg-[#1F487C] w-[85vw] h-[10vw] rounded-[1.5vw] border-[0.1vw] gap-x-[0.5vw] border-slate-700 mt-[5vw]  
                       flex items-center justify-center text-white"
-                  // disabled={isSubmitting} // Disable button during submission
+                    // disabled={isSubmitting} // Disable button during submission
                   >
                     <span className="text-[4vw]">GENERATE OTP</span>
                     <span className="text-[3vw]">(One Time Password)</span>

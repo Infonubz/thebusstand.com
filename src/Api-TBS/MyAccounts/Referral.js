@@ -8,26 +8,26 @@ const apicrm = process.env.REACT_APP_CRM_API_URL;
 export const GetRefferalContent = async (setSpinning) => {
   try {
     const response = await axios.get(`${apicrm}/referEarnContent`);
-    console.log(response.data,"apiressponce");
+    console.log(response.data, "apiressponce");
     return response?.data[0];
   } catch (err) {
     handleError(err);
   }
-  finally{
+  finally {
     setSpinning(false)
   }
 };
 
-export const GetRefferalCode = async () =>{
+export const GetRefferalCode = async () => {
   const user_id = sessionStorage.getItem("user_id");
   const decryptuser_id = user_id && decryptData(user_id);
-    try{
-        const response = await axios.get(decryptuser_id)
-        return response.data
-    }
-    catch(err){
-        handleError(err)
-    }
+  try {
+    const response = await axios.get(`${apiUrl}/ReferralCode/${decryptuser_id}`)
+    return response.data
+  }
+  catch (err) {
+    handleError(err)
+  }
 }
 const handleError = (error) => {
   console.error("Error details:", error);

@@ -50,6 +50,7 @@ export default function HomeIndex() {
   }
   useEffect(() => {
     Abhibus_GetStations();
+    // getBusList()
   }, []);
   return (
     <div
@@ -58,9 +59,10 @@ export default function HomeIndex() {
       <Navbar_One />
       <LocationPermission />
       <div className="Background  relative md:block hidden">
-        {/* <div className="bg-[#1F487C] h-[32vw] w-full  relative md:block hidden"> */}
-        <TBS_Theme />
-        <SearchBus />
+        <div className="bg-[#1F487C] h-[32vw] w-full  relative md:block hidden">
+          {/* <TBS_Theme /> */}
+          <SearchBus />
+        </div>
       </div>
       <div className=" block md:hidden">
         <SearchBusMobile />

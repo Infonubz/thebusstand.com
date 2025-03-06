@@ -4,6 +4,8 @@ import * as Yup from "yup";
 //import Verification from "../../assets/Verified.gif";
 import {
   GetUserDetails,
+  SendMessage,
+  SendMobileVerifycation,
   SendOTPassword,
   SendVerificationOTP,
 } from "../../../Api-TBS/Login/Login";
@@ -28,7 +30,8 @@ const OtpVerification = ({
   const navigation = useNavigate();
   const decryptedEmailId = sessionStorage.getItem("email_id");
   const passenger_mail = decryptedEmailId && decryptData(decryptedEmailId);
-
+  const decryptedMbile = sessionStorage.getItem("mobile");
+  const passenger_mobile = decryptedMbile && decryptData(decryptedMbile);
   // const passenger_mail = sessionStorage.getItem("email_id");
   const [timeLeft, setTimeLeft] = useState(120); // 2 minutes = 120 seconds
   const email = { email: passenger_mail };
@@ -76,75 +79,116 @@ const OtpVerification = ({
       }
     }
   };
+  const handlesuccess = () => {
+    console.log("hyyyyyyyyyyyyyyy");
 
+    setLoginIsOpen(false);
+    setLoginMobileIsOpen(false);
+    GetUserDetails(navigation);
+  };
   const handleOtpSubmit = async (values, { setErrors }) => {
-    console.log("response85858");
+    console.log(values, "OTP Submission Values");
 
-    try {
-      const response = await SendOTPassword(dispatch, values, passenger_mail);
-      console.log(response, "responseresponse");
-      // if (response.message) {
-      //   setPopupMessage("VERIFIED SUCCESSFULLY!");
-      //   setShowPopup(true);
-      //   setTimeout(() => {
-      //     setShowPopup(false);
-      //     nextPage();
-      //   }, 2500);
-      // } else {
-      //   setErrors({ otp: response.error || "Invalid OTP" });
-      // }
-      const encryptedUserId =
-        response && encryptData(response.user.tbs_passenger_id);
+    const OTPdata = sessionStorage.getItem("mobileOTP");
+    const decryptOTP = OTPdata ? decryptData(OTPdata) : null;
+    console.log(passenger_mail, "Passenger Email");
 
-      sessionStorage.setItem("passenger_id", encryptedUserId);
-      sessionStorage.setItem("user_id", encryptedUserId);
-      // sessionStorage.setItem("passenger_id", response.user.tbs_passenger_id);
-      // sessionStorage.setItem("user_id", response.user.tbs_passenger_id);
-      toast.success(response);
-      console.log(response, "response_response");
-      if (response.user.status === 2) {
-        setLoginIsOpen(false);
-        GetUserDetails(navigation);
-      } else {
-        setCurrentPage(2);
-        GetUserDetails(navigation);
+    if (passenger_mail) {
+      try {
+        // Handling OTP submission with email
+        const response = await SendOTPassword(dispatch, values, passenger_mail);
+
+        if (response?.user) {
+          const encryptedUserId = encryptData(response.user.tbs_passenger_id);
+          sessionStorage.setItem("passenger_id", encryptedUserId);
+          sessionStorage.setItem("user_id", encryptedUserId);
+          toast.success("OTP verified successfully!");
+
+          console.log(response, "OTP Response");
+
+          if (response.user.status === 2) {
+            handlesuccess();
+          } else {
+            setCurrentPage(2);
+            GetUserDetails(navigation);
+          }
+        }
+      } catch (error) {
+        console.error("OTP Verification Error:", error);
+        // setErrors({ otp: "Something went wrong, please try again." });
       }
-      console.log(response.tbs_passenger_id, "passengers_idd");
-    } catch (error) {
-      console.error("An error occurred:", error);
-      setErrors({ otp: "Invalid OTP" });
+    } else {
+      console.log(decryptOTP, values?.otp, "Verifying Mobile OTP");
+
+      if (Number(decryptOTP) === Number(values?.otp)) {
+        console.log("Mobile OTP Matched, Proceeding with Verification");
+        try {
+          const response = await SendMobileVerifycation(dispatch);
+
+          if (response?.user) {
+            const encryptedUserId = encryptData(response.user.tbs_passenger_id);
+            sessionStorage.setItem("passenger_id", encryptedUserId);
+            sessionStorage.setItem("user_id", encryptedUserId);
+            toast.success("Mobile OTP verified successfully!");
+
+            console.log(response.user.status, "Mobile OTP Response");
+
+            if (response.user.status === 2) {
+              handlesuccess();
+            } else {
+              setCurrentPage(2);
+              GetUserDetails(navigation);
+            }
+          }
+        } catch (error) {
+          console.error("OTP Verification Error:", error);
+          setErrors({ otp: "Something went wrong, please try again." });
+        }
+      } else {
+        setErrors({ otp: "Invalid OTP" });
+      }
     }
   };
 
   const handleKeyEnter = (event, values, setErrors) => {
-    // Allow control keys like Backspace, Delete, Tab, etc.
+    // Allow control keys like Backspace, Delete, Tab, Arrow keys, and 'v'
     const isControlKey = [
       "Backspace",
       "Tab",
       "ArrowLeft",
       "ArrowRight",
       "Delete",
+      "v",
     ].includes(event.key);
-    if (isControlKey) {
+    if (
+      isControlKey ||
+      (event.key === "v" && (event.ctrlKey || event.metaKey))
+    ) {
       return;
     }
 
-    // Allow numeric characters (0-9)
     if (!/^[0-9]$/.test(event.key)) {
-      event.preventDefault(); // Prevent the key if it's not a number
+      event.preventDefault();
     }
-
     if (event.key === "Enter") {
       handleOtpSubmit(values, { setErrors });
     }
   };
-
+  const generateOTP = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  };
+  const random = generateOTP();
   const handleresend = async () => {
-    try {
-      const response = await SendVerificationOTP(dispatch, email);
-      console.log(response, "response");
+    if (passenger_mail) {
+      try {
+        const response = await SendVerificationOTP(dispatch, email);
+        console.log(response, "response");
+        setTimeLeft(120);
+      } catch {}
+    } else {
+      const mblres = await SendMessage(decrymobile, random);
       setTimeLeft(120);
-    } catch {}
+    }
   };
 
   useEffect(() => {
@@ -156,6 +200,20 @@ const OtpVerification = ({
       return () => clearInterval(timerId); // Cleanup on component unmount
     }
   }, [timeLeft]);
+  const mobile = sessionStorage.getItem("mobile");
+  const decrymobile = mobile && decryptData(mobile);
+  // useEffect(() => {
+  //   const OTPdata = sessionStorage.getItem("mobileOTP");
+  //   const decryptOTP = OTPdata && decryptData(OTPdata);
+  //   if(decryptOTP===values?.otp){
+  //     try {
+  //       const response = await SendVerificationOTP(dispatch, email);
+  //       console.log(response, "response");
+  //       setTimeLeft(120);
+  //     } catch {}
+  //   }
+  //   console.log( decryptOTP, OTPdata, "wsssssssssddddddddddsss");
+  // }, [sessionStorage.getItem("mobileOTP")]);
   console.log(passenger_mail, "passenger_mailpassenger_mail");
   return (
     <>
@@ -214,7 +272,7 @@ const OtpVerification = ({
                   MOBILE NUMBER
                 </div>
                 <div className=" w-[27vw] flex justify-between">
-                  <span className="text-[1vw] font-bold ">{`+91 96885 53316`}</span>
+                  <span className="text-[1vw] font-bold ">{`+91 - ${decrymobile}`}</span>
                   <span
                     className="cursor-pointer text-[1vw] order-last text-[#1F487C] font-bold"
                     onClick={() => {
@@ -355,7 +413,7 @@ const OtpVerification = ({
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[4.5vw] font-bold order-first">
-                    +91 88708 12264
+                    {`+91 - ${decrymobile}`}
                   </span>
                   <span
                     className="cursor-pointer text-[4.5vw] order-last border-[0.1vw] text-[#1F487C] font-bold"
@@ -375,7 +433,8 @@ const OtpVerification = ({
               otp: "",
             }}
             validationSchema={validationSchema}
-            onSubmit={handleMobileOtpSubmit}
+            // onSubmit={handleMobileOtpSubmit}
+            onSubmit={handleOtpSubmit}
             enableReinitialize
           >
             {({

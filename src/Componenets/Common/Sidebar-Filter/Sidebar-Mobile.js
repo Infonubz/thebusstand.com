@@ -23,7 +23,13 @@ import bg from "../../../Assets/Sidebar/mobile pattern.png";
 import { GET_BUS_FILTERS } from "../../../Store/Type";
 import dayjs from "dayjs";
 import moment from "moment";
-
+import { FaWater, FaBlanket, FaTv, FaAirConditioner, FaCookieBite, FaPlug, FaVideo, FaExit, FaHammer, FaTissue, FaFireExtinguisher, FaLightbulb, FaLocationArrow, FaFirstAid, FaWifi, FaHandSparkles, FaTemperatureHigh, FaUsers, FaSprayCan, FaUsersCog } from 'react-icons/fa';
+import { FaMattressPillow } from "react-icons/fa6";
+import { FaBoxTissue } from "react-icons/fa";
+import { RxExit } from "react-icons/rx";
+import { TbAirConditioning } from "react-icons/tb";
+import { FaBottleWater } from "react-icons/fa6";
+import { BiSolidBlanket } from "react-icons/bi";
 
 const SidebarMobile = ({
   // sidebarToggle,
@@ -75,7 +81,6 @@ const SidebarMobile = ({
   const set_ac_local = localStorage.getItem("ac");
   const seatType_local = localStorage.getItem("seatType");
   const [pickUp_list, setPickUpList] = useState({});
-
   const [dropfulllist, setDropFullList] = useState([]);
   const [pickupfullist, setPickupFullList] = useState([]);
   const [opertorfulllist, setOperatorFullList] = useState([]);
@@ -112,8 +117,8 @@ const SidebarMobile = ({
     ratings: true,
   });
   const fulllist = useSelector((state) => state?.get_data);
-  const buslist = useSelector((state) => state?.get_buslist_filter);
-
+  const buslist = useSelector((state) => state?.get_buslist);
+  console.log(buslist, 'buslist_buslist')
   const toggleDrawer = (name) => {
     setIsDrawerOpen(!isDrawerOpen);
     setIsDrawerName(name);
@@ -287,9 +292,10 @@ const SidebarMobile = ({
     // }
   }, [dispatch]);
 
-  const handleAmenityCheckbox = (event, itemName) => {
-    const { checked } = event?.target;
+  const [selectedAmenities, setSelectedAmenities] = useState([]); // State to store selected indices
 
+  const handleAmenityCheckbox = useCallback((event, itemName, index) => {
+    const { checked } = event?.target;
     setAmenitiesValue((prevState) => {
       if (checked) {
         return { ...prevState, [itemName]: true };
@@ -299,7 +305,15 @@ const SidebarMobile = ({
         return updatedItems;
       }
     });
-  };
+
+    setSelectedAmenities((prevState) => {
+      if (checked) {
+        return [...prevState, index];
+      } else {
+        return prevState.filter((itemIndex) => itemIndex !== index);
+      }
+    });
+  }, []);
 
   const handledropCheckbox = (event, itemName) => {
     const { checked } = event.target;
@@ -419,7 +433,7 @@ const SidebarMobile = ({
           ? a?.operator?.localeCompare(b?.operator)
           : a?.name?.localeCompare(b?.name)
     );
-
+  console.log(sortedList, 'sortedList')
   // const Search = async (e, values) => {
   //   const response = await handleSearch(
   //     dispatch,
@@ -482,30 +496,30 @@ const SidebarMobile = ({
     opertorfulllist,
   ]);
 
-  useEffect(() => {
-    if (isDrawerName === "pickup") {
-      const filteredData = showingdata?.filter((item) =>
-        item?.name?.toLowerCase()?.includes(drawerSearch?.toLowerCase())
-      );
+  // useEffect(() => {
+  //   if (isDrawerName === "pickup") {
+  //     const filteredData = showingdata?.filter((item) =>
+  //       item?.name?.toLowerCase()?.includes(drawerSearch?.toLowerCase())
+  //     );
 
-      setDrawerShowData(filteredData);
-    } else if (isDrawerName === "drop") {
-      const filteredData = showingdata?.filter((item) =>
-        item.name?.toLowerCase()?.includes(drawerSearch?.toLowerCase())
-      );
-      setDrawerShowData(filteredData);
-    } else if (isDrawerName === "amenities") {
-      const filteredData = showingdata?.filter((item) =>
-        item?.amenity?.toLowerCase()?.includes(drawerSearch?.toLowerCase())
-      );
-      setDrawerShowData(filteredData);
-    } else {
-      const filteredData = showingdata?.filter((item) =>
-        item?.operator?.toLowerCase()?.includes(drawerSearch?.toLowerCase())
-      );
-      setDrawerShowData(filteredData);
-    }
-  }, [isDrawerName, drawerSearch, showingdata]);
+  //     setDrawerShowData(filteredData);
+  //   } else if (isDrawerName === "drop") {
+  //     const filteredData = showingdata?.filter((item) =>
+  //       item.name?.toLowerCase()?.includes(drawerSearch?.toLowerCase())
+  //     );
+  //     setDrawerShowData(filteredData);
+  //   } else if (isDrawerName === "amenities") {
+  //     const filteredData = showingdata?.filter((item) =>
+  //       item?.amenity?.toLowerCase()?.includes(drawerSearch?.toLowerCase())
+  //     );
+  //     setDrawerShowData(filteredData);
+  //   } else {
+  //     const filteredData = showingdata?.filter((item) =>
+  //       item?.operator?.toLowerCase()?.includes(drawerSearch?.toLowerCase())
+  //     );
+  //     setDrawerShowData(filteredData);
+  //   }
+  // }, [isDrawerName, drawerSearch, showingdata]);
 
   useEffect(() => {
     const filterfun = () => {
@@ -653,6 +667,33 @@ const SidebarMobile = ({
     }));
   };
 
+  const amenities = [
+    { "amenity_title": "Water Bottle", "amenity_position": 1, "icon": <FaBottleWater /> },
+    { "amenity_title": "Blanket", "amenity_position": 2, "icon": <BiSolidBlanket /> },
+    { "amenity_title": "TV", "amenity_position": 3, "icon": <FaTv /> },
+    { "amenity_title": "AC", "amenity_position": 4, "icon": <TbAirConditioning /> },
+    { "amenity_title": "Snacks", "amenity_position": 5, "icon": <FaCookieBite /> },
+    { "amenity_title": "Charging Point", "amenity_position": 6, "icon": <FaPlug /> },
+    { "amenity_title": "CCTV", "amenity_position": 7, "icon": <FaVideo /> },
+    { "amenity_title": "Emergency Exit", "amenity_position": 8, "icon": <RxExit /> },
+    { "amenity_title": "Individual TV", "amenity_position": 9, "icon": <FaTv /> },
+    { "amenity_title": "Hammer", "amenity_position": 10, "icon": <FaHammer /> },
+    { "amenity_title": "Facial Tissues", "amenity_position": 11, "icon": <FaBoxTissue /> },
+    { "amenity_title": "Pillows", "amenity_position": 12, "icon": <FaMattressPillow /> },
+    { "amenity_title": "Fire Extinguisher", "amenity_position": 13, "icon": <FaFireExtinguisher /> },
+    { "amenity_title": "Reading Light", "amenity_position": 14, "icon": <FaLightbulb /> },
+    { "amenity_title": "GPS Tracking", "amenity_position": 15, "icon": <FaLocationArrow /> },
+    { "amenity_title": "First Aid Box", "amenity_position": 16, "icon": <FaFirstAid /> },
+    { "amenity_title": "Wifi", "amenity_position": 17, "icon": <FaWifi /> },
+    { "amenity_title": "Hand Sanitizer", "amenity_position": 18, "icon": <FaHandSparkles /> },
+    { "amenity_title": "Temperature checks", "amenity_position": 19, "icon": <FaTemperatureHigh /> },
+    { "amenity_title": "Social Distancing", "amenity_position": 20, "icon": <FaUsers /> },
+    { "amenity_title": "Driver Conductor with masks", "amenity_position": 21, "icon": <FaUsersCog /> },
+    { "amenity_title": "Fumigation", "amenity_position": 22, "icon": <FaSprayCan /> },
+    { "amenity_title": "Staff", "amenity_position": 23, "icon": <FaUsers /> }
+  ];
+
+
   const filteredBoardingPoints = BoardingPoints?.filter((point) =>
     point?.name?.toLowerCase()?.includes(searchQueries?.boardingPoints?.toLowerCase())
   );
@@ -664,24 +705,170 @@ const SidebarMobile = ({
   const filteredOperatorName = OperatorName?.filter((operator) =>
     operator.toLowerCase()?.includes(searchQueries?.Operators?.toLowerCase())
   );
+  const filteredAmenities = amenities?.filter((item) =>
+    item?.amenity_title?.toLowerCase().includes(searchQueries?.Amenities?.toLowerCase())
+  );
+
+  const dumy_buslist = [
+    {
+      "operatorId": "465",
+      "Service_key": "1358175907",
+      "Service_Name": "",
+      "Service_Number": "Special",
+      "Traveler_Agent_Name": "JBT TRAVELS",
+      "Bus_Type_Name": "MERCEDES BENZ AC Multi Axle Semi Sleeper",
+      "Start_time": "11:30 PM",
+      "Arr_Time": "04:00 AM",
+      "TravelTime": "04:30:00",
+      "Source_ID": 3,
+      "Destination_ID": 5,
+      "Fare": 750,
+      "available_seats": "49",
+      "jdate": "2025-02-28",
+      "BUS_START_DATE": "2025-02-28",
+      "layout_id": 93,
+      "Amenities": "0,1,0,0,0,1,0,1,0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0",
+      "boarding_info": [
+        "Gachibowli^11:30 PM^2245^"
+      ],
+      "dropping_info": [
+        "5^Vijayawada^04:00 AM"
+      ],
+      "Cancellationpolicy": "B/W 0-03 hours of bus start time#*#*B/W 03-12 hours of bus start time#*#*B/W 12-24 hours of bus start time#*#*Above 24 hours of bus start time--0%#*#*20%#*#*50%#*#*70%",
+      "bus_type": "AC,SEATER"
+    },
+    {
+      "operatorId": "465",
+      "Service_key": "1358175908",
+      "Service_Name": "",
+      "Service_Number": "special",
+      "Traveler_Agent_Name": "JBT TRAVELS",
+      "Bus_Type_Name": "NON-AC Seater (2 + 2)",
+      "Start_time": "11:15 PM",
+      "Arr_Time": "06:00 AM",
+      "TravelTime": "06:45:00",
+      "Source_ID": 3,
+      "Destination_ID": 5,
+      "Fare": 1000,
+      "available_seats": "40",
+      "jdate": "2025-02-28",
+      "BUS_START_DATE": "2025-02-28",
+      "layout_id": 226,
+      "Amenities": "0,0,1,0,1,0,1,0,0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0",
+      "boarding_info": [
+        "Lakdi-ka-pool^11:00 PM^2242^phone no 9553911177"
+      ],
+      "dropping_info": [
+        "2231^HANUMANPET^01:08 PM",
+        "2357^Benz Circle^02:10 PM",
+        "2368^RTC Bus Stand^03:03 PM",
+        "2391^Moghalrajapuram^04:00 PM"
+      ],
+      "Cancellationpolicy": "B/W 0-03 hours of bus start time#*#*B/W 03-12 hours of bus start time#*#*B/W 12-24 hours of bus start time#*#*Above 24 hours of bus start time--0%#*#*20%#*#*50%#*#*70%",
+      "bus_type": "NON-AC,SEATER"
+    },
+    {
+      "operatorId": "465",
+      "Service_key": "1358175909",
+      "Service_Name": "",
+      "Service_Number": "1112",
+      "Traveler_Agent_Name": "JBT TRAVELS",
+      "Bus_Type_Name": "NON-AC Sleeper (2 + 1)",
+      "Start_time": "12:00 PM",
+      "Arr_Time": "05:00 PM",
+      "TravelTime": "05:00:00",
+      "Source_ID": 3,
+      "Destination_ID": 5,
+      "Fare": 1050,
+      "available_seats": "34",
+      "jdate": "2025-02-28",
+      "BUS_START_DATE": "2025-02-28",
+      "layout_id": 213,
+      "Amenities": "0,1,0,0,1,1,0,1,0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0",
+      "boarding_info": [
+        "Gachibowli^12:00 PM^2245^"
+      ],
+      "dropping_info": [
+        "5^Vijayawada^05:00 PM"
+      ],
+      "Cancellationpolicy": "B/W 0-03 hours of bus start time#*#*B/W 03-12 hours of bus start time#*#*B/W 12-24 hours of bus start time#*#*Above 24 hours of bus start time--0%#*#*20%#*#*50%#*#*70%",
+      "bus_type": "NON-AC,SLEEPER"
+    },
+    {
+      "operatorId": "465",
+      "Service_key": "1358175910",
+      "Service_Name": "",
+      "Service_Number": "1119",
+      "Traveler_Agent_Name": "JBT TRAVELS",
+      "Bus_Type_Name": "AC Sleeper (2 + 1)",
+      "Start_time": "01:00 PM",
+      "Arr_Time": "06:00 PM",
+      "TravelTime": "05:00:00",
+      "Source_ID": 3,
+      "Destination_ID": 5,
+      "Fare": 1350,
+      "available_seats": "32",
+      "jdate": "2025-02-28",
+      "BUS_START_DATE": "2025-02-28",
+      "layout_id": 140,
+      "Amenities": "0,1,0,0,0,1,0,1,0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0",
+      "boarding_info": [
+        "Gachibowli^01:00 PM^2245^"
+      ],
+      "dropping_info": [
+        "5^Vijayawada^06:00 PM"
+      ],
+      "Cancellationpolicy": "B/W 0-03 hours of bus start time#*#*B/W 03-12 hours of bus start time#*#*B/W 12-24 hours of bus start time#*#*Above 24 hours of bus start time--0%#*#*20%#*#*50%#*#*70%",
+      "bus_type": "AC,SLEEPER"
+    }
+  ]
+
+
+
+
+
+  // useEffect(() => {
+  //   let newShowingData = [];
+
+  //   if (isDrawerName === "pickup") {
+  //     newShowingData = filteredBoardingPoints;
+  //   } else if (isDrawerName === "drop") {
+  //     newShowingData = filteredDropingPoints;
+  //   } else if (isDrawerName === "amenities") {
+  //     newShowingData = handlesearchValue?.amenities || amenitieslist;
+  //   } else {
+  //     newShowingData = filteredOperatorName;
+  //   }
+  //   if
+  //     (JSON.stringify(newShowingData) !== JSON.stringify(drawershowdata)) {
+  //     setDrawerShowData(newShowingData);
+  //   }
+  // }, [isDrawerName, filteredBoardingPoints, filteredDropingPoints, filteredOperatorName, handlesearchValue, amenitieslist]);
 
   useEffect(() => {
-    let newShowingData = [];
-
     if (isDrawerName === "pickup") {
-      newShowingData = filteredBoardingPoints;
+      const filteredData = filteredBoardingPoints?.filter((item) =>
+        item?.name?.toLowerCase()?.includes(searchQueries?.boardingPoints?.toLowerCase())
+      );
+
+      setDrawerShowData(filteredData);
     } else if (isDrawerName === "drop") {
-      newShowingData = filteredDropingPoints;
+      const filteredData = filteredDropingPoints?.filter((item) =>
+        item.name?.toLowerCase()?.includes(searchQueries?.droppingPoints?.toLowerCase())
+      );
+      setDrawerShowData(filteredData);
     } else if (isDrawerName === "amenities") {
-      newShowingData = handlesearchValue?.amenities || amenitieslist;
+      const filteredData = filteredAmenities?.filter((item) =>
+        item?.amenity_title?.toLowerCase()?.includes(searchQueries?.Amenities?.toLowerCase())
+      );
+      setDrawerShowData(filteredData);
     } else {
-      newShowingData = filteredOperatorName;
+      const filteredData = filteredOperatorName?.filter((item) =>
+        item?.operator?.toLowerCase()?.includes(searchQueries?.Operators?.toLowerCase())
+      );
+      setDrawerShowData(filteredData);
     }
-    if
-      (JSON.stringify(newShowingData) !== JSON.stringify(drawershowdata)) {
-      setDrawerShowData(newShowingData);
-    }
-  }, [isDrawerName, filteredBoardingPoints, filteredDropingPoints, filteredOperatorName, handlesearchValue, amenitieslist]);
+  }, [isDrawerName, drawerSearch, showingdata, searchQueries]);
 
 
   const [BusFilters, SetBusFilters] = useState({
@@ -771,38 +958,38 @@ const SidebarMobile = ({
     let filteredList = buslist || [];
     // Filter for Bus Type (Luxury/Normal)
 
-    // if (luxurybus?.normal === true) {
-    //   filteredList = filteredList?.filter((item) =>
-    //     !(item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
-    //       item?.Bus_Type_Name?.toLowerCase()?.includes("volvo"))
-    //   );
-    // } else if (luxurybus?.luxury === true) {
-    //   filteredList = filteredList?.filter((item) =>
-    //     item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
-    //     item?.Bus_Type_Name?.toLowerCase()?.includes("volvo")
-    //   );
-    // }
+    if (luxurybus?.normal === true) {
+      filteredList = filteredList?.filter((item) =>
+        !(item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
+          item?.Bus_Type_Name?.toLowerCase()?.includes("volvo"))
+      );
+    } else if (luxurybus?.luxury === true) {
+      filteredList = filteredList?.filter((item) =>
+        item?.Bus_Type_Name?.toLowerCase()?.includes("mercedes benz") ||
+        item?.Bus_Type_Name?.toLowerCase()?.includes("volvo")
+      );
+    }
 
-    // // Filter for AC/Non-AC
-    // if (acBus?.ac_bus === true) {
-    //   filteredList = filteredList?.filter((item) =>
-    //     !item?.bus_type?.toLowerCase()?.includes("non-ac")
-    //   );
-    // } else if (acBus?.non_ac_bus === true) {
-    //   filteredList = filteredList.filter((item) =>
-    //     item?.bus_type?.toLowerCase()?.includes("non-ac")
-    //   );
-    // }
-    // // Filter for Seater/Sleeper
-    // if (busSeatType?.seat === true) {
-    //   filteredList = filteredList?.filter((item) =>
-    //     item?.bus_type?.toLowerCase()?.includes("seater")
-    //   );
-    // } else if (busSeatType?.sleep === true) {
-    //   filteredList = filteredList?.filter((item) =>
-    //     item?.bus_type?.toLowerCase()?.includes("sleeper")
-    //   );
-    // }
+    // Filter for AC/Non-AC
+    if (acBus?.ac_bus === true) {
+      filteredList = filteredList?.filter((item) =>
+        !item?.bus_type?.toLowerCase()?.includes("non-ac")
+      );
+    } else if (acBus?.non_ac_bus === true) {
+      filteredList = filteredList.filter((item) =>
+        item?.bus_type?.toLowerCase()?.includes("non-ac")
+      );
+    }
+    // Filter for Seater/Sleeper
+    if (busSeatType?.seat === true) {
+      filteredList = filteredList?.filter((item) =>
+        item?.bus_type?.toLowerCase()?.includes("seater")
+      );
+    } else if (busSeatType?.sleep === true) {
+      filteredList = filteredList?.filter((item) =>
+        item?.bus_type?.toLowerCase()?.includes("sleeper")
+      );
+    }
 
     if (priceRange?.min > 0 || priceRange?.max < 3000) {
       filteredList = filteredList?.filter((item) =>
@@ -876,13 +1063,27 @@ const SidebarMobile = ({
         return busTimeInMinutes >= start && busTimeInMinutes <= end;
       });
     }
+
+    if (selectedAmenities?.length > 0) {
+
+      filteredList = filteredList?.filter(item => {
+        const amenity_1 = item.Amenities?.split(",");
+        const amenity_2 = amenity_1?.map((amenity) => Number(amenity));
+        const amenity_filter = selectedAmenities?.every((index) => {
+          return amenity_2 && amenity_2[index] === 1;
+        });
+
+        return amenity_filter;
+      });
+
+    }
     dispatch({
       type: GET_BUS_FILTERS,
       payload: filteredList,
     });
 
 
-  }, [dispatch, buslist, priceRange, pickupchecked, dropchecked, pickuptime, operatorchecked, droptime]);
+  }, [dispatch, buslist, priceRange, pickupchecked, dropchecked, pickuptime, operatorchecked, droptime, selectedAmenities]);
 
 
 
@@ -1183,6 +1384,7 @@ const SidebarMobile = ({
               priceRange={priceRange}
               value={value}
               setValue={setValue}
+
             />
             <p className="my-[0.5vw] border-b-[0.01vw] border-gray-300"></p>
           </div>
@@ -2019,67 +2221,67 @@ const SidebarMobile = ({
             <p className="my-[3vw] border-b-[0.01vw] border-gray-300"></p>
           </div>
 
-          {buslist?.Amenities && buslist?.Amenities !== null ?
+          {buslist?.some(item => item?.Amenities != null) ?
 
-            <div className="">
-              <div className="grid grid-cols-4 justify-between items-center my-[3vw]">
-                <div className="col-span-3">
-                  <h1 className="text-[4.5vw] font-bold px-[1vw]">Amenities</h1>
-                </div>
-                <div className="flex items-center">
-                  <h3
-                    className="text-[3.5vw] pr-[1vw] float-end text-gray-500  cursor-pointer"
-                    onClick={amenitiesClear}
-                  >
-                    CLEAR
-                  </h3>
-                  {boolean?.amenities === true ? (
-                    <button
-                      onClick={() =>
-                        setBoolean({
-                          ...boolean,
-                          amenities: !boolean?.amenities,
-                        })
-                      }
-                    >
-                      <IoIosArrowUp size={"5vw"} className="cursor-pointer" />
-                    </button>
-                  ) : (
-                    <IoIosArrowDown
-                      size={"5vw"}
-                      className="cursor-pointer"
-                      onClick={() =>
-                        setBoolean({
-                          ...boolean,
-                          amenities: !boolean?.amenities,
-                        })
-                      }
-                    />
-                  )}
-                </div>
+          <div className="">
+            <div className="grid grid-cols-4 justify-between items-center my-[3vw]">
+              <div className="col-span-3">
+                <h1 className="text-[4.5vw] font-bold px-[1vw]">Amenities</h1>
               </div>
-              {boolean?.amenities && (
-                <>
-                  <div className="px-[1vw] pb-[2vw] pt-[3vw]">
-                    {/* <input className="border-2 border-gray-300 h-8 rounded-md w-full mb-4" /> */}
-                    <div className="relative mb-[2vw]">
-                      <div style={styles?.inputContainer}>
-                        <CiSearch style={styles?.icon} />
-                        <input
-                          type="text"
-                          autoComplete="off"
-                          placeholder="Search"
-                          className="placeholder:text-[4vw] "
-                          style={styles?.input}
-                          onChange={(e) => {
-                            handleSearchChange(e, 'droppingPoints')
-                          }}
-                        />
-                      </div>
+              <div className="flex items-center">
+                <h3
+                  className="text-[3.5vw] pr-[1vw] float-end text-gray-500  cursor-pointer"
+                  onClick={amenitiesClear}
+                >
+                  CLEAR
+                </h3>
+                {boolean?.amenities === true ? (
+                  <button
+                    onClick={() =>
+                      setBoolean({
+                        ...boolean,
+                        amenities: !boolean?.amenities,
+                      })
+                    }
+                  >
+                    <IoIosArrowUp size={"5vw"} className="cursor-pointer" />
+                  </button>
+                ) : (
+                  <IoIosArrowDown
+                    size={"5vw"}
+                    className="cursor-pointer"
+                    onClick={() =>
+                      setBoolean({
+                        ...boolean,
+                        amenities: !boolean?.amenities,
+                      })
+                    }
+                  />
+                )}
+              </div>
+            </div>
+            {boolean?.amenities && (
+              <>
+                <div className="px-[1vw] pb-[2vw] pt-[3vw]">
+                  {/* <input className="border-2 border-gray-300 h-8 rounded-md w-full mb-4" /> */}
+                  <div className="relative mb-[2vw]">
+                    <div style={styles?.inputContainer}>
+                      <CiSearch style={styles?.icon} />
+                      <input
+                        type="text"
+                        autoComplete="off"
+                        placeholder="Search"
+                        className="placeholder:text-[4vw] "
+                        style={styles?.input}
+                        onChange={(e) => {
+                          handleSearchChange(e, 'Amenities')
+                        }}
+                      />
                     </div>
-                    <div>
-                      <div className="flex-col items-center justify-center gap-[1vw] py-[2vw] px-[1vw]">
-                        {/* {handlesearchAmenities?.amenities?.length > 0
+                  </div>
+                  <div>
+                    <div className="flex-col items-center justify-center gap-[1vw] py-[2vw] px-[1vw]">
+                      {/* {handlesearchAmenities?.amenities?.length > 0
                       ? handlesearchAmenities?.amenities
                           .slice(0, 5)
                           .map((item, i) => (
@@ -2110,84 +2312,79 @@ const SidebarMobile = ({
                             </div>
                           ))
                       : ""} */}
-                        {handlesearchValue?.amenities?.length <= 0 ? (
-                          <div className="flex items-center justify-between mx-[.5vw]">
-                            <div className="flex items-center my-[0.25vw]">
-                              <span className="text-[4vw]">
-                                No matching amenities found.
-                              </span>
-                            </div>
+                      {filteredAmenities?.length < 0 ? (
+                        <div className="flex items-center justify-between mx-[.5vw]">
+                          <div className="flex items-center my-[0.25vw]">
+                            <span className="text-[4vw]">
+                              No matching amenities found.
+                            </span>
                           </div>
-                        ) : (
-                          (handlesearchValue?.amenities?.length > 0
-                            ? handlesearchValue?.amenities
-                            : pickUp_list?.amenities
-                          )
-                            ?.slice(0, 5)
-                            .map((item, i) => (
-                              <div
-                                className=" flex items-center justify-between"
-                                key={i}
-                              >
-                                <div className="flex items-center my-[0.25vw] gap-[2vw]">
-                                  <input
-                                    type="checkbox"
-                                    className=" filter-input w-[5vw] h-[5vw] mr-[0.4vw] cursor-pointer"
-                                    // onChange={() => handleAmenities(item.amenity)}
-                                    onChange={(e) =>
-                                      handleAmenityCheckbox(e, item?.amenity)
-                                    }
-                                    autoComplete="off"
-                                    // checked={amenitiesvalue?.includes(item.amenity)}
-                                    checked={
-                                      amenitiesvalue[item?.amenity] || false
-                                    }
-                                  />
-                                  <span className="text-[4.8vw]">
-                                    {item?.amenity?.length > 26 ? (
-                                      <Popover
-                                        content={toTitleCase(item?.amenity)}
-                                        trigger="hover"
-                                      >
-                                        <span>
-                                          {item?.amenity
-                                            ?.charAt(0)
-                                            ?.toUpperCase() +
-                                            item?.amenity
-                                              ?.slice(1)
-                                              ?.toLowerCase()
-                                              ?.substring(0, 26) +
-                                            "..."}
-                                        </span>
-                                      </Popover>
-                                    ) : (
-                                      toTitleCase(item?.amenity)
-                                    )}
-                                  </span>
-                                </div>
-                                <div>
-                                  <span className="text-[4.8vw]">{`(${item?.count})`}</span>
-                                </div>
+                        </div>
+                      ) : (
+                        (filteredAmenities)
+                          ?.slice(0, 5)
+                          .map((item, index) => (
+                            <div
+                              className=" flex items-center justify-between"
+                              key={index}
+                            >
+                              <div className="flex items-center my-[0.25vw] gap-[2vw]">
+                                <input
+                                  type="checkbox"
+                                  className=" filter-input w-[5vw] h-[5vw] mr-[0.4vw] cursor-pointer"
+                                  // onChange={() => handleAmenities(item.amenity)}
+                                  onChange={(e) =>
+                                    handleAmenityCheckbox(e, item.amenity_title, index)
+                                  }
+                                  autoComplete="off"
+                                  // checked={amenitiesvalue?.includes(item.amenity)}
+                                  checked={selectedAmenities.includes(index)}
+                                />
+                                <span className="text-[4.8vw]">
+                                  {item?.amenity?.length > 26 ? (
+                                    <Popover
+                                      content={toTitleCase(item?.amenity_title)}
+                                      trigger="hover"
+                                    >
+                                      <span>
+                                        {item?.amenity_title
+                                          ?.charAt(0)
+                                          ?.toUpperCase() +
+                                          item?.amenity_title
+                                            ?.slice(1)
+                                            ?.toLowerCase()
+                                            ?.substring(0, 26) +
+                                          "..."}
+                                      </span>
+                                    </Popover>
+                                  ) : (
+                                    toTitleCase(item?.amenity_title)
+                                  )}
+                                </span>
                               </div>
-                            ))
-                        )}
-                      </div>
-                      <p
-                        className="text-[#1F487C] font-bold text-[3.8vw] pt-[3vw] cursor-pointer pl-[1vw]"
-                        // onClick={() => openModal("amenities")}
-                        onClick={() => toggleDrawer("amenities")}
-                      >
-                        {amenitiesLength > 5
-                          ? `SHOW ALL (${amenitiesLength})`
-                          : ""}
-                      </p>{" "}
-                      <p className="mt-[2vw] border-b-[0.01vw] border-gray-300"></p>
+                              <div>
+                                {/* <span className="text-[4.8vw]">{`(${item?.count})`}</span> */}
+                              </div>
+                            </div>
+                          ))
+                      )}
                     </div>
+                    <p
+                      className="text-[#1F487C] font-bold text-[3.8vw] pt-[3vw] cursor-pointer pl-[1vw]"
+                      // onClick={() => openModal("amenities")}
+                      onClick={() => toggleDrawer("amenities")}
+                    >
+                      {filteredAmenities?.length > 5
+                        ? `SHOW ALL (${filteredAmenities?.length})`
+                        : ""}
+                    </p>{" "}
+                    <p className="mt-[2vw] border-b-[0.01vw] border-gray-300"></p>
                   </div>
-                </>
-              )}
-            </div>
-            :
+                </div>
+              </>
+            )}
+          </div>
+          :
             ''}
 
         </div>
@@ -2225,7 +2422,14 @@ const SidebarMobile = ({
                   placeholder="Search"
                   className="placeholder:text-[4vw] "
                   style={styles.input}
-                  onChange={(e) => setDrawerSearch(e.target.value)}
+                  onChange={(e) => handleSearchChange(e, isDrawerName === "pickup"
+                    ? "boardingPoints"
+                    : isDrawerName === "drop"
+                      ? "droppingPoints"
+                      : isDrawerName === "amenities"
+                        ? "Amenities"
+                        : "Operators")}
+
                 />
               </div>
             </div>
@@ -2245,7 +2449,7 @@ const SidebarMobile = ({
                           : isDrawerName === "drop"
                             ? handledropCheckbox(e, item?.name)
                             : isDrawerName === "amenities"
-                              ? handleAmenityCheckbox(e, item?.amenity)
+                              ? handleAmenityCheckbox(e, item?.amenity_title, i)
                               : handleoperatorCheckbox(e, item?.operator)
                       }
                       checked={
@@ -2254,13 +2458,13 @@ const SidebarMobile = ({
                           : isDrawerName === "drop"
                             ? dropchecked[item.name] || false
                             : isDrawerName === "amenities"
-                              ? amenitiesvalue[item.amenity]
+                              ? selectedAmenities.includes(i)
                               : operatorchecked[item.operator]
                       }
                     />
                     <span className="pt-1 text-[4vw]">
                       {isDrawerName === "amenities"
-                        ? toTitleCase(item?.amenity)
+                        ? toTitleCase(item?.amenity_title)
                         : isDrawerName === "operators"
                           ? item.operator?.charAt(0).toUpperCase() +
                           item.operator?.slice(1).toLowerCase()

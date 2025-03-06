@@ -29,7 +29,7 @@ export const UserAndAgreement = () => {
                 <FooterTwo />
                 <FooterThree />
             </div>
-            <div className="md:hidden block fixed top-0">
+            <div className="md:hidden block fixed top-0 w-screen">
                 <div className=" bg-[#E5FFF1] ">
                     <Navbar_One />
                 </div>

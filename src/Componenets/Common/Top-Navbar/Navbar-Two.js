@@ -35,6 +35,10 @@ import dayjs from "dayjs";
 import { GetStations } from "../../../Api-TBS/Home/Home";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
+import { format } from 'date-fns';
+
+
+
 export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) => {
   const validationSchema = Yup.object().shape({
     from: Yup.string().required("Field is Required"),
@@ -63,17 +67,17 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
   const Get_des_Statiion = useSelector((state) => state.get_des_station);
   const SVG = SVG_List();
   const currentpath = useParams();
-
+  const state_from_to = location?.state
+  const [mobile_date, setMobile_Date] = useState(false)
   const [busdatas, setBusDatas] = useState({
     from: currentpath?.source_name,
     to: currentpath?.destination_name,
     from_sourceID: currentpath?.source_ID,
     to_sourceID: currentpath?.destionation_ID,
     date: currentpath?.trip_date,
-    from_state: "",
-    to_state: "",
+    from_state: state_from_to?.from_state,
+    to_state: state_from_to?.to_state,
   });
-
   const all = [
     {
       value: "Coimbatore",
@@ -253,6 +257,15 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
   //       sessionStorage.setItem("spinner", "false");
   //     }, 1000);
   //   };
+
+  useEffect(() => {
+    if (mobile_date === true) {
+      handleSearch()
+
+      setMobile_Date(false)
+    }
+  }, [mobile_date])
+
   const handleSearch = async () => {
     try {
       const data = await Abhibus_GetBusList(
@@ -264,7 +277,7 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
       // if (data?.status === "success") {
       navigation(
         `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${busdatas.to_sourceID
-        }/${dayjs(busdatas?.date).format("YYYY-MM-DD")}`
+        }/${dayjs(busdatas?.date).format("YYYY-MM-DD")}`, { state: busdatas }
       );
       // }
     } catch {
@@ -1074,7 +1087,7 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
             </Drawer>
           </div> */}
                   <div className=" md:hidden block">
-                    <div className="flex px-[2vw] items-center justify-between h-full">
+                    <div className="flex px-[2vw] items-center justify-between h-[12vw]">
                       <div className="flex flex-col ">
                         <div className="flex gap-x-[2vw] items-center">
                           <div className="text-[4.5vw] text-white font-semibold">
@@ -1122,10 +1135,13 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
                               onChange={(date) => {
                                 setSelectedDatee(date);
                                 setFromDate(date);
+                                const new_date = new Date(date);
+                                const formatted_Date = format(new_date, 'yyyy-MM-dd');  // "2025-03-05"
                                 setBusDatas({
                                   ...busdatas,
-                                  date: date,
+                                  date: formatted_Date,
                                 });
+                                setMobile_Date(true)
                                 onClosee(); // Close drawer on date select
                               }}
                               value={busdatas?.date}

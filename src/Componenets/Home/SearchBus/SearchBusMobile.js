@@ -84,7 +84,6 @@ export default function SearchBusMobile() {
     from_state: '',
     to_state: ''
   });
-
   const [error, setError] = useState();
 
   const handlecheckbox = (e) => {
@@ -307,8 +306,13 @@ export default function SearchBusMobile() {
                       : "text-black border-[#81A3B6]"
                       }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                     onClick={() => {
-                      SetSeatFilter("seater");
-                      sessionStorage.setItem("home_seat_type", true);
+                      if (seatFilter === "seater" && sessionStorage.getItem("home_seat_type") === "true") {
+                        SetSeatFilter("");
+                        sessionStorage.setItem("home_seat_type", null)
+                      } else {
+                        SetSeatFilter("seater")
+                        sessionStorage.setItem("home_seat_type", true);
+                      }
                     }}
                   >
                     Seater
@@ -319,8 +323,13 @@ export default function SearchBusMobile() {
                       : "text-black border-[#81A3B6]"
                       }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                     onClick={() => {
-                      SetSeatFilter("sleeper");
-                      sessionStorage.setItem("home_seat_type", false);
+                      if (seatFilter === "sleeper" && sessionStorage.getItem("home_seat_type") === "false") {
+                        SetSeatFilter("");
+                        sessionStorage.setItem("home_seat_type", null)
+                      } else {
+                        SetSeatFilter("sleeper")
+                        sessionStorage.setItem("home_seat_type", false);
+                      }
                     }}
                   >
                     Sleeper
@@ -341,7 +350,7 @@ export default function SearchBusMobile() {
                         ...prev,
                         bustype: prev.bustype === false ? null : false,
                       }));
-                      sessionStorage.setItem("home_luxury", true);
+                      sessionStorage.setItem("home_luxury", !luxury);
                     }}
                   >
                     Luxury Bus

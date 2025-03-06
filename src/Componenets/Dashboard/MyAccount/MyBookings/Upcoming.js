@@ -18,6 +18,7 @@ import { GET_TICKET_DETAILS } from "../../../../Store/Type";
 import { ViewTicketById } from "../../../../Api-Abhibus/MyAccount/ViewTicket";
 import busloading from "../../../../Assets/Gif/bus.gif";
 import { Get_TBS_Booking_details } from "../../../../Api-TBS/Dashboard/Dashboard";
+import { useNavigate } from "react-router";
 
 function convertTo12Hour(timeString) {
   // Split the time string into its components (hours, minutes, seconds)
@@ -41,6 +42,8 @@ export default function Upcoming() {
   const [ticketDetails, setTicketDetails] = useState([]);
   const [spinning1, setSpinning1] = useState(false);
   const [spinning, setSpinning] = useState(false);
+
+  const navigation = useNavigate()
   // const completedDetails = [
   //   {
   //     depature: "Chennai",
@@ -115,7 +118,7 @@ export default function Upcoming() {
     if (width < 640) {
       // mobile
       setTicketDetails(item);
-      setViewModalIsOpen(true);
+      // setViewModalIsOpen(true);
     }
   };
 
@@ -128,7 +131,8 @@ export default function Upcoming() {
   };
   const handleviewticket = async (ticketno) => {
     setViewModalIsOpen(true);
-    console.log("yyyyyyyyyyyyy");
+
+    console.log(ticketno, "yyyyyyyyyyyyy");
     Get_TBS_Booking_details(ticketno, dispatch);
 
     try {
@@ -139,11 +143,39 @@ export default function Upcoming() {
         type: GET_TICKET_DETAILS,
         payload: ticketdetails,
       });
+      console.log()
     } catch (err) {
       console.log(err);
     }
   };
   const ticketlist = useSelector((state) => state?.get_ticket_detail);
+  console.log(ticketlist, 'ticketlist_ticketlist')
+
+  const handleNavigate = async (ticketno) => {
+
+    Get_TBS_Booking_details(ticketno, dispatch);
+    try {
+      console.log(ticketno, "tyucusdcsd");
+
+      const ticketdetails = await ViewTicketById(ticketno, setSpinning);
+      dispatch({
+        type: GET_TICKET_DETAILS,
+        payload: ticketdetails,
+      });
+
+
+      if (ticketdetails?.status === "success") {
+        navigation(`/bookedTicket`, {
+          state: {
+            ticket_list: ticketlist,
+          },
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+
+  }
   return (
     <>
       {spinning1 ? (
@@ -193,25 +225,25 @@ export default function Upcoming() {
               {/* <span className="ml-2">
               Showing {completedDetails?.length} completed tickets
             </span> */}
-              <span
-                className={` flex items-center pl-[1vw] md:text-[1vw] text-[4vw] gap-x-[0.5vw]`}
+              <div
+                className={` flex items-center pl-[1vw] md:text-[1vw] text-[4vw] md:gap-x-[0.5vw] gap-x-[1.5vw]`}
               >
-                Showing{" "}
-                <div className="bg-[#1F487C] rounded-full flex items-center justify-center w-[1.75vw] h-[1.75vw]">
+                <span>Showing{" "}</span>
+                <div className="bg-[#1F487C] rounded-full flex items-center justify-center md:w-[1.75vw] md:h-[1.75vw] w-[5vw] h-[5vw]">
                   <span
                     className={`rounded-full font-extrabold md:text-[0.9vw] text-[4vw] text-white `}
                   >
                     {completedDetails?.length}
                   </span>{" "}
                 </div>
-                Tickets
-              </span>
+                <span>Tickets</span>
+              </div>
             </div>
           ) : (
             ""
           )}
           {completedDetails?.length > 0 ? (
-            <div className="md:h-[28vw]   overflow-y-scroll  ">
+            <div className="md:h-[28vw] h-[70vh] overflow-y-scroll  ">
               {completedDetails?.map((item) => (
                 <div
                   onClick={() => {
@@ -414,8 +446,9 @@ export default function Upcoming() {
                         <div className="block  md:hidden">
                           <div
                             onClick={() => {
-                              setViewModalIsOpen(true);
-                              setTicketDetails(item);
+
+                              handleNavigate(item?.ticket_no)
+
                             }}
                             className={` text-[3.5vw] font-semibold text-[#1F487C] flex items-center justify-center w-full h-full`}
                           >
@@ -446,11 +479,10 @@ export default function Upcoming() {
                             "lengthhhhhhhhhhhhhhhhhhhhh"
                           )}
                           <div
-                            className={`w-full ${
-                              item?.passenger_details?.length > 3
-                                ? "grid grid-cols-2 gap-x-[1.5vw] gap-y-[.5vw]"
-                                : "flex flex-col gap-y-[0.5vw]"
-                            }`}
+                            className={`w-full ${item?.passenger_details?.length > 3
+                              ? "grid grid-cols-2 gap-x-[1.5vw] gap-y-[.5vw]"
+                              : "flex flex-col gap-y-[0.5vw]"
+                              }`}
                           >
                             {item?.passenger_details?.map((list) =>
                               list?.Passenger_Name?.length > 10 ? (
@@ -482,9 +514,9 @@ export default function Upcoming() {
                                     >
                                       {list?.Passenger_Name?.length > 10
                                         ? `${list.Passenger_Name.slice(
-                                            0,
-                                            10
-                                          )}...`
+                                          0,
+                                          10
+                                        )}...`
                                         : list.Passenger_Name}
                                       {/* {(list.user_name)} */}
                                     </span>
@@ -551,14 +583,15 @@ export default function Upcoming() {
                 <label
                   className={`md:text-[2vw] text-[4vw] text-[#1F487C] font-bold `}
                 >
-                  Looks empty, you’ve no cancelled bookings
+                  Looks empty, you’ve no upcoming bookings
                 </label>
                 <label
                   className={`flex md:text-[1.2vw] text-[3.5vw] text-[#1F487C] items-center gap-[0.5vw]`}
                 >
-                  Looks like you don’t have any cancelled trips
+                  Looks like you don’t have any upcoming trips
                 </label>
                 <button
+                  onClick={() => navigation("/")}
                   className={`bg-[#1F487C] mt-[3vw] w-[30vw] md:mt-[1vw] md:w-[12vw] text-white font-bold text-[3.5vw] md:text-[1.2vw] 
              rounded-[5vw] h-[10vw] md:h-[3vw] md:rounded-full`}
                 >

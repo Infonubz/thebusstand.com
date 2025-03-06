@@ -15,6 +15,8 @@ import { useSelector } from "react-redux";
 import ViewFullTicket from "../MyAccount/ViewTicket/ViewFullTicket";
 import busloading from "../../../Assets/Gif/bus.gif";
 import dayjs from "dayjs";
+import { LoginCheck } from "../../../Api-TBS/Login/Login";
+import { decryptData } from "../../Common/Common-Functions/Encrypt-Decrypt";
 export default function DrawerIndex({
   BusDetails,
   layout,
@@ -38,6 +40,7 @@ export default function DrawerIndex({
   setTicketLoading,
   ticketnumber,
   ticketloading,
+  onClose
 }) {
   const [loader, setLoader] = useState(false);
   const [razorpayloading, setRazorpayLoading] = useState(false);
@@ -139,8 +142,53 @@ export default function DrawerIndex({
     Object?.values(travelerDetails)
   );
   const [buttondisable, setButtonDisable] = useState(false);
-  const handleSubmit = async (values) => {
+  const [checkerror, setCheckError] = useState("");
+  const user = sessionStorage?.getItem("user_id");
+  const getuserid = decryptData(user);
+  const handleSubmit = async (values, setFieldError) => {
+    console.log(values, 'values__Values')
     setButtonDisable(true);
+    // if (getuserid) {
+    //   try {
+    //     const response = await Abhibus_SeatBlocked(
+    //       BusDetails,
+    //       seatDetails,
+    //       travelerDetails,
+    //       values,
+    //       selectedRoutes,
+    //       emailInput,
+    //       mobileInput,
+    //       selectedseatprice
+    //     );
+    //     if (response?.status === "success") {
+    //       setConfirmModal(true);
+    //       setEnableInput(true);
+    //       setConfirmRefNo(response?.ReferenceNo);
+    //       handleScroll();
+    //       try {
+    //         const data = await Abhibus_GetFareInfo(
+    //           adultCount,
+    //           childCount,
+    //           response?.ReferenceNo
+    //         );
+    //         setFareDetails(data?.GetFaresInfo);
+    //       } catch {}
+    //     }
+    //   } catch (error) {
+    //     console.error("API call failed:", error);
+    //   } finally {
+    //     setButtonDisable(false);
+    //   }
+    // } else {
+    //   const checklogindetails = await LoginCheck(emailInput, mobileInput);
+    //   console.log(
+    //     checklogindetails?.userExist,
+    //     "checklogindetailschecklogindetails"
+    //   );
+    //   if (checklogindetails.userExist) {
+    //     setButtonDisable(true);
+    //     setFieldError("email", "Email already exist");
+    //   } else {
     try {
       const response = await Abhibus_SeatBlocked(
         BusDetails,
@@ -164,13 +212,23 @@ export default function DrawerIndex({
             response?.ReferenceNo
           );
           setFareDetails(data?.GetFaresInfo);
-        } catch {}
+        } catch { }
       }
     } catch (error) {
       console.error("API call failed:", error);
     } finally {
       setButtonDisable(false);
     }
+    //   }
+    //   // setCheckError(checklogindetails);
+    // }
+
+    // else{
+    //   const checklogindetails = await LoginCheck(emailInput, mobileInput);
+    //     console.log(checklogindetails?.message, "checklogindetailschecklogindetails");
+    //     setCheckError(checklogindetails);
+    //     setButtonDisable(true);
+    // }
   };
 
   const handleScroll = () => {
@@ -342,8 +400,8 @@ export default function DrawerIndex({
       //setShowModal(true);
       console.log(
         (ticketlist?.ticketInfo?.Journey_Date,
-        ticketlist?.ticketInfo?.Start_Time,
-        ticketlist?.ticketInfo?.Arr_Time),
+          ticketlist?.ticketInfo?.Start_Time,
+          ticketlist?.ticketInfo?.Arr_Time),
         calculatedDate && ConvertDate(calculatedDate),
         "helldfhkdxjhfkdjhfkxdjhf"
       );
@@ -351,6 +409,8 @@ export default function DrawerIndex({
     }
   }, [ticketlist]);
 
+  console.log(selectedSeats1?.map(
+    (seat, index) => travelerDetails?.[index]?.age), 'passenger_age')
   return (
     <>
       {razorpayloading ? (
@@ -373,8 +433,8 @@ export default function DrawerIndex({
             email: emailInput || "",
             mobile:
               mobileInput &&
-              mobileInput !== "undefined" &&
-              mobileInput !== "null"
+                mobileInput !== "undefined" &&
+                mobileInput !== "null"
                 ? mobileInput
                 : "",
             user_name:
@@ -388,6 +448,13 @@ export default function DrawerIndex({
             gender: selectedSeats1?.map(
               (seat, index) => travelerDetails?.[index]?.gender || "male"
             ),
+            ...selectedSeats1?.reduce((acc, seat, index) => {
+              // Assuming travelerDetails is an array with traveler data corresponding to the selected seats
+              acc[`user_name_${index}`] = travelerDetails?.[index]?.user_name || "";
+              acc[`age_${index}`] = travelerDetails?.[index]?.age || "";
+              acc[`gender_${index}`] = travelerDetails?.[index]?.gender || "male"; // Default gender to "male"
+              return acc;
+            }, {}),
             terms: termschecked || false,
             address: billAddress?.address ? billAddress?.address : "",
             pin_code: selectedRoutes?.pincode || "",
@@ -395,8 +462,8 @@ export default function DrawerIndex({
             city: from_source?.from || "",
           }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            handleSubmit(values);
+          onSubmit={(values, { setFieldError }) => {
+            handleSubmit(values, setFieldError);
             console.log(values, "values values");
             setRegisterFullDetails(values);
             localStorage.setItem("page1", true);
@@ -412,7 +479,9 @@ export default function DrawerIndex({
             values,
             setFieldValue,
             handleChange,
+            resetForm
           }) => {
+
             // Update the form state when Formik state changes
             if (
               formState?.isValid !== isValid ||
@@ -456,6 +525,7 @@ export default function DrawerIndex({
                           enableInput={enableInput}
                           setEnableInput={setEnableInput}
                           isAllDetailsFilled={isAllDetailsFilled}
+                          onClose={onClose}
                         />
                         <BiilingAddress
                           BusDetails={BusDetails}
@@ -480,6 +550,7 @@ export default function DrawerIndex({
                           billAddress={billAddress}
                           setBillAddress={setBillAddress}
                           buttondisable={buttondisable}
+                          onClose={onClose}
                         />
                         {confirmModal && (
                           <div id="targetSection">

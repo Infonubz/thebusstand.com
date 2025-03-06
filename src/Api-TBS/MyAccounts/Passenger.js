@@ -45,12 +45,12 @@ export const SubmitPassengerData = async (passengerdata, updateData) => {
   };
 
   // Log the passenger data for debugging
-  console.log(passengerdata, "poda antha andavane namba pakkam");
+  console.log(passengerdata, authToken, "poda antha andavane namba pakkam");
 
   // Determine the URL and HTTP method based on whether we are updating data
   const url = updateData
     ? `${apiUrl}/add-passenger-details/${updateData}`
-    : `${apiUrl}/add-passenger-details`;
+    : `${apiUrl}/addpassengerdetails`;
   const method = updateData ? "put" : "post";
 
   // Log the payload for debugging

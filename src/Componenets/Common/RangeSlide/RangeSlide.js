@@ -18,7 +18,7 @@ const RangeSlide = ({
     const [min, max] = value;
     setPriceRange({ min, max });
     console.log(value, "Value");
-    setBusFilterType("pricefilter");
+    // setBusFilterType("pricefilter");
   };
 
   // const onInputChange = (index, newValue) => {
@@ -243,7 +243,7 @@ const RangeSlide = ({
                         autoComplete="off"
                         value={value[0]}
                         prefix={
-                          <MdOutlineCurrencyRupee className="text-[4vw] md:text-[1.25vw]" />
+                          <MdOutlineCurrencyRupee className="text-[4vw] text-black md:text-[1.25vw]" />
                         }
                         onChange={(val) =>
                           handleInputChange(0, { target: { value: val } })
@@ -277,7 +277,7 @@ const RangeSlide = ({
                         min={0}
                         max={3000}
                         prefix={
-                          <MdOutlineCurrencyRupee className="text-[4vw] md:text-[1.25vw]" />
+                          <MdOutlineCurrencyRupee className="text-[4vw] text-black md:text-[1.25vw]" />
                         }
                         value={value[1]}
                         placeholder="0"

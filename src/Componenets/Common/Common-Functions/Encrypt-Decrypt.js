@@ -1,7 +1,7 @@
 import CryptoJS from "crypto-js";
 
 const SECRET_KEY = CryptoJS.enc.Utf8.parse(
-  process.env.REACT_APP_SECRET_KEY.substring(0, 32)
+  process.env.REACT_APP_SECRET_KEY?.substring(0, 32)
 );
 
 // Encrypt Data

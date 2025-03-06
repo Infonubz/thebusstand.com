@@ -18,7 +18,7 @@ export default function LiveTracking({
     amenities,
     busType,
     bus_type,
-    services_amenities,
+    // services_amenities,
     //bus_type_status,
     amenity
 }) {
@@ -315,7 +315,7 @@ export default function LiveTracking({
 
     // console.log(assignedAmenities, 'assigned_Amenities')
 
-    const servicesArray = services_amenities.split(',');
+    const servicesArray = amenities.split(',');
     return (
         // <>
         //     <div
@@ -376,21 +376,31 @@ export default function LiveTracking({
         // </>
 
         <>
-            <div className={`text-[1.25vw] grid grid-cols-3 p-[2vw] gap-[1vw] ${LuxuryFind(busType) === true ? 'text-[#393939]' : 'text-[#1F487C]'}`}>
-                {amenity.map((amenity, index) => {
-                    if (servicesArray[index] === '1') {
-                        return (
-                            <>
-                                <div className="grid grid-cols-12 items-center justify-stretch">
-                                    <div className="col-span-2">{amenity?.icon}</div>
-                                    <div className="col-span-10">{amenity.amenity_title}</div>
-                                </div>
-                            </>
-                        )
+            <div className="md:block hidden w-full">
+                <div
+                    className={`${
+                        // busType === "luxury"
+                        LuxuryFind(busType) === true
+                            ? "bg-[#FFEEC9]" : "bg-[#EEEDED]"
+                        } h-auto md:rounded-[0.5vw] px-[1vw] pt-[1vw]`}
+                >
+                    <div className={`text-[1.25vw] grid grid-cols-3 p-[2vw] gap-[1vw] ${LuxuryFind(busType) === true ? 'text-[#393939]' : 'text-[#1F487C]'}`}>
+                        {amenity.map((amenity, index) => {
+                            if (servicesArray[index] === '1') {
+                                return (
+                                    <>
+                                        <div className="grid grid-cols-12 items-center justify-stretch">
+                                            <div className="col-span-2">{amenity?.icon}</div>
+                                            <div className="col-span-10">{amenity.amenity_title}</div>
+                                        </div>
+                                    </>
+                                )
 
-                    }
-                    return null; // Return null for false values
-                })}
+                            }
+                            return null; // Return null for false values
+                        })}
+                    </div>
+                </div>
             </div>
         </>
     );

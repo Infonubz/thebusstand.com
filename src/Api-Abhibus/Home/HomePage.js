@@ -219,3 +219,48 @@ export const Abhibus_GetOperators = async (dispatch) => {
     return null;
   }
 };
+
+// export const getBusList = async () => {
+//   try {
+//     const response = await axios.post(
+//       "http://localhost:5000/api/getBusList",
+//       {
+//         from_sourceID: 3,
+//         to_sourceID: 5,
+//         journeyDate: "2025-03-08",
+//       },
+//       { withCredentials: true }  // Add this
+//     );
+
+//     console.log("Bus List:", response.data);
+//   } catch (error) {
+//     console.error("CORS Error:", error.response?.data || error.message);
+//   }
+// };
+
+
+// export const getBusList = async () => {
+//   try {
+//     const response = await fetch("http://localhost:5000/api/getBusList", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         from_sourceID: 3,
+//         to_sourceID: 5,
+//         journeyDate: "2025-03-08",
+//       }),
+//       credentials: "include",  // Allow cookies to be sent with the request
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! Status: ${response.status}`);
+//     }
+
+//     const data = await response.json();
+//     console.log("Bus List:", data);
+//   } catch (error) {
+//     console.error("CORS Error:", error.message);
+//   }
+// };

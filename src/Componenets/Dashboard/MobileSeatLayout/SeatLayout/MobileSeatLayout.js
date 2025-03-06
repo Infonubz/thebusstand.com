@@ -17,7 +17,9 @@ export default function MobileSeatLayout({
   setSeatDetails,
   seatHighlight,
   layout,
-  setLayout
+  setLayout,
+  currentrate,
+  SetCurrentRate
 }) {
   const tbs_discount = useSelector((state) => state?.live_per);
 
@@ -363,9 +365,9 @@ export default function MobileSeatLayout({
                                 }}
                               >
                                 {" "}
-                                <div className="absolute top-[0.8vw] right-[58%]">
+                                {/* <div className="absolute top-[0.8vw] right-[58%]">
                                   {seatHighlight(seat)}
-                                </div>
+                                </div> */}
                                 <Tooltip
                                   placement="top"
                                   title={
@@ -390,7 +392,17 @@ export default function MobileSeatLayout({
                                     // fill="#D8D8D8"
                                     onClick={() => handleSeatClick(seat)}
                                     className={` cursor-pointer`}
-                                  // ${getShadowClass(seat)}
+                                    // ${getShadowClass(seat)}
+                                    style={{
+                                      filter:
+                                        currentrate ===
+                                          Math.round(seat?.price) &&
+                                          seat.isBooked === false
+                                          ? `drop-shadow(2px 2px 2px  ${getBorderClass(
+                                            seat
+                                          )})`
+                                          : null,
+                                    }}
                                   >
                                     <path
                                       d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998V11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H3.55687Z"
@@ -419,9 +431,9 @@ export default function MobileSeatLayout({
                                   gridColumn: seat.column,
                                 }}
                               >
-                                <div className="absolute top-[0.8vw] right-[4vw]">
+                                {/* <div className="absolute top-[0.8vw] right-[4vw]">
                                   {seatHighlight(seat)}
-                                </div>
+                                </div> */}
                                 <Tooltip
                                   placement="top"
                                   title={
@@ -447,7 +459,17 @@ export default function MobileSeatLayout({
                                     xmlns="http://www.w3.org/2000/svg"
                                     onClick={() => handleSeatClick(seat)}
                                     className="cursor-pointer"
-                                    style={{ userSelect: "none" }}
+                                    style={{
+                                      userSelect: "none",
+                                      filter:
+                                        currentrate ===
+                                          Math.round(seat?.price) &&
+                                          seat.isBooked === false
+                                          ? `drop-shadow(2px 2px 2px  ${getBorderClass(
+                                            seat
+                                          )})`
+                                          : null,
+                                    }}
                                   >
                                     <path
                                       d="M1.30176 209.776V7.28689C1.30176 4.18046 3.82002 1.6622 6.92645 1.6622H45.3618L82.8597 1.66212C85.9662 1.66211 88.4844 4.18038 88.4844 7.28681V209.776C88.4844 212.882 85.9662 215.4 82.8597 215.4H45.3618H6.92645C3.82002 215.4 1.30176 212.882 1.30176 209.776Z"
@@ -506,9 +528,9 @@ export default function MobileSeatLayout({
                                 }}
                               >
                                 {" "}
-                                <div className="absolute top-[0.8vw] right-[1.23vw]">
+                                {/* <div className="absolute top-[0.8vw] right-[1.23vw]">
                                   {seatHighlight(seat)}
-                                </div>
+                                </div> */}
                                 <Tooltip
                                   placement="top"
                                   title={
@@ -534,7 +556,17 @@ export default function MobileSeatLayout({
                                     // fill="#D8D8D8"
                                     onClick={() => handleSeatClick(seat)}
                                     className={` cursor-pointer`}
-                                  // ${getShadowClass(seat)}
+                                    // ${getShadowClass(seat)}
+                                    style={{
+                                      filter:
+                                        currentrate ===
+                                          Math.round(seat?.price) &&
+                                          seat.isBooked === false
+                                          ? `drop-shadow(2px 2px 2px  ${getBorderClass(
+                                            seat
+                                          )})`
+                                          : null,
+                                    }}
                                   >
                                     <path
                                       d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998V11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H3.55687Z"
@@ -561,9 +593,9 @@ export default function MobileSeatLayout({
                                   gridColumn: seat.column,
                                 }}
                               >
-                                <div className="absolute top-[0.8vw] right-[5vw]">
+                                {/* <div className="absolute top-[0.8vw] right-[5vw]">
                                   {seatHighlight(seat)}
-                                </div>
+                                </div> */}
                                 <Tooltip
                                   placement="top"
                                   title={
@@ -589,7 +621,17 @@ export default function MobileSeatLayout({
                                     xmlns="http://www.w3.org/2000/svg"
                                     onClick={() => handleSeatClick(seat)}
                                     className="cursor-pointer"
-                                    style={{ userSelect: "none" }}
+                                    style={{
+                                      userSelect: "none",
+                                      filter:
+                                        currentrate ===
+                                          Math.round(seat?.price) &&
+                                          seat.isBooked === false
+                                          ? `drop-shadow(2px 2px 2px  ${getBorderClass(
+                                            seat
+                                          )})`
+                                          : null,
+                                    }}
                                   >
                                     <path
                                       d="M1.30176 209.776V7.28689C1.30176 4.18046 3.82002 1.6622 6.92645 1.6622H45.3618L82.8597 1.66212C85.9662 1.66211 88.4844 4.18038 88.4844 7.28681V209.776C88.4844 212.882 85.9662 215.4 82.8597 215.4H45.3618H6.92645C3.82002 215.4 1.30176 212.882 1.30176 209.776Z"

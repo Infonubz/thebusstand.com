@@ -9,13 +9,17 @@ import {
 } from "../../../../Api-Abhibus/MyAccount/ViewTicket";
 // import { GetCancelTicket } from "../../../../Api/MyAccounts/MyBookings";
 import empty from "../../../../Assets/CommonImages/empty.png";
-import { useNavigate } from "react-router";
+import { Await, useNavigate } from "react-router";
 import dayjs from "dayjs";
-
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
+import ModalPopup from "../../../Common/Modal/Modal";
+import { FaCheckCircle } from "react-icons/fa";
+import { Get_TBS_Booking_details } from "../../../../Api-TBS/Dashboard/Dashboard";
 const validationSchema = Yup.object({
   ticketNumber: Yup.string().required(
     "Please Enter Your Ticket Number (From Your Ticket)"
-  ),
+  ).matches(/^\S+$/, "Ticket Number cannot contain spaces"),
   // phoneNumber: Yup.string()
   //   .required("Phone Number Is Required")
   //   .matches(/^[0-9]+$/, "Phone Number must be a number")
@@ -32,6 +36,9 @@ const CancelIndex = () => {
     ticketNo: "",
     phoneNo: "",
   });
+  const [cancellResModal, setCancellResModal] = useState(false);
+  const [cancelResponse, setCancelResponse] = useState("");
+
   console.log(formValues, "responsegggggggggg");
   const dispatch = useDispatch();
   const [info, setInfo] = useState("");
@@ -40,6 +47,11 @@ const CancelIndex = () => {
     starTime: "",
     endTime: "",
   });
+    const tbs_discount = useSelector((state) => state?.live_per);
+
+  const closeDeleteModal = () =>{
+    setCancellResModal(false)
+  }
   const handleSubmit = async (values) => {
     // GetCancelTicket(
     //   dispatch,
@@ -49,6 +61,7 @@ const CancelIndex = () => {
     // );
     setInfo(values);
     try {
+      await Get_TBS_Booking_details(values.ticketNumber, dispatch);
       const data = await PreCancelTicket(values ,tbs_ticket_details?.mobile);
       setCancellationPolicy(data);
       console.log(data, "datadatadatadatadatsdsdsdzfdghfga");
@@ -161,11 +174,12 @@ const CancelIndex = () => {
     }
   }, [passengerDetails]);
 
-  console.log(calArrival, "thedate");
+  console.log(cancelResponse, "thedate");
+
 
   return (
     <div
-      className={`w-full md:h-auto h-[60vw] ${
+      className={`w-full md:h-auto h-auto md:pb-[0vw] pb-[2vw] ${
         passengerDetails?.ticket_det?.length > 0 ? "pb-[0vw]" : "pb-[2.5vw]"
       }   bg-white shadow-lg shadow-gray-400 rounded-[2vw] md:rounded-[.9vw] border-b-[0.1vw] `}
     >
@@ -184,7 +198,7 @@ const CancelIndex = () => {
                 Cancel Your Ticket
               </div>
               <div
-                className={`grid grid-rows-3 gap-y-[6vw] md:gap-y-[0vw] justify-center md:flex md:justify-evenly mt-[5vw] md:mt-[1vw]`}
+                className={`grid grid-rows-2 gap-y-[6vw] md:gap-y-[0vw] justify-center md:flex md:justify-evenly mt-[5vw] md:mt-[1vw]`}
               >
                 <div className={`relative`}>
                   <Field
@@ -257,12 +271,43 @@ const CancelIndex = () => {
                 submit
               </button>
             </div> */}
-              <div className="mt-[2vw]"></div>
+              <div className="mt-[1.5vw]"></div>
             </div>
           </Form>
         )}
       </Formik>
-      {showTable === true && passengerDetails?.ticket_det?.length > 0 ? (
+      <div>
+      {spinning ? (
+        // <div
+        //   style={{
+        //     position: "fixed",
+        //     top: 0,
+        //     left: 0,
+        //     width: "100%",
+        //     height: "100%",
+        //     // background: "rgba(0, 0, 0, 0.2)",
+        //     display: "flex",
+        //     justifyContent: "center",
+        //     alignItems: "center",
+        //     zIndex: 1000,
+        //   }}
+        // >
+        <Spin
+          className=""
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+          }}
+          spinning={spinning}
+          indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />}
+        />
+      ) :
+      <> 
+      {showTable === true && passengerDetails?.ticket_det?.length > 0 && cancellationPolicy?.status === "success" ? (
         <div className="md:px-[3.5vw] md:pb-[2vw] md:mt-0 mt-[7.5vw]">
           <PassengerList
             spinning={spinning}
@@ -275,11 +320,13 @@ const CancelIndex = () => {
             setShowtable={setShowtable}
             setFormValues={setFormValues}
             mobileno={tbs_ticket_details?.mobile}
+            setCancellResModal={setCancellResModal}
+            setCancelResponse={setCancelResponse}
           />
         </div>
       ) : (
         showTable === true && (
-          <div className="flex flex-col gap-x-[3vw] items-center mt-[13vw] md:mt-[0vw] md:pt-[1.5vw] justify-center">
+          <div className="flex flex-col gap-x-[3vw] items-center md:pb-[2.5vw] mt-[13vw] md:mt-[0vw] md:pt-[1.5vw] justify-center">
             <img
               src={empty}
               alt="empty"
@@ -287,7 +334,8 @@ const CancelIndex = () => {
             />
             <div className="flex flex-col gap-y-[0.5vw] items-center pt-[2vw] justify-center">
               <label className="text-[4.2vw] md:text-[2vw] text-[#1F487C] font-bold text-center">
-                Invalid Ticket Number or Phone Number
+                {/* Invalid Ticket Number or Phone Number */}
+                Invalid ticket number or cancellation policy might have been expired.
               </label>
               <label className="flex text-[3.6vw] md:text-[1.1vw] text-[#1F487C] items-center gap-[0.5vw]">
                 Looks like given details are invalid
@@ -302,6 +350,38 @@ const CancelIndex = () => {
           </div>
         )
       )}
+      </>
+}
+    </div>
+    <ModalPopup
+        show={cancellResModal}
+        onClose={closeDeleteModal}
+        height="auto"
+        width="auto"
+        closeicon={false}
+        className="md:block hidden"
+      >
+       <div className="text-[#1F487C] md:w-[25vw] md:h-[13vw] h-[35vw] w-[70vw]">
+  {/* <div className="font-bold text-center text-[3.5vw] md:text-[1.2vw] pb-[3vw] md:pb-[2vw] flex items-center gap-x-[.5vw]"><span><FaCheckCircle  className="md:text-[1.5vw] text-[5.5vw]" color="green" /></span> <span>{cancelResponse?.message}</span></div> */}
+
+  {/* <div className={`grid grid-cols-2 gap-x-[1vw] md:pl-[1vw] pl-[4vw] md:pb-[1vw] pb-[3vw] text-[3vw] md:text-[1vw] ${cancelResponse?.NewPNR ? "" :"md:pb-[3vw] pb-[6vw]"}`}> */}
+    <div className="col-span-1 flex flex-col font-bold gap-y-[2vw] md:gap-y-[1vw]">
+      {cancelResponse?.NewPNR ? (<div>New Ticket No :</div>) : "" } 
+      <div>Refund Amount :</div>
+    </div>
+<div>{cancelResponse}</div>
+    <div className="col-span-1 flex flex-col gap-y-[2vw] md:gap-y-[1vw]">
+     {/* {cancelResponse?.NewPNR ? (<div>{cancelResponse?.NewPNR}</div>) : "" }  */}
+      {/* <div>{Math.round(cancelResponse?.return_amount)}</div> */}
+      {/* <div>{tbs_discount}</div> */}
+      {/* <div>{Math.round(cancelResponse?.return_amount - ( cancelResponse?.return_amount * (tbs_discount / 100 )))}</div> */}
+    </div>
+  </div>
+
+  <div className="text-center mt-[1vw] md:px-[0vw] px-[1vw] text-[2.6vw] md:text-[.9vw]">The refund amount will be returned to your account within 5 - 7 working days</div>
+{/* </div> */}
+
+      </ModalPopup>
     </div>
   );
 };

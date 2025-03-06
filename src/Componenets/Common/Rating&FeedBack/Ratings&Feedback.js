@@ -132,7 +132,7 @@ export const RatingFeedBack = ({ setRatingModal }) => {
                 <div>
                   <div className="overflow-hidden w-full rounded-lg md:py-[1vw] py-[2.5vw] px-[2.5vw] over">
                     <span className="text-[#1F487C] font-bold md:text-[1.5vw]">
-                      Enjoy our Website?
+                      Enjoying our Website?
                     </span>
                     <div className="md:py-[1vw] py-[2.5vw]">
                       <p className="md:text-[1.25vw] text-[4vw] text-[#1F487C] font-semibold text-center">
@@ -385,7 +385,7 @@ export const RatingFeedBack = ({ setRatingModal }) => {
                       alt="Rating Graphic"
                     />
                     <span className="text-[#1F487C] font-bold md:text-[1.5vw] text-[5vw] absolute md:top-[1.5vw] top-[1.5vw] left-[2vw]">
-                      Enjoy our Website?
+                      Enjoying our Website?
                     </span>
                   </div>
                   <div className="px-[1vw]">

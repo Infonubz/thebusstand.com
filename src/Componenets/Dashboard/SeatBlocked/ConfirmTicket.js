@@ -61,6 +61,9 @@ export default function ConfirmTicket({
   const tbs_available_offer = useSelector(
     (state) => state?.tbs_available_offer?.data
   );
+  console.log(selectvalue, "tbs_discounttbs_discount");
+
+  const [finaldiscount, setFinalDiscount] = useState(null);
   const [promoCode, setPromoCode] = useState("");
   const [spinning, setSpinning] = useState(false);
   const [ticketDetails, setTicketDetails] = useState(null);
@@ -68,6 +71,8 @@ export default function ConfirmTicket({
   const { handleChange, isSubmitting } = useFormikContext();
   const [orderid, setOrderId] = useState(null);
   const abhibusamount = Number(faredetails?.totalAmount);
+  console.log(promoCode, "Therikaa")
+
   const seatTaxList = Object.values(seatDetails)
     .map((item) => item.tax.split(",")[0])
     .filter((tax) => tax);
@@ -88,13 +93,8 @@ export default function ConfirmTicket({
       tbs_discount
     ) +
     Number(Math.round(totaltax)) -
-    Number(tbsdiscountamount);
-  const tbsbasefare =
-    calculateDiscountedFare(
-      BusDetails?.BUS_START_DATE,
-      Number(faredetails?.TotadultFare),
-      tbs_discount
-    ) + Number(Math.round(totaltax));
+    Number(finaldiscount);
+  const tbsbasefare = faredetails?.TotadultFare;
   const handlePromoCode = async () => {
     console.log("hi");
   };
@@ -280,6 +280,8 @@ export default function ConfirmTicket({
     BusDetails?.TravelTime
   );
   const currentpath = useParams();
+  const dddddd = new Date();
+  console.log(dddddd, "dddddddddddddddddddddddddddddd");
 
   const handleBookingPrice = async (order_id, payment_id, signature, msg) => {
     setTicketLoading(true);
@@ -301,16 +303,19 @@ export default function ConfirmTicket({
         const values = {
           ticketNumber: response?.TicketNo,
         };
-        const cancel_data = await PreCancelTicket(
-          values,
-          ticketdetails?.ticketInfo?.mobile
-        );
-        console.log("cancel_data",cancel_data);
-        
+        console.log(ticketdetails, "ticketdetails");
+
+        // const cancel_data = await PreCancelTicket(values, mobileInput);
+        // console.log("cancel_data", cancel_data);
+
         if (response?.TicketNo) {
           setTicketNumber(response?.TicketNo);
           setTicketLoading(false);
         }
+        const tbs_deal = Math?.round(
+          Number(faredetails?.TotadultFare) * Number(tbs_discount / 100)
+        );
+        // const data = await PreCancelTicket(values, tbs_ticket_details?.mobile);
 
         const TBS_booking = await TBS_Booking_Details(
           response?.TicketNo,
@@ -327,11 +332,15 @@ export default function ConfirmTicket({
           seatDetails,
           currentpath,
           LuxuryFind(ticketdetails?.ticketInfo?.bustype),
-          tbsdiscountamount,
+          finaldiscount,
           selectvalue?.code,
           tbsamount,
           tbsbasefare,
-          dispatch
+          dispatch,
+          tbs_deal,
+          tbs_discount,
+          totaltax,
+          ticketdetails?.ticketInfo?.Board_Halt_Time
         );
         dispatch({
           type: GET_TICKET_DETAILS,
@@ -447,7 +456,6 @@ export default function ConfirmTicket({
   //     pay.open();
   //   });
   // };
-  console.log(travelerDetails, "travelerDetails");
 
   const handleoffer = (item) => {
     if (selectvalue?.value === item?.offer_value) {
@@ -484,7 +492,11 @@ export default function ConfirmTicket({
         setDiscount(null);
         setFinalDiscount(null);
       } else {
+        // if (promoCode != "") {
         setDiscount(Math.round(item?.offer_value));
+        // } else {
+        //   setDiscount(null);
+        // }
       }
     } else {
       const amount = calculateDiscountedFare(
@@ -519,12 +531,12 @@ export default function ConfirmTicket({
       }, 1000);
     }
   }, [faredetails?.TotadultFare]);
-  const [finaldiscount, setFinalDiscount] = useState(null);
   const handlesubmit = async (values, { setFieldError }) => {
     if (!values.coupon_code) {
       setFieldError("coupon_code", "Promo code is required");
       return;
     }
+    setPromoCode(values.coupon_code);
     try {
       const response = await GetOfferValid(
         emailInput,
@@ -535,7 +547,7 @@ export default function ConfirmTicket({
         setFinalDiscount(tbsdiscountamount);
       } else {
         setFinalDiscount(null);
-        setFieldError("coupon_code", "Coupon code is not valid");
+        setFieldError("coupon_code", "Coupon code is not valid or expired");
       }
       console.log("datawdedwedew", response?.data);
     } catch (error) {
@@ -543,7 +555,7 @@ export default function ConfirmTicket({
     }
   };
   console.log(tbsdiscountamount, "tbsdiscountamount");
-  console.log(selectvalue, "selectvalueselectvalue");
+  console.log(promoCode, "selectvalueselectvalue");
 
   return (
     <>
@@ -559,11 +571,10 @@ export default function ConfirmTicket({
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-[2vw] h-[5vw]">
             <div
-              className={`${
-                LuxuryFind(BusDetails.Bus_Type_Name) === true
-                  ? "bg-[#FFEEC9]"
-                  : "bg-white"
-              } col-span-1 h-[67vw] md:h-[17.4vw] w-full rounded-[1.5vw]  md:rounded-[0.5vw]`}
+              className={`${LuxuryFind(BusDetails.Bus_Type_Name) === true
+                ? "bg-[#FFEEC9]"
+                : "bg-white"
+                } col-span-1 h-[67vw] md:h-[17.4vw] w-full rounded-[1.5vw]  md:rounded-[0.5vw]`}
               style={{
                 boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
               }}
@@ -609,7 +620,7 @@ export default function ConfirmTicket({
                               onClick={() => {
                                 handleoffer(item);
                               }}
-                              // value={selectvalue?.value}
+                            // value={selectvalue?.value}
                             />
                           </div>
                           <div className="col-span-9 flex flex-col w-full min-w-0 pr-[2vw]">
@@ -707,11 +718,10 @@ export default function ConfirmTicket({
               </div>
             </div>
             <div
-              className={`${
-                LuxuryFind(BusDetails.Bus_Type_Name) === true
-                  ? "bg-[#FFEEC9]"
-                  : "bg-white"
-              } col-span-1 h-[40vw] md:h-[17.4vw] w-full rounded-[0.5vw]`}
+              className={`${LuxuryFind(BusDetails.Bus_Type_Name) === true
+                ? "bg-[#FFEEC9]"
+                : "bg-white"
+                } col-span-1 h-[40vw] md:h-[17.4vw] w-full rounded-[0.5vw]`}
               style={{
                 boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
               }}
@@ -737,11 +747,7 @@ export default function ConfirmTicket({
                   <div className="px-[1vw] flex justify-between">
                     <p className="md:text-[1.1vw] text-[3.5vw]">Base Fare</p>
                     <p className="md:text-[1.1vw] text-[3.5vw]">
-                      {`₹ ${calculateDiscountedFare(
-                        BusDetails?.BUS_START_DATE,
-                        faredetails?.TotadultFare,
-                        tbs_discount
-                      )}`}
+                      {`₹ ${Math?.round(faredetails?.TotadultFare)}`}
                     </p>
                   </div>
                   {/* <div className="px-[1vw] flex justify-between">
@@ -751,12 +757,21 @@ export default function ConfirmTicket({
                 </p>
               </div> */}
                   <div className="px-[1vw] flex justify-between">
-                    <p className="md:text-[1.1vw] text-[3.5vw]">Service Tax</p>
+                    <p className="md:text-[1.1vw] text-[3.5vw]">GST</p>
                     <p className="md:text-[1.1vw] text-[3.5vw]">
                       + ₹ {Math.round(totaltax)}
                     </p>
                   </div>
-                  {finaldiscount != null && (
+                  <div className="px-[1vw] flex justify-between">
+                    <p className="md:text-[1.1vw] text-[3.5vw]">TBS Deal</p>
+                    <p className="md:text-[1.1vw] text-[3.5vw]">
+                      {`- ₹ ${Math?.round(
+                        Number(faredetails?.TotadultFare) *
+                        Number(tbs_discount / 100)
+                      )}`}
+                    </p>
+                  </div>
+                  {finaldiscount != null && promoCode != "" && (
                     <div className="px-[1vw] flex justify-between">
                       <p className="md:text-[1.1vw] text-[3.5vw]">
                         Discount
@@ -772,9 +787,10 @@ export default function ConfirmTicket({
                     </div>
                   )}
                   <button
-                    className={`w-full md:h-[3vw] h-[8vw] rounded-[1.5vw] md:rounded-[0vw] md:rounded-b-[0.5vw] mt-[12vw] ${
-                      finaldiscount != null ? "md:mt-[6.2vw]" : "md:mt-[7.85vw]"
-                    } flex 
+                    className={`w-full md:h-[3vw] h-[8vw] rounded-[1.5vw] md:rounded-[0vw] md:rounded-b-[0.5vw] mt-[12vw] ${finaldiscount != null && promoCode != ""
+                      ? "md:mt-[4.55vw]"
+                      : "md:mt-[6.2vw]"
+                      } flex 
                                           items-center justify-between px-[3vw] md:px-[1vw] cursor-pointer`}
                     style={{
                       backgroundColor:
@@ -791,15 +807,14 @@ export default function ConfirmTicket({
                     Number(discount) + Number(Math.round(discount * 0.03))
                   }`} */}
                       <span className="font-extrabold cursor-pointer pl-[1vw] text-[1.3vw]">
-                        {`₹ ${
-                          calculateDiscountedFare(
-                            BusDetails?.BUS_START_DATE,
-                            Number(faredetails?.TotadultFare),
-                            tbs_discount
-                          ) +
+                        {`₹ ${calculateDiscountedFare(
+                          BusDetails?.BUS_START_DATE,
+                          Number(faredetails?.TotadultFare),
+                          tbs_discount
+                        ) +
                           Number(Math.round(totaltax)) -
                           Number(finaldiscount)
-                        }`}
+                          }`}
                       </span>
                     </label>
                     <span className="pl-[0.5vw] cursor-pointer">

@@ -13,7 +13,7 @@ import { BiSolidOffer } from "react-icons/bi";
 import dayjs from "dayjs";
 import Barcode from "react-barcode";
 import { useRef } from "react";
-import html2canvas from "html2canvas";
+// import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import complete from "../../../../Assets/BookingList/complete.png";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -234,43 +234,43 @@ export default function PassengerDetails({
 
   // };
 
-  const downloadPDF = () => {
-    setLoader(true);
-    const capture = componentRef.current;
-    if (capture) {
-      html2canvas(capture, {
-        scale: 2, // Higher scale for better image quality
-        useCORS: true, // For cross-origin resources (images from other domains)
-        logging: true, // Optional, logs any warnings/errors
-      }).then((canvas) => {
-        const imgData = canvas.toDataURL("image/png"); // Image data URL
+  // const downloadPDF = () => {
+  //   setLoader(true);
+  //   const capture = componentRef.current;
+  //   if (capture) {
+  //     html2canvas(capture, {
+  //       scale: 2, // Higher scale for better image quality
+  //       useCORS: true, // For cross-origin resources (images from other domains)
+  //       logging: true, // Optional, logs any warnings/errors
+  //     }).then((canvas) => {
+  //       const imgData = canvas.toDataURL("image/png"); // Image data URL
 
-        const doc = new jsPDF("p", "mm", "a4");
-        // Calculate the appropriate size of the image in the PDF
-        const componentWidth = doc.internal.pageSize.getWidth();
-        const componentHeight = doc.internal.pageSize.getHeight();
+  //       const doc = new jsPDF("p", "mm", "a4");
+  //       // Calculate the appropriate size of the image in the PDF
+  //       const componentWidth = doc.internal.pageSize.getWidth();
+  //       const componentHeight = doc.internal.pageSize.getHeight();
 
-        // Add the image to the PDF with the correct dimensions
-        doc.addImage(imgData, "PNG", 0, 0, componentWidth, componentHeight);
+  //       // Add the image to the PDF with the correct dimensions
+  //       doc.addImage(imgData, "PNG", 0, 0, componentWidth, componentHeight);
 
-        // Save the PDF
-        doc.save("receipt.pdf");
-        setLoader(false); // Stop loader after PDF is saved
-      });
-    } else {
-      console.error("Element not found");
-      setLoader(false);
-    }
-  };
+  //       // Save the PDF
+  //       doc.save("receipt.pdf");
+  //       setLoader(false); // Stop loader after PDF is saved
+  //     });
+  //   } else {
+  //     console.error("Element not found");
+  //     setLoader(false);
+  //   }
+  // };
 
-  const handleDownloadClick = () => {
-    const capture = componentRef.current;
-    if (capture) {
-      downloadPDF();
-    } else {
-      console.error("Element not found on button click.");
-    }
-  };
+  // const handleDownloadClick = () => {
+  //   const capture = componentRef.current;
+  //   if (capture) {
+  //     downloadPDF();
+  //   } else {
+  //     console.error("Element not found on button click.");
+  //   }
+  // };
 
   // useEffect(() => {
   //   const capture = componentRef.current;

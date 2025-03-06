@@ -1,4 +1,4 @@
-import { Field, Form, Formik, useFormikContext } from "formik";
+import { Field, Form, Formik, useFormikContext, ErrorMessage } from "formik";
 import React, { useEffect, useState } from "react";
 import { BiSolidOffer } from "react-icons/bi";
 import { RiArrowRightDoubleLine } from "react-icons/ri";
@@ -6,7 +6,7 @@ import { Abhibus_SeatConfirmed } from "../../../../Api-Abhibus/Dashboard/Dashboa
 import { toast } from "react-toastify";
 import { calculateDiscountedFare } from "../../../Common/Common-Functions/TBS-Discount-Fare";
 import { useNavigate, useParams } from "react-router";
-import { Modal } from "antd";
+import { Empty, Modal } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import ModalPopup from "../../../Common/Modal/Modal";
@@ -15,7 +15,14 @@ import { ViewTicketById } from "../../../../Api-Abhibus/MyAccount/ViewTicket";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import dayjs from "dayjs";
-import { TBS_Booking_Details } from "../../../../Api-TBS/Dashboard/Dashboard";
+import { GetAvailableOffers, GetOfferValid, TBS_Booking_Details } from "../../../../Api-TBS/Dashboard/Dashboard";
+import { GetDiscountOffers } from "../../../../Api-TBS/Home/Home";
+import * as Yup from "yup";
+
+const validationSchema = Yup.object().shape({
+  coupon_code: Yup.string().required("Coupon Code is required"),
+});
+
 
 export default function MobileConfirmTicket({
   MobSeatDetails,
@@ -87,6 +94,7 @@ export default function MobileConfirmTicket({
 
 
   const initiateRazorpay = (generatedOrderId) => {
+    setPayButton(false);
     const options = {
       key: key_id,
       amount: tbsamount * 100,
@@ -183,6 +191,13 @@ export default function MobileConfirmTicket({
           response?.TicketNo,
           setSpinning
         );
+
+
+        const tbs_deal = Math?.round(
+          Number(faredetails?.TotadultFare) * Number(tbs_discount / 100)
+        );
+        // const data = await PreCancelTicket(values, tbs_ticket_details?.mobile);
+
         const TBS_booking = await TBS_Booking_Details(
           response?.TicketNo,
           order_id,
@@ -201,7 +216,11 @@ export default function MobileConfirmTicket({
           tbsdiscountamount,
           selectvalue?.code,
           tbsamount,
-          tbsbasefare
+          tbsbasefare,
+          dispatch,
+          tbs_deal,
+          tbs_discount,
+          totaltax
         );
         dispatch({
           type: GET_TICKET_DETAILS,
@@ -235,7 +254,11 @@ export default function MobileConfirmTicket({
     { Coupon: "WEEKEND50", details: "Avail 50% off on weekend bus travel." },
   ];
   const offerlist = useSelector((state) => state?.discount_offer_list);
-  console.log(offerlist?.response, "offerlistofferlist");
+
+  const tbs_available_offer = useSelector(
+    (state) => state?.tbs_available_offer?.data
+  );
+  console.log(tbs_available_offer, "available_offer")
   useEffect(() => {
     if (navigate === true) {
       navigation("/seats", {
@@ -261,7 +284,6 @@ export default function MobileConfirmTicket({
     };
 
     try {
-      console.log("API URL:", apiUrl); // Debugging API URL
 
       const authHeader = `Basic ${btoa(`${username}:${password}`)}`;
 
@@ -272,7 +294,6 @@ export default function MobileConfirmTicket({
         },
       });
 
-      console.log("Generated Order ID:", response?.data?.id); // Debugging Order ID
       return response?.data.id; // Return the order ID
     } catch (error) {
       if (error.response) {
@@ -349,6 +370,7 @@ export default function MobileConfirmTicket({
   //   });
   // };
   const RazorpayGateway = async () => {
+    setPayButton(true);
     setRazorpayLoading(true);
     if (!tbsamount) {
       alert("Please enter an amount");
@@ -375,9 +397,13 @@ export default function MobileConfirmTicket({
     Symbol: "",
     code: "",
   });
+  console.log(selectvalue, 'selectvalue_selectvalue')
   const [tbsdiscountamount, setDiscount] = useState(null);
+  const [finaldiscount, setFinalDiscount] = useState(null);
+  const [paybutton, setPayButton] = useState(false);
 
   const handleoffer = (item) => {
+    console.log(item, 'item_item_item')
     if (selectvalue?.value === item?.offer_value) {
       setSelectValues({
         ...selectvalue,
@@ -410,8 +436,13 @@ export default function MobileConfirmTicket({
       const final = Number(amount) - Number(item?.offer_value);
       if (selectvalue?.value === item?.offer_value) {
         setDiscount(null);
+        setFinalDiscount(null);
       } else {
+        // if (promoCode != "") {
         setDiscount(Math.round(item?.offer_value));
+        // } else {
+        //   setDiscount(null);
+        // }
       }
     } else {
       const amount = calculateDiscountedFare(
@@ -446,8 +477,48 @@ export default function MobileConfirmTicket({
       }, 1000);
     }
   }, [faredetails?.TotadultFare]);
+
+
+  useEffect(() => {
+    GetDiscountOffers(dispatch);
+  }, [dispatch, sessionStorage.getItem("occupation_id")]);
+
+  const GetOffers = async () => {
+    try {
+      const data = await GetAvailableOffers(dispatch, emailInput, mobileInput);
+    } catch {
+      console.log("hi");
+    }
+  };
+  useEffect(() => {
+    GetOffers();
+  }, []);
+
+  const handlesubmit = async (values, { setFieldError }) => {
+    if (!values.coupon_code) {
+      setFieldError("coupon_code", "Promo code is required");
+      return;
+    }
+    setPromoCode(values.coupon_code);
+    try {
+      const response = await GetOfferValid(
+        emailInput,
+        mobileInput,
+        values.coupon_code
+      );
+      if (response?.data === true) {
+        setFinalDiscount(tbsdiscountamount);
+      } else {
+        setFinalDiscount(null);
+        setFieldError("coupon_code", "Coupon code is not valid or expired");
+      }
+      console.log("datawdedwedew", response?.data);
+    } catch (error) {
+      console.log("Error fetching offer:", error);
+    }
+  };
   console.log(tbsdiscountamount, "tbsdiscountamount");
-  console.log(selectvalue, "selectvalueselectvalue");
+  console.log(promoCode, "selectvalueselectvalue");
 
   return (
     <div>
@@ -480,206 +551,234 @@ export default function MobileConfirmTicket({
               Offers
             </h1>
             <div className=" px-[3vw] h-[42vw]  overflow-y-auto">
-              {offerlist?.response?.map((item, index) => (
-                <div
-                  key={index}
-                  className="border-[0.1vw] rounded-[2vw]  mb-[2vw]"
-                  style={{
-                    borderColor:
-                      LuxuryFind(MobBusDetails.Bus_Type_Name) === true
-                        ? "#393939"
-                        : "#1F487C",
-                  }}
-
-                >
-                  <div className="grid grid-cols-10 m-[1vw] w-full">
-                    <div className="col-span-1 pt-[.5vw] ">
-                      <input
-                        type="radio"
-                        name="offer"
-                        className="w-full h-auto"
-                        checked={selectvalue?.value === item.offer_value}
-                        onClick={() => {
-                          handleoffer(item)
-                        }}
-                      />
-                    </div>
-                    <div className="col-span-9 flex flex-col w-full">
-                      <p
-                        className=" text-[3.3vw] font-bold"
-                      // style={{ color: "#1F487C" }}
-                      >
-                        {item.code}
-                      </p>
-                      <p className=" text-[3vw] font-semibold text-[#A4A4A4] break-words px-[2vw]">
-                        {item.offer_desc}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className=" h-[15vw]  py-[2vw]  w-full">
-              <div className="px-[2.5vw] ">
-                {/* <Formik
-                                    initialValues={{
-                                        name: "",
-                                    }}
-                                    //   validationSchema={validationSchema}
-                                    onSubmit={(values) => {
-                                        // Handle form submission
-                                        // setShowRegister(true);
-                                        localStorage.setItem("page1", true);
-                                        localStorage.setItem("occupation", values.option);
-                                        localStorage.setItem("mobile", values.mobileData);
-                                    }}
-                                >
-                                    {({ handleChange, isSubmitting }) => ( */}
-                <Form className="flex px-[1vw] mt-[0.8vw] relative">
-                  <BiSolidOffer
-                    className="absolute left-[1.5vw] top-[0.5vw] text-[7vw] "
-                    // color="color"
+              {tbs_available_offer?.length > 0 ? (
+                tbs_available_offer?.map((item, index) => (
+                  <div
+                    key={index}
+                    className="border-[0.1vw] rounded-[2vw]  mb-[2vw]"
                     style={{
-                      color:
-                        LuxuryFind(MobBusDetails.Bus_Type_Name) === true
-                          ? "#393939"
-                          : "#1F487C",
-                    }}
-                  />
-
-                  <Field
-                    type="text"
-                    name="name"
-                    placeholder="Enter promo code"
-                    className="border-dashed border-[.3vw]  placeholder:text-[3.5vw]  outline-none text-[3.5vw]  h-[9vw] w-[75%] rounded-l-[1.5vw] pl-[9vw] "
-                    style={{
-                      // color: "#1F487C",
                       borderColor:
                         LuxuryFind(MobBusDetails.Bus_Type_Name) === true
                           ? "#393939"
                           : "#1F487C",
-                      // background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`
                     }}
-                    onChange={(e) => {
-                      setPromoCode(e.target.value);
-                      handleChange(e);
-                    }}
-                  />
-                  <button
-                    onClick={handlePromoCode}
-                    className=" w-[25%]  h-[9vw]  rounded-r-[1.5vw]  text-white  font-bold flex items-center justify-center"
+
+                  >
+                    <div className="grid grid-cols-10 m-[1vw] w-full">
+                      <div className="col-span-1 pt-[.5vw] ">
+                        <input
+                          type="radio"
+                          name="offer"
+                          className="w-full h-auto"
+                          checked={selectvalue?.value === item.offer_value}
+                          onClick={() => {
+                            handleoffer(item)
+                          }}
+                        />
+                      </div>
+                      <div className="col-span-9 flex flex-col w-full">
+                        <p
+                          className=" text-[3.3vw] font-bold"
+                        // style={{ color: "#1F487C" }}
+                        >
+                          {item.code}
+                        </p>
+                        <p className=" text-[3vw] font-semibold text-[#A4A4A4] break-words px-[2vw]">
+                          {item.offer_desc}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))) : (
+                <div className="flex flex-col items-center justify-center">
+                  <Empty description={false} />
+                  <label
+                    className="text-[3.5vw] font-semibold "
                     style={{
-                      backgroundColor:
-                        LuxuryFind(MobBusDetails.Bus_Type_Name) === true
-                          ? "#393939"
-                          : "#1F487C",
+                      color: LuxuryFind(MobBusDetails.Bus_Type_Name)
+                        ? "#393939"
+                        : "#1F487C",
                     }}
                   >
-                    Apply
-                  </button>
-                </Form>
-                {/* )}
-                                </Formik> */}
+                    No Offers Available
+                  </label>
+                </div>
+              )}
+            </div>
+
+            <div className=" h-[15vw]  py-[2vw]  w-full">
+              <div className="px-[2.5vw] ">
+                <Formik
+                  initialValues={{
+                    coupon_code: selectvalue?.code || "",
+                  }}
+                  validationSchema={validationSchema}
+                  onSubmit={handlesubmit}
+                  enableReinitialize
+                >
+                  {({ handleChange, handleSubmit, values }) => (
+                    <Form className="flex px-[1vw] mt-[0.8vw] relative" onSubmit={handleSubmit}>
+                      <BiSolidOffer
+                        className="absolute left-[1.5vw] top-[0.5vw] text-[7vw] "
+                        // color="color"
+                        style={{
+                          color:
+                            LuxuryFind(MobBusDetails.Bus_Type_Name) === true
+                              ? "#393939"
+                              : "#1F487C",
+                        }}
+                      />
+
+                      <Field
+                        type="text"
+                        name="coupon_code"
+                        placeholder="Enter offer code"
+                        value={values?.coupon_code}
+                        className="border-dashed border-[.3vw]   placeholder:text-[3.5vw]  outline-none text-[3.5vw]  h-[9vw] w-[75%] rounded-l-[1.5vw] pl-[9vw] "
+                        style={{
+                          // color: "#1F487C",
+                          borderColor:
+                            LuxuryFind(MobBusDetails.Bus_Type_Name) === true
+                              ? "#393939"
+                              : "#1F487C",
+                          // background: `linear-gradient(to right,${colorcode.gradient} , #FFFFFF)`
+                        }}
+                        onChange={(e) => {
+                          setPromoCode(e.target.value);
+                          handleChange(e);
+                        }}
+                      />
+                      <ErrorMessage
+                        name="coupon_code"
+                        component="div"
+                        className="text-red-500 text-[2.5vw] md:text-[0.75vw] absolute md:top-[2.75vw] md:left-[4vw] top-[4.5vw]"
+                      />
+                      <button
+                        // onClick={handlePromoCode}
+                        type="submit"
+                        className=" w-[25%]  h-[9vw]  rounded-r-[1.5vw]  text-white  font-bold flex items-center justify-center"
+                        style={{
+                          backgroundColor:
+                            LuxuryFind(MobBusDetails.Bus_Type_Name) === true
+                              ? "#393939"
+                              : "#1F487C",
+                        }}
+                      >
+                        Apply
+                      </button>
+                    </Form>
+                  )}
+                </Formik>
               </div>
             </div>
           </div>
         </div>
+       
         <div
           className={`${LuxuryFind(MobBusDetails.Bus_Type_Name) === true
             ? "bg-[#FFEEC9]"
             : "bg-white"
-            } col-span-1 h-[40vw]  w-full rounded-[0.5vw]`}
+            } col-span-1 min-h-[45] max-h -auto w-full  mb-[2vw] px-[2vw] rounded-[1.5vw]`}
           style={{
             boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
           }}
         >
-          <div className="grid grid-rows-10 h-[45vw]  w-full gap-[2vw]">
-            <div
-              className="row-span-4 h-[40vw] w-full rounded-[1.5vw] px-[2vw] pb-[2vw]"
+          <div className="flex flex-col  w-full gap-[1vw]">
+            <h1
+              className=" text-[4vw] font-semibold bg-gradient-to-r px-[1vw] py-[0.5vw] "
               style={{
-                boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+                color:
+                  LuxuryFind(MobBusDetails.Bus_Type_Name) === true
+                    ? "#393939"
+                    : "#1F487C",
               }}
             >
-              <h1
-                className=" text-[4vw] font-semibold bg-gradient-to-r px-[1vw] py-[0.5vw] "
-                style={{
-                  color:
-                    LuxuryFind(MobBusDetails.Bus_Type_Name) === true
-                      ? "#393939"
-                      : "#1F487C",
-                }}
-              >
-                Fare Details
-              </h1>
-              <div className="px-[1vw] flex justify-between">
-                <p className=" text-[3.5vw]">Base Fare</p>
-                <p className=" text-[3.5vw]">
-                  {/* {calculateDiscountedFare(
+              Fare Details
+            </h1>
+            <div className="px-[1vw] flex justify-between">
+              <p className=" text-[3.5vw]">Base Fare</p>
+              <p className=" text-[3.5vw]">
+                {`₹ ${Math?.round(faredetails?.TotadultFare)}`}
+                {/* {calculateDiscountedFare(
                     MobBusDetails?.BUS_START_DATE,
                     MobDiscount,
                     tbs_discount
                   )} */}
-                  {`₹ ${calculateDiscountedFare(
+                {/* {`₹ ${calculateDiscountedFare(
                     MobBusDetails?.BUS_START_DATE,
                     faredetails?.TotadultFare,
                     tbs_discount
-                  )}`}
+                  )}`} */}
+              </p>
+            </div>
+            <div className="px-[1vw] flex justify-between">
+              <p className="text-[3.5vw]">GST</p>
+              <p className="text-[3.5vw]">
+                + ₹ {Math.round(totaltax)}
+              </p>
+            </div>
+            <div className="px-[1vw] flex justify-between">
+              <p className="text-[3.5vw]">TBS Deal</p>
+              <p className="text-[3.5vw]">
+                {`- ₹ ${Math?.round(
+                  Number(faredetails?.TotadultFare) *
+                  Number(tbs_discount / 100)
+                )}`}
+              </p>
+            </div>
+            {finaldiscount != null && promoCode !== "" && (
+              <div className="px-[1vw] flex justify-between">
+                <p className="text-[3.5vw]">
+                  Discount
+                  <span className="pl-[0.5vw]">
+                    {selectvalue.Symbol?.includes("%")
+                      ? ` ( ${selectvalue?.value} % )`
+                      : `( Flat ₹ ${selectvalue?.value} )`}
+                  </span>
+                </p>
+                <p className="md:text-[1.1vw] text-[3.5vw]">
+                  - ₹ {finaldiscount}
                 </p>
               </div>
-              {selectvalue?.value != null && (
-                <div className="px-[1vw] flex justify-between">
-                  <p className="md:text-[1.1vw] text-[3.5vw]">
-                    Discount
-                    <span className="pl-[0.5vw]">
-                      {selectvalue.Symbol?.includes("%")
-                        ? ` ( ${selectvalue?.value} % )`
-                        : `( Flat ₹ ${selectvalue?.value} )`}
-                    </span>
-                  </p>
-                  <p className="md:text-[1.1vw] text-[3.5vw]">
-                    - ₹ {tbsdiscountamount}
-                  </p>
-                </div>
-              )}
-              <div className="px-[1vw] flex justify-between">
+            )}
+            {/* <div className="px-[1vw] flex justify-between">
                 <p className=" text-[3.5vw]">Service Tax</p>
                 <p className=" text-[3.5vw]">+ ₹ {Math.round(totaltax)}</p>
-              </div>
-              <button
-                className={`w-full h-[8vw] rounded-[1.5vw] ${selectvalue?.value ? 'mt-[8vw]' : 'mt-[12vw]'}  flex 
-                                          items-center justify-between px-[3vw] `}
-                style={{
-                  backgroundColor:
-                    LuxuryFind(MobBusDetails.Bus_Type_Name) === true
-                      ? "#393939"
-                      : "#1F487C",
-                }}
-                onClick={RazorpayGateway}
-              >
-                <span className="text-white text-[3.5vw]  font-semibold">
-                  Proceed to Pay{" "}
-                  {/* {`₹ ${
+              </div> */}
+            <button
+              className={`w-full h-[8vw] rounded-[1.5vw] flex items-center justify-between px-[3vw] mt-[3vw] `}
+              style={{
+                backgroundColor:
+                  LuxuryFind(MobBusDetails.Bus_Type_Name) === true
+                    ? "#393939"
+                    : "#1F487C",
+              }}
+              onClick={RazorpayGateway}
+              disabled={paybutton}
+
+            >
+              <span className="text-white text-[3.5vw]  font-semibold">
+                Proceed to Pay{" "}
+                {/* {`₹ ${
                     Number(discount) + Number(Math.round(discount * 0.03))
                   }`} */}
-                  {calculateDiscountedFare(
-                    MobBusDetails?.BUS_START_DATE,
-                    Number(faredetails?.TotadultFare),
-                    tbs_discount
-                  ) + Number(Math.round(totaltax)) - Number(tbsdiscountamount)}
-                </span>
-                <span className="pl-[0.5vw]">
-                  <RiArrowRightDoubleLine
-                    // size={"1.7vw"}
-                    color="white"
-                    className=" text-[3.5vw]"
-                  />
-                </span>
-              </button>
-            </div>
-            <div className="h-[2vw] w-full">
-              <div className=""></div>
-            </div>
+                {calculateDiscountedFare(
+                  MobBusDetails?.BUS_START_DATE,
+                  Number(faredetails?.TotadultFare),
+                  tbs_discount
+                ) + Number(Math.round(totaltax)) - Number(finaldiscount)}
+              </span>
+              <span className="pl-[0.5vw]">
+                <RiArrowRightDoubleLine
+                  // size={"1.7vw"}
+                  color="white"
+                  className=" text-[3.5vw]"
+                />
+              </span>
+            </button>
+          </div>
+          <div className="h-[2vw] w-full">
+            <div className=""></div>
           </div>
         </div>
       </div>

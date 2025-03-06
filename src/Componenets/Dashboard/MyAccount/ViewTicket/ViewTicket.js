@@ -12,14 +12,19 @@ import { LoadingOutlined } from "@ant-design/icons";
 import empty from "../../../../Assets/CommonImages/empty.png";
 import { useNavigate } from "react-router";
 import ViewFullTicket from "./ViewFullTicket";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { calculateDiscountedFare } from "../../../Common/Common-Functions/TBS-Discount-Fare";
+import { CurrentDiscount } from "../../../../Api-TBS/Home/Home";
+import { Get_TBS_Booking_details } from "../../../../Api-TBS/Dashboard/Dashboard";
 
 export default function ViewTicket() {
   const validationSchema = Yup.object({
-    ticketNumber: Yup.string().required("Ticket Number is required"),
+    ticketNumber: Yup.string()
+      .required("Ticket Number is required")
+      .matches(/^\S+$/, "Ticket Number cannot contain spaces"),
   });
   const apiUrl = process.env.REACT_APP_API_URL;
-
+  const tbs_discount = useSelector((state) => state?.live_per);
   const navigation = useNavigate();
   const [ticketDetails, setTicketDetails] = useState([]);
   const [spinning, setSpinning] = useState(false);
@@ -35,6 +40,8 @@ export default function ViewTicket() {
     // alert(values);
     // console.log(values.ticketNumber, "dkjfhdkjfhkdjf");
     // setSpinning(true)
+    Get_TBS_Booking_details(values.ticketNumber, dispatch);
+    setNoData(false);
     setShowList(true);
     const response = await ViewTicketById(
       values.ticketNumber,
@@ -55,6 +62,17 @@ export default function ViewTicket() {
   const onClose = () => {
     setShowDrawer(false);
     // sessionStorage.setItem("ticket_view", false);
+  };
+  const newConvertDate = (dateStr) => {
+    // Remove ordinal suffix (st, nd, rd, th)
+    const cleanedDateStr = dateStr?.replace(/(\d+)(st|nd|rd|th)/, "$1");
+
+    // Parse the date using moment
+    const formattedDate = moment(cleanedDateStr, "DD MMM YYYY")?.format(
+      "YYYY-MM-DD"
+    );
+
+    return formattedDate;
   };
 
   // const calculateArrival = (departureDate, departureTime, duration) => {
@@ -256,6 +274,25 @@ export default function ViewTicket() {
     const downloadUrl = `${apiUrl}/downloadticket/${ticketid}`;
     window.open(downloadUrl, "_blank");
   };
+
+  useEffect(() => {
+    if (ticketDetails?.ticketInfo?.journeyDate) {
+      CurrentDiscount(
+        dispatch,
+        newConvertDate(ticketDetails?.ticketInfo?.Journey_Date)
+      );
+    }
+  }, [ticketDetails]);
+
+  const [noData, setNoData] = useState(false);
+
+  useEffect(() => {
+    if (ticketDetails?.status === "fail") {
+      setNoData(true);
+    } else {
+      setNoData(false);
+    }
+  }, [ticketDetails]);
   return (
     <div>
       <Formik
@@ -271,13 +308,13 @@ export default function ViewTicket() {
       >
         {({ handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
-            <div className="w-full shadow-lg shadow-gray-400 h-[60vw] md:h-[15vw] bg-white rounded-[2vw] md:rounded-[.9vw] border-b-[0.1vw]">
+            <div className="w-full shadow-lg shadow-gray-400 h-[60vw] md:h-auto md:pb-[3.5vw] bg-white rounded-[2vw] md:rounded-[.9vw] border-b-[0.1vw]">
               <div className="text-center py-[3vw] md:py-[1vw] text-[#1F487C] p-[1vw] font-bold text-[5vw] md:text-[1.5vw]">
                 View Ticket
               </div>
-              <div className="text-center text-[#1F487C] p-[.5vw] font-semibold text-[4vw] md:text-[1.1vw]">
+              {/* <div className="text-center text-[#1F487C] p-[.5vw] font-semibold text-[4vw] md:text-[1.1vw]">
                 Verify your details, and View your Tickets
-              </div>
+              </div> */}
               <div className="grid grid-rows-3 gap-y-[7vw] justify-center md:gap-y-[0vw] md:flex md:justify-evenly mt-[5vw] md:mt-[3vw]">
                 <div className="relative flex">
                   <Field
@@ -302,6 +339,31 @@ export default function ViewTicket() {
                   </button>
                 </div>
               </div>
+              {noData ? (
+                <div className="flex flex-col gap-x-[3vw] items-center mt-[13vw] md:mt-[0vw] md:pt-[1.5vw] justify-center">
+                  <img
+                    src={empty}
+                    alt="empty"
+                    className="md:w-[8vw] md:h-[9vw] h-[24vw] w-[22vw]"
+                  />
+                  <div className="flex flex-col gap-y-[0.5vw] items-center pt-[3vw] justify-center">
+                    <label className="text-[4.2vw] md:text-[2vw] text-[#1F487C] font-bold text-center">
+                      Invalid ticket number or ticket might have been canceled.
+                    </label>
+                    <label className="flex text-[3.6vw] md:text-[1.1vw] text-[#1F487C] items-center gap-[0.5vw]">
+                      Looks like given details are invalid
+                    </label>
+                    <button
+                      onClick={() => navigation("/")}
+                      className="bg-[#1F487C] md:mt-[1vw] mt-[3vw] md:w-[12vw] w-[30vw] text-white font-bold md:text-[1.1vw] text-[3.6vw] md:h-[3vw] h-[8vw] rounded-full"
+                    >
+                      Plan a Trip
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
           </Form>
         )}
@@ -328,7 +390,7 @@ export default function ViewTicket() {
             </div>
           ) : (
             <>
-              {ticketDetails?.status === "success" ? (
+              {ticketDetails?.status === "success" && (
                 // <div className="grid grid-rows-12 w-full h-[45vw] md:max-h-[18.5vw] bg-white mt-[1vw] border-[0.1vw] border-gray-400 relative md:rounded-none rounded-[2vw]">
                 //   <div className="row-span-5 w-full border-b-[0.1vw] border-gray-400 ">
                 //     <div className="grid grid-cols-4 w-full h-full flex-col items-center ">
@@ -509,96 +571,140 @@ export default function ViewTicket() {
                 </div> */}
                   </div>
                   <div className="row-span-5 w-full border-b-[0.1vw]  border-gray-400 ">
-                    <div className="grid grid-cols-4 w-full h-full flex-col items-center ">
-                      <div className="col-span-3 flex flex-col gap-y-[0.5vw] pl-[4vw]">
-                        <div className="flex items-center">
-                          <label
-                            className={`block md:hidden text-[4.2vw]  ${
-                              ticketDetails?.bus_type_status === "luxury"
+                    <div className="grid md:grid-cols-7 grid-cols-9 w-full h-full flex-col items-center ">
+                      <div className="md:col-span-3 col-span-4 flex gap-x-[1vw]">
+                        <div className=" flex flex-col gap-y-[0.5vw] md:pl-[4vw] pl-[1.5vw]">
+                          <div className="flex items-center">
+                            <label
+                              className={`block md:hidden text-[3.5vw]  ${ticketDetails?.bus_type_status === "luxury"
                                 ? "text-[#393939]"
                                 : "text-[#1F487C]"
-                            } font-semibold`}
-                          >
-                            {ticketDetails?.ticketInfo?.operatorname}
-                          </label>
-                          <label
-                            className={`md:block hidden text-[1.1vw]  ${
-                              ticketDetails?.bus_type_status === "luxury"
+                                } font-semibold`}
+                            >
+                              {ticketDetails?.ticketInfo?.operatorname}
+                            </label>
+                            <label
+                              className={`md:block hidden text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
                                 ? "text-[#393939]"
                                 : "text-[#1F487C]"
-                            } font-bold`}
-                          >
-                            {ticketDetails?.ticketInfo?.source_name}
-                          </label>
-                          <span className="md:block hidden px-[0.5vw]">
-                            <FaArrowRightLong
-                              color={` ${
-                                ticketDetails?.bus_type_status === "luxury"
+                                } font-bold`}
+                            >
+                              {ticketDetails?.ticketInfo?.source_name}
+                            </label>
+                            <span className="md:block hidden px-[0.5vw]">
+                              <FaArrowRightLong
+                                size={"1vw"}
+                                color={` ${ticketDetails?.bus_type_status === "luxury"
                                   ? "#393939"
                                   : "#1F487C"
-                              }`}
-                            />
-                          </span>
-                          <label
-                            className={`md:block hidden text-[1.1vw]  ${
-                              ticketDetails?.bus_type_status === "luxury"
+                                  }`}
+                              />
+                            </span>
+                            <label
+                              className={`md:block hidden text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
                                 ? "text-[#393939]"
                                 : "text-[#1F487C]"
-                            } font-bold`}
-                          >
-                            {ticketDetails?.ticketInfo?.dest_name}
-                          </label>
-                        </div>
-                        <div className="flex items-center gap-x-[0.5vw]">
-                          <label
-                            className={`md:block hidden text-[1.3vw] font-bold  ${
-                              ticketDetails?.bus_type_status === "luxury"
+                                } font-bold`}
+                            >
+                              {ticketDetails?.ticketInfo?.dest_name}
+                            </label>
+                          </div>
+                          <div className="flex items-center gap-x-[0.5vw]">
+                            <label
+                              className={`md:block hidden text-[1.3vw] font-bold  ${ticketDetails?.bus_type_status === "luxury"
                                 ? "text-[#393939]"
                                 : "text-[#1F487C]"
-                            }`}
-                          >
-                            {/* {ticketDetails?.status} */}
-                            {ticketDetails?.ticketInfo?.operatorname}
-                          </label>
-                          {/* <div className="md:block hidden h-[0.5vw] w-[0.5vw] bg-[#1F487C] rounded-full"></div> */}
-                          <label
-                            className={`text-[3.7vw] md:text-[1.1vw]  ${
-                              ticketDetails?.bus_type_status === "luxury"
+                                }`}
+                            >
+                              {/* {ticketDetails?.status} */}
+                              {ticketDetails?.ticketInfo?.operatorname}
+                            </label>
+                            {/* <div className="md:block hidden h-[0.5vw] w-[0.5vw] bg-[#1F487C] rounded-full"></div> */}
+                            <label
+                              className={`text-[3.7vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
                                 ? "text-[#393939]"
                                 : "text-[#1F487C]"
-                            } font-bold`}
-                          >
-                            {/* {ticketDetails?.trip_type} */}
-                          </label>
-                          <div
-                            className={` ${
-                              ticketDetails?.bus_type_status === "luxury"
+                                } font-bold`}
+                            >
+                              {/* {ticketDetails?.trip_type} */}
+                            </label>
+                            <div
+                              className={` ${ticketDetails?.bus_type_status === "luxury"
                                 ? "bg-[#393939]"
                                 : "bg-[#1F487C]"
-                            } md:block hidden h-[0.5vw] w-[0.5vw] rounded-full`}
-                          ></div>
-                          <label
-                            className={`md:text-[1.1vw] text-[3.7vw]  ${
-                              ticketDetails?.bus_type_status === "luxury"
+                                } md:block hidden h-[0.5vw] w-[0.5vw] rounded-full`}
+                            ></div>
+                            <label
+                              className={`md:text-[1.1vw] text-[3vw]  ${ticketDetails?.bus_type_status === "luxury"
                                 ? "text-[#393939]"
                                 : "text-[#1F487C]"
-                            } `}
-                          >
-                            {`Booking ID - ${ticketDetails?.ticketInfo?.Ticket_no}`}
-                          </label>
+                                } `}
+                            >
+                              {`Booking ID - ${ticketDetails?.ticketInfo?.Ticket_no}`}
+                            </label>
+                          </div>
                         </div>
                       </div>
-                      <div className="col-span-1  flex items-center justify-center">
+                      <div className="  md:col-span-2 col-span-3 md:pl-[0vw] pl-[2vw] flex gap-x-[.5vw]">
+                        <div className="md:block hidden ">
+                          <div className="flex gap-x-[1vw]">
+                            <div className="md:h-[5vw] h-[11vw] w-[.1vw]  bg-[#1F487C]"></div>
+                            <div className="grid grid-cols-5 gap-x-[1vw] md:pl-[0vw] pl-[1vw] text-[#1F487C] text-[2.3vw] md:text-[1vw]">
+                              <div className=" flex flex-col col-span-2 gap-y-[.3vw]">
+                                <div className="">Base Fare </div>
+                                <div className="">serviceTax </div>
+                                <div className="">Net Fare </div>
+                              </div>
+                              <div className=" flex flex-col items-center gap-y-[0.3vw]">
+                                <div className="">:</div>
+                                <div className="">:</div>
+                                <div className="">:</div>
+                              </div>
+                              <div className="flex flex-col  col-span-2 gap-y-[0.3vw]">
+                                <div className="">
+                                  {" "}
+                                  {`₹ ${calculateDiscountedFare(
+                                    newConvertDate(
+                                      ticketDetails?.ticketInfo?.Journey_Date
+                                    ),
+                                    ticketDetails?.ticketInfo?.FareBreakup
+                                      ?.baseFare,
+                                    tbs_discount
+                                  )}`}
+                                </div>
+                                <div className="">{`₹ ${" "} ${Math.round(
+                                  ticketDetails?.ticketInfo?.FareBreakup?.serviceTax
+                                )}`}</div>
+                                <div className="">{`₹ ${parseInt(
+                                  calculateDiscountedFare(
+                                    newConvertDate(
+                                      ticketDetails?.ticketInfo?.Journey_Date
+                                    ),
+                                    ticketDetails?.ticketInfo?.FareBreakup
+                                      ?.baseFare,
+                                    tbs_discount
+                                  )
+                                ) +
+                                  Math.round(
+                                    ticketDetails?.ticketInfo?.FareBreakup
+                                      ?.serviceTax
+                                  )
+                                  } `}</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="md:col-span-2 col-span-2 flex items-center justify-center">
                         <button
                           // onClick={() => {
                           //   setShowModal(true);
                           //   setTicketDetails(ticketDetails);
                           // }}
-                          className={` ${
-                            ticketDetails?.bus_type_status === "luxury"
-                              ? "bg-[#393939]"
-                              : "bg-[#1F487C]"
-                          }  text-[3.6vw] md:text-[1.1vw] font-bold rounded-full text-white md:w-[15vw] md:h-[3vw] w-[20vw] h-[7vw] outline-none`}
+                          className={` ${ticketDetails?.bus_type_status === "luxury"
+                            ? "bg-[#393939]"
+                            : "bg-[#1F487C]"
+                            }  text-[3.6vw] md:text-[1.1vw] font-bold rounded-full text-white md:w-[15vw] md:h-[3vw] w-[20vw] h-[7vw] outline-none`}
                         >
                           <span
                             className="md:hidden block"
@@ -622,11 +728,10 @@ export default function ViewTicket() {
                     <div className="flex items-center px-[2vw] h-full justify-between">
                       <div className="flex flex-col gap-y-[1.2vw] md:gap-y-[0.5vw]">
                         <label
-                          className={`text-[3.5vw] md:text-[1.1vw] relative flex items-center gap-[2vw] ${
-                            ticketDetails?.bus_type_status === "luxury"
-                              ? "text-[#393939]"
-                              : "text-[#1F487C]"
-                          }`}
+                          className={`text-[3.5vw] md:text-[1.1vw] relative flex items-center gap-[2vw] ${ticketDetails?.bus_type_status === "luxury"
+                            ? "text-[#393939]"
+                            : "text-[#1F487C]"
+                            }`}
                         >
                           <span className="">From</span>
                           <span className="md:hidden  block text-[2.5vw]">
@@ -641,45 +746,43 @@ export default function ViewTicket() {
                         <div className="md:block hidden">
                           <label className="flex   items-center mr-[1vw] gap-[0.5vw]">
                             <span
-                              className={`text-[3.5vw] md:text-[1.1vw]  ${
-                                ticketDetails?.bus_type_status === "luxury"
-                                  ? "text-[#393939]"
-                                  : "text-[#1F487C]"
-                              } font-bold`}
+                              className={`text-[3.5vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
+                                ? "text-[#393939]"
+                                : "text-[#1F487C]"
+                                } font-bold`}
                             >
                               {ticketDetails?.ticketInfo?.Journey_Date}
                             </span>
                             <span
-                              className={`text-[3.5vw] md:text-[1.1vw]  ${
-                                ticketDetails?.bus_type_status === "luxury"
-                                  ? "text-[#393939]"
-                                  : "text-[#1F487C]"
-                              }`}
+                              className={`text-[3.5vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
+                                ? "text-[#393939]"
+                                : "text-[#1F487C]"
+                                }`}
                             >
-                              {moment(
+                              {/* {moment(
                                 ticketDetails?.ticketInfo?.Start_Time,
                                 "HH:mm:ss"
-                              ).format("hh:mm A")}
+                              ).format("hh:mm A")} */}
+                              {ticketDetails?.ticketInfo?.Board_Halt_Time}
                             </span>
                           </label>
                         </div>
                         <label
-                          className={`text-[3.5vw] md:text-[1.1vw]  ${
-                            ticketDetails?.bus_type_status === "luxury"
-                              ? "text-[#393939]"
-                              : "text-[#1F487C]"
-                          } font-bold`}
+                          className={`text-[3.5vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
+                            ? "text-[#393939]"
+                            : "text-[#1F487C]"
+                            } font-bold`}
                         >
-                          {ticketDetails?.ticketInfo?.source_name}
+                          {ticketDetails?.ticketInfo?.source_name} (
+                          {ticketDetails?.ticketInfo?.Boarding_Place_Name})
                         </label>
                         <div className="  block md:hidden">
                           <label className="flex items-center gap-[2vw]">
                             <span
-                              className={` text-[3vw] md:text-[1.1vw]  ${
-                                ticketDetails?.bus_type_status === "luxury"
-                                  ? "text-[#393939]"
-                                  : "text-[#1F487C]"
-                              } font-bold`}
+                              className={` text-[3vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
+                                ? "text-[#393939]"
+                                : "text-[#1F487C]"
+                                } font-bold`}
                             >
                               {/* {dayjs(ticketDetails?.departure_date).format(
                                 "DD MMM' YY"
@@ -687,11 +790,10 @@ export default function ViewTicket() {
                               {ticketDetails?.ticketInfo?.Journey_Date}
                             </span>
                             <span
-                              className={`text-[3.5vw] md:text-[1.1vw]  ${
-                                ticketDetails?.bus_type_status === "luxury"
-                                  ? "text-[#393939]"
-                                  : "text-[#1F487C]"
-                              } `}
+                              className={`text-[3.5vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
+                                ? "text-[#393939]"
+                                : "text-[#1F487C]"
+                                } `}
                             >
                               {ticketDetails?.departure_time}
                             </span>
@@ -700,11 +802,10 @@ export default function ViewTicket() {
                       </div>
                       <div className="flex flex-col gap-y-[1.2vw] md:gap-y-[0.5vw]">
                         <label
-                          className={`text-[3.5vw] md:text-[1.1vw] relative flex items-center ${
-                            ticketDetails?.bus_type_status === "luxury"
-                              ? "text-[#393939]"
-                              : "text-[#1F487C]"
-                          }`}
+                          className={`text-[3.5vw] md:text-[1.1vw] relative flex items-center ${ticketDetails?.bus_type_status === "luxury"
+                            ? "text-[#393939]"
+                            : "text-[#1F487C]"
+                            }`}
                         >
                           <span className="">To</span>{" "}
                           <span className="md:hidden  block text-[2.5vw] pl-[3vw]">
@@ -719,20 +820,18 @@ export default function ViewTicket() {
                         <div className="md:block hidden">
                           <label className=" flex items-center gap-[0.5vw]">
                             <span
-                              className={`text-[3.5vw] md:text-[1.1vw]  ${
-                                ticketDetails?.bus_type_status === "luxury"
-                                  ? "text-[#393939]"
-                                  : "text-[#1F487C]"
-                              } font-bold`}
+                              className={`text-[3.5vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
+                                ? "text-[#393939]"
+                                : "text-[#1F487C]"
+                                } font-bold`}
                             >
                               {calculatedDate && ConvertDate(calculatedDate)}
                             </span>
                             <span
-                              className={`text-[3.5vw] md:text-[1.1vw]  ${
-                                ticketDetails?.bus_type_status === "luxury"
-                                  ? "text-[#393939]"
-                                  : "text-[#1F487C]"
-                              }`}
+                              className={`text-[3.5vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
+                                ? "text-[#393939]"
+                                : "text-[#1F487C]"
+                                }`}
                             >
                               {moment(
                                 ticketDetails?.ticketInfo?.Arr_Time,
@@ -742,22 +841,20 @@ export default function ViewTicket() {
                           </label>
                         </div>
                         <label
-                          className={`text-[3.5vw] md:text-[1.1vw]  ${
-                            ticketDetails?.bus_type_status === "luxury"
-                              ? "text-[#393939]"
-                              : "text-[#1F487C]"
-                          } font-bold`}
+                          className={`text-[3.5vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
+                            ? "text-[#393939]"
+                            : "text-[#1F487C]"
+                            } font-bold`}
                         >
                           {ticketDetails?.ticketInfo?.dest_name}
                         </label>
                         <div className="block md:hidden">
                           <label className="flex items-center gap-[2vw]">
                             <span
-                              className={`text-[3vw] md:text-[1.1vw]  ${
-                                ticketDetails?.bus_type_status === "luxury"
-                                  ? "text-[#393939]"
-                                  : "text-[#1F487C]"
-                              } font-bold`}
+                              className={`text-[3vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
+                                ? "text-[#393939]"
+                                : "text-[#1F487C]"
+                                } font-bold`}
                             >
                               {/* {dayjs(ticketDetails?.arrival_date).format(
                                 "DD MMM' YY"
@@ -794,9 +891,10 @@ export default function ViewTicket() {
                   </div> */}
                       <div className="md:block hidden   col-span-2">
                         <div
-                          className={`flex flex-col gap-y-[0.5vw] ${
-                            true ? "grid grid-cols-2 gap-x-[2vw]" : ""
-                          }`}
+                          className={`flex flex-col gap-y-[0.5vw] ${true
+                            ? "grid grid-cols-2 gap-y-[.5vw] gap-x-[2vw]"
+                            : ""
+                            }`}
                         >
                           {ticketDetails?.ticketInfo?.ticket_det?.map(
                             (list, index) =>
@@ -816,27 +914,25 @@ export default function ViewTicket() {
                                     <span>
                                       <IoPersonOutline
                                         size={"1.2vw"}
-                                        color={`${
-                                          ticketDetails?.bus_type_status ===
+                                        color={`${ticketDetails?.bus_type_status ===
                                           "luxury"
-                                            ? "#393939"
-                                            : "#1F487C"
-                                        }`}
+                                          ? "#393939"
+                                          : "#1F487C"
+                                          }`}
                                       />
                                     </span>
                                     <span
-                                      className={`text-[1.1vw]  ${
-                                        ticketDetails?.bus_type_status ===
+                                      className={`text-[1.1vw]  ${ticketDetails?.bus_type_status ===
                                         "luxury"
-                                          ? "text-[#393939]"
-                                          : "text-[#1F487C]"
-                                      } font-bold`}
+                                        ? "text-[#393939]"
+                                        : "text-[#1F487C]"
+                                        } font-bold`}
                                     >
                                       {list.Passenger_Name.length > 8
                                         ? `${list.Passenger_Name.slice(
-                                            0,
-                                            8
-                                          )}...`
+                                          0,
+                                          8
+                                        )}...`
                                         : list.Passenger_Name}
                                       {/* {(list.user_name)} */}
                                       <span>{list?.Age}</span>
@@ -848,21 +944,19 @@ export default function ViewTicket() {
                                   <span>
                                     <IoPersonOutline
                                       size={"1.2vw"}
-                                      color={`${
-                                        ticketDetails?.bus_type_status ===
+                                      color={`${ticketDetails?.bus_type_status ===
                                         "luxury"
-                                          ? "#393939"
-                                          : "#1F487C"
-                                      }`}
+                                        ? "#393939"
+                                        : "#1F487C"
+                                        }`}
                                     />
                                   </span>
                                   <span
-                                    className={`text-[1.1vw]  ${
-                                      ticketDetails?.bus_type_status ===
+                                    className={`text-[1.1vw]  ${ticketDetails?.bus_type_status ===
                                       "luxury"
-                                        ? "text-[#393939]"
-                                        : "text-[#1F487C]"
-                                    } font-bold`}
+                                      ? "text-[#393939]"
+                                      : "text-[#1F487C]"
+                                      } font-bold`}
                                   >
                                     {list.Passenger_Name}{" "}
                                     <span className="text-[.9vw] pl-[.1vw] font-bold">
@@ -875,7 +969,7 @@ export default function ViewTicket() {
                           )}
                         </div>
                       </div>
-                      <div className="flex flex-col gap-y-[0.5vw]">
+                      {/* <div className="flex flex-col gap-y-[0.5vw]">
                         <label
                           // onClick={() => {
                           //   setShowModal(true);
@@ -889,7 +983,7 @@ export default function ViewTicket() {
                           className="flex items-center cursor-pointer gap-x-[0.5vw]"
                         >
                           <span>
-                            {/* <LuDownload size={"1.2vw"} color={"#1F487C"} />  */}
+                       
                             <HiOutlineDownload
                               className="md:text-[1.5vw] text-[3.5vw]"
                               color={"#1F487C"}
@@ -902,30 +996,8 @@ export default function ViewTicket() {
                             Download
                           </span>
                         </label>
-                      </div>
+                      </div> */}
                     </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex flex-col gap-x-[3vw] items-center mt-[13vw] md:mt-[0vw] md:pt-[1.5vw] justify-center">
-                  <img
-                    src={empty}
-                    alt="empty"
-                    className="md:w-[8vw] md:h-[9vw] h-[24vw] w-[22vw]"
-                  />
-                  <div className="flex flex-col gap-y-[0.5vw] items-center pt-[3vw] justify-center">
-                    <label className="text-[4.2vw] md:text-[2vw] text-[#1F487C] font-bold text-center">
-                      Invalid ticket number or ticket might have been canceled.
-                    </label>
-                    <label className="flex text-[3.6vw] md:text-[1.1vw] text-[#1F487C] items-center gap-[0.5vw]">
-                      Looks like given details are invalid
-                    </label>
-                    <button
-                      onClick={() => navigation("/")}
-                      className="bg-[#1F487C] md:mt-[1vw] mt-[3vw] md:w-[12vw] w-[30vw] text-white font-bold md:text-[1.1vw] text-[3.6vw] md:h-[3vw] h-[8vw] rounded-full"
-                    >
-                      Plan a Trip
-                    </button>
                   </div>
                 </div>
               )}
@@ -940,7 +1012,7 @@ export default function ViewTicket() {
         open={showDrawer}
         key={"right"}
         width={"60%"}
-        // width={drawerWidth}
+      // width={drawerWidth}
       >
         <ViewFullTicket
           ticketDetails={ticketDetails}

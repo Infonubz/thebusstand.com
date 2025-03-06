@@ -20,7 +20,7 @@ export default function FeedBacks() {
     const dispatch = useDispatch();
     const ratingdata = useSelector((state) => state.feed_back);
     const colors = useSelector((state) => state.themecolors[0]);
-
+    console.log(ratingdata, 'ratingdata_ratingdaat')
     const prevSlide = () => {
         // Ensure we don’t go below zero
         setStartIndex((prev) => Math.max(prev - itemsPerPage, 0));
@@ -116,7 +116,7 @@ export default function FeedBacks() {
                                             </div>
                                             <div className="flex flex-col justify-end items-end">
                                                 <Rate
-                                                    defaultValue={item.rating}
+                                                    value={item.rating}
                                                     style={{
                                                         fontSize: "1vw",
                                                         color: getColorForValue(item.rating),
@@ -185,7 +185,7 @@ export default function FeedBacks() {
                                             </div>
                                             <div className="flex flex-col justify-end items-end">
                                                 <Rate
-                                                    defaultValue={item.rating}
+                                                    value={item.rating}
                                                     style={{
                                                         fontSize: "3vw",
                                                         color: getColorForValue(item.rating),

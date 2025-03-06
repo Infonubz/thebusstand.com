@@ -64,7 +64,7 @@ const initial = {
   live_per: [],
   booking_details: [],
   tbs_booking_details: [],
-  tbs_available_offer:[]
+  tbs_available_offer: [],
 };
 export const busreducer = (state = initial, action) => {
   const { type, payload } = action;
@@ -231,7 +231,9 @@ export const busreducer = (state = initial, action) => {
     case CURRENT_PERCENTAGE: {
       return {
         ...state,
-        live_per: payload?.data?.data?.[0].Percentage,
+        // after discuss set 4% default at 1-3-25
+        // live_per: payload?.data?.data?.[0].Percentage,
+        live_per: 4,
       };
     }
     case BOOKING_DETAILS_STATUS: {

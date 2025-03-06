@@ -16,7 +16,11 @@ export default function SelectedCardDesign({ busData }) {
     const apiUrlimage = process.env.REACT_APP_API_URL_IMAGE;
     const navigate = useNavigate();
 
-
+    const formatTime = (timeString) => {
+        const [hours, minutes] = timeString?.split(":")?.map(Number);
+        return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
+      };
+    
     const LuxuryFind = (type) =>
         type?.toLowerCase()?.includes("volvo") ||
         type?.toLowerCase()?.includes("mercedes benz") ||
@@ -171,7 +175,7 @@ export default function SelectedCardDesign({ busData }) {
                 </svg>
                 <label
                     className={` absolute left-[1.5vw] top-[-4.5vw] text-[2.5vw] ${LuxuryFind(busData?.Bus_Type_Name) === true ? "text-black" : "text-white"
-                        } underline underline-offset-2`}
+                        } `}
                 >
                     Bus Operator
                 </label>
@@ -229,7 +233,7 @@ export default function SelectedCardDesign({ busData }) {
                             : busData?.bus_type}
                     </Tooltip>
                 </label>
-                <div className="absolute top-[13vw] left-[20vw]">
+                <div className="absolute top-[13vw] left-[22.5vw]">
                     <svg
                         width="25vw"
                         height="10vw"
@@ -250,7 +254,7 @@ export default function SelectedCardDesign({ busData }) {
                             transform: "translate(-50%, -50%)",
                         }}
                     >
-                        {busData?.TravelTime?.slice(0, 5)} hrs
+                        {formatTime(busData?.TravelTime)}
                     </label>
                 </div>
                 <div className=" absolute left-[2vw] top-[12vw]">
@@ -266,12 +270,12 @@ export default function SelectedCardDesign({ busData }) {
                         </label>
                         <label
                             // className="text-[3.5vw] text-[#1F487C] font-bold"
-                            className={`text-[4.5vw] ${LuxuryFind(busData?.Bus_Type_Name) === true
+                            className={`text-[4vw] ${LuxuryFind(busData?.Bus_Type_Name) === true
                                 ? "text-[#393939]"
                                 : "text-[#1F487C]"
                                 } font-bold`}
                         >
-                            {busData?.Start_time?.split(" ")[0]}
+                            {busData?.Start_time}
                         </label>
                     </div>
                 </div>
@@ -288,12 +292,12 @@ export default function SelectedCardDesign({ busData }) {
                         </label>
                         <label
                             // className="text-[3.5vw] text-[#1F487C] font-bold"
-                            className={`text-[4.5vw] ${LuxuryFind(busData?.Bus_Type_Name) === true
+                            className={`text-[4vw] ${LuxuryFind(busData?.Bus_Type_Name) === true
                                 ? "text-[#393939]"
                                 : "text-[#1F487C]"
                                 } font-bold`}
                         >
-                            {busData?.Arr_Time?.split(" ")[0]}
+                            {busData?.Arr_Time}
                         </label>
                     </div>
                 </div>
@@ -303,7 +307,7 @@ export default function SelectedCardDesign({ busData }) {
                         className={`${LuxuryFind(busData?.Bus_Type_Name) === true
                             ? "border-[#393939]"
                             : "border-[#1F487C]"
-                            } border-t-[0.5vw] z-0 absolute left-[1.9vw] top-[5.2vw] border-dashed w-[25vw]`}
+                            } border-t-[0.5vw] z-0 absolute left-[5vw] top-[5.2vw] border-dashed w-[25vw]`}
                     ></div>
                 </div>
                 <div className="absolute left-[18.5vw] top-[12.45vw]">
@@ -312,10 +316,10 @@ export default function SelectedCardDesign({ busData }) {
                         className={`${LuxuryFind(busData?.Bus_Type_Name) === true
                             ? "bg-[#393939]"
                             : "bg-[#1F487C]"
-                            } absolute left-[-1.4vw] h-[2.25vw] w-[2.25vw] top-[3.8vw] rounded-full`}
+                            } absolute left-[2.5vw] h-[2.25vw] w-[2.25vw] top-[3.8vw] rounded-full`}
                     ></div>
                 </div>
-                <div className="absolute left-[45.5vw] top-[12.2vw]">
+                <div className="absolute left-[49vw] top-[12.2vw]">
                     <FaCaretRight
                         // color="#1F487C"
                         size={"4.5vw"}
@@ -396,7 +400,7 @@ export default function SelectedCardDesign({ busData }) {
                         </div>
                     </div> */}
                 </div>
-                <div className=" absolute right-[1.3vw] top-[11vw]">
+                <div className=" absolute right-[1.3vw] top-[9vw]">
                     <div className="text-[3.3vw] text-center py-[2vw]">
                         Available Seats
                     </div>

@@ -65,7 +65,7 @@ export default function MyAccountIndex() {
   const busTo = localStorage.getItem("arrival");
   const fromSourceID = localStorage.getItem("departureID");
   const toSourceID = localStorage.getItem("arrivalID");
-  const jdate = localStorage.getItem("selectedDate");
+  const jdate = localStorage.getItem("departure_date");
 
   useEffect(() => {
     if (fromSourceID || toSourceID) {

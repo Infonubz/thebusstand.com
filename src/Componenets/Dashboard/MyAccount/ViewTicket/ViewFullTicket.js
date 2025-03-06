@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import Barcode from "react-barcode";
 import { FiDownload } from "react-icons/fi";
 import Logo from "../../../../Assets/Logo/tbs_logo.png";
-import html2canvas from "html2canvas";
+// import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { calculateDiscountedFare } from "../../../Common/Common-Functions/TBS-Discount-Fare";
 import { useSelector } from "react-redux";
@@ -27,6 +27,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
   function generateRandomId(prefix, length) {
     return prefix;
   }
+
   const apiUrl = process.env.REACT_APP_API_URL;
   const calculateDuration = (startTime, endTime) => {
     // Parse start and end times using Moment.js
@@ -45,7 +46,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
     const hours = duration.hours();
     const minutes = duration.minutes();
 
-    return `${hours}h ${minutes}m`;
+    return minutes > 0 ? `${hours}h ${minutes}m` : `${hours}h`;
   };
 
   const LuxuryFind = (type) =>
@@ -55,34 +56,34 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
     type?.toLowerCase().includes("bharatBenz") ||
     type?.toLowerCase().includes("luxury");
 
-  const downloadPDF = () => {
-    // setLoader(true);
-    const capture = componentRef.current;
-    if (capture) {
-      html2canvas(capture, {
-        scale: 2, // Higher scale for better image quality
-        useCORS: true, // For cross-origin resources (images from other domains)
-        logging: true, // Optional, logs any warnings/errors
-      }).then((canvas) => {
-        const imgData = canvas.toDataURL("image/png"); // Image data URL
+  // const downloadPDF = () => {
+  //   // setLoader(true);
+  //   const capture = componentRef.current;
+  //   if (capture) {
+  //     html2canvas(capture, {
+  //       scale: 2, // Higher scale for better image quality
+  //       useCORS: true, // For cross-origin resources (images from other domains)
+  //       logging: true, // Optional, logs any warnings/errors
+  //     }).then((canvas) => {
+  //       const imgData = canvas.toDataURL("image/png"); // Image data URL
 
-        const doc = new jsPDF("p", "mm", "a4");
-        // Calculate the appropriate size of the image in the PDF
-        const componentWidth = doc.internal.pageSize.getWidth();
-        const componentHeight = doc.internal.pageSize.getHeight();
+  //       const doc = new jsPDF("p", "mm", "a4");
+  //       // Calculate the appropriate size of the image in the PDF
+  //       const componentWidth = doc.internal.pageSize.getWidth();
+  //       const componentHeight = doc.internal.pageSize.getHeight();
 
-        // Add the image to the PDF with the correct dimensions
-        doc.addImage(imgData, "PNG", 0, 0, componentWidth, componentHeight);
+  //       // Add the image to the PDF with the correct dimensions
+  //       doc.addImage(imgData, "PNG", 0, 0, componentWidth, componentHeight);
 
-        // Save the PDF
-        doc.save("receipt.pdf");
-        //setLoader(false); // Stop loader after PDF is saved
-      });
-    } else {
-      console.error("Element not found");
-      //   setLoader(false);
-    }
-  };
+  //       // Save the PDF
+  //       doc.save("receipt.pdf");
+  //       //setLoader(false); // Stop loader after PDF is saved
+  //     });
+  //   } else {
+  //     console.error("Element not found");
+  //     //   setLoader(false);
+  //   }
+  // };
   const navigate = useNavigate();
 
   const handleDownloadClick = async (ticketid) => {

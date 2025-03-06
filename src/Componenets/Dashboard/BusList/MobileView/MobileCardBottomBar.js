@@ -17,6 +17,7 @@ import { capitalizeLetter } from "../../../Common/Common-Functions/Captalization
 import SVG_List from "../../../Common/SVG/SVG";
 import { toast } from "react-toastify";
 import { Abhibus_Cancelation_Policy } from "../../../../Api-Abhibus/Dashboard/DashboardPage";
+import { calculateDiscountedFare } from "../../../Common/Common-Functions/TBS-Discount-Fare";
 
 export default function MobileCardBottomBar({
     drawername,
@@ -31,8 +32,11 @@ export default function MobileCardBottomBar({
     price,
     buslist,
     services_amenity,
-    Amenities
+    Amenities,
+    tbs_discount,
+    startTime
 }) {
+
     // const colorcode = {
     //   theme: "#1F487C",
     // };
@@ -49,7 +53,7 @@ export default function MobileCardBottomBar({
 
     const componentRef = useRef();
     // ---------------------------------------------------------------------Amenities-----------------------------------------------------
-    const servicesArray = services_amenity.split(',');
+    const servicesArray = amenities?.split(',');
 
     // const amenityIcons = {
     //     Blankets: (
@@ -350,7 +354,6 @@ export default function MobileCardBottomBar({
         Destination_ID: policies?.Destination_ID,
         jdate: policies?.jdate
     }
-    console.log(policies !== null, selectedBus, 'iamironman')
 
     const fetch_Cancellation_Policy = async () => {
         try {
@@ -393,7 +396,7 @@ export default function MobileCardBottomBar({
                 open={showModal}
                 key={"bottom"}
                 width={"100vw"}
-                height={"50%"}
+                height={isToggleSwitch === "CDCP" ? "40%" : "70%"}
                 classNames={{
                     header: "bg-[#E5FFF1]",
                     body: "bg-[#E5FFF1]",
@@ -423,12 +426,12 @@ export default function MobileCardBottomBar({
                                 <>
                                     <div className={`text-[4vw] grid grid-cols-2 p-[2vw] gap-[3vw] ${LuxuryFind(busType) === true ? 'text-[#393939]' : 'text-[#1F487C]'}`}>
                                         {Amenities.map((amenity, index) => {
-                                            if (servicesArray[index] === '1') {
+                                            if ((servicesArray && servicesArray[index]) === '1') {
                                                 return (
                                                     <>
                                                         <div className="grid grid-cols-12 items-center justify-stretch">
                                                             <div className="col-span-2">{amenity?.icon}</div>
-                                                            <div className="col-span-10">{amenity.amenity_title}</div>
+                                                            <div className="col-span-10">{amenity?.amenity_title}</div>
                                                         </div>
                                                     </>
                                                 )
@@ -440,7 +443,7 @@ export default function MobileCardBottomBar({
                                 </>
                             ) : drawername === "pickupDrop" ? (
                                 <div className={`h-auto w-full`}>
-                                    <div className="grid grid-col gap-[3vw]">
+                                    <div className="grid grid-col gap-[3vw] py-[2.5vw]">
                                         <Collapse
                                             className="relative shadow-lg bg-white"
                                             items={[
@@ -465,7 +468,7 @@ export default function MobileCardBottomBar({
                                                         </div>
                                                     ),
                                                     children: (
-                                                        <div className="flex flex-col gap-y-[2.5vw]">
+                                                        <div className="flex flex-col gap-y-[2.5vw] px-[2vw]">
                                                             {/* <p
                           className={`${
                             busType === "luxury"
@@ -491,7 +494,7 @@ export default function MobileCardBottomBar({
                                                                             <div className={`${
                                                                                 // busType === "luxury"
                                                                                 LuxuryFind(bus_type) === true
-                                                                                    ? "text-[#393939]" : "text-[#1F487C]"} text-[3.5vw] cursor-pointer flex items-center gap-x-[1vw]`}>
+                                                                                    ? "text-[#393939]" : "text-[#1F487C]"} text-[4vw] cursor-pointer flex items-center gap-x-[2vw]`}>
                                                                                 <span className="font-bold">{time}</span>
 
                                                                                 <span>
@@ -554,7 +557,7 @@ export default function MobileCardBottomBar({
                                                         </div>
                                                     ),
                                                     children: (
-                                                        <div className="flex flex-col gap-y-[2.5vw]">
+                                                        <div className="flex flex-col gap-y-[2.5vw] px-[2vw]">
                                                             {dropping?.map((item) => {
                                                                 // Split the string item by '^'
                                                                 const parts = item.split('^');
@@ -566,13 +569,13 @@ export default function MobileCardBottomBar({
                                                                     const id = parts[0];
 
                                                                     return (
-                                                                        <div className="flex gap-x-[1vw] pb-[.7vw] items-center" key={id}>
+                                                                        <div className="flex gap-x-[1vw]  items-center" key={id}>
 
 
                                                                             <div className={`${
                                                                                 // busType === "luxury"
                                                                                 LuxuryFind(bus_type) === true
-                                                                                    ? "text-[#393939]" : "text-[#1F487C]"} text-[3.5vw] cursor-pointer flex items-center gap-x-[1vw]`}>
+                                                                                    ? "text-[#393939]" : "text-[#1F487C]"} text-[4vw] cursor-pointer flex items-center gap-x-[2vw]`}>
                                                                                 <span className="font-bold">{time}</span>
 
                                                                                 <span>
@@ -680,7 +683,7 @@ export default function MobileCardBottomBar({
                                     </div>
 
                                     {isToggleSwitch === "CDCP" ? (
-                                        <div className="py-[5vw]">
+                                        <div className="py-[5vw] ">
                                             {/* <div className="">
                                                 <div className="grid grid-cols-12 justify-between  gap-[1vw]">
                                                     <div className="col-span-7">
@@ -797,7 +800,7 @@ export default function MobileCardBottomBar({
                                                                     Refund(₹)
                                                                 </p>
                                                             </div>
-                                                            <div className={`text-[3vw]  ${
+                                                            <div className={`text-[3vw] flex flex-col gap-y-[2vw] mt-[2vw] ${
                                                                 // busType === 'luxury'
                                                                 LuxuryFind(bus_type) === true
                                                                     ? 'text-[#393939]' : 'text-[#1F4B7F]'}`}>
@@ -832,13 +835,26 @@ export default function MobileCardBottomBar({
                                         }
                                     })} */}
 
-                                                                {cancelPolicy?.Cancellationpy?.conditions?.map((item, index) => (
-                                                                    <div className="grid grid-cols-12 py-[0.25vw]">
-                                                                        <div className="col-span-7 justify-center items-center" key={index}>{item?.con}</div>
-                                                                        <div className="col-span-2 flex justify-center items-center" key={index}>{item?.rp}</div>
-                                                                        <div className="col-span-3 flex justify-center items-center" key={index}>{item?.cc}</div>
-                                                                    </div>
-                                                                ))}
+                                                                {cancelPolicy?.Cancellationpy?.conditions
+                                                                    ?.filter(item => {
+                                                                        // Calculate the fare and check if it returns NaN
+                                                                        const fare = calculateDiscountedFare(
+                                                                            startTime,
+                                                                            (item?.cc)?.split(' ')[1],
+                                                                            tbs_discount
+                                                                        );
+                                                                        return !isNaN(fare); // Only include items where the fare is not NaN
+                                                                    }).slice(0, 4)?.map((item, index) => (
+                                                                        <div className="grid grid-cols-12 py-[0.25vw]">
+                                                                            <div className="col-span-7 justify-center items-center" key={index}>{item?.con}</div>
+                                                                            <div className="col-span-2 flex justify-center items-center" key={index}>{item?.rp}</div>
+                                                                            <div className="col-span-3 flex justify-center items-center" key={index}>{`₹ ${calculateDiscountedFare(
+                                                                                startTime,
+                                                                                (item?.cc)?.split(' ')[1],
+                                                                                tbs_discount
+                                                                            )}`}</div>
+                                                                        </div>
+                                                                    ))}
                                                             </div>
                                                             {/* {policies?.length > 0 &&
                                         policies?.map((item) => {

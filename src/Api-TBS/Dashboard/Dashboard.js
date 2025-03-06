@@ -84,14 +84,18 @@ export const TBS_Booking_Details = async (
   seatDetails,
   currentpath,
   Bustype,
-  discountamount,
+  finaldiscount,
   code,
   tbsamount,
   tbsbasefare,
-  dispatch
+  dispatch,
+  tbs_deal,
+  tbs_discount,
+  totaltax,
+  Boarding_time
 ) => {
   console.log(
-    ticketdetails,
+    ticketdetails?.Board_Halt_Time,
     "ticketdetailsticketdetailsticketdetails"
   );
   const l_user_id = sessionStorage.getItem("user_id");
@@ -122,7 +126,8 @@ export const TBS_Booking_Details = async (
     pickup_point_id: selectedRoutes?.dep_route_id,
     pickup_point_name: selectedRoutes?.dep_route,
     depature_date: BusDetails?.BUS_START_DATE,
-    depature_time: BusDetails?.Start_time,
+    // depature_time: BusDetails?.Board_Halt_Time && BusDetails?.Board_Halt_Time,
+    depature_time: ticketdetails?.Board_Halt_Time,
     destination_id: currentpath?.destionation_ID,
     destination_name: currentpath?.destination_name,
     droping_point_id: selectedRoutes?.arr_route_id,
@@ -138,11 +143,15 @@ export const TBS_Booking_Details = async (
     razorpay_signature: signature,
     total_fare: tbsamount,
     bustype: Bustype,
-    dicount_amt: discountamount,
+    dicount_amt: finaldiscount,
     offer_code: code,
     base_fare: tbsbasefare,
-    // bustype_name:ticketdetails?.bustype,
-    // cancel_policy:ticketdetails?.cancelpolicy
+    bustype_name: ticketdetails?.bustype,
+    cancel_policy: ticketdetails?.cancelpolicy,
+    gst: totaltax,
+    tbs_deal_amount: tbs_deal,
+    tbs_deal_percentage: tbs_discount,
+    booking_date_time: new Date(),
   };
 
   const url = `${apiUrl}/tbsbookinghistory`;
@@ -173,6 +182,7 @@ export const TBS_Booking_Cancellation = async (
   NewPNR,
   droppingDate,
   pickupData,
+  calculateRefund
 ) => {
   const l_user_id = sessionStorage.getItem("user_id");
   const l_email_id = sessionStorage.getItem("user_email_id");
@@ -203,6 +213,9 @@ export const TBS_Booking_Cancellation = async (
     passenger_details: selectedRowsData,
     partialcancellation: partialCancellation == 0 ? true : false,
     new_ticket_no: NewPNR ? NewPNR : null,
+    cancel_date_time: new Date(),
+    refund_amt: calculateRefund,
+    total_fare: "",
   };
 
   const url = `${apiUrl}/cancellation`;

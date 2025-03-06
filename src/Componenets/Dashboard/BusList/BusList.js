@@ -207,7 +207,8 @@ export default function BusList() {
   //   }
   // }, [sessionStorage.getItem("ticket_view")]);
 
-  const services = { Amenities:  "0,1,0,0,0,1,0,1,0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0", };
+  // const services = { Amenities:  "0,1,0,0,0,1,0,1,0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0", };
+
   const amenities = [
     { "amenity_title": "Water Bottle", "amenity_position": 1, "icon": <FaBottleWater /> },
     { "amenity_title": "Blanket", "amenity_position": 2, "icon": <BiSolidBlanket /> },
@@ -282,6 +283,7 @@ export default function BusList() {
                     </div>
                   ) : (
                     <>
+
                       <div className="grid grid-cols-2 ">
                         <div>
                           <div className="grid grid-rows-7 h-full w-full">
@@ -593,7 +595,7 @@ export default function BusList() {
                                       </svg>
                                     </div>
                                     <div className="text-[1.2vw] text-[#C62B2B] font-bold">
-                                      {item.available_seats} Seats Left
+                                      {item?.available_seats === "0" ? <span className="text-[1.2vw] font-extrabold">SOLD-OUT</span> : `${item.available_seats} Seats Left`}
                                     </div>
                                   </div>
                                 </div>
@@ -707,7 +709,8 @@ export default function BusList() {
                                     </div>
                                   </div>
                                   <button
-                                    className="absolute top-[6vw] left-[2vw] w-[9vw] h-[2.2vw]  bg-[#61B00F] text-white text-[1.1vw] font-semibold rounded-[0.3vw]"
+                                    className={`absolute top-[6vw]  left-[2vw] w-[9vw] h-[2.2vw] ${item?.available_seats === "0" ? 'bg-[#ADADAD]' : 'bg-[#61B00F]'}  text-white text-[1.1vw] font-semibold rounded-[0.3vw]`}
+                                    disabled={item?.available_seats === "0"}
                                     onClick={() => {
                                       toggleDropDown(`seat${index}`);
                                     }}
@@ -723,6 +726,16 @@ export default function BusList() {
                           </div>
                         </div>
                       </div>
+
+                      {/* -----------------------------------------------------------------------SOLD-OUT-------------------------------------------------------------------------- */}
+                      {/* 
+                      {item?.available_seats === 0 ? "" : <div className="relative">  <div
+                        style={{
+                          transform: 'rotate(-6deg)',
+                          zIndex:'0'
+                        }} className=" rounded-full w-screen h-10 bg-red-300 absolute top-[-6vw] left-[-1vw]  opacity-70"> <span className="text-[3vw] opacity-100 font-extrabold text-red-500 w-full flex items-center justify-center">SOLD-OUT</span>  </div></div>} */}
+
+                      {/* --------------------------------------------------------------------------------------------------------------------------------------------------------- */}
                       <div className="h-[2.7vw] w-full flex items-center">
                         <div className="px-[1vw] ">
                           <div className="flex items-center gap-[0.5vw] py-[0.1vw] w-full">
@@ -783,12 +796,12 @@ export default function BusList() {
                           </div> */}
 
                             <div className="flex items-center gap-[0.5vw] w-full">
-                              {item?.Amenities || services?.Amenities === null ? (
+                              {item?.Amenities === null ? (
                                 ""
                               ) : (
                                 <div className="flex items-center">
                                   <div
-                                    className="flex items-center cursor-pointer gap-[0.5vw]"
+                                    className="flex items-center cursor-pointer gap-[0.5vw] mr-[0.5vw]"
                                     onClick={() =>
                                       toggleDropDown(`liveTracking${index}`)
                                     }
@@ -1017,6 +1030,7 @@ export default function BusList() {
                           </div>
                         </div>
                       </div>
+
                       {/* {openLiveTracking === index && (
                 <div className="bg-gray-200 h-[10vw] w-full mt-[1vw] rounded-[0.5vw]">
                   <LiveTracking />
@@ -1029,7 +1043,7 @@ export default function BusList() {
                             setTrackingCount={setTrackingCount}
                             amenities={item?.Amenities}
                             busType={item?.Bus_Type_Name}
-                            services_amenities={services?.Amenities}
+                            // services_amenities={services?.Amenities}
                             amenity={amenities}
                           />
                         </div>
@@ -1055,6 +1069,7 @@ export default function BusList() {
                             busType={item?.bus_type_status}
                             busPrice={item?.Fare}
                             bus_type={item?.Bus_Type_Name}
+                       
                           />
                         </div>
                       )}
@@ -1067,6 +1082,8 @@ export default function BusList() {
                             busType={item?.bus_type_status}
                             busPrice={item?.Fare}
                             bus_type={item?.Bus_Type_Name}
+                            tbs_discount={tbs_discount}
+                            jdate={item?.BUS_START_DATE}
                           />
                         </div>
                       )}

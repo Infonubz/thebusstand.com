@@ -40,15 +40,18 @@ export default function Navbar_One({ userName }) {
   const closeLoginModal = () => {
     setLoginIsOpen(false);
     setLoginMobileIsOpen(false);
+    sessionStorage.removeItem("mobile");
   };
 
   const closeModal = () => {
     setModalIsOpen(false);
     // setShowDialog(false);
+    sessionStorage.removeItem("mobile");
   };
 
   const closeLogModal = () => {
     setLogModalIsOpen(false);
+    sessionStorage.removeItem("mobile");
   };
 
   const navigation = useNavigate();
@@ -89,6 +92,14 @@ export default function Navbar_One({ userName }) {
     {
       key: "1",
       label: (
+        <div className="text-[#1F487C] text-[3.5vw] md:text-[1.4vw] px-[2vw] font-semibold">
+          {`Hi! ${LoginUser_Name} 👋`}
+        </div>
+      ),
+    },
+    {
+      key: "2",
+      label: (
         <div
           className="text-[#1F487C] text-[3.5vw] md:text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
           onClick={handleProPage}
@@ -102,7 +113,7 @@ export default function Navbar_One({ userName }) {
       ),
     },
     {
-      key: "2",
+      key: "3",
       label: (
         <div
           className="text-[#1F487C] text-[3.5vw] md:text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
@@ -117,7 +128,7 @@ export default function Navbar_One({ userName }) {
       ),
     },
     {
-      key: "3",
+      key: "4",
       label: (
         <div
           className="text-[#1F487C] text-[3.5vw] md:text-[1.4vw] px-[2vw] flex items-center gap-[1vw]"
@@ -154,15 +165,15 @@ export default function Navbar_One({ userName }) {
   }, [userName, sessionStorage.getItem("user_name")]);
   console.log(location.pathname, "testing");
 
-
-  const isDisabled = location.pathname === '/main';
+  const isDisabled = location.pathname === "/main";
 
   return (
     <>
       <div className="md:h-[3.8vw]  bg-[#E5FFF1] h-[10vw] relative  z-1 w-full flex ">
         <div
-          className={`w-[19%] md:h-[3.3vw] h-[10vw] flex ${location.pathname === "/" ? "" : "cursor-pointer"
-            } `}
+          className={`w-[19%] md:h-[3.3vw] h-[10vw] flex ${
+            location.pathname === "/" ? "" : "cursor-pointer"
+          } `}
           onClick={() => {
             navigation("/");
             localStorage.clear();
@@ -274,7 +285,9 @@ export default function Navbar_One({ userName }) {
                               <FaUserCircle size="1.5vw" color="#1F487C" />
                             </div>
                             <span className="text-[1.2vw] font-semibold text-[#1F487C]">
+                              {/* <Tooltip trigger={"hover"} title={LoginUser_Name} placement="left" color="#1F487C"> */}
                               {LoginUser_Name.slice(0, 5)}..
+                              {/* </Tooltip> */}
                             </span>
                           </div>
                         ) : (
@@ -348,7 +361,7 @@ export default function Navbar_One({ userName }) {
                 placement="bottom"
                 title="Share"
                 className="cursor-pointer"
-              // color="white"
+                // color="white"
               >
                 <img
                   className="md:w-[3vw] md:h-[3vw] w-[10vw] h-[7vw]"
@@ -369,7 +382,7 @@ export default function Navbar_One({ userName }) {
                 placement="bottom"
                 title="Rewards/Offers"
                 className="cursor-pointer"
-              // color="white"
+                // color="white"
               >
                 <img
                   className="md:w-[2.5vw] md:h-[2.5vw] w-[10vw] h-[7vw]"
@@ -391,11 +404,8 @@ export default function Navbar_One({ userName }) {
                     }}
                     trigger={["click"]}
                     className="flex items-center gap-[0.5vw] cursor-pointer"
-
                   >
-                    <button
-                      className="bg-[#1F487C] w-[7.5vw] h-[7.5vw] md:w-[2.5vw] md:h-[2.5vw] rounded-full flex items-center justify-center"
-                    >
+                    <button className="bg-[#1F487C] w-[7.5vw] h-[7.5vw] md:w-[2.5vw] md:h-[2.5vw] rounded-full flex items-center justify-center">
                       <p className="text-[4vw] md:text-[1.5vw] text-white font-extrabold">
                         {capitalizeFirstLetter(LoginUser_Name.split("")[0])}
                       </p>
@@ -415,7 +425,7 @@ export default function Navbar_One({ userName }) {
                       className="bg-[#1F487C] w-[7.5vw] h-[7.5vw] md:w-[2.5vw] md:h-[2.5vw] rounded-full flex items-center justify-center"
                       onClick={(e) => {
                         e.preventDefault();
-                        navigation("/settings");                  
+                        navigation("/settings");
                       }}
                     >
                       <p className="text-[4vw] md:text-[1.5vw] text-white font-extrabold">

@@ -11,10 +11,13 @@ import { capitalizeFirstLetter } from "../../Common/Common-Functions/Captalizati
 import SVG_List from "../../Common/SVG/SVG";
 import { Abhibus_Cancelation_Policy } from "../../../Api-Abhibus/Dashboard/DashboardPage";
 import { toast } from "react-toastify";
+import { calculateDiscountedFare } from "../../Common/Common-Functions/TBS-Discount-Fare";
 
-export default function CancelPolicy({ policies, busPrice, busType, bus_type, item }) {
+export default function CancelPolicy({ policies, busPrice, busType, bus_type, item, tbs_discount, jdate }) {
     const [isToggleSwitch, setIsToggleSwitch] = useState("CDCP");
     const [cancelPolicy, setCancelPolicy] = useState()
+
+    console.log(cancelPolicy, 'cancelationpolicy')
     const [policyloader, setPolicyLoader] = useState(true)
     const SVG = SVG_List()
     const selectedBus = {
@@ -171,7 +174,7 @@ export default function CancelPolicy({ policies, busPrice, busType, bus_type, it
                                     active
                                     style={{ margin: "0.5vw", padding: "0.5vw" }}
                                     paragraph={{ rows: 4 }}
-                                    
+
                                 ></Skeleton> :
 
                                 <>
@@ -235,13 +238,35 @@ export default function CancelPolicy({ policies, busPrice, busType, bus_type, it
                                         }
                                     })} */}
 
-                                            {cancelPolicy?.Cancellationpy?.conditions?.map((item, index) => (
-                                                <div className="grid grid-cols-12 py-[0.25vw]">
-                                                    <div className="col-span-7 justify-center items-center" key={index}>{item?.con}</div>
-                                                    <div className="col-span-2 flex justify-center items-center" key={index}>{item?.rp}</div>
-                                                    <div className="col-span-3 flex justify-center items-center" key={index}>{item?.cc}</div>
-                                                </div>
-                                            ))}
+                                            {cancelPolicy?.Cancellationpy?.conditions
+                                                ?.filter(item => {
+                                                    // Calculate the fare and check if it returns NaN
+                                                    const fare = calculateDiscountedFare(
+                                                        jdate,
+                                                        (item?.cc)?.split(' ')[1],
+                                                        tbs_discount
+                                                    );
+                                                    return !isNaN(fare); // Only include items where the fare is not NaN
+                                                })
+                                                .slice(0, 4) // Then slice the filtered array
+                                                .map((item, index) => (
+                                                    <div className="grid grid-cols-12 py-[0.25vw]" key={index}>
+                                                        <div className="col-span-7 justify-center items-center">
+                                                            {item?.con}
+                                                        </div>
+                                                        <div className="col-span-2 flex justify-center items-center">
+                                                            {item?.rp}
+                                                        </div>
+                                                        <div className="col-span-3 flex justify-center items-center">
+                                                            {`₹ ${calculateDiscountedFare(
+                                                                jdate,
+                                                                (item?.cc)?.split(' ')[1],
+                                                                tbs_discount
+                                                            )}`}
+                                                        </div>
+                                                    </div>
+                                                ))}
+
                                         </div>
                                         {/* {policies?.length > 0 &&
                                         policies?.map((item) => {

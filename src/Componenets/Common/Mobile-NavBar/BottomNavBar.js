@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import moment from "moment";
 // import LoginMobile from "../Login/LoginMobile";
 
-export default function BottomNavbar() {
+export default function BottomNavbar({ ticketInfo }) {
     const colors = ColorCodes();
     const [currentTab, setCurrentTab] = useState(
         Number(sessionStorage.getItem("tab")) || 2
@@ -19,11 +19,19 @@ export default function BottomNavbar() {
     const [opendrawer, setOpenDrawer] = useState(false);
     const navigation = useNavigate();
 
+    const location = useLocation();
     const handleDrawerClose = () => {
         setOpenDrawer(false);
     };
 
-    const location = useLocation();
+
+
+    const LuxuryFind = (type) =>
+        type?.toLowerCase().includes("volvo") ||
+        type?.toLowerCase().includes("mercedes benz") ||
+        type?.toLowerCase().includes("washroom") ||
+        type?.toLowerCase().includes("bharatBenz") ||
+        type?.toLowerCase().includes("luxury");
 
 
     const busFrom = localStorage.getItem("departure");
@@ -72,7 +80,7 @@ export default function BottomNavbar() {
     return (
         <>
             <footer
-                className={` fixed bottom-0 h-[15vw] w-full bg-[${colors.primary}] md:hidden block py-[1vw] z-[2]`}
+                className={` fixed bottom-0 h-[15vw] w-full  ${LuxuryFind(ticketInfo?.bustype) === true ? 'bg-[#FFE782]' : 'bg-[#1F487C]'} md:hidden block py-[1vw] z-[2]`}
             >
                 <div className="flex items-center justify-between px-[5vw]">
                     <div
@@ -85,9 +93,9 @@ export default function BottomNavbar() {
                             e.preventDefault();
                         }}
                     >
-                        <FaHome color="white" size={"8vw"} />
+                        <FaHome color={`${LuxuryFind(ticketInfo?.bustype) === true ? '#393939' : 'white'} `} size={"8vw"} />
                         <label
-                            className={`${currentTab === 1 ? "text-white font-extrabold" : "text-white"
+                            className={`${currentTab === 1 ? ` ${LuxuryFind(ticketInfo?.bustype) === true ? 'text-[#393939]' : 'text-white'} font-extrabold` : `${LuxuryFind(ticketInfo?.bustype) === true ? 'text-[#393939]' : 'text-white'}`
                                 } text-[4vw]`}
                         >
                             Home
@@ -125,9 +133,9 @@ export default function BottomNavbar() {
                             e.preventDefault();
                         }}
                     >
-                        <FaTicketAlt color="white" size={"8vw"} />
+                        <FaTicketAlt color={`${LuxuryFind(ticketInfo?.bustype) === true ? '#393939' : 'white'} `}  size={"8vw"} />
                         <label
-                            className={`${currentTab === 3 ? "text-white font-extrabold" : "text-white"
+                            className={`${currentTab === 3 ? ` ${LuxuryFind(ticketInfo?.bustype) === true ? 'text-[#393939]' : 'text-white'} font-extrabold` : ` ${LuxuryFind(ticketInfo?.bustype) === true ? 'text-[#393939]' : 'text-white'}`
                                 } text-[4vw]`}
                         >
                             Booking
@@ -144,9 +152,9 @@ export default function BottomNavbar() {
                             e.preventDefault();
                         }}
                     >
-                        <BiSolidUserRectangle color="white" size={"8vw"} />
+                        <BiSolidUserRectangle color={`${LuxuryFind(ticketInfo?.bustype) === true ? '#393939' : 'white'} `}  size={"8vw"} />
                         <label
-                            className={`${currentTab === 4 ? "text-white font-extrabold" : "text-white"
+                            className={`${currentTab === 4 ? ` ${LuxuryFind(ticketInfo?.bustype) === true ? 'text-[#393939]' : 'text-white'} font-extrabold` : ` ${LuxuryFind(ticketInfo?.bustype) === true ? 'text-[#393939]' : 'text-white'}`
                                 } text-[4vw]`}
                         >
                             Profile

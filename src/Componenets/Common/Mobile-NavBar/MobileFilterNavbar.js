@@ -65,6 +65,7 @@ export default function MobileFilterNavbar() {
     })
 
 
+
     useEffect(() => {
         if (sessionStorage.getItem('home_luxury') === 'true') {
             setluxurybus({
@@ -92,6 +93,21 @@ export default function MobileFilterNavbar() {
         }
     }, [])
 
+    useEffect(() => {
+        if (luxurybus?.luxury === null) {
+            sessionStorage.setItem("home_luxury", null)
+        }
+        if (busSeatType?.seat === null) {
+            sessionStorage.setItem("home_seat_type", null)
+        }
+        if (busSeatType?.sleep === null) {
+            sessionStorage.setItem("home_seat_type", null)
+        }
+        if (acBus?.ac_bus === null) {
+            sessionStorage.setItem("home_ac", null)
+        }
+    }, [])
+    
     const filter =
         luxurybus?.luxury === true || luxurybus?.normal === true || acBus?.ac_bus === true || acBus?.non_ac_bus === true || busSeatType?.seat === true || busSeatType?.sleep === true ||
         sessionStorage.getItem('home_luxury') === 'true' ||
@@ -305,6 +321,7 @@ export default function MobileFilterNavbar() {
                             luxury: prev.luxury === true ? null : true,
                             normal: null
                         }));
+
                     }}
                 >
                     <span>

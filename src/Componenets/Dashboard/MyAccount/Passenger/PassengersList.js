@@ -15,9 +15,9 @@ import {
 import ModalPopup from "../../../Common/Modal/Modal";
 import Delete from "./DeleteModal";
 import { LoadingOutlined } from "@ant-design/icons";
-import { FaPlus, FaUser } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 // import { TfiArrowCircleRight } from "react-icons/tfi";
-// import { LuUser2 } from "react-icons/lu";
+import { LuUser2 } from "react-icons/lu";
 import ReactPaginate from "react-js-pagination";
 import { FaAngleDoubleLeft } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa6";
@@ -30,6 +30,7 @@ import {
   faAngleDoubleLeft,
   faAngleDoubleRight,
 } from "@fortawesome/free-solid-svg-icons";
+
 
 export default function PassengersList({
   nextPage,
@@ -107,12 +108,12 @@ export default function PassengersList({
     {
       title: <div className="">Action</div>,
       key: "actions",
-      width: "30%",
+      width: "10%",
       render: (row, record) => {
         return (
-          <div className="flex justify-center gap-[1vw] ">
+          <div className="flex justify-around">
             <div
-              className="flex items-center justify-center cursor-pointer px-[0.5vw] border-[0.1vw] border-[#1f4b7f] rounded-[0.2vw] w-[4.5vw] h-[2vw] gap-[0.5vw]"
+              className=" cursor-pointer px-[0.5vw]  rounded-[0.2vw] gap-[0.5vw]"
               onClick={() => {
                 setUpdateData(row.tbs_add_pax_id);
                 nextPage();
@@ -120,12 +121,12 @@ export default function PassengersList({
               }}
             >
               <div>
-                <MdOutlineModeEdit size="1.1vw" />
+                <MdOutlineModeEdit size="1.25vw" />
               </div>
-              <div className="text-[1vw]">Edit</div>
+              {/* <div className="text-[1vw]">Edit</div> */}
             </div>
             <div
-              className="flex items-center cursor-pointer px-[0.5vw] border-[0.1vw] border-[#1f4b7f] rounded-[0.2vw] w-[5.5vw] h-[2vw] gap-[0.5vw]"
+              className="cursor-pointer px-[0.5vw]  rounded-[0.2vw] gap-[0.5vw]"
               onClick={() => {
                 setDeleteModalIsOpen(true);
                 SetDeleteId(row.tbs_add_pax_id);
@@ -133,9 +134,9 @@ export default function PassengersList({
               }}
             >
               <div>
-                <RiDeleteBin6Line size="1.1vw" />
+                <RiDeleteBin6Line size="1.25vw" />
               </div>
-              <div className="text-[1vw]">Delete</div>
+              {/* <div className="text-[1vw]">Delete</div> */}
             </div>
           </div>
         );
@@ -228,8 +229,7 @@ export default function PassengersList({
             className="order-last bg-[#1F487C] text-white font-semibold font-size-[1.2vw] flex px-[4vw] items-center justify-center gap-[3.5vw] rounded-full h-[10vw]"
             onClick={handleNextPage}
           >
-            {/* <LuUser2 size="7vw" color="white" /> */}
-            <FaPlus size="7vw" color="white" />
+            <LuUser2 size="7vw" color="white" />
             <p>Add New Passenger </p>
           </button>
         </span>
@@ -302,7 +302,7 @@ export default function PassengersList({
         </div>
         <div>
           <div className="text-[#1F487C] text-[1vw] py-[0.5vw]">
-            You have {passengerdata?.length} Traveller(s)
+            You have {passengerdata?.length > 0 ? passengerdata?.length : '0'} Traveller(s)
           </div>
         </div>
         <div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Table, Spin } from "antd";
+import { Table, Spin, Modal } from "antd";
 import { TbTicketOff } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 // import { CancelTicket } from "../../../../Api/MyAccounts/MyBookings";
@@ -7,7 +7,7 @@ import { TiArrowRightOutline } from "react-icons/ti";
 import moment from "moment";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Popover, Drawer } from "antd";
-// import { LuUser2 } from "react-icons/lu";
+import { LuUser2 } from "react-icons/lu";
 import ModalPopup from "../../../Common/Modal/Modal";
 import dayjs from "dayjs";
 import { CancelTicket } from "../../../../Api-Abhibus/MyAccount/ViewTicket";
@@ -29,13 +29,18 @@ const PassengerList = ({
   setPassengerDetails,
   setShowtable,
   setFormValues,
-  mobileno
+  mobileno,
+  setCancellResModal,
+  setCancelResponse
 }) => {
   const cancelledDetails = useSelector((state) => state.get_ticket_to_cancel);
   const [deletemodalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [cancelmodalIsOpen, setCancelModalIsOpen] = useState(false);
   const [nameToDelete, setNameToDelete] = useState([]);
-
+  const [cancelPercent,setCancelPercent] = useState([])
+  // const [cancellResModal, setCancellResModal] = useState(false);
+  // const [cancelResponse, setCancelResponse] = useState("");
+  // console.log(cancellResModal, "cancellResModal");
   const trimName = nameToDelete.map((ntd) => {
     return ntd?.length > 10 ? ntd.slice(0, 10) + "..." : ntd;
   });
@@ -57,6 +62,8 @@ const PassengerList = ({
   );
   const closeDeleteModal = () => {
     setDeleteModalIsOpen(false);
+    // setCancellResModal((prev)=> setCancellResModal(...prev ,modalOpen:false))
+    // setCancellResModal(false)
   };
 
   const closeCancelModal = () => {
@@ -94,13 +101,12 @@ const PassengerList = ({
         passenger.gender === "male"
           ? "AFM"
           : passenger.gender === "female"
-            ? "AFF"
-            : "AFA",
+          ? "AFF"
+          : "AFA",
     }));
   }, [passengerDetails]);
 
   const dispatch = useDispatch();
-
 
   console.log(passengerDetails, "passdetailssss");
 
@@ -112,10 +118,18 @@ const PassengerList = ({
     const partialCancellation =
       selectedRowsData?.length === passengerDetails?.ticket_det?.length ? 1 : 0;
     try {
-      const response = await CancelTicket(deleteId, info, partialCancellation,mobileno);
-      console.log(droppingDate, "responseresponssdcdscsdcdse");
-
-      if (response?.status == "success") {
+      const response = await CancelTicket(
+        deleteId,
+        info,
+        partialCancellation,
+        mobileno
+      );
+      console.log(response, "responseresponssdcdscsdcdse");
+      // setCancelResponse(response);
+      setCancelResponse(refundAmount(response.return_amount))
+      // sessionStorage.setItem("returnamount",response.return_amount)
+      if (response?.status === "success") {
+        const calculateRefund = Math.round(response?.return_amount - ( response?.return_amount * (tbs_discount / 100 )))
         const data = await TBS_Booking_Cancellation(
           passengerDetails,
           currentpath,
@@ -123,25 +137,32 @@ const PassengerList = ({
           partialCancellation,
           response?.NewPNR,
           newConvertDate(droppingDate),
-          newConvertDate(passengerDetails?.Journey_Date)
+          newConvertDate(passengerDetails?.Journey_Date),
+          calculateRefund
+
         );
         // toast.success(
         //   `Ticket Cancelled Successfully  ${
         //     response?.NewPNR ? "and New Pnr Generated :" response?.NewPNR : ""
         //   }`
         // );
-        toast.success(
-          `Ticket Cancelled Successfully ${response?.NewPNR ? "and New Pnr Generated :" + response?.NewPNR : ""}`
-        );
 
+        toast.success(
+          `Ticket Cancelled Successfully ${
+            response?.NewPNR ? "and New Pnr Generated :" + response?.NewPNR : ""
+          }`
+        );
       }
+
       setSpinning(false);
       setShowtable(false);
       setPassengerDetails(null);
-      console.log(response, "responsegggggggggg");
+      setCancellResModal(true);
     } catch (error) {
       console.log(error, "errorerrorerror");
     } finally {
+    
+      console.log('hiiiiasfioasdhf;oasu')
       setFormValues({
         ticketNo: "",
         phoneNo: "",
@@ -207,10 +228,12 @@ const PassengerList = ({
       });
     }
   };
-  console.log(deleteId, "selectedRowsData");
+  // console.log(cancellResModal, "selectedRowsData");
 
   const tbs_discount = useSelector((state) => state?.live_per);
-  CurrentDiscount(dispatch, newConvertDate(passengerDetails?.Journey_Date))
+  useEffect(() => {
+    CurrentDiscount(dispatch, newConvertDate(passengerDetails?.Journey_Date));
+  }, [passengerDetails]);
 
   const columns = [
     {
@@ -234,54 +257,54 @@ const PassengerList = ({
       render: (_, record) => (
         <input
           type="checkbox"
-          className="border-black h-[3.2vw] w-[3.2vw] md:h-[1.3vw] md:w-[1.3vw] mt-[.5vw] cursor-pointer"
+          className="border-black h-[3.2vw] w-[3.2vw] md:h-[1.1vw] md:w-[1.1vw] mt-[.5vw] cursor-pointer"
           checked={selectedRowsData?.some((item) => item.key === record.key)}
           onChange={(e) => handleRowSelection(record, e.target.checked)}
         />
       ),
     },
     {
-      title: <div className={`text-[3vw] md:text-[1.2vw]`}>S.NO</div>,
+      title: <div className={`text-[3vw] md:text-[1.1vw]`}>S.NO</div>,
       width: "10%",
       render: (row, record, index) => (
         <div className="flex justify-center">
-          <h1 className="text-[3vw] md:text-[1vw]">{index + 1}</h1>
+          <h1 className="text-[3vw] md:text-[.9vw]">{index + 1}</h1>
         </div>
       ),
     },
     {
-      title: <div className={`text-[3.5vw] md:text-[1.2vw]`}>Name</div>,
+      title: <div className={`text-[3.5vw] md:text-[1.1vw]`}>Name</div>,
       width: "16%",
       render: (row) => (
         <div className="flex justify-center">
-          <h1 className="text-[3vw] md:text-[1vw]">{row.name}</h1>
+          <h1 className="text-[3vw] md:text-[.9vw]">{row.name}</h1>
         </div>
       ),
     },
     {
-      title: <div className={`text-[3.5vw] md:text-[1.2vw]`}>Gender</div>,
+      title: <div className={`text-[3.5vw] md:text-[1.1vw]`}>Gender</div>,
       width: "16%",
       render: (row) => (
         <div className="flex justify-center">
-          <h1 className="text-[3vw] md:text-[1vw]">{row.gender}</h1>
+          <h1 className="text-[3vw] md:text-[.9vw]">{row.gender}</h1>
         </div>
       ),
     },
     {
-      title: <div className={`text-[3.5vw] md:text-[1.2vw]`}>Age</div>,
+      title: <div className={`text-[3.5vw] md:text-[1.1vw]`}>Age</div>,
       width: "13%",
       render: (row) => (
         <div className="flex justify-center">
-          <h1 className="text-[3vw] md:text-[1vw]">{row.age}</h1>
+          <h1 className="text-[3vw] md:text-[.9vw]">{row.age}</h1>
         </div>
       ),
     },
     {
-      title: <div className={`text-[3.5vw] md:text-[1.2vw]`}>Seat NO</div>,
+      title: <div className={`text-[3.5vw] md:text-[1.1vw]`}>Seat NO</div>,
       width: "16%",
       render: (row) => (
         <div className="flex justify-center">
-          <h1 className="text-[3vw] md:text-[1vw]">{row.seat}</h1>
+          <h1 className="text-[3vw] md:text-[.9vw]">{row.seat}</h1>
         </div>
       ),
     },
@@ -411,9 +434,72 @@ const PassengerList = ({
     return `${day} ${month}, ${year}`;
   };
   console.log(passengerDetails, "testingdeleteid");
-  const [calculatedDate, setCalculatedDate] = useState("");
-  const [showmodal, setShowModal] = useState(false);
 
+  const processAmount = (amountString) => {
+    const amount = parseInt(amountString.replace(/[^\d]/g, ""));
+    const reducedAmount = amount - amount * 0.02;
+    const roundedAmount = Math.round(reducedAmount);
+    return roundedAmount;
+  };
+
+  const calculatefunction = ((val) =>{
+    const removePercentage =  parseFloat(val?.replace('%', ''))
+    // setCancelPercent(prev =>[...prev,removePercentage])
+    const basefare = cancellationPolicy?.Collect_amt?.replace(/,/g, '');
+    const findPercentage = (basefare * tbs_discount) / 100
+    const newcal = basefare - findPercentage
+    console.log("valuessssssiusd",removePercentage,basefare,findPercentage,newcal);
+    return  Math.round(newcal * removePercentage) /100
+  })
+
+  const calTbsDiscount = (val) =>{
+    return (val * tbs_discount) / 100
+
+  }
+  useEffect(() => {
+    if (cancellationPolicy?.CancellationPolicyWithRefund) {
+      const newRpArray = cancellationPolicy?.CancellationPolicyWithRefund?.map(
+        (val) => parseFloat(val?.rp?.replace('%', ''))
+      );
+      setCancelPercent(newRpArray);  // Update the state with val.rp values
+    }
+  }, [cancellationPolicy]);
+  console.log(cancelPercent,"percentaekhfkdjfhkdjxfhdxjkf");
+
+
+//   const refundAmount = (val) =>{
+//     const basefare = cancellationPolicy?.Collect_amt?.replace(/,/g, ''); 
+//     const returnval = val;
+//     // const percentagecal = (basefare * cancelPercent[0]) /100;
+//     // const taxcal = (basefare * 5) / 100;
+//     const tbsdis = (basefare * tbs_discount) / 100;
+//     // const userBasedAmount = (tbsdis / selectedRowsData?.length);
+//     const userBasedAmount = selectedRowsData?.length > 0 ? tbsdis / selectedRowsData.length : tbsdis;
+//     const tbsReturnAmount = (returnval - tbsdis) ;
+// console.log(basefare ,tbsdis,userBasedAmount,tbsReturnAmount,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+//      return tbsReturnAmount
+//    }
+const refundAmount = () =>{
+  const basefare = cancellationPolicy?.Collect_amt?.replace(/,/g, '');
+  const percentagecal = (basefare * cancelPercent[0]) /100;
+  const taxcal = (percentagecal * 5) / 100;
+  const tbsdis = (percentagecal * tbs_discount) / 100;
+  // const userBasedAmount = (tbsdis / selectedRowsData?.length);
+  // const userBasedAmount = selectedRowsData?.length > 0 ? tbsdis / selectedRowsData.length : tbsdis;
+  const userBasedAmount = selectedRowsData?.length > 0 ? selectedRowsData?.length === passengerDetails?.ticket_det?.length ? tbsdis : (selectedRowsData?.length / passengerDetails?.ticket_det?.length) * tbsdis  : tbsdis 
+  // const selectedUserShare = (selectedRowsData?.length / passengerDetails?.ticket_det?.length) * tbsdis
+  const tbsReturnAmount = (percentagecal - userBasedAmount) + taxcal;
+console.log(basefare ,percentagecal, taxcal ,tbsdis,userBasedAmount,tbsReturnAmount ,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+   return tbsReturnAmount
+ }
+
+   console.log(refundAmount(),"sgdsgsddbjhdbsdgbjsbdjdbjsdbjsdjsdjsgd");
+   
+  
+
+  
   return (
     <div>
       {spinning ? (
@@ -603,15 +689,16 @@ const PassengerList = ({
         //     ""
         //   )}
         // </span>
-        <div className="flex items-center justify-between">
+        <div className="md:block hidden">
+        <div className="flex items-center h-auto pb-[1vw] justify-between">
           <>
-            <div className="md:block hidden">
+            <div className="">
               <label className="text-[1.2vw] text-[#1F487C] font-extrabold">
                 {passengerDetails?.operatorname}
                 <span className="text-[1vw] pl-[1vw] font-semibold text-gray-500">{`( ${passengerDetails?.bustype} )`}</span>
               </label>
-              <div className="mt-[0.5vw] mb-[1.5vw] flex justify-between gap-x-[2vw] w-full">
-                <div className="flex flex-col">
+              <div className="mt-[0.5vw]  grid grid-cols-7  w-full">
+                <div className="flex flex-col col-span-3">
                   {/* <label className="text-[1vw]">From</label> */}
                   <label className="text-[1.1vw] ">
                     {passengerDetails?.source_name}{" "}
@@ -620,7 +707,7 @@ const PassengerList = ({
                     </span>
                   </label>
                   <label className="text-[0.9vw] font-semibold">
-                    {`${passengerDetails?.Reporting_Time},`}
+                    {`${passengerDetails?.Board_Halt_Time},`}
                     {/* <span className="text-[0.9vw] pl-[0.5vw] text-gray-500">{` ${formatDate(
                       passengerDetails?.Journey_Date
                     )}`}</span> */}
@@ -629,10 +716,10 @@ const PassengerList = ({
                     </span>
                   </label>
                 </div>
-                <div>
+                <div className="col-span-1 flex justify-center items-center">
                   <FaArrowRightLong color="gray" size={"1.5vw"} />
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col col-span-3">
                   {/* <label className="text-[1vw]">From</label> */}
                   <label className="text-[1.1vw] ">
                     {passengerDetails?.dest_name}{" "}
@@ -659,10 +746,60 @@ const PassengerList = ({
                 </div>
               </div>
             </div>
+            <div className=" flex items-start gap-x-[1vw]">
+              <div className="bg-[#1F487C] w-[.1vw] h-[6.2vw]"></div>
+              <div className="flex text-[.9vw] text-[#1F487C] gap-x-[.5vw] ">
+                <div className="grid grid-cols-5 gap-x-[1vw]">
+                  <div className=" flex flex-col col-span-2 gap-y-[.3vw]">
+                    <div className="">Base Fare </div>
+                    <div className="">serviceTax </div>
+                    <div>Tbs Discount</div>
+                    <div className="">Net Fare </div>
+                  </div>
+                  <div className=" flex flex-col items-center gap-y-[.3vw]">
+                    <div className="">:</div>
+                    <div className="">:</div>
+                    <div className="">:</div>
+                    <div className="">:</div>
+                  </div>
+                  <div className="flex flex-col  col-span-2 gap-y-[.3vw]">
+                    <div className="">
+                      {" "}
+                      {/* {`₹ ${calculateDiscountedFare(
+                        newConvertDate(passengerDetails?.Journey_Date),
+                        passengerDetails?.FareBreakup?.baseFare,
+                        tbs_discount
+                      )}`} */}
+                      {`₹ ${Math.round(passengerDetails?.FareBreakup?.baseFare)}`}
+                    </div>
+                    <div className="">{`₹ ${" "} ${Math.round(
+                      passengerDetails?.FareBreakup?.serviceTax
+                    )}`}</div>
+                    <div>{`- ₹ ${Math.round(calTbsDiscount(passengerDetails?.FareBreakup?.baseFare))}`}</div>
+                    <div className="">{`₹ ${
+                      parseInt(
+                        calculateDiscountedFare(
+                          newConvertDate(passengerDetails?.Journey_Date),
+                          passengerDetails?.FareBreakup?.baseFare,
+                          tbs_discount
+                        )
+                      ) + Math.round(passengerDetails?.FareBreakup?.serviceTax)
+                    } `}</div>
+                  </div>
+                </div>
+                {/* <div className="font-semibold" >
+          {`₹ ${calculateDiscountedFare(
+          newConvertDate(passengerDetails?.Journey_Date),
+          passengerDetails?.TicketFare,
+          tbs_discount
+        )}`}</div> */}
+              </div>
+            </div>
             <div>
               {cancellationPolicy?.CancellationPolicyWithRefund?.length > 0 && (
                 <div className="flex justify-center text-[#1F487C] items-center gap-[.5vw] pb-[.5vw]">
                   <Popover
+                    color="#EEEDED"
                     content={
                       <div className="">
                         {/* <div className="pb-[1vw] text-[#1F487C] font-bold">
@@ -674,26 +811,34 @@ const PassengerList = ({
                           {cancellationPolicy?.CancellationPolicyWithRefund
                             ?.length > 0
                             ? cancellationPolicy?.CancellationPolicyWithRefund?.map(
-                              (val, ind) => {
-                                return (
-                                  <>
-                                    <div className="py-[.5vw] text-[#1F487C] font-semibold">
-                                      {/* <li>{val.cc}</li>
+                                (val, ind) => {
+                                  return (
+                                    <>
+                                      <div className="py-[.5vw] text-[#1F487C] font-semibold">
+                                        {/* <li>{val.cc}</li>
                             <div>{val.rp}</div> */}
-                                      <div>{val.tl}</div>
-                                      <div>{val.con}</div>
-                                    </div>
-                                  </>
-                                );
-                              }
-                            )
+                                        {/* <div>{val.tl}</div> */}
+                                        {/* <div>{`Rs ${processAmount(
+                                          val.cc
+                                        )} /- @ ${val.rp} refund`}</div> */}
+                                        <div>{`Rs ${Math.round(calculatefunction(val.rp))} /- @ ${val.rp} refund`}</div>
+                                        {/* <div>{Math.round(calculatefunction(val.rp))}</div> */}
+                                        <div>{val.con}</div>
+                                      </div>
+                                    </>
+                                  );
+                                }
+                              )
                             : ""}
                         </div>
                       </div>
                     }
                     placement="left"
                     trigger="hover"
-                  // overlayStyle={{ maxWidth: "70vw" }}
+                    overlayStyle={{
+                      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)", // Apply the shadow here
+                    }}
+                    // overlayStyle={{ maxWidth: "70vw" }}
                   >
                     <FaCircleInfo
                       size={"1vw"}
@@ -710,14 +855,16 @@ const PassengerList = ({
               {passengerDetails?.ticket_det?.length > 0 ? (
                 <>
                   <div className={`md:block hidden`}>
-                    {cancellationPolicy?.CancellationPolicyWithRefund?.length > 0 ?
+                    {cancellationPolicy?.CancellationPolicyWithRefund?.length >
+                    0 ? (
                       <button
-                        className={`flex justify-center items-center bg-[#FFC1C180] ${deleteId.Booking_Id &&
-                            // deleteId.mobile_number &&
-                            deleteId.seat_numbers
+                        className={`flex justify-center items-center bg-[#FFC1C180] ${
+                          deleteId.Booking_Id &&
+                          // deleteId.mobile_number &&
+                          deleteId.seat_numbers
                             ? "cursor-pointer"
                             : "cursor-not-allowed bg-gray-400"
-                          }  w-[12vw] rounded-full h-[2.5vw] gap-[1vw] mb-[1vw]`}
+                        }  w-[12vw] rounded-full h-[2.5vw] gap-[1vw] mb-[1vw]`}
                         onClick={() => {
                           if (
                             deleteId.Booking_Id &&
@@ -732,27 +879,32 @@ const PassengerList = ({
                           <TbTicketOff
                             size="1.7vw"
                             className={`
-                   ${selectedRowsData.length === 0
-                                ? "text-white"
-                                : "text-[#C62B2B]"
-                              }
+                   ${
+                     selectedRowsData.length === 0
+                       ? "text-white"
+                       : "text-[#C62B2B]"
+                   }
                  text-[#C62B2B]`}
                           />
                         </div>
                         <div
                           className={`
-                 ${selectedRowsData.length === 0
-                              ? "text-white"
-                              : "text-[#C62B2B]"
-                            }
+                 ${
+                   selectedRowsData.length === 0
+                     ? "text-white"
+                     : "text-[#C62B2B]"
+                 }
                text-[1.1vw] text-[#C62B2B] font-bold`}
                         >
                           Cancel Ticket
                         </div>
-                      </button> :
-                      <div className="text-red-600 font-bold text-[1vw]"> cancellation policy has expired</div>
-                    }
-
+                      </button>
+                    ) : (
+                      <div className="text-red-600 font-bold text-[1vw]">
+                        {" "}
+                        cancellation policy has expired
+                      </div>
+                    )}
                   </div>
                 </>
               ) : (
@@ -761,10 +913,11 @@ const PassengerList = ({
             </div>
           </>
         </div>
+        </div>
       )}
 
       <div
-        className={`md:block hidden min-h-auto max-h-[16vw] overflow-y-auto pt-[0vw]`}
+        className={`md:block hidden min-h-auto max-h-[17vw] overflow-y-auto pt-[0vw]`}
       >
         <Table
           columns={columns}
@@ -772,18 +925,10 @@ const PassengerList = ({
           pagination={false}
           className="Passenger-class"
         />
-
-        <div className="flex justify-end items-center font-bold text-[1.2vw] text-[#1F487C] gap-x-[.5vw] pt-[1.5vw]"><div className="" >Total Fare : </div> <div className="font-semibold" >
-          {/* {passengerDetails?.TicketFare}  */}
-          {`₹ ${calculateDiscountedFare(
-          newConvertDate(passengerDetails?.Journey_Date),
-          passengerDetails?.TicketFare,
-          tbs_discount
-        )}`}</div></div>
       </div>
 
       {/* ----------------------------------------------------Mobile--------------------------------------- */}
-      <div className=" px-[3vw] rounded-[1.5vw] h-[100vw] overflow-y-auto block md:hidden bg-white">
+      <div className=" px-[3vw] rounded-[1.5vw] overflow-y-auto block md:hidden">
         <div className="md:hidden block">
           <label className="text-[5vw] text-[#1F487C] font-extrabold">
             {passengerDetails?.operatorname}
@@ -881,18 +1026,119 @@ const PassengerList = ({
             })}
           </div> 
         </div> */}
-        <div>
+        <div className="flex flex-col py-[2vw]">
           {passengerDetails?.ticket_det?.length > 0 ? (
             <>
               <div className={`block md:hidden`}>
-                <div className="flex items-center justify-end py-[2vw]">
+                <div className="flex items-center justify-between py-[2vw]">
+                <div className="grid grid-cols-5 gap-x-[1vw] text-[3vw]">
+                  <div className=" flex flex-col col-span-2 gap-y-[.3vw]">
+                    <div className="">Base Fare </div>
+                    <div className="">serviceTax </div>
+                    <div>Tbs Discount</div>
+                    <div className="">Net Fare </div>
+                  </div>
+                  <div className=" flex flex-col items-center gap-y-[.3vw]">
+                    <div className="">:</div>
+                    <div className="">:</div>
+                    <div className="">:</div>
+                    <div className="">:</div>
+                  </div>
+                  <div className="flex flex-col  col-span-2 gap-y-[.3vw]">
+                    <div className="">
+                      {" "}
+                      {`₹ ${calculateDiscountedFare(
+                        newConvertDate(passengerDetails?.Journey_Date),
+                        passengerDetails?.FareBreakup?.baseFare,
+                        tbs_discount
+                      )}`}
+                    </div>
+                    <div className="">{`₹ ${" "} ${Math.round(
+                      passengerDetails?.FareBreakup?.serviceTax
+                    )}`}</div>
+                     <div>{`- ₹ ${Math.round(calTbsDiscount(passengerDetails?.FareBreakup?.baseFare))}`}</div>
+                    <div className="">{`₹ ${
+                      parseInt(
+                        calculateDiscountedFare(
+                          newConvertDate(passengerDetails?.Journey_Date),
+                          passengerDetails?.FareBreakup?.baseFare,
+                          tbs_discount
+                        )
+                      ) + Math.round(passengerDetails?.FareBreakup?.serviceTax)
+                    } `}</div>
+                  </div>
+                </div>
+                <div>
+                {cancellationPolicy?.CancellationPolicyWithRefund?.length > 0 && (
+                <div className="flex justify-center text-[#1F487C] items-center gap-[.5vw] pb-[2.5vw]">
+                  <Popover
+                    color="#EEEDED"
+                    content={
+                      <div className="">
+                        {/* <div className="pb-[1vw] text-[#1F487C] font-bold">
+                    <div>Ticket Fare : <span className="font-semibold">{cancellationPolicy?.Collect_amt}</span></div>
+                    <div>Cancellation Charges :<span className="font-semibold"> {cancellationPolicy?.canncellation_charges}</span></div>
+                    <div>Refund Amount : <span className="font-semibold">{cancellationPolicy?.return_amount}</span></div>
+                    </div> */}
+                        <div className="grid grid-cols-1 gap-x-[2vw] gap-y-[1vw] items-center">
+                          {cancellationPolicy?.CancellationPolicyWithRefund
+                            ?.length > 0
+                            ? cancellationPolicy?.CancellationPolicyWithRefund?.map(
+                                (val, ind) => {
+                                  return (
+                                    <>
+                                      <div className="py-[.5vw] text-[#1F487C] font-semibold">
+                                        {/* <li>{val.cc}</li>
+                            <div>{val.rp}</div> */}
+                                        {/* <div>{val.tl}</div> */}
+                                        {/* <div>{`Rs ${processAmount(
+                                          val.cc
+                                        )} /- @ ${val.rp} refund`}</div> */}
+                                        <div>{`Rs ${Math.round(calculatefunction(val.rp))} /- @ ${val.rp} refund`}</div>
+                                        
+                                        <div>{val.con}</div>
+                                      </div>
+                                    </>
+                                  );
+                                }
+                              )
+                            : ""}
+                        </div>
+                      </div>
+                    }
+                    placement="top"
+                    trigger="click"
+                    overlayStyle={{
+                      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)", // Apply the shadow here
+                      maxWidth: "150vw"
+                    }}
+                    // overlayStyle={{ maxWidth: "70vw" }}
+                  >
+                    <div className="flex items-center gap-x-[1vw]">
+                    <FaCircleInfo
+                      size={"3vw"}
+                      color="#1F487c"
+                      className="cursor-pointer"
+                    />
+                     <span className="text-[3vw] font-semibold ">
+                    cancellation policy
+                  </span>
+                  </div>
+                  </Popover>
+                 
+                </div>
+              )}
+                {cancellationPolicy?.CancellationPolicyWithRefund?.length >
+                    0 ? (
+                      
                   <button
-                    className={`flex justify-center items-center bg-[#FFC1C180] ${deleteId.Booking_Id &&
-                        // deleteId.mobile_number &&
-                        deleteId.seat_numbers
+                    className={`flex justify-center pt-[2vw] items-center bg-[#FFC1C180] ${
+                      deleteId.Booking_Id &&
+                      // deleteId.mobile_number &&
+                      deleteId.seat_numbers
                         ? "cursor-pointer"
                         : "cursor-not-allowed bg-gray-400"
-                      } px-[2.5vw] py-[1.5vw] rounded-[1.5vw] gap-[1vw] mb-[1vw]`}
+                    } px-[2.5vw] py-[1.5vw] rounded-[1.5vw] gap-[1vw] mb-[1vw]`}
                     onClick={() => {
                       if (
                         deleteId.Booking_Id &&
@@ -916,19 +1162,21 @@ const PassengerList = ({
                     <div>
                       <TbTicketOff
                         className={`
-                    ${selectedRowsData.length === 0
-                            ? "text-white"
-                            : "text-[#C62B2B]"
-                          }
+                    ${
+                      selectedRowsData.length === 0
+                        ? "text-white"
+                        : "text-[#C62B2B]"
+                    }
                   h-[4vw] w-[4vw] text-[#C62B2B]`}
                       />
                     </div>
                     <div
                       className={`
-                ${selectedRowsData.length === 0
-                          ? "text-white"
-                          : "text-[#C62B2B]"
-                        }
+                ${
+                  selectedRowsData.length === 0
+                    ? "text-white"
+                    : "text-[#C62B2B]"
+                }
                 text-[3.5vw] text-[#C62B2B] font-bold`}
                     >
                       {selectedRowsData.length === 0 ? (
@@ -946,6 +1194,13 @@ const PassengerList = ({
                       )}
                     </div>
                   </button>
+                     ) : (
+                      <div className="text-red-600 font-bold text-[3.5vw]">
+                        {" "}
+                        cancellation policy has expired
+                      </div>
+                    )}
+                    </div>
                 </div>
               </div>
             </>
@@ -953,13 +1208,14 @@ const PassengerList = ({
             ""
           )}
         </div>
-
+<div className="max-h-[40vw] pb-[2vw] overflow-y-auto">
         <Table
           columns={mobileColumn}
           dataSource={passengerData}
           pagination={false}
           className="Passenger-class"
         />
+        </div>
       </div>
 
       <ModalPopup
@@ -1003,6 +1259,16 @@ const PassengerList = ({
           </div>
         </div>
       </ModalPopup>
+      {/* <ModalPopup
+        show={cancellResModal}
+        onClose={closeDeleteModal}
+        height="20vw"
+        width="30vw"
+        closeicon={false}
+        className="md:block hidden"
+      >
+        <div> fgfgfgfgfgfgfgfgfgfg{cancelResponse.NewPNR}</div>
+      </ModalPopup> */}
       <Drawer
         onClose={closeCancelModal}
         placement={"bottom"}
