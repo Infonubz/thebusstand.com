@@ -62,7 +62,7 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
   const getselecteddate = useSelector((state) => state.selected_date);
-  console.log(getselecteddate, "getselecteddategetselecteddate");
+  // console.log(getselecteddate, "getselecteddategetselecteddate");
 
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
@@ -75,8 +75,8 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
   nextDate3.setDate(currentDate.getDate() + 3);
 
   const dateSelection = new Date(getselecteddate);
-  console.log(dateSelection, "dateselectiondateselectiondateselection");
-  console.log(nextDate3, "nextdatenextedatewfaewfawgafdsagewa");
+  // console.log(dateSelection, "dateselectiondateselectiondateselection");
+  // console.log(nextDate3, "nextdatenextedatewfaewfawgafdsagewa");
 
   const [selectedDate, setSelectedDate] = useState(currentDate);
 
@@ -140,9 +140,9 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
   //   const endDate = new Date(today);
   //   endDate.setDate(today.getDate() + 3);
 
-  //   console.log("Today:", today);
-  //   console.log("End Date:", endDate);
-  //   console.log("Date being checked:", date);
+  //   // console.log("Today:", today);
+  //   // console.log("End Date:", endDate);
+  //   // console.log("Date being checked:", date);
 
   //   return date < endDate;
   // }
@@ -163,8 +163,8 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
 
   const location = useLocation();
   const path = useParams();
-  console.log(location.pathname, "locationlocation");
-  console.log(selectedDate, "selectedDateselectedDate");
+  // console.log(location.pathname, "locationlocation");
+  // console.log(selectedDate, "selectedDateselectedDate");
   const dispatch = useDispatch();
   useEffect(() => {
     const formattedDate = selectedDate
@@ -179,7 +179,7 @@ function HomeDateInput(props, { selecteddate, setSelecteddate }) {
       });
     }
   }, [location.pathname, selectedDate]);
-  console.log(nextDate3, "nextDate3");
+  // console.log(nextDate3, "nextDate3");
 
   const [dateSelectionColor, setDateSelectionColor] = useState(false);
 

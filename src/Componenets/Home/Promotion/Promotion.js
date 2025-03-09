@@ -99,7 +99,7 @@ export default function Promotion() {
           </div>
           <div className="h-[85%] w-full md:mt-0 mt-[5vw]">
             <div
-              className={`grid lg:grid-cols-5 md:grid-cols-4  w-full h-full items-center gap-[1vw] justify-center px-[2vw]`}
+              className={`grid lg:grid-cols-4 md:grid-cols-4  w-full h-full items-center gap-[1vw] justify-center px-[2vw]`}
             >
               {offerlist?.response?.length > 0 &&
                 offerlist?.response
@@ -124,7 +124,7 @@ export default function Promotion() {
                       </div>
                     </div> */}
                       <div className="relative">
-                        <div className={`absolute left-[4.6vw] top-0`}>
+                        <div className={`absolute left-[6.3vw] top-0`}>
                           <div
                             className={`bg-[${colors.background}] w-[1.6vw] h-[0.8vw] rounded-b-full`}
                           ></div>
@@ -139,7 +139,7 @@ export default function Promotion() {
                           }`}
                           className="w-[80vw] lg:h-[9.5vw] md:h-[8vw] h-[40vw]"
                         />
-                        <div className={`absolute left-[4.6vw] bottom-0`}>
+                        <div className={`absolute left-[6.3vw] bottom-0`}>
                           <div
                             className={`bg-[${colors.background}] w-[1.6vw] h-[0.8vw] rounded-t-full rounded-b-[0.5vw]`}
                           ></div>

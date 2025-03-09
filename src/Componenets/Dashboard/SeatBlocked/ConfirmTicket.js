@@ -18,12 +18,15 @@ import axios from "axios";
 import {
   GetAvailableOffers,
   GetOfferValid,
+  GetTBSSeatConfirmed,
   TBS_Booking_Details,
 } from "../../../Api-TBS/Dashboard/Dashboard";
 import dayjs from "dayjs";
 import { useParams } from "react-router";
 import { GetDiscountOffers } from "../../../Api-TBS/Home/Home";
 import * as Yup from "yup";
+import { GetViewTicketID } from "../../../Api-TBS/MyAccounts/MyBookings";
+import { LuxuryFind } from "../../Common/Common-Functions/LuxuryFind";
 
 const validationSchema = Yup.object().shape({
   coupon_code: Yup.string().required("Coupon Code is required"),
@@ -61,7 +64,7 @@ export default function ConfirmTicket({
   const tbs_available_offer = useSelector(
     (state) => state?.tbs_available_offer?.data
   );
-  console.log(selectvalue, "tbs_discounttbs_discount");
+  // console.log(selectvalue, "tbs_discounttbs_discount");
 
   const [finaldiscount, setFinalDiscount] = useState(null);
   const [promoCode, setPromoCode] = useState("");
@@ -71,7 +74,7 @@ export default function ConfirmTicket({
   const { handleChange, isSubmitting } = useFormikContext();
   const [orderid, setOrderId] = useState(null);
   const abhibusamount = Number(faredetails?.totalAmount);
-  console.log(promoCode, "Therikaa")
+  // console.log(promoCode, "Therikaa");
 
   const seatTaxList = Object.values(seatDetails)
     .map((item) => item.tax.split(",")[0])
@@ -96,14 +99,14 @@ export default function ConfirmTicket({
     Number(finaldiscount);
   const tbsbasefare = faredetails?.TotadultFare;
   const handlePromoCode = async () => {
-    console.log("hi");
+    // console.log("hi");
   };
-  const LuxuryFind = (type) =>
-    type.toLowerCase().includes("volvo") ||
-    type.toLowerCase().includes("mercedes benz") ||
-    type.toLowerCase().includes("washroom") ||
-    type.toLowerCase().includes("bharatBenz") ||
-    type.toLowerCase().includes("luxury");
+  // const LuxuryFind = (type) =>
+  //   type.toLowerCase().includes("volvo") ||
+  //   type.toLowerCase().includes("mercedes benz") ||
+  //   type.toLowerCase().includes("washroom") ||
+  //   type.toLowerCase().includes("bharatBenz") ||
+  //   type.toLowerCase().includes("luxury");
   const offers = [
     { Coupon: "BUSSAVE10", details: "Get 10% off on all bus tickets." },
     { Coupon: "TRAVEL20", details: "Save $20 on round-trip bus tickets." },
@@ -140,6 +143,8 @@ export default function ConfirmTicket({
       return { arrivalDate: null, arrivalTime: null };
     }
   };
+  // console.log(key_id, key_secret, "testtttttttt");
+
   const OrderId_Generate = async () => {
     const username = key_id;
     const password = key_secret;
@@ -157,9 +162,12 @@ export default function ConfirmTicket({
     };
 
     try {
-      console.log("API URL:", apiUrl); // Debugging API URL
+      // console.log("API URL:", apiUrl); // Debugging API URL
 
       const authHeader = `Basic ${btoa(`${username}:${password}`)}`;
+      // const authHeader = `Basic ${btoa(
+      //   `${process.env.REACT_APP_RAZORPAY_KEY_ID}:${process.env.REACT_APP_RAZORPAY_KEY_SECRET}`
+      // )}`;
 
       const response = await axios.post(apiUrl, requestBody, {
         headers: {
@@ -168,7 +176,7 @@ export default function ConfirmTicket({
         },
       });
 
-      console.log("Generated Order ID:", response?.data?.id); // Debugging Order ID
+      // console.log("Generated Order ID:", response?.data?.id); // Debugging Order ID
       setOrderId(response?.data?.id);
       return response?.data.id; // Return the order ID
     } catch (error) {
@@ -209,7 +217,7 @@ export default function ConfirmTicket({
       amount: tbsamount * 100,
       currency: "INR",
       name: "thebusstand.com",
-      description: "For testing purposes",
+      description: "ticket details",
       order_id: generatedOrderId,
       handler: async function (response) {
         if (response?.razorpay_payment_id) {
@@ -281,13 +289,14 @@ export default function ConfirmTicket({
   );
   const currentpath = useParams();
   const dddddd = new Date();
-  console.log(dddddd, "dddddddddddddddddddddddddddddd");
+  // console.log(dddddd, "dddddddddddddddddddddddddddddd");
 
   const handleBookingPrice = async (order_id, payment_id, signature, msg) => {
     setTicketLoading(true);
     try {
-      console.log("Calling API...");
-      const response = await Abhibus_SeatConfirmed(BusDetails, confirmRefNo);
+      // console.log("Calling API...");
+      // const response = await Abhibus_SeatConfirmed(BusDetails, confirmRefNo);
+      const response = await GetTBSSeatConfirmed(BusDetails, confirmRefNo);
 
       if (response?.status === "success") {
         // toast.success(
@@ -296,17 +305,21 @@ export default function ConfirmTicket({
         sessionStorage.setItem("testing", "hello");
         // setDropDown(null);
         // Fetch ticket details
-        const ticketdetails = await ViewTicketById(
+        // const ticketdetails = await ViewTicketById(
+        //   response?.TicketNo,
+        //   setSpinning
+        // );
+        const ticketdetails = await GetViewTicketID(
           response?.TicketNo,
           setSpinning
         );
         const values = {
           ticketNumber: response?.TicketNo,
         };
-        console.log(ticketdetails, "ticketdetails");
+        // console.log(ticketdetails, "ticketdetails");
 
         // const cancel_data = await PreCancelTicket(values, mobileInput);
-        // console.log("cancel_data", cancel_data);
+        //  // console.log("cancel_data", cancel_data);
 
         if (response?.TicketNo) {
           setTicketNumber(response?.TicketNo);
@@ -349,26 +362,29 @@ export default function ConfirmTicket({
         sessionStorage.setItem("ticket_view", "open"); // Update state with ticket details
         setTicketDetails(ticketdetails);
         setShowTicket(true);
-        console.log(ticketdetails, "ggggggggggg");
+        // console.log(ticketdetails, "ggggggggggg");
       }
-      console.log(response, "API Response");
+      // console.log(response, "API Response");
     } catch (error) {
       console.error("API call failed:", error);
     }
   };
   useEffect(() => {
-    loadRazorpayScript(() => console.log("Razorpay script preloaded"));
+    loadRazorpayScript(() => {
+      console.log("Razorpay script loaded successfully.");
+    });
   }, []);
+
   useEffect(() => {
     GetDiscountOffers(dispatch);
   }, [dispatch, sessionStorage.getItem("occupation_id")]);
   const offerlist = useSelector((state) => state?.discount_offer_list);
-  console.log(offerlist?.response, "offerlistofferlist");
+  // console.log(offerlist?.response, "offerlistofferlist");
   const GetOffers = async () => {
     try {
       const data = await GetAvailableOffers(dispatch, emailInput, mobileInput);
     } catch {
-      console.log("hi");
+      // console.log("hi");
     }
   };
   useEffect(() => {
@@ -404,7 +420,7 @@ export default function ConfirmTicket({
   //       description: "For testing purposes",
   //       order_id: generatedOrderId, // Use the generated order ID
   //       handler: async function (response) {
-  //         console.log(response, "Razorpay response");
+  //          // console.log(response, "Razorpay response");
 
   //         if (response?.razorpay_payment_id) {
   //           const payload = {
@@ -418,7 +434,7 @@ export default function ConfirmTicket({
   //               `${OrderApi}/order/validate`,
   //               payload
   //             );
-  //             console.log(jsonRes, "jsonRes");
+  //              // console.log(jsonRes, "jsonRes");
 
   //             if (jsonRes?.msg === "success") {
   //               handleBookingPrice(
@@ -428,7 +444,7 @@ export default function ConfirmTicket({
   //                 jsonRes?.msg
   //               );
   //             }
-  //             console.log(jsonRes, "Payment validation response");
+  //              // console.log(jsonRes, "Payment validation response");
   //           } catch (err) {
   //             console.error("Validation failed:", err);
   //           }
@@ -485,7 +501,7 @@ export default function ConfirmTicket({
         faredetails?.TotadultFare,
         tbs_discount
       );
-      console.log(amount, "amountgggggg");
+      // console.log(amount, "amountgggggg");
 
       const final = Number(amount) - Number(item?.offer_value);
       if (selectvalue?.value === item?.offer_value) {
@@ -506,7 +522,7 @@ export default function ConfirmTicket({
       );
       const per = Number(item?.offer_value) / 100;
       const final = Number(amount) * Number(per);
-      console.log(final, per, amount, "finalfinalfinal");
+      // console.log(final, per, amount, "finalfinalfinal");
       if (selectvalue?.value === item?.offer_value) {
         setDiscount(null);
       } else {
@@ -549,13 +565,13 @@ export default function ConfirmTicket({
         setFinalDiscount(null);
         setFieldError("coupon_code", "Coupon code is not valid or expired");
       }
-      console.log("datawdedwedew", response?.data);
+      // console.log("datawdedwedew", response?.data);
     } catch (error) {
-      console.log("Error fetching offer:", error);
+      // console.log("Error fetching offer:", error);
     }
   };
-  console.log(tbsdiscountamount, "tbsdiscountamount");
-  console.log(promoCode, "selectvalueselectvalue");
+  // console.log(tbsdiscountamount, "tbsdiscountamount");
+  // console.log(promoCode, "selectvalueselectvalue");
 
   return (
     <>
@@ -571,10 +587,11 @@ export default function ConfirmTicket({
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-[2vw] h-[5vw]">
             <div
-              className={`${LuxuryFind(BusDetails.Bus_Type_Name) === true
-                ? "bg-[#FFEEC9]"
-                : "bg-white"
-                } col-span-1 h-[67vw] md:h-[17.4vw] w-full rounded-[1.5vw]  md:rounded-[0.5vw]`}
+              className={`${
+                LuxuryFind(BusDetails.Bus_Type_Name) === true
+                  ? "bg-[#FFEEC9]"
+                  : "bg-white"
+              } col-span-1 h-[67vw] md:h-[17.4vw] w-full rounded-[1.5vw]  md:rounded-[0.5vw]`}
               style={{
                 boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
               }}
@@ -620,7 +637,7 @@ export default function ConfirmTicket({
                               onClick={() => {
                                 handleoffer(item);
                               }}
-                            // value={selectvalue?.value}
+                              // value={selectvalue?.value}
                             />
                           </div>
                           <div className="col-span-9 flex flex-col w-full min-w-0 pr-[2vw]">
@@ -718,10 +735,11 @@ export default function ConfirmTicket({
               </div>
             </div>
             <div
-              className={`${LuxuryFind(BusDetails.Bus_Type_Name) === true
-                ? "bg-[#FFEEC9]"
-                : "bg-white"
-                } col-span-1 h-[40vw] md:h-[17.4vw] w-full rounded-[0.5vw]`}
+              className={`${
+                LuxuryFind(BusDetails.Bus_Type_Name) === true
+                  ? "bg-[#FFEEC9]"
+                  : "bg-white"
+              } col-span-1 h-[40vw] md:h-[17.4vw] w-full rounded-[0.5vw]`}
               style={{
                 boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
               }}
@@ -767,7 +785,7 @@ export default function ConfirmTicket({
                     <p className="md:text-[1.1vw] text-[3.5vw]">
                       {`- ₹ ${Math?.round(
                         Number(faredetails?.TotadultFare) *
-                        Number(tbs_discount / 100)
+                          Number(tbs_discount / 100)
                       )}`}
                     </p>
                   </div>
@@ -787,10 +805,11 @@ export default function ConfirmTicket({
                     </div>
                   )}
                   <button
-                    className={`w-full md:h-[3vw] h-[8vw] rounded-[1.5vw] md:rounded-[0vw] md:rounded-b-[0.5vw] mt-[12vw] ${finaldiscount != null && promoCode != ""
-                      ? "md:mt-[4.55vw]"
-                      : "md:mt-[6.2vw]"
-                      } flex 
+                    className={`w-full md:h-[3vw] h-[8vw] rounded-[1.5vw] md:rounded-[0vw] md:rounded-b-[0.5vw] mt-[12vw] ${
+                      finaldiscount != null && promoCode != ""
+                        ? "md:mt-[4.55vw]"
+                        : "md:mt-[6.2vw]"
+                    } flex 
                                           items-center justify-between px-[3vw] md:px-[1vw] cursor-pointer`}
                     style={{
                       backgroundColor:
@@ -807,14 +826,15 @@ export default function ConfirmTicket({
                     Number(discount) + Number(Math.round(discount * 0.03))
                   }`} */}
                       <span className="font-extrabold cursor-pointer pl-[1vw] text-[1.3vw]">
-                        {`₹ ${calculateDiscountedFare(
-                          BusDetails?.BUS_START_DATE,
-                          Number(faredetails?.TotadultFare),
-                          tbs_discount
-                        ) +
+                        {`₹ ${
+                          calculateDiscountedFare(
+                            BusDetails?.BUS_START_DATE,
+                            Number(faredetails?.TotadultFare),
+                            tbs_discount
+                          ) +
                           Number(Math.round(totaltax)) -
                           Number(finaldiscount)
-                          }`}
+                        }`}
                       </span>
                     </label>
                     <span className="pl-[0.5vw] cursor-pointer">

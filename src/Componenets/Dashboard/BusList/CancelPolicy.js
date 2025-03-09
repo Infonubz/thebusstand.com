@@ -12,139 +12,153 @@ import SVG_List from "../../Common/SVG/SVG";
 import { Abhibus_Cancelation_Policy } from "../../../Api-Abhibus/Dashboard/DashboardPage";
 import { toast } from "react-toastify";
 import { calculateDiscountedFare } from "../../Common/Common-Functions/TBS-Discount-Fare";
+import { GetTBSCancelationPolicy } from "../../../Api-TBS/Dashboard/Dashboard";
+import { LuxuryFind } from "../../Common/Common-Functions/LuxuryFind";
 
-export default function CancelPolicy({ policies, busPrice, busType, bus_type, item, tbs_discount, jdate }) {
-    const [isToggleSwitch, setIsToggleSwitch] = useState("CDCP");
-    const [cancelPolicy, setCancelPolicy] = useState()
+export default function CancelPolicy({
+  policies,
+  busPrice,
+  busType,
+  bus_type,
+  item,
+  tbs_discount,
+  jdate,
+}) {
+  const [isToggleSwitch, setIsToggleSwitch] = useState("CDCP");
+  const [cancelPolicy, setCancelPolicy] = useState();
 
-    console.log(cancelPolicy, 'cancelationpolicy')
-    const [policyloader, setPolicyLoader] = useState(true)
-    const SVG = SVG_List()
-    const selectedBus = {
-        operatorId: item?.operatorId,
-        Service_key: item?.Service_key,
-        Source_ID: item?.Source_ID,
-        Destination_ID: item?.Destination_ID,
-        jdate: item?.jdate
+   // console.log(cancelPolicy, "cancelationpolicy");
+  const [policyloader, setPolicyLoader] = useState(true);
+  const SVG = SVG_List();
+  const selectedBus = {
+    operatorId: item?.operatorId,
+    Service_key: item?.Service_key,
+    Source_ID: item?.Source_ID,
+    Destination_ID: item?.Destination_ID,
+    jdate: item?.jdate,
+  };
+
+  // const LuxuryFind = (type) =>
+  //   type.toLowerCase().includes("volvo") ||
+  //   type.toLowerCase().includes("mercedes benz");
+
+  const DiscountedPrice = (price, item) => {
+    const originalPrice = parseInt(price?.price || 0);
+    const discountRate = parseInt(item?.rate?.replace("%", "") || 0);
+    const discountedPrice =
+      originalPrice - (discountRate / 100) * originalPrice;
+    return discountedPrice === 0
+      ? "No Refund"
+      : `₹ ${parseInt(discountedPrice)}`;
+  };
+   // console.log(selectedBus, item, "policiespolicies");
+
+  const fetch_Cancellation_Policy = async () => {
+    try {
+      // const response = await Abhibus_Cancelation_Policy(selectedBus, setPolicyLoader)
+      const response = await GetTBSCancelationPolicy(
+        selectedBus,
+        setPolicyLoader
+      );
+      setCancelPolicy(response?.Cancellationpy);
+      return response;
+    } catch (error) {
+      toast.error(error);
     }
+  };
+  useEffect(() => {
+    fetch_Cancellation_Policy();
+  }, []);
+  // useEffect(() => {
+  //   if (policies !== null) {
+  //     fetch_Cancellation_Policy();
+  //   }
+  // }, [policies]);
+  // Split the policies by '#*#*' into an array
+  const policyArray = policies.split("#*#*");
 
-    const LuxuryFind = (type) =>
-        type.toLowerCase().includes("volvo") ||
-        type.toLowerCase().includes("mercedes benz");
+  // Separate time intervals and percentages
+  const times = policyArray.slice(0, 4); // First 4 elements are time intervals
+  const percentages = policyArray.slice(4); // Last 4 elements are percentages
 
-    const DiscountedPrice = (price, item) => {
-        const originalPrice = parseInt(price?.price || 0);
-        const discountRate = parseInt(item?.rate?.replace("%", "") || 0);
-        const discountedPrice =
-            originalPrice - (discountRate / 100) * originalPrice;
-        return discountedPrice === 0
-            ? "No Refund"
-            : `₹ ${parseInt(discountedPrice)}`;
-    };
+  // Rearranging and pairing time intervals with percentages (reverse the percentage array)
+  const formattedPolicies = times.map((time, index) => {
+    // If the time contains '--', split it into the time part and percentage part
+    let cleanedTime = time;
+    let percentage = percentages[percentages.length - 1 - index];
 
-    const fetch_Cancellation_Policy = async () => {
-        try {
-            const response = await Abhibus_Cancelation_Policy(selectedBus, setPolicyLoader)
-            setCancelPolicy(response?.Cancellationpy)
-            return response
-        } catch (error) {
-            toast.error(error)
-        }
+    if (time.includes("--")) {
+      // Split the time and percentage part at '--'
+      const [timePart, percentPart] = time.split("--");
+      cleanedTime = timePart.trim(); // Cleaned time part (before '--')
+      percentage = percentPart.trim() || percentage; // Cleaned percentage part (after '--')
     }
-    useEffect(() => {
-        fetch_Cancellation_Policy()
-    }, [])
-
-
-    // Split the policies by '#*#*' into an array
-    const policyArray = policies.split('#*#*');
-
-    // Separate time intervals and percentages
-    const times = policyArray.slice(0, 4); // First 4 elements are time intervals
-    const percentages = policyArray.slice(4); // Last 4 elements are percentages
-
-    // Rearranging and pairing time intervals with percentages (reverse the percentage array)
-    const formattedPolicies = times.map((time, index) => {
-        // If the time contains '--', split it into the time part and percentage part
-        let cleanedTime = time;
-        let percentage = percentages[percentages.length - 1 - index];
-
-        if (time.includes('--')) {
-            // Split the time and percentage part at '--'
-            const [timePart, percentPart] = time.split('--');
-            cleanedTime = timePart.trim(); // Cleaned time part (before '--')
-            percentage = percentPart.trim() || percentage; // Cleaned percentage part (after '--')
-        }
-
-        return (
-            <div key={index}>
-                {cleanedTime} {percentage} {/* Combine cleaned time and percentage */}
-            </div>
-        );
-    });
 
     return (
-        <>
-            <div className="md:block hidden w-full">
-                <div
+      <div key={index}>
+        {cleanedTime} {percentage} {/* Combine cleaned time and percentage */}
+      </div>
+    );
+  });
+
+  return (
+    <>
+      <div className="md:block hidden w-full">
+        <div
+          className={`${
+            // busType === "luxury"
+            LuxuryFind(bus_type) === true ? "bg-[#FFEEC9]" : "bg-[#EEEDED]"
+          } h-auto md:rounded-[0.5vw] px-[1vw] pt-[1vw]`}
+        >
+          <div className="py-[2vw] px-[0.5vw]">
+            <div className="w-full grid grid-cols-12 gap-x-[2vw] ">
+              <div
+                className="flex rounded-[0.5vw] col-span-4"
+                style={{
+                  backgroundImage:
+                    // busType === "luxury"
+                    LuxuryFind(bus_type) === true
+                      ? "linear-gradient(to right, #F8C550, #FFEB76, #FFE173)"
+                      : "",
+                  backgroundColor:
+                    // busType === "luxury"
+                    LuxuryFind(bus_type) === true ? "" : "#D0E5FF80",
+                }}
+              >
+                <div className="py-[1vw] px-[0.5vw] flex flex-col gap-[1vw]">
+                  <p
                     className={`${
-                        // busType === "luxury"
-                        LuxuryFind(bus_type) === true
-                            ? "bg-[#FFEEC9]" : "bg-[#EEEDED]"
-                        } h-auto md:rounded-[0.5vw] px-[1vw] pt-[1vw]`}
-                >
-
-
-                    <div className="py-[2vw] px-[0.5vw]">
-                        <div className="w-full grid grid-cols-12 gap-x-[2vw] ">
-                            <div
-                                className="flex rounded-[0.5vw] col-span-4"
-                                style={{
-                                    backgroundImage:
-                                        // busType === "luxury"
-                                        LuxuryFind(bus_type) === true
-                                            ? "linear-gradient(to right, #F8C550, #FFEB76, #FFE173)"
-                                            : "",
-                                    backgroundColor:
-                                        // busType === "luxury"
-                                        LuxuryFind(bus_type) === true
-                                            ? "" : "#D0E5FF80",
-                                }}
-                            >
-                                <div className="py-[1vw] px-[0.5vw] flex flex-col gap-[1vw]">
-                                    <p
-                                        className={`${
-                                            // busType === "luxury"
-                                            LuxuryFind(bus_type) === true
-                                                ? "text-[#393939]"
-                                                : "text-[#1F4B7F]"
-                                            } text-[1.1vw]`}
-                                    >
-                                        Refund amount is Indicative.
-                                    </p>
-                                    <p
-                                        className={`${
-                                            // busType === "luxury"
-                                            LuxuryFind(bus_type) === true
-                                                ? "text-[#393939]"
-                                                : "text-[#1F4B7F]"
-                                            } text-[1.1vw]`}
-                                    >
-                                        Additional Rs. 15 per seat cancellation fee is applicable.
-                                    </p>
-                                    <p
-                                        className={`${
-                                            // busType === "luxury"
-                                            LuxuryFind(bus_type) === true
-                                                ? "text-[#393939]"
-                                                : "text-[#1F4B7F]"
-                                            } text-[1.1vw]`}
-                                    >
-                                        Partial cancellation is not allowed.
-                                    </p>
-                                </div>
-                            </div>
-                            {/* <div className="flex flex-col gap-[1vw]">
+                      // busType === "luxury"
+                      LuxuryFind(bus_type) === true
+                        ? "text-[#393939]"
+                        : "text-[#1F4B7F]"
+                    } text-[1.1vw]`}
+                  >
+                    Refund amount is Indicative.
+                  </p>
+                  <p
+                    className={`${
+                      // busType === "luxury"
+                      LuxuryFind(bus_type) === true
+                        ? "text-[#393939]"
+                        : "text-[#1F4B7F]"
+                    } text-[1.1vw]`}
+                  >
+                    Additional Rs. 15 per seat cancellation fee is applicable.
+                  </p>
+                  <p
+                    className={`${
+                      // busType === "luxury"
+                      LuxuryFind(bus_type) === true
+                        ? "text-[#393939]"
+                        : "text-[#1F4B7F]"
+                    } text-[1.1vw]`}
+                  >
+                    Partial cancellation is not allowed.
+                  </p>
+                </div>
+              </div>
+              {/* <div className="flex flex-col gap-[1vw]">
                   <p 
                    className={`${
                     busType === "luxury" ? "text-[#393939]" : "text-[#1F4B7F]"
@@ -168,46 +182,58 @@ export default function CancelPolicy({ policies, busPrice, busType, bus_type, it
                   ))}
                 </div> */}
 
-                            {cancelPolicy === undefined || null ?
-                                <Skeleton
-                                    loading={policyloader}
-                                    active
-                                    style={{ margin: "0.5vw", padding: "0.5vw" }}
-                                    paragraph={{ rows: 4 }}
-
-                                ></Skeleton> :
-
-                                <>
-                                    <div className="w-full gap-[1vw] col-span-8">
-                                        <div className="grid grid-cols-12">
-                                            <p
-                                                className={`text-[1.25vw] ${
-                                                    // busType === "luxury"
-                                                    LuxuryFind(bus_type) === true
-                                                        ? "text-[#393939]" : "text-[#1F4B7F]"
-                                                    }  font-semibold col-span-7 `}
-                                            >
-                                                Cancellation Time
-                                            </p>
-                                            <p className={`text-[1.25vw] ${
-                                                // busType === 'luxury'
-                                                LuxuryFind(bus_type) === true
-                                                    ? 'text-[#393939]' : 'text-[#1F4B7F]'} font-semibold col-span-2 flex justify-center`}>
-                                                {/* Refund Amount */}
-                                                Refund(%)
-                                            </p>
-                                            <p className={`text-[1.25vw] ${
-                                                // busType === 'luxury'
-                                                LuxuryFind(bus_type) === true
-                                                    ? 'text-[#393939]' : 'text-[#1F4B7F]'} font-semibold col-span-3 flex justify-center`}>
-                                                Refund Amount
-                                            </p>
-                                        </div>
-                                        <div className={`text-[1vw]  ${
-                                            // busType === 'luxury'
-                                            LuxuryFind(bus_type) === true
-                                                ? 'text-[#393939]' : 'text-[#1F4B7F]'}`}>
-                                            {/* {formattedPolicies?.map((items, index) => {
+              {cancelPolicy === undefined || null ? (
+                <Skeleton
+                  loading={policyloader}
+                  active
+                  style={{ margin: "0.5vw", padding: "0.5vw" }}
+                  paragraph={{ rows: 4 }}
+                ></Skeleton>
+              ) : (
+                <>
+                  <div className="w-full gap-[1vw] col-span-8">
+                    <div className="grid grid-cols-12">
+                      <p
+                        className={`text-[1.25vw] ${
+                          // busType === "luxury"
+                          LuxuryFind(bus_type) === true
+                            ? "text-[#393939]"
+                            : "text-[#1F4B7F]"
+                        }  font-semibold col-span-7 `}
+                      >
+                        Cancellation Time
+                      </p>
+                      <p
+                        className={`text-[1.25vw] ${
+                          // busType === 'luxury'
+                          LuxuryFind(bus_type) === true
+                            ? "text-[#393939]"
+                            : "text-[#1F4B7F]"
+                        } font-semibold col-span-2 flex justify-center`}
+                      >
+                        {/* Refund Amount */}
+                        Refund(%)
+                      </p>
+                      <p
+                        className={`text-[1.25vw] ${
+                          // busType === 'luxury'
+                          LuxuryFind(bus_type) === true
+                            ? "text-[#393939]"
+                            : "text-[#1F4B7F]"
+                        } font-semibold col-span-3 flex justify-center`}
+                      >
+                        Refund Amount
+                      </p>
+                    </div>
+                    <div
+                      className={`text-[1vw]  ${
+                        // busType === 'luxury'
+                        LuxuryFind(bus_type) === true
+                          ? "text-[#393939]"
+                          : "text-[#1F4B7F]"
+                      }`}
+                    >
+                      {/* {formattedPolicies?.map((items, index) => {
                                         const parts = items?.props?.children;
                                         const percentageString = parts[2]; // Assume parts[2] contains "20%" as a string
 
@@ -238,37 +264,39 @@ export default function CancelPolicy({ policies, busPrice, busType, bus_type, it
                                         }
                                     })} */}
 
-                                            {cancelPolicy?.Cancellationpy?.conditions
-                                                ?.filter(item => {
-                                                    // Calculate the fare and check if it returns NaN
-                                                    const fare = calculateDiscountedFare(
-                                                        jdate,
-                                                        (item?.cc)?.split(' ')[1],
-                                                        tbs_discount
-                                                    );
-                                                    return !isNaN(fare); // Only include items where the fare is not NaN
-                                                })
-                                                .slice(0, 4) // Then slice the filtered array
-                                                .map((item, index) => (
-                                                    <div className="grid grid-cols-12 py-[0.25vw]" key={index}>
-                                                        <div className="col-span-7 justify-center items-center">
-                                                            {item?.con}
-                                                        </div>
-                                                        <div className="col-span-2 flex justify-center items-center">
-                                                            {item?.rp}
-                                                        </div>
-                                                        <div className="col-span-3 flex justify-center items-center">
-                                                            {`₹ ${calculateDiscountedFare(
-                                                                jdate,
-                                                                (item?.cc)?.split(' ')[1],
-                                                                tbs_discount
-                                                            )}`}
-                                                        </div>
-                                                    </div>
-                                                ))}
-
-                                        </div>
-                                        {/* {policies?.length > 0 &&
+                      {cancelPolicy?.Cancellationpy?.conditions
+                        ?.filter((item) => {
+                          // Calculate the fare and check if it returns NaN
+                          const fare = calculateDiscountedFare(
+                            jdate,
+                            item?.cc?.split(" ")[1],
+                            tbs_discount
+                          );
+                          return !isNaN(fare); // Only include items where the fare is not NaN
+                        })
+                        .slice(0, 4) // Then slice the filtered array
+                        .map((item, index) => (
+                          <div
+                            className="grid grid-cols-12 py-[0.25vw]"
+                            key={index}
+                          >
+                            <div className="col-span-7 justify-center items-center">
+                              {item?.con}
+                            </div>
+                            <div className="col-span-2 flex justify-center items-center">
+                              {item?.rp}
+                            </div>
+                            <div className="col-span-3 flex justify-center items-center">
+                              {`₹ ${calculateDiscountedFare(
+                                jdate,
+                                item?.cc?.split(" ")[1],
+                                tbs_discount
+                              )}`}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                    {/* {policies?.length > 0 &&
                                         policies?.map((item) => {
                                             const [start, end] = item?.span?.split("-").map(Number); // Split and convert to numbers
                                             const displaySpan =
@@ -292,7 +320,7 @@ export default function CancelPolicy({ policies, busPrice, busType, bus_type, it
                                                 </p>
                                             );
                                         })} */}
-                                        {/* {policies?.length > 0 &&
+                    {/* {policies?.length > 0 &&
                     policies?.map((item) => (
                       <p className="text-[1.1vw] text-[#1F4B7F] ">
                         <span className="px-[.2vw]">Before </span>
@@ -302,9 +330,9 @@ export default function CancelPolicy({ policies, busPrice, busType, bus_type, it
                         <span className="px-[.2vw]">Hours</span>
                       </p>
                     ))} */}
-                                    </div>
-                                    <div className="flex flex-col gap-[1vw]">
-                                        {/* {policies?.length > 0 &&
+                  </div>
+                  <div className="flex flex-col gap-[1vw]">
+                    {/* {policies?.length > 0 &&
                                         policies?.map((item) => (
                                             <p className={`text-[1.1vw] flex justify-center  ${busType === 'luxury' ? 'text-[#393939]' : 'text-[#1F4B7F]'}`}>
                                                 <span className="text-center">{`${item.rate}`}</span>
@@ -315,9 +343,9 @@ export default function CancelPolicy({ policies, busPrice, busType, bus_type, it
                     </span>
                                             </p>
                                         ))} */}
-                                    </div>
-                                    <div className="flex flex-col gap-[1vw]">
-                                        {/* {policies?.length > 0 &&
+                  </div>
+                  <div className="flex flex-col gap-[1vw]">
+                    {/* {policies?.length > 0 &&
                                         policies?.map((item) => (
                                             <p className={`text-[1.1vw] flex justify-center   ${busType === 'luxury' ? 'text-[#393939]' : 'text-[#1F4B7F]'}`}>
                                                 <span className="col-span-1">{item.rate}</span>
@@ -326,14 +354,13 @@ export default function CancelPolicy({ policies, busPrice, busType, bus_type, it
                                                 </span>
                                             </p>
                                         ))} */}
-                                    </div>
-                                </>}
-
-                        </div>
-                    </div>
-
-                </div>
-            </div >
-        </>
-    );
-};
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}

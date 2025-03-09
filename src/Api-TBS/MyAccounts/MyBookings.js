@@ -15,7 +15,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 //   try {
 //     const response = await axios.get(`${apiUrl}/booking_details/${mbleNum}`);
 //     dispatch({ type: GET_BOOKING_DETAILS, payload: response.data });
-//     console.log(response, "response for bookingDetails");
+//     // console.log(response, "response for bookingDetails");
 //     return response.data;
 //   } catch (error) {
 //     handleError(error);
@@ -32,7 +32,7 @@ export const SendBookingDetails = async (
   mobile,
   bookingId
 ) => {
-  console.log(busdetails, "busdetailsbusdetails");
+  // console.log(busdetails, "busdetailsbusdetails");
   const passengers = Object.values(travelerDetails).map((detail) => ({
     user_name: detail.user_name,
     age: detail.age,
@@ -68,8 +68,8 @@ export const SendBookingDetails = async (
         "Content-Type": "application/json",
       },
     });
-    console.log(response, "locationdatas");
-    console.log(response.data, "submit booking Detail");
+    // console.log(response, "locationdatas");
+    // console.log(response.data, "submit booking Detail");
     return response.data;
   } catch (error) {
     handleError(error);
@@ -82,7 +82,7 @@ export const TicketViewDetails = async (
   mobileNum,
   setSpinning
 ) => {
-  console.log(busBookingId, "busBookingId");
+  // console.log(busBookingId, "busBookingId");
 
   const payload = {
     mobile_number: mobileNum,
@@ -102,8 +102,8 @@ export const TicketViewDetails = async (
         "Content-Type": "application/json",
       },
     });
-    console.log(response, "locationdata TicketView");
-    console.log(response.data, "Submit TicketView");
+    // console.log(response, "locationdata TicketView");
+    // console.log(response.data, "Submit TicketView");
 
     return response.data[0];
   } catch (error) {
@@ -122,11 +122,11 @@ export const sendBookingPrice = async (
   travelerDetails,
   promoCode
 ) => {
-  console.log(totalAmount, "totalAmount");
-  console.log(bookingId, "bookingId");
-  console.log(selectedSeats, "selectedSeats");
-  console.log(busdetails, "busdetails");
-  console.log(promoCode, "promoCode");
+  // console.log(totalAmount, "totalAmount");
+  // console.log(bookingId, "bookingId");
+  // console.log(selectedSeats, "selectedSeats");
+  // console.log(busdetails, "busdetails");
+  // console.log(promoCode, "promoCode");
 
   const result = Object.values(travelerDetails).map((user) => {
     if (user.gender === "male") {
@@ -138,7 +138,7 @@ export const sendBookingPrice = async (
     }
   });
 
-  console.log(result, "result");
+  // console.log(result, "result");
 
   const payload = {
     bus_id: busdetails?.bus_id,
@@ -165,7 +165,7 @@ export const sendBookingPrice = async (
       },
     });
     // sessionStorage.removeItem("booking_id")
-    console.log(response, "submit Price Detail");
+    // console.log(response, "submit Price Detail");
     return response.data;
   } catch (error) {
     handleError(error);
@@ -182,10 +182,10 @@ export const GetBookingStatusDetails = async (
       login_user_id: user_id,
     });
     dispatch({ type: BOOKING_DETAILS_STATUS, payload: response?.data?.data });
-    console.log(response.data, "upcomingdata");
+    // console.log(response.data, "upcomingdata");
     return response.data;
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   } finally {
     setSpinning && setSpinning(false);
   }
@@ -202,17 +202,17 @@ export const GetCancelDetails = async (
       login_user_id: user_id,
     });
     dispatch({ type: BOOKING_DETAILS_STATUS, payload: response?.data?.data });
-    console.log(response.data, "upcomingdata");
+    // console.log(response.data, "upcomingdata");
     return response.data;
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   } finally {
     setSpinning && setSpinning(false);
   }
 };
 
 export const CancelTicket = async (dispatch, cancelvalues, setSpinning) => {
-  console.log("ima calling 2", cancelvalues);
+  // console.log("ima calling 2", cancelvalues);
   try {
     const response = await axios.post(`${apiUrl}/cancel-ticket`, cancelvalues);
     toast.success(response.data.message);
@@ -225,6 +225,87 @@ export const CancelTicket = async (dispatch, cancelvalues, setSpinning) => {
     handleError(err);
   } finally {
     setSpinning && setSpinning(false);
+  }
+};
+export const GetViewTicketID = async (ticketID, setSpinning) => {
+  const payload = {
+    ticketID: ticketID,
+  };
+  const url = `${apiUrl}/getticketdetails`;
+  const method = "post";
+  // console.log(payload, "payload");
+  try {
+    const response = await api({
+      method,
+      url,
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    sessionStorage.setItem("ticket_view", "open");
+    setSpinning(false);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const TBSPreCancelTicket = async (values, mblno) => {
+  const payload = {
+    ticketNumber: values?.ticketNumber,
+    mblno: mblno,
+  };
+
+  const url = `${apiUrl}/precancellation`;
+  const method = "post";
+  // console.log(payload, "payload");
+  try {
+    const response = await api({
+      method,
+      url,
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+export const TBSCancelTicket = async (
+  values,
+  info,
+  partialCancellation,
+  mobileno
+) => {
+  const cancelseat = values?.seat_numbers?.map((item) => item).join(",");
+
+  const payload = {
+    ticketNumber: info?.ticketNumber,
+    mobileno: mobileno,
+    cancelseat: cancelseat,
+    partialCancellation: partialCancellation,
+  };
+
+  const url = `${apiUrl}/cancelticket`;
+  const method = "post";
+  // console.log(payload, "payload");
+  try {
+    const response = await api({
+      method,
+      url,
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    handleError(error);
   }
 };
 const handleError = (error) => {

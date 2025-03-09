@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useRef } from "react";
 import dayjs from "dayjs";
 import { HiCheckCircle } from "react-icons/hi";
+import { LuxuryFind } from "../../../Common/Common-Functions/LuxuryFind";
 
 export default function PickandDrop({
     busData,
@@ -13,12 +14,12 @@ export default function PickandDrop({
     setBillAddress,
 }) {
 
-    const LuxuryFind = (type) =>
-        type?.toLowerCase().includes("volvo") ||
-        type?.toLowerCase().includes("mercedes benz") ||
-        type?.toLowerCase().includes("washroom") ||
-        type?.toLowerCase().includes("bharatBenz") ||
-        type?.toLowerCase().includes("luxury");
+    // const LuxuryFind = (type) =>
+    //     type?.toLowerCase().includes("volvo") ||
+    //     type?.toLowerCase().includes("mercedes benz") ||
+    //     type?.toLowerCase().includes("washroom") ||
+    //     type?.toLowerCase().includes("bharatBenz") ||
+    //     type?.toLowerCase().includes("luxury");
 
     useEffect(() => {
         window.scrollTo(0, 0);

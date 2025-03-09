@@ -12,14 +12,14 @@ import NavMobile from './NavMobile';
 export const PrivacyAndPolicy = () => {
     const dispatch = useDispatch();
     const priv_policy = useSelector((state) => state?.tbs_info || [])
-    console.log(priv_policy.privacy_policy, 'consoleconsole');
+     // console.log(priv_policy.privacy_policy, 'consoleconsole');
 
     useEffect(() => {
         GetFooterTabs(dispatch);
     }, [dispatch]);
 
     const privacy_policy = priv_policy?.privacy_policy
-    console.log(privacy_policy, 'privacy_policy');
+     // console.log(privacy_policy, 'privacy_policy');
 
     return (
         <>

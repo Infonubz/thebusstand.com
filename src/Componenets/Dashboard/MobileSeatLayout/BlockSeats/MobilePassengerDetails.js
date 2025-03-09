@@ -11,7 +11,7 @@ import { RiArrowRightSLine } from "react-icons/ri";
 import { GiSevenPointedStar } from "react-icons/gi";
 import { BiSolidOffer } from "react-icons/bi";
 import dayjs from "dayjs";
-import Barcode from "react-barcode";
+// import Barcode from "react-barcode";
 import { useRef } from "react";
 // import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -26,6 +26,7 @@ import { FaEdit } from "react-icons/fa";
 import { Abhibus_SeatBlocked } from "../../../../Api-Abhibus/Dashboard/DashboardPage";
 import { decryptData } from "../../../Common/Common-Functions/Encrypt-Decrypt";
 import { GetPassengerData } from "../../../../Api-TBS/MyAccounts/Passenger";
+import { LuxuryFind } from "../../../Common/Common-Functions/LuxuryFind";
 
 export default function MobilePassengerDetails({
   travelerDetails,
@@ -112,12 +113,12 @@ export default function MobilePassengerDetails({
   //     return acc;
   //   }, {})
   // );
-  const LuxuryFind = (type) =>
-    type?.toLowerCase().includes("volvo") ||
-    type?.toLowerCase().includes("mercedes benz") ||
-    type?.toLowerCase().includes("washroom") ||
-    type?.toLowerCase().includes("bharatBenz") ||
-    type?.toLowerCase().includes("luxury");
+  // const LuxuryFind = (type) =>
+  //   type?.toLowerCase().includes("volvo") ||
+  //   type?.toLowerCase().includes("mercedes benz") ||
+  //   type?.toLowerCase().includes("washroom") ||
+  //   type?.toLowerCase().includes("bharatBenz") ||
+  //   type?.toLowerCase().includes("luxury");
 
   const [continuenext, setContinue] = useState(false);
   const [sumbitbutton, setSubmitButon] = useState(false);

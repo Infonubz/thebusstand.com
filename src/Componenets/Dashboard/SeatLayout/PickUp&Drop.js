@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import React, { useEffect } from "react";
 import { HiCheckCircle } from "react-icons/hi";
+import { LuxuryFind } from "../../Common/Common-Functions/LuxuryFind";
 
 export default function PickUpandDrop({
   BusDetails,
@@ -12,12 +13,12 @@ export default function PickUpandDrop({
   busdroping,
   layout,
 }) {
-  const LuxuryFind = (type) =>
-    type.toLowerCase().includes("volvo") ||
-    type.toLowerCase().includes("mercedes benz") ||
-    type.toLowerCase().includes("washroom") ||
-    type.toLowerCase().includes("bharatBenz") ||
-    type.toLowerCase().includes("luxury");
+  // const LuxuryFind = (type) =>
+  //   type.toLowerCase().includes("volvo") ||
+  //   type.toLowerCase().includes("mercedes benz") ||
+  //   type.toLowerCase().includes("washroom") ||
+  //   type.toLowerCase().includes("bharatBenz") ||
+  //   type.toLowerCase().includes("luxury");
 
   useEffect(() => {
     setSelectedRoutes({
@@ -30,20 +31,28 @@ export default function PickUpandDrop({
       arr_route_id: layout?.dropping_info?.[0]?.placeId,
       dep_landmark: layout?.boarding_info?.[0]?.landMark,
       dep_pincode: layout?.boarding_info?.[0]?.pincode,
-      arr_landmark: layout?.dropping_info?.[0]?.landMark
-    })
+      arr_landmark: layout?.dropping_info?.[0]?.landMark,
+    });
     setBillAddress({
       ...billAddress,
       address: layout?.boarding_info?.[0]?.landMark,
       pincode: layout?.boarding_info?.[0]?.pincode,
-    })
-  }, [])
+    });
+  }, []);
   return (
     <div>
       <div
         className="grid grid-cols-2 w-full  px-[2vw] py-[1vw] gap-[1.5vw]"
         style={{
-          height: `${Number(layout?.lowerTotalColumns) * 3}vw`,
+          height: `${
+            (Number(
+              layout?.upperTotalColumns
+                ? layout?.upperTotalColumns
+                : layout?.lowerTotalColumns
+            ) +
+              1) *
+            3
+          }vw`,
         }}
       >
         <div className="col-span-1 border-[0.1vw] border-gray-400 w-full rounded-[0.5vw] bg-white">
@@ -60,28 +69,32 @@ export default function PickUpandDrop({
 
           {/* SCROLLABLE CONTAINER */}
           <div
-            className={`overflow-y-auto  ${LuxuryFind(BusDetails?.Bus_Type_Name)
-              ? "scrollbar-luxury"
-              : "scrollbar-regular"
-              }`}
+            className={`overflow-y-auto  ${
+              LuxuryFind(BusDetails?.Bus_Type_Name)
+                ? "scrollbar-luxury"
+                : "scrollbar-regular"
+            }`}
             style={{
-              maxHeight: `${Number(layout?.lowerTotalColumns) * 2.5 > 35
-                ? 35
-                : Number(layout?.lowerTotalColumns) * 2.5
-                }vw`,
+              maxHeight: `${
+                Number(layout?.lowerTotalColumns) * 2.5 > 35
+                  ? 35
+                  : Number(layout?.lowerTotalColumns) * 2.5
+              }vw`,
               overflowY: "auto",
             }}
           >
             {layout?.boarding_info?.map((item, index) => (
               <div
                 key={index}
-                className={`${selectedRoutes.d === item?.placeName
-                  ? "bg-[#E5FFF1]"
-                  : "bg-white hover:bg-gray-200"
-                  } ${LuxuryFind(BusDetails?.Bus_Type_Name)
+                className={`${
+                  selectedRoutes.d === item?.placeName
+                    ? "bg-[#E5FFF1]"
+                    : "bg-white hover:bg-gray-200"
+                } ${
+                  LuxuryFind(BusDetails?.Bus_Type_Name)
                     ? "border-gray-400"
                     : "border-gray-400"
-                  } border-b-[0.1vw]  flex flex-col py-[0.5vw] px-[1vw] cursor-pointer relative `}
+                } border-b-[0.1vw]  flex flex-col py-[0.5vw] px-[1vw] cursor-pointer relative `}
                 onClick={() => {
                   setSelectedRoutes({
                     ...selectedRoutes,
@@ -89,15 +102,14 @@ export default function PickUpandDrop({
                     dep_time: item?.placeTime,
                     dep_route_id: item?.placeId,
                     dep_landmark: item?.landMark,
-                    dep_pincode: item?.pincode
-                  })
+                    dep_pincode: item?.pincode,
+                  });
                   setBillAddress({
                     ...billAddress,
                     address: item?.landMark,
                     pincode: item?.pincode,
-                  })
-                }
-                }
+                  });
+                }}
                 style={{
                   backgroundColor:
                     selectedRoutes?.dep_route === item?.placeName
@@ -120,12 +132,16 @@ export default function PickUpandDrop({
                   </span>
                 )}
                 <p className="flex items-center">
-                  <span className="text-[1vw] pr-[1vw] break-words overflow-hidden ">{item?.placeTime}</span>
+                  <span className="text-[1vw] pr-[1vw] break-words overflow-hidden ">
+                    {item?.placeTime}
+                  </span>
                   <span className="text-[0.8vw]">{`(${dayjs(item.dt).format(
                     "DD MMM"
                   )})`}</span>
                 </p>
-                <p className="text-[1.1vw] font-bold break-words overflow-hidden">{item?.placeName}</p>
+                <p className="text-[1.1vw] font-bold break-words overflow-hidden">
+                  {item?.placeName}
+                </p>
                 <p className="text-[0.8vw] tracking-wide break-words overflow-hidden">
                   {item.landMark ? `( ${item.landMark} )` : ""}
                 </p>
@@ -147,28 +163,32 @@ export default function PickUpandDrop({
 
           {/* SCROLLABLE CONTAINER */}
           <div
-            className={`overflow-y-auto ${LuxuryFind(BusDetails?.Bus_Type_Name)
-              ? "scrollbar-luxury"
-              : "scrollbar-regular"
-              }`}
+            className={`overflow-y-auto ${
+              LuxuryFind(BusDetails?.Bus_Type_Name)
+                ? "scrollbar-luxury"
+                : "scrollbar-regular"
+            }`}
             style={{
-              maxHeight: `${Number(layout?.lowerTotalColumns) * 2.5 > 35
-                ? 35
-                : Number(layout?.lowerTotalColumns) * 2.5
-                }vw`,
+              maxHeight: `${
+                Number(layout?.lowerTotalColumns) * 2.5 > 35
+                  ? 35
+                  : Number(layout?.lowerTotalColumns) * 2.5
+              }vw`,
               overflowY: "auto",
             }}
           >
             {layout?.dropping_info?.map((item, index) => (
               <div
                 key={index}
-                className={`${selectedRoutes.arri_route === item?.placeName
-                  ? "bg-[#E5FFF1]"
-                  : "bg-white hover:bg-gray-200"
-                  } ${LuxuryFind(BusDetails?.Bus_Type_Name)
+                className={`${
+                  selectedRoutes.arri_route === item?.placeName
+                    ? "bg-[#E5FFF1]"
+                    : "bg-white hover:bg-gray-200"
+                } ${
+                  LuxuryFind(BusDetails?.Bus_Type_Name)
                     ? "border-gray-400"
                     : "border-gray-400"
-                  } border-b-[0.1vw]  flex flex-col py-[0.5vw] px-[1vw] cursor-pointer relative`}
+                } border-b-[0.1vw]  flex flex-col py-[0.5vw] px-[1vw] cursor-pointer relative`}
                 onClick={() =>
                   setSelectedRoutes({
                     ...selectedRoutes,
@@ -199,12 +219,16 @@ export default function PickUpandDrop({
                   </span>
                 )}
                 <p className="flex items-center">
-                  <span className="text-[1vw] pr-[1vw] break-words overflow-hidden">{item?.placeTime}</span>
+                  <span className="text-[1vw] pr-[1vw] break-words overflow-hidden">
+                    {item?.placeTime}
+                  </span>
                   <span className="text-[0.8vw]">{`(${dayjs(item.dt).format(
                     "DD MMM"
                   )})`}</span>
                 </p>
-                <p className="text-[1.1vw] font-bold break-words overflow-hidden">{item?.placeName}</p>
+                <p className="text-[1.1vw] font-bold break-words overflow-hidden">
+                  {item?.placeName}
+                </p>
                 <p className="text-[0.8vw] tracking-wide break-words overflow-hidden">
                   {item.landMark ? `( ${item.landMark} )` : ""}
                 </p>
@@ -213,6 +237,6 @@ export default function PickUpandDrop({
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 }

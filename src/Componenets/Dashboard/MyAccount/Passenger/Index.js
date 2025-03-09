@@ -13,7 +13,7 @@ export default function PassengerIndex() {
     const [spinning,setSpinning] = useState(false)
     
     const passengerdata = useSelector((state) => state?.passenger_data.add_passenger_details)
-    console.log(passengerdata, "passengerdatapassengerdata")
+     // console.log(passengerdata, "passengerdatapassengerdata")
     const dispatch = useDispatch();
 
     useEffect(() => {

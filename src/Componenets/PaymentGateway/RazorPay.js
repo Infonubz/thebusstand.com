@@ -11,7 +11,7 @@ export const RazorpayGateway = ({ amount1 }) => {
       const script = document.createElement("script");
       script.src = "https://checkout.razorpay.com/v1/checkout.js";
       script.async = true;
-      script.onload = () => console.log("Razorpay Loaded");
+      script.onload = () =>  // console.log("Razorpay Loaded");
       document.body.appendChild(script);
     }
   }, []);
@@ -38,7 +38,7 @@ export const RazorpayGateway = ({ amount1 }) => {
       });
 
       const data = await response.json();
-      console.log("Order Created:", data);
+       // console.log("Order Created:", data);
     } catch (error) {
       console.error("Error creating order:", error);
     }
@@ -62,7 +62,7 @@ export const RazorpayGateway = ({ amount1 }) => {
       description: "For testing purposes",
       order_id: "order_PxIM6PEHMJdG27",
       handler: async function (response) {
-        console.log(response, "responseresponseresponse");
+         // console.log(response, "responseresponseresponse");
         const payload = {
           razorpay_order_id: response?.razorpay_order_id,
           razorpay_payment_id: response?.razorpay_payment_id,
@@ -75,7 +75,7 @@ export const RazorpayGateway = ({ amount1 }) => {
             "http://localhost:5000/order/validate",
             payload
           );
-          console.log(jsonRes, "ttttt");
+           // console.log(jsonRes, "ttttt");
         } catch (err) {
           console.error("Validation failed:", err);
         }
@@ -123,7 +123,7 @@ export const RazorpayGateway = ({ amount1 }) => {
 //         receipt: receiptId,
 //       });
 
-//       console.log(order);
+//        // console.log(order);
 
 //       // Razorpay options
 //       const options = {
@@ -141,7 +141,7 @@ export const RazorpayGateway = ({ amount1 }) => {
 //               "http://localhost:5000/order/validate",
 //               response
 //             );
-//             console.log(jsonRes);
+//              // console.log(jsonRes);
 //           } catch (err) {
 //             console.error("Validation failed:", err);
 //           }

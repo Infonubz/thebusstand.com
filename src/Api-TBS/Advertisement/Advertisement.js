@@ -7,7 +7,6 @@ export const GetAds = async (dispatch, id) => {
     try {
         const response = await axios.get(`${apicrm}/Active-ads`);
         dispatch({ type: ADS_LIST, payload: response.data });
-        console.log(response.data, "footerresponse");
         return response.data;
     } catch (error) {
         handleError(error);
@@ -19,7 +18,6 @@ export const GetMobAds = async (dispatch, id) => {
     try {
         const response = await axios.get(`${apicrm}/mobads-all`);
         dispatch({ type: MOB_ADS_LIST, payload: response.data });
-        console.log(response.data, "footerresponse");
         return response.data;
     } catch (error) {
         handleError(error);

@@ -18,7 +18,12 @@ import SINGLECARD_BG from "../../../../Assets/BusList/SINGLECARD_BG.png";
 // import MobileSeatLayout from "./SeatLayout";
 // import SelectedCardDesign from "./SelectedCardDesign";
 // import SeatIndex from "./SeatIndex";
-import { useAsyncError, useLocation, useNavigate, useParams } from "react-router";
+import {
+  useAsyncError,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router";
 import { BsBusFront } from "react-icons/bs";
 import MOBILE_CARD from "../../../../Assets/BusList/Luxury_BG.png";
 import { Abhibus_GetBusList } from "../../../../Api-Abhibus/Home/HomePage";
@@ -29,24 +34,47 @@ import MobileCardBottomBar from "./MobileCardBottomBar";
 import BottomNavbar from "../../../Common/Mobile-NavBar/BottomNavBar";
 import Advertisement from "../../Advertisement/Advertisement";
 import { calculateDiscountedFare } from "../../../Common/Common-Functions/TBS-Discount-Fare";
-import { FaWater, FaBlanket, FaTv, FaAirConditioner, FaCookieBite, FaPlug, FaVideo, FaExit, FaHammer, FaTissue, FaFireExtinguisher, FaLightbulb, FaLocationArrow, FaFirstAid, FaWifi, FaHandSparkles, FaTemperatureHigh, FaUsers, FaSprayCan, FaUsersCog } from 'react-icons/fa';
+import {
+  FaWater,
+  FaBlanket,
+  FaTv,
+  FaAirConditioner,
+  FaCookieBite,
+  FaPlug,
+  FaVideo,
+  FaExit,
+  FaHammer,
+  FaTissue,
+  FaFireExtinguisher,
+  FaLightbulb,
+  FaLocationArrow,
+  FaFirstAid,
+  FaWifi,
+  FaHandSparkles,
+  FaTemperatureHigh,
+  FaUsers,
+  FaSprayCan,
+  FaUsersCog,
+} from "react-icons/fa";
 import { FaMattressPillow } from "react-icons/fa6";
 import { FaBoxTissue } from "react-icons/fa";
 import { RxExit } from "react-icons/rx";
 import { TbAirConditioning } from "react-icons/tb";
 import { FaBottleWater } from "react-icons/fa6";
 import { BiSolidBlanket } from "react-icons/bi";
+import { GetTBSAvailableService } from "../../../../Api-TBS/Home/Home";
+import { LuxuryFind } from "../../../Common/Common-Functions/LuxuryFind";
 
 export default function MobileBusList() {
   const dispatch = useDispatch();
   const buslist = useSelector((state) => state?.get_buslist_filter);
   const tbs_discount = useSelector((state) => state?.live_per);
-  const [startTime, setStartTime] = useState('')
+  const [startTime, setStartTime] = useState("");
   const data = [
-    { id: 1, title: 'Card Title 1', description: 'Description for Card 1' },
-    { id: 2, title: 'Card Title 2', description: 'Description for Card 2' },
-    { id: 3, title: 'Card Title 3', description: 'Description for Card 3' },
-    { id: 4, title: 'Card Title 4', description: 'Description for Card 4' },
+    { id: 1, title: "Card Title 1", description: "Description for Card 1" },
+    { id: 2, title: "Card Title 2", description: "Description for Card 2" },
+    { id: 3, title: "Card Title 3", description: "Description for Card 3" },
+    { id: 4, title: "Card Title 4", description: "Description for Card 4" },
   ];
 
   const [drawername, setDrawerName] = useState("");
@@ -64,8 +92,8 @@ export default function MobileBusList() {
     amenities: "",
   });
   const [bus_type, setBus_type] = useState();
-  const location = useLocation()
-  const busdatas = location?.state || {}
+  const location = useLocation();
+  const busdatas = location?.state || {};
 
   // const [busdatas, setBusDatas] = useState({
   //   ac: "false",
@@ -84,12 +112,12 @@ export default function MobileBusList() {
   const [spinner, setSpinner] = useState(sessionStorage.getItem("spinner"));
   const [spin, setSpin] = useState(false);
 
-  const LuxuryFind = (type) =>
-    type?.toLowerCase()?.includes("volvo") ||
-    type?.toLowerCase()?.includes("mercedes benz") ||
-    type?.toLowerCase()?.includes("washroom") ||
-    type?.toLowerCase()?.includes("bharatBenz") ||
-    type?.toLowerCase()?.includes("luxury");
+  // const LuxuryFind = (type) =>
+    // type?.toLowerCase()?.includes("volvo") ||
+    // type?.toLowerCase()?.includes("mercedes benz") ||
+    // type?.toLowerCase()?.includes("washroom") ||
+    // type?.toLowerCase()?.includes("bharatBenz") ||
+    // type?.toLowerCase()?.includes("luxury");
 
   // useEffect(() => {
   //     setSpin(true);
@@ -138,13 +166,17 @@ export default function MobileBusList() {
   const GetBusList = async () => {
     setSpin(true);
     try {
-      const data = await Abhibus_GetBusList(
+      // const data = await Abhibus_GetBusList(
+      //   dispatch,
+      //   BusDetails,
+      //   BusDetails?.date
+      //   // luxury
+      // );
+      const data = await GetTBSAvailableService(
         dispatch,
         BusDetails,
         BusDetails?.date
-        // luxury
       );
-
       if (data) {
         setSpin(false);
       }
@@ -166,15 +198,13 @@ export default function MobileBusList() {
 
   const toggleDropDown = (item) => {
     if (item?.available_seats === "0") {
-      return null
+      return null;
     } else {
-
       navigation("/seats", {
         state: { data: item, busdatas: busdatas },
         busboarding: item.busboarding,
         busdroping: item.busdroping,
       });
-
     }
 
     // setDropDown(dropDown === index ? null : index);
@@ -220,33 +250,78 @@ export default function MobileBusList() {
     return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
   };
 
-  const services = { Amenities: "0,1,0,0,0,1,0,1,0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0", };
+  const services = {
+    Amenities: "0,1,0,0,0,1,0,1,0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0",
+  };
   const amenities = [
-    { "amenity_title": "Water Bottle", "amenity_position": 1, "icon": <FaBottleWater /> },
-    { "amenity_title": "Blanket", "amenity_position": 2, "icon": <BiSolidBlanket /> },
-    { "amenity_title": "TV", "amenity_position": 3, "icon": <FaTv /> },
-    { "amenity_title": "AC", "amenity_position": 4, "icon": <TbAirConditioning /> },
-    { "amenity_title": "Snacks", "amenity_position": 5, "icon": <FaCookieBite /> },
-    { "amenity_title": "Charging Point", "amenity_position": 6, "icon": <FaPlug /> },
-    { "amenity_title": "CCTV", "amenity_position": 7, "icon": <FaVideo /> },
-    { "amenity_title": "Emergency Exit", "amenity_position": 8, "icon": <RxExit /> },
-    { "amenity_title": "Individual TV", "amenity_position": 9, "icon": <FaTv /> },
-    { "amenity_title": "Hammer", "amenity_position": 10, "icon": <FaHammer /> },
-    { "amenity_title": "Facial Tissues", "amenity_position": 11, "icon": <FaBoxTissue /> },
-    { "amenity_title": "Pillows", "amenity_position": 12, "icon": <FaMattressPillow /> },
-    { "amenity_title": "Fire Extinguisher", "amenity_position": 13, "icon": <FaFireExtinguisher /> },
-    { "amenity_title": "Reading Light", "amenity_position": 14, "icon": <FaLightbulb /> },
-    { "amenity_title": "GPS Tracking", "amenity_position": 15, "icon": <FaLocationArrow /> },
-    { "amenity_title": "First Aid Box", "amenity_position": 16, "icon": <FaFirstAid /> },
-    { "amenity_title": "Wifi", "amenity_position": 17, "icon": <FaWifi /> },
-    { "amenity_title": "Hand Sanitizer", "amenity_position": 18, "icon": <FaHandSparkles /> },
-    { "amenity_title": "Temperature checks", "amenity_position": 19, "icon": <FaTemperatureHigh /> },
-    { "amenity_title": "Social Distancing", "amenity_position": 20, "icon": <FaUsers /> },
-    { "amenity_title": "Driver Conductor with masks", "amenity_position": 21, "icon": <FaUsersCog /> },
-    { "amenity_title": "Fumigation", "amenity_position": 22, "icon": <FaSprayCan /> },
-    { "amenity_title": "Staff", "amenity_position": 23, "icon": <FaUsers /> }
+    {
+      amenity_title: "Water Bottle",
+      amenity_position: 1,
+      icon: <FaBottleWater />,
+    },
+    { amenity_title: "Blanket", amenity_position: 2, icon: <BiSolidBlanket /> },
+    { amenity_title: "TV", amenity_position: 3, icon: <FaTv /> },
+    { amenity_title: "AC", amenity_position: 4, icon: <TbAirConditioning /> },
+    { amenity_title: "Snacks", amenity_position: 5, icon: <FaCookieBite /> },
+    { amenity_title: "Charging Point", amenity_position: 6, icon: <FaPlug /> },
+    { amenity_title: "CCTV", amenity_position: 7, icon: <FaVideo /> },
+    { amenity_title: "Emergency Exit", amenity_position: 8, icon: <RxExit /> },
+    { amenity_title: "Individual TV", amenity_position: 9, icon: <FaTv /> },
+    { amenity_title: "Hammer", amenity_position: 10, icon: <FaHammer /> },
+    {
+      amenity_title: "Facial Tissues",
+      amenity_position: 11,
+      icon: <FaBoxTissue />,
+    },
+    {
+      amenity_title: "Pillows",
+      amenity_position: 12,
+      icon: <FaMattressPillow />,
+    },
+    {
+      amenity_title: "Fire Extinguisher",
+      amenity_position: 13,
+      icon: <FaFireExtinguisher />,
+    },
+    {
+      amenity_title: "Reading Light",
+      amenity_position: 14,
+      icon: <FaLightbulb />,
+    },
+    {
+      amenity_title: "GPS Tracking",
+      amenity_position: 15,
+      icon: <FaLocationArrow />,
+    },
+    {
+      amenity_title: "First Aid Box",
+      amenity_position: 16,
+      icon: <FaFirstAid />,
+    },
+    { amenity_title: "Wifi", amenity_position: 17, icon: <FaWifi /> },
+    {
+      amenity_title: "Hand Sanitizer",
+      amenity_position: 18,
+      icon: <FaHandSparkles />,
+    },
+    {
+      amenity_title: "Temperature checks",
+      amenity_position: 19,
+      icon: <FaTemperatureHigh />,
+    },
+    {
+      amenity_title: "Social Distancing",
+      amenity_position: 20,
+      icon: <FaUsers />,
+    },
+    {
+      amenity_title: "Driver Conductor with masks",
+      amenity_position: 21,
+      icon: <FaUsersCog />,
+    },
+    { amenity_title: "Fumigation", amenity_position: 22, icon: <FaSprayCan /> },
+    { amenity_title: "Staff", amenity_position: 23, icon: <FaUsers /> },
   ];
-
 
   return (
     <>
@@ -281,9 +356,9 @@ export default function MobileBusList() {
                     // item?.bus_type_status
                     LuxuryFind(item.Bus_Type_Name) === true
                       ? // === "luxury"
-                      "custom-gradient-luxury border-[#C9C9C9]"
+                        "custom-gradient-luxury border-[#C9C9C9]"
                       : "bg-white border-[#C9C9C9] "
-                    } w-full border-[0.2vw] rounded-[2vw] `}
+                  } w-full border-[0.2vw] rounded-[2vw] `}
                   style={{
                     // backgroundImage: `linear-gradient(to right, #F8C550, #FFEB76, #FFE173), url(${SINGLECARD_BG})`,
                     backgroundImage: backgroundImage,
@@ -438,7 +513,7 @@ export default function MobileBusList() {
                           LuxuryFind(item.Bus_Type_Name) === true
                             ? "text-black"
                             : "text-white"
-                          } `}
+                        } `}
                       >
                         Bus Operator
                       </label>
@@ -448,7 +523,7 @@ export default function MobileBusList() {
                           LuxuryFind(item.Bus_Type_Name) === true
                             ? "text-black"
                             : "text-white"
-                          }`}
+                        }`}
                       >
                         {item?.Traveler_Agent_Name}
                         <Tooltip
@@ -473,7 +548,7 @@ export default function MobileBusList() {
                               LuxuryFind(item.Bus_Type_Name) === true
                                 ? "shadow-lg shadow-[rgba(255, 238, 201, 0.9)]"
                                 : "shadow-lg shadow-[rgba(238, 237, 237, 0.7)]"
-                              }`}
+                            }`}
                           />
                         )}
                       </div>
@@ -483,7 +558,7 @@ export default function MobileBusList() {
                           LuxuryFind(item.Bus_Type_Name) === true
                             ? ""
                             : "bg-[#1F487C]"
-                          } rounded-tr-[2vw] rounded-br-[0.5vw]  h-[9vw] w-[75vw]`}
+                        } rounded-tr-[2vw] rounded-br-[0.5vw]  h-[9vw] w-[75vw]`}
                         style={{
                           background:
                             // item?.bus_type_status === "luxury"
@@ -502,8 +577,12 @@ export default function MobileBusList() {
                         >
                           <path
                             d="M0.00012207 35.0001L12.0444 0.00012207H129.98C133.305 0.00012207 136 2.6952 136 6.01975V35.0001H0.00012207Z"
-                            fill={`${LuxuryFind(item.Bus_Type_Name) === true ? '#393939' : '#10243f'}`}
-                          //   fill-opacity="0.5"
+                            fill={`${
+                              LuxuryFind(item.Bus_Type_Name) === true
+                                ? "#393939"
+                                : "#10243f"
+                            }`}
+                            //   fill-opacity="0.5"
                           />
                         </svg>
                         <label
@@ -512,15 +591,15 @@ export default function MobileBusList() {
                             LuxuryFind(item.Bus_Type_Name) === true
                               ? "text-black"
                               : "text-white"
-                            } text-[4vw] absolute left-[18vw] top-[1.5vw]`}
+                          } text-[4vw] absolute left-[18vw] top-[1.5vw]`}
                         >
                           Starting @
                         </label>
                         <div onClick={() => toggleDropDown(item)}>
                           <label
                             className="text-white text-[6vw] font-extrabold absolute right-[13vw] top-[0.4vw]"
-                          // onClick={() => toggleDropDown(`seat${index}`)}
-                          // onClick={() => toggleDropDown(item)}
+                            // onClick={() => toggleDropDown(`seat${index}`)}
+                            // onClick={() => toggleDropDown(item)}
                           >
                             {/* ₹ {Math.round(item?.Fare)} */}
                             {`₹ ${calculateDiscountedFare(
@@ -545,9 +624,9 @@ export default function MobileBusList() {
                               // item?.bus_type_status === "luxury"
                               LuxuryFind(item.Bus_Type_Name) === true
                                 ? // ? "bg-[#ffc918]"
-                                "bg-gradient-to-r from-[#facf65] to-[#fde480]"
+                                  "bg-gradient-to-r from-[#facf65] to-[#fde480]"
                                 : "bg-white"
-                              }  rounded-full `}
+                            }  rounded-full `}
                           />
                         </div>
                       </div>{" "}
@@ -562,7 +641,11 @@ export default function MobileBusList() {
                         <path
                           d="M12.8719 0.0335693L0.334861 17.8141C0.334861 17.8141 1.85487 12.2663 1.85487 9.70735C1.85487 6.16066 1.85487 0.0335692 1.85487 0.0335692L12.8719 0.0335693Z"
                           // fill="#001938"
-                          fill={`${LuxuryFind(item.Bus_Type_Name) === true ? '#393939' : '#10243f'}`}
+                          fill={`${
+                            LuxuryFind(item.Bus_Type_Name) === true
+                              ? "#393939"
+                              : "#10243f"
+                          }`}
                         />
                       </svg>
                       <label
@@ -571,7 +654,7 @@ export default function MobileBusList() {
                           LuxuryFind(item.Bus_Type_Name) === true
                             ? "text-[#393939]"
                             : "text-[#1F487C]"
-                          }`}
+                        }`}
                         style={{
                           top: "18%",
                           left: "35%",
@@ -617,7 +700,7 @@ export default function MobileBusList() {
                               LuxuryFind(item.Bus_Type_Name) === true
                                 ? "border-[#393939]"
                                 : "border-[#1F487C]"
-                              } border-t-[0.5vw] absolute left-[1.9vw] z-0 top-[4.25vw] border-dashed w-[25vw]`}
+                            } border-t-[0.5vw] absolute left-[1.9vw] z-0 top-[4.25vw] border-dashed w-[25vw]`}
                           ></div>
                         </div>
                         <label
@@ -640,7 +723,7 @@ export default function MobileBusList() {
                               LuxuryFind(item.Bus_Type_Name) === true
                                 ? "text-[#393939]"
                                 : "text-[#1F487C]"
-                              } font-semibold opacity-60`}
+                            } font-semibold opacity-60`}
                           >
                             {dayjs(item?.BUS_START_DATE).format("DD MMM")}
                           </label>
@@ -651,7 +734,7 @@ export default function MobileBusList() {
                               LuxuryFind(item.Bus_Type_Name) === true
                                 ? "text-[#393939]"
                                 : "text-[#1F487C]"
-                              } font-bold`}
+                            } font-bold`}
                           >
                             {item?.Start_time}
                           </label>
@@ -666,7 +749,7 @@ export default function MobileBusList() {
                               LuxuryFind(item.Bus_Type_Name) === true
                                 ? "text-[#393939]"
                                 : "text-[#1F487C]"
-                              } font-semibold opacity-60`}
+                            } font-semibold opacity-60`}
                           >
                             {/* {dayjs(item?.jdate).format("DD MMM")} */}
                             {calculateArrival(
@@ -682,7 +765,7 @@ export default function MobileBusList() {
                               LuxuryFind(item.Bus_Type_Name) === true
                                 ? "text-[#393939]"
                                 : "text-[#1F487C]"
-                              } font-bold`}
+                            } font-bold`}
                           >
                             {item?.Arr_Time}
                           </label>
@@ -696,7 +779,7 @@ export default function MobileBusList() {
                             LuxuryFind(item.Bus_Type_Name) === true
                               ? "bg-[#393939]"
                               : "bg-[#1F487C]"
-                            } absolute left-[-1.4vw] h-[2.25vw] w-[2.25vw] top-[2.8vw] rounded-full`}
+                          } absolute left-[-1.4vw] h-[2.25vw] w-[2.25vw] top-[2.8vw] rounded-full`}
                         ></div>
                       </div>
                       <div className="absolute left-[45.5vw] top-[12.2vw]">
@@ -708,7 +791,7 @@ export default function MobileBusList() {
                             LuxuryFind(item.Bus_Type_Name) === true
                               ? "#393939"
                               : "#1F487C"
-                            }`}
+                          }`}
                           className="absolute right-[-2.25vw] top-[2vw]"
                         />
                       </div>
@@ -720,7 +803,7 @@ export default function MobileBusList() {
                             LuxuryFind(item.Bus_Type_Name) === true
                               ? "border-[#393939]"
                               : "border-[#1F487C]"
-                            } border-t-[0.3vw] absolute left-[3vw] top-[5.2vw] border-dashed w-[17vw]`}
+                          } border-t-[0.3vw] absolute left-[3vw] top-[5.2vw] border-dashed w-[17vw]`}
                           style={{
                             transform: "rotate(90deg)",
                           }}
@@ -792,7 +875,13 @@ export default function MobileBusList() {
                         </div>
                         <div className="flex justify-center items-center bg-[#FFC1C180] rounded-full h-[5vw] px-[2vw] gap-[1vw]">
                           <div className="text-[3.3vw] text-[#C62B2B] font-bold">
-                            {item?.available_seats === "0" ? <span className="text-[3.5vw] font-extrabold">SOLD-OUT</span> : `${item?.available_seats} Seats Left`}
+                            {item?.available_seats === "0" ? (
+                              <span className="text-[3.5vw] font-extrabold">
+                                SOLD-OUT
+                              </span>
+                            ) : (
+                              `${item?.available_seats} Seats Left`
+                            )}
                           </div>
                         </div>
                       </div>
@@ -840,24 +929,22 @@ export default function MobileBusList() {
                       <div className=" absolute left-[25vw] bottom-[0.5vw]">
                         <div className="flex items-center gap-x-[2vw]">
                           {item?.Amenities ? (
-                         
-                               <div className="flex items-center gap-[2vw]">
-                                <label
-                                  className={`text-[3.5vw] font-semibold`}
-                                  onClick={() => {
-                                    setDrawerName("Amenities");
-                                    setDrawerIsOpen(true);
-                                    setCardDetails((prev) => ({
-                                      bus_type: item?.Bus_Type_Name,
-                                      amenities: item?.Amenities,
-                                    }));
-                                  }}
-                                >
-                                  Amenities
-                                </label>
-                                <div className="w-[0.1vw] h-[4vw] bg-black"></div>
-                              </div>
-
+                            <div className="flex items-center gap-[2vw]">
+                              <label
+                                className={`text-[3.5vw] font-semibold`}
+                                onClick={() => {
+                                  setDrawerName("Amenities");
+                                  setDrawerIsOpen(true);
+                                  setCardDetails((prev) => ({
+                                    bus_type: item?.Bus_Type_Name,
+                                    amenities: item?.Amenities,
+                                  }));
+                                }}
+                              >
+                                Amenities
+                              </label>
+                              <div className="w-[0.1vw] h-[4vw] bg-black"></div>
+                            </div>
                           ) : (
                             ""
                           )}
@@ -885,7 +972,7 @@ export default function MobileBusList() {
                             onClick={() => {
                               setDrawerName("Policies");
                               setDrawerIsOpen(true);
-                              setStartTime(item?.BUS_START_DATE)
+                              setStartTime(item?.BUS_START_DATE);
                               setCardDetails((prev) => ({
                                 ...prev,
                                 policies: item,
@@ -917,41 +1004,40 @@ export default function MobileBusList() {
 )} */}
                 </div>
               ))
-            )
-              : sessionStorage.getItem('busListLoader') === 'true' ?
-
-                <>
-                  {data?.map((item) => {
-                    return (
-                      <div
-                        key={item.id}
-                        className="bg-white h-auto w-full mt-[0.4vw] flex-col rounded-[0.5vw] border-[0.15vw] border-[#C9C9C9]"
-                      >
-                        <Skeleton
-                          loading={sessionStorage.getItem('busListLoader') === 'true'}
-                          active
-                          style={{ margin: "0.5vw", padding: "0.5vw" }}
-                          paragraph={{ rows: 3 }}
-                          avatar
-                        ></Skeleton>
-                      </div>
-                    );
-                  })}
-
-                </>
-                : (
-                  <div className="flex flex-col justify-center items-center w-full ">
-                    <BsBusFront
-                      size={"25vw"}
-                      className="mt-[20vw]"
-                      color="#1F487C"
-                    />
-                    <span className="font-bold text-[#1F487C] text-[5vw]">
-                      {" "}
-                      No Buses Are Available!
-                    </span>
-                  </div>
-                )}
+            ) : sessionStorage.getItem("busListLoader") === "true" ? (
+              <>
+                {data?.map((item) => {
+                  return (
+                    <div
+                      key={item.id}
+                      className="bg-white h-auto w-full mt-[0.4vw] flex-col rounded-[0.5vw] border-[0.15vw] border-[#C9C9C9]"
+                    >
+                      <Skeleton
+                        loading={
+                          sessionStorage.getItem("busListLoader") === "true"
+                        }
+                        active
+                        style={{ margin: "0.5vw", padding: "0.5vw" }}
+                        paragraph={{ rows: 3 }}
+                        avatar
+                      ></Skeleton>
+                    </div>
+                  );
+                })}
+              </>
+            ) : (
+              <div className="flex flex-col justify-center items-center w-full ">
+                <BsBusFront
+                  size={"25vw"}
+                  className="mt-[20vw]"
+                  color="#1F487C"
+                />
+                <span className="font-bold text-[#1F487C] text-[5vw]">
+                  {" "}
+                  No Buses Are Available!
+                </span>
+              </div>
+            )}
           </div>
           {/* )} */}
         </div>

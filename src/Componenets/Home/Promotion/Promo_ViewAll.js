@@ -248,10 +248,10 @@ export default function Promo_ViewAll() {
     GetDiscountOffers(dispatch);
   }, [dispatch,sessionStorage.getItem("occupation_id")]);
 
-  console.log(
-    `${apicrmimage}/${promotionlist[0]?.background_image}`,
-    "promotionlist8888"
-  );
+   // console.log(
+  //   `${apicrmimage}/${promotionlist[0]?.background_image}`,
+  //   "promotionlist8888"
+  // );
 
   // useEffect(() => {
   //   let temp = [];

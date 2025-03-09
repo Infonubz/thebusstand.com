@@ -206,7 +206,7 @@ export default function PassengersList({
     //     setBgColor(getRandomColor())
     //   }
   }, [passengerdata]);
-  console.log(passengerdata, "passengers_daata");
+   // console.log(passengerdata, "passengers_daata");
   const [activePage, setActivePage] = useState(1);
 
   const itemsPerPage = 6;
@@ -238,7 +238,7 @@ export default function PassengersList({
       <FaUser className="text-gray-600 text-2xl" />
     </div> */}
         <div className="h-[120vw] border-r-[1vw] border-l-[1vw] overflow-y-auto">
-          {console.log(passengerdata, "passdataesdgfkdj,gdn")}
+          {/* { // console.log(passengerdata, "passdataesdgfkdj,gdn")} */}
           {passengerdata?.length > 0 &&
             passengerdata.map((value, index) => {
               // const userIconColor = getRandomColor();
@@ -260,7 +260,7 @@ export default function PassengersList({
                         <div>{value.age} years</div>
                       </span>
                     </div>
-                    {console.log(value.user_name, "dhkjdshfkjd")}
+                    {/* { // console.log(value.user_name, "dhkjdshfkjd")} */}
                   </div>
                   <div className="flex gap-x-[4vw] text-[#1F487C] ">
                     <div

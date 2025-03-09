@@ -83,7 +83,7 @@ export default function FooterOne() {
   const top_rtc_busesFooter = fetchedFooter[0]?.top_rtc_buses;
   const top_bus_serviceFooter = fetchedFooter[0]?.top_bus_service;
   const quick_links = fetchedFooter[0]?.quick_links;
-  console.log(top_bus_routeFooter, 'top_bus_routeFooter')
+   // console.log(top_bus_routeFooter, 'top_bus_routeFooter')
   const colors = ColorCodes()
 
   const handleVisibleButton = () => {
@@ -102,8 +102,8 @@ export default function FooterOne() {
     GetFooter(dispatch);
   }, [dispatch]);
 
-  console.log(top, "top");
-  console.log(path !== "/", "pathpathpathpathpathpath");
+   // console.log(top, "top");
+   // console.log(path !== "/", "pathpathpathpathpathpath");
 
   return (
     <>
@@ -218,7 +218,7 @@ export default function FooterOne() {
       </div>
       {/* mobile */}
       <div className="md:hidden block h-auto bg-black w-full py-[1vw]  relative">
-        <div className="grid grid-cols-2 row-auto w-full h-full px-[3vw]">
+        <div className="grid grid-cols-2 row-auto w-full h-full px-[3vw] gap-y-[3vw] gap-x-[1vw]">
           <div>
             <p className="text-white  font-bold text-[4vw] w-full items-center py-[2vw]  flex">
               Top Bus Routes
@@ -226,7 +226,7 @@ export default function FooterOne() {
             {top_bus_routeFooter?.length > 0 &&
               top_bus_routeFooter?.slice(0, 3)?.map((item) => (
                 <button
-                  className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%]"
+                  className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%] "
                   //href="#"
                   target="blank"
                 >
@@ -237,51 +237,57 @@ export default function FooterOne() {
               ))}
           </div>
           <div>
-            <p className="text-white  font-bold text-[4vw] w-full items-center py-[2vw]  flex">
+            <p className="text-white font-bold text-[4vw] w-full items-center py-[2vw]  flex">
               Buses from top cities
             </p>
-            {buses_from_top_citiesFooter?.length > 0 &&
-              buses_from_top_citiesFooter?.slice(0, 3)?.map((item) => (
-                <button
-                  className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%]"
-                  //href="#"
-                  target="blank"
-                >
-                  <p>{item.city_name}</p>
-                </button>
-              ))}
+            <div className="grid grid-rows-3 justify-items-start">
+              {buses_from_top_citiesFooter?.length > 0 &&
+                buses_from_top_citiesFooter?.slice(0, 3)?.map((item) => (
+                  <button
+                    className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%] "
+                    //href="#"
+                    target="blank"
+                  >
+                    <p>{item.city_name}</p>
+                  </button>
+                ))}
+            </div>
           </div>
           <div>
             <p className="text-white  font-bold text-[4vw] w-full items-center py-[2vw]  flex">
               Top RTC Buses
             </p>
-            {top_rtc_busesFooter?.length > 0 &&
-              top_rtc_busesFooter?.slice(0, 3)?.map((item) => (
-                <button
-                  className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%]"
-                  //href="#"
-                  target="blank"
-                >
-                  <p>{item.rtc_name}</p>
-                </button>
-              ))}
+            <div className="grid grid-rows-3 justify-items-start">
+              {top_rtc_busesFooter?.length > 0 &&
+                top_rtc_busesFooter?.slice(0, 3)?.map((item) => (
+                  <button
+                    className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%]"
+                    //href="#"
+                    target="blank"
+                  >
+                    <p>{item.rtc_name}</p>
+                  </button>
+                ))}
+            </div>
           </div>
           <div>
             <p className="text-white  font-bold text-[4vw] w-full items-center py-[2vw]  flex">
               Top Bus Service
             </p>
-            {top_bus_serviceFooter?.length > 0 &&
-              top_bus_serviceFooter?.slice(0, 3)?.map((item) => (
-                <button
-                  className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%]"
-                  // href="#"
-                  target="blank"
-                >
-                  <p>{item.operator_name}</p>
-                </button>
-              ))}
+            <div className="grid grid-rows-3 justify-items-start">
+              {top_bus_serviceFooter?.length > 0 &&
+                top_bus_serviceFooter?.slice(0, 3)?.map((item) => (
+                  <button
+                    className="text-[#7A7A7A] hover:text-[#7A7A7A]  text-[3vw] mt-[10%]"
+                    // href="#"
+                    target="blank"
+                  >
+                    <p>{item.operator_name}</p>
+                  </button>
+                ))}
+            </div>
           </div>
-          <div>
+          {/* <div>
             <p className="text-white  font-bold text-[4vw] w-full items-center py-[2vw]  flex">
               Quick Links
             </p>
@@ -295,7 +301,7 @@ export default function FooterOne() {
                   <p>{item.link}</p>
                 </button>
               ))}
-          </div>
+          </div> */}
 
           <div className=" items-center py-[2vw] flex gap-[3vw] pl-[1vw]">
             <a href="https://www.facebook.com/">

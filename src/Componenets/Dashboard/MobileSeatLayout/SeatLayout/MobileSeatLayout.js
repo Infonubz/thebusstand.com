@@ -7,6 +7,8 @@ import { RiSteering2Fill } from "react-icons/ri";
 import { LoadingOutlined } from "@ant-design/icons";
 import { calculateDiscountedFare } from "../../../Common/Common-Functions/TBS-Discount-Fare";
 import { Abhibus_SeatLayout } from "../../../../Api-Abhibus/Dashboard/DashboardPage";
+import { GetTBSSeatLayout } from "../../../../Api-TBS/Dashboard/Dashboard";
+import { LuxuryFind } from "../../../Common/Common-Functions/LuxuryFind";
 
 export default function MobileSeatLayout({
   item,
@@ -19,18 +21,16 @@ export default function MobileSeatLayout({
   layout,
   setLayout,
   currentrate,
-  SetCurrentRate
+  SetCurrentRate,
 }) {
   const tbs_discount = useSelector((state) => state?.live_per);
 
-
-  const LuxuryFind = (type) =>
-    type?.toLowerCase()?.includes("volvo") ||
-    type?.toLowerCase()?.includes("mercedes benz") ||
-    type?.toLowerCase()?.includes("washroom") ||
-    type?.toLowerCase()?.includes("bharatBenz") ||
-    type?.toLowerCase()?.includes("luxury");
-
+  // const LuxuryFind = (type) =>
+  //   type?.toLowerCase()?.includes("volvo") ||
+  //   type?.toLowerCase()?.includes("mercedes benz") ||
+  //   type?.toLowerCase()?.includes("washroom") ||
+  //   type?.toLowerCase()?.includes("bharatBenz") ||
+  //   type?.toLowerCase()?.includes("luxury");
 
   const getseats = useSelector((state) => state.seat_layout);
   const allprice = getseats?.seats_id_layout
@@ -49,21 +49,17 @@ export default function MobileSeatLayout({
   const uniqueprice = [...new Set(allprice)];
 
   const lowerdeck = getseats?.seats_id_layout?.filter((item) => {
-
     return item.z === 0;
   });
 
   const upperdeck = getseats?.seats_id_layout?.filter((item) => {
-
     return item.z === 1;
   });
 
   const lowerdeckc = lowerdeck?.map((item) => {
-
     return item.y;
   });
   const upperdeckc = upperdeck?.map((item) => {
-
     return item.y;
   });
 
@@ -71,7 +67,6 @@ export default function MobileSeatLayout({
   const lowerdeckcol = lowerdeckc?.length > 0 ? Math.max(...lowerdeckc) : [];
   const upperdeckrow = Math.max(upperdeck?.map((item) => item.x));
   const upperdeckcol = upperdeckc?.length > 0 ? Math.max(...upperdeckc) : [];
-
 
   const handleSeatClick = (seat) => {
     if (seat.isBooked === true) return;
@@ -109,7 +104,6 @@ export default function MobileSeatLayout({
       }
     });
 
-
     setSelectedSeatsPrice((prevSelectedSeatsPrice) => {
       const seatIndex = selectedSeats.indexOf(seat?.seatNumber);
 
@@ -125,7 +119,6 @@ export default function MobileSeatLayout({
       }
     });
   };
-
 
   const getBorderClass = (seat) => {
     if (seat?.isBooked === true && seat.gender === "M") {
@@ -156,7 +149,6 @@ export default function MobileSeatLayout({
         return "#958F8F";
     }
   };
-
 
   const getBackgroundClass = (seat) => {
     if (
@@ -282,11 +274,11 @@ export default function MobileSeatLayout({
     layout?.TotalSeatList?.upperdeck_seat_nos || []
   );
 
-
   const fetchSeatLayout = async () => {
     setLayoutLoading(true);
     try {
-      const data = await Abhibus_SeatLayout(item, dispatch);
+      // const data = await Abhibus_SeatLayout(item, dispatch);
+      const data = await GetTBSSeatLayout(item, dispatch);
       setLayoutLoading(false);
       setLayout(data?.seatlayout);
     } catch (error) {
@@ -308,17 +300,17 @@ export default function MobileSeatLayout({
         <>
           <div className={`md:col-span-3 col-span-6 h-full w-full`}>
             <div
-              className={`${lowerDeckSeats?.length > 0 && upperDeckSeats?.length > 0
-                ? "grid grid-cols-2 px-[2vw]"
-                : "grid grid-cols-1 px-[20vw]"
-                }  w-full  gap-[1.5vw]`}
+              className={`${
+                lowerDeckSeats?.length > 0 && upperDeckSeats?.length > 0
+                  ? "grid grid-cols-2 px-[2vw]"
+                  : "grid grid-cols-1 px-[20vw]"
+              }  w-full  gap-[1.5vw]`}
             >
               <div className={`col-span-1 h-full w-full py-[1vw]`}>
                 <div
                   className={`border-[0.1vw] border-gray-400  w-full rounded-[0.5vw] relative bg-white`}
                   style={{
-                    height: `${Number(layout?.lowerTotalColumns) * 13
-                      }vw`,
+                    height: `${Number(layout?.lowerTotalColumns) * 13}vw`,
                   }}
                 >
                   <p className="text-[3.5vw] absolute top-[0.5vw] left-[6vw] text-center">
@@ -329,16 +321,18 @@ export default function MobileSeatLayout({
                     <RiSteering2Fill size={"6vw"} />
                   </span>
                   <div
-                    className={` border-l-[0.2vw] ${LuxuryFind(item?.Bus_Type_Name) === true
-                      ? "border-[#FFEEC9]"
-                      : "border-[#EEEDED]"
-                      }  absolute left-[-0.15vw] top-[10vw] h-[8vw]`}
+                    className={` border-l-[0.2vw] ${
+                      LuxuryFind(item?.Bus_Type_Name) === true
+                        ? "border-[#FFEEC9]"
+                        : "border-[#EEEDED]"
+                    }  absolute left-[-0.15vw] top-[10vw] h-[8vw]`}
                   ></div>
                   <div
-                    className={`border-r-[0.1vw] border-t-[0.1vw] border-b-[0.1vw] ${LuxuryFind(item?.Bus_Type_Name) === true
-                      ? "bg-[#FFEEC9]"
-                      : "bg-[#EEEDED]"
-                      } border-gray-400 h-[8vw] left-[-0.05vw] w-[8vw] top-[10vw] absolute`}
+                    className={`border-r-[0.1vw] border-t-[0.1vw] border-b-[0.1vw] ${
+                      LuxuryFind(item?.Bus_Type_Name) === true
+                        ? "bg-[#FFEEC9]"
+                        : "bg-[#EEEDED]"
+                    } border-gray-400 h-[8vw] left-[-0.05vw] w-[8vw] top-[10vw] absolute`}
                   ></div>
                   <div
                     className="grid grid-rows-6 h-full w-full gap-[1vw] pt-[20vw] py-[1vw]"
@@ -397,22 +391,22 @@ export default function MobileSeatLayout({
                                       filter:
                                         currentrate ===
                                           Math.round(seat?.price) &&
-                                          seat.isBooked === false
+                                        seat.isBooked === false
                                           ? `drop-shadow(2px 2px 2px  ${getBorderClass(
-                                            seat
-                                          )})`
+                                              seat
+                                            )})`
                                           : null,
                                     }}
                                   >
                                     <path
                                       d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998V11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H3.55687Z"
                                       fill={`${getBackgroundClass(seat)}`}
-                                    // stroke="#D8D8D8"
+                                      // stroke="#D8D8D8"
                                     />
                                     <path
                                       d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998C28.9099 9.12696 28.9099 11.5352 28.9099 11.5352M28.9099 11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H4.6386C5.53474 11.5354 6.2612 12.2619 6.2612 13.158V29.9671C6.2612 31.3113 7.35089 32.401 8.69509 32.401H24.1098C25.454 32.401 26.5437 31.3113 26.5437 29.9671V13.1579C26.5437 12.2618 27.2701 11.5353 28.1661 11.5353L28.9099 11.5352Z"
                                       stroke={`${getBorderClass(seat)}`}
-                                    // stroke="#D8D8D8"
+                                      // stroke="#D8D8D8"
                                     />
                                   </svg>
                                 </Tooltip>
@@ -425,9 +419,7 @@ export default function MobileSeatLayout({
                                 className="relative items-center justify-center flex"
                                 style={{
                                   gridRow:
-                                    seat.type === "LB"
-                                      ? `span 2`
-                                      : seat.row, // Sleeper seats span 2 rows
+                                    seat.type === "LB" ? `span 2` : seat.row, // Sleeper seats span 2 rows
                                   gridColumn: seat.column,
                                 }}
                               >
@@ -464,10 +456,10 @@ export default function MobileSeatLayout({
                                       filter:
                                         currentrate ===
                                           Math.round(seat?.price) &&
-                                          seat.isBooked === false
+                                        seat.isBooked === false
                                           ? `drop-shadow(2px 2px 2px  ${getBorderClass(
-                                            seat
-                                          )})`
+                                              seat
+                                            )})`
                                           : null,
                                     }}
                                   >
@@ -498,8 +490,7 @@ export default function MobileSeatLayout({
                   <div
                     className="border-[0.1vw] border-gray-400  w-full rounded-[0.5vw] relative bg-white"
                     style={{
-                      height: `${Number(layout?.upperTotalColumns) * 13
-                        }vw`,
+                      height: `${Number(layout?.upperTotalColumns) * 13}vw`,
                     }}
                   >
                     <p className="text-[3.5vw] absolute top-[0.5vw] left-[6vw] text-center">
@@ -561,22 +552,22 @@ export default function MobileSeatLayout({
                                       filter:
                                         currentrate ===
                                           Math.round(seat?.price) &&
-                                          seat.isBooked === false
+                                        seat.isBooked === false
                                           ? `drop-shadow(2px 2px 2px  ${getBorderClass(
-                                            seat
-                                          )})`
+                                              seat
+                                            )})`
                                           : null,
                                     }}
                                   >
                                     <path
                                       d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998V11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H3.55687Z"
                                       fill={`${getBackgroundClass(seat)}`}
-                                    // stroke="#D8D8D8"
+                                      // stroke="#D8D8D8"
                                     />
                                     <path
                                       d="M3.55687 11.5354V6.43945C3.55687 3.67803 5.79544 1.43945 8.55687 1.43945H23.91C26.6714 1.43945 28.9099 3.67855 28.9099 6.43998C28.9099 9.12696 28.9099 11.5352 28.9099 11.5352M28.9099 11.5352L29.6538 11.5353C30.5498 11.5353 31.2762 12.2618 31.2762 13.1579V34.0056C31.2762 35.3498 30.1865 36.4395 28.8423 36.4395H3.28643C1.94223 36.4395 0.852539 35.3498 0.852539 34.0056V13.158C0.852539 12.2619 1.579 11.5354 2.47514 11.5354H4.6386C5.53474 11.5354 6.2612 12.2619 6.2612 13.158V29.9671C6.2612 31.3113 7.35089 32.401 8.69509 32.401H24.1098C25.454 32.401 26.5437 31.3113 26.5437 29.9671V13.1579C26.5437 12.2618 27.2701 11.5353 28.1661 11.5353L28.9099 11.5352Z"
                                       stroke={`${getBorderClass(seat)}`}
-                                    // stroke="#D8D8D8"
+                                      // stroke="#D8D8D8"
                                     />
                                   </svg>
                                 </Tooltip>
@@ -587,9 +578,7 @@ export default function MobileSeatLayout({
                                 className="relative items-center justify-center flex"
                                 style={{
                                   gridRow:
-                                    seat.type === "UB"
-                                      ? `span 2`
-                                      : seat.row, // Sleeper seats span 2 rows
+                                    seat.type === "UB" ? `span 2` : seat.row, // Sleeper seats span 2 rows
                                   gridColumn: seat.column,
                                 }}
                               >
@@ -626,10 +615,10 @@ export default function MobileSeatLayout({
                                       filter:
                                         currentrate ===
                                           Math.round(seat?.price) &&
-                                          seat.isBooked === false
+                                        seat.isBooked === false
                                           ? `drop-shadow(2px 2px 2px  ${getBorderClass(
-                                            seat
-                                          )})`
+                                              seat
+                                            )})`
                                           : null,
                                     }}
                                   >

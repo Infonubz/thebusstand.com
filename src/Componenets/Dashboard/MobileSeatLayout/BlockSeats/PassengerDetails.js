@@ -11,7 +11,7 @@ import { RiArrowRightSLine } from "react-icons/ri";
 import { GiSevenPointedStar } from "react-icons/gi";
 import { BiSolidOffer } from "react-icons/bi";
 import dayjs from "dayjs";
-import Barcode from "react-barcode";
+// import Barcode from "react-barcode";
 import { useRef } from "react";
 // import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -25,6 +25,8 @@ import { getTabIndex } from "@progress/kendo-react-common";
 import { FaEdit } from "react-icons/fa";
 import { Abhibus_SeatBlocked } from "../../../../Api-Abhibus/Dashboard/DashboardPage";
 import { decryptData } from "../../../Common/Common-Functions/Encrypt-Decrypt";
+import { GetTBSSeatBlock } from "../../../../Api-TBS/Dashboard/Dashboard";
+import { LuxuryFind } from "../../../Common/Common-Functions/LuxuryFind";
 
 export default function PassengerDetails({
   BusDetails,
@@ -104,14 +106,14 @@ export default function PassengerDetails({
   //     return acc;
   //   }, {})
   // );
-  const LuxuryFind = (type) =>
-    type?.toLowerCase().includes("volvo") ||
-    type?.toLowerCase().includes("mercedes benz") ||
-    type?.toLowerCase().includes("washroom") ||
-    type?.toLowerCase().includes("bharatBenz") ||
-    type?.toLowerCase().includes("luxury");
+  // const LuxuryFind = (type) =>
+  //   type?.toLowerCase().includes("volvo") ||
+  //   type?.toLowerCase().includes("mercedes benz") ||
+  //   type?.toLowerCase().includes("washroom") ||
+  //   type?.toLowerCase().includes("bharatBenz") ||
+  //   type?.toLowerCase().includes("luxury");
   const [registerfulldetails, setRegisterFullDetails] = useState({});
-  console.log(registerfulldetails, "register_full_details");
+   // console.log(registerfulldetails, "register_full_details");
   const [continuenext, setContinue] = useState(false);
   const [sumbitbutton, setSubmitButon] = useState(false);
 
@@ -193,10 +195,10 @@ export default function PassengerDetails({
         // If valid details, you can execute any additional logic here
         if (hasValidDetails) {
           // Add any logic for displaying the icon or other actions
-          console.log(
-            "Valid traveler details selected:",
-            updatedDetails[index]
-          );
+          //  // console.log(
+          //   "Valid traveler details selected:",
+          //   updatedDetails[index]
+          // );
         }
 
         return updatedDetails;
@@ -296,7 +298,8 @@ export default function PassengerDetails({
       //   // sessionStorage.getItem("user_mobile"),
       //   bookingId
       // );
-      const response = await Abhibus_SeatBlocked(BusDetails);
+      // const response = await Abhibus_SeatBlocked(BusDetails);
+      const response = await GetTBSSeatBlock(BusDetails);
       setShowPrice(true);
       setSubmitButon(true);
       setEnableInput(true);
@@ -329,7 +332,7 @@ export default function PassengerDetails({
     //     promoCode
     //   );
     //   setBusBookingId(response.Booking_Id);
-    //   console.log(response, "response for price");
+    //    // console.log(response, "response for price");
     //   setContinue(true);
     //   toast.success("booked successfully");
     //   setLoading(false);
@@ -360,7 +363,7 @@ export default function PassengerDetails({
   // const fetchBookingDetail = async (mobilenum) => {
   //   try {
   //     const data = await GetBookingDetails(mobilenum, dispatch);
-  //     console.log(data[0].Array, "GetBookingDetails data");
+  //      // console.log(data[0].Array, "GetBookingDetails data");
   //   } catch (error) {
   //     console.error("Error fetching data", error);
   //   }
@@ -434,7 +437,7 @@ export default function PassengerDetails({
       //   try {
       //     const response = await TicketViewDetails(busBookingId, mobileInput);
       //     setTicketDetail(response);
-      //     console.log(response, "response for ticketdtl");
+      //      // console.log(response, "response for ticketdtl");
       //   } catch (error) {
       //     console.error("Error", error);
       //   }
@@ -449,7 +452,7 @@ export default function PassengerDetails({
       const updateData = passengerId;
       //   try {
       //     const data = await GetPassengById(updateData);
-      //     console.log(data, "datadata");
+      //      // console.log(data, "datadata");
       //   } catch (error) {
       //     console.error("Error fetching additional user data", error);
       //   }
@@ -657,7 +660,7 @@ export default function PassengerDetails({
                       validationSchema={validationSchema}
                       onSubmit={(values) => {
                         handleSubmit(values);
-                        console.log(values, "values values");
+                         // console.log(values, "values values");
                         setRegisterFullDetails(values);
                         localStorage.setItem("page1", true);
                         localStorage.setItem("occupation", values.option);

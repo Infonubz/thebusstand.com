@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { XMLParser } from "fast-xml-parser";
 import dayjs from "dayjs";
+import { LuxuryFind } from "../../Componenets/Common/Common-Functions/LuxuryFind";
 
 const username = process.env.REACT_APP_ABHIBUS_USERNAME || "demo@test"; // Replace with actual username if not in .env
 const password = process.env.REACT_APP_ABHIBUS_PASSWORD || "demo@abhibus"; // Replace with actual password if not in .env
@@ -21,7 +22,6 @@ export const processSOAPResponse = async (soapResponse, name) => {
     // Step 2: Parse the SOAP response (XML to JS object)
     const parsedSOAP = parser.parse(soapResponse);
 
-    console.log("Parsed SOAP:", parsedSOAP); // Log the parsed SOAP response
 
     // Step 3: Extract the JSON string from the parsed response
     // Check if the response exists and then try to access GetStationsResult
@@ -29,13 +29,11 @@ export const processSOAPResponse = async (soapResponse, name) => {
       parsedSOAP["SOAP-ENV:Envelope"]?.["SOAP-ENV:Body"]?.[
         `ns1:${name}Response`
       ]?.[`ns1:${name}Result`]?.["#text"];
-    console.log("Extracted GetStationsResult:", getStationsResult);
 
     // Ensure the jsonString is a valid string before trying to parse it
     if (getStationsResult) {
       // Check if it's a JSON string and parse it
       const jsonObject = JSON.parse(getStationsResult);
-      console.log("Converted JSON Object:", jsonObject);
       return jsonObject;
     } else {
       console.error("No valid 'GetStationsResult' found in the response");
@@ -48,7 +46,6 @@ export const processSOAPResponse = async (soapResponse, name) => {
 };
 
 export const Abhibus_SeatLayout = async (BusDetails, dispatch) => {
-  console.log(BusDetails, "busdatasyyyy");
   const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
@@ -77,13 +74,8 @@ export const Abhibus_SeatLayout = async (BusDetails, dispatch) => {
   try {
     const authHeader = `Basic ${btoa(`${username}:${password}`)}`;
 
-    console.log("Request Headers:", {
-      "Content-Type": "text/xml;charset=UTF-8",
-      Authorization: authHeader,
-      SOAPAction: `${abhibusurl}/GetServiceSeatingLayoutV5`,
-    });
+ 
 
-    console.log("SOAP Request Body:", soapRequest);
     const response = await axios({
       method: "post",
       url,
@@ -95,12 +87,10 @@ export const Abhibus_SeatLayout = async (BusDetails, dispatch) => {
       },
     });
 
-    console.log("SOAP Response:", response.data);
     const result = await processSOAPResponse(
       response.data,
       "GetServiceSeatingLayoutV5"
     );
-    console.log(result, "resultresultresultdddresultresultresult");
     if (result?.status === "fail") {
       toast.error(`${result?.status} - ${result?.message}`);
     }
@@ -136,13 +126,12 @@ export const Abhibus_SeatBlocked = async (
   //   return item?.seat;
   // });
   // const namesList = travelerDetails?.map(item => item.user_name).join(", ");
-  const LuxuryFind = (type) =>
-    type.toLowerCase().includes("volvo") ||
-    type.toLowerCase().includes("mercedes benz") ||
-    type.toLowerCase().includes("washroom") ||
-    type.toLowerCase().includes("bharatBenz") ||
-    type.toLowerCase().includes("luxury");
-  console.log(selectedSeats1, "selectedSeats1selectedSeats1");
+  // const LuxuryFind = (type) =>
+  //   type.toLowerCase().includes("volvo") ||
+  //   type.toLowerCase().includes("mercedes benz") ||
+  //   type.toLowerCase().includes("washroom") ||
+  //   type.toLowerCase().includes("bharatBenz") ||
+  //   type.toLowerCase().includes("luxury");
 
   const seatpriceList = selectedseatprice?.map((item) => item).join(", ");
   const seatFareList = Object.values(selectedSeats1)
@@ -158,7 +147,6 @@ export const Abhibus_SeatBlocked = async (
     .filter((gender) => gender) // Remove undefined/null values
     .join(",");
 
-  console.log(genderList, "tfvgfgghhhhhhhhhhhhh");
 
   const ageList = Object.values(travelerDetails)
     .map((item) => item.age)
@@ -181,7 +169,6 @@ export const Abhibus_SeatBlocked = async (
     .filter((tax) => tax)
     .join(",");
   const isAcType = LuxuryFind(BusDetails.Bus_Type_Name) === true ? "yes" : "no";
-  console.log(values, "dwewcwcwedwwedwe");
   const soapRequest = `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
@@ -229,13 +216,8 @@ export const Abhibus_SeatBlocked = async (
   try {
     const authHeader = `Basic ${btoa(`${username}:${password}`)}`;
 
-    console.log("Request Headers:", {
-      "Content-Type": "text/xml;charset=UTF-8",
-      Authorization: authHeader,
-      SOAPAction: `${abhibusurl}/BlockTicketsV4`,
-    });
+ 
 
-    console.log("SOAP Request Body:", soapRequest);
     const response = await axios({
       method: "post",
       url,
@@ -247,9 +229,7 @@ export const Abhibus_SeatBlocked = async (
       },
     });
 
-    console.log("SOAP Response:", response.data);
     const result = await processSOAPResponse(response.data, "BlockTicketsV4");
-    console.log(result, "resultresultresultdddresultresultresult");
     if (result?.status === "fail") {
       toast.error(`${result?.status} - ${result?.message}`);
     }
@@ -283,13 +263,7 @@ export const Abhibus_SeatConfirmed = async (BusDetails, refno) => {
   try {
     const authHeader = `Basic ${btoa(`${username}:${password}`)}`;
 
-    console.log("Request Headers:", {
-      "Content-Type": "text/xml;charset=UTF-8",
-      Authorization: authHeader,
-      SOAPAction: `${abhibusurl}/ConfirmationSeatBooking`,
-    });
-
-    console.log("SOAP Request Body:", soapRequest);
+   
     const response = await axios({
       method: "post",
       url,
@@ -301,12 +275,10 @@ export const Abhibus_SeatConfirmed = async (BusDetails, refno) => {
       },
     });
 
-    console.log("SOAP Response:", response.data);
     const result = await processSOAPResponse(
       response.data,
       "ConfirmationSeatBooking"
     );
-    console.log(result, "resultresultresultdddresultresultresult");
     if (result?.status === "fail") {
       toast.error(`${result?.status} - ${result?.message}`);
     }
@@ -341,13 +313,7 @@ export const Abhibus_GetFareInfo = async (
   try {
     const authHeader = `Basic ${btoa(`${username}:${password}`)}`;
 
-    console.log("Request Headers:", {
-      "Content-Type": "text/xml;charset=UTF-8",
-      Authorization: authHeader,
-      SOAPAction: `${abhibusurl}/GetFaresInfo`,
-    });
 
-    console.log("SOAP Request Body:", soapRequest);
     const response = await axios({
       method: "post",
       url,
@@ -359,9 +325,7 @@ export const Abhibus_GetFareInfo = async (
       },
     });
 
-    console.log("SOAP Response:", response.data);
     const result = await processSOAPResponse(response.data, "GetFaresInfo");
-    console.log(result, "resultresultresultdddresultresultresult");
     if (result?.status === "fail") {
       toast.error(`${result?.status} - ${result?.message}`);
     }

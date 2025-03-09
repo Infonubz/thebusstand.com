@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import HomeHearder from "../MainComponenet/HomeHearder";
 // import Footer from "../Home/Footer";
-import homesky from "../../../../../../Assets/Theme/Sky/BackgroundSky1.png"
+import homesky from "../../../../../../Assets/Theme/Sky/BackgroundSky1.png";
 import { useLocation, useNavigate } from "react-router";
 // import { GetFooter } from "../../Api/Home/Home";
 import { useDispatch } from "react-redux";
@@ -54,35 +54,15 @@ export default function TermsIndex() {
                             }`}
                     </label> */}
           <div
-            className={`absolute top-[0vw] left-[43.5vw] text-white text-[3.5vw] font-bold transition-transform duration-500 ease-in-out opacity-25 ${
+            className={`absolute top-[0vw] left-[38.8vw] text-white text-[3.5vw] font-bold transition-transform duration-500 ease-in-out opacity-25 ${
               //   currenttab === 1
               location.pathname === "/privacy"
                 ? "translate-x-0"
                 : // : currenttab === 2
                 location.pathname === "/terms"
-                  ? "-translate-x-0"
-                  : "translate-x-0"
-              }`}
-          >
-            {`${
-              //   currenttab === 1
-              location.pathname === "/privacy"
-                ? "Privacy Policy"
-                : // : currenttab === 2
-                location.pathname === "/terms"
-                  ? "Terms & Conditions"
-                  : "User Agreement"
-              }`}
-          </div>
-          <div
-            className={`absolute top-[1.25vw] left-[48.5vw] text-white text-[2vw] font-bold transition-transform duration-500 ease-in-out ${location.pathname === "/privacy"
-              ? // currenttab === 1
-              "translate-x-0"
-              : // : currenttab === 2
-              location.pathname === "/terms"
                 ? "-translate-x-0"
                 : "translate-x-0"
-              }`}
+            }`}
           >
             {`${
               //   currenttab === 1
@@ -90,9 +70,30 @@ export default function TermsIndex() {
                 ? "Privacy Policy"
                 : // : currenttab === 2
                 location.pathname === "/terms"
-                  ? "Terms & Conditions"
-                  : "User Agreement"
-              }`}
+                ? "Terms & Conditions"
+                : "User Agreement"
+            }`}
+          </div>
+          <div
+            className={`absolute top-[1.25vw] left-[43.5vw] text-white text-[2vw] font-bold transition-transform duration-500 ease-in-out ${
+              location.pathname === "/privacy"
+                ? // currenttab === 1
+                  "translate-x-0"
+                : // : currenttab === 2
+                location.pathname === "/terms"
+                ? "-translate-x-0"
+                : "translate-x-0"
+            }`}
+          >
+            {`${
+              //   currenttab === 1
+              location.pathname === "/privacy"
+                ? "Privacy Policy"
+                : // : currenttab === 2
+                location.pathname === "/terms"
+                ? "Terms & Conditions"
+                : "User Agreement"
+            }`}
           </div>
           <div className="cloudhome"></div>
         </div>
@@ -104,7 +105,7 @@ export default function TermsIndex() {
               location.pathname === "/privacy"
                 ? "bg-[#1F487C] text-white"
                 : "bg-white text-[#1F487C]"
-              }`}
+            }`}
             onClick={
               () => navigate("/privacy")
               // setCurrentTab(1)
@@ -120,7 +121,7 @@ export default function TermsIndex() {
               location.pathname === "/terms"
                 ? "bg-[#1F487C] text-white"
                 : "bg-white text-[#1F487C]"
-              }`}
+            }`}
             onClick={() =>
               // setCurrentTab(2)
               navigate("/terms")
@@ -136,7 +137,7 @@ export default function TermsIndex() {
               location.pathname === "/agreement"
                 ? "bg-[#1F487C] text-white"
                 : "bg-white text-[#1F487C]"
-              }`}
+            }`}
             onClick={
               () => navigate("/agreement")
               // setCurrentTab(3)
@@ -154,16 +155,15 @@ export default function TermsIndex() {
               location.pathname === "/privacy" ? (
                 <PrivacyPolicy currenttab={currenttab} />
               ) : //    currenttab === 2 ?
-                location.pathname === "/terms" ? (
-                  <TermsConditions />
-                ) : (
-                  <UserAgreement />
-                )
+              location.pathname === "/terms" ? (
+                <TermsConditions />
+              ) : (
+                <UserAgreement />
+              )
             }
           </div>
         </div>
       </div>
-
     </div>
   );
 }

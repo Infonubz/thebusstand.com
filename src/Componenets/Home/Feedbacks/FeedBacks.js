@@ -20,7 +20,7 @@ export default function FeedBacks() {
     const dispatch = useDispatch();
     const ratingdata = useSelector((state) => state.feed_back);
     const colors = useSelector((state) => state.themecolors[0]);
-    console.log(ratingdata, 'ratingdata_ratingdaat')
+     // console.log(ratingdata, 'ratingdata_ratingdaat')
     const prevSlide = () => {
         // Ensure we don’t go below zero
         setStartIndex((prev) => Math.max(prev - itemsPerPage, 0));
@@ -44,7 +44,7 @@ export default function FeedBacks() {
     useEffect(() => {
         GetFeedbacks(dispatch);
     }, [dispatch]);
-    console.log(ratingdata, "ratingdataratingdata");
+     // console.log(ratingdata, "ratingdataratingdata");
     // const [startIndex, setStartIndex] = useState(0);
 
     // useEffect(() => {

@@ -3,6 +3,7 @@ import { Abhibus_GetOperators } from "../../../../Api-Abhibus/Home/HomePage";
 import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "antd";
 import { Link } from "react-router-dom";
+import { GetTBSOperators } from "../../../../Api-TBS/Home/Home";
 
 export default function Private_Operators() {
   const Get_Operators = useSelector((state) => state.get_operators);
@@ -10,10 +11,11 @@ export default function Private_Operators() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    Abhibus_GetOperators(dispatch);
+    // Abhibus_GetOperators(dispatch);
+    GetTBSOperators(dispatch);
   }, []);
 
-  console.log(Get_Operators, "Operators");
+   // console.log(Get_Operators, "Operators");
 
   return (
     <div className="px-[6.7vw] py-[1.5vw]">
@@ -23,15 +25,15 @@ export default function Private_Operators() {
         >
           {`${Get_Operators?.length}+ Private Bus Operators`}
         </p>
-        {Get_Operators?.length > 60 && 
-         <Link to="/BusOperators">
-         <button
-           className={`text-[3vw] px-[2vw] py-[2vw] md:border-[0.1vw] md:border-[#AAAAAA] md:px-[1.5vw] md:py-[0.2vw] md:rounded-full md:text-[1vw] md:bg-white md:shadow-lg `}
-         >
-           View All
-         </button>
-       </Link>
-       }
+        {Get_Operators?.length > 60 && (
+          <Link to="/BusOperators">
+            <button
+              className={`text-[3vw] px-[2vw] py-[2vw] md:border-[0.1vw] md:border-[#AAAAAA] md:px-[1.5vw] md:py-[0.2vw] md:rounded-full md:text-[1vw] md:bg-white md:shadow-lg `}
+            >
+              View All
+            </button>
+          </Link>
+        )}
       </div>
       <div className="grid md:grid-cols-6 grid-cols-3 w-full my-[1.5vw]">
         {Get_Operators?.length > 0 &&

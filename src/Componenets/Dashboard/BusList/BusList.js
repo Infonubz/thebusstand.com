@@ -65,10 +65,11 @@ import { FaBoxTissue } from "react-icons/fa";
 import { RxExit } from "react-icons/rx";
 import { TbAirConditioning } from "react-icons/tb";
 import { FaBottleWater } from "react-icons/fa6";
+import { LuxuryFind } from "../../Common/Common-Functions/LuxuryFind";
 export default function BusList() {
   // const [dropDown, setDropDown] = useState(0)
   const [dropDown, setDropDown] = useState(false);
-  console.log(dropDown, "dropDownjjjj");
+   // console.log(dropDown, "dropDownjjjj");
 
   const SVG = SVG_List();
   const [spinner, setSpinner] = useState(sessionStorage.getItem("spinner"));
@@ -92,12 +93,12 @@ export default function BusList() {
     { id: 4, title: 'Card Title 4', description: 'Description for Card 4' },
   ];
 
-  const LuxuryFind = (type) =>
-    type.toLowerCase().includes("volvo") ||
-    type.toLowerCase().includes("mercedes benz") ||
-    type.toLowerCase().includes("washroom") ||
-    type.toLowerCase().includes("bharatBenz") ||
-    type.toLowerCase().includes("luxury");
+  // const LuxuryFind = (type) =>
+  //   type.toLowerCase().includes("volvo") ||
+  //   type.toLowerCase().includes("mercedes benz") ||
+  //   type.toLowerCase().includes("washroom") ||
+  //   type.toLowerCase().includes("bharatBenz") ||
+  //   type.toLowerCase().includes("luxury");
 
   useEffect(() => {
     if (window.location.pathname === "/") {
@@ -109,7 +110,7 @@ export default function BusList() {
 
   const toggleDropDown = (index) => {
     setDropDown(dropDown === index ? null : index);
-    console.log(dropDown, "toggle_drop_down");
+     // console.log(dropDown, "toggle_drop_down");
   };
 
   useEffect(() => {
@@ -165,7 +166,7 @@ export default function BusList() {
   const duration = "06:15"; // HH:mm (hours:minutes)
 
   const arrival = calculateArrival(departureDate, departureTime, duration);
-  console.log(arrival); // { arrivalDate: "Feb 04, 2025", arrivalTime: "04:00 AM" }
+   // console.log(arrival); // { arrivalDate: "Feb 04, 2025", arrivalTime: "04:00 AM" }
   // const checkDayType = (date) => {
   //   if (!date) return "";
   //   return isWeekend(date) ? "Weekend" : "Weekday";
@@ -181,19 +182,19 @@ export default function BusList() {
   const ticketlist = useSelector((state) => state?.get_ticket_detail);
   const [showModal, setShowModal] = useState(false);
   const tbs_discount = useSelector((state) => state?.live_per);
-  console.log(tbs_discount, "tbs_discount");
+   // console.log(tbs_discount, "tbs_discount");
   const currentpath = useParams();
   const dispatch = useDispatch();
-  console.log(currentpath, "currentpath");
+   // console.log(currentpath, "currentpath");
 
   useEffect(() => {
     if (currentpath?.trip_date) {
-      console.log(currentpath?.trip_date, "currentpathggggg");
+       // console.log(currentpath?.trip_date, "currentpathggggg");
 
       const date = new Date(currentpath?.trip_date);
       date.setUTCHours(5, 30, 53, 897);
       const jdate = date?.toISOString();
-      console.log(jdate, "jdatejdatejdate");
+       // console.log(jdate, "jdatejdatejdate");
 
       CurrentDiscount(dispatch, jdate);
     }
@@ -401,8 +402,8 @@ export default function BusList() {
                                           ? "#393939"
                                           : "#1F4B7F"
                                       }
-                                      stroke-width="2.60367"
-                                      stroke-dasharray="5.21 5.21"
+                                      strokeWidth="2.60367"
+                                      strokeDasharray="5.21 5.21"
                                     />
                                     <line
                                       x1="15.9639"
@@ -414,8 +415,8 @@ export default function BusList() {
                                           ? "#393939"
                                           : "#1F4B7F"
                                       }
-                                      stroke-width="2.60367"
-                                      stroke-dasharray="5.21 5.21"
+                                      strokeWidth="2.60367"
+                                      strokeDasharray="5.21 5.21"
                                     />
                                     <circle
                                       cx="9.07097"
@@ -428,8 +429,8 @@ export default function BusList() {
                                       }
                                     />
                                     <path
-                                      fill-rule="evenodd"
-                                      clip-rule="evenodd"
+                                      fillRule="evenodd"
+                                      clipRule="evenodd"
                                       d="M416.866 9.28204C417.571 8.61432 418.713 8.61432 419.418 9.28204L430.244 19.5409C430.949 20.2086 430.949 21.2912 430.244 
 21.9589L419.418 32.2177C418.713 32.8854 417.571 32.8854 416.866 32.2177C416.161 31.55 416.161 30.4674 416.866 29.7997L426.416 20.7499L416.866 11.7001C416.161 11.0323 416.161 
 9.94976 416.866 9.28204Z"
@@ -439,9 +440,9 @@ export default function BusList() {
                                           : "#1F4B7F"
                                       }
                                       stroke="#1F487C"
-                                      stroke-width="0.260367"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
+                                      strokeWidth="0.260367"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
                                     />
                                   </svg>
                                   <div
@@ -590,7 +591,7 @@ export default function BusList() {
                                           d="M31.9668 31.3057C31.9668 31.4571 31.8917 31.6023 31.7579 31.7094C31.6242 31.8164 31.4429 31.8766 31.2538 31.8766H12.7164C12.5273 31.8766 12.3459 31.8164 12.2122 31.7094C12.0785 31.6023 12.0034 31.4571 12.0034 31.3057C12.0034 31.1543 12.0785 31.0091 12.2122 30.902C12.3459 30.7949 12.5273 30.7348 12.7164 30.7348H31.2538C31.4429 30.7348 31.6242 30.7949 31.7579 30.902C31.8917 31.0091 31.9668 31.1543 31.9668 31.3057ZM31.9668 21.0298V25.5968C31.9668 26.0511 31.7414 26.4867 31.3403 26.8079C30.9392 27.129 30.3951 27.3095 29.8278 27.3095H13.0925C12.6949 27.3107 12.3048 27.2227 11.9664 27.0555C11.628 26.8882 11.355 26.6484 11.1781 26.3632L0.820357 9.80761C0.672595 9.56945 0.595703 9.30713 0.595703 9.0412C0.595703 8.77527 0.672595 8.51295 0.820357 8.27479L4.76312 1.99506C5.01515 1.59115 5.45619 1.28326 5.99028 1.1384C6.52437 0.993529 7.10831 1.0234 7.61503 1.22151L13.6361 3.25814L13.6771 3.27384C13.9284 3.37438 14.1525 3.51357 14.3366 3.68346C14.5207 3.85336 14.6612 4.05062 14.7501 4.264C14.839 4.47738 14.8745 4.70268 14.8546 4.92705C14.8348 5.15142 14.7599 5.37045 14.6343 5.57165L14.6236 5.58592L12.0747 9.36375C12.0266 9.44213 12.0015 9.52831 12.0015 9.61565C12.0015 9.70299 12.0266 9.78917 12.0747 9.86755L17.7393 19.0017C17.7987 19.0961 17.8896 19.1754 18.002 19.2308C18.1143 19.2862 18.2437 19.3156 18.3756 19.3157H29.8278C30.1089 19.3157 30.3872 19.36 30.6468 19.4462C30.9064 19.5323 31.1423 19.6586 31.3409 19.8178C31.5396 19.977 31.6971 20.166 31.8045 20.3739C31.9119 20.5819 31.967 20.8047 31.9668 21.0298ZM30.5408 21.0298C30.5408 20.8784 30.4657 20.7331 30.332 20.6261C30.1983 20.519 30.0169 20.4589 29.8278 20.4589H18.3792C17.9807 20.4609 17.5894 20.3733 17.25 20.206C16.9107 20.0387 16.6368 19.7985 16.4595 19.5126L10.7949 10.3785C10.6468 10.1409 10.5697 9.87904 10.5697 9.61351C10.5697 9.34798 10.6468 9.08609 10.7949 8.84853L10.8056 8.83283L13.3492 5.055C13.4294 4.92237 13.4425 4.77002 13.3857 4.62983C13.3289 4.48965 13.2066 4.37248 13.0444 4.30286L7.03574 2.26623L6.99296 2.25053C6.89463 2.2107 6.78588 2.19015 6.67568 2.19059C6.54323 2.19051 6.41336 2.21998 6.30065 2.2757C6.18794 2.33141 6.09684 2.41116 6.03757 2.506L2.0948 8.78573C2.04553 8.86485 2.01988 8.95207 2.01988 9.04049C2.01988 9.1289 2.04553 9.21611 2.0948 9.29524L12.4526 25.8509C12.5119 25.9457 12.603 26.0255 12.7157 26.0812C12.8284 26.1369 12.9582 26.1664 13.0907 26.1663H29.8278C30.0169 26.1663 30.1983 26.1061 30.332 25.9991C30.4657 25.892 30.5408 25.7468 30.5408 25.5954V21.0298Z"
                                           fill="#C62B2B"
                                           stroke="#C62B2B"
-                                          stroke-width="1.0132"
+                                          strokeWidth="1.0132"
                                         />
                                       </svg>
                                     </div>
@@ -1059,7 +1060,7 @@ export default function BusList() {
                           />
                         </div>
                       )}
-                      {console.log(item?.boarding_info, "bus_type_status")}
+                      {/* { // console.log(item?.boarding_info, "bus_type_status")} */}
 
                       {dropDown === `policy${index}` && (
                         <div className="bg-gray-200 h-auto m-[0.5vw] rounded-[0.5vw]">

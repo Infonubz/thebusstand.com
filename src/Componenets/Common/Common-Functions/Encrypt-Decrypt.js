@@ -21,7 +21,7 @@ export const decryptData = (ciphertext) => {
     });
     return CryptoJS.enc.Utf8.stringify(bytes);
   } catch (error) {
-    console.error("Decryption Error:", error.message);
+    console.error("Decryption Error:", error?.message);
     return null;
   }
 };

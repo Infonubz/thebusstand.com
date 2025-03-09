@@ -32,14 +32,20 @@ import "./CSS/Navbar-Two.css";
 import SVG_List from "../../Common/SVG/SVG";
 import { Abhibus_GetBusList } from "../../../Api-Abhibus/Home/HomePage";
 import dayjs from "dayjs";
-import { GetStations } from "../../../Api-TBS/Home/Home";
+import {
+  GetStations,
+  GetTBSAvailableService,
+} from "../../../Api-TBS/Home/Home";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
-
-
-export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) => {
+export const Navbar_Two = ({
+  loading,
+  loader,
+  onTimeChanged,
+  ...inputProps
+}) => {
   const validationSchema = Yup.object().shape({
     from: Yup.string().required("Field is Required"),
     to: Yup.string().required("Field is Required"),
@@ -67,8 +73,8 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
   const Get_des_Statiion = useSelector((state) => state.get_des_station);
   const SVG = SVG_List();
   const currentpath = useParams();
-  const state_from_to = location?.state
-  const [mobile_date, setMobile_Date] = useState(false)
+  const state_from_to = location?.state;
+  const [mobile_date, setMobile_Date] = useState(false);
   const [busdatas, setBusDatas] = useState({
     from: currentpath?.source_name,
     to: currentpath?.destination_name,
@@ -260,24 +266,32 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
 
   useEffect(() => {
     if (mobile_date === true) {
-      handleSearch()
+      handleSearch();
 
-      setMobile_Date(false)
+      setMobile_Date(false);
     }
-  }, [mobile_date])
+  }, [mobile_date]);
 
   const handleSearch = async () => {
     try {
-      const data = await Abhibus_GetBusList(
+      // const data = await Abhibus_GetBusList(
+      //   dispatch,
+      //   busdatas,
+      //   busdatas?.date
+      //   // luxury
+      // );
+      const data = await GetTBSAvailableService(
         dispatch,
         busdatas,
         busdatas?.date
-        // luxury
       );
+
       // if (data?.status === "success") {
       navigation(
-        `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${busdatas.to_sourceID
-        }/${dayjs(busdatas?.date).format("YYYY-MM-DD")}`, { state: busdatas }
+        `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${
+          busdatas.to_sourceID
+        }/${dayjs(busdatas?.date).format("YYYY-MM-DD")}`,
+        { state: busdatas }
       );
       // }
     } catch {
@@ -896,7 +910,12 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
       date: currentpath?.trip_date,
     };
 
-    const data = await Abhibus_GetBusList(dispatch, busdatas, busdatas?.date);
+    // const data = await Abhibus_GetBusList(dispatch, busdatas, busdatas?.date);
+    const data = await GetTBSAvailableService(
+      dispatch,
+      busdatas,
+      busdatas?.date
+    );
   };
 
   useEffect(() => {
@@ -908,7 +927,7 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
         <div className="md:block hidden">
           <Navbar_One />
         </div>{" "}
-        {loading && loader === 'true' ? (
+        {loading && loader === "true" ? (
           <>
             <div className="h-[12vw] md:h-[5vw] w-full bg-[#1F487C] md:-z-10">
               <div className="navbar-container">
@@ -1101,8 +1120,9 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
                           </div>
                         </div>
                         <div className="mt-[-2vw]">
-                          <label className="text-gray-300 text-[3vw]">{`Showing ${totalbuses?.length > 0 ? totalbuses?.length : "0"
-                            } Buses on This Route`}</label>
+                          <label className="text-gray-300 text-[3vw]">{`Showing ${
+                            totalbuses?.length > 0 ? totalbuses?.length : "0"
+                          } Buses on This Route`}</label>
                         </div>
                       </div>
                       <div>
@@ -1127,7 +1147,12 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
                           onClose={onClosee}
                           open={openDatee}
                           height="50%" // Adjust height as needed
-                          bodyStyle={{ padding: 0 }} // Removes extra padding
+                          // bodyStyle={{ padding: 0 }} // Removes extra padding
+                          styles={{
+                            body: {
+                              padding: 0,
+                            },
+                          }}
                           className="flex justify-center md:hidden"
                         >
                           <div className="flex items-center justify-center">
@@ -1136,12 +1161,15 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
                                 setSelectedDatee(date);
                                 setFromDate(date);
                                 const new_date = new Date(date);
-                                const formatted_Date = format(new_date, 'yyyy-MM-dd');  // "2025-03-05"
+                                const formatted_Date = format(
+                                  new_date,
+                                  "yyyy-MM-dd"
+                                ); // "2025-03-05"
                                 setBusDatas({
                                   ...busdatas,
                                   date: formatted_Date,
                                 });
-                                setMobile_Date(true)
+                                setMobile_Date(true);
                                 onClosee(); // Close drawer on date select
                               }}
                               value={busdatas?.date}
@@ -1157,9 +1185,9 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
                     src={newbus1}
                     className="absolute md:block hidden top-[1.7vw] h-[8.1vw] w-[21.75vw]   left-[-3vw]"
                     alt=""
-                  // style={{
-                  //   transform: "rotateY(180deg)",
-                  // }}
+                    // style={{
+                    //   transform: "rotateY(180deg)",
+                    // }}
                   />
                   <div className="md:block hidden">
                     <div className="  pl-[1vw] md:pl-[19.5vw] md:pt-[0.2vw] grid grid-cols-12 w-full md:h-[4.5vw] h-[12vw]">
@@ -1606,7 +1634,13 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
                               />
                             </div>
                           ) : (
-                            <div className="relative flex justify-center">
+                            <div
+                              className="relative flex justify-center"
+                              onClick={() => {
+                                setModifyBtn(true);
+                                setIsInputFromFocused(true);
+                              }}
+                            >
                               <svg
                                 width="25vw"
                                 height="3vw"
@@ -1631,14 +1665,15 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
                           <div className=" relative flex justify-center cursor-pointer">
                             <div
                               onClick={() => {
-                                if (modifyBtn === true) {
-                                  handleflip();
-                                }
+                                // if (modifyBtn === true) {
+                                handleflip();
+                                // }
                               }}
-                              className={`${modifyBtn === true
-                                ? "cursor-pointer"
-                                : "cursor-not-allowed"
-                                }`}
+                              // className={`${modifyBtn === true
+                              //   ? "cursor-pointer"
+                              //   : "cursor-not-allowed"
+                              //   }`}
+                              className="cursor-pointer"
                             >
                               {/* <img
                       src={split}
@@ -1655,7 +1690,7 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
                                 <path
                                   d="M41.9353 0.308594H9.94123C4.89269 0.308594 0.800049 4.20635 0.800049 9.01448V37.3086C0.800049 42.1167 4.89269 46.0145 9.94123 46.0145H41.9353C46.9839 46.0145 51.0765 42.1167 51.0765 37.3086V9.01448C51.0765 4.20635 46.9839 0.308594 41.9353 0.308594Z"
                                   fill="white"
-                                  fill-opacity="0.2"
+                                  fillOpacity="0.2"
                                 />
                               </svg>
                               <FaArrowRightArrowLeft
@@ -1808,7 +1843,13 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
                               />
                             </div>
                           ) : (
-                            <div className="relative custnav flex justify-center">
+                            <div
+                              className="relative custnav flex justify-center"
+                              onClick={() => {
+                                setModifyBtn(true);
+                                setIsInputToFocused(true);
+                              }}
+                            >
                               <svg
                                 width="25vw"
                                 height="3vw"
@@ -1845,7 +1886,10 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
                       <div className="md:col-span-2"></div>
                       <div className="md:block hidden col-span-4 content-center">
                         <div className="grid grid-cols-4 gap-[1vw]  px-[0.5vw] ">
-                          <div className="col-span-2">
+                          <div
+                            className="col-span-2"
+                            onClick={() => setModifyBtn(true)}
+                          >
                             {modifyBtn === true ? (
                               <div className="bg-white w-full h-[2.5vw] rounded-[0.5vw] text-[1.1vw]">
                                 <div
@@ -1880,22 +1924,24 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
                               </div>
                             )}
                           </div>
-                          {modifyBtn === true ? (
-                            <div className="col-span-2">
-                              <button
-                                type="submit"
-                                className="bg-white w-full h-[2.5vw] rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer"
-                                onClick={() => {
-                                  //  handleSearch();
-                                  //  setModifyBtn(false);
-                                  setIsInputFromFocused(false);
-                                  setIsInputToFocused(false);
-                                }}
-                              >
-                                Search
-                              </button>
-                            </div>
-                          ) : (
+                          {/* {modifyBtn === true ? ( */}
+                          <div className="col-span-2">
+                            <button
+                              type="submit"
+                              className={`bg-white w-full h-[2.5vw] ${
+                                modifyBtn === false ? "mt-[.3vw]" : ""
+                              } rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer`}
+                              onClick={() => {
+                                //  handleSearch();
+                                //  setModifyBtn(false);
+                                setIsInputFromFocused(false);
+                                setIsInputToFocused(false);
+                              }}
+                            >
+                              Search
+                            </button>
+                          </div>
+                          {/* ) : (
                             <div className="col-span-2">
                               <div
                                 className="bg-white w-full h-[2.5vw] mt-[.3vw] rounded-[0.5vw] text-[1.1vw] flex items-center justify-center cursor-pointer"
@@ -1907,7 +1953,7 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
                                 Modify
                               </div>
                             </div>
-                          )}
+                          )} */}
                         </div>
                       </div>
                     </div>
@@ -1942,7 +1988,7 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
         closable={true}
         onClose={onAccClose}
         open={accDrawer}
-        key={"right"}
+        // key={"right"}
         width={"75%"}
         className="custom-drawer"
       >
@@ -1968,7 +2014,7 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
         closable={true}
         onClose={closeLogMobile}
         open={logMobileIsOpen}
-        key={"right"}
+        // key={"right"}
         width={"50%"}
         className="custom-drawer"
       >
@@ -2036,7 +2082,7 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
         closable={false}
         onClose={onClose}
         open={modalshow}
-        key={"right"}
+        // key={"right"}
         width={"100%"}
         className="custom-drawer"
       >
@@ -2083,7 +2129,7 @@ export const Navbar_Two = ({ loading, loader, onTimeChanged, ...inputProps }) =>
                     from: e.target.value,
                   });
                 }}
-              // value={inputsearch.from}
+                // value={inputsearch.from}
               />
             </div>
             <div className="h-[100%]  w-full">

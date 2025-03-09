@@ -40,7 +40,7 @@ export const PostFeedBack = async (rating, nameValue, feedback, occValue) => {
     });
     toast.success(response.data);
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   }
 };
 
@@ -50,7 +50,7 @@ export const GetFeedbackById = async () => {
   // const id = sessionStorage.getItem("passenger_id");
   try {
     const response = await axios.get(`${apiUrl}/passenger-details/${decryppassenger_id}`);
-    console.log(response.data, "ddddjjjjjjdjdjhfh");
+    // console.log(response.data, "ddddjjjjjjdjdjhfh");
     return response.data;
   } catch (err) {
     handleError(err);
@@ -65,7 +65,7 @@ export const GetFeedbacks = async (dispatch, id, setSpinner) => {
       ratingTo: 5,
     });
     dispatch({ type: FEED_BACK, payload: response.data });
-    console.log(response, "GET_FEED_BACK");
+    // console.log(response, "GET_FEED_BACK");
     return response.data;
   } catch (error) {
     handleError(error);
@@ -78,7 +78,7 @@ export const GetFeedbacks = async (dispatch, id, setSpinner) => {
 export const GetAverageRating = async () => {
   try {
     const response = await axios.get(`${apiUrl}/feedbackCount`);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (err) {
     handleError(err);
@@ -86,8 +86,8 @@ export const GetAverageRating = async () => {
 };
 
 export const SendFeedBacks = async (dispatch, values) => {
-  console.log(values, "SEND__FEED__BACK");
-  // console.log(gettingDetails, 'getting_details')
+  // console.log(values, "SEND__FEED__BACK");
+  // // console.log(gettingDetails, 'getting_details')
   const payload = {
     description: values.description,
     rating: values.rating,
@@ -109,7 +109,7 @@ export const SendFeedBacks = async (dispatch, values) => {
       },
     });
     dispatch({ type: FEED_BACK, payload: response.data });
-    console.log(response.data, "FEEDBACK_RESPONDED");
+    // console.log(response.data, "FEEDBACK_RESPONDED");
     return response.data;
   } catch (error) {
     handleError(error);

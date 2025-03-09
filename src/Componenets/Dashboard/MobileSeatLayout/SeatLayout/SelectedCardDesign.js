@@ -7,6 +7,7 @@ import { MdOutlineKeyboardDoubleArrowRight, MdStarRate } from "react-icons/md";
 import SINGLECARD_BG from "../../../../Assets/BusList/SINGLECARD_BG.png"
 import { IoCloseCircle } from "react-icons/io5";
 import { useNavigate } from "react-router";
+import { LuxuryFind } from "../../../Common/Common-Functions/LuxuryFind";
 
 export default function SelectedCardDesign({ busData }) {
 
@@ -21,12 +22,12 @@ export default function SelectedCardDesign({ busData }) {
         return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
       };
     
-    const LuxuryFind = (type) =>
-        type?.toLowerCase()?.includes("volvo") ||
-        type?.toLowerCase()?.includes("mercedes benz") ||
-        type?.toLowerCase()?.includes("washroom") ||
-        type?.toLowerCase()?.includes("bharatBenz") ||
-        type?.toLowerCase()?.includes("luxury");
+    // const LuxuryFind = (type) =>
+    //     type?.toLowerCase()?.includes("volvo") ||
+    //     type?.toLowerCase()?.includes("mercedes benz") ||
+    //     type?.toLowerCase()?.includes("washroom") ||
+    //     type?.toLowerCase()?.includes("bharatBenz") ||
+    //     type?.toLowerCase()?.includes("luxury");
     return (
         <div className="relative">
             {/* <div

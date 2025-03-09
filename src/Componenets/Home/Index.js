@@ -25,14 +25,15 @@ import { useParams } from "react-router";
 import About from "./TBS/About/About";
 import { decryptData } from "../Common/Common-Functions/Encrypt-Decrypt";
 import { Abhibus_GetStations } from "../../Api-Abhibus/Home/HomePage";
+import { GetAds } from "../../Api-TBS/Advertisement/Advertisement";
 export default function HomeIndex() {
   const currentpath = useParams();
   const dispatch = useDispatch();
-  console.log(currentpath, "currentpath");
+   // console.log(currentpath, "currentpath");
 
   useEffect(() => {
     if (currentpath?.trip_date) {
-      console.log(currentpath?.trip_date, "currentpathggggg");
+       // console.log(currentpath?.trip_date, "currentpathggggg");
 
       const date = new Date(currentpath?.trip_date);
       date.setUTCHours(5, 30, 53, 897);
@@ -44,13 +45,14 @@ export default function HomeIndex() {
 
   if (encryptedUserId) {
     const decryptedUserId = decryptData(encryptedUserId);
-    console.log("Decrypted User ID:", decryptedUserId);
+     // console.log("Decrypted User ID:", decryptedUserId);
   } else {
-    console.log("No user ID found in session storage.");
+     // console.log("No user ID found in session storage.");
   }
   useEffect(() => {
-    Abhibus_GetStations();
+    // Abhibus_GetStations();
     // getBusList()
+    GetAds(dispatch);
   }, []);
   return (
     <div
@@ -59,10 +61,10 @@ export default function HomeIndex() {
       <Navbar_One />
       <LocationPermission />
       <div className="Background  relative md:block hidden">
-        <div className="bg-[#1F487C] h-[32vw] w-full  relative md:block hidden">
-          {/* <TBS_Theme /> */}
-          <SearchBus />
-        </div>
+        {/* <div className="bg-[#1F487C] h-[32vw] w-full  relative md:block hidden"> */}
+        <TBS_Theme />
+        <SearchBus />
+        {/* </div> */}
       </div>
       <div className=" block md:hidden">
         <SearchBusMobile />

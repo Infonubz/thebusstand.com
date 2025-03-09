@@ -17,7 +17,7 @@ const RangeSlide = ({
     setValue(value);
     const [min, max] = value;
     setPriceRange({ min, max });
-    console.log(value, "Value");
+     // console.log(value, "Value");
     // setBusFilterType("pricefilter");
   };
 
@@ -42,7 +42,7 @@ const RangeSlide = ({
 
     let numericValue = Number(sanitizedValue);
 
-    if (numericValue >= 0 && numericValue <= 3000) {
+    if (numericValue >= 0 && numericValue <= 10000) {
       if (index === 0) {
         if (numericValue <= updatedValue[1]) {
           updatedValue[index] = numericValue;
@@ -73,8 +73,8 @@ const RangeSlide = ({
   };
 
   const priceclear = () => {
-    setValue([0, 3000]);
-    setPriceRange({ min: 0, max: 3000 });
+    setValue([0, 10000]);
+    setPriceRange({ min: 0, max: 10000 });
   };
 
   const formatValue = (value) => `₹${value}`;
@@ -216,7 +216,7 @@ const RangeSlide = ({
                   <Slider
                     range
                     min={0}
-                    max={3000}
+                    max={10000}
                     value={value}
                     className="ml-[4vw] mr-[4vw] md:ml-[1vw] md:mr-[1vw]"
                     onChange={onSliderChange}
@@ -239,7 +239,7 @@ const RangeSlide = ({
                       </p>
                       <InputNumber
                         min={0}
-                        max={3000}
+                        max={10000}
                         autoComplete="off"
                         value={value[0]}
                         prefix={
@@ -275,7 +275,7 @@ const RangeSlide = ({
                       </p>
                       <InputNumber
                         min={0}
-                        max={3000}
+                        max={10000}
                         prefix={
                           <MdOutlineCurrencyRupee className="text-[4vw] text-black md:text-[1.25vw]" />
                         }

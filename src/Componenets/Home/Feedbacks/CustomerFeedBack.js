@@ -19,7 +19,7 @@ export default function CustomerFeedBack() {
     const colors = useSelector((state) => state?.themecolors[0]);
     const ratingdata = useSelector((state) => state?.feed_back);
     const dispatch = useDispatch();
-    console.log(ratingdata, 'ratingData')
+     // console.log(ratingdata, 'ratingData')
     //  const handleChange = (value) =>{
     //   setSpinner(true)
     //       GetFeedbacks(dispatch,value,setSpinner)

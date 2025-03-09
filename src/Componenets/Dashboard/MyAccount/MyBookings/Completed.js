@@ -12,7 +12,10 @@ import { Spin } from "antd";
 import { HiTicket } from "react-icons/hi2";
 import { capitalizeFirstLetter } from "../../../Common/Common-Functions/Captalization";
 import ViewFullTicket from "../ViewTicket/ViewFullTicket";
-import { GetBookingStatusDetails } from "../../../../Api-TBS/MyAccounts/MyBookings";
+import {
+  GetBookingStatusDetails,
+  GetViewTicketID,
+} from "../../../../Api-TBS/MyAccounts/MyBookings";
 import { decryptData } from "../../../Common/Common-Functions/Encrypt-Decrypt";
 import { GET_TICKET_DETAILS } from "../../../../Store/Type";
 import { ViewTicketById } from "../../../../Api-Abhibus/MyAccount/ViewTicket";
@@ -42,7 +45,7 @@ export default function Completed() {
   const [ticketDetails, setTicketDetails] = useState([]);
   const [spinning1, setSpinning1] = useState(false);
   const [spinning, setSpinning] = useState(false);
-  const navigation = useNavigate()
+  const navigation = useNavigate();
   // const completedDetails = [
   //   {
   //     depature: "Chennai",
@@ -76,7 +79,7 @@ export default function Completed() {
   // ];
 
   const completedDetails = useSelector((state) => state.booking_details);
-  console.log(completedDetails, "ithuulla");
+   // console.log(completedDetails, "ithuulla");
 
   const dispatch = useDispatch();
 
@@ -107,9 +110,9 @@ export default function Completed() {
       if (passengerCount > 3) {
         //setPassCount(true);
       }
-      console.log(
-        `Booking ID: ${booking.Booking_Id}, Passenger Count: ${passengerCount}`
-      );
+      //  // console.log(
+      //   `Booking ID: ${booking.Booking_Id}, Passenger Count: ${passengerCount}`
+      // );
     });
   }, [completedDetails]);
   const updateStartIndex = (item) => {
@@ -130,19 +133,20 @@ export default function Completed() {
   };
   const handleviewticket = async (ticketno) => {
     setViewModalIsOpen(true);
-    console.log("yyyyyyyyyyyyy");
+     // console.log("yyyyyyyyyyyyy");
     Get_TBS_Booking_details(ticketno, dispatch);
 
     try {
-      console.log("tyucusdcsd");
+       // console.log("tyucusdcsd");
 
-      const ticketdetails = await ViewTicketById(ticketno, setSpinning);
+      // const ticketdetails = await ViewTicketById(ticketno, setSpinning);
+      const ticketdetails = await GetViewTicketID(ticketno, setSpinning);
       dispatch({
         type: GET_TICKET_DETAILS,
         payload: ticketdetails,
       });
     } catch (err) {
-      console.log(err);
+       // console.log(err);
     }
   };
   const ticketlist = useSelector((state) => state?.get_ticket_detail);
@@ -150,15 +154,16 @@ export default function Completed() {
   const handleNavigate = async (ticketno) => {
     Get_TBS_Booking_details(ticketno, dispatch);
     try {
-      console.log("tyucusdcsd");
+       // console.log("tyucusdcsd");
 
-      const ticketdetails = await ViewTicketById(ticketno, setSpinning);
+      // const ticketdetails = await ViewTicketById(ticketno, setSpinning);
+      const ticketdetails = await GetViewTicketID(ticketno, setSpinning);
       dispatch({
         type: GET_TICKET_DETAILS,
         payload: ticketdetails,
       });
     } catch (err) {
-      console.log(err);
+       // console.log(err);
     }
 
     navigation(`/bookedTicket`, {
@@ -167,7 +172,7 @@ export default function Completed() {
         // droppingDate: dropDate?.props?.children,
       },
     });
-  }
+  };
 
   return (
     <>
@@ -221,7 +226,7 @@ export default function Completed() {
               <div
                 className={` flex items-center pl-[1vw] md:text-[1vw] text-[4vw] md:gap-x-[0.5vw] gap-x-[1.5vw]`}
               >
-                <span>Showing{" "}</span>
+                <span>Showing </span>
                 <div className="bg-[#1F487C] rounded-full flex items-center justify-center md:w-[1.75vw] md:h-[1.75vw] w-[5vw] h-[5vw]">
                   <span
                     className={`rounded-full font-extrabold md:text-[0.9vw] text-[4vw] text-white `}
@@ -439,7 +444,7 @@ export default function Completed() {
                         <div className="block  md:hidden">
                           <div
                             onClick={() => {
-                              handleNavigate(item?.ticket_no)
+                              handleNavigate(item?.ticket_no);
                             }}
                             className={` text-[3.5vw] font-semibold text-[#1F487C] flex items-center justify-center w-full h-full`}
                           >
@@ -465,15 +470,16 @@ export default function Completed() {
                   </div> */}
                       <div className={`md:block hidden w-full col-span-2  `}>
                         <div className={`flex justify-center`}>
-                          {console.log(
+                          {/* { // console.log(
                             item?.passenger_details?.length,
                             "lengthhhhhhhhhhhhhhhhhhhhh"
-                          )}
+                          )} */}
                           <div
-                            className={`w-full ${item?.passenger_details?.length > 3
-                              ? "grid grid-cols-2 gap-x-[1.5vw] gap-y-[.5vw]"
-                              : "flex flex-col gap-y-[0.5vw]"
-                              }`}
+                            className={`w-full ${
+                              item?.passenger_details?.length > 3
+                                ? "grid grid-cols-2 gap-x-[1.5vw] gap-y-[.5vw]"
+                                : "flex flex-col gap-y-[0.5vw]"
+                            }`}
                           >
                             {item?.passenger_details?.map((list) =>
                               list?.Passenger_Name?.length > 10 ? (
@@ -505,9 +511,9 @@ export default function Completed() {
                                     >
                                       {list?.Passenger_Name?.length > 10
                                         ? `${list.Passenger_Name.slice(
-                                          0,
-                                          10
-                                        )}...`
+                                            0,
+                                            10
+                                          )}...`
                                         : list.Passenger_Name}
                                       {/* {(list.user_name)} */}
                                     </span>

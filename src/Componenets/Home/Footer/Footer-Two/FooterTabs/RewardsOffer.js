@@ -25,7 +25,7 @@ export default function Rewardsandoffers() {
   // const [getValues, setGetValues] = useState("General Public");
   const [spinning, setSpinning] = useState(false);
   const [redeemOffers, setRedeemOffers] = useState();
-  console.log(redeemOffers, "redeemOffers_redeemOffers");
+   // console.log(redeemOffers, "redeemOffers_redeemOffers");
   const apicrmimage = process.env.REACT_APP_CRM_API_URL_IMAGE;
   // const Reward = [
   //   {
@@ -77,7 +77,7 @@ export default function Rewardsandoffers() {
         //     ? "CorporateTravelers"
         //     : "GeneralPublic"
         // );
-        console.log(response, "lszfmjdsfksdhgj");
+         // console.log(response, "lszfmjdsfksdhgj");
         GetOffersOccupation(
           dispatch,
           response.occupation_id,

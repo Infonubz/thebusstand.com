@@ -34,9 +34,9 @@ const ShareButtons = ({ url, title, imageUrl }) => {
     SetButtonName(true);
   };
   const location = useLocation();
-  console.log(location, "location1");
+  // console.log(location, "location1");
   // const params = useParams();
-  // console.log(params,"paramss")
+  // // console.log(params,"paramss")
 
   return (
     <>

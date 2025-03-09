@@ -15,10 +15,15 @@ import {
   GET_STATIONS,
   GET_DES_STATION,
   CURRENT_PERCENTAGE,
+  GET_OPERATORS,
+  BUSLIST_LOADER,
+  GET_BUS_LIST,
+  GET_BUS_FILTERS,
 } from "../../Store/Type";
 import { useParams } from "react-router";
 import { useDispatch } from "react-redux";
 import { decryptData } from "../../Componenets/Common/Common-Functions/Encrypt-Decrypt";
+import dayjs from "dayjs";
 let lastToastTime = 0;
 const TOAST_DELAY = 3000;
 const api = axios.create({
@@ -44,7 +49,6 @@ export const GetPromotion = async (dispatch, id) => {
   try {
     const response = await axios.get(`${apicrm}/getLivePromotions`);
     dispatch({ type: PROMOTION_LIST, payload: response.data });
-    console.log(response.data, "footerresponse");
     return response.data;
   } catch (error) {
     handleError(error);
@@ -57,14 +61,12 @@ export const GetDiscountOffers = async (dispatch) => {
   try {
     const response = await axios.get(`${apicrm}/livediscountandpromotion/8`);
     dispatch({ type: DISCOUNT_OFFER_LIST, payload: response.data });
-    console.log(response.data, "footerresponse");
     return response.data;
   } catch (error) {
     handleError(error);
     // return null;
   }
 };
- 
 
 export const GetTopBusRoutes = async (dispatch, id) => {
   try {
@@ -73,7 +75,7 @@ export const GetTopBusRoutes = async (dispatch, id) => {
       type: TOP_ROUTE_LIST,
       payload: response?.data?.data,
     });
-    console.log(response.data, "footerresponse");
+    // console.log(response.data, "footerresponse");
     return response.data;
   } catch (error) {
     handleError(error);
@@ -85,7 +87,7 @@ export const GetPdp = async (dispatch, id) => {
   try {
     const response = await axios.get(`${apiUrl}/popular-domestic-presence`);
     dispatch({ type: PDP, payload: response.data });
-    console.log(response, "pdp_pdp_pdp");
+    // console.log(response, "pdp_pdp_pdp");
     return response.data;
   } catch (error) {
     handleError(error);
@@ -99,7 +101,7 @@ export const GetFAQById = async (dispatch, id) => {
   try {
     const response = await axios.get(`${apicrm}/faqs/${id}`);
     dispatch({ type: FAQ_LIST, payload: response.data });
-    console.log(response.data, "Get_Footer_Tabs");
+    // console.log(response.data, "Get_Footer_Tabs");
     return response.data;
   } catch (error) {
     handleError(error);
@@ -131,7 +133,7 @@ export const GetFAQS = async (dispatch, tabName, setSpinning) => {
     }
     const response = await axios.get(`${apicrm}/faqs/${id}`);
     dispatch({ type: FAQS, payload: response.data });
-    console.log(response, "faqsresponse");
+    // console.log(response, "faqsresponse");
     setSpinning(false);
     return response.data;
   } catch (error) {
@@ -143,7 +145,7 @@ export const GetFAQS = async (dispatch, tabName, setSpinning) => {
 export const GetAverageRating = async () => {
   try {
     const response = await axios.get(`${apiUrl}/feedbackCount`);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (err) {
     handleError(err);
@@ -158,7 +160,7 @@ export const GetFeedbacks = async (dispatch, id, setSpinner) => {
       ratingTo: 5,
     });
     dispatch({ type: FEED_BACK, payload: response.data });
-    console.log(response, "GET_FEED_BACK");
+    // console.log(response, "GET_FEED_BACK");
     return response.data;
   } catch (error) {
     handleError(error);
@@ -181,7 +183,7 @@ export const sendAppLink = async (dispatch, values) => {
 
   const url = `${apiUrl}/share-link`;
   const method = "post";
-  console.log(payload, "payload");
+  // console.log(payload, "payload");
   try {
     const response = await api({
       method,
@@ -192,7 +194,7 @@ export const sendAppLink = async (dispatch, values) => {
       },
     });
     dispatch({ type: SEND_APP_LINK, payload: response.data });
-    console.log("App Link", response);
+    // console.log("App Link", response);
     return response.data;
   } catch (error) {
     handleError(error);
@@ -204,7 +206,7 @@ export const GetFooterTabs = async (dispatch, id) => {
   try {
     const response = await axios.get(`${apicrm}/tbsInfo`);
     dispatch({ type: TBS_INFO, payload: response.data });
-    console.log(response.data, "Get_Footer_Tabs");
+    // console.log(response.data, "Get_Footer_Tabs");
     return response.data;
   } catch (error) {
     handleError(error);
@@ -216,7 +218,7 @@ export const GetFooter = async (dispatch, id) => {
   try {
     const response = await axios.get(`${apiUrl}/footer`);
     dispatch({ type: FOOTER, payload: response.data });
-    console.log(response.data, "footerresponse");
+    // console.log(response.data, "footerresponse");
     return response.data;
   } catch (error) {
     handleError(error);
@@ -229,7 +231,7 @@ export const GetOffersOccupation = async (dispatch, id) => {
   try {
     const response = await axios.get(`${apicrm}/offers-deals-occupation/0`);
     dispatch({ type: OFFERS_OCCUPATION, payload: response.data });
-    console.log(response, "Offers_occupationss");
+    // console.log(response, "Offers_occupationss");
     return response.data;
   } catch (error) {
     handleError(error);
@@ -242,7 +244,7 @@ export const GetFeedbackById = async () => {
   const id = passenger_id && decryptData(passenger_id);
   try {
     const response = await axios.get(`${apiUrl}/passenger-details/${id}`);
-    console.log(response.data, "ddddjjjjjjdjdjhfh");
+    // console.log(response.data, "ddddjjjjjjdjdjhfh");
     return response.data;
   } catch (err) {
     handleError(err);
@@ -263,12 +265,55 @@ export const GetStations = async (dispatch, val, module) => {
       dispatch({ type: GET_STATIONS, payload: response.data });
       dispatch({ type: GET_DES_STATION, payload: response.data });
     }
-    console.log(response.data, "station response");
+    // console.log(response.data, "station response");
   } catch (err) {
     handleError(err);
   }
 };
+export const GetTBSOperators = async (dispatch, val, module) => {
+  try {
+    const response = await axios.get(`${apiUrl}/getoperators`);
+    // console.log(response?.data?.operatorsInfo, "responseresponse");
 
+    dispatch({ type: GET_OPERATORS, payload: response?.data?.operatorsInfo });
+    // console.log(response.data, "station response");
+  } catch (err) {
+    handleError(err);
+  }
+};
+export const GetTBSAvailableService = async (
+  dispatch,
+  busdatas,
+  getselecteddate
+) => {
+  const payload = {
+    from_sourceID: busdatas.from_sourceID,
+    to_sourceID: busdatas.to_sourceID,
+    getselecteddate: dayjs(getselecteddate).format("YYYY-MM-DD"),
+  };
+
+  const url = `${apiUrl}/getavaliableservice`;
+  const method = "post";
+  // console.log(payload, "payload");
+  try {
+    const response = await api({
+      method,
+      url,
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    dispatch({ type: BUSLIST_LOADER, payload: false });
+    dispatch({ type: GET_BUS_LIST, payload: response?.data?.services });
+    dispatch({ type: GET_BUS_FILTERS, payload: response?.data?.services });
+    sessionStorage.setItem("busListLoader", false);
+    // console.log("App Link", response);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
 const handleError = (error) => {
   console.error("Error details:", error);
   let errorMessage = "An error occurred";

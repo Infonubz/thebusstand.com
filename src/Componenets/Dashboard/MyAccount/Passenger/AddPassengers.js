@@ -266,7 +266,7 @@
 // }
 
 import React, { useEffect, useState } from "react";
-import { Modal } from "antd";
+import { ConfigProvider, Modal, Select } from "antd";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
@@ -324,7 +324,7 @@ const AddPassengers = ({
       // toast.success(data?.message);
       GetPassengerData(dispatch, setSpinning);
       prevStep();
-      console.log(data);
+       // console.log(data);
     } catch (error) {
       console.error("Error uploading data", error);
     }
@@ -333,7 +333,7 @@ const AddPassengers = ({
     try {
       const data = await GetPassengById(updateData);
       setPassengData(data);
-      console.log(data, "datadatanameeeeee");
+       // console.log(data, "datadatanameeeeee");
     } catch (error) {
       console.error("Error fetching additional user data", error);
     }
@@ -362,194 +362,269 @@ const AddPassengers = ({
       fetchGetPassenger();
     }
   }, [updateData]);
+  const indianStates = [
+    { values: "Andhra Pradesh", label: "Andhra Pradesh" },
+    { values: "Arunachal Pradesh", label: "Arunachal Pradesh" },
+    { values: "Assam", label: "Assam" },
+    { values: "Bihar", label: "Bihar" },
+    { values: "Chhattisgarh", label: "Chhattisgarh" },
+    { values: "Goa", label: "Goa" },
+    { values: "Gujarat", label: "Gujarat" },
+    { values: "Haryana", label: "Haryana" },
+    { values: "Himachal Pradesh", label: "Himachal Pradesh" },
+    { values: "Jharkhand", label: "Jharkhand" },
+    { values: "Karnataka", label: "Karnataka" },
+    { values: "Kerala", label: "Kerala" },
+    { values: "Madhya Pradesh", label: "Madhya Pradesh" },
+    { values: "Maharashtra", label: "Maharashtra" },
+    { values: "Manipur", label: "Manipur" },
+    { values: "Meghalaya", label: "Meghalaya" },
+    { values: "Mizoram", label: "Mizoram" },
+    { values: "Nagaland", label: "Nagaland" },
+    { values: "Odisha", label: "Odisha" },
+    { values: "Punjab", label: "Punjab" },
+    { values: "Rajasthan", label: "Rajasthan" },
+    { values: "Sikkim", label: "Sikkim" },
+    { values: "Tamil Nadu", label: "Tamil Nadu" },
+    { values: "Telangana", label: "Telangana" },
+    { values: "Tripura", label: "Tripura" },
+    { values: "Uttar Pradesh", label: "Uttar Pradesh" },
+    { values: "Uttarakhand", label: "Uttarakhand" },
+    { values: "West Bengal", label: "West Bengal" },
+    {
+      values: "Andaman and Nicobar Islands",
+      label: "Andaman and Nicobar Islands",
+    },
+    { values: "Chandigarh", label: "Chandigarh" },
+    {
+      values: "Dadra and Nagar Haveli and Daman and Diu",
+      label: "Dadra and Nagar Haveli and Daman and Diu",
+    },
+    { values: "Lakshadweep", label: "Lakshadweep" },
+    { values: "Delhi", label: "Delhi" },
+    { values: "Puducherry", label: "Puducherry" },
+    { values: "Ladakh", label: "Ladakh" },
+    { values: "Jammu and Kashmir", label: "Jammu and Kashmir" },
+  ];
+
+  const stateOptions = indianStates?.map((value, ind) => ({
+    value: value.values,
+    label: (
+      <div
+        className="text-[1vw] font-normal px-[0.2vw] pb-[0.1vw] text-[#1F487C]"
+        title={value.label} // This will show full text on hover
+        style={{
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          maxWidth: "28ch", // Ensure truncation if text is too long
+        }}
+      >
+        {value.label?.length > 28
+          ? `${value.label.substring(0, 28)}...`
+          : value.label}
+      </div>
+    ),
+    id: ind,
+  }));
+  const defaultoption = {
+    value: "",
+    label: (
+      <div className="text-[1vw] px-[0.2vw] pb-[0.1vw] text-gray-400">
+        Select State
+      </div>
+    ),
+    disabled: true,
+  };
+
+  const optionss = [defaultoption, ...stateOptions];
 
   return (
     <>
-   
-        <Formik
-          initialValues={{
-            name: passengData?.user_name || "",
-            date_of_birth: passengData?.date_of_birth || "",
-            age: passengData?.age || "",
-            state: passengData?.state || "",
-            email: passengData?.email_id || "",
-            phone: passengData?.mobile_number || "",
-            gender: passengData?.gender || "",
-          }}
-          validationSchema={validationSchema}
-          onSubmit={(values) => {
-            const birthYear = new Date(values.date_of_birth).getFullYear();
-            const currentYear = new Date().getFullYear();
-            const age = currentYear - birthYear;
-            console.log("Date of Birth:", values.date_of_birth);
-            console.log("Age:", age);
-            values.age = age; // Set the calculated age in the form values
-            console.log("Date of Birth:", values.date_of_birth); // Log the date_of_birth here
-            // localStorage.setItem("phone", values.phone);
-            dispatch({
-              type: PASSENGER_DATA,
-              payload: values,
-            });
-            handleSubmit(values);
-          }}
-          enableReinitialize
-        >
-          {({ isSubmitting, isValid, handleSubmit, values, handleChange }) => (
-            <Form className="" onSubmit={handleSubmit}>
-              <div className="">
-
-                <div className="pb-[1vw]">
-                  <span className="">
-                    <div className="grid grid-cols-2 md:gap-0 gap-[2vw] ">
-                      <div className="text-[#1F487C] text-[4vw] md:text-[1.5vw] font-semibold flex items-center">
-                        {isEdit === true
-                          ? "Edit Passenger Details"
-                          : "Add Passenger Details"}
-                      </div>
-                      <div className="md:pl-[13vw] pl-[5vw] flex items-center md:h-[2.5vw] gap-[1vw] ">
-                        <button
-                          className="border border-[#1F487C] text-[#1F487C]  h-full md:rounded-[0.5vw] rounded-[1vw] md:text-[1.2vw] text-[3.5vw] px-[2vw]"
-                          onClick={prevStep}
-                        >
-                          Back
-                        </button>
-                        <button
-                          type="submit"
-                          className="bg-[#1F487C]  w-full text-white md:rounded-[0.5vw] rounded-[1vw] h-full md:text-[1.2vw] text-[3.5vw] px-[1vw]"
-                        >
-                          <span className="md:block hidden">{isEdit === true
-                            ? "Save Passenger"
-                            : "Add Passenger"}</span>
-
-                          <span className="md:hidden block ">
-                            {isEdit === true ? 'Save' : 'Add'}
-                          </span>
-                        </button>
-                      </div>
+      <Formik
+        initialValues={{
+          name: passengData?.user_name || "",
+          date_of_birth: passengData?.date_of_birth || "",
+          age: passengData?.age || "",
+          state: passengData?.state || "",
+          email: passengData?.email_id || "",
+          phone: passengData?.mobile_number || "",
+          gender: passengData?.gender || "",
+        }}
+        validationSchema={validationSchema}
+        onSubmit={(values) => {
+          const birthYear = new Date(values.date_of_birth).getFullYear();
+          const currentYear = new Date().getFullYear();
+          const age = currentYear - birthYear;
+           // console.log("Date of Birth:", values.date_of_birth);
+           // console.log("Age:", age);
+          values.age = age; // Set the calculated age in the form values
+           // console.log("Date of Birth:", values.date_of_birth); // Log the date_of_birth here
+          // localStorage.setItem("phone", values.phone);
+          dispatch({
+            type: PASSENGER_DATA,
+            payload: values,
+          });
+          handleSubmit(values);
+        }}
+        enableReinitialize
+      >
+        {({ isSubmitting, isValid, handleSubmit, values, handleChange }) => (
+          <Form className="" onSubmit={handleSubmit}>
+            <div className="">
+              <div className="pb-[1vw]">
+                <span className="">
+                  <div className="grid grid-cols-2 md:gap-0 gap-[2vw] ">
+                    <div className="text-[#1F487C] text-[4vw] md:text-[1.5vw] font-semibold flex items-center">
+                      {isEdit === true
+                        ? "Edit Passenger Details"
+                        : "Add Passenger Details"}
                     </div>
-                  </span>
-                </div>  
-                <div className="grid md:grid-cols-2 my-[2vw] md:my-[0vw] py-[1vw] md:gap-y-[0vw] gap-y-[6vw] relative ">
-                  <div>
-                    <Field
-                      type="text"
-                      name="name"
-                      id="name"
-                      className="block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border-[0.1vw] border-slate-400 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
-                      placeholder=" "
-                      value={values.name}
-                      autoComplete="off"
-                      onChange={(e) => {
-                        handleChange(e); // Formik's handleChange
-                        // handleFormChange({
-                        //   ...values,
-                        //   phone: e.target.value,
-                        // });
-                        localStorage.setItem("name", e.target.value);
-                      }}
+                    <div className="md:pl-[13vw] pl-[5vw] flex items-center md:h-[2.5vw] gap-[1vw] ">
+                      <button
+                        className="border border-[#1F487C] text-[#1F487C]  h-full md:rounded-[0.5vw] rounded-[1vw] md:text-[1.2vw] text-[3.5vw] px-[2vw]"
+                        onClick={prevStep}
+                      >
+                        Back
+                      </button>
+                      <button
+                        type="submit"
+                        className="bg-[#1F487C]  w-full text-white md:rounded-[0.5vw] rounded-[1vw] h-full md:text-[1.2vw] text-[3.5vw] px-[1vw]"
+                      >
+                        <span className="md:block hidden">
+                          {isEdit === true ? "Save Passenger" : "Add Passenger"}
+                        </span>
+
+                        <span className="md:hidden block ">
+                          {isEdit === true ? "Save" : "Add"}
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </span>
+              </div>
+              <div className="grid md:grid-cols-2 my-[2vw] md:my-[0vw] py-[1vw] md:gap-y-[0vw] gap-y-[6vw] relative ">
+                <div>
+                  <Field
+                    type="text"
+                    name="name"
+                    id="name"
+                    className="block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border-[0.1vw] border-slate-400 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
+                    placeholder=" "
+                    value={values.name}
+                    autoComplete="off"
+                    onChange={(e) => {
+                      handleChange(e); // Formik's handleChange
+                      // handleFormChange({
+                      //   ...values,
+                      //   phone: e.target.value,
+                      // });
+                      localStorage.setItem("name", e.target.value);
+                    }}
                     // className="border-[0.1vw]  border-slate-500 text-[#1F487C] text-[1.2vw] h-[3vw] w-[27vw]  outline-none px-[1vw] rounded-[0.5vw]"
-                    />
-                    <label
-                      htmlFor="name"
-                      className={`absolute text-[4vw] placeholder:font-medium md:text-[1vw] text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[3vw] md:top-[1.3vw] left-[2vw] md:left-[0.4vw] origin-0 bg-white px-[0.2vw] md:peer-focus:left-[0.6vw] peer-focus:left-[2vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 md:peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] md:peer-focus:text-[1vw] peer-focus:text-[3.7vw] peer-focus:scale-75 md:peer-focus:-translate-y-[1vw] peer-focus:-translate-y-[5vw] ${values.name
+                  />
+                  <label
+                    htmlFor="name"
+                    className={`absolute text-[4vw] placeholder:font-medium md:text-[1vw] text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[3vw] md:top-[1.3vw] left-[2vw] md:left-[0.4vw] origin-0 bg-white px-[0.2vw] md:peer-focus:left-[0.6vw] peer-focus:left-[2vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 md:peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] md:peer-focus:text-[1vw] peer-focus:text-[3.7vw] peer-focus:scale-75 md:peer-focus:-translate-y-[1vw] peer-focus:-translate-y-[5vw] ${
+                      values.name
                         ? "md:-translate-y-[1vw] -translate-y-[5vw] "
                         : ""
-                        }`}
-                    >
-                      Name
-                      <span className="text-red-500 ml-1">*</span>
-                    </label>
-                    <ErrorMessage
-                      name="name"
-                      component="div"
-                      className="text-red-500 md:text-[0.8vw] text-[2.1vw]  absolute top-[11vw] md:top-[4vw]"
-                    />
-                  </div>
-
-                  <div className="relative">
-                    <Field
-                      type="date"
-                      name="date_of_birth"
-                      placeholder=" "
-                      value={values.date_of_birth}
-                      onChange={(e) => {
-                        handleChange(e); // Formik's handleChange
-                        // handleFormChange({
-                        //   ...values,
-                        //   phone: e.target.value,
-                        // });
-                        localStorage.setItem("date_of_birth", e.target.value);
-                      }}
-                      className="block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border-[0.1vw] border-slate-400 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
-                    />
-                    <label
-                      htmlFor="date_of_birth"
-                      className={`absolute text-[4vw] md:text-[1vw] text-[#1F487C] duration-300 transform  scale-75 top-[-2.5vw] md:top-[.3vw] left-[0.4vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] md:peer-focus:text-[1vw] peer-focus:text-[3.7vw] peer-focus:scale-75 md:peer-focus:-translate-y-[1vw] peer-focus:-translate-y-[1vw]  -translate-y-[1vw]`}
-                    >
-                      Date Of Birth
-                      <span className="text-red-500 ml-1">*</span>
-                    </label>
-
-                    <ErrorMessage
-                      name="date_of_birth"
-                      component="div"
-                      className="text-red-500 md:text-[0.8vw] text-[2.1vw] absolute top-[10vw] md:top-[3.1vw]"
-                    />
-                  </div>
+                    }`}
+                  >
+                    Name
+                    <span className="text-red-500 ml-1">*</span>
+                  </label>
+                  <ErrorMessage
+                    name="name"
+                    component="div"
+                    className="text-red-500 md:text-[0.8vw] text-[2.1vw]  absolute top-[11vw] md:top-[4vw]"
+                  />
                 </div>
 
-                <div className="mt-[0vw] md:mt-[2vw] md:mb-[0vw] grid md:grid-rows-2 relative gap-y-[2vw] md:gap-y-[0vw]">
-                  <span className="font-bold text-[4vw] md:text-[1.5vw] text-[#1F487C]">
-                    Gender
-                  </span>
-                  <div className="flex gap-x-[2vw]">
-                    <div className=" border-[0.1vw] border-slate-400 text-[#1F487C] text-[4vw] md:text-[1.2vw] h-[10vw] w-full md:h-[3vw] md:w-[12.5vw] outline-none px-[4vw] md:px-[1vw] font-semibold rounded-[1vw] md:rounded-[0.5vw] flex items-center justify-between">
-                      <label
-                        htmlFor="male"
-                        className="flex h-full cursor-pointer w-full justify-between items-center"
-                      >
-                        <div className="order-first">Male</div>
-                        <div className="order-last flex items-center">
-                          <Field
-                            id="male"
-                            type="radio"
-                            name="gender"
-                            value="male"
-                          />
-                        </div>
-                      </label>
-                    </div>
-                    <div className="border-[0.1vw] border-slate-400 text-[#1F487C] font-semibold text-[4vw] md:text-[1.2vw] h-[10vw] w-full md:h-[3vw] md:w-[12.5vw] outline-none px-[4vw] md:px-[1vw] rounded-[1vw] md:rounded-[0.5vw] flex items-center justify-between cursor-pointer">
-                      <label
-                        className="flex w-full h-full items-center cursor-pointer justify-between"
-                        htmlFor="female"
-                      >
-                        <div className="order-first">Female</div>
-                        <div className="order-last flex items-center">
-                          <Field
-                            id="female" // Assigning an id to the radio button
-                            type="radio"
-                            name="gender"
-                            value="female"
-                          />
-                        </div>
-                      </label>
-                    </div>
-                  </div>
+                <div className="relative">
+                  <Field
+                    type="date"
+                    name="date_of_birth"
+                    placeholder=" "
+                    value={values.date_of_birth}
+                    onChange={(e) => {
+                      handleChange(e); // Formik's handleChange
+                      // handleFormChange({
+                      //   ...values,
+                      //   phone: e.target.value,
+                      // });
+                      localStorage.setItem("date_of_birth", e.target.value);
+                    }}
+                    className="block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border-[0.1vw] border-slate-400 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
+                  />
+                  <label
+                    htmlFor="date_of_birth"
+                    className={`absolute text-[4vw] md:text-[1vw] text-[#1F487C] duration-300 transform  scale-75 top-[-2.5vw] md:top-[.3vw] left-[0.4vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] md:peer-focus:text-[1vw] peer-focus:text-[3.7vw] peer-focus:scale-75 md:peer-focus:-translate-y-[1vw] peer-focus:-translate-y-[1vw]  -translate-y-[1vw]`}
+                  >
+                    Date Of Birth
+                    <span className="text-red-500 ml-1">*</span>
+                  </label>
+
                   <ErrorMessage
-                    name="gender"
+                    name="date_of_birth"
                     component="div"
-                    className="text-red-500 bottom-[-2.5vw] md:bottom-[-1.2vw] md:text-[0.8vw] text-[2.1vw]  absolute"
+                    className="text-red-500 md:text-[0.8vw] text-[2.1vw] absolute top-[10vw] md:top-[3.1vw]"
                   />
                 </div>
               </div>
-              <div className="relative md:pb-[0.5vw]">
-                <div className="text-[#1F487C] md:pt-[1.5vw] md:pb-[1vw] text-[4vw] md:text-[1.5vw] font-semibold ">
-                  Contact Details
+
+              <div className="mt-[0vw] md:mt-[2vw] md:mb-[0vw] grid md:grid-rows-2 relative gap-y-[2vw] md:gap-y-[0vw]">
+                <span className="font-bold text-[4vw] md:text-[1.5vw] text-[#1F487C]">
+                  Gender
+                </span>
+                <div className="flex gap-x-[2vw]">
+                  <div className=" border-[0.1vw] border-slate-400 text-[#1F487C] text-[4vw] md:text-[1.2vw] h-[10vw] w-full md:h-[3vw] md:w-[12.5vw] outline-none px-[4vw] md:px-[1vw] font-semibold rounded-[1vw] md:rounded-[0.5vw] flex items-center justify-between">
+                    <label
+                      htmlFor="male"
+                      className="flex h-full cursor-pointer w-full justify-between items-center"
+                    >
+                      <div className="order-first">Male</div>
+                      <div className="order-last flex items-center">
+                        <Field
+                          id="male"
+                          type="radio"
+                          name="gender"
+                          value="male"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                  <div className="border-[0.1vw] border-slate-400 text-[#1F487C] font-semibold text-[4vw] md:text-[1.2vw] h-[10vw] w-full md:h-[3vw] md:w-[12.5vw] outline-none px-[4vw] md:px-[1vw] rounded-[1vw] md:rounded-[0.5vw] flex items-center justify-between cursor-pointer">
+                    <label
+                      className="flex w-full h-full items-center cursor-pointer justify-between"
+                      htmlFor="female"
+                    >
+                      <div className="order-first">Female</div>
+                      <div className="order-last flex items-center">
+                        <Field
+                          id="female" // Assigning an id to the radio button
+                          type="radio"
+                          name="gender"
+                          value="female"
+                        />
+                      </div>
+                    </label>
+                  </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 py-[1vw] my-[3vw] md:my-[0vw] gap-y-[6vw] md:gap-y-[2.5vw]">
-                  <div className="relative z-0 w-full">
-                    <Field
+                <ErrorMessage
+                  name="gender"
+                  component="div"
+                  className="text-red-500 bottom-[-2.5vw] md:bottom-[-1.2vw] md:text-[0.8vw] text-[2.1vw]  absolute"
+                />
+              </div>
+            </div>
+            <div className="relative md:pb-[0.5vw]">
+              <div className="text-[#1F487C] md:pt-[1.5vw] md:pb-[1vw] text-[4vw] md:text-[1.5vw] font-semibold ">
+                Contact Details
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 py-[1vw] my-[3vw] md:my-[0vw] gap-y-[6vw] md:gap-y-[2.5vw]">
+                <div className="relative z-0 w-full">
+                  {/* <Field
                       as="select"
                       name="state"
                       id="state"
@@ -570,102 +645,148 @@ const AddPassengers = ({
                         label="Tamilnadu"
                         className="text-gray-400 text-[3vw] md:text-[1.1vw]"
                       />
-                    </Field>
-                    <label
-                      htmlFor="state"
-                      className={`absolute text-[4vw] md:text-[1vw] text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[-1vw] md:top-[1.3vw] left-[0vw] md:left-[0.4vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] peer-focus:text-[3.7vw] md:peer-focus:text-[1vw] peer-focus:scale-75 peer-focus:-translate-y-[2vw] ${values.state
-                        ? "-translate-y-[2vw]"
-                        : "-translate-y-[2vw]"
-                        }`}
-                    >
-                      State of Residence
-                      <span className="text-red-500 ml-1">*</span>
-                    </label>
-                    <div className="absolute top-[10vw] md:top-[3vw] left-[0vw] md:left-[1.5vw] md:text-[0.8vw] text-[2.5vw] text-[#1F487C] opacity-50">
-                      Required for GST Tax Invoicing{" "}
-                    </div>
-                    {/* <ErrorMessage
+                    </Field> */}
+                  <ConfigProvider
+                    theme={{
+                      components: {
+                        Select: {
+                          // optionActiveBg: 'none',
+                          // optionSelectedColor: 'none',
+                          // optionSelectedBg: 'none',
+                          optionHeight: "2",
+                          activeBorderColor: "none",
+                          activeOutlineColor: "none",
+                          hoverBorderColor: "none",
+                        },
+                      },
+                    }}
+                  >
+                    <Select
+                      showSearch
+                      value={values.state || ""}
+                      // placement="topRight"
+                      listHeight={150}
+                      onChange={(value, id) => {
+                        handleChange({ target: { name: "state", value } });
+                        //    // console.log(id.id,"idididisdfsdf");
+                        //   setCurrentRoleId(id.id)
+                      }}
+                      // onChange={(e) => {
+                      //   handleChange(e); // Formik's handleChange
+                      // }}
+                      name="state"
+                      id="state"
+                      className={`block py-[0.5vw]  w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer`}
+                      placeholder="Select role"
+                      filterOption={
+                        (input, option) =>
+                          option?.value
+                            ?.toLowerCase()
+                            ?.includes(input.toLowerCase()) // Make it case-insensitive
+                      }
+                      optionFilterProp="value"
+                      // suffixIcon={<span style={{ fontSize: '1vw', color: '#1f487c' }}>
+                      //   <IoMdArrowDropup size="2vw" />
+                      // </span>}
+                      style={{ padding: 4 }}
+                      options={optionss}
+                    />
+                  </ConfigProvider>
+                  <label
+                    htmlFor="state"
+                    className={`absolute text-[4vw] md:text-[1vw] text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[-1vw] md:top-[1.3vw] left-[0vw] md:left-[0.4vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] peer-focus:text-[3.7vw] md:peer-focus:text-[1vw] peer-focus:scale-75 peer-focus:-translate-y-[2vw] ${
+                      values.state ? "-translate-y-[2vw]" : "-translate-y-[2vw]"
+                    }`}
+                  >
+                    State of Residence
+                    <span className="text-red-500 ml-1">*</span>
+                  </label>
+                  <div className="absolute top-[10vw] md:top-[3vw] left-[0vw] md:left-[1.5vw] md:text-[0.8vw] text-[2.5vw] text-[#1F487C] opacity-50">
+                    Required for GST Tax Invoicing{" "}
+                  </div>
+                  {/* <ErrorMessage
                                                 name="state"
                                                 component="div"
                                                 className="text-red-500 text-[0.8vw] absolute top-[4vw]"
                                             /> */}
-                  </div>
-                  <div className="relative z-0 w-full">
-                    <Field
-                      type="email"
-                      name="email"
-                      id="email"
-                      autoComplete="off"
-
-                      className="block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border-[0.1vw] border-slate-400 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
-                      value={values.email}
-                      onChange={(e) => {
-                        handleChange(e); // Formik's handleChange
-                        // handleFormChange({
-                        //   ...values,
-                        //   phone: e.target.value,
-                        // });
-                        localStorage.setItem("email", e.target.value);
-                      }}
+                </div>
+                <div className="relative z-0 w-full">
+                  <Field
+                    type="email"
+                    name="email"
+                    id="email"
+                    autoComplete="off"
+                    className="block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border-[0.1vw] border-slate-400 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
+                    value={values.email}
+                    onChange={(e) => {
+                      handleChange(e); // Formik's handleChange
+                      // handleFormChange({
+                      //   ...values,
+                      //   phone: e.target.value,
+                      // });
+                      localStorage.setItem("email", e.target.value);
+                    }}
                     // className="border-[0.1vw] border-slate-500 text-[#1F487C] text-[1.2vw] h-[3vw] w-[27vw]  outline-none px-[1vw] rounded-[0.5vw]"
-                    />
-                    <label
-                      htmlFor="email"
-                      className={`absolute text-[5.5vw] md:text-[1.2vw] text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[1vw] md:top-[0.8vw] md:left-[0.4vw] left-[1.5vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[2vw] md:peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] peer-focus:text-[3.2vw] md:peer-focus:text-[1vw] peer-focus:scale-75 peer-focus:-translate-y-[5vw] md:peer-focus:-translate-y-[1.5vw] ${values.email
+                  />
+                  <label
+                    htmlFor="email"
+                    className={`absolute text-[5.5vw] md:text-[1.2vw] text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[1vw] md:top-[0.8vw] md:left-[0.4vw] left-[1.5vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[2vw] md:peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] peer-focus:text-[3.2vw] md:peer-focus:text-[1vw] peer-focus:scale-75 peer-focus:-translate-y-[5vw] md:peer-focus:-translate-y-[1.5vw] ${
+                      values.email
                         ? "md:-translate-y-[1.5vw] -translate-y-[5.5vw]"
                         : ""
-                        }`}
-                    >
-                      Email<span className="text-red-500 ml-1">*</span>
-                    </label>
+                    }`}
+                  >
+                    Email<span className="text-red-500 ml-1">*</span>
+                  </label>
 
-                    <ErrorMessage
-                      name="email"
-                      component="div"
-                      className="text-red-500 md:text-[0.8vw] text-[2.1vw] absolute md:top-[3vw] top-[10vw]"
-                    />
-                  </div>
-                  <div className="relative z-0 w-full">
-                    <Field
-                      type="text"
-                      name="phone"
-                      id="phone"
-                      onKeyDown={handleKeyDown}
-                      maxLength={10}
-                      className="block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border-[0.1vw] border-slate-400 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
-                      placeholder=" "
-                      autoComplete="off"
-                      value={values.phone}
-                      onChange={(e) => {
-                        handleChange(e); // Formik's handleChange
-                        // handleFormChange({
-                        //   ...values,
-                        //   phone: e.target.value,
-                        // });
-                        localStorage.setItem("email", e.target.value);
-                      }}
+                  <ErrorMessage
+                    name="email"
+                    component="div"
+                    className="text-red-500 md:text-[0.8vw] text-[2.1vw] absolute md:top-[3vw] top-[10vw]"
+                  />
+                </div>
+                <div className="relative z-0 w-full">
+                  <Field
+                    type="text"
+                    name="phone"
+                    id="phone"
+                    onKeyDown={handleKeyDown}
+                    maxLength={10}
+                    className="block py-[0.5vw] px-2 w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent border-[0.1vw] border-slate-400 rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer"
+                    placeholder=" "
+                    autoComplete="off"
+                    value={values.phone}
+                    onChange={(e) => {
+                      handleChange(e); // Formik's handleChange
+                      // handleFormChange({
+                      //   ...values,
+                      //   phone: e.target.value,
+                      // });
+                      localStorage.setItem("email", e.target.value);
+                    }}
                     // className="border-[0.1vw] border-slate-500 text-[#1F487C] text-[1.2vw] h-[3vw] w-[27vw]  outline-none px-[1vw] rounded-[0.5vw]"
-                    />
-                    <label
-                      htmlFor="phone"
-                      className={`absolute text-[4vw] md:text-[1vw] text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[1vw] md:top-[0.5vw] md:left-[0.4vw] left-[2.3vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[1.5vw] md:peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] peer-focus:text-[3.7vw] md:peer-focus:text-[1vw] peer-focus:scale-75 md:peer-focus:-translate-y-[1.2vw] peer-focus:-translate-y-[4vw] ${values.phone
+                  />
+                  <label
+                    htmlFor="phone"
+                    className={`absolute text-[4vw] md:text-[1vw] text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 top-[1vw] md:top-[0.5vw] md:left-[0.4vw] left-[2.3vw] origin-0 bg-white px-[0.2vw] peer-focus:left-[1.5vw] md:peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[vw] peer-focus:text-[3.7vw] md:peer-focus:text-[1vw] peer-focus:scale-75 md:peer-focus:-translate-y-[1.2vw] peer-focus:-translate-y-[4vw] ${
+                      values.phone
                         ? "md:-translate-y-[1.2vw] -translate-y-[4vw] "
                         : ""
-                        }`}
-                    >
-                      Phone Number<span className="text-red-500 ml-1">*</span>
-                    </label>
+                    }`}
+                  >
+                    Phone Number<span className="text-red-500 ml-1">*</span>
+                  </label>
 
-                    <ErrorMessage
-                      name="phone"
-                      component="div"
-                      className="text-red-500 md:text-[0.8vw] text-[2.1vw] absolute md:top-[3vw] top-[10vw]"
-                    />
-                  </div>
+                  <ErrorMessage
+                    name="phone"
+                    component="div"
+                    className="text-red-500 md:text-[0.8vw] text-[2.1vw] absolute md:top-[3vw] top-[10vw]"
+                  />
                 </div>
               </div>
+            </div>
 
-              {/* <div className=" flex justify-center gap-x-[2vw] md:my-[0vw] my-[2vw]">
+            {/* <div className=" flex justify-center gap-x-[2vw] md:my-[0vw] my-[2vw]">
                 <button
                   className="bg-[#1F487C] text-[white] md:w-[18vw] w-full h-[9vw] md:h-[3vw] rounded-full text-[4vw] md:text-[1.25vw]"
                   onClick={prevStep}
@@ -679,10 +800,9 @@ const AddPassengers = ({
                   {isEdit === true ? "Save Passenger" : "Add Passenger"}
                 </button>
               </div> */}
-            </Form>
-          )}
-        </Formik>
-   
+          </Form>
+        )}
+      </Formik>
     </>
   );
 };

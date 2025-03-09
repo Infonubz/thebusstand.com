@@ -118,7 +118,7 @@ const SidebarMobile = ({
   });
   const fulllist = useSelector((state) => state?.get_data);
   const buslist = useSelector((state) => state?.get_buslist);
-  console.log(buslist, 'buslist_buslist')
+   // console.log(buslist, 'buslist_buslist')
   const toggleDrawer = (name) => {
     setIsDrawerOpen(!isDrawerOpen);
     setIsDrawerName(name);
@@ -433,7 +433,7 @@ const SidebarMobile = ({
           ? a?.operator?.localeCompare(b?.operator)
           : a?.name?.localeCompare(b?.name)
     );
-  console.log(sortedList, 'sortedList')
+   // console.log(sortedList, 'sortedList')
   // const Search = async (e, values) => {
   //   const response = await handleSearch(
   //     dispatch,

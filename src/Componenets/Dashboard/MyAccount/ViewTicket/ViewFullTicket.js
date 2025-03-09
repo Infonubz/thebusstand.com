@@ -2,7 +2,7 @@ import { Modal, Skeleton, Tooltip } from "antd";
 import dayjs from "dayjs";
 import moment from "moment";
 import { useEffect, useRef, useState } from "react";
-import Barcode from "react-barcode";
+// import Barcode from "react-barcode";
 import { FiDownload } from "react-icons/fi";
 import Logo from "../../../../Assets/Logo/tbs_logo.png";
 // import html2canvas from "html2canvas";
@@ -13,13 +13,13 @@ import { RatingFeedBack } from "../../../Common/Rating&FeedBack/Ratings&Feedback
 import ModalPopup from "../../../Common/Modal/Modal.js";
 import { DownloadTicket } from "../../../../Api-TBS/Dashboard/Dashboard.js";
 import { useNavigate } from "react-router";
+import { LuxuryFind } from "../../../Common/Common-Functions/LuxuryFind.js";
 
 const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
-  console.log(droppingDate, "droppingDate");
+   // console.log(droppingDate, "droppingDate");
   const ticketlist = useSelector((state) => state?.get_ticket_detail);
   const tbs_discount = useSelector((state) => state?.live_per);
   const tbs_ticket_details = useSelector((state) => state?.tbs_booking_details);
-  console.log(tbs_ticket_details, "tickckckckckc");
   const componentRef = useRef();
   const colorcode = {
     theme: "#1F4B7F",
@@ -49,12 +49,12 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
     return minutes > 0 ? `${hours}h ${minutes}m` : `${hours}h`;
   };
 
-  const LuxuryFind = (type) =>
-    type?.toLowerCase().includes("volvo") ||
-    type?.toLowerCase().includes("mercedes benz") ||
-    type?.toLowerCase().includes("washroom") ||
-    type?.toLowerCase().includes("bharatBenz") ||
-    type?.toLowerCase().includes("luxury");
+  // const LuxuryFind = (type) =>
+  //   type?.toLowerCase().includes("volvo") ||
+  //   type?.toLowerCase().includes("mercedes benz") ||
+  //   type?.toLowerCase().includes("washroom") ||
+  //   type?.toLowerCase().includes("bharatBenz") ||
+  //   type?.toLowerCase().includes("luxury");
 
   // const downloadPDF = () => {
   //   // setLoader(true);
@@ -97,7 +97,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
     // navigate(`http://192.168.90.47:4001/api/downloadticket/${ticketid}`)
     const downloadUrl = `${apiUrl}/downloadticket/${ticketid}`;
     window.open(downloadUrl, "_blank");
-    // console.log(ticketid, response?.data, "downloading_main_ticket");
+    //  // console.log(ticketid, response?.data, "downloading_main_ticket");
     // return response?.data
   };
   const formatDate = (inputDate) => {
@@ -142,6 +142,137 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
       }
     }, [5000]);
   }, []);
+
+  // const calculateArrivalDate = (boardingDateTime, arrTime) => {
+  //   // Parse the boarding date and time (in "YYYY-MM-DD HH:mm" format)
+  //   const [datePart, timePart] = boardingDateTime?.split(" ");
+  //   const [year, month, day] = datePart?.split("-");
+  //   const [startHours, startMinutes] = timePart?.split(":").map(Number);
+
+  //   // Create a Date object with the parsed values
+  //   const journeyDateObj = new Date(
+  //     year,
+  //     month - 1,
+  //     day,
+  //     startHours,
+  //     startMinutes
+  //   );
+
+  //   // Extract hours and minutes from Arrival Time (in "HH:mm:ss" format)
+  //   const [arrHours, arrMinutes, arrSeconds] = arrTime.split(":").map(Number);
+
+  //   // Calculate the arrival time by adding hours and minutes from "Arrival_Time"
+  //   const arrivalDateObj = new Date(journeyDateObj);
+  //   arrivalDateObj.setHours(arrivalDateObj.getHours() + arrHours);
+  //   arrivalDateObj.setMinutes(arrivalDateObj.getMinutes() + arrMinutes);
+  //   arrivalDateObj.setSeconds(arrivalDateObj.getSeconds() + arrSeconds);
+
+  //   return arrivalDateObj;
+  // };
+
+  const calculateArrivalDate = (boardingDateTime, arrTime) => {
+    // Ensure that boardingDateTime and arrTime are valid strings
+    if (!boardingDateTime || !arrTime) {
+      throw new Error(
+        "Invalid input: Boarding date/time or Arrival time is missing."
+      );
+    }
+
+    // Parse the boarding date and time (in "YYYY-MM-DD HH:mm" format)
+    const [datePart, timePart] = boardingDateTime.split(" ");
+    if (!datePart || !timePart) {
+      throw new Error(
+        "Invalid boardingDateTime format. Expected 'YYYY-MM-DD HH:mm'."
+      );
+    }
+
+    const [year, month, day] = datePart.split("-");
+    const [startHours, startMinutes] = timePart.split(":").map(Number);
+
+    if (!year || !month || !day || isNaN(startHours) || isNaN(startMinutes)) {
+      throw new Error("Invalid date or time in boardingDateTime.");
+    }
+
+    // Create a Date object with the parsed values
+    const journeyDateObj = new Date(
+      year,
+      month - 1,
+      day,
+      startHours,
+      startMinutes
+    );
+
+    // Extract hours and minutes from Arrival Time (in "HH:mm:ss" format)
+    const [arrHours, arrMinutes, arrSeconds] = arrTime.split(":").map(Number);
+
+    if (isNaN(arrHours) || isNaN(arrMinutes) || isNaN(arrSeconds)) {
+      throw new Error("Invalid arrivalTime format. Expected 'HH:mm:ss'.");
+    }
+
+    // Calculate the arrival time by adding hours and minutes from "Arrival_Time"
+    const arrivalDateObj = new Date(journeyDateObj);
+    arrivalDateObj.setHours(arrivalDateObj.getHours() + arrHours);
+    arrivalDateObj.setMinutes(arrivalDateObj.getMinutes() + arrMinutes);
+    arrivalDateObj.setSeconds(arrivalDateObj.getSeconds() + arrSeconds);
+
+    return arrivalDateObj;
+  };
+
+  const [calArrival, setCalArrival] = useState({
+    journeyDate: ticketDetails?.ticketInfo?.originStartTime,
+    starTime: ticketDetails?.ticketInfo?.Start_Time,
+    endTime: ticketDetails?.ticketInfo?.Arr_Time,
+  });
+
+  const [calculatedDate, setCalculatedDate] = useState("");
+
+  useEffect(() => {
+    if (ticketDetails?.status === "success" && calArrival) {
+      // alert("heieei")
+      const values = calculateArrivalDate(
+        calArrival?.journeyDate,
+        calArrival?.endTime
+      );
+       // console.log(values, "vashdfkjdhkjfsdd");
+      setCalculatedDate(values);
+      // setShowModal(true);
+      //  // console.log((ticketDetails?.ticketInfo?.Journey_Date, ticketDetails?.ticketInfo?.Start_Time, ticketDetails?.ticketInfo?.Arr_Time), "helldfhkdxjhfkdjhfkxdjhf");
+    }
+  }, [ticketDetails]);
+  // Simple function to get suffix
+  const getDaySuffix = (day) => {
+    // Check for the special case of 11th, 12th, and 13th
+    if (day >= 11 && day <= 13) return "th";
+
+    // Use the last digit of the day to determine the suffix
+    switch (day % 10) {
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
+    }
+  };
+  const ConvertDate = (date) => {
+    // Get the day of the month
+    const day = dayjs(date).date();
+
+    // Get the suffix for the day (st, nd, rd, th)
+    const dayWithSuffix = day + getDaySuffix(day);
+
+    // Format the date to 'Thu, 6th Feb 2025'
+    const formattedDate = dayjs(date).format(`ddd, MMM YYYY`);
+    // const formattedDate = format(new Date(calculatedDate), `EEE, MMM yyyy`);
+    const dateParts = formattedDate.split(" ");
+    dateParts.splice(1, 0, `${dayWithSuffix}`);
+    const modifiedDate = dateParts.join(" ");
+     // console.log(date, "modfuhdifhdataadff");
+    return <div>{modifiedDate}</div>;
+  };
+   // console.log(ConvertDate(calculatedDate), "vashdfkjdhkjfsdd");
 
   return (
     <div className="p-[2.5vw] md:p-[1.5vw] flex flex-col gap-y-[3vw] md:gap-y-[1.60vw]">
@@ -200,7 +331,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                       ? "#393939"
                       : "#1F4B7F"
                   }
-                  stroke-width="2.30622"
+                  strokeWidth="2.30622"
                 />
                 <mask id="path-2-inside-1_6794_2554" fill="white">
                   {" "}
@@ -225,7 +356,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                       ? "#393939"
                       : "#1F4B7F"
                   }
-                  stroke-width="0.2"
+                  strokeWidth="0.2"
                 />
                 <path
                   d="M41.7225 208.675V207.454H43.0084C43.1814 207.454 43.3228 207.31 43.3228 207.133C43.3228 205.061 41.6721 202.374 39.644 202.374H16.8165C14.7884 202.374 13.1376 205.061 13.1376 207.133C13.1376 207.31 13.276 207.454 13.452 207.454H14.7349V208.672C13.8294 208.826 13.1376 209.632 13.1376 210.599V221.927C13.1376 222.897 13.8294 223.7 14.7349 223.855V232.378C14.7349 232.554 14.8765 232.699 15.0493 232.699C15.2254 232.699 15.3638 232.554 15.3638 232.378V223.855C16.2693 223.7 16.9642 222.897 16.9642 221.927V219.919H18.6873V220.353C18.6873 221.516 19.6117 222.46 20.7499 222.46H35.7105C36.8456 222.46 37.77 221.516 37.77 220.353V219.919H39.4962V221.927C39.4962 222.897 40.1817 223.7 41.0935 223.855V232.378C41.0935 232.554 41.2351 232.699 41.4079 232.699C41.584 232.699 41.7223 232.554 41.7223 232.378V223.855C42.6279 223.7 43.3228 222.897 43.3228 221.927V219.379C43.3228 219.203 43.1813 219.058 43.0084 219.058C42.8354 219.058 42.694 219.203 42.694 219.379V221.927C42.694 222.65 42.1186 223.238 41.4111 223.241H41.408C41.059 223.241 40.7383 223.096 40.5056 222.859C40.2729 222.624 40.1251 222.296 40.1251 221.927V210.599C40.1251 209.876 40.7005 209.288 41.408 209.288C41.7507 209.288 42.0746 209.427 42.3167 209.674C42.5619 209.921 42.694 210.249 42.694 210.599V219.773C42.694 219.95 42.8356 220.094 43.0084 220.094C43.1814 220.094 43.3228 219.95 43.3228 219.773V210.599C43.3228 210.079 43.1247 209.587 42.7632 209.218C42.4771 208.925 42.1155 208.739 41.7225 208.675ZM16.3354 221.927C16.3354 222.653 15.76 223.241 15.0494 223.241C14.3419 223.241 13.7665 222.653 13.7665 221.927V210.599C13.7665 209.876 14.3419 209.288 15.0494 209.288C15.76 209.288 16.3354 209.876 16.3354 210.599V221.927ZM18.6873 219.277H16.9643V213.25H18.6873V219.277ZM33.3083 219.334H23.1491C22.9762 219.334 22.8347 219.193 22.8347 219.013C22.8347 218.836 22.9762 218.692 23.1491 218.692H33.3083C33.4844 218.692 33.6227 218.836 33.6227 219.013C33.6228 219.193 33.4844 219.334 33.3083 219.334ZM33.3083 216.584H23.1491C22.9762 216.584 22.8347 216.443 22.8347 216.263C22.8347 216.086 22.9762 215.942 23.1491 215.942H33.3083C33.4844 215.942 33.6227 216.087 33.6227 216.263C33.6228 216.443 33.4844 216.584 33.3083 216.584ZM33.3083 213.834H23.1491C22.9762 213.834 22.8347 213.69 22.8347 213.513C22.8347 213.336 22.9762 213.192 23.1491 213.192H33.3083C33.4844 213.192 33.6227 213.336 33.6227 213.513C33.6228 213.69 33.4844 213.834 33.3083 213.834ZM39.4963 219.277H37.7732V213.25H39.4963V219.277ZM41.0936 208.675C40.188 208.829 39.4963 209.632 39.4963 210.599V212.607H37.7701V212.173C37.7701 211.014 36.8457 210.069 35.7106 210.069H20.75C19.6117 210.069 18.6873 211.014 18.6873 212.173V212.607H16.9643V210.599C16.9643 209.632 16.2694 208.826 15.3638 208.672V207.454H41.0936V208.675Z"
@@ -247,7 +378,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                       ? "#393939"
                       : "#1F4B7F"
                   }
-                  stroke-width="0.2"
+                  strokeWidth="0.2"
                 />
                 <path
                   d="M42.5103 221.975V210.591C42.5103 210.239 42.3415 209.908 42.0569 209.702C41.6728 209.423 41.1524 209.423 40.7683 209.701C40.4833 209.908 40.315 210.24 40.316 210.592L40.3481 221.977C40.3491 222.308 40.5018 222.62 40.762 222.825C41.1537 223.132 41.7057 223.133 42.0974 222.825C42.3581 222.62 42.5103 222.307 42.5103 221.975Z"
@@ -261,7 +392,7 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                       ? "#393939"
                       : "#1F4B7F"
                   }
-                  stroke-width="0.2"
+                  strokeWidth="0.2"
                 />
                 <path
                   d="M36.5847 224.381H19.8759C18.7252 224.381 17.7881 225.336 17.7881 226.511C17.7881 227.687 18.7252 228.645 19.8759 228.645H20.2218V232.378C20.2218 232.554 20.3634 232.699 20.5362 232.699H22.4637C22.6366 232.699 22.7781 232.554 22.7781 232.378V228.645H33.6825V232.378C33.6825 232.554 33.8241 232.699 33.997 232.699H35.9213C36.0942 232.699 36.2357 232.554 36.2357 232.378V228.645H36.5847C37.7356 228.645 38.6694 227.687 38.6694 226.511C38.6694 225.336 37.7356 224.381 36.5847 224.381ZM22.1493 232.056V228.756V228.645V232.056ZM36.5847 226.511C35.7829 226.511 19.8759 226.511 19.8759 226.511C19.071 226.511 19.8759 226.511 18.417 226.511C18.417 225.692 19.071 225.024 19.8759 225.024H36.5847C37.3865 225.024 38.0405 225.692 38.0405 226.511C36.7628 226.511 37.3865 226.511 36.5847 226.511Z"
@@ -550,8 +681,8 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                           }
                         />
                         <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
+                          fillRule="evenodd"
+                          clipRule="evenodd"
                           d="M32.2528 54.6614C34.0086 54.6614 35.4319 55.8294 35.4319 57.2702C35.4319 58.711 34.0086 59.879 32.2528 59.879C32.2365 59.879 32.2202 59.8789 32.2039 59.8787L32.2528 62.4375L184.608 62.4375L187.301 59.8787C187.284 59.8789 187.269 59.879 187.252 59.879C185.496 59.879 184.073 58.711 184.073 57.2702C184.073 55.8294 185.496 54.6614 187.252 54.6614C187.269 54.6614 187.284 54.6615 187.301 54.6617V50.4067C187.284 50.4069 187.269 50.407 187.252 50.407C185.496 50.407 184.073 49.239 184.073 47.7982C184.073 46.3574 185.496 45.1894 187.252 45.1894H187.26L187.275 45.1895L187.284 45.1895L187.301 45.1897V41.5772C182.493 41.5772 178.595 38.3786 178.595 34.433C178.595 30.4875 182.493 27.2889 187.301 27.2889V23.7566C187.284 23.7569 187.269 23.757 187.252 23.757C185.496 23.757 184.073 22.5889 184.073 21.1481C184.073 19.7073 185.496 18.5393 187.252 18.5393C187.269 18.5393 187.284 18.5394 187.301 18.5396V14.2846C187.292 14.2847 187.284 14.2848 187.275 14.2849C187.268 14.2849 187.26 14.2849 187.252 14.2849C185.496 14.2849 184.073 13.1169 184.073 11.6761C184.073 10.2353 185.496 9.0673 187.252 9.0673C187.269 9.0673 187.284 9.06738 187.301 9.06762L185.147 6.42857L32.2039 6.96711L32.2039 9.06762C32.1876 9.06762 32.2202 9.06738 32.2039 9.06762C33.9597 9.06762 35.4319 10.2353 35.4319 11.6761C35.4319 13.1169 34.0086 14.2849 32.2528 14.2849C32.2365 14.2849 32.2202 14.2849 32.2039 14.2846V18.5396C32.2202 18.5394 32.2365 18.5393 32.2528 18.5393C34.0086 18.5393 35.4319 19.7073 35.4319 21.1481C35.4319 22.5889 34.0086 23.757 32.2528 23.757C32.2365 23.757 32.2202 23.7569 32.2039 23.7566V27.2889C37.0119 27.2889 41.9793 30.4875 41.9793 34.433C41.9793 38.3786 37.0119 41.5772 32.2039 41.5772V45.1897C32.2202 45.1895 32.2365 45.1894 32.2528 45.1894C34.0086 45.1894 35.4319 46.3574 35.4319 47.7982C35.4319 49.239 34.0086 50.407 32.2528 50.407C32.2365 50.407 32.2202 50.4069 32.2039 50.4067V54.6617C32.2202 54.6615 32.2365 54.6614 32.2528 54.6614Z"
                           fill={
                             LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
@@ -716,8 +847,8 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                                   ? "#393939"
                                   : "#1F4B7F"
                               }
-                              stroke-width="2.71095"
-                              stroke-dasharray="5.42 5.42"
+                              strokeWidth="2.71095"
+                              strokeDasharray="5.42 5.42"
                             />
                             <line
                               x1="10.2483"
@@ -731,8 +862,8 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                                   ? "#393939"
                                   : "#1F4B7F"
                               }
-                              stroke-width="2.71095"
-                              stroke-dasharray="5.42 5.42"
+                              strokeWidth="2.71095"
+                              strokeDasharray="5.42 5.42"
                             />
                             <ellipse
                               cx="6.12043"
@@ -748,8 +879,8 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                               }
                             />
                             <path
-                              fill-rule="evenodd"
-                              clip-rule="evenodd"
+                              fillRule="evenodd"
+                              clipRule="evenodd"
                               d="M280.078 6.24612C280.553 5.805 281.321 5.805 281.796 6.24612L289.082 13.0235C289.557 13.4646 289.557 14.1798 289.082 14.621L281.796 21.3983C281.321 21.8395 280.553 21.8395 280.078 21.3983C279.604 20.9572 279.604 20.242 280.078 19.8009L286.506 13.8222L280.078 7.84357C279.604 7.40245 279.604 6.68725 280.078 6.24612Z"
                               fill={
                                 LuxuryFind(
@@ -765,9 +896,9 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                                   ? "#393939"
                                   : "#1F4B7F"
                               }
-                              stroke-width="0.271095"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeWidth="0.271095"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                             />
                           </svg>
                         </div>
@@ -823,7 +954,8 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                             } text-[0.8vw] `}
                             // style={{ color: colorcode.theme }}
                           >
-                            {droppingDate}
+                            {/* {droppingDate} */}
+                            {ConvertDate(calculatedDate)}
                           </p>
                           <p
                             className={`font-bold text-[#1F487C] text-[1.2vw] ${
@@ -1111,8 +1243,8 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                           }
                         />
                         <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
+                          fillRule="evenodd"
+                          clipRule="evenodd"
                           d="M32.2528 54.6614C34.0086 54.6614 35.4319 55.8294 35.4319 57.2702C35.4319 58.711 34.0086 59.879 32.2528 59.879C32.2365 59.879 32.2202 59.8789 32.2039 59.8787L32.2528 62.4375L184.608 62.4375L187.301 59.8787C187.284 59.8789 187.269 59.879 187.252 59.879C185.496 59.879 184.073 58.711 184.073 57.2702C184.073 55.8294 185.496 54.6614 187.252 54.6614C187.269 54.6614 187.284 54.6615 187.301 54.6617V50.4067C187.284 50.4069 187.269 50.407 187.252 50.407C185.496 50.407 184.073 49.239 184.073 47.7982C184.073 46.3574 185.496 45.1894 187.252 45.1894H187.26L187.275 45.1895L187.284 45.1895L187.301 45.1897V41.5772C182.493 41.5772 178.595 38.3786 178.595 34.433C178.595 30.4875 182.493 27.2889 187.301 27.2889V23.7566C187.284 23.7569 187.269 23.757 187.252 23.757C185.496 23.757 184.073 22.5889 184.073 21.1481C184.073 19.7073 185.496 18.5393 187.252 18.5393C187.269 18.5393 187.284 18.5394 187.301 18.5396V14.2846C187.292 14.2847 187.284 14.2848 187.275 14.2849C187.268 14.2849 187.26 14.2849 187.252 14.2849C185.496 14.2849 184.073 13.1169 184.073 11.6761C184.073 10.2353 185.496 9.0673 187.252 9.0673C187.269 9.0673 187.284 9.06738 187.301 9.06762L185.147 6.42857L32.2039 6.96711L32.2039 9.06762C32.1876 9.06762 32.2202 9.06738 32.2039 9.06762C33.9597 9.06762 35.4319 10.2353 35.4319 11.6761C35.4319 13.1169 34.0086 14.2849 32.2528 14.2849C32.2365 14.2849 32.2202 14.2849 32.2039 14.2846V18.5396C32.2202 18.5394 32.2365 18.5393 32.2528 18.5393C34.0086 18.5393 35.4319 19.7073 35.4319 21.1481C35.4319 22.5889 34.0086 23.757 32.2528 23.757C32.2365 23.757 32.2202 23.7569 32.2039 23.7566V27.2889C37.0119 27.2889 41.9793 30.4875 41.9793 34.433C41.9793 38.3786 37.0119 41.5772 32.2039 41.5772V45.1897C32.2202 45.1895 32.2365 45.1894 32.2528 45.1894C34.0086 45.1894 35.4319 46.3574 35.4319 47.7982C35.4319 49.239 34.0086 50.407 32.2528 50.407C32.2365 50.407 32.2202 50.4069 32.2039 50.4067V54.6617C32.2202 54.6615 32.2365 54.6614 32.2528 54.6614Z"
                           fill={
                             LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
@@ -1148,8 +1280,8 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                           }
                         />
                         <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
+                          fillRule="evenodd"
+                          clipRule="evenodd"
                           d="M32.2528 54.6614C34.0086 54.6614 35.4319 55.8294 35.4319 57.2702C35.4319 58.711 34.0086 59.879 32.2528 59.879C32.2365 59.879 32.2202 59.8789 32.2039 59.8787L32.2528 62.4375L184.608 62.4375L187.301 59.8787C187.284 59.8789 187.269 59.879 187.252 59.879C185.496 59.879 184.073 58.711 184.073 57.2702C184.073 55.8294 185.496 54.6614 187.252 54.6614C187.269 54.6614 187.284 54.6615 187.301 54.6617V50.4067C187.284 50.4069 187.269 50.407 187.252 50.407C185.496 50.407 184.073 49.239 184.073 47.7982C184.073 46.3574 185.496 45.1894 187.252 45.1894H187.26L187.275 45.1895L187.284 45.1895L187.301 45.1897V41.5772C182.493 41.5772 178.595 38.3786 178.595 34.433C178.595 30.4875 182.493 27.2889 187.301 27.2889V23.7566C187.284 23.7569 187.269 23.757 187.252 23.757C185.496 23.757 184.073 22.5889 184.073 21.1481C184.073 19.7073 185.496 18.5393 187.252 18.5393C187.269 18.5393 187.284 18.5394 187.301 18.5396V14.2846C187.292 14.2847 187.284 14.2848 187.275 14.2849C187.268 14.2849 187.26 14.2849 187.252 14.2849C185.496 14.2849 184.073 13.1169 184.073 11.6761C184.073 10.2353 185.496 9.0673 187.252 9.0673C187.269 9.0673 187.284 9.06738 187.301 9.06762L185.147 6.42857L32.2039 6.96711L32.2039 9.06762C32.1876 9.06762 32.2202 9.06738 32.2039 9.06762C33.9597 9.06762 35.4319 10.2353 35.4319 11.6761C35.4319 13.1169 34.0086 14.2849 32.2528 14.2849C32.2365 14.2849 32.2202 14.2849 32.2039 14.2846V18.5396C32.2202 18.5394 32.2365 18.5393 32.2528 18.5393C34.0086 18.5393 35.4319 19.7073 35.4319 21.1481C35.4319 22.5889 34.0086 23.757 32.2528 23.757C32.2365 23.757 32.2202 23.7569 32.2039 23.7566V27.2889C37.0119 27.2889 41.9793 30.4875 41.9793 34.433C41.9793 38.3786 37.0119 41.5772 32.2039 41.5772V45.1897C32.2202 45.1895 32.2365 45.1894 32.2528 45.1894C34.0086 45.1894 35.4319 46.3574 35.4319 47.7982C35.4319 49.239 34.0086 50.407 32.2528 50.407C32.2365 50.407 32.2202 50.4069 32.2039 50.4067V54.6617C32.2202 54.6615 32.2365 54.6614 32.2528 54.6614Z"
                           fill={
                             LuxuryFind(ticketDetails?.ticketInfo?.bustype) ===
@@ -1565,8 +1697,8 @@ const ViewFullTicket = ({ ticketDetails, droppingDate, ticketnumber }) => {
                   }
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M32.2528 54.6614C34.0086 54.6614 35.4319 55.8294 35.4319 57.2702C35.4319 58.711 34.0086 59.879 32.2528 59.879C32.2365 59.879 32.2202 59.8789 32.2039 59.8787L32.2528 62.4375L184.608 62.4375L187.301 59.8787C187.284 59.8789 187.269 59.879 187.252 59.879C185.496 59.879 184.073 58.711 184.073 57.2702C184.073 55.8294 185.496 54.6614 187.252 54.6614C187.269 54.6614 187.284 54.6615 187.301 54.6617V50.4067C187.284 50.4069 187.269 50.407 187.252 50.407C185.496 50.407 184.073 49.239 184.073 47.7982C184.073 46.3574 185.496 45.1894 187.252 45.1894H187.26L187.275 45.1895L187.284 45.1895L187.301 45.1897V41.5772C182.493 41.5772 178.595 38.3786 178.595 34.433C178.595 30.4875 182.493 27.2889 187.301 27.2889V23.7566C187.284 23.7569 187.269 23.757 187.252 23.757C185.496 23.757 184.073 22.5889 184.073 21.1481C184.073 19.7073 185.496 18.5393 187.252 18.5393C187.269 18.5393 187.284 18.5394 187.301 18.5396V14.2846C187.292 14.2847 187.284 14.2848 187.275 14.2849C187.268 14.2849 187.26 14.2849 187.252 14.2849C185.496 14.2849 184.073 13.1169 184.073 11.6761C184.073 10.2353 185.496 9.0673 187.252 9.0673C187.269 9.0673 187.284 9.06738 187.301 9.06762L185.147 6.42857L32.2039 6.96711L32.2039 9.06762C32.1876 9.06762 32.2202 9.06738 32.2039 9.06762C33.9597 9.06762 35.4319 10.2353 35.4319 11.6761C35.4319 13.1169 34.0086 14.2849 32.2528 14.2849C32.2365 14.2849 32.2202 14.2849 32.2039 14.2846V18.5396C32.2202 18.5394 32.2365 18.5393 32.2528 18.5393C34.0086 18.5393 35.4319 19.7073 35.4319 21.1481C35.4319 22.5889 34.0086 23.757 32.2528 23.757C32.2365 23.757 32.2202 23.7569 32.2039 23.7566V27.2889C37.0119 27.2889 41.9793 30.4875 41.9793 34.433C41.9793 38.3786 37.0119 41.5772 32.2039 41.5772V45.1897C32.2202 45.1895 32.2365 45.1894 32.2528 45.1894C34.0086 45.1894 35.4319 46.3574 35.4319 47.7982C35.4319 49.239 34.0086 50.407 32.2528 50.407C32.2365 50.407 32.2202 50.4069 32.2039 50.4067V54.6617C32.2202 54.6615 32.2365 54.6614 32.2528 54.6614Z"
                   fill={
                     LuxuryFind(ticketDetails?.ticketInfo?.bustype) === true

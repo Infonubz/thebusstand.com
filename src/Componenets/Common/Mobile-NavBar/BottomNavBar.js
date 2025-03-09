@@ -9,6 +9,7 @@ import SidebarMobile from "../Sidebar-Filter/Sidebar-Mobile";
 import { Abhibus_GetBusList } from "../../../Api-Abhibus/Home/HomePage";
 import { useDispatch } from "react-redux";
 import moment from "moment";
+import { LuxuryFind } from "../Common-Functions/LuxuryFind";
 // import LoginMobile from "../Login/LoginMobile";
 
 export default function BottomNavbar({ ticketInfo }) {
@@ -26,12 +27,12 @@ export default function BottomNavbar({ ticketInfo }) {
 
 
 
-    const LuxuryFind = (type) =>
-        type?.toLowerCase().includes("volvo") ||
-        type?.toLowerCase().includes("mercedes benz") ||
-        type?.toLowerCase().includes("washroom") ||
-        type?.toLowerCase().includes("bharatBenz") ||
-        type?.toLowerCase().includes("luxury");
+    // const LuxuryFind = (type) =>
+    //     type?.toLowerCase().includes("volvo") ||
+    //     type?.toLowerCase().includes("mercedes benz") ||
+    //     type?.toLowerCase().includes("washroom") ||
+    //     type?.toLowerCase().includes("bharatBenz") ||
+    //     type?.toLowerCase().includes("luxury");
 
 
     const busFrom = localStorage.getItem("departure");
@@ -40,7 +41,7 @@ export default function BottomNavbar({ ticketInfo }) {
     const toSourceID = localStorage.getItem("arrivalID");
     const jdate = localStorage.getItem("selectedDate");
 
-    console.log(busFrom, busTo, fromSourceID, toSourceID, jdate, 'Arigato')
+    // console.log(busFrom, busTo, fromSourceID, toSourceID, jdate, 'Arigato')
 
     useEffect(() => {
         if (location.pathname.includes('buslist')) {
@@ -54,7 +55,7 @@ export default function BottomNavbar({ ticketInfo }) {
         sessionStorage.setItem("tab", currentTab);
     }, [currentTab]);
 
-    console.log(currentTab, "currentTabcurrentTab");
+    // console.log(currentTab, "currentTabcurrentTab");
 
     const dispatch = useDispatch()
 

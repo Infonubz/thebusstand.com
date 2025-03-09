@@ -21,7 +21,7 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import { LiaCitySolid } from "react-icons/lia";
 import { toast } from "react-toastify";
-import { GetStations } from "../../../Api-TBS/Home/Home";
+import { GetStations, GetTBSAvailableService } from "../../../Api-TBS/Home/Home";
 
 const validationSchema = Yup.object().shape({
   occupation: Yup.string()
@@ -81,8 +81,8 @@ export default function SearchBusMobile() {
     sleeper: "",
     semi_sleeper: "",
     luxury_data: false,
-    from_state: '',
-    to_state: ''
+    from_state: "",
+    to_state: "",
   });
   const [error, setError] = useState();
 
@@ -106,7 +106,7 @@ export default function SearchBusMobile() {
       from_sourceID: busdatas.to_sourceID,
       to_sourceID: busdatas.from_sourceID,
       to_state: busdatas?.from_state,
-      from_state: busdatas?.to_state
+      from_state: busdatas?.to_state,
     };
 
     // Update the busdatas state
@@ -134,17 +134,25 @@ export default function SearchBusMobile() {
       ) {
         toast.error("Please Enter Your Origin and Destination City");
       } else {
-        const data = await Abhibus_GetBusList(
+        // const data = await Abhibus_GetBusList(
+        //   dispatch,
+        //   busdatas,
+        //   getselecteddate,
+        //   luxury
+        // );
+        const data = await GetTBSAvailableService(
           dispatch,
           busdatas,
           getselecteddate,
           luxury
         );
-        sessionStorage.setItem('loader', true)
+        sessionStorage.setItem("loader", true);
         // sessionStorage.removeItem('loader')
         navigation(
-          `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${busdatas.to_sourceID
-          }/${dayjs(getselecteddate).format("YYYY-MM-DD")}`, { state: busdatas }
+          `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${
+            busdatas.to_sourceID
+          }/${dayjs(getselecteddate).format("YYYY-MM-DD")}`,
+          { state: busdatas }
         );
       }
     } catch (error) {
@@ -218,7 +226,6 @@ export default function SearchBusMobile() {
   // }, [inputsearch, selectinput]);
 
   const [searchQuery, setSearchQuery] = useState("");
-
 
   const handleSearch = (event) => {
     const query = event.target.value;
@@ -301,16 +308,20 @@ export default function SearchBusMobile() {
               <div className="flex flex-col justify-between w-full gap-y-[2vw] py-[1vw]">
                 <div className="flex justify-between">
                   <button
-                    className={`border-[0.15vw] ${seatFilter === "seater"
-                      ? "bg-[#1F487C] text-white"
-                      : "text-black border-[#81A3B6]"
-                      }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
+                    className={`border-[0.15vw] ${
+                      seatFilter === "seater"
+                        ? "bg-[#1F487C] text-white"
+                        : "text-black border-[#81A3B6]"
+                    }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                     onClick={() => {
-                      if (seatFilter === "seater" && sessionStorage.getItem("home_seat_type") === "true") {
+                      if (
+                        seatFilter === "seater" &&
+                        sessionStorage.getItem("home_seat_type") === "true"
+                      ) {
                         SetSeatFilter("");
-                        sessionStorage.setItem("home_seat_type", null)
+                        sessionStorage.setItem("home_seat_type", null);
                       } else {
-                        SetSeatFilter("seater")
+                        SetSeatFilter("seater");
                         sessionStorage.setItem("home_seat_type", true);
                       }
                     }}
@@ -318,16 +329,20 @@ export default function SearchBusMobile() {
                     Seater
                   </button>
                   <button
-                    className={`border-[0.15vw] ${seatFilter === "sleeper"
-                      ? "bg-[#1F487C] text-white"
-                      : "text-black border-[#81A3B6]"
-                      }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
+                    className={`border-[0.15vw] ${
+                      seatFilter === "sleeper"
+                        ? "bg-[#1F487C] text-white"
+                        : "text-black border-[#81A3B6]"
+                    }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                     onClick={() => {
-                      if (seatFilter === "sleeper" && sessionStorage.getItem("home_seat_type") === "false") {
+                      if (
+                        seatFilter === "sleeper" &&
+                        sessionStorage.getItem("home_seat_type") === "false"
+                      ) {
                         SetSeatFilter("");
-                        sessionStorage.setItem("home_seat_type", null)
+                        sessionStorage.setItem("home_seat_type", null);
                       } else {
-                        SetSeatFilter("sleeper")
+                        SetSeatFilter("sleeper");
                         sessionStorage.setItem("home_seat_type", false);
                       }
                     }}
@@ -335,10 +350,11 @@ export default function SearchBusMobile() {
                     Sleeper
                   </button>
                   <button
-                    className={`border-[0.15vw]  ${luxury === true
-                      ? "bg-custom-gradient-luxury bg-image-url  text-black border-[#e1db84]"
-                      : "text-black border-[#81A3B6]"
-                      }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
+                    className={`border-[0.15vw]  ${
+                      luxury === true
+                        ? "bg-custom-gradient-luxury bg-image-url  text-black border-[#e1db84]"
+                        : "text-black border-[#81A3B6]"
+                    }  py-[1vw] px-[4vw] rounded-full text-[4vw]`}
                     onClick={() => {
                       setLuxury(!luxury);
                       // if (seatFilter == "semi_sleeper") {
@@ -451,7 +467,7 @@ export default function SearchBusMobile() {
                   handleSearch(e);
                 }}
                 value={searchQuery}
-              // value={inputsearch.from}
+                // value={inputsearch.from}
               />
             </div>
             <div className="h-screen  w-full overflow-y-scroll">
@@ -472,17 +488,17 @@ export default function SearchBusMobile() {
                         });
                         selectinput === "from"
                           ? setBusDatas({
-                            ...busdatas,
-                            from: item?.station_name,
-                            from_sourceID: item?.source_id,
-                            from_state: item?.state_name
-                          })
+                              ...busdatas,
+                              from: item?.station_name,
+                              from_sourceID: item?.source_id,
+                              from_state: item?.state_name,
+                            })
                           : setBusDatas({
-                            ...busdatas,
-                            to: item?.station_name,
-                            to_sourceID: item?.source_id,
-                            to_state: item?.state_name
-                          });
+                              ...busdatas,
+                              to: item?.station_name,
+                              to_sourceID: item?.source_id,
+                              to_state: item?.state_name,
+                            });
                         setError("");
                         setSearchQuery("");
                       }}

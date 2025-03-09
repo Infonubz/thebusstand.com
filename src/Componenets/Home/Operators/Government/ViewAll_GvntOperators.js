@@ -93,6 +93,8 @@ export default function ViewAll_GvntOperators() {
   const Get_GvtOperators = Get_Operators.filter((operator) =>
     operator.operater_name.toLowerCase().includes("rtc")
   );
+  
+  
 
   // Function to return the correct image based on the operator name
   const getOperatorImage = (operatorName) => {
@@ -133,6 +135,69 @@ export default function ViewAll_GvntOperators() {
     }
   };
 
+    const busdetails = [
+      {
+        label: "TNSTC",
+        logo: bus17,
+      },
+      {
+        label: "Kerala RTC",
+        logo: bus5,
+      },
+      {
+        label: "KSRTC",
+        logo: bus10,
+      },
+      {
+        label: "APSRTC",
+        logo: bus1,
+      },
+      {
+        label: "TSRTC",
+        logo: bus3,
+      },
+      {
+        label: "GSRTC",
+        logo: bus2,
+      },
+      {
+        label: "HRTC",
+        logo: bus13,
+      },
+      {
+        label: "JKSRTC",
+        logo: bus21,
+      },
+      {
+        label: "OSRTC",
+        logo: bus16,
+      },
+      {
+        label: "PRTC",
+        logo: bus18,
+      },
+      {
+        label: "PUNBUS",
+        logo: bus19,
+      },
+      {
+        label: "RSRTC",
+        logo: bus7,
+      },
+      {
+        label: "UPSRTC",
+        logo: bus8,
+      },
+      {
+        label: "BSRTC",
+        logo: bus15,
+      },
+      {
+        label: "WBTC",
+        logo: bus20,
+      },
+    ];
+
   const closeModal = () => {
     setModalIsOpen(false);
     // setShowDialog(false);
@@ -141,6 +206,7 @@ export default function ViewAll_GvntOperators() {
   // Fetch Operators
   useEffect(() => {
     Abhibus_GetOperators(dispatch);
+     // console.log(Get_GvtOperators,"hisdsdhsdksdskd");
   }, []);
 
   useEffect(() => {
@@ -193,7 +259,7 @@ export default function ViewAll_GvntOperators() {
                 </div>
                 <div className="md:max-h-[28vw] h-[75vh] overflow-y-auto">
                   <div className="grid grid-cols-2 md:grid-cols-5 w-full py-[1vw]">
-                    {Get_GvtOperators.length > 0 &&
+                    {/* {Get_GvtOperators.length > 0 &&
                       Get_GvtOperators?.map((item, index) => (
                         <div
                           key={index}
@@ -216,6 +282,33 @@ export default function ViewAll_GvntOperators() {
                     </Tooltip>
                   ) : (
                     item?.operater_name.slice(0, 10)
+                  )}
+                          </p>
+                        </div>
+                      ))} */}
+                        {
+                      busdetails?.map((item, index) => (
+                        <div
+                          key={index}
+                          className="col-span-1 w-full items-center justify-center flex-col"
+                        >
+                          <img
+                            src={item.logo} // Dynamically setting image
+                            className="md:w-[8vw] md:h-[8vw] ml-[11vw] md:ml-[2.5vw] rounded-full h-[22vw] w-[22vw]"
+                            alt={item.label}
+                          />
+                          <p className="text-center pb-[5vw] md:pb-[1.5vw] py-[1vw] md:py-[0.5vw] text-[3.8vw] md:text-[1vw]">
+                          {item?.label?.length > 11 ? (
+                    <Tooltip
+                      placement="top"
+                      title={item?.label}
+                      className="cursor-pointer"
+                      color="#1F487C"
+                    >
+                      {`${item?.label.slice(0, 11)}...`}
+                    </Tooltip>
+                  ) : (
+                    item?.label.slice(0, 10)
                   )}
                           </p>
                         </div>

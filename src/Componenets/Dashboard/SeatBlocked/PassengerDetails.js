@@ -11,7 +11,7 @@ import { RiArrowRightSLine } from "react-icons/ri";
 import { GiSevenPointedStar } from "react-icons/gi";
 import { BiSolidOffer } from "react-icons/bi";
 import dayjs from "dayjs";
-import Barcode from "react-barcode";
+// import Barcode from "react-barcode";
 import { useRef } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -25,6 +25,7 @@ import { getTabIndex } from "@progress/kendo-react-common";
 import { FaEdit } from "react-icons/fa";
 import { decryptData } from "../../Common/Common-Functions/Encrypt-Decrypt";
 import { GetPassengerData } from "../../../Api-TBS/MyAccounts/Passenger";
+import { LuxuryFind } from "../../Common/Common-Functions/LuxuryFind";
 
 export default function PassengerDetails({
   BusDetails,
@@ -45,7 +46,7 @@ export default function PassengerDetails({
   setEnableInput,
   setRegisterFullDetails,
 }) {
-  console.log(seatDetails, "wdcwdcwdcwdcdsc");
+   // console.log(seatDetails, "wdcwdcwdcwdcdsc");
 
   const {
     isSubmitting,
@@ -73,7 +74,7 @@ export default function PassengerDetails({
   const busdetails1 = busdetails2 || BusDetails;
   const seatDetails1 = seatDetails2 || seatDetails;
   const discount1 = discount2 || discount;
-  console.log(selectedSeats1, "selectedSeats1");
+   // console.log(selectedSeats1, "selectedSeats1");
 
   // const validationSchema = Yup.object().shape({
   //   mobile: Yup.string()
@@ -119,14 +120,14 @@ export default function PassengerDetails({
   //     return acc;
   //   }, {})
   // );
-  const LuxuryFind = (type) =>
-    type?.toLowerCase().includes("volvo") ||
-    type?.toLowerCase().includes("mercedes benz") ||
-    type?.toLowerCase().includes("washroom") ||
-    type?.toLowerCase().includes("bharatBenz") ||
-    type?.toLowerCase().includes("luxury");
+  // const LuxuryFind = (type) =>
+  //   type?.toLowerCase().includes("volvo") ||
+  //   type?.toLowerCase().includes("mercedes benz") ||
+  //   type?.toLowerCase().includes("washroom") ||
+  //   type?.toLowerCase().includes("bharatBenz") ||
+  //   type?.toLowerCase().includes("luxury");
   // const [registerfulldetails, setRegisterFullDetails] = useState({});
-  console.log(registerfulldetails, "register_full_details");
+   // console.log(registerfulldetails, "register_full_details");
   const [continuenext, setContinue] = useState(false);
   const [sumbitbutton, setSubmitButon] = useState(false);
 
@@ -160,7 +161,7 @@ export default function PassengerDetails({
   const componentRef = useRef();
   const dispatch = useDispatch();
 
-  console.log(travelerDetails, "traveler_Details");
+   // console.log(travelerDetails, "traveler_Details");
 
   //   const isAllDetailsFilled = Object?.values(travelerDetails).every(
   //     (traveler) =>
@@ -170,7 +171,7 @@ export default function PassengerDetails({
   //       traveler.seat !== ""
   //   );
 
-  //   console.log(isAllDetailsFilled, "is_all_details_Filled");
+  //    // console.log(isAllDetailsFilled, "is_all_details_Filled");
   // const [drawerWidth, setDrawerWidth] = useState("60%");
   const user_id1 = sessionStorage.getItem("user_id");
   const user_id = user_id1 && decryptData(user_id1);
@@ -218,10 +219,10 @@ export default function PassengerDetails({
         // If valid details, you can execute any additional logic here
         if (hasValidDetails) {
           // Add any logic for displaying the icon or other actions
-          console.log(
-            "Valid traveler details selected:",
-            updatedDetails[index]
-          );
+           // console.log(
+          //   "Valid traveler details selected:",
+          //   updatedDetails[index]
+          // );
         }
 
         return updatedDetails;
@@ -234,12 +235,12 @@ export default function PassengerDetails({
 
       setPassengerId(selectedPassengerId);
 
-      console.log("Updated travelerDetails", {
-        user_name: passenger.user_name,
-        age: passenger.age,
-        gender: passenger.gender,
-        seat: selectedSeats1?.[index],
-      });
+       // console.log("Updated travelerDetails", {
+      //   user_name: passenger.user_name,
+      //   age: passenger.age,
+      //   gender: passenger.gender,
+      //   seat: selectedSeats1?.[index],
+      // });
     }
 
     setPassengerDropDown(null);
@@ -314,7 +315,7 @@ export default function PassengerDetails({
   // }, []);
 
   // const handleSubmit = async (values) => {
-  //   console.log(values.email, values.mobile, "handle Submit");
+  //    // console.log(values.email, values.mobile, "handle Submit");
 
   //   try {
   //     // const response = await SendBookingDetails(
@@ -334,7 +335,7 @@ export default function PassengerDetails({
   //     setShowPrice(true);
   //     setSubmitButon(true);
   //     setEnableInput(true);
-  //     console.log(response?.bookingId, "values 123");
+  //      // console.log(response?.bookingId, "values 123");
   //     if (!bookingId) {
   //       setBookingId(response?.bookingId);
   //       // setBookingId1(response?.bookingId);
@@ -345,20 +346,20 @@ export default function PassengerDetails({
   // };
 
   const handlePromoCode = async () => {
-    console.log(promoCode, "Promocode Submit");
+     // console.log(promoCode, "Promocode Submit");
   };
 
   const handleBookingPrice = async () => {
     setLoading(true);
     const totalAmount = `${Number(discount1) + Number(Math.round(discount1 * 0.03))
       }`;
-    console.log(
-      totalAmount,
-      bookingId,
-      selectedSeats1,
-      busdetails1,
-      "busdetails1"
-    );
+     // console.log(
+    //   totalAmount,
+    //   bookingId,
+    //   selectedSeats1,
+    //   busdetails1,
+    //   "busdetails1"
+    // );
     setTimeout(() => {
       // setShowModal(false);
       setRatingModal(true);
@@ -373,7 +374,7 @@ export default function PassengerDetails({
     //     promoCode
     //   );
     //   setBusBookingId(response.Booking_Id);
-    //   console.log(response, "response for price");
+    //    // console.log(response, "response for price");
     //   setContinue(true);
     //   toast.success("booked successfully");
     //   setLoading(false);
@@ -404,7 +405,7 @@ export default function PassengerDetails({
   // const fetchBookingDetail = async (mobilenum) => {
   //   try {
   //     const data = await GetBookingDetails(mobilenum, dispatch);
-  //     console.log(data[0].Array, "GetBookingDetails data");
+  //      // console.log(data[0].Array, "GetBookingDetails data");
   //   } catch (error) {
   //     console.error("Error fetching data", error);
   //   }
@@ -420,11 +421,11 @@ export default function PassengerDetails({
   //   }
   // }, [proceed]);
   const seatStatus = seatDetails1;
-  console.log(
-    Object?.values(seatDetails1)?.[0]?.Status,
-    selectedSeats1,
-    "seatStatusseatStatus"
-  );
+   // console.log(
+  //   Object?.values(seatDetails1)?.[0]?.Status,
+  //   selectedSeats1,
+  //   "seatStatusseatStatus"
+  // );
 
   useEffect(() => {
     setTravelerDetails(
@@ -433,7 +434,7 @@ export default function PassengerDetails({
         const seatStatus = seatDetails1?.[seat]?.Status;
 
         // Determine gender based on the seatStatus
-        console.log(seatStatus, "seatStatus888888");
+         // console.log(seatStatus, "seatStatus888888");
 
         let gender = "male"; // Default to male
         if (seatStatus === "F") {
@@ -483,17 +484,17 @@ export default function PassengerDetails({
 
   useEffect(() => {
     const handleTicketDetail = async () => {
-      console.log(busBookingId, "response for ticket id");
+       // console.log(busBookingId, "response for ticket id");
       //   try {
       //     const response = await TicketViewDetails(busBookingId, mobileInput);
       //     setTicketDetail(response);
-      //     console.log(response, "response for ticketdtl");
+      //      // console.log(response, "response for ticketdtl");
       //   } catch (error) {
       //     console.error("Error", error);
       //   }
     };
 
-    console.log(busBookingId, "response for ticket id");
+     // console.log(busBookingId, "response for ticket id");
     if (busBookingId) {
       handleTicketDetail();
     }
@@ -501,17 +502,17 @@ export default function PassengerDetails({
 
   useEffect(() => {
     const fetchGetPassenger = async () => {
-      console.log(passengerId, "passengerId");
+       // console.log(passengerId, "passengerId");
       const updateData = passengerId;
       //   try {
       //     const data = await GetPassengById(updateData);
-      //     console.log(data, "datadata");
+      //      // console.log(data, "datadata");
       //   } catch (error) {
       //     console.error("Error fetching additional user data", error);
       //   }
     };
 
-    console.log(passengerId, "passengerId");
+     // console.log(passengerId, "passengerId");
     if (passengerId) {
       fetchGetPassenger();
     }
@@ -573,7 +574,7 @@ export default function PassengerDetails({
 
   // const borderColor =
   //   busdetails1?.bus_type_status === "luxury" ? "#393939" : colorcode.theme;
-  console.log(BusDetails?.Bus_Type_Name === true, "seatDetails1seatDetails1");
+   // console.log(BusDetails?.Bus_Type_Name === true, "seatDetails1seatDetails1");
   const getSeatColor = (index, travelerDetails, BusDetails, enableInput) => {
     const isMale =
       travelerDetails?.[index]?.gender === "male" || !travelerDetails?.[index];
@@ -618,12 +619,12 @@ export default function PassengerDetails({
         isSelected || isEmpty ? (isLuxury ? "#393939" : "#1F4B7F") : "",
     };
   };
-  console.log(
-    travelerDetails,
-    mobileInput,
-    emailInput,
-    "travsdddddddddddddddddddd"
-  );
+   // console.log(
+  //   travelerDetails,
+  //   mobileInput,
+  //   emailInput,
+  //   "travsdddddddddddddddddddd"
+  // );
   const [isEmpty, setIsEmpty] = useState(true);
 
   useEffect(() => {
@@ -632,7 +633,7 @@ export default function PassengerDetails({
     );
     setIsEmpty(checkIfAnyEmpty);
   }, [travelerDetails]);
-  console.log(selectedSeats1, "gggdddddgg");
+   // console.log(selectedSeats1, "gggdddddgg");
 
   return (
     <div>
@@ -721,7 +722,7 @@ export default function PassengerDetails({
                       validationSchema={validationSchema}
                       onSubmit={(values) => {
                         handleSubmit(values);
-                        console.log(values, "values values");
+                         // console.log(values, "values values");
                         setRegisterFullDetails(values);
                         localStorage.setItem("page1", true);
                         localStorage.setItem("occupation", values.option);
@@ -1030,7 +1031,7 @@ export default function PassengerDetails({
                                                     },
                                                   })
                                                 );
-                                                console.log(e.target.value, 'ddsfasd')
+                                                 // console.log(e.target.value, 'ddsfasd')
 
                                               }}
                                               onKeyDown={handleKeyDown}

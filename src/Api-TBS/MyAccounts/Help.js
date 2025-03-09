@@ -14,6 +14,6 @@ export const help = async (values) => {
     });
     toast.success(response.data);
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   }
 };

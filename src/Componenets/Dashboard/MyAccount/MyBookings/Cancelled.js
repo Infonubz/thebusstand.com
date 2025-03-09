@@ -15,6 +15,7 @@ import ViewFullTicket from "../ViewTicket/ViewFullTicket";
 import {
   GetBookingStatusDetails,
   GetCancelDetails,
+  GetViewTicketID,
 } from "../../../../Api-TBS/MyAccounts/MyBookings";
 import { decryptData } from "../../../Common/Common-Functions/Encrypt-Decrypt";
 import { GET_TICKET_DETAILS } from "../../../../Store/Type";
@@ -46,7 +47,7 @@ export default function Cancelled() {
   const [ticketDetails, setTicketDetails] = useState([]);
   const [spinning1, setSpinning1] = useState(false);
   const [spinning, setSpinning] = useState(false);
-  const navigation = useNavigate()
+  const navigation = useNavigate();
   // const completedDetails = [
   //   {
   //     depature: "Chennai",
@@ -80,7 +81,7 @@ export default function Cancelled() {
   // ];
 
   const completedDetails = useSelector((state) => state.booking_details);
-  console.log(completedDetails, "ithuulla");
+   // console.log(completedDetails, "ithuulla");
 
   const dispatch = useDispatch();
 
@@ -111,9 +112,9 @@ export default function Cancelled() {
       if (passengerCount > 3) {
         //setPassCount(true);
       }
-      console.log(
-        `Booking ID: ${booking.Booking_Id}, Passenger Count: ${passengerCount}`
-      );
+       // console.log(
+      //   `Booking ID: ${booking.Booking_Id}, Passenger Count: ${passengerCount}`
+      // );
     });
   }, [completedDetails]);
   const updateStartIndex = (item) => {
@@ -134,19 +135,20 @@ export default function Cancelled() {
   };
   const handleviewticket = async (ticketno) => {
     setViewModalIsOpen(true);
-    console.log("yyyyyyyyyyyyy");
+     // console.log("yyyyyyyyyyyyy");
     Get_TBS_Booking_details(ticketno, dispatch);
 
     try {
-      console.log("tyucusdcsd");
+       // console.log("tyucusdcsd");
 
-      const ticketdetails = await ViewTicketById(ticketno, setSpinning);
+      // const ticketdetails = await ViewTicketById(ticketno, setSpinning);
+      const ticketdetails = await GetViewTicketID(ticketno, setSpinning);
       dispatch({
         type: GET_TICKET_DETAILS,
         payload: ticketdetails,
       });
     } catch (err) {
-      console.log(err);
+       // console.log(err);
     }
   };
   const ticketlist = useSelector((state) => state?.get_ticket_detail);
@@ -202,7 +204,7 @@ export default function Cancelled() {
               <div
                 className={` flex items-center pl-[1vw] md:text-[1vw] text-[4vw] md:gap-x-[0.5vw] gap-x-[1.5vw]`}
               >
-                <span>Showing{" "}</span>
+                <span>Showing </span>
                 <div className="bg-[#1F487C] rounded-full flex items-center justify-center md:w-[1.75vw] md:h-[1.75vw] w-[5vw] h-[5vw]">
                   <span
                     className={`rounded-full font-extrabold md:text-[0.9vw] text-[4vw] text-white `}
@@ -339,7 +341,9 @@ export default function Cancelled() {
                               className={`md:text-[1.1vw] text-[3vw] text-[#1F487C]`}
                             >
                               {/* {item?.depature_time}{" "} */}
-                              {moment(item?.depature_time, "HH:mm:ss").format("h:mm A")}
+                              {moment(item?.depature_time, "HH:mm:ss").format(
+                                "h:mm A"
+                              )}
                             </span>
                           </label>
                           <label
@@ -367,7 +371,9 @@ export default function Cancelled() {
                             <span className={`text-[1.1vw] text-[#1F487C] `}>
                               {/* {item.arraival_time} */}
                               {/* {dayjs(item?.arraival_time, "HH:mm:ss").format("h:mm A")} */}
-                              {moment(item?.arraival_time, "HH:mm:ss").format("h:mm A")}
+                              {moment(item?.arraival_time, "HH:mm:ss").format(
+                                "h:mm A"
+                              )}
                             </span>
                           </label>
                           <label
@@ -375,7 +381,6 @@ export default function Cancelled() {
                           >
                             {/* {item.droping_point_name} */}
                             {item.destination_name}
-
                           </label>
                         </div>
                         <div
@@ -453,15 +458,16 @@ export default function Cancelled() {
                   </div> */}
                       <div className={`md:block hidden w-full col-span-2  `}>
                         <div className={`flex justify-center`}>
-                          {console.log(
+                          {/* { // console.log(
                             item?.passenger_details,
                             "lengthhhhhhhhhhhhhhhhhhhhh"
-                          )}
+                          )} */}
                           <div
-                            className={`w-full ${item?.passenger_details?.length > 3
+                            className={`w-full ${
+                              item?.passenger_details?.length > 3
                                 ? "grid grid-cols-2 gap-x-[1.5vw] gap-y-[.5vw]"
                                 : "flex flex-col gap-y-[0.5vw]"
-                              }`}
+                            }`}
                           >
                             {item?.passenger_details?.map((list) =>
                               list?.name?.length > 10 ? (
@@ -492,10 +498,7 @@ export default function Cancelled() {
                                       className={`md:text-[1.1vw] text-[3vw] text-[#1F487C] font-bold`}
                                     >
                                       {list?.name?.length > 10
-                                        ? `${list.name.slice(
-                                          0,
-                                          10
-                                        )}...`
+                                        ? `${list.name.slice(0, 10)}...`
                                         : list.name}
                                       {/* {(list.user_name)} */}
                                     </span>

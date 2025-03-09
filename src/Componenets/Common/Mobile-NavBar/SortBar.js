@@ -17,7 +17,7 @@ export default function SortBar({ selectedOption, setSelectedOption }) {
     high_low_seats: false,
   });
 
-  console.log(sortList, 'sortList_sort')
+  // console.log(sortList, 'sortList_sort')
 
   const handleRadioChange = (option, key) => {
     if (selectedOption === option) {
@@ -93,14 +93,14 @@ export default function SortBar({ selectedOption, setSelectedOption }) {
     } else if (sortList.high_low_seats) {
       sortedList.sort((a, b) => b.available_seats - a.available_seats);
     }
-    console.log(sortedList, 'sorted_List')
+    // console.log(sortedList, 'sorted_List')
     dispatch({ type: "GET_BUS_FILTERS", payload: sortedList });
     return sortedList;
   };
 
   useEffect(() => {
     const sortedItems = sortListItems();
-    console.log(sortedItems, 'sortedItems');
+    // console.log(sortedItems, 'sortedItems');
   }, [sortList]);
 
   return (

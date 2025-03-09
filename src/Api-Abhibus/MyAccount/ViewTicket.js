@@ -20,7 +20,6 @@ export const processSOAPResponse = async (soapResponse, name) => {
     // Step 2: Parse the SOAP response (XML to JS object)
     const parsedSOAP = parser.parse(soapResponse);
 
-    console.log("Parsed SOAP:", parsedSOAP); // Log the parsed SOAP response
 
     // Step 3: Extract the JSON string from the parsed response
     // Check if the response exists and then try to access GetStationsResult
@@ -28,13 +27,11 @@ export const processSOAPResponse = async (soapResponse, name) => {
       parsedSOAP["SOAP-ENV:Envelope"]?.["SOAP-ENV:Body"]?.[
         `ns1:${name}Response`
       ]?.[`ns1:${name}Result`]?.["#text"];
-    console.log("Extracted GetStationsResult:", getStationsResult);
 
     // Ensure the jsonString is a valid string before trying to parse it
     if (getStationsResult) {
       // Check if it's a JSON string and parse it
       const jsonObject = JSON.parse(getStationsResult);
-      console.log("Converted JSON Object:", jsonObject);
       return jsonObject;
     } else {
       console.error("No valid 'GetStationsResult' found in the response");
@@ -122,7 +119,6 @@ export const PreCancelTicket = async (values, mblno) => {
       "PreCancellationV5"
     );
 
-    console.log(result.CancellationPolicyWithRefund, "Responsesdsdsdsdsd Data");
     return result;
   } catch (err) {
     console.error(err, "Error in the response");
@@ -166,7 +162,6 @@ export const CancelTicket = async (
         SOAPAction: `${abhibusurl}/CancelTicket`,
       },
     });
-    console.log(response, "yyyyyyyyyyyyyyy");
 
     const result = await processSOAPResponse(response.data, "CancelTicket");
     // console.log([result.ticketInfo], "Responsesdsdsdsdsd Data");

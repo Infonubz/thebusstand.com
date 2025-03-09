@@ -43,14 +43,18 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
   // const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   const validationSchema = Yup.object({
-    mobile: Yup.string()
-      .required("Mobile number is required")
-      .matches(/^\d{10}$/, "Mobile number must be exactly 10 digits"),
+    // mobile: Yup.string()
+    //   .required("Mobile number is required")
+    //   .matches(/^\d{10}$/, "Mobile number must be exactly 10 digits"),
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required")
       .min(5, "Email must be at least 5 characters long")
       .max(40, "Email must be less than 40 characters")
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        "Invalid email address"
+      )
       .test(
         "no-special-characters",
         "Email contains invalid characters",
@@ -60,6 +64,25 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
           return !forbiddenChars.test(value); // Returns false if invalid characters are found
         }
       ),
+  });
+  const validationMobile = Yup.object({
+    mobile: Yup.string()
+      .required("Mobile number is required")
+      .matches(/^\d{10}$/, "Mobile number must be exactly 10 digits"),
+    // email: Yup.string()
+    //   .email("Invalid email address")
+    //   .required("Email is required")
+    //   .min(5, "Email must be at least 5 characters long")
+    //   .max(40, "Email must be less than 40 characters")
+    //   .test(
+    //     "no-special-characters",
+    //     "Email contains invalid characters",
+    //     (value) => {
+    //       // Regular expression to disallow certain special characters
+    //       const forbiddenChars = /[!#$%&'*+/=?^_{}|~]/;
+    //       return !forbiddenChars.test(value); // Returns false if invalid characters are found
+    //     }
+    //   ),
   });
 
   const [user, setUser] = useState(null);
@@ -109,7 +132,7 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
     sessionStorage.setItem("email_id", encryptedUserEmail);
     sessionStorage.setItem("mobile", encryptedUserMobile);
     setLoading(true);
-    console.log("testiiiiiiiii");
+     // console.log("testiiiiiiiii");
 
     if (values?.email) {
       try {
@@ -118,7 +141,7 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
         // nextPage();
         setLoading(false);
       } catch (err) {
-        console.log(err);
+         // console.log(err);
       }
     } else {
       try {
@@ -128,14 +151,14 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
         // nextPage();
         setLoading(false);
       } catch (err) {
-        console.log(err);
+         // console.log(err);
       }
     }
   };
   useEffect(() => {
     const OTPdata = sessionStorage.getItem("mobileOTP");
     const decryptOTP = OTPdata && decryptData(OTPdata);
-    console.log(random, decryptOTP, OTPdata, otpvalid, "wssssssssssss");
+     // console.log(random, decryptOTP, OTPdata, otpvalid, "wssssssssssss");
   }, [sessionStorage.getItem("mobileOTP")]);
 
   useEffect(() => {
@@ -150,8 +173,8 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
       setLoading(false);
     }
   }, [dispatch, user]);
-  console.log(decryptMobile, "decryptMobiledecryptMobile");
-  console.log(toggleNum, "toggleNumhhhhhhhhh");
+   // console.log(decryptMobile, "decryptMobiledecryptMobile");
+   // console.log(toggleNum, "toggleNumhhhhhhhhh");
 
   return (
     <>
@@ -237,7 +260,9 @@ const MobileNumberLog = ({ setCurrentPage, setLoginMobileIsOpen }) => {
                 mobile: decryptMobile || "",
                 email: decryptEmailId || "",
               }}
-              // validationSchema={validationSchema}
+              validationSchema={
+                toggleNum === 2 ? validationSchema : validationMobile
+              }
               onSubmit={(values) => {
                 handleSubmit(values);
                 // sessionStorage.setItem("email_id", values.email);

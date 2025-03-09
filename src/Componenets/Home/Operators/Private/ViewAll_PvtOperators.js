@@ -27,6 +27,7 @@ import {
   faAngleDoubleRight,
 } from "@fortawesome/free-solid-svg-icons";
 import "../../../../App.css";
+import { GetTBSOperators } from "../../../../Api-TBS/Home/Home";
 
 export default function ViewAll_PvtOperators() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -89,7 +90,8 @@ export default function ViewAll_PvtOperators() {
   };
 
   useEffect(() => {
-    Abhibus_GetOperators(dispatch);
+    // Abhibus_GetOperators(dispatch);
+    GetTBSOperators(dispatch);
   }, []);
 
   useEffect(() => {
@@ -132,7 +134,7 @@ export default function ViewAll_PvtOperators() {
                 <p
                   className={`md:text-[1.5vw] text-[5vw] text-[${colors.primary}] font-bold`}
                 >
-                    {`${Get_Operators?.length}+ Private Bus Operators`}
+                  {`${Get_Operators?.length}+ Private Bus Operators`}
                 </p>
               </div>
               <div className="md:max-h-[28vw] h-[75vh]  overflow-y-auto">
@@ -186,9 +188,7 @@ export default function ViewAll_PvtOperators() {
           </div>
         </div>
       </div>
-      <span className="md:block hidden">
-        {/* <Footer /> */}
-      </span>
+      <span className="md:block hidden">{/* <Footer /> */}</span>
       <ModalPopup
         show={modalIsOpen}
         onClose={closeModal}

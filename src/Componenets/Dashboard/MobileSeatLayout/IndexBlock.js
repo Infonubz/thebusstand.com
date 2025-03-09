@@ -16,6 +16,10 @@ import MobileViewTicket from "../MyAccount/ViewTicket/MobileViewTicket";
 import dayjs from "dayjs";
 import busloading from "../../../Assets/Gif/bus.gif";
 import { decryptData } from "../../Common/Common-Functions/Encrypt-Decrypt";
+import {
+  GetTBSFareInfo,
+  GetTBSSeatBlock,
+} from "../../../Api-TBS/Dashboard/Dashboard";
 
 export default function IndexBlock() {
   const location = useLocation();
@@ -112,12 +116,12 @@ export default function IndexBlock() {
       .max(999999, "Pincode must be a 6-digit number"),
   });
 
-  const LuxuryFind = (type) =>
-    type?.toLowerCase().includes("volvo") ||
-    type?.toLowerCase().includes("mercedes benz") ||
-    type?.toLowerCase().includes("washroom") ||
-    type?.toLowerCase().includes("bharatBenz") ||
-    type?.toLowerCase().includes("luxury");
+  // const LuxuryFind = (type) =>
+  //   type?.toLowerCase().includes("volvo") ||
+  //   type?.toLowerCase().includes("mercedes benz") ||
+  //   type?.toLowerCase().includes("washroom") ||
+  //   type?.toLowerCase().includes("bharatBenz") ||
+  //   type?.toLowerCase().includes("luxury");
 
   const getPassengerCount = (data) => {
     let adultCount = 0;
@@ -141,7 +145,17 @@ export default function IndexBlock() {
 
   const handleSubmit = async (values) => {
     try {
-      const response = await Abhibus_SeatBlocked(
+      // const response = await Abhibus_SeatBlocked(
+      //   busdetails2,
+      //   seatDetails2,
+      //   travelerDetails,
+      //   values,
+      //   selectedRoutes2,
+      //   emailInput,
+      //   mobileInput,
+      //   selectedseatprice2
+      // );
+      const response = await GetTBSSeatBlock(
         busdetails2,
         seatDetails2,
         travelerDetails,
@@ -156,7 +170,12 @@ export default function IndexBlock() {
         setEnableInput(true);
         setConfirmRefNo(response?.ReferenceNo);
         try {
-          const data = await Abhibus_GetFareInfo(
+          // const data = await Abhibus_GetFareInfo(
+          //   adultCount,
+          //   childCount,
+          //   response?.ReferenceNo
+          // );
+          const data = await GetTBSFareInfo(
             adultCount,
             childCount,
             response?.ReferenceNo

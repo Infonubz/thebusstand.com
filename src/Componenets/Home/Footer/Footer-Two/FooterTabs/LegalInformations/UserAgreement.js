@@ -9,14 +9,14 @@ import Navbar_One from "../../../../../Common/Top-Navbar/Navbar-One";
 export const UserAgreement = () => {
     const dispatch = useDispatch();
     const agreement = useSelector((state) => state?.tbs_info || [])
-    console.log(agreement.user_agreement, 'consoleconsole');
+     // console.log(agreement.user_agreement, 'consoleconsole');
 
     useEffect(() => {
         GetFooterTabs(dispatch);
     }, [dispatch]);
 
     const user_agreement = agreement?.user_agreement
-    console.log(user_agreement, 'user_agreement');
+     // console.log(user_agreement, 'user_agreement');
 
     return (
         <>

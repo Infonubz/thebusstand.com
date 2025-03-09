@@ -7,6 +7,8 @@ import {
 } from "../../Store/Type";
 import { decryptData } from "../../Componenets/Common/Common-Functions/Encrypt-Decrypt";
 import { useParams } from "react-router";
+import dayjs from "dayjs";
+import { LuxuryFind } from "../../Componenets/Common/Common-Functions/LuxuryFind";
 
 //import { object } from "yup";
 
@@ -48,8 +50,7 @@ export const OperatorFilters = async (operator, e = null) => {
         "Content-Type": "application/json",
       },
     });
-    console.log(response, "locationdatas");
-    console.log(response.data, "submitlocationdata");
+
     return response.data;
     //  const response = await axios.get(`${apiUrl}/operator-names/${operator}`);
   } catch (error) {
@@ -59,7 +60,6 @@ export const OperatorFilters = async (operator, e = null) => {
 export const Get_TBS_Booking_details = async (TicketNo, dispatch) => {
   try {
     const response = await axios.get(`${apiUrl}/getbookingdetails/${TicketNo}`);
-    console.log(response?.data, "ddddjjjjjjdjdjhfh");
     dispatch({
       type: TBS_TICKET_DETAILS,
       payload: response?.data,
@@ -94,10 +94,7 @@ export const TBS_Booking_Details = async (
   totaltax,
   Boarding_time
 ) => {
-  console.log(
-    ticketdetails?.Board_Halt_Time,
-    "ticketdetailsticketdetailsticketdetails"
-  );
+
   const l_user_id = sessionStorage.getItem("user_id");
   const l_email_id = sessionStorage.getItem("user_email_id");
   const l_mobile = sessionStorage.getItem("user_mobile");
@@ -106,12 +103,12 @@ export const TBS_Booking_Details = async (
   const login_email_id = decryptData(l_email_id);
   const login_mobile = decryptData(l_mobile);
   const login_user_id = decryptData(l_user_id);
-  const LuxuryFind = (type) =>
-    type.toLowerCase().includes("volvo") ||
-    type.toLowerCase().includes("mercedes benz") ||
-    type.toLowerCase().includes("washroom") ||
-    type.toLowerCase().includes("bharatBenz") ||
-    type.toLowerCase().includes("luxury");
+  // const LuxuryFind = (type) =>
+  //   type.toLowerCase().includes("volvo") ||
+  //   type.toLowerCase().includes("mercedes benz") ||
+  //   type.toLowerCase().includes("washroom") ||
+  //   type.toLowerCase().includes("bharatBenz") ||
+  //   type.toLowerCase().includes("luxury");
   const payload = {
     login_user_id: login_user_id,
     login_user_email: login_email_id,
@@ -165,8 +162,7 @@ export const TBS_Booking_Details = async (
         "Content-Type": "application/json",
       },
     });
-    console.log(response, "locationdatas");
-    console.log(response.data, "submitlocationdata");
+ 
     Get_TBS_Booking_details(TicketNo, dispatch);
     return response.data;
     //  const response = await axios.get(`${apiUrl}/operator-names/${operator}`);
@@ -192,7 +188,6 @@ export const TBS_Booking_Cancellation = async (
   const login_email_id = decryptData(l_email_id);
   const login_mobile = decryptData(l_mobile);
   const login_user_id = decryptData(l_user_id);
-  console.log(droppingDate, "formattedDate");
 
   const payload = {
     login_user_id: login_user_id,
@@ -215,7 +210,7 @@ export const TBS_Booking_Cancellation = async (
     new_ticket_no: NewPNR ? NewPNR : null,
     cancel_date_time: new Date(),
     refund_amt: calculateRefund,
-    total_fare: "",
+    total_fare: passengerDetails?.TicketFare,
   };
 
   const url = `${apiUrl}/cancellation`;
@@ -229,12 +224,10 @@ export const TBS_Booking_Cancellation = async (
         "Content-Type": "application/json",
       },
     });
-    console.log(response, "locationdatas");
-    console.log(response.data, "submitlocationdata");
+  
     return response.data;
     //  const response = await axios.get(`${apiUrl}/operator-names/${operator}`);
   } catch (error) {
-    console.log(error, "errorerror");
 
     handleError(error);
   }
@@ -271,7 +264,6 @@ export const PostFeedBack = async (rating, nameValue, feedback, occValue) => {
     });
     toast.success(response.data);
   } catch (err) {
-    console.log(err);
   }
 };
 
@@ -280,7 +272,6 @@ export const GetFeedbackById = async () => {
   const id = passenger_id && decryptData(passenger_id);
   try {
     const response = await axios.get(`${apiUrl}/passenger-details/${id}`);
-    console.log(response.data, "ddddjjjjjjdjdjhfh");
     return response.data;
   } catch (err) {
     handleError(err);
@@ -309,8 +300,7 @@ export const GetAvailableOffers = async (dispatch, emailInput, mobileInput) => {
       type: GET_AVAILABLE_OFFER,
       payload: response?.data,
     });
-    console.log(response, "locationdatas");
-    console.log(response.data, "submitlocationdata");
+ 
     return response.data;
     //  const response = await axios.get(`${apiUrl}/operator-names/${operator}`);
   } catch (error) {
@@ -337,8 +327,7 @@ export const GetOfferValid = async (emailInput, mobileInput, coupon_code) => {
         "Content-Type": "application/json",
       },
     });
-    console.log(response, "locationdatas");
-    console.log(response.data, "submitlocationdata");
+
     return response.data;
     //  const response = await axios.get(`${apiUrl}/operator-names/${operator}`);
   } catch (error) {
@@ -348,12 +337,217 @@ export const GetOfferValid = async (emailInput, mobileInput, coupon_code) => {
 export const DownloadTicket = async (ticketID) => {
   try {
     const response = await axios.get(`${apiUrl}/downloadticket/${ticketID}`);
-    console.log(response, "downloading_ticket");
     return response?.data;
   } catch (err) {
     handleError(err);
   }
 };
+export const GetTBSSeatLayout = async (BusDetails, dispatch) => {
+  const payload = {
+    operatorId: BusDetails?.operatorId,
+    Service_key: BusDetails?.Service_key,
+    Source_ID: BusDetails?.Source_ID,
+    Destination_ID: BusDetails?.Destination_ID,
+    BUS_START_DATE: dayjs(BusDetails?.BUS_START_DATE).format("YYYY-MM-DD"),
+    layout_id: BusDetails?.layout_id,
+    Fare: BusDetails?.Fare,
+  };
+
+  const url = `${apiUrl}/getserviceseatinglayout`;
+  const method = "post";
+  try {
+    const response = await api({
+      method,
+      url,
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    // dispatch({ type: BUSLIST_LOADER, payload: false });
+    // dispatch({ type: GET_BUS_LIST, payload: response?.data?.services });
+    // dispatch({ type: GET_BUS_FILTERS, payload: response?.data?.services });
+    sessionStorage.setItem("busListLoader", false);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+export const GetTBSSeatBlock = async (
+  BusDetails,
+  selectedSeats1,
+  travelerDetails,
+  values,
+  selectedRoutes,
+  emailInput,
+  mobileInput,
+  selectedseatprice
+) => {
+
+
+  // const LuxuryFind = (type) =>
+  //   type.toLowerCase().includes("volvo") ||
+  //   type.toLowerCase().includes("mercedes benz") ||
+  //   type.toLowerCase().includes("washroom") ||
+  //   type.toLowerCase().includes("bharatBenz") ||
+  //   type.toLowerCase().includes("luxury");
+  // console.log(selectedSeats1, "selectedSeats1selectedSeats1");
+
+  const seatpriceList = selectedseatprice?.map((item) => item).join(", ");
+  const seatFareList = Object.values(selectedSeats1)
+    .map((item) => item.price)
+    .filter((price) => price)
+    .join(",");
+  const namesList = Object.values(travelerDetails)
+    .map((item) => item.user_name)
+    .filter((name) => name)
+    .join(",");
+  const genderList = Object.values(travelerDetails)
+    .map((item) => (item.gender === "male" ? "M" : "F")) // Convert to M or F
+    .filter((gender) => gender) // Remove undefined/null values
+    .join(",");
+
+
+  const ageList = Object.values(travelerDetails)
+    .map((item) => item.age)
+    .filter((name) => name)
+    .join(",");
+  const seatList = Object.values(travelerDetails)
+    .map((item) => item.seat)
+    .filter((name) => name)
+    .join(",");
+  const seatTypeList = Object.values(selectedSeats1)
+    .map((item) => item.type)
+    .filter((name) => name)
+    .join(",");
+  const seatTypeIdList = Object.values(selectedSeats1)
+    .map((item) => item.typeId)
+    .filter((name) => name)
+    .join(",");
+  const seatTaxList = Object.values(selectedSeats1)
+    .map((item) => item.tax.split(",")[0])
+    .filter((tax) => tax)
+    .join(",");
+  const isAcType = LuxuryFind(BusDetails.Bus_Type_Name) === true ? "yes" : "no";
+  const payload = {
+    operatorId: BusDetails?.operatorId,
+    Service_key: BusDetails?.Service_key,
+    Source_ID: BusDetails?.Source_ID,
+    Destination_ID: BusDetails?.Destination_ID,
+    BUS_START_DATE: dayjs(BusDetails?.BUS_START_DATE).format("YYYY-MM-DD"),
+    layout_id: BusDetails?.layout_id,
+    dep_route_id: selectedRoutes?.dep_route_id,
+    arr_route_id: selectedRoutes?.arr_route_id,
+    address: values?.address,
+    city: values?.city,
+    pin_code: values?.pin_code,
+    state: values?.state,
+    mobileInput: mobileInput,
+    emailInput: emailInput,
+    namesList: namesList,
+    genderList: genderList,
+    ageList: ageList,
+    seatList: seatList,
+    seatFareList: seatFareList,
+    seatTypeList: seatTypeList,
+    seatTypeIdList: seatTypeIdList,
+    isAcType: isAcType,
+    seatTaxList: seatTaxList,
+  };
+  const url = `${apiUrl}/blocktickets`;
+  const method = "post";
+  try {
+    const response = await api({
+      method,
+      url,
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    // dispatch({ type: BUSLIST_LOADER, payload: false });
+    // dispatch({ type: GET_BUS_LIST, payload: response?.data?.services });
+    // dispatch({ type: GET_BUS_FILTERS, payload: response?.data?.services });
+    // sessionStorage.setItem("busListLoader", false);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+export const GetTBSSeatConfirmed = async (BusDetails, refno) => {
+  const payload = {
+    operatorId: BusDetails?.operatorId,
+    BUS_START_DATE: dayjs(BusDetails?.BUS_START_DATE).format("YYYY-MM-DD"),
+    refno: refno,
+  };
+  const url = `${apiUrl}/confirmationseatbooking`;
+  const method = "post";
+  try {
+    const response = await api({
+      method,
+      url,
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    // dispatch({ type: BUSLIST_LOADER, payload: false });
+    // dispatch({ type: GET_BUS_LIST, payload: response?.data?.services });
+    // dispatch({ type: GET_BUS_FILTERS, payload: response?.data?.services });
+    // sessionStorage.setItem("busListLoader", false);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+export const GetTBSFareInfo = async (adultCount, childCount, confirmRefNo) => {
+  const payload = {
+    adultCount: adultCount,
+    childCount: childCount,
+    confirmRefNo: confirmRefNo,
+  };
+
+  const url = `${apiUrl}/getfaresinfo`;
+  const method = "post";
+  try {
+    const response = await api({
+      method,
+      url,
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+export const GetTBSCancelationPolicy = async (item, setPolicyLoader) => {
+  const payload = {
+    operatorId: item?.operatorId,
+    Service_key: item?.Service_key,
+    Source_ID: item?.Source_ID,
+    Destination_ID: item?.Destination_ID,
+    jdate: item?.jdate,
+  };
+  const url = `${apiUrl}/getcancellationpolicy`;
+  const method = "post";
+  try {
+    const response = await api({
+      method,
+      url,
+      data: payload,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 const handleError = (error) => {
   console.error("Error details:", error);
   let errorMessage = "An error occurred";

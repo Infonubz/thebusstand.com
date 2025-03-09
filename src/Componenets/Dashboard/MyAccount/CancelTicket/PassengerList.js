@@ -17,6 +17,7 @@ import { TBS_Booking_Cancellation } from "../../../../Api-TBS/Dashboard/Dashboar
 import { useParams } from "react-router";
 import { CurrentDiscount } from "../../../../Api-TBS/Home/Home";
 import { calculateDiscountedFare } from "../../../Common/Common-Functions/TBS-Discount-Fare";
+import { TBSCancelTicket } from "../../../../Api-TBS/MyAccounts/MyBookings";
 // import { capitalizeFirstLetter } from "../../../Common/Captalization";
 
 const PassengerList = ({
@@ -40,12 +41,12 @@ const PassengerList = ({
   const [cancelPercent,setCancelPercent] = useState([])
   // const [cancellResModal, setCancellResModal] = useState(false);
   // const [cancelResponse, setCancelResponse] = useState("");
-  // console.log(cancellResModal, "cancellResModal");
+  //  // console.log(cancellResModal, "cancellResModal");
   const trimName = nameToDelete.map((ntd) => {
     return ntd?.length > 10 ? ntd.slice(0, 10) + "..." : ntd;
   });
 
-  console.log(info, "name_to_delete");
+   // console.log(info, "name_to_delete");
 
   const [deleteId, setDeleteId] = useState({
     mobile_number: "",
@@ -55,11 +56,11 @@ const PassengerList = ({
   });
 
   const [selectedRowsData, setSelectedRowsData] = useState([]);
-  console.log(
-    selectedRowsData,
-    passengerDetails?.ticket_det,
-    "selected_rows_data"
-  );
+   // console.log(
+  //   selectedRowsData,
+  //   passengerDetails?.ticket_det,
+  //   "selected_rows_data"
+  // );
   const closeDeleteModal = () => {
     setDeleteModalIsOpen(false);
     // setCancellResModal((prev)=> setCancellResModal(...prev ,modalOpen:false))
@@ -87,7 +88,7 @@ const PassengerList = ({
     // const cancelledDetails = passengerDetails?.flatMap((booking) => {
     //   return booking;
     // });
-    console.log(passengerDetails, "cancelledDetails");
+     // console.log(passengerDetails, "cancelledDetails");
 
     return passengerDetails?.ticket_det.map((passenger) => ({
       key: `${passenger.Seat_Num}`,
@@ -108,7 +109,7 @@ const PassengerList = ({
 
   const dispatch = useDispatch();
 
-  console.log(passengerDetails, "passdetailssss");
+   // console.log(passengerDetails, "passdetailssss");
 
   const currentpath = useParams();
 
@@ -118,13 +119,19 @@ const PassengerList = ({
     const partialCancellation =
       selectedRowsData?.length === passengerDetails?.ticket_det?.length ? 1 : 0;
     try {
-      const response = await CancelTicket(
+      // const response = await CancelTicket(
+      //   deleteId,
+      //   info,
+      //   partialCancellation,
+      //   mobileno
+      // );
+      const response = await TBSCancelTicket(
         deleteId,
         info,
         partialCancellation,
         mobileno
-      );
-      console.log(response, "responseresponssdcdscsdcdse");
+      )
+       // console.log(response, "responseresponssdcdscsdcdse");
       // setCancelResponse(response);
       setCancelResponse(refundAmount(response.return_amount))
       // sessionStorage.setItem("returnamount",response.return_amount)
@@ -159,10 +166,10 @@ const PassengerList = ({
       setPassengerDetails(null);
       setCancellResModal(true);
     } catch (error) {
-      console.log(error, "errorerrorerror");
+       // console.log(error, "errorerrorerror");
     } finally {
     
-      console.log('hiiiiasfioasdhf;oasu')
+       // console.log('hiiiiasfioasdhf;oasu')
       setFormValues({
         ticketNo: "",
         phoneNo: "",
@@ -200,12 +207,12 @@ const PassengerList = ({
       ? selectedRowsData.filter((item) => item.key !== row.key)
       : [...selectedRowsData, row];
 
-    console.log(
-      updatedSelectedRowsData,
-      row,
-      isSelected,
-      "updatedSelectedRowsData"
-    );
+     // console.log(
+    //   updatedSelectedRowsData,
+    //   row,
+    //   isSelected,
+    //   "updatedSelectedRowsData"
+    // );
     setSelectedRowsData(updatedSelectedRowsData);
     updateDeleteId(updatedSelectedRowsData);
   };
@@ -228,7 +235,7 @@ const PassengerList = ({
       });
     }
   };
-  // console.log(cancellResModal, "selectedRowsData");
+  //  // console.log(cancellResModal, "selectedRowsData");
 
   const tbs_discount = useSelector((state) => state?.live_per);
   useEffect(() => {
@@ -433,7 +440,7 @@ const PassengerList = ({
     // Return the formatted date
     return `${day} ${month}, ${year}`;
   };
-  console.log(passengerDetails, "testingdeleteid");
+   // console.log(passengerDetails, "testingdeleteid");
 
   const processAmount = (amountString) => {
     const amount = parseInt(amountString.replace(/[^\d]/g, ""));
@@ -448,7 +455,7 @@ const PassengerList = ({
     const basefare = cancellationPolicy?.Collect_amt?.replace(/,/g, '');
     const findPercentage = (basefare * tbs_discount) / 100
     const newcal = basefare - findPercentage
-    console.log("valuessssssiusd",removePercentage,basefare,findPercentage,newcal);
+     // console.log("valuessssssiusd",removePercentage,basefare,findPercentage,newcal);
     return  Math.round(newcal * removePercentage) /100
   })
 
@@ -464,7 +471,7 @@ const PassengerList = ({
       setCancelPercent(newRpArray);  // Update the state with val.rp values
     }
   }, [cancellationPolicy]);
-  console.log(cancelPercent,"percentaekhfkdjfhkdjxfhdxjkf");
+   // console.log(cancelPercent,"percentaekhfkdjfhkdjxfhdxjkf");
 
 
 //   const refundAmount = (val) =>{
@@ -476,7 +483,7 @@ const PassengerList = ({
 //     // const userBasedAmount = (tbsdis / selectedRowsData?.length);
 //     const userBasedAmount = selectedRowsData?.length > 0 ? tbsdis / selectedRowsData.length : tbsdis;
 //     const tbsReturnAmount = (returnval - tbsdis) ;
-// console.log(basefare ,tbsdis,userBasedAmount,tbsReturnAmount,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+//  // console.log(basefare ,tbsdis,userBasedAmount,tbsReturnAmount,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
 //      return tbsReturnAmount
 //    }
@@ -490,12 +497,12 @@ const refundAmount = () =>{
   const userBasedAmount = selectedRowsData?.length > 0 ? selectedRowsData?.length === passengerDetails?.ticket_det?.length ? tbsdis : (selectedRowsData?.length / passengerDetails?.ticket_det?.length) * tbsdis  : tbsdis 
   // const selectedUserShare = (selectedRowsData?.length / passengerDetails?.ticket_det?.length) * tbsdis
   const tbsReturnAmount = (percentagecal - userBasedAmount) + taxcal;
-console.log(basefare ,percentagecal, taxcal ,tbsdis,userBasedAmount,tbsReturnAmount ,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+ // console.log(basefare ,percentagecal, taxcal ,tbsdis,userBasedAmount,tbsReturnAmount ,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
    return tbsReturnAmount
  }
 
-   console.log(refundAmount(),"sgdsgsddbjhdbsdgbjsbdjdbjsdbjsdjsdjsgd");
+    // console.log(refundAmount(),"sgdsgsddbjhdbsdgbjsbdjdbjsdbjsdjsdjsgd");
    
   
 
@@ -988,7 +995,7 @@ console.log(basefare ,percentagecal, taxcal ,tbsdis,userBasedAmount,tbsReturnAmo
                   key={index}
                   onClick={() => {
                     handleRowSelection(passenger);
-                    console.log(passenger, "passenger");
+                     // console.log(passenger, "passenger");
                   }}
                   style={{ backgroundColor }}
                   className={`${isSelected ? "text-white" : ""} 

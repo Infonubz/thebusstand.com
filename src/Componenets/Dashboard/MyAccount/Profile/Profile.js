@@ -9,7 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { LoadingOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
+import { ConfigProvider, Select, Spin } from "antd";
 import { GetUserDetails } from "../../../../Api-TBS/Login/Login";
 import { TbEdit } from "react-icons/tb";
 import { IoIosCloseCircle } from "react-icons/io";
@@ -49,8 +49,8 @@ export default function Profile({ userName, setUserName }) {
   // const handleSubmit = async (values) => {
   //   try {
   //     const data = await UpdateProfile(values);
-  //     console.log(data, "datadatadata");
-  //     // console.log(data.offer_name, "datadata");
+  //      // console.log(data, "datadatadata");
+  //     //  // console.log(data.offer_name, "datadata");
   //     // setOfferData(data);
   //   } catch (error) {
   //     console.error("Error fetching additional user data", error);
@@ -59,7 +59,7 @@ export default function Profile({ userName, setUserName }) {
 
   const handleEdit = () => {
     setEditEnable(true);
-    console.log("enabled", "true");
+     // console.log("enabled", "true");
   };
 
   // useEffect(() => {
@@ -72,11 +72,87 @@ export default function Profile({ userName, setUserName }) {
   //     setIsDisabled(true);
   //   }
   // }, []);
+  const indianStates = [
+    { values: "Andhra Pradesh", label: "Andhra Pradesh" },
+    { values: "Arunachal Pradesh", label: "Arunachal Pradesh" },
+    { values: "Assam", label: "Assam" },
+    { values: "Bihar", label: "Bihar" },
+    { values: "Chhattisgarh", label: "Chhattisgarh" },
+    { values: "Goa", label: "Goa" },
+    { values: "Gujarat", label: "Gujarat" },
+    { values: "Haryana", label: "Haryana" },
+    { values: "Himachal Pradesh", label: "Himachal Pradesh" },
+    { values: "Jharkhand", label: "Jharkhand" },
+    { values: "Karnataka", label: "Karnataka" },
+    { values: "Kerala", label: "Kerala" },
+    { values: "Madhya Pradesh", label: "Madhya Pradesh" },
+    { values: "Maharashtra", label: "Maharashtra" },
+    { values: "Manipur", label: "Manipur" },
+    { values: "Meghalaya", label: "Meghalaya" },
+    { values: "Mizoram", label: "Mizoram" },
+    { values: "Nagaland", label: "Nagaland" },
+    { values: "Odisha", label: "Odisha" },
+    { values: "Punjab", label: "Punjab" },
+    { values: "Rajasthan", label: "Rajasthan" },
+    { values: "Sikkim", label: "Sikkim" },
+    { values: "Tamil Nadu", label: "Tamil Nadu" },
+    { values: "Telangana", label: "Telangana" },
+    { values: "Tripura", label: "Tripura" },
+    { values: "Uttar Pradesh", label: "Uttar Pradesh" },
+    { values: "Uttarakhand", label: "Uttarakhand" },
+    { values: "West Bengal", label: "West Bengal" },
+    {
+      values: "Andaman and Nicobar Islands",
+      label: "Andaman and Nicobar Islands",
+    },
+    { values: "Chandigarh", label: "Chandigarh" },
+    {
+      values: "Dadra and Nagar Haveli and Daman and Diu",
+      label: "Dadra and Nagar Haveli and Daman and Diu",
+    },
+    { values: "Lakshadweep", label: "Lakshadweep" },
+    { values: "Delhi", label: "Delhi" },
+    { values: "Puducherry", label: "Puducherry" },
+    { values: "Ladakh", label: "Ladakh" },
+    { values: "Jammu and Kashmir", label: "Jammu and Kashmir" },
+  ];
+
+  const stateOptions = indianStates?.map((value, ind) => ({
+    value: value.values,
+    label: (
+      <div
+        className="text-[1vw] font-normal px-[0.2vw] pb-[0.1vw] text-[#1F487C]"
+        title={value.label} // This will show full text on hover
+        style={{
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          maxWidth: "28ch", // Ensure truncation if text is too long
+        }}
+      >
+        {value.label?.length > 28
+          ? `${value.label.substring(0, 28)}...`
+          : value.label}
+      </div>
+    ),
+    id: ind,
+  }));
+  const defaultoption = {
+    value: "",
+    label: (
+      <div className="text-[1vw] px-[0.2vw] pb-[0.1vw] text-gray-400">
+        Select State
+      </div>
+    ),
+    disabled: true,
+  };
+
+  const optionss = [defaultoption, ...stateOptions];
 
   useEffect(() => {
     if (!hasFetched.current) {
       GetProfileById(dispatch, "tbs-pax1001");
-      console.log("hitesting");
+       // console.log("hitesting");
       hasFetched.current = true;
     }
   }, [dispatch]);
@@ -87,7 +163,7 @@ export default function Profile({ userName, setUserName }) {
     if (storedName !== userName) {
       setUserName(storedName);
     }
-    console.log(storedName, "userName");
+     // console.log(storedName, "userName");
   }, [userName, setUserName]);
 
   return (
@@ -410,8 +486,8 @@ export default function Profile({ userName, setUserName }) {
                     Contact Details
                   </div>
                   <div className="grid md:grid-cols-2 md:py-[1vw] md:gap-y-[2.5vw] mb-[2vw] md:mb-[0vw] grid-cols-1 gap-y-[6vw]">
-                    <div className="relative z-0 w-full">
-                      <Field
+                    <div className="profileselect relative z-0 w-full">
+                      {/* <Field
                         as="select"
                         disabled={!editenable}
                         name="state"
@@ -432,7 +508,54 @@ export default function Profile({ userName, setUserName }) {
                           label="Tamilnadu"
                           className="text-[1vw] text-[#1F487C] "
                         />
-                      </Field>
+                      </Field> */}
+                      <ConfigProvider
+                        theme={{
+                          components: {
+                            Select: {
+                              // optionActiveBg: 'none',
+                              // optionSelectedColor: 'none',
+                              // optionSelectedBg: 'none',
+                              optionHeight: "2",
+                              activeBorderColor: "none",
+                              activeOutlineColor: "none",
+                              hoverBorderColor: "none",
+                            },
+                          },
+                        }}
+                      >
+                        <Select
+                          showSearch
+                          value={values.state || ""}
+                          // placement="topRight"
+                          // disabled={!editenable}
+                          listHeight={150}
+                          onChange={(value, id) => {
+                            handleChange({ target: { name: "state", value } });
+                            //    // console.log(id.id,"idididisdfsdf");
+                            //   setCurrentRoleId(id.id)
+                          }}
+                          // onChange={(e) => {
+                          //   handleChange(e); // Formik's handleChange
+                          // }}
+                          name="state"
+                          id="state"
+                          className={`block py-[0.5vw] md:py-[0vw] w-full md:w-[27vw] h-[10vw] md:h-[3vw] text-[4vw] md:text-[1vw] text-[#1F487C] bg-transparent rounded-[1vw] md:rounded-[0.5vw] focus:outline-none focus:ring-0 focus:border-[#1F487C] peer`}
+                          placeholder="Select role"
+                          filterOption={
+                            (input, option) =>
+                              option?.value
+                                ?.toLowerCase()
+                                ?.includes(input.toLowerCase()) // Make it case-insensitive
+                          }
+                          optionFilterProp="value"
+                          // suffixIcon={<span style={{ fontSize: '1vw', color: '#1f487c' }}>
+                          //   <IoMdArrowDropup size="2vw" />
+                          // </span>}
+                          style={{ padding: 4 }}
+                          options={optionss}
+                        />
+                      </ConfigProvider>
                       <label
                         htmlFor="residence"
                         className={`absolute text-[4vw] md:text-[1.4vw] font-bold text-[#1F487C] duration-300 transform -translate-y-[0.2vw] scale-75 md:top-[0.8vw] top-[-.1vw] md:left-[0vw] left-[-.4vw]  origin-0 bg-white px-[0.2vw] peer-focus:left-[0.6vw] peer-focus:text-[#1F487C] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-[-3vw] md:peer-placeholder-shown:translate-y-[0.4vw] peer-placeholder-shown:text-[1vw] md:peer-focus:text-[1vw] peer-focus:text-[3.7vw] peer-focus:scale-75 peer-focus:-translate-y-[2vw] ${

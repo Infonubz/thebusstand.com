@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { calculateDiscountedFare } from "../../../Common/Common-Functions/TBS-Discount-Fare";
 import { CurrentDiscount } from "../../../../Api-TBS/Home/Home";
 import { Get_TBS_Booking_details } from "../../../../Api-TBS/Dashboard/Dashboard";
+import { GetViewTicketID } from "../../../../Api-TBS/MyAccounts/MyBookings";
 
 export default function ViewTicket() {
   const validationSchema = Yup.object({
@@ -38,16 +39,17 @@ export default function ViewTicket() {
   const dispatch = useDispatch();
   const handleSubmit = async (values) => {
     // alert(values);
-    // console.log(values.ticketNumber, "dkjfhdkjfhkdjf");
+    //  // console.log(values.ticketNumber, "dkjfhdkjfhkdjf");
     // setSpinning(true)
     Get_TBS_Booking_details(values.ticketNumber, dispatch);
     setNoData(false);
     setShowList(true);
-    const response = await ViewTicketById(
-      values.ticketNumber,
-      setSpinning
-      // dispatch
-    );
+    // const response = await ViewTicketById(
+    //   values.ticketNumber,
+    //   setSpinning
+    //   // dispatch
+    // );
+    const response = await GetViewTicketID(values.ticketNumber, setSpinning);
     setTicketDetails(response);
     setCalArrival({
       journeyDate: response?.ticketInfo?.originStartTime,
@@ -57,7 +59,7 @@ export default function ViewTicket() {
     setSpinning(false);
   };
 
-  console.log(ticketDetails, "mytickwtsfskdhfdz");
+   // console.log(ticketDetails, "mytickwtsfskdhfdz");
 
   const onClose = () => {
     setShowDrawer(false);
@@ -139,7 +141,7 @@ export default function ViewTicket() {
 
   // const calculateArrivalDate = (journeyDate, startTime, arrTime) => {
   //   // Convert "Thu, 6th Feb 2025" to a valid date format "2025-02-06"
-  //   console.log(journeyDate, startTime, arrTime, "ieusfhdkjfh");
+  //    // console.log(journeyDate, startTime, arrTime, "ieusfhdkjfh");
 
   //   const [dayOfWeek, day, month, year] = journeyDate.split(" ");
   //   const monthMap = {
@@ -200,11 +202,11 @@ export default function ViewTicket() {
   //   const arrival = calculateArrivalDate(journeyDate, startTime, arrTime);
   //   setArrivalDate(arrival);
   // };
-  // console.log(calculateArrivalDate(ticketDetails?.ticketInfo?.Journey_Date, ticketDetails?.ticketInfo?.Start_Time, ticketDetails?.ticketInfo?.Arr_Time),"helldfhkdxjhfkdjhfkxdjhf");
-  // console.log((ticketDetails?.ticketInfo?.Journey_Date), "helldfhkdxjhfkdjhfkxdjhf");
-  // console.log(ticketDetails?.ticketInfo?.Start_Time, "helldfhkdxjhfkdjhfkxdjhf");
-  // console.log(ticketDetails?.ticketInfo?.Arr_Time, "helldfhkdxjhfkdjhfkxdjhf");
-  console.log(calArrival, "helldfhkdxjhfkdjhfkxdjhf");
+  //  // console.log(calculateArrivalDate(ticketDetails?.ticketInfo?.Journey_Date, ticketDetails?.ticketInfo?.Start_Time, ticketDetails?.ticketInfo?.Arr_Time),"helldfhkdxjhfkdjhfkxdjhf");
+  //  // console.log((ticketDetails?.ticketInfo?.Journey_Date), "helldfhkdxjhfkdjhfkxdjhf");
+  //  // console.log(ticketDetails?.ticketInfo?.Start_Time, "helldfhkdxjhfkdjhfkxdjhf");
+  //  // console.log(ticketDetails?.ticketInfo?.Arr_Time, "helldfhkdxjhfkdjhfkxdjhf");
+   // console.log(calArrival, "helldfhkdxjhfkdjhfkxdjhf");
 
   const [calculatedDate, setCalculatedDate] = useState("");
   const [showmodal, setShowModal] = useState(false);
@@ -216,10 +218,10 @@ export default function ViewTicket() {
         calArrival?.journeyDate,
         calArrival?.endTime
       );
-      console.log(values, "vashdfkjdhkjfsdd");
+       // console.log(values, "vashdfkjdhkjfsdd");
       setCalculatedDate(values);
       setShowModal(true);
-      // console.log((ticketDetails?.ticketInfo?.Journey_Date, ticketDetails?.ticketInfo?.Start_Time, ticketDetails?.ticketInfo?.Arr_Time), "helldfhkdxjhfkdjhfkxdjhf");
+      //  // console.log((ticketDetails?.ticketInfo?.Journey_Date, ticketDetails?.ticketInfo?.Start_Time, ticketDetails?.ticketInfo?.Arr_Time), "helldfhkdxjhfkdjhfkxdjhf");
     }
   }, [ticketDetails]);
   // Simple function to get suffix
@@ -252,7 +254,7 @@ export default function ViewTicket() {
     const dateParts = formattedDate.split(" ");
     dateParts.splice(1, 0, `${dayWithSuffix}`);
     const modifiedDate = dateParts.join(" ");
-    console.log(date, "modfuhdifhdataadff");
+     // console.log(date, "modfuhdifhdataadff");
     return <div>{modifiedDate}</div>;
   };
   const [dropDate, setDropDate] = useState();
@@ -303,7 +305,7 @@ export default function ViewTicket() {
         enableReinitialize={false}
         onSubmit={(values) => {
           handleSubmit(values);
-          console.log(values, "valefdkfdkfh");
+           // console.log(values, "valefdkfdkfh");
         }}
       >
         {({ handleSubmit }) => (
@@ -576,69 +578,77 @@ export default function ViewTicket() {
                         <div className=" flex flex-col gap-y-[0.5vw] md:pl-[4vw] pl-[1.5vw]">
                           <div className="flex items-center">
                             <label
-                              className={`block md:hidden text-[3.5vw]  ${ticketDetails?.bus_type_status === "luxury"
-                                ? "text-[#393939]"
-                                : "text-[#1F487C]"
-                                } font-semibold`}
+                              className={`block md:hidden text-[3.5vw]  ${
+                                ticketDetails?.bus_type_status === "luxury"
+                                  ? "text-[#393939]"
+                                  : "text-[#1F487C]"
+                              } font-semibold`}
                             >
                               {ticketDetails?.ticketInfo?.operatorname}
                             </label>
                             <label
-                              className={`md:block hidden text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
-                                ? "text-[#393939]"
-                                : "text-[#1F487C]"
-                                } font-bold`}
+                              className={`md:block hidden text-[1.1vw]  ${
+                                ticketDetails?.bus_type_status === "luxury"
+                                  ? "text-[#393939]"
+                                  : "text-[#1F487C]"
+                              } font-bold`}
                             >
                               {ticketDetails?.ticketInfo?.source_name}
                             </label>
                             <span className="md:block hidden px-[0.5vw]">
                               <FaArrowRightLong
                                 size={"1vw"}
-                                color={` ${ticketDetails?.bus_type_status === "luxury"
-                                  ? "#393939"
-                                  : "#1F487C"
-                                  }`}
+                                color={` ${
+                                  ticketDetails?.bus_type_status === "luxury"
+                                    ? "#393939"
+                                    : "#1F487C"
+                                }`}
                               />
                             </span>
                             <label
-                              className={`md:block hidden text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
-                                ? "text-[#393939]"
-                                : "text-[#1F487C]"
-                                } font-bold`}
+                              className={`md:block hidden text-[1.1vw]  ${
+                                ticketDetails?.bus_type_status === "luxury"
+                                  ? "text-[#393939]"
+                                  : "text-[#1F487C]"
+                              } font-bold`}
                             >
                               {ticketDetails?.ticketInfo?.dest_name}
                             </label>
                           </div>
                           <div className="flex items-center gap-x-[0.5vw]">
                             <label
-                              className={`md:block hidden text-[1.3vw] font-bold  ${ticketDetails?.bus_type_status === "luxury"
-                                ? "text-[#393939]"
-                                : "text-[#1F487C]"
-                                }`}
+                              className={`md:block hidden text-[1.3vw] font-bold  ${
+                                ticketDetails?.bus_type_status === "luxury"
+                                  ? "text-[#393939]"
+                                  : "text-[#1F487C]"
+                              }`}
                             >
                               {/* {ticketDetails?.status} */}
                               {ticketDetails?.ticketInfo?.operatorname}
                             </label>
                             {/* <div className="md:block hidden h-[0.5vw] w-[0.5vw] bg-[#1F487C] rounded-full"></div> */}
                             <label
-                              className={`text-[3.7vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
-                                ? "text-[#393939]"
-                                : "text-[#1F487C]"
-                                } font-bold`}
+                              className={`text-[3.7vw] md:text-[1.1vw]  ${
+                                ticketDetails?.bus_type_status === "luxury"
+                                  ? "text-[#393939]"
+                                  : "text-[#1F487C]"
+                              } font-bold`}
                             >
                               {/* {ticketDetails?.trip_type} */}
                             </label>
                             <div
-                              className={` ${ticketDetails?.bus_type_status === "luxury"
-                                ? "bg-[#393939]"
-                                : "bg-[#1F487C]"
-                                } md:block hidden h-[0.5vw] w-[0.5vw] rounded-full`}
+                              className={` ${
+                                ticketDetails?.bus_type_status === "luxury"
+                                  ? "bg-[#393939]"
+                                  : "bg-[#1F487C]"
+                              } md:block hidden h-[0.5vw] w-[0.5vw] rounded-full`}
                             ></div>
                             <label
-                              className={`md:text-[1.1vw] text-[3vw]  ${ticketDetails?.bus_type_status === "luxury"
-                                ? "text-[#393939]"
-                                : "text-[#1F487C]"
-                                } `}
+                              className={`md:text-[1.1vw] text-[3vw]  ${
+                                ticketDetails?.bus_type_status === "luxury"
+                                  ? "text-[#393939]"
+                                  : "text-[#1F487C]"
+                              } `}
                             >
                               {`Booking ID - ${ticketDetails?.ticketInfo?.Ticket_no}`}
                             </label>
@@ -673,23 +683,25 @@ export default function ViewTicket() {
                                   )}`}
                                 </div>
                                 <div className="">{`₹ ${" "} ${Math.round(
-                                  ticketDetails?.ticketInfo?.FareBreakup?.serviceTax
+                                  ticketDetails?.ticketInfo?.FareBreakup
+                                    ?.serviceTax
                                 )}`}</div>
-                                <div className="">{`₹ ${parseInt(
-                                  calculateDiscountedFare(
-                                    newConvertDate(
-                                      ticketDetails?.ticketInfo?.Journey_Date
-                                    ),
-                                    ticketDetails?.ticketInfo?.FareBreakup
-                                      ?.baseFare,
-                                    tbs_discount
-                                  )
-                                ) +
+                                <div className="">{`₹ ${
+                                  parseInt(
+                                    calculateDiscountedFare(
+                                      newConvertDate(
+                                        ticketDetails?.ticketInfo?.Journey_Date
+                                      ),
+                                      ticketDetails?.ticketInfo?.FareBreakup
+                                        ?.baseFare,
+                                      tbs_discount
+                                    )
+                                  ) +
                                   Math.round(
                                     ticketDetails?.ticketInfo?.FareBreakup
                                       ?.serviceTax
                                   )
-                                  } `}</div>
+                                } `}</div>
                               </div>
                             </div>
                           </div>
@@ -701,10 +713,11 @@ export default function ViewTicket() {
                           //   setShowModal(true);
                           //   setTicketDetails(ticketDetails);
                           // }}
-                          className={` ${ticketDetails?.bus_type_status === "luxury"
-                            ? "bg-[#393939]"
-                            : "bg-[#1F487C]"
-                            }  text-[3.6vw] md:text-[1.1vw] font-bold rounded-full text-white md:w-[15vw] md:h-[3vw] w-[20vw] h-[7vw] outline-none`}
+                          className={` ${
+                            ticketDetails?.bus_type_status === "luxury"
+                              ? "bg-[#393939]"
+                              : "bg-[#1F487C]"
+                          }  text-[3.6vw] md:text-[1.1vw] font-bold rounded-full text-white md:w-[15vw] md:h-[3vw] w-[20vw] h-[7vw] outline-none`}
                         >
                           <span
                             className="md:hidden block"
@@ -728,10 +741,11 @@ export default function ViewTicket() {
                     <div className="flex items-center px-[2vw] h-full justify-between">
                       <div className="flex flex-col gap-y-[1.2vw] md:gap-y-[0.5vw]">
                         <label
-                          className={`text-[3.5vw] md:text-[1.1vw] relative flex items-center gap-[2vw] ${ticketDetails?.bus_type_status === "luxury"
-                            ? "text-[#393939]"
-                            : "text-[#1F487C]"
-                            }`}
+                          className={`text-[3.5vw] md:text-[1.1vw] relative flex items-center gap-[2vw] ${
+                            ticketDetails?.bus_type_status === "luxury"
+                              ? "text-[#393939]"
+                              : "text-[#1F487C]"
+                          }`}
                         >
                           <span className="">From</span>
                           <span className="md:hidden  block text-[2.5vw]">
@@ -746,18 +760,20 @@ export default function ViewTicket() {
                         <div className="md:block hidden">
                           <label className="flex   items-center mr-[1vw] gap-[0.5vw]">
                             <span
-                              className={`text-[3.5vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
-                                ? "text-[#393939]"
-                                : "text-[#1F487C]"
-                                } font-bold`}
+                              className={`text-[3.5vw] md:text-[1.1vw]  ${
+                                ticketDetails?.bus_type_status === "luxury"
+                                  ? "text-[#393939]"
+                                  : "text-[#1F487C]"
+                              } font-bold`}
                             >
                               {ticketDetails?.ticketInfo?.Journey_Date}
                             </span>
                             <span
-                              className={`text-[3.5vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
-                                ? "text-[#393939]"
-                                : "text-[#1F487C]"
-                                }`}
+                              className={`text-[3.5vw] md:text-[1.1vw]  ${
+                                ticketDetails?.bus_type_status === "luxury"
+                                  ? "text-[#393939]"
+                                  : "text-[#1F487C]"
+                              }`}
                             >
                               {/* {moment(
                                 ticketDetails?.ticketInfo?.Start_Time,
@@ -768,10 +784,11 @@ export default function ViewTicket() {
                           </label>
                         </div>
                         <label
-                          className={`text-[3.5vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
-                            ? "text-[#393939]"
-                            : "text-[#1F487C]"
-                            } font-bold`}
+                          className={`text-[3.5vw] md:text-[1.1vw]  ${
+                            ticketDetails?.bus_type_status === "luxury"
+                              ? "text-[#393939]"
+                              : "text-[#1F487C]"
+                          } font-bold`}
                         >
                           {ticketDetails?.ticketInfo?.source_name} (
                           {ticketDetails?.ticketInfo?.Boarding_Place_Name})
@@ -779,10 +796,11 @@ export default function ViewTicket() {
                         <div className="  block md:hidden">
                           <label className="flex items-center gap-[2vw]">
                             <span
-                              className={` text-[3vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
-                                ? "text-[#393939]"
-                                : "text-[#1F487C]"
-                                } font-bold`}
+                              className={` text-[3vw] md:text-[1.1vw]  ${
+                                ticketDetails?.bus_type_status === "luxury"
+                                  ? "text-[#393939]"
+                                  : "text-[#1F487C]"
+                              } font-bold`}
                             >
                               {/* {dayjs(ticketDetails?.departure_date).format(
                                 "DD MMM' YY"
@@ -790,10 +808,11 @@ export default function ViewTicket() {
                               {ticketDetails?.ticketInfo?.Journey_Date}
                             </span>
                             <span
-                              className={`text-[3.5vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
-                                ? "text-[#393939]"
-                                : "text-[#1F487C]"
-                                } `}
+                              className={`text-[3.5vw] md:text-[1.1vw]  ${
+                                ticketDetails?.bus_type_status === "luxury"
+                                  ? "text-[#393939]"
+                                  : "text-[#1F487C]"
+                              } `}
                             >
                               {ticketDetails?.departure_time}
                             </span>
@@ -802,10 +821,11 @@ export default function ViewTicket() {
                       </div>
                       <div className="flex flex-col gap-y-[1.2vw] md:gap-y-[0.5vw]">
                         <label
-                          className={`text-[3.5vw] md:text-[1.1vw] relative flex items-center ${ticketDetails?.bus_type_status === "luxury"
-                            ? "text-[#393939]"
-                            : "text-[#1F487C]"
-                            }`}
+                          className={`text-[3.5vw] md:text-[1.1vw] relative flex items-center ${
+                            ticketDetails?.bus_type_status === "luxury"
+                              ? "text-[#393939]"
+                              : "text-[#1F487C]"
+                          }`}
                         >
                           <span className="">To</span>{" "}
                           <span className="md:hidden  block text-[2.5vw] pl-[3vw]">
@@ -820,18 +840,20 @@ export default function ViewTicket() {
                         <div className="md:block hidden">
                           <label className=" flex items-center gap-[0.5vw]">
                             <span
-                              className={`text-[3.5vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
-                                ? "text-[#393939]"
-                                : "text-[#1F487C]"
-                                } font-bold`}
+                              className={`text-[3.5vw] md:text-[1.1vw]  ${
+                                ticketDetails?.bus_type_status === "luxury"
+                                  ? "text-[#393939]"
+                                  : "text-[#1F487C]"
+                              } font-bold`}
                             >
                               {calculatedDate && ConvertDate(calculatedDate)}
                             </span>
                             <span
-                              className={`text-[3.5vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
-                                ? "text-[#393939]"
-                                : "text-[#1F487C]"
-                                }`}
+                              className={`text-[3.5vw] md:text-[1.1vw]  ${
+                                ticketDetails?.bus_type_status === "luxury"
+                                  ? "text-[#393939]"
+                                  : "text-[#1F487C]"
+                              }`}
                             >
                               {moment(
                                 ticketDetails?.ticketInfo?.Arr_Time,
@@ -841,20 +863,22 @@ export default function ViewTicket() {
                           </label>
                         </div>
                         <label
-                          className={`text-[3.5vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
-                            ? "text-[#393939]"
-                            : "text-[#1F487C]"
-                            } font-bold`}
+                          className={`text-[3.5vw] md:text-[1.1vw]  ${
+                            ticketDetails?.bus_type_status === "luxury"
+                              ? "text-[#393939]"
+                              : "text-[#1F487C]"
+                          } font-bold`}
                         >
                           {ticketDetails?.ticketInfo?.dest_name}
                         </label>
                         <div className="block md:hidden">
                           <label className="flex items-center gap-[2vw]">
                             <span
-                              className={`text-[3vw] md:text-[1.1vw]  ${ticketDetails?.bus_type_status === "luxury"
-                                ? "text-[#393939]"
-                                : "text-[#1F487C]"
-                                } font-bold`}
+                              className={`text-[3vw] md:text-[1.1vw]  ${
+                                ticketDetails?.bus_type_status === "luxury"
+                                  ? "text-[#393939]"
+                                  : "text-[#1F487C]"
+                              } font-bold`}
                             >
                               {/* {dayjs(ticketDetails?.arrival_date).format(
                                 "DD MMM' YY"
@@ -891,10 +915,11 @@ export default function ViewTicket() {
                   </div> */}
                       <div className="md:block hidden   col-span-2">
                         <div
-                          className={`flex flex-col gap-y-[0.5vw] ${true
-                            ? "grid grid-cols-2 gap-y-[.5vw] gap-x-[2vw]"
-                            : ""
-                            }`}
+                          className={`flex flex-col gap-y-[0.5vw] ${
+                            true
+                              ? "grid grid-cols-2 gap-y-[.5vw] gap-x-[2vw]"
+                              : ""
+                          }`}
                         >
                           {ticketDetails?.ticketInfo?.ticket_det?.map(
                             (list, index) =>
@@ -914,25 +939,27 @@ export default function ViewTicket() {
                                     <span>
                                       <IoPersonOutline
                                         size={"1.2vw"}
-                                        color={`${ticketDetails?.bus_type_status ===
+                                        color={`${
+                                          ticketDetails?.bus_type_status ===
                                           "luxury"
-                                          ? "#393939"
-                                          : "#1F487C"
-                                          }`}
+                                            ? "#393939"
+                                            : "#1F487C"
+                                        }`}
                                       />
                                     </span>
                                     <span
-                                      className={`text-[1.1vw]  ${ticketDetails?.bus_type_status ===
+                                      className={`text-[1.1vw]  ${
+                                        ticketDetails?.bus_type_status ===
                                         "luxury"
-                                        ? "text-[#393939]"
-                                        : "text-[#1F487C]"
-                                        } font-bold`}
+                                          ? "text-[#393939]"
+                                          : "text-[#1F487C]"
+                                      } font-bold`}
                                     >
                                       {list.Passenger_Name.length > 8
                                         ? `${list.Passenger_Name.slice(
-                                          0,
-                                          8
-                                        )}...`
+                                            0,
+                                            8
+                                          )}...`
                                         : list.Passenger_Name}
                                       {/* {(list.user_name)} */}
                                       <span>{list?.Age}</span>
@@ -944,19 +971,21 @@ export default function ViewTicket() {
                                   <span>
                                     <IoPersonOutline
                                       size={"1.2vw"}
-                                      color={`${ticketDetails?.bus_type_status ===
+                                      color={`${
+                                        ticketDetails?.bus_type_status ===
                                         "luxury"
-                                        ? "#393939"
-                                        : "#1F487C"
-                                        }`}
+                                          ? "#393939"
+                                          : "#1F487C"
+                                      }`}
                                     />
                                   </span>
                                   <span
-                                    className={`text-[1.1vw]  ${ticketDetails?.bus_type_status ===
+                                    className={`text-[1.1vw]  ${
+                                      ticketDetails?.bus_type_status ===
                                       "luxury"
-                                      ? "text-[#393939]"
-                                      : "text-[#1F487C]"
-                                      } font-bold`}
+                                        ? "text-[#393939]"
+                                        : "text-[#1F487C]"
+                                    } font-bold`}
                                   >
                                     {list.Passenger_Name}{" "}
                                     <span className="text-[.9vw] pl-[.1vw] font-bold">
@@ -1012,7 +1041,7 @@ export default function ViewTicket() {
         open={showDrawer}
         key={"right"}
         width={"60%"}
-      // width={drawerWidth}
+        // width={drawerWidth}
       >
         <ViewFullTicket
           ticketDetails={ticketDetails}

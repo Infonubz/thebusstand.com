@@ -9,7 +9,7 @@ export default function RazorPayindex() {
     const script = document.createElement("script");
     script.src = "https://razorpay.me/@ratraveltechprivatelimited";
     script.async = true;
-    script.onload = () => console.log("Razorpay Loaded");
+    script.onload() ;
     document.body.appendChild(script);
   }, []);
   

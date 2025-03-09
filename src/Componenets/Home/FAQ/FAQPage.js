@@ -29,7 +29,7 @@ export default function FAQPage() {
         try {
             const response = await GetFAQById(dispatch, value);
             setFAQ(response);
-            console.log("response of FAQ", response);
+             // console.log("response of FAQ", response);
         } catch (error) {
             console.error("Error", error);
         }

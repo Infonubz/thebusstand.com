@@ -50,7 +50,7 @@ const OtpVerification = ({
   };
 
   const handleMobileOtpSubmit = async (values, { setErrors }) => {
-    console.log("response85858");
+     // console.log("response85858");
 
     try {
       const response = await SendOTPassword(dispatch, values, passenger_mail);
@@ -71,7 +71,7 @@ const OtpVerification = ({
         GetUserDetails(navigation);
       }
       toast.success(response.message);
-      console.log(response, "passengers_idd");
+       // console.log(response, "passengers_idd");
     } catch (error) {
       console.error("An error occurred:", error);
       if (error) {
@@ -80,18 +80,18 @@ const OtpVerification = ({
     }
   };
   const handlesuccess = () => {
-    console.log("hyyyyyyyyyyyyyyy");
+     // console.log("hyyyyyyyyyyyyyyy");
 
     setLoginIsOpen(false);
     setLoginMobileIsOpen(false);
     GetUserDetails(navigation);
   };
   const handleOtpSubmit = async (values, { setErrors }) => {
-    console.log(values, "OTP Submission Values");
+     // console.log(values, "OTP Submission Values");
 
     const OTPdata = sessionStorage.getItem("mobileOTP");
     const decryptOTP = OTPdata ? decryptData(OTPdata) : null;
-    console.log(passenger_mail, "Passenger Email");
+     // console.log(passenger_mail, "Passenger Email");
 
     if (passenger_mail) {
       try {
@@ -104,7 +104,7 @@ const OtpVerification = ({
           sessionStorage.setItem("user_id", encryptedUserId);
           toast.success("OTP verified successfully!");
 
-          console.log(response, "OTP Response");
+           // console.log(response, "OTP Response");
 
           if (response.user.status === 2) {
             handlesuccess();
@@ -118,10 +118,10 @@ const OtpVerification = ({
         // setErrors({ otp: "Something went wrong, please try again." });
       }
     } else {
-      console.log(decryptOTP, values?.otp, "Verifying Mobile OTP");
+       // console.log(decryptOTP, values?.otp, "Verifying Mobile OTP");
 
       if (Number(decryptOTP) === Number(values?.otp)) {
-        console.log("Mobile OTP Matched, Proceeding with Verification");
+         // console.log("Mobile OTP Matched, Proceeding with Verification");
         try {
           const response = await SendMobileVerifycation(dispatch);
 
@@ -131,7 +131,7 @@ const OtpVerification = ({
             sessionStorage.setItem("user_id", encryptedUserId);
             toast.success("Mobile OTP verified successfully!");
 
-            console.log(response.user.status, "Mobile OTP Response");
+             // console.log(response.user.status, "Mobile OTP Response");
 
             if (response.user.status === 2) {
               handlesuccess();
@@ -182,7 +182,7 @@ const OtpVerification = ({
     if (passenger_mail) {
       try {
         const response = await SendVerificationOTP(dispatch, email);
-        console.log(response, "response");
+         // console.log(response, "response");
         setTimeLeft(120);
       } catch {}
     } else {
@@ -208,13 +208,13 @@ const OtpVerification = ({
   //   if(decryptOTP===values?.otp){
   //     try {
   //       const response = await SendVerificationOTP(dispatch, email);
-  //       console.log(response, "response");
+  //        // console.log(response, "response");
   //       setTimeLeft(120);
   //     } catch {}
   //   }
-  //   console.log( decryptOTP, OTPdata, "wsssssssssddddddddddsss");
+  //    // console.log( decryptOTP, OTPdata, "wsssssssssddddddddddsss");
   // }, [sessionStorage.getItem("mobileOTP")]);
-  console.log(passenger_mail, "passenger_mailpassenger_mail");
+   // console.log(passenger_mail, "passenger_mailpassenger_mail");
   return (
     <>
       <div className="md:block hidden mt-[1vw]">

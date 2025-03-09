@@ -51,9 +51,9 @@ function LocationPermission() {
   const lat = localStorage.getItem("latitude");
   const long = localStorage.getItem("longitude");
   const getlocation = localStorage.getItem("location_permission");
-  console.log(modalIsOpen, "modalIsOpenmodalIsOpen");
-  console.log(lat === null, long, "location741852");
-  console.log(getlocation, "get_permissionget_permission");
+  // console.log(modalIsOpen, "modalIsOpenmodalIsOpen");
+  // console.log(lat === null, long, "location741852");
+  // console.log(getlocation, "get_permissionget_permission");
   // const handledeny = () => {
   //   setModalIsOpen(false);
   //   localStorage.setItem("location_permission", 2);

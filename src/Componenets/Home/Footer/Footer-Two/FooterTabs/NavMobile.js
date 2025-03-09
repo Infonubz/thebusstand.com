@@ -31,7 +31,7 @@ export default function NavMobile() {
                         className="ml-[2vw] bg-white rounded-lg shadow-lg overflow-hidden w-[60vw] mt-[24vw]"
                     // onClick={(e) => e.stopPropagation()} // Prevents modal from closing when clicking inside the modal
                     >
-                        <nav className="flex flex-col py-[4vw] text-blue-800 text-[4vw]">
+                        <nav className="flex flex-col py-[4vw] text-[#1F487C] text-[4vw]">
                             <div className="flex items-center py-[3vw] px-[4vw] hover:bg-blue-800 hover:text-white cursor-pointer" onClick={() => navigate("/")}>
                                 <IoHomeOutline size={"6vw"} />
                                 <div className="ml-[4vw] text-[4vw] font-semibold">Home</div>

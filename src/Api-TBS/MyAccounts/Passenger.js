@@ -45,7 +45,7 @@ export const SubmitPassengerData = async (passengerdata, updateData) => {
   };
 
   // Log the passenger data for debugging
-  console.log(passengerdata, authToken, "poda antha andavane namba pakkam");
+  // console.log(passengerdata, authToken, "poda antha andavane namba pakkam");
 
   // Determine the URL and HTTP method based on whether we are updating data
   const url = updateData
@@ -54,11 +54,11 @@ export const SubmitPassengerData = async (passengerdata, updateData) => {
   const method = updateData ? "put" : "post";
 
   // Log the payload for debugging
-  console.log(payload, "payload outside");
+  // console.log(payload, "payload outside");
 
   try {
     // Log the payload again for debugging
-    console.log(payload, "payload inside");
+    // console.log(payload, "payload inside");
 
     // Make the API call
     const response = await api({
@@ -72,7 +72,7 @@ export const SubmitPassengerData = async (passengerdata, updateData) => {
     });
 
     // Log the response for debugging
-    console.log(response, "SubmitPassengerData");
+    // console.log(response, "SubmitPassengerData");
 
     // Show a success message using toast
     toast.success(response.data.message);
@@ -87,13 +87,13 @@ export const SubmitPassengerData = async (passengerdata, updateData) => {
 };
 
 export const GetPassengById = async (updatedata) => {
-  console.log(updatedata, "ahsgxdahsjksaxbj");
+  // console.log(updatedata, "ahsgxdahsjksaxbj");
   try {
-    console.log(updatedata, "aaaaaaaaaaaaaaaaaaaa");
+    // console.log(updatedata, "aaaaaaaaaaaaaaaaaaaa");
     const response = await api.get(
       `${apiUrl}/add-passenger-details/${updatedata}`
     );
-    console.log(response.data, "GetPassengById");
+    // console.log(response.data, "GetPassengById");
     return response?.data;
   } catch (error) {
     handleError(error);
@@ -104,7 +104,7 @@ export const GetPassengById = async (updatedata) => {
 export const Deleteall = async (api, dispatch) => {
   try {
     const response = await axios.delete(api);
-    console.log(response.data, "response.data5555");
+    // console.log(response.data, "response.data5555");
     toast.success(response.data);
     GetPassengerData(dispatch);
     toast.success(response.data.message);

@@ -59,9 +59,9 @@ const LoginProfile = ({ setLoginIsOpen, setLoginMobileIsOpen }) => {
   const decryptedMobile = sessionStorage.getItem("mobile");
   const passenger_Mobile = decryptedMobile && decryptData(decryptedMobile);
   const handleSubmit = async (values) => {
-    console.log(values, "vaaaaaaaaaaaaaaaaaaaaafddddddddddd");
+     // console.log(values, "vaaaaaaaaaaaaaaaaaaaaafddddddddddd");
     const response = await SendPassengerName(dispatch, values, setLoginIsOpen);
-    console.log(response, "responsemail");
+     // console.log(response, "responsemail");
     if (user_id) {
       GetUserDetails(navigation);
     }
@@ -71,10 +71,10 @@ const LoginProfile = ({ setLoginIsOpen, setLoginMobileIsOpen }) => {
   };
 
   const handleMobileSubmit = async (values) => {
-    console.log(values, "i have a values");
+     // console.log(values, "i have a values");
     const response = await SendPassengerName(dispatch, values);
     setLoginMobileIsOpen(false);
-    console.log(response);
+     // console.log(response);
     toast.success(response.response);
     if (user_id) {
       GetUserDetails(navigation);

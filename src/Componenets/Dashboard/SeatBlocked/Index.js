@@ -17,6 +17,10 @@ import busloading from "../../../Assets/Gif/bus.gif";
 import dayjs from "dayjs";
 import { LoginCheck } from "../../../Api-TBS/Login/Login";
 import { decryptData } from "../../Common/Common-Functions/Encrypt-Decrypt";
+import {
+  GetTBSFareInfo,
+  GetTBSSeatBlock,
+} from "../../../Api-TBS/Dashboard/Dashboard";
 export default function DrawerIndex({
   BusDetails,
   layout,
@@ -40,7 +44,7 @@ export default function DrawerIndex({
   setTicketLoading,
   ticketnumber,
   ticketloading,
-  onClose
+  onClose,
 }) {
   const [loader, setLoader] = useState(false);
   const [razorpayloading, setRazorpayLoading] = useState(false);
@@ -146,7 +150,7 @@ export default function DrawerIndex({
   const user = sessionStorage?.getItem("user_id");
   const getuserid = decryptData(user);
   const handleSubmit = async (values, setFieldError) => {
-    console.log(values, 'values__Values')
+     // console.log(values, "values__Values");
     setButtonDisable(true);
     // if (getuserid) {
     //   try {
@@ -181,7 +185,7 @@ export default function DrawerIndex({
     //   }
     // } else {
     //   const checklogindetails = await LoginCheck(emailInput, mobileInput);
-    //   console.log(
+    //    // console.log(
     //     checklogindetails?.userExist,
     //     "checklogindetailschecklogindetails"
     //   );
@@ -190,7 +194,17 @@ export default function DrawerIndex({
     //     setFieldError("email", "Email already exist");
     //   } else {
     try {
-      const response = await Abhibus_SeatBlocked(
+      // const response = await Abhibus_SeatBlocked(
+      //   BusDetails,
+      //   seatDetails,
+      //   travelerDetails,
+      //   values,
+      //   selectedRoutes,
+      //   emailInput,
+      //   mobileInput,
+      //   selectedseatprice
+      // );
+      const response = await GetTBSSeatBlock(
         BusDetails,
         seatDetails,
         travelerDetails,
@@ -206,13 +220,18 @@ export default function DrawerIndex({
         setConfirmRefNo(response?.ReferenceNo);
         handleScroll();
         try {
-          const data = await Abhibus_GetFareInfo(
+          // const data = await Abhibus_GetFareInfo(
+          //   adultCount,
+          //   childCount,
+          //   response?.ReferenceNo
+          // );
+          const data = await GetTBSFareInfo(
             adultCount,
             childCount,
             response?.ReferenceNo
           );
           setFareDetails(data?.GetFaresInfo);
-        } catch { }
+        } catch {}
       }
     } catch (error) {
       console.error("API call failed:", error);
@@ -225,7 +244,7 @@ export default function DrawerIndex({
 
     // else{
     //   const checklogindetails = await LoginCheck(emailInput, mobileInput);
-    //     console.log(checklogindetails?.message, "checklogindetailschecklogindetails");
+    //      // console.log(checklogindetails?.message, "checklogindetailschecklogindetails");
     //     setCheckError(checklogindetails);
     //     setButtonDisable(true);
     // }
@@ -251,7 +270,7 @@ export default function DrawerIndex({
     starTime: ticketlist?.ticketInfo?.Start_Time,
     endTime: ticketlist?.ticketInfo?.Arr_Time,
   });
-  console.log(calArrival, "calArrival");
+   // console.log(calArrival, "calArrival");
 
   useEffect(() => {
     const value = sessionStorage.getItem("ticket_view");
@@ -302,7 +321,7 @@ export default function DrawerIndex({
     const dateParts = formattedDate?.split(" ");
     dateParts?.splice(1, 0, `${dayWithSuffix}`);
     const modifiedDate = dateParts?.join(" ");
-    console.log(date, "modfuhdifhdataadff");
+     // console.log(date, "modfuhdifhdataadff");
     return modifiedDate;
   };
 
@@ -391,26 +410,28 @@ export default function DrawerIndex({
         ticketlist?.ticketInfo?.originStartTime,
         ticketlist?.ticketInfo?.Arr_Time
       );
-      console.log(
-        ticketlist?.ticketInfo?.originStartTime,
-        ticketlist?.ticketInfo?.Arr_Time,
-        "vashdfkjdhkjfsdd"
-      );
+       // console.log(
+      //   ticketlist?.ticketInfo?.originStartTime,
+      //   ticketlist?.ticketInfo?.Arr_Time,
+      //   "vashdfkjdhkjfsdd"
+      // );
       setCalculatedDate(values);
       //setShowModal(true);
-      console.log(
-        (ticketlist?.ticketInfo?.Journey_Date,
-          ticketlist?.ticketInfo?.Start_Time,
-          ticketlist?.ticketInfo?.Arr_Time),
-        calculatedDate && ConvertDate(calculatedDate),
-        "helldfhkdxjhfkdjhfkxdjhf"
-      );
+       // console.log(
+      //   (ticketlist?.ticketInfo?.Journey_Date,
+      //   ticketlist?.ticketInfo?.Start_Time,
+      //   ticketlist?.ticketInfo?.Arr_Time),
+      //   calculatedDate && ConvertDate(calculatedDate),
+      //   "helldfhkdxjhfkdjhfkxdjhf"
+      // );
       // }
     }
   }, [ticketlist]);
 
-  console.log(selectedSeats1?.map(
-    (seat, index) => travelerDetails?.[index]?.age), 'passenger_age')
+   // console.log(
+  //   selectedSeats1?.map((seat, index) => travelerDetails?.[index]?.age),
+  //   "passenger_age"
+  // );
   return (
     <>
       {razorpayloading ? (
@@ -422,7 +443,7 @@ export default function DrawerIndex({
             paragraph={{ rows: 4 }}
             avatar
           ></Skeleton> */}
-          <div className="flex items-center justify-center h-full w-full">
+          <div className="flex items-center  justify-center h-full w-full">
             <img src={busloading} className="h-[20vw] w-[40vw]" />
           </div>
           {/* <label className="text-center text-[1.5vw]">Loading</label> */}
@@ -433,8 +454,8 @@ export default function DrawerIndex({
             email: emailInput || "",
             mobile:
               mobileInput &&
-                mobileInput !== "undefined" &&
-                mobileInput !== "null"
+              mobileInput !== "undefined" &&
+              mobileInput !== "null"
                 ? mobileInput
                 : "",
             user_name:
@@ -450,9 +471,11 @@ export default function DrawerIndex({
             ),
             ...selectedSeats1?.reduce((acc, seat, index) => {
               // Assuming travelerDetails is an array with traveler data corresponding to the selected seats
-              acc[`user_name_${index}`] = travelerDetails?.[index]?.user_name || "";
+              acc[`user_name_${index}`] =
+                travelerDetails?.[index]?.user_name || "";
               acc[`age_${index}`] = travelerDetails?.[index]?.age || "";
-              acc[`gender_${index}`] = travelerDetails?.[index]?.gender || "male"; // Default gender to "male"
+              acc[`gender_${index}`] =
+                travelerDetails?.[index]?.gender || "male"; // Default gender to "male"
               return acc;
             }, {}),
             terms: termschecked || false,
@@ -464,7 +487,7 @@ export default function DrawerIndex({
           validationSchema={validationSchema}
           onSubmit={(values, { setFieldError }) => {
             handleSubmit(values, setFieldError);
-            console.log(values, "values values");
+             // console.log(values, "values values");
             setRegisterFullDetails(values);
             localStorage.setItem("page1", true);
             localStorage.setItem("occupation", values.option);
@@ -479,9 +502,8 @@ export default function DrawerIndex({
             values,
             setFieldValue,
             handleChange,
-            resetForm
+            resetForm,
           }) => {
-
             // Update the form state when Formik state changes
             if (
               formState?.isValid !== isValid ||

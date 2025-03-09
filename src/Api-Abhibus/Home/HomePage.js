@@ -29,7 +29,6 @@ export const processSOAPResponse = async (soapResponse, name) => {
     // Step 2: Parse the SOAP response (XML to JS object)
     const parsedSOAP = parser.parse(soapResponse);
 
-    console.log("Parsed SOAP:", parsedSOAP); // Log the parsed SOAP response
 
     // Step 3: Extract the JSON string from the parsed response
     // Check if the response exists and then try to access GetStationsResult
@@ -37,13 +36,11 @@ export const processSOAPResponse = async (soapResponse, name) => {
       parsedSOAP["SOAP-ENV:Envelope"]?.["SOAP-ENV:Body"]?.[
         `ns1:${name}Response`
       ]?.[`ns1:${name}Result`]?.["#text"];
-    console.log("Extracted GetStationsResult:", getStationsResult);
 
     // Ensure the jsonString is a valid string before trying to parse it
     if (getStationsResult) {
       // Check if it's a JSON string and parse it
       const jsonObject = JSON.parse(getStationsResult);
-      console.log("Converted JSON Object:", jsonObject);
       return jsonObject;
     } else {
       console.error("No valid 'GetStationsResult' found in the response");
@@ -72,13 +69,7 @@ export const Abhibus_GetStations = async (dispatch) => {
   try {
     const authHeader = `Basic ${btoa(`${username}:${password}`)}`;
 
-    console.log("Request Headers:", {
-      "Content-Type": "text/xml;charset=UTF-8",
-      Authorization: authHeader,
-      SOAPAction: `${abhibusurl}GetStationsV1`,
-    });
-
-    console.log("SOAP Request Body:", soapRequest);
+  
 
     const response = await axios({
       method: "post",
@@ -91,9 +82,7 @@ export const Abhibus_GetStations = async (dispatch) => {
       },
     });
 
-    console.log("SOAP Response:", response.data);
     const result = await processSOAPResponse(response.data, "GetStationsV1");
-    console.log(result, "resultresultresultresultresultresult");
     // dispatch({ type: GET_STATIONS, payload: result?.stations });
     return result;
   } catch (error) {
@@ -133,13 +122,6 @@ export const Abhibus_GetBusList = async (
   try {
     const authHeader = `Basic ${btoa(`${username}:${password}`)}`;
 
-    console.log("Request Headers:", {
-      "Content-Type": "text/xml;charset=UTF-8",
-      Authorization: authHeader,
-      SOAPAction: `${abhibusurl}/GetAvailableServices`,
-    });
-
-    console.log("SOAP Request Body:", soapRequest);
 
     const response = await axios({
       method: "post",
@@ -153,12 +135,10 @@ export const Abhibus_GetBusList = async (
     });
     dispatch({ type: BUSLIST_LOADER, payload: false });
 
-    console.log("SOAP Response:", response.data);
     const result = await processSOAPResponse(
       response.data,
       "GetAvailableServices"
     );
-    console.log(result, "resultresultresultdddresultresultresult");
     if (result?.status === "fail") {
       toast.error(`${result?.status} - ${result?.message}`);
     }

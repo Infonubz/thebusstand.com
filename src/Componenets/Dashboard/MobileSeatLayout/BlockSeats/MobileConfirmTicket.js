@@ -15,14 +15,20 @@ import { ViewTicketById } from "../../../../Api-Abhibus/MyAccount/ViewTicket";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import dayjs from "dayjs";
-import { GetAvailableOffers, GetOfferValid, TBS_Booking_Details } from "../../../../Api-TBS/Dashboard/Dashboard";
+import {
+  GetAvailableOffers,
+  GetOfferValid,
+  GetTBSSeatConfirmed,
+  TBS_Booking_Details,
+} from "../../../../Api-TBS/Dashboard/Dashboard";
 import { GetDiscountOffers } from "../../../../Api-TBS/Home/Home";
 import * as Yup from "yup";
+import { GetViewTicketID } from "../../../../Api-TBS/MyAccounts/MyBookings";
+import { LuxuryFind } from "../../../Common/Common-Functions/LuxuryFind";
 
 const validationSchema = Yup.object().shape({
   coupon_code: Yup.string().required("Coupon Code is required"),
 });
-
 
 export default function MobileConfirmTicket({
   MobSeatDetails,
@@ -39,7 +45,7 @@ export default function MobileConfirmTicket({
   ticketLoader,
   setTicketLoader,
   razorpayloading,
-  setRazorpayLoading
+  setRazorpayLoading,
 }) {
   const navigation = useNavigate();
   const [promoCode, setPromoCode] = useState("");
@@ -85,13 +91,11 @@ export default function MobileConfirmTicket({
       Number(faredetails?.TotadultFare),
       tbs_discount
     ) + Number(Math.round(totaltax));
-  const handlePromoCode = async () => {
-  };
+  const handlePromoCode = async () => {};
   const dispatch = useDispatch();
   const [spinning, setSpinning] = useState(false);
   const { handleSubmit, handleChange, isSubmitting, isValid, values } =
     useFormikContext();
-
 
   const initiateRazorpay = (generatedOrderId) => {
     setPayButton(false);
@@ -143,7 +147,6 @@ export default function MobileConfirmTicket({
     pay.open();
   };
 
-
   const calculateArrival = (departureDate, departureTime, duration) => {
     try {
       const departureDateTime = new Date(`${departureDate} ${departureTime}`);
@@ -172,7 +175,6 @@ export default function MobileConfirmTicket({
     }
   };
 
-
   const currentpath = useParams();
 
   const arraivaldate = calculateArrival(
@@ -182,17 +184,20 @@ export default function MobileConfirmTicket({
   );
 
   const handleBookingPrice = async (order_id, payment_id, signature, msg) => {
-    setTicketLoader(true)
+    setTicketLoader(true);
     try {
-      const response = await Abhibus_SeatConfirmed(MobBusDetails, confirmRefNo);
+      // const response = await Abhibus_SeatConfirmed(MobBusDetails, confirmRefNo);
+      const response = await GetTBSSeatConfirmed(MobBusDetails, confirmRefNo);
       if (response?.status === "success") {
         // toast.success(`Ticket Booked Successfully, your TicketNo: ${response?.TicketNo}`);
-        const ticketdetails = await ViewTicketById(
+        // const ticketdetails = await ViewTicketById(
+        //   response?.TicketNo,
+        //   setSpinning
+        // );
+        const ticketdetails = await GetViewTicketID(
           response?.TicketNo,
           setSpinning
         );
-
-
         const tbs_deal = Math?.round(
           Number(faredetails?.TotadultFare) * Number(tbs_discount / 100)
         );
@@ -232,17 +237,16 @@ export default function MobileConfirmTicket({
           setTicektConfirm(true);
         }
       }
-
     } catch (error) {
       console.error("API call failed:", error);
     }
   };
-  const LuxuryFind = (type) =>
-    type.toLowerCase().includes("volvo") ||
-    type.toLowerCase().includes("mercedes benz") ||
-    type.toLowerCase().includes("washroom") ||
-    type.toLowerCase().includes("bharatBenz") ||
-    type.toLowerCase().includes("luxury");
+  // const LuxuryFind = (type) =>
+  //   type.toLowerCase().includes("volvo") ||
+  //   type.toLowerCase().includes("mercedes benz") ||
+  //   type.toLowerCase().includes("washroom") ||
+  //   type.toLowerCase().includes("bharatBenz") ||
+  //   type.toLowerCase().includes("luxury");
 
   const offers = [
     { Coupon: "BUSSAVE10", details: "Get 10% off on all bus tickets." },
@@ -258,7 +262,7 @@ export default function MobileConfirmTicket({
   const tbs_available_offer = useSelector(
     (state) => state?.tbs_available_offer?.data
   );
-  console.log(tbs_available_offer, "available_offer")
+   // console.log(tbs_available_offer, "available_offer");
   useEffect(() => {
     if (navigate === true) {
       navigation("/seats", {
@@ -284,7 +288,6 @@ export default function MobileConfirmTicket({
     };
 
     try {
-
       const authHeader = `Basic ${btoa(`${username}:${password}`)}`;
 
       const response = await axios.post(apiUrl, requestBody, {
@@ -397,13 +400,13 @@ export default function MobileConfirmTicket({
     Symbol: "",
     code: "",
   });
-  console.log(selectvalue, 'selectvalue_selectvalue')
+   // console.log(selectvalue, "selectvalue_selectvalue");
   const [tbsdiscountamount, setDiscount] = useState(null);
   const [finaldiscount, setFinalDiscount] = useState(null);
   const [paybutton, setPayButton] = useState(false);
 
   const handleoffer = (item) => {
-    console.log(item, 'item_item_item')
+     // console.log(item, "item_item_item");
     if (selectvalue?.value === item?.offer_value) {
       setSelectValues({
         ...selectvalue,
@@ -431,7 +434,7 @@ export default function MobileConfirmTicket({
         faredetails?.TotadultFare,
         tbs_discount
       );
-      console.log(amount, "amountgggggg");
+       // console.log(amount, "amountgggggg");
 
       const final = Number(amount) - Number(item?.offer_value);
       if (selectvalue?.value === item?.offer_value) {
@@ -452,7 +455,7 @@ export default function MobileConfirmTicket({
       );
       const per = Number(item?.offer_value) / 100;
       const final = Number(amount) * Number(per);
-      console.log(final, per, amount, "finalfinalfinal");
+       // console.log(final, per, amount, "finalfinalfinal");
       if (selectvalue?.value === item?.offer_value) {
         setDiscount(null);
       } else {
@@ -478,7 +481,6 @@ export default function MobileConfirmTicket({
     }
   }, [faredetails?.TotadultFare]);
 
-
   useEffect(() => {
     GetDiscountOffers(dispatch);
   }, [dispatch, sessionStorage.getItem("occupation_id")]);
@@ -487,7 +489,7 @@ export default function MobileConfirmTicket({
     try {
       const data = await GetAvailableOffers(dispatch, emailInput, mobileInput);
     } catch {
-      console.log("hi");
+       // console.log("hi");
     }
   };
   useEffect(() => {
@@ -512,22 +514,23 @@ export default function MobileConfirmTicket({
         setFinalDiscount(null);
         setFieldError("coupon_code", "Coupon code is not valid or expired");
       }
-      console.log("datawdedwedew", response?.data);
+       // console.log("datawdedwedew", response?.data);
     } catch (error) {
-      console.log("Error fetching offer:", error);
+       // console.log("Error fetching offer:", error);
     }
   };
-  console.log(tbsdiscountamount, "tbsdiscountamount");
-  console.log(promoCode, "selectvalueselectvalue");
+   // console.log(tbsdiscountamount, "tbsdiscountamount");
+   // console.log(promoCode, "selectvalueselectvalue");
 
   return (
     <div>
       <div className="grid grid-cols-1  gap-[2vw] h-[5vw]">
         <div
-          className={`${LuxuryFind(MobBusDetails.Bus_Type_Name) === true
-            ? "bg-[#FFEEC9]"
-            : "bg-white"
-            } col-span-1 h-[67vw]  w-full rounded-[1.5vw]`}
+          className={`${
+            LuxuryFind(MobBusDetails.Bus_Type_Name) === true
+              ? "bg-[#FFEEC9]"
+              : "bg-white"
+          } col-span-1 h-[67vw]  w-full rounded-[1.5vw]`}
           style={{
             boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
           }}
@@ -562,7 +565,6 @@ export default function MobileConfirmTicket({
                           ? "#393939"
                           : "#1F487C",
                     }}
-
                   >
                     <div className="grid grid-cols-10 m-[1vw] w-full">
                       <div className="col-span-1 pt-[.5vw] ">
@@ -572,14 +574,14 @@ export default function MobileConfirmTicket({
                           className="w-full h-auto"
                           checked={selectvalue?.value === item.offer_value}
                           onClick={() => {
-                            handleoffer(item)
+                            handleoffer(item);
                           }}
                         />
                       </div>
                       <div className="col-span-9 flex flex-col w-full">
                         <p
                           className=" text-[3.3vw] font-bold"
-                        // style={{ color: "#1F487C" }}
+                          // style={{ color: "#1F487C" }}
                         >
                           {item.code}
                         </p>
@@ -589,7 +591,8 @@ export default function MobileConfirmTicket({
                       </div>
                     </div>
                   </div>
-                ))) : (
+                ))
+              ) : (
                 <div className="flex flex-col items-center justify-center">
                   <Empty description={false} />
                   <label
@@ -617,7 +620,10 @@ export default function MobileConfirmTicket({
                   enableReinitialize
                 >
                   {({ handleChange, handleSubmit, values }) => (
-                    <Form className="flex px-[1vw] mt-[0.8vw] relative" onSubmit={handleSubmit}>
+                    <Form
+                      className="flex px-[1vw] mt-[0.8vw] relative"
+                      onSubmit={handleSubmit}
+                    >
                       <BiSolidOffer
                         className="absolute left-[1.5vw] top-[0.5vw] text-[7vw] "
                         // color="color"
@@ -673,12 +679,13 @@ export default function MobileConfirmTicket({
             </div>
           </div>
         </div>
-       
+
         <div
-          className={`${LuxuryFind(MobBusDetails.Bus_Type_Name) === true
-            ? "bg-[#FFEEC9]"
-            : "bg-white"
-            } col-span-1 min-h-[45] max-h -auto w-full  mb-[2vw] px-[2vw] rounded-[1.5vw]`}
+          className={`${
+            LuxuryFind(MobBusDetails.Bus_Type_Name) === true
+              ? "bg-[#FFEEC9]"
+              : "bg-white"
+          } col-span-1 min-h-[45] max-h -auto w-full  mb-[2vw] px-[2vw] rounded-[1.5vw]`}
           style={{
             boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
           }}
@@ -713,16 +720,13 @@ export default function MobileConfirmTicket({
             </div>
             <div className="px-[1vw] flex justify-between">
               <p className="text-[3.5vw]">GST</p>
-              <p className="text-[3.5vw]">
-                + ₹ {Math.round(totaltax)}
-              </p>
+              <p className="text-[3.5vw]">+ ₹ {Math.round(totaltax)}</p>
             </div>
             <div className="px-[1vw] flex justify-between">
               <p className="text-[3.5vw]">TBS Deal</p>
               <p className="text-[3.5vw]">
                 {`- ₹ ${Math?.round(
-                  Number(faredetails?.TotadultFare) *
-                  Number(tbs_discount / 100)
+                  Number(faredetails?.TotadultFare) * Number(tbs_discount / 100)
                 )}`}
               </p>
             </div>
@@ -755,7 +759,6 @@ export default function MobileConfirmTicket({
               }}
               onClick={RazorpayGateway}
               disabled={paybutton}
-
             >
               <span className="text-white text-[3.5vw]  font-semibold">
                 Proceed to Pay{" "}
@@ -766,7 +769,9 @@ export default function MobileConfirmTicket({
                   MobBusDetails?.BUS_START_DATE,
                   Number(faredetails?.TotadultFare),
                   tbs_discount
-                ) + Number(Math.round(totaltax)) - Number(finaldiscount)}
+                ) +
+                  Number(Math.round(totaltax)) -
+                  Number(finaldiscount)}
               </span>
               <span className="pl-[0.5vw]">
                 <RiArrowRightDoubleLine

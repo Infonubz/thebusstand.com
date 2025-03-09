@@ -21,7 +21,7 @@ import { PiBuildingOffice, PiBuildingOfficeBold } from "react-icons/pi";
 import "../../../App.css";
 import SVG_List from "../../Common/SVG/SVG";
 import { toast } from "react-toastify";
-import { GetStations } from "../../../Api-TBS/Home/Home";
+import { GetStations, GetTBSAvailableService } from "../../../Api-TBS/Home/Home";
 const validationSchema = Yup.object().shape({
   // occupation: Yup.string()
   //   // .oneOf(["option1", "option2", "option3"], "Invalid option")
@@ -61,10 +61,10 @@ export default function SearchBus() {
     sleeper: "",
     semi_sleeper: "",
     luxury_data: false,
-    from_state: '',
-    to_state: ''
+    from_state: "",
+    to_state: "",
   });
-  console.log(busdatas, 'bus_datas')
+   // console.log(busdatas, "bus_datas");
   const [error, setError] = useState({
     from: "",
     to: "",
@@ -91,7 +91,7 @@ export default function SearchBus() {
       from_sourceID: busdatas?.to_sourceID,
       to_sourceID: busdatas?.from_sourceID,
       to_state: busdatas?.from_state,
-      from_state: busdatas?.to_state
+      from_state: busdatas?.to_state,
     };
 
     // Update the busdatas state
@@ -103,19 +103,27 @@ export default function SearchBus() {
   };
   const handleSubmit = async () => {
     try {
-      const data = await Abhibus_GetBusList(
+      // const data = await Abhibus_GetBusList(
+      //   dispatch,
+      //   busdatas,
+      //   getselecteddate,
+      //   luxury
+      // );
+      const data = await GetTBSAvailableService(
         dispatch,
         busdatas,
         getselecteddate,
         luxury
       );
-      if (data?.status === "success") {
-        sessionStorage.setItem('loader', true)
+      // if (data?.status === "success") {
+        sessionStorage.setItem("loader", true);
         navigation(
-          `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${busdatas.to_sourceID
+          `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${
+            busdatas.to_sourceID
           }/${dayjs(getselecteddate).format("YYYY-MM-DD")}`,
-          { state: busdatas });
-      }
+          { state: busdatas }
+        );
+      // }
     } catch {
       console.error("Error fetching additional user data");
     }
@@ -145,7 +153,7 @@ export default function SearchBus() {
     //     busdatas,
     //     luxury
     //   );
-    //   console.log(
+    //    // console.log(
     //     busdatas.from,
     //     busdatas.to,
     //     busdatas.seater,
@@ -170,7 +178,6 @@ export default function SearchBus() {
     // }
   };
   const handleonClick = (item, setFieldValue, input) => {
-
     // Update Formik's value
     if (input === "from") {
       setFieldValue("from", item?.station_name);
@@ -184,14 +191,14 @@ export default function SearchBus() {
         ...busdatas,
         from: item?.station_name,
         from_sourceID: item?.source_id,
-        from_state: item?.state_name
+        from_state: item?.state_name,
       });
     } else {
       setBusDatas({
         ...busdatas,
         to: item?.station_name,
         to_sourceID: item?.source_id,
-        to_state: item?.state_name
+        to_state: item?.state_name,
       });
     }
     if (input === "from") {
@@ -218,17 +225,24 @@ export default function SearchBus() {
     }
   };
   useEffect(() => {
-    sessionStorage.removeItem('home_luxury')
-    sessionStorage.removeItem('home_seat_type')
-    sessionStorage.removeItem('home_ac')
-  }, [])
-
+    sessionStorage.removeItem("home_luxury");
+    sessionStorage.removeItem("home_seat_type");
+    sessionStorage.removeItem("home_ac");
+  }, []);
 
   const handleKeyDown = (event) => {
     const regex = /^[a-zA-Z ]+$/;
     if (!regex.test(event.key) && event.key !== "Backspace") {
       event.preventDefault();
     }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
   };
 
   return (
@@ -386,6 +400,8 @@ export default function SearchBus() {
                                   {...field}
                                   className="h-[3vw] w-full rounded-[0.3vw] pl-[1vw] outline-none text-[1.2vw] placeholder:text-[1.2vw]"
                                   placeholder="From"
+                                  onDragOver={handleDragOver}
+                                  onDrop={handleDrop}
                                   onKeyDown={handleKeyDown}
                                   onFocus={() => {
                                     setBusDatas({
@@ -444,10 +460,7 @@ export default function SearchBus() {
                                       }
                                     >
                                       {SVG.building_dropdown}
-                                      <div
-                                        className="flex flex-col cursor-pointer"
-
-                                      >
+                                      <div className="flex flex-col cursor-pointer">
                                         <label className="text-[0.9vw] flex-wrap w-full font-semibold">
                                           {item.station_name}
                                         </label>
@@ -572,6 +585,8 @@ export default function SearchBus() {
                                     setIsInputToFocused(true);
                                     setIsInputFromFocused(false);
                                   }}
+                                  onDragOver={handleDragOver}
+                                  onDrop={handleDrop}
                                   onKeyDown={handleKeyDown}
                                   onBlur={(e) => {
                                     //setIsInputToFocused(false)
@@ -664,10 +679,11 @@ export default function SearchBus() {
                   <div className="flex gap-[1vw]   pt-[0.5vw] pl-[2vw] items-center w-full ">
                     <button
                       onFocus={() => setIsInputToFocused(false)}
-                      className={`border-[0.15vw] flex ${seatFilter === "seater"
-                        ? `bg-[${colors.primary}] text-white border-white`
-                        : "text-black border-[#81A3B6]"
-                        } py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
+                      className={`border-[0.15vw] flex ${
+                        seatFilter === "seater"
+                          ? `bg-[${colors.primary}] text-white border-white`
+                          : "text-black border-[#81A3B6]"
+                      } py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
                       onClick={() => {
                         if (seatFilter === "seater") {
                           SetSeatFilter("");
@@ -719,20 +735,22 @@ export default function SearchBus() {
                           </div>
                         </span> */}
                       <span
-                        className={` ${seatFilter === "seater"
-                          ? "text-white"
-                          : `text-[${colors.primary}]`
-                          } font-bold inline-flex`}
+                        className={` ${
+                          seatFilter === "seater"
+                            ? "text-white"
+                            : `text-[${colors.primary}]`
+                        } font-bold inline-flex`}
                       >
                         Seater
                       </span>
                     </button>
 
                     <button
-                      className={`border-[0.15vw] flex ${seatFilter === "sleeper"
-                        ? `bg-[${colors.primary}] text-white border-white`
-                        : "text-black border-[#81A3B6]"
-                        } py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
+                      className={`border-[0.15vw] flex ${
+                        seatFilter === "sleeper"
+                          ? `bg-[${colors.primary}] text-white border-white`
+                          : "text-black border-[#81A3B6]"
+                      } py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
                       onClick={() => {
                         if (seatFilter === "sleeper") {
                           SetSeatFilter("");
@@ -767,10 +785,11 @@ export default function SearchBus() {
                           </div>
                         </span> */}
                       <span
-                        className={` ${seatFilter === "sleeper"
-                          ? "text-white"
-                          : `text-[${colors.primary}]`
-                          } font-bold`}
+                        className={` ${
+                          seatFilter === "sleeper"
+                            ? "text-white"
+                            : `text-[${colors.primary}]`
+                        } font-bold`}
                       >
                         Sleeper
                       </span>
@@ -792,10 +811,11 @@ export default function SearchBus() {
                         Semi Sleeper
                       </button> */}
                     <button
-                      className={`border-[0.15vw] flex items-center ${luxury === true
-                        ? "luxury-card  text-black border-[#e1db84]"
-                        : "text-black border-[#81A3B6]"
-                        }  py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
+                      className={`border-[0.15vw] flex items-center ${
+                        luxury === true
+                          ? "luxury-card  text-black border-[#e1db84]"
+                          : "text-black border-[#81A3B6]"
+                      }  py-[0.2vw] px-[1.5vw] rounded-full text-[1vw]`}
                       onClick={() => {
                         setLuxury(!luxury);
                         sessionStorage.getItem("home_luxury") === "true"
@@ -810,10 +830,11 @@ export default function SearchBus() {
                           />
                         </span> */}
                       <span
-                        className={`${luxury === true
-                          ? "text-black"
-                          : `text-[${colors.primary}]`
-                          } font-bold`}
+                        className={`${
+                          luxury === true
+                            ? "text-black"
+                            : `text-[${colors.primary}]`
+                        } font-bold`}
                       >
                         Luxury Buses
                       </span>

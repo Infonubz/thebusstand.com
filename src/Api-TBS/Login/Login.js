@@ -19,7 +19,7 @@ export const SendVerificationOTP = async (dispatch, values) => {
     email_id: values.email ? values?.email : values,
     // phone: values.mobile
   };
-  console.log(values, "values");
+  // console.log(values, "values");
   const url = `${apiUrl}/send-request`;
   const method = "post";
   try {
@@ -33,7 +33,7 @@ export const SendVerificationOTP = async (dispatch, values) => {
     });
     // sessionStorage.setItem("user_email_id")
     dispatch({ type: SEND_OTP, payload: response.data });
-    console.log(response.data, "SENDED_VERIFICATION");
+    // console.log(response.data, "SENDED_VERIFICATION");
     return response.data;
   } catch (error) {
     handleError(error);
@@ -81,7 +81,7 @@ export const GetUserDetails = async (navigation) => {
     sessionStorage.setItem("user_id", encryptedUserId);
     sessionStorage.setItem("user_name", encryptedUserName);
     sessionStorage.setItem("passenger_name", encryptedUserName);
-    console.log(response, "response for bookingDetails");
+    // console.log(response, "response for bookingDetails");
     // navigation("/dashboard");
     return response.data;
   } catch (error) {
@@ -89,14 +89,14 @@ export const GetUserDetails = async (navigation) => {
   }
 };
 export const SendOTPassword = async (dispatch, values, Email_Id) => {
-  console.log(Email_Id.email_id, "email_id__email_id");
+  // console.log(Email_Id.email_id, "email_id__email_id");
   const email = sessionStorage.getItem("email_id");
   const encryptemailid = decryptData(email);
   const payload = {
     email_id: encryptemailid,
     otp: values.otp,
   };
-  console.log(payload.email_id, "verificationforotp");
+  // console.log(payload.email_id, "verificationforotp");
 
   const url = `${apiUrl}/verify-otp`;
   const method = "post";
@@ -133,18 +133,18 @@ export const SendOTPassword = async (dispatch, values, Email_Id) => {
     // if (response?.data?.user?.status == 2) {
     //   window.location.reload();
     // }
-    console.log(response.data, "OTP_VERIFICATION");
+    // console.log(response.data, "OTP_VERIFICATION");
     localStorage.setItem("tokenID", response?.data?.token);
     return response.data;
   } catch (error) {
-    console.log(error, "error_message_otp");
+    // console.log(error, "error_message_otp");
     handleError(error);
     // toast.error(error);
     return null;
   }
 };
 export const SendMobileVerifycation = async (dispatch) => {
-  // console.log(Email_Id.email_id, "email_id__email_id");
+  // // console.log(Email_Id.email_id, "email_id__email_id");
   const mobile = sessionStorage.getItem("mobile");
   const encryptmobile = decryptData(mobile);
   const payload = {
@@ -187,11 +187,11 @@ console.log(response?.data?.user?.tbs_passenger_id,"response?.dataresponse?.data
     // if (response?.data?.user?.status == 2) {
     //   window.location.reload();
     // }
-    console.log(response.data, "OTP_VERIFICATION");
+    // console.log(response.data, "OTP_VERIFICATION");
     localStorage.setItem("tokenID", response?.data?.token);
     return response.data;
   } catch (error) {
-    console.log(error, "error_message_otp");
+    // console.log(error, "error_message_otp");
     handleError(error);
     // toast.error(error);
     return null;
@@ -206,13 +206,13 @@ export const SendPassengerName = async (dispatch, values, setLoginIsOpen) => {
     occupation_id:
       values.occupation === "Business"
         ? 1
-        : values.occupation === "GeneralPublic"
+        : values.occupation === "General Public"
         ? 2
-        : values.occupation === "PhysicallyChallenged"
+        : values.occupation === "Physically Challenged"
         ? 3
-        : values.occupation === "PilgrimTravelers"
+        : values.occupation === "Pilgrim Travelers"
         ? 4
-        : values.occupation === "SeniorCitizens"
+        : values.occupation === "Senior Citizens"
         ? 5
         : values.occupation === "Students"
         ? 6
@@ -220,7 +220,7 @@ export const SendPassengerName = async (dispatch, values, setLoginIsOpen) => {
         ? 7
         : 8,
   };
-  console.log(payload.email_id, "verificationforotp");
+  // console.log(payload.email_id, "verificationforotp");
   sessionStorage.setItem("user_name", values.name);
   const user_id = sessionStorage.getItem("user_id");
   const decryptid = user_id && decryptData(user_id);
@@ -239,12 +239,12 @@ export const SendPassengerName = async (dispatch, values, setLoginIsOpen) => {
     GetUserDetails();
     setLoginIsOpen(false);
     toast.success(response?.data?.message);
-    console.log(response, "OTP_VERIFICATION");
+    // console.log(response, "OTP_VERIFICATION");
     return response.data;
   } catch (error) {
     handleError(error);
     // toast.error(error.response.data.message);
-    console.log(error.response.data.message);
+    // console.log(error.response.data.message);
     return error.response.data.message;
   }
 };
@@ -268,7 +268,7 @@ export const SendPassengerName = async (dispatch, values, setLoginIsOpen) => {
 
 //   try {
 //     const response = await axios.get(url, { params });
-//     console.log("SMS Response:", response.data);
+//     // console.log("SMS Response:", response.data);
 //   } catch (error) {
 //     console.error("Error sending SMS:", error);
 //   }
@@ -280,13 +280,13 @@ export const SendMessage = async (mobile, otp) => {
       mobile,
       otp,
     });
-    console.log(response?.data?.success===true,"hhhhhhhh");
+    // console.log(response?.data?.success===true,"hhhhhhhh");
     
     if (response?.data?.success) {
       const encryptrandom = encryptData(otp);
       sessionStorage.setItem("mobileOTP", encryptrandom);
     }
-    console.log("SMS Response:", response?.data?.success);
+    // console.log("SMS Response:", response?.data?.success);
   } catch (error) {
     console.error("Error sending OTP:", error.response?.data || error.message);
   }
@@ -308,7 +308,7 @@ export const SendMessage = async (mobile, otp) => {
 //   try {
 //     const response = await fetch(`${baseURL}?${params.toString()}`);
 //     const data = await response.text();
-//     console.log("SMS Response:", data);
+//     // console.log("SMS Response:", data);
 //   } catch (error) {
 //     console.error("Error sending SMS:", error);
 //   }
@@ -331,7 +331,7 @@ export const SendMessage = async (mobile, otp) => {
 //   try {
 //     const response = await fetch(`${baseURL}?${params.toString()}`);
 //     const data = await response.json();
-//     console.log("SMS Response:", data);
+//     // console.log("SMS Response:", data);
 //   } catch (error) {
 //     console.error("Error sending SMS:", error);
 //   }

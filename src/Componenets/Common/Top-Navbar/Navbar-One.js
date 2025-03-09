@@ -73,7 +73,7 @@ export default function Navbar_One({ userName }) {
     setLogMobileIsOpen(false);
   };
   const openLogModal = () => {
-    console.log("openkkkkk");
+     // console.log("openkkkkk");
     setAccDrawer(false);
     setLogModalIsOpen(true);
     sessionStorage.clear();
@@ -84,7 +84,7 @@ export default function Navbar_One({ userName }) {
     // window.location.reload();
   };
   const openLogMobile = () => {
-    console.log("open8888888888888888888");
+     // console.log("open8888888888888888888");
     setAccDrawer(false);
     setLogMobileIsOpen(true);
   };
@@ -148,7 +148,7 @@ export default function Navbar_One({ userName }) {
   // useEffect(() => {
   //  sessionStorage.getItem("user_name");
   //   setLoginUser_Name(sessionStorage.getItem("user_name"));
-  //   console.log(LoginUser_Name,"User Name");
+  //    // console.log(LoginUser_Name,"User Name");
   // }, [sessionStorage.getItem("user_name")]);
 
   // const [userName, setUserName] = useState(sessionStorage.getItem("user_name") || "");
@@ -163,7 +163,7 @@ export default function Navbar_One({ userName }) {
       setLoginUser_Name(decryptuser_name);
     }
   }, [userName, sessionStorage.getItem("user_name")]);
-  console.log(location.pathname, "testing");
+   // console.log(location.pathname, "testing");
 
   const isDisabled = location.pathname === "/main";
 
@@ -519,7 +519,7 @@ export default function Navbar_One({ userName }) {
           <button
             className=" bg-[#1F487C] text-[1.4vw] w-[20vw] h-[3.5vw] text-white rounded-full font-bold "
             onClick={() => {
-              console.log("hiiiiii", "main");
+               // console.log("hiiiiii", "main");
 
               navigation("/");
               sessionStorage.clear();
@@ -538,7 +538,7 @@ export default function Navbar_One({ userName }) {
         closable={true}
         onClose={onAccClose}
         open={accDrawer}
-        key={"right"}
+        // key={"right"}
         width={"75%"}
         className="custom-drawer"
       >
@@ -563,7 +563,7 @@ export default function Navbar_One({ userName }) {
         closable={true}
         onClose={closeLogMobile}
         open={logMobileIsOpen}
-        key={"right"}
+        // key={"right"}
         width={"50%"}
         className="custom-drawer"
       >
@@ -577,7 +577,7 @@ export default function Navbar_One({ userName }) {
           <button
             className=" bg-[#1F487C] text-[4vw] w-3/4 h-[10vw] text-white rounded-md font-bold"
             onClick={() => {
-              console.log("hiiiiii", "main");
+               // console.log("hiiiiii", "main");
 
               navigation("/");
               sessionStorage.clear();

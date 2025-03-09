@@ -97,13 +97,13 @@ export const UpdateProfile = async (profilevalues, setSpinning) => {
     occupation_id:
       profilevalues.occupation === "Business"
         ? 1
-        : profilevalues.occupation === "GeneralPublic"
+        : profilevalues.occupation === "General Public"
         ? 2
-        : profilevalues.occupation === "PhysicallyChallenged"
+        : profilevalues.occupation === "Physically Challenged"
         ? 3
-        : profilevalues.occupation === "PilgrimTravelers"
+        : profilevalues.occupation === "Pilgrim Travelers"
         ? 4
-        : profilevalues.occupation === "SeniorCitizens"
+        : profilevalues.occupation === "Senior Citizens"
         ? 5
         : profilevalues.occupation === "Students"
         ? 6

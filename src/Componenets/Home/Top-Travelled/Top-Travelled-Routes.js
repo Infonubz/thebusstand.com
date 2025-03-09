@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { GetTopBusRoutes } from "../../../Api-TBS/Home/Home";
+import {
+  GetTBSAvailableService,
+  GetTopBusRoutes,
+} from "../../../Api-TBS/Home/Home";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 //import { capitalizeFirstLetter } from "../../Common/Common-Functions/Captalization";
@@ -38,8 +41,8 @@ export default function TopTravelledRoutes() {
   //   localStorage.setItem("arrival", capitalizeFirstLetter(item.to));
   //   try {
   //     const data = await SendTravelDetails(dispatch, busdatas, luxury);
-  //     console.log(luxury, "luxury_luxury");
-  //     console.log(busdatas.from, busdatas.to, data, "datadata");
+  //      // console.log(luxury, "luxury_luxury");
+  //      // console.log(busdatas.from, busdatas.to, data, "datadata");
   //   } catch (error) {
   //     console.error("Error fetching additional user data", error);
   //   }
@@ -59,21 +62,28 @@ export default function TopTravelledRoutes() {
 
   const handlebussearch = async () => {
     try {
-      const data = await Abhibus_GetBusList(
+      // const data = await Abhibus_GetBusList(
+      //   dispatch,
+      //   busdatas,
+      //   getselecteddate,
+      //   luxury
+      // );
+      const data = await GetTBSAvailableService(
         dispatch,
         busdatas,
         getselecteddate,
         luxury
       );
-      console.log(data?.status === "success", "datadatadata");
-      if (data?.status === "success") {
-        console.log(data, "test");
-        sessionStorage.setItem('loader', true)
+       // console.log(data?.status === "success", "datadatadata");
+      // if (data?.status === "success") {
+         // console.log(data, "test");
+        sessionStorage.setItem("loader", true);
         navigate(
-          `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${busdatas.to_sourceID
+          `/buslist/${busdatas.from}/${busdatas.from_sourceID}/${busdatas.to}/${
+            busdatas.to_sourceID
           }/${dayjs(getselecteddate).format("YYYY-MM-DD")}`
         );
-      }
+      // }
     } catch (error) {
       console.error("Error fetching additional user data", error);
     }
@@ -108,10 +118,10 @@ export default function TopTravelledRoutes() {
 
   // const sanitizePath = (path) => {
   //   const sanitizedPath = path.replace(/\\\\/g, "file://").replace(/\\/g, "//");
-  //   console.log(encodeURI(sanitizedPath), "techimage");
+  //    // console.log(encodeURI(sanitizedPath), "techimage");
   //   return encodeURI(sanitizedPath);
   // };
-console.log(getroutes,"getroutesgetroutes");
+   // console.log(getroutes, "getroutesgetroutes");
 
   return (
     <>
@@ -127,7 +137,7 @@ console.log(getroutes,"getroutesgetroutes");
                 className="cursor-pointer col-span-1 w-full h-[18vw] bg-gradient-to-t from-[#126DAF] border-t-[0.2vw] rounded-lg border-[#0D99FF]"
                 onClick={() => {
                   handleonClick(item);
-                  console.log(item, "item");
+                   // console.log(item, "item");
                 }}
               >
                 <div
@@ -206,7 +216,7 @@ console.log(getroutes,"getroutesgetroutes");
                   key={index}
                   onClick={() => {
                     handleonClick(item);
-                    console.log(item, "item");
+                     // console.log(item, "item");
                   }}
                   className="w-[55vw] mr-[2vw] flex-shrink-0  h-[54vw] bg-gradient-to-t from-[#126DAF] border-t-[0.5vw] rounded-lg border-[#0D99FF]"
                 >

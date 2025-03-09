@@ -8,7 +8,7 @@ const apicrm = process.env.REACT_APP_CRM_API_URL;
 export const GetRefferalContent = async (setSpinning) => {
   try {
     const response = await axios.get(`${apicrm}/referEarnContent`);
-    console.log(response.data, "apiressponce");
+    // console.log(response.data, "apiressponce");
     return response?.data[0];
   } catch (err) {
     handleError(err);

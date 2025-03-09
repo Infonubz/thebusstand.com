@@ -10,6 +10,7 @@ import { MdMyLocation } from "react-icons/md";
 import { capitalizeFirstLetter } from "../../Common/Common-Functions/Captalization";
 //import { useSelector } from "react-redux";
 import SVG_List from "../../Common/SVG/SVG";
+import { LuxuryFind } from "../../Common/Common-Functions/LuxuryFind";
 
 
 export default function LiveTracking({
@@ -30,9 +31,9 @@ export default function LiveTracking({
 
     const SVG = SVG_List()
 
-    const LuxuryFind = (type) =>
-        type?.toLowerCase()?.includes("volvo") ||
-        type?.toLowerCase()?.includes("mercedes benz");
+    // const LuxuryFind = (type) =>
+    //     type?.toLowerCase()?.includes("volvo") ||
+    //     type?.toLowerCase()?.includes("mercedes benz");
 
     // const amenityIcons = {
     //     Blankets: (

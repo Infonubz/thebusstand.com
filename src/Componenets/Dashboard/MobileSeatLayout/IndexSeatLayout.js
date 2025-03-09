@@ -10,6 +10,7 @@ import { useLocation, useNavigate } from "react-router";
 import { FaArrowRight } from "react-icons/fa";
 import dayjs from "dayjs";
 import { calculateDiscountedFare } from "../../Common/Common-Functions/TBS-Discount-Fare";
+import { LuxuryFind } from "../../Common/Common-Functions/LuxuryFind";
 
 export default function IndexSeatLayout() {
   const location = useLocation();
@@ -168,12 +169,12 @@ export default function IndexSeatLayout() {
     ) : null;
   };
 
-  const LuxuryFind = (type) =>
-    type?.toLowerCase()?.includes("volvo") ||
-    type?.toLowerCase()?.includes("mercedes benz") ||
-    type?.toLowerCase()?.includes("washroom") ||
-    type?.toLowerCase()?.includes("bharatBenz") ||
-    type?.toLowerCase()?.includes("luxury");
+  // const LuxuryFind = (type) =>
+  //   type?.toLowerCase()?.includes("volvo") ||
+  //   type?.toLowerCase()?.includes("mercedes benz") ||
+  //   type?.toLowerCase()?.includes("washroom") ||
+  //   type?.toLowerCase()?.includes("bharatBenz") ||
+  //   type?.toLowerCase()?.includes("luxury");
 
   return (
     <>
@@ -392,7 +393,7 @@ export default function IndexSeatLayout() {
                       d="M6.0199 9.71591C6.61632 10.3043 7.42392 10.6337 8.2647 10.6337C8.68114 10.6337 9.09365 10.5528 9.47873 10.3955C9.86383 10.2381 10.2141 10.0073 10.5095 9.71591C10.8049 9.42451 11.0395 9.07823 11.1997 8.69666C11.3599 8.31508 11.4425 7.90588 11.4425 7.49248C11.4425 6.65732 11.1061 5.85766 10.5095 5.26906C9.91308 4.68067 9.10548 4.35123 8.2647 4.35123C7.42392 4.35123 6.61632 4.68067 6.0199 5.26906C5.42326 5.85766 5.08691 6.65732 5.08691 7.49248C5.08691 8.32765 5.42326 9.12731 6.0199 9.71591ZM8.2647 20.7059C8.06105 20.4722 7.77652 20.1397 7.4374 19.7275C6.73145 18.8694 5.79097 17.6681 4.85144 16.2943C3.91099 14.9192 2.97738 13.3798 2.28033 11.8449C1.58046 10.3037 1.13529 8.80188 1.13529 7.49248C1.13529 5.63083 1.88487 3.84413 3.22121 2.52579C4.55776 1.20724 6.37184 0.465372 8.2647 0.465372C10.1576 0.465372 11.9716 1.20724 13.3082 2.52579C14.6445 3.84413 15.3941 5.63083 15.3941 7.49248C15.3941 8.80188 14.9489 10.3037 14.2491 11.8449C13.552 13.3798 12.6184 14.9192 11.678 16.2943C10.7384 17.6681 9.79795 18.8694 9.092 19.7275C8.75287 20.1397 8.46835 20.4722 8.2647 20.7059Z"
                       stroke="black"
                       stroke-opacity="0.5"
-                      stroke-width="0.930743"
+                      strokeWidth="0.930743"
                     />
                   </svg>
                 </div>

@@ -130,7 +130,7 @@ export const RatingFeedBack = ({ setRatingModal }) => {
             <Form onSubmit={handleSubmit}>
               {error ? (
                 <div>
-                  <div className="overflow-hidden w-full rounded-lg md:py-[1vw] py-[2.5vw] px-[2.5vw] over">
+                  <div className="overflow-hidden w-full rounded-lg md:py-[1vw] py-[2.5vw] px-[2.5vw] h-[32.5vw]">
                     <span className="text-[#1F487C] font-bold md:text-[1.5vw]">
                       Enjoying our Website?
                     </span>
@@ -350,12 +350,12 @@ export const RatingFeedBack = ({ setRatingModal }) => {
                             as="textarea"
                             name="feedback"
                             placeholder="Write your feedback  :)"
-                            className="custom-placeholders md:px-[2vw] px-[4.5vw] py-[2vw] md:py-[0.75vw] md:h-[17vw] h-[50vw] w-full md:w-[30vw] md:text-[1vw] text-[3.5vw] text-[#1F487C] bg-[#D0E5FF4D] md:border-[0.1vw] border-[0.5vw] border-[#1F487C] md:rounded-[0.5vw] rounded-[1.2vw] outline-none"
+                            className="custom-placeholders md:px-[2vw] px-[4.5vw] py-[2vw] md:py-[0.75vw] md:h-[17vw] h-[50vw] w-full md:w-[30vw] md:text-[1vw] text-[3.5vw] text-[#1F487C] bg-[#D0E5FF4D] md:border-[0.1vw] border-[0.5vw] border-[#1F487C] md:rounded-[0.5vw] rounded-[1.2vw] outline-none resize-none"
                           />
                           <ErrorMessage
                             name="feedback"
                             component="div"
-                            className="text-red-500 md:text-[0.8vw] text-[2.75vw] absolute md:bottom-[-1.25vw] bottom-[-3.5vw] left-[1.5vw]"
+                            className="text-red-500 md:text-[0.8vw] text-[2.75vw] absolute md:bottom-[-0.85vw] bottom-[-3.5vw] left-[1.5vw]"
                           />
                         </div>
                       </div>

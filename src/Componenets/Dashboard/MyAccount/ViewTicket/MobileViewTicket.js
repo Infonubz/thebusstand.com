@@ -12,7 +12,7 @@ import BottomNavbar from "../../../Common/Mobile-NavBar/BottomNavBar.js";
 import dayjs from "dayjs";
 import ModalPopup from "../../../Common/Modal/Modal.js";
 import { useSelector } from "react-redux";
-import Barcode from "react-barcode";
+// import Barcode from "react-barcode";
 import { FiDownload } from "react-icons/fi";
 // import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -23,6 +23,7 @@ import { use } from "react";
 import { useLocation, useNavigate } from "react-router";
 import busloading from "../../../../Assets/Gif/bus.gif";
 import MOBILE_CARD from "../../../../Assets/BusList/Luxury_BG.png"
+import { LuxuryFind } from "../../../Common/Common-Functions/LuxuryFind.js";
 // function convertTo12Hour(timeString) {
 //   if (!timeString) {
 //     return "";
@@ -252,12 +253,12 @@ export default function MobileViewTicket({ ticketDetails, droppingDate }) {
 
   }, [ticket_Details, ticket]);
 
-  const LuxuryFind = (type) =>
-    type?.toLowerCase().includes("volvo") ||
-    type?.toLowerCase().includes("mercedes benz") ||
-    type?.toLowerCase().includes("washroom") ||
-    type?.toLowerCase().includes("bharatBenz") ||
-    type?.toLowerCase().includes("luxury");
+  // const LuxuryFind = (type) =>
+  //   type?.toLowerCase().includes("volvo") ||
+  //   type?.toLowerCase().includes("mercedes benz") ||
+  //   type?.toLowerCase().includes("washroom") ||
+  //   type?.toLowerCase().includes("bharatBenz") ||
+  //   type?.toLowerCase().includes("luxury");
 
   // const downloadPDF = () => {
   //   // setLoader(true);
@@ -633,8 +634,8 @@ export default function MobileViewTicket({ ticketDetails, droppingDate }) {
                                       ? "#393939"
                                       : "#1F4B7F"
                                   }
-                                  stroke-width="2.71095"
-                                  stroke-dasharray="5.42 5.42"
+                                  strokeWidth="2.71095"
+                                  strokeDasharray="5.42 5.42"
                                 />
                                 <line
                                   x1="10.2483"
@@ -646,8 +647,8 @@ export default function MobileViewTicket({ ticketDetails, droppingDate }) {
                                       ? "#393939"
                                       : "#1F4B7F"
                                   }
-                                  stroke-width="2.71095"
-                                  stroke-dasharray="5.42 5.42"
+                                  strokeWidth="2.71095"
+                                  strokeDasharray="5.42 5.42"
                                 />
                                 <ellipse
                                   cx="6.12043"
@@ -661,8 +662,8 @@ export default function MobileViewTicket({ ticketDetails, droppingDate }) {
                                   }
                                 />
                                 <path
-                                  fill-rule="evenodd"
-                                  clip-rule="evenodd"
+                                  fillRule="evenodd"
+                                  clipRule="evenodd"
                                   d="M280.078 6.24612C280.553 5.805 281.321 5.805 281.796 6.24612L289.082 13.0235C289.557 13.4646 289.557 14.1798 289.082 14.621L281.796 21.3983C281.321 21.8395 280.553 21.8395 280.078 21.3983C279.604 20.9572 279.604 20.242 280.078 19.8009L286.506 13.8222L280.078 7.84357C279.604 7.40245 279.604 6.68725 280.078 6.24612Z"
                                   fill={
                                     LuxuryFind(ticketInfo?.bustype) === true
@@ -674,9 +675,9 @@ export default function MobileViewTicket({ ticketDetails, droppingDate }) {
                                       ? "#393939"
                                       : "#1F4B7F"
                                   }
-                                  stroke-width="0.271095"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
+                                  strokeWidth="0.271095"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
                                 />
                               </svg>
                             </div>
@@ -850,8 +851,8 @@ export default function MobileViewTicket({ ticketDetails, droppingDate }) {
                             }
                           />
                           <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
+                            fillRule="evenodd"
+                            clipRule="evenodd"
                             d="M32.2528 54.6614C34.0086 54.6614 35.4319 55.8294 35.4319 57.2702C35.4319 58.711 34.0086 59.879 32.2528 59.879C32.2365 59.879 32.2202 59.8789 32.2039 59.8787L32.2528 62.4375L184.608 62.4375L187.301 59.8787C187.284 59.8789 187.269 59.879 187.252 59.879C185.496 59.879 184.073 58.711 184.073 57.2702C184.073 55.8294 185.496 54.6614 187.252 54.6614C187.269 54.6614 187.284 54.6615 187.301 54.6617V50.4067C187.284 50.4069 187.269 50.407 187.252 50.407C185.496 50.407 184.073 49.239 184.073 47.7982C184.073 46.3574 185.496 45.1894 187.252 45.1894H187.26L187.275 45.1895L187.284 45.1895L187.301 45.1897V41.5772C182.493 41.5772 178.595 38.3786 178.595 34.433C178.595 30.4875 182.493 27.2889 187.301 27.2889V23.7566C187.284 23.7569 187.269 23.757 187.252 23.757C185.496 23.757 184.073 22.5889 184.073 21.1481C184.073 19.7073 185.496 18.5393 187.252 18.5393C187.269 18.5393 187.284 18.5394 187.301 18.5396V14.2846C187.292 14.2847 187.284 14.2848 187.275 14.2849C187.268 14.2849 187.26 14.2849 187.252 14.2849C185.496 14.2849 184.073 13.1169 184.073 11.6761C184.073 10.2353 185.496 9.0673 187.252 9.0673C187.269 9.0673 187.284 9.06738 187.301 9.06762L185.147 6.42857L32.2039 6.96711L32.2039 9.06762C32.1876 9.06762 32.2202 9.06738 32.2039 9.06762C33.9597 9.06762 35.4319 10.2353 35.4319 11.6761C35.4319 13.1169 34.0086 14.2849 32.2528 14.2849C32.2365 14.2849 32.2202 14.2849 32.2039 14.2846V18.5396C32.2202 18.5394 32.2365 18.5393 32.2528 18.5393C34.0086 18.5393 35.4319 19.7073 35.4319 21.1481C35.4319 22.5889 34.0086 23.757 32.2528 23.757C32.2365 23.757 32.2202 23.7569 32.2039 23.7566V27.2889C37.0119 27.2889 41.9793 30.4875 41.9793 34.433C41.9793 38.3786 37.0119 41.5772 32.2039 41.5772V45.1897C32.2202 45.1895 32.2365 45.1894 32.2528 45.1894C34.0086 45.1894 35.4319 46.3574 35.4319 47.7982C35.4319 49.239 34.0086 50.407 32.2528 50.407C32.2365 50.407 32.2202 50.4069 32.2039 50.4067V54.6617C32.2202 54.6615 32.2365 54.6614 32.2528 54.6614Z"
                             fill={
                               LuxuryFind(ticketInfo?.bustype) ===

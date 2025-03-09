@@ -13,6 +13,7 @@ import * as Yup from "yup";
 import ModalPopup from "../../Common/Modal/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { GetFooterTabs } from "../../../Api-TBS/Home/Home";
+import { LuxuryFind } from "../../Common/Common-Functions/LuxuryFind";
 
 // const validationSchema = Yup.object().shape({
 //   address: Yup.string().required("required"),
@@ -44,12 +45,12 @@ export default function BiilingAddress({
   billAddress,
   buttondisable,
 }) {
-  const LuxuryFind = (type) =>
-    type?.toLowerCase().includes("volvo") ||
-    type?.toLowerCase().includes("mercedes benz") ||
-    type?.toLowerCase().includes("washroom") ||
-    type?.toLowerCase().includes("bharatBenz") ||
-    type?.toLowerCase().includes("luxury");
+  // const LuxuryFind = (type) =>
+  //   type?.toLowerCase().includes("volvo") ||
+  //   type?.toLowerCase().includes("mercedes benz") ||
+  //   type?.toLowerCase().includes("washroom") ||
+  //   type?.toLowerCase().includes("bharatBenz") ||
+  //   type?.toLowerCase().includes("luxury");
   const [formState, setFormState] = useState({
     isValid: false,
     isSubmitting: false,
@@ -452,7 +453,7 @@ export default function BiilingAddress({
                             <ErrorMessage
                               name="terms"
                               component="div"
-                              className="text-red-500 text-[2.5vw] md:text-[0.75vw] absolute md:top-[1vw] md:left-[2.5vw] top-[4.5vw]"
+                              className="text-red-500 text-[2.5vw] md:text-[0.75vw] absolute md:top-[1.3vw] md:left-[2.5vw] top-[4.5vw]"
                             />
                           </div>
                           <div className="flex justify-end md:gap-x-[0vw] gap-x-[6vw] items-center">

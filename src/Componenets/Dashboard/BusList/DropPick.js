@@ -2,12 +2,13 @@ import { Popover } from "antd";
 import dayjs from "dayjs";
 import React from "react";
 import { capitalizeFirstLetter } from '../../Common/Common-Functions/Captalization'
+import { LuxuryFind } from "../../Common/Common-Functions/LuxuryFind";
 
 export default function DropPick({ boarding, dropping, bus_type_status, busType, bus_type }) {
 
-    const LuxuryFind = (type) =>
-        type.toLowerCase().includes("volvo") ||
-        type.toLowerCase().includes("mercedes benz");
+    // const LuxuryFind = (type) =>
+    //     type.toLowerCase().includes("volvo") ||
+    //     type.toLowerCase().includes("mercedes benz");
 
     return (
         <>
@@ -45,7 +46,7 @@ export default function DropPick({ boarding, dropping, bus_type_status, busType,
                                 {boarding?.map((item) => {
                                     // Split the string item by '^'
                                     const parts = item.split('^');
-                                    console.log(parts, 'parts_dropping')
+                                     // console.log(parts, 'parts_dropping')
                                     // Ensure we have enough parts in the split string
                                     if (parts.length >= 3) {
                                         const place = parts[0];  // "Ameerpet"

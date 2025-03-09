@@ -233,7 +233,7 @@ export const busreducer = (state = initial, action) => {
         ...state,
         // after discuss set 4% default at 1-3-25
         // live_per: payload?.data?.data?.[0].Percentage,
-        live_per: 4,
+        live_per: 5,
       };
     }
     case BOOKING_DETAILS_STATUS: {

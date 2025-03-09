@@ -58,7 +58,7 @@ const Login = ({ closeLoginModal, setLoginIsOpen }) => {
     if (storedName !== userName) {
       setUserName(storedName);
     }
-    console.log(storedName, "userName");
+     // console.log(storedName, "userName");
   }, [userName, setUserName]);
 
   return (

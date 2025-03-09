@@ -59,7 +59,7 @@ export default function Advertisement() {
     // ----------------------------------------------------------------MOBILE_VIEW--------------------------------------------------
 
     const adList = useSelector((state) => state.mob_ads_list);
-    console.log(adList, "Mboile_ads_");
+     // console.log(adList, "Mboile_ads_");
     const [mobileAds, setMobileAds] = useState([
         localStorage.getItem("ad1"),
         localStorage.getItem("ad2"),
@@ -67,7 +67,7 @@ export default function Advertisement() {
         localStorage.getItem("ad4"),
     ]);
     const [activeAdIndex, setActiveAdIndex] = useState(0);
-    console.log(activeAdIndex, "activADIndex");
+     // console.log(activeAdIndex, "activADIndex");
 
     useEffect(() => {
         const storedIndex = Number(sessionStorage.getItem("ActiveIndex")) || 0;
@@ -102,7 +102,7 @@ export default function Advertisement() {
         GetMobAds(dispatch);
         setMobileAds(adList);
     }, []);
-    console.log(activeAdIndex, "adlist");
+     // console.log(activeAdIndex, "adlist");
 
     return (
         <>

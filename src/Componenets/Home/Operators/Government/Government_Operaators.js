@@ -24,44 +24,69 @@ import { useDispatch, useSelector } from "react-redux";
 import { Abhibus_GetOperators } from "../../../../Api-Abhibus/Home/HomePage";
 import { Tooltip } from "antd";
 
-const busdetails = [
-  {
-    label: "KSRTC",
-    logo: bus10,
-  },
-  {
-    label: "APSRTC",
-    logo: bus1,
-  },
-  {
-    label: "GSRTC",
-    logo: bus2,
-  },
-  {
-    label: "TSRTC",
-    logo: bus3,
-  },
-  {
-    label: "MSRTC",
-    logo: bus11,
-  },
-  {
-    label: "Kerala RTC",
-    logo: bus5,
-  },
-  {
-    label: "SBSTC",
-    logo: bus6,
-  },
-  {
-    label: "RSRTC",
-    logo: bus7,
-  },
-  {
-    label: "UPSRTC",
-    logo: bus8,
-  },
-];
+ const busdetails = [
+      {
+        label: "TNSTC",
+        logo: bus17,
+      },
+      {
+        label: "Kerala RTC",
+        logo: bus5,
+      },
+      {
+        label: "KSRTC",
+        logo: bus10,
+      },
+      {
+        label: "APSRTC",
+        logo: bus1,
+      },
+      {
+        label: "TSRTC",
+        logo: bus3,
+      },
+      {
+        label: "GSRTC",
+        logo: bus2,
+      },
+    
+      {
+        label: "HRTC",
+        logo: bus13,
+      },
+      {
+        label: "JKSRTC",
+        logo: bus21,
+      },
+      {
+        label: "OSRTC",
+        logo: bus16,
+      },
+      {
+        label: "PRTC",
+        logo: bus18,
+      },
+      {
+        label: "PUNBUS",
+        logo: bus19,
+      },
+      {
+        label: "RSRTC",
+        logo: bus7,
+      },
+      {
+        label: "UPSRTC",
+        logo: bus8,
+      },
+      {
+        label: "BSRTC",
+        logo: bus15,
+      },
+      {
+        label: "WBTC",
+        logo: bus20,
+      },
+    ];
 
 export default function Government_Operators() {
   const colors = useSelector((state) => state.themecolors[0]);
@@ -113,9 +138,9 @@ export default function Government_Operators() {
   };
 
   // Fetch Operators
-  useEffect(() => {
-    Abhibus_GetOperators(dispatch);
-  }, []);
+  // useEffect(() => {
+  //   Abhibus_GetOperators(dispatch);
+  // }, []);
 
   return (
     <>
@@ -136,7 +161,7 @@ export default function Government_Operators() {
           }
         </div>
         <div className="grid grid-cols-9 w-full py-[1vw]">
-          {Get_GvtOperators?.length > 0 &&
+          {/* {Get_GvtOperators?.length > 0 &&
             Get_GvtOperators?.slice(0, 9)?.map((item, index) => (
               <div
                 key={index}
@@ -159,6 +184,33 @@ export default function Government_Operators() {
                     </Tooltip>
                   ) : (
                     item?.operater_name.slice(0, 10)
+                  )}
+                </p>
+              </div>
+            ))} */}
+              {
+            busdetails?.slice(0, 9)?.map((item, index) => (
+              <div
+                key={index}
+                className="col-span-1 w-full items-center justify-center flex-col"
+              >
+                <img
+                  src={item?.logo} // Dynamically setting image
+                  className="w-[8vw] h-[8vw] ml-[1vw] rounded-full"
+                  alt={item?.label}
+                />
+                <p className="text-center py-[0.5vw] text-[1vw]">
+                  {item?.label?.length > 11 ? (
+                    <Tooltip
+                      placement="top"
+                      title={item?.label}
+                      className="cursor-pointer"
+                      color="#1F487C"
+                    >
+                      {`${item?.label.slice(0, 11)}...`}
+                    </Tooltip>
+                  ) : (
+                    item?.label.slice(0, 10)
                   )}
                 </p>
               </div>

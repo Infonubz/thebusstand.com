@@ -36,7 +36,7 @@ export default function BookingApp() {
   const handleSubmitlink = async (values) => {
     try {
       const sendLink = await sendAppLink(dispatch, values);
-      console.log(sendLink, "send app link");
+       // console.log(sendLink, "send app link");
       toast.success(sendLink.message);
     } catch (error) {
       console.error(error, "Error");
@@ -46,8 +46,8 @@ export default function BookingApp() {
   useEffect(() => {
     const AverageRating = async () => {
       const response = await GetAverageRating();
-      console.log(response, "ratingavvadsd");
-      // console.log(parseFloat(response?.average_rating),"ratingavvadsdp");
+       // console.log(response, "ratingavvadsd");
+      //  // console.log(parseFloat(response?.average_rating),"ratingavvadsdp");
       setAverageData(response);
     };
     AverageRating();
@@ -169,9 +169,8 @@ export default function BookingApp() {
                 <div className="flex flex-col ">
                   <div className="flex">
                     <div
-                      className={`cursor-pointer ${
-                        modalshow === 2 ? "bg-[#B3C2D4]" : ""
-                      } rounded-[1vw] w-[10vw] py-[0.5vw]`}
+                      className={`cursor-pointer ${modalshow === 2 ? "bg-[#B3C2D4]" : ""
+                        } rounded-[1vw] w-[10vw] py-[0.5vw]`}
                       onClick={() => setModalShow(2)}
                     >
                       <div className="text-[1.4vw] text-white text-center">
@@ -179,9 +178,8 @@ export default function BookingApp() {
                       </div>
                     </div>
                     <div
-                      className={`cursor-pointer ${
-                        modalshow === 1 ? "bg-[#B3C2D4]" : ""
-                      } rounded-[1vw] w-[10vw] py-[0.5vw]`}
+                      className={`cursor-pointer ${modalshow === 1 ? "bg-[#B3C2D4]" : ""
+                        } rounded-[1vw] w-[10vw] py-[0.5vw]`}
                       onClick={() => setModalShow(1)}
                     >
                       <p className="text-[1.4vw] text-white text-center">
@@ -199,7 +197,7 @@ export default function BookingApp() {
                         validationSchema={mobileValidationSchema}
                         onSubmit={(values, { resetForm, validateForm }) => {
                           handleSubmitlink(values);
-                          console.log(values, "values");
+                           // console.log(values, "values");
                           resetForm();
                           validateForm();
                         }}
@@ -254,7 +252,7 @@ export default function BookingApp() {
                         validationSchema={emailValidationSchema}
                         onSubmit={(values, { resetForm, validateForm }) => {
                           handleSubmitlink(values);
-                          console.log(values, "values");
+                           // console.log(values, "values");
                           resetForm();
                           validateForm();
                         }}
@@ -383,9 +381,9 @@ export default function BookingApp() {
                       value={averageData?.average_rating}
                       className="home-rate text-[2.3vw]"
                     />
-                    {console.log(
+                    {/* { // console.log(
                       parseFloat(averageData?.average_rating, "avdssiuzdrs")
-                    )}
+                    )} */}
                     <div className=" text-white font-InterFont text-[1.1vw] ">
                       <span className="font-semibold text-[1.2vw]">{`${averageData?.average_rating}/5`}</span>{" "}
                       based on{" "}
@@ -492,6 +490,379 @@ export default function BookingApp() {
           alt="App store"
           className="absolute right-[2vw] bottom-[12vw] w-[15vw] h-[5vw]"
         />
+        {/* <div className="flex flex-col justify-center items-center ">
+          <div className="w-[0.1vw] h-[11vh] opacity-35 rounded-full bg-white"></div>
+          <div className="text-white text-2xl">or</div>
+          <div className="w-[0.1vw] h-[11vh] opacity-35 rounded-full bg-white"></div>
+        </div> */}
+      </div>
+
+      <div
+        alt="BgHills"
+        className="h-[70vw] px-[2.5w]  w-full relative md:hidden block"
+        style={{
+          backgroundImage: `url(${BgHills})`,
+          backgroundSize: "cover",
+          backgroundPosition: "bottom",
+        }}
+      >
+        <div className=" w-full h-[35vw] ">
+          <div className=" col-span-4  h-[35vw] w-full">
+            <div className="flex flex-col gap-[1vw]  w-full h-full">
+              <div className=" items-center flex px-[1.5vw]">
+                <span className=" text-white font-bold text-[5vw] select-none">
+                  Your all-in-one Booking app
+                </span>
+              </div>
+              <div className="items-center flex">
+                <span className=" text-white text-[3vw] px-[1.5vw] w-full text-justify">
+                  Book Buses anywhere in the world in just seconds. Get
+                  real-time flight updates, travel info, exclusive deals, and
+                  30% more Trip Coins only on the app!
+                </span>
+              </div>
+
+              <div className="grid grid-cols-6">
+                <div className="col-span-2 relative flex items-center">
+                  <img
+                    src={iphone}
+                    draggable={false}
+                    alt="iphone"
+                    className="h-[35vw] w-[28vw]"
+                  />
+                </div>
+                <div className="col-span-4">
+                  <div className=" ">
+                    <div className="flex">
+                      <div
+                        className={`cursor-pointer ${modalshow === 2 ? "bg-[#B3C2D4]" : ""
+                          } rounded-[1vw] w-[15vw] py-[0.5vw]`}
+                        onClick={() => setModalShow(2)}
+                      >
+                        <div className="text-[3vw] text-white text-center">
+                          E-Mail
+                        </div>
+                      </div>
+                      <div
+                        className={`cursor-pointer ${modalshow === 1 ? "bg-[#B3C2D4]" : ""
+                          } rounded-[1vw] w-[15vw] py-[0.5vw]`}
+                        onClick={() => setModalShow(1)}
+                      >
+                        <p className="text-[3vw] text-white text-center">
+                          Mobile
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* <div>
+                    {modalshow === 1 ? (
+                      <Formik
+                        initialValues={{
+                          mobile: "",
+                        }}
+                        validationSchema={mobileValidationSchema}
+                        onSubmit={(values, { resetForm, validateForm }) => {
+                          handleSubmitlink(values);
+                           // console.log(values, "values");
+                          resetForm();
+                          validateForm();
+                        }}
+                        enableReinitialize={false}
+                      >
+                        {({
+                          isSubmitting,
+                          isValid,
+                          handleChange,
+                          handleSubmit,
+                        }) => (
+                          <Form onSubmit={handleSubmit}>
+                            <div className="">
+                              <div className="font-InterFont text-white text-[1.3vw] py-[1vw]">
+                                Enter your mobile number to receive a text with
+                                a link to download the app.
+                              </div>
+                              <div className="relative">
+                                <button
+                                  type="submit"
+                                  className="absolute top-[0.37vw] right-[6.4vw] w-[8vw] h-[3vw] bg-white rounded-full text-[#1F4B7F] font-bold text-[1.2vw]"
+                                >
+                                  Submit
+                                </button>
+                                <Field
+                                  type="text"
+                                  name="mobile"
+                                  autoComplete="off"
+                                  placeholder="+91 Mobile Number"
+                                  onChange={(e) => handleChange(e)}
+                                  maxLength={10}
+                                  onKeyDown={handleKeyDown}
+                                  className="text-[1.2vw] h-[3.8vw] w-[36vw] bg-[#ffffff9a] rounded-[1vw] outline-none px-[1vw]"
+                                />
+                                <div>
+                                  <ErrorMessage
+                                    name="mobile"
+                                    component="div"
+                                    className="text-white text-[0.8vw] absolute top-[4vw] left-[0.7vw]"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </Form>
+                        )}
+                      </Formik>
+                    ) : (
+                      <Formik
+                        initialValues={{
+                          email: "",
+                        }}
+                        validationSchema={emailValidationSchema}
+                        onSubmit={(values, { resetForm, validateForm }) => {
+                          handleSubmitlink(values);
+                           // console.log(values, "values");
+                          resetForm();
+                          validateForm();
+                        }}
+                        enableReinitialize={false}
+                      >
+                        {({
+                          isSubmitting,
+                          isValid,
+                          handleChange,
+                          handleSubmit,
+                        }) => (
+                          <Form onSubmit={handleSubmit}>
+                            <div>
+                              <div className="font-InterFont text-white text-[1.3vw] py-[1vw]">
+                                Enter your Email to receive a text with a link
+                                to download the app.
+                              </div>
+                              <div className="relative">
+                                <button
+                                  type="submit"
+                                  className="absolute top-[0.37vw] right-[1.3vw] w-[8vw] h-[3vw] bg-white rounded-full text-[#1F4B7F] font-bold text-[1.2vw]"
+                                >
+                                  Submit
+                                </button>
+                                <Field
+                                  type="text"
+                                  name="email"
+                                  autoComplete="off"
+                                  placeholder="Email"
+                                  onChange={(e) => handleChange(e)}
+                                  className="text-[1.2vw] h-[3.8vw] w-[36vw] bg-[#ffffff9a] rounded-[1vw] outline-none px-[1vw]"
+                                />
+                                <div>
+                                  <ErrorMessage
+                                    name="email"
+                                    component="div"
+                                    className="text-white text-[0.8vw] absolute top-[4vw] left-[0.7vw]"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </Form>
+                        )}
+                      </Formik>
+                    )}
+                  </div> */}
+
+                    {modalshow === 1 ? (
+                      // Mobile Form
+                      <div className="">
+                        <div className="font-InterFont text-white text-[3vw] py-[1vw] text-justify w-[62.5vw]">
+                          Enter your mobile number to receive a text with a link
+                          to download the app.
+                        </div>
+                        <div className="relative w-fit">
+                          <button
+                            type="button"
+                            onClick={handleMobileSubmit}
+                            className="absolute top-[0.75vw] right-[1vw] w-[15vw] h-[5vw] bg-white rounded-full text-[#1F4B7F] font-bold text-[3vw]"
+                          >
+                            Submit
+                          </button>
+                          <input
+                            type="text"
+                            value={mobile}
+                            autoComplete="off"
+                            onChange={handleMobileChange}
+                            placeholder="+91 Mobile Number"
+                            onKeyDown={handleKeyDown}
+                            maxLength={10}
+                            className="text-[3vw] h-[6vw] w-[62.5vw] bg-[#ffffff9a] rounded-[1vw] outline-none px-[1vw] placeholder:text-[3vw]"
+                          />
+                          {mobileError && (
+                            <div className="text-white text-[0.8vw] absolute top-[4vw] left-[0.7vw]">
+                              {mobileError}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ) : (
+                      //  Email Form
+                      <div>
+                        <div className="font-InterFont text-white text-[3vw] py-[1vw] text-justify w-[62.5vw]">
+                          Enter your Email to receive a text with a link to
+                          download the app.
+                        </div>
+                        <div className="relative w-fit">
+                          <button
+                            type="button"
+                            onClick={handleEmailSubmit}
+                            className="absolute top-[0.75vw] right-[1vw]  w-[15vw] h-[5vw] bg-white rounded-full text-[#1F4B7F] font-bold text-[3vw]"
+                          >
+                            Submit
+                          </button>
+                          <input
+                            type="text"
+                            value={email}
+                            autoComplete="off"
+                            onChange={handleEmailChange}
+                            placeholder="Email"
+                            className="text-[3vw] h-[6vw] w-[62.5vw] bg-[#ffffff9a] rounded-[1vw] outline-none px-[1vw] placeholder:text-[3vw]"
+                          />
+                          {emailError && (
+                            <div className="text-white text-[1.2vw] absolute top-[4vw] left-[0.7vw]">
+                              {emailError}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="">
+                    <div className=" py-[1vw]">
+                      <div className="">
+                        {/* <img
+                      src={AppRating}
+                      alt="AppRating"
+                      className="w-[15vw] h-[2.5vw]"  
+                    /> */}
+                        {/* <Rate disabled allowHalf defaultValue={averageData.average_rating ? averageData.average_rating : 4.5} className="text-[2vw]"  /> */}
+                        <Rate
+                          disabled
+                          allowHalf
+                          // defaultValue={3.6}
+                          value={averageData?.average_rating}
+                          className="home-rate text-[4vw]"
+                        />
+                        {/* { // console.log(
+                          parseFloat(averageData?.average_rating, "avdssiuzdrs")
+                        )} */}
+                        <div className=" text-white font-InterFont text-[3vw] ">
+                          <span className="font-semibold text-[3.2vw]">{`${averageData?.average_rating}/5`}</span>{" "}
+                          based on{" "}
+                          <span className="font-semibold text-[3.2vw]">
+                            {`${averageData?.total_feedbacks}`}{" "}
+                          </span>{" "}
+                          reviews
+                        </div>
+                        {/* <div className=" text-white font-InterFont text-[1.1vw]">
+                      Trusted by 5+ Crores Travellers
+                    </div> */}
+                      </div>
+                      {/* <div>
+                    <img src={Award} alt="Award" className="w-[15vw] h-[6vw]" />
+                  </div> */}
+                    </div>
+                  </div>
+
+                  <div className="flex gap-x-[2vw]">
+                    <img
+                      src={GoogleStore}
+                      alt="GoogleStore"
+                      draggable={false}
+                      className=" w-[22.5vw] h-[7.5vw]"
+                    />
+                    <img
+                      src={AppStore}
+                      draggable={false}
+                      alt="App store"
+                      className=" w-[22.5vw] h-[7.5vw]"
+                    />
+                  </div>
+                </div>
+
+
+                {/* </div> */}
+
+                {/* <div className=" flex flex-rows gap-[5%] w-[65vw]">
+                <div className=" ">
+                  <Tabs>
+                    <div className="flex flex-col ">
+                      <TabList>
+                        <Tab className="tab1 my-[2vh]">
+                          <div className="text-2xl text-white">Mobile</div>
+                        </Tab>
+                        <Tab className="tab1 my-[2vh]">
+                          <div className="text-2xl text-white">E-Mail</div>
+                        </Tab>
+                      </TabList>
+
+                      <TabPanel>
+                        <div className="flex flex-col gap-6">
+                          <div className="font-InterFont text-white text-xl w-[37vw]">
+                            Enter your phone number to receive a text with a
+                            link to download the app.
+                          </div>
+                          <input
+                            type="text"
+                            className="inputbox   font-InterFont rounded-2xl  grid content-center  outline-none "
+                            placeholder="   +91 Mobile Number"
+                            style={{}}
+                          />
+                        </div>
+                      </TabPanel>
+
+                      <TabPanel>
+                        <div className="flex flex-col gap-6">
+                          <div className="font-InterFont text-white text-xl w-[37vw]">
+                            Enter your Email to receive a text with a link to
+                            download the app.
+                          </div>
+                          <input
+                            type="email"
+                            className="inputbox   font-InterFont rounded-2xl  grid content-center  outline-none "
+                            placeholder="  Email"
+                            style={{}}
+                          />
+                        </div>
+                      </TabPanel>
+                    </div>
+                  </Tabs>
+                </div>
+                <div className="flex flex-col justify-center items-center ">
+                  <div className="w-[0.1vw] h-[11vh] opacity-35 rounded-full bg-white"></div>
+                  <div className="text-white text-2xl">or</div>
+                  <div className="w-[0.1vw] h-[11vh] opacity-35 rounded-full bg-white"></div>
+                </div>
+
+                <div className=" grid grid-flow-row w-[15vw] gap-[10%] items-center">
+                  <img src={GoogleStore} alt="GoogleStore" className=" " />
+                  <img src={AppStore} alt="App store" className="" />
+                </div>
+              </div>
+
+              <div className="flex flex-col">
+                <div className="grid grid-flow-col w-[55%] gap-[20%] items-center">
+                  <div>
+                    <img src={AppRating} alt="AppRating" className="w-[90%]" />
+                    <div className=" text-white font-InterFont text-lg">
+                      4.6/5 based on 210260 reviews
+                    </div>
+                    <div className=" text-white font-InterFont text-lg">
+                      Trusted by 5+ Crores Travellers
+                    </div>
+                  </div>
+                  <img src={Award} alt="Award" className="w-[100%]" />
+                </div>
+              </div> */}
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* <div className="flex flex-col justify-center items-center ">
           <div className="w-[0.1vw] h-[11vh] opacity-35 rounded-full bg-white"></div>
           <div className="text-white text-2xl">or</div>

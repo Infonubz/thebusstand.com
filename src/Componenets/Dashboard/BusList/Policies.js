@@ -9,17 +9,18 @@ import { Popover } from "antd";
 import { IoPawOutline } from "react-icons/io5";
 import { capitalizeFirstLetter } from "../../Common/Common-Functions/Captalization";
 import SVG_List from "../../Common/SVG/SVG";
+import { LuxuryFind } from "../../Common/Common-Functions/LuxuryFind";
 
 export default function Policies({ policies, busPrice, busType, bus_type }) {
     const [isToggleSwitch, setIsToggleSwitch] = useState("CDCP");
 
     const SVG = SVG_List()
-    console.log(isToggleSwitch, 'is_toggle_switch')
+     // console.log(isToggleSwitch, 'is_toggle_switch')
 
 
-    const LuxuryFind = (type) =>
-        type.toLowerCase().includes("volvo") ||
-        type.toLowerCase().includes("mercedes benz");
+    // const LuxuryFind = (type) =>
+    //     type.toLowerCase().includes("volvo") ||
+    //     type.toLowerCase().includes("mercedes benz");
 
     const Travel = [
         {

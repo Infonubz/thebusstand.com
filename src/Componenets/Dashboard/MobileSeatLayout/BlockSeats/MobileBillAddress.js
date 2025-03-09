@@ -9,6 +9,7 @@ import { Abhibus_SeatBlocked } from "../../../../Api-Abhibus/Dashboard/Dashboard
 import * as Yup from "yup";
 import { GetFooterTabs } from "../../../../Api-TBS/Home/Home";
 import { useDispatch, useSelector } from "react-redux";
+import { LuxuryFind } from "../../../Common/Common-Functions/LuxuryFind";
 // const validationSchema = Yup.object().shape({
 //   address: Yup.string()
 //     .required('Address is required'),
@@ -52,12 +53,12 @@ export default function MobileBillAddress({
     GetFooterTabs(dispatch);
   }, [dispatch]);
 
-  const LuxuryFind = (type) =>
-    type?.toLowerCase().includes("volvo") ||
-    type?.toLowerCase().includes("mercedes benz") ||
-    type?.toLowerCase().includes("washroom") ||
-    type?.toLowerCase().includes("bharatBenz") ||
-    type?.toLowerCase().includes("luxury");
+  // const LuxuryFind = (type) =>
+  //   type?.toLowerCase().includes("volvo") ||
+  //   type?.toLowerCase().includes("mercedes benz") ||
+  //   type?.toLowerCase().includes("washroom") ||
+  //   type?.toLowerCase().includes("bharatBenz") ||
+  //   type?.toLowerCase().includes("luxury");
 
   const [formState, setFormState] = useState({
     isValid: false,

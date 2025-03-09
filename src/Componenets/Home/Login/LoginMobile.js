@@ -32,7 +32,7 @@ const LoginMobile = ({ setLoginMobileIsOpen, setIsLoginDrawer , setLoginDrawer})
   //   }
   // };
 
-  console.log(CurrentPage, "curpagefh");
+   // console.log(CurrentPage, "curpagefh");
   
 
   return (

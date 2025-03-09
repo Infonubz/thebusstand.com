@@ -78,7 +78,7 @@ const Navbar_Three = ({ sidebarToggle, setSidebarToggle }) => {
     setIsDrawerOpen(false);
     setSelectedButton(null);
   };
-  // console.log(buslist.length, "buslistbuslist");
+  //  // console.log(buslist.length, "buslistbuslist");
 
   const handleSortingClick = (type) => {
     setSortList((prevState) => {
@@ -120,7 +120,7 @@ const Navbar_Three = ({ sidebarToggle, setSidebarToggle }) => {
     });
 
     dispatch({ type: "GET_BUS_FILTERS", payload: sortedList });
-    console.log(`Sorted by ${type}:`, sortedList);
+     // console.log(`Sorted by ${type}:`, sortedList);
   };
 
   // const getButtonLabel = (type) => {
@@ -273,7 +273,7 @@ const Navbar_Three = ({ sidebarToggle, setSidebarToggle }) => {
 
           <span className="text-[#1F487C] font-bold  text-[1vw]  px-[0.1vw] flex items-center">
             <span className="pr-[0.4vw]">Showing</span>
-            <div className="w-[1.7vw] h-[1.7vw] bg-[#1F487C] text-white mr-[0.4vw] items-center flex justify-center rounded-full">
+            <div className="w-[2vw] h-[2vw] bg-[#1F487C] text-white mr-[0.4vw] items-center flex justify-center rounded-full">
               <span className=" text-[1vw] font-extrabold ">
                 {buslistFilter?.length}
               </span>

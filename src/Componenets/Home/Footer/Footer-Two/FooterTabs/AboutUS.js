@@ -30,7 +30,7 @@ export default function AboutUs() {
         window.scrollTo(0, 0);
     }, []);
 
-    console.log(about_us, "about_us");
+     // console.log(about_us, "about_us");
 
     return (
         <>

@@ -31,19 +31,18 @@ const Loader = () => {
     }
   }, [menulist]);
   const [loading, setLoading] = useState(true);
-  const loader = sessionStorage.getItem('loader')
+  const loader = sessionStorage.getItem("loader");
   useEffect(() => {
-    if (loader === 'true') {
+    if (loader === "true") {
       setLoading(true);
-    } else if (loader === 'false') {
-      setLoading(false)
+    } else if (loader === "false") {
+      setLoading(false);
     }
     setTimeout(() => {
       setLoading(false);
-      sessionStorage.setItem('loader', false)
+      sessionStorage.setItem("loader", false);
     }, 6000);
   }, [loader]);
-
 
   // const getCityAbbreviation = (city) => {
   //   const cityAbbreviations = {
@@ -89,6 +88,9 @@ const Loader = () => {
   const getCityAbbreviation = (cityName) => {
     if (!cityName) return "";
 
+    // Remove anything inside parentheses (e.g., "Tirupur (Avinashi)" → "Tirupur")
+    cityName = cityName.replace(/\s*\(.*?\)\s*/g, "").trim();
+
     const words = cityName.split(" ");
 
     // If city has multiple words (e.g., "New Delhi" → "NDL")
@@ -113,7 +115,6 @@ const Loader = () => {
 
     return abbreviation;
   };
-
   const logos = [parveen, redlogo, yatralogo, ixigo];
   const [currentLogo, setCurrentLogo] = useState(logos[0]);
 
@@ -256,7 +257,7 @@ const Loader = () => {
       }, stage.time);
     });
   }, []);
-  console.log(scale, "scalescale");
+  // console.log(scale, "scalescale");
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -269,15 +270,13 @@ const Loader = () => {
     }
   }, [count]);
 
-  console.log(count, "countcount");
+  // console.log(count, "countcount");
 
   return (
     <>
-      <Navbar_Two
-       loading={loading}
-       loader={loader} />
+      <Navbar_Two loading={loading} loader={loader} />
       {/* <div> */}
-      {loading && loader === 'true' ? (
+      {loading && loader === "true" ? (
         <div>
           <div className="md:block hidden">
             <div className="flex pt-[8vw] h-screen">
@@ -1247,11 +1246,12 @@ const Loader = () => {
           <Sidebar sidebarToggle={sidebarToggle} />
           <div className="flex flex-col flex-1">
             <div
-              className={` ${sidebarToggle ? "" : "md:pl-[18vw] ml-0"
-                } fixed w-full mt-[0.5vw] md:block hidden z-10`}
-            // style={{
-            //   zIndex: 1,
-            // }}
+              className={` ${
+                sidebarToggle ? "" : "md:pl-[18vw] ml-0"
+              } fixed w-full mt-[0.5vw] md:block hidden z-10`}
+              // style={{
+              //   zIndex: 1,
+              // }}
             >
               <Navbar_Three
                 sidebarToggle={sidebarToggle}
@@ -1264,8 +1264,9 @@ const Loader = () => {
               <Sample />
             </div> */}
             <main
-              className={` ${sidebarToggle ? "" : "md:ml-[18vw] ml-0"
-                } md:mt-[2.8vw]  md:pt-0 pt-[1vw] -z-1`}
+              className={` ${
+                sidebarToggle ? "" : "md:ml-[18vw] ml-0"
+              } md:mt-[2.8vw]  md:pt-0 pt-[1vw] -z-1`}
             >
               <Outlet />
             </main>
