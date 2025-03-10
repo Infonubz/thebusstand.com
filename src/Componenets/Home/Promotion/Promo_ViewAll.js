@@ -363,6 +363,7 @@ export default function Promo_ViewAll() {
                 >
                   Trending Offers
                 </p>
+                
               </div>
               <div className="md:max-h-[28vw] h-[80vh] overflow-y-auto w-[100%] px-[3vw] place-items-center pt-[1vw] items-center justify-center flex">
                 <div className="grid md:grid-cols-3 w-full h-full items-center flex-col gap-[2.7vw] justify-center px-[1vw]">
